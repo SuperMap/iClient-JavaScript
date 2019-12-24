@@ -1,9 +1,9 @@
 /*!
  * 
  *          iclient-classic.(https://iclient.supermap.io)
- *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
+ *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0
+ *          version: v10.0.1
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -96,12 +96,6 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var g; // This works in non-strict mode
@@ -122,6 +116,12 @@ try {
 
 
 module.exports = g;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
 /* 2 */
@@ -145,9 +145,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function generateCallbackFunction() {
     return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-  } // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
-  // error if request timeout
-
+  }
 
   function clearFunction(functionName) {
     // IE8 throws an exception when you try to delete a property on window
@@ -161,7 +159,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function removeScript(scriptId) {
     var script = document.getElementById(scriptId);
-    document.getElementsByTagName('head')[0].removeChild(script);
+
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
   }
 
   function fetchJsonp(_url) {
@@ -192,13 +193,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       url += url.indexOf('?') === -1 ? '?' : '&';
       var jsonpScript = document.createElement('script');
       jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
+
       jsonpScript.id = scriptId;
       document.getElementsByTagName('head')[0].appendChild(jsonpScript);
       timeoutId = setTimeout(function () {
         reject(new Error('JSONP request to ' + _url + ' timed out'));
         clearFunction(callbackFunction);
         removeScript(scriptId);
-      }, timeout);
+
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
+      }, timeout); // Caught if got 404/500
+
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
     });
   } // export as global function
 
@@ -236,262 +253,6 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate) {function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-(function (root) {
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var setTimeoutFunc = setTimeout;
-
-  function noop() {} // Polyfill for Function.prototype.bind
-
-
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-
-  function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    this._state = 0;
-    this._handled = false;
-    this._value = undefined;
-    this._deferreds = [];
-    doResolve(fn, this);
-  }
-
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-
-      return;
-    }
-
-    self._handled = true;
-
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-        return;
-      }
-
-      var ret;
-
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-
-      resolve(deferred.promise, ret);
-    });
-  }
-
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-
-      if (newValue && (_typeof(newValue) === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function () {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
-    }
-
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-
-    self._deferreds = null;
-  }
-
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-
-
-  function doResolve(fn, self) {
-    var done = false;
-
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    var prom = new this.constructor(noop);
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-
-  Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-    return new Promise(function (resolve, reject) {
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-
-      function res(i, val) {
-        try {
-          if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
-            var then = val.then;
-
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-
-          args[i] = val;
-
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  };
-
-  Promise.resolve = function (value) {
-    if (value && _typeof(value) === 'object' && value.constructor === Promise) {
-      return value;
-    }
-
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-
-  Promise.race = function (values) {
-    return new Promise(function (resolve, reject) {
-      for (var i = 0, len = values.length; i < len; i++) {
-        values[i].then(resolve, reject);
-      }
-    });
-  }; // Use polyfill for setImmediate for performance gains
-
-
-  Promise._immediateFn = typeof setImmediate === 'function' && function (fn) {
-    setImmediate(fn);
-  } || function (fn) {
-    setTimeoutFunc(fn, 0);
-  };
-
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-  /**
-   * Set the immediate function to execute callbacks
-   * @param fn {function} Function to execute
-   * @deprecated
-   */
-
-
-  Promise._setImmediateFn = function _setImmediateFn(fn) {
-    Promise._immediateFn = fn;
-  };
-  /**
-   * Change the function to execute on unhandled rejection
-   * @param {function} fn Function to execute on unhandled rejection
-   * @deprecated
-   */
-
-
-  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
-    Promise._unhandledRejectionFn = fn;
-  };
-
-  if ( true && module.exports) {
-    module.exports = Promise;
-  } else if (!root.Promise) {
-    root.Promise = Promise;
-  }
-})(this);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8).setImmediate))
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1237,13 +998,331 @@ function keys(object) {
 
 var toPairs = createToPairs(keys);
 module.exports = toPairs;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(0)))
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return echarts}catch(e){return {}}}();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(setImmediate, global) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+(function (global, factory) {
+  ( false ? undefined : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
+})(this, function () {
+  'use strict';
+  /**
+   * @this {Promise}
+   */
+
+  function finallyConstructor(callback) {
+    var constructor = this.constructor;
+    return this.then(function (value) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function () {
+        return value;
+      });
+    }, function (reason) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function () {
+        // @ts-ignore
+        return constructor.reject(reason);
+      });
+    });
+  } // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+
+
+  var setTimeoutFunc = setTimeout;
+
+  function isArray(x) {
+    return Boolean(x && typeof x.length !== 'undefined');
+  }
+
+  function noop() {} // Polyfill for Function.prototype.bind
+
+
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
+  }
+  /**
+   * @constructor
+   * @param {Function} fn
+   */
+
+
+  function Promise(fn) {
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    /** @type {!number} */
+
+    this._state = 0;
+    /** @type {!boolean} */
+
+    this._handled = false;
+    /** @type {Promise|undefined} */
+
+    this._value = undefined;
+    /** @type {!Array<!Function>} */
+
+    this._deferreds = [];
+    doResolve(fn, this);
+  }
+
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
+    }
+
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+
+      return;
+    }
+
+    self._handled = true;
+
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+        return;
+      }
+
+      var ret;
+
+      try {
+        ret = cb(self._value);
+      } catch (e) {
+        reject(deferred.promise, e);
+        return;
+      }
+
+      resolve(deferred.promise, ret);
+    });
+  }
+
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+
+      if (newValue && (_typeof(newValue) === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function () {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+
+    self._deferreds = null;
+  }
+  /**
+   * @constructor
+   */
+
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+
+
+  function doResolve(fn, self) {
+    var done = false;
+
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    // @ts-ignore
+    var prom = new this.constructor(noop);
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+
+  Promise.prototype['finally'] = finallyConstructor;
+
+  Promise.all = function (arr) {
+    return new Promise(function (resolve, reject) {
+      if (!isArray(arr)) {
+        return reject(new TypeError('Promise.all accepts an array'));
+      }
+
+      var args = Array.prototype.slice.call(arr);
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        try {
+          if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
+            var then = val.then;
+
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+
+          args[i] = val;
+
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+
+  Promise.resolve = function (value) {
+    if (value && _typeof(value) === 'object' && value.constructor === Promise) {
+      return value;
+    }
+
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (arr) {
+    return new Promise(function (resolve, reject) {
+      if (!isArray(arr)) {
+        return reject(new TypeError('Promise.race accepts an array'));
+      }
+
+      for (var i = 0, len = arr.length; i < len; i++) {
+        Promise.resolve(arr[i]).then(resolve, reject);
+      }
+    });
+  }; // Use polyfill for setImmediate for performance gains
+
+
+  Promise._immediateFn = // @ts-ignore
+  typeof setImmediate === 'function' && function (fn) {
+    // @ts-ignore
+    setImmediate(fn);
+  } || function (fn) {
+    setTimeoutFunc(fn, 0);
+  };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+  /** @suppress {undefinedVars} */
+
+
+  var globalNS = function () {
+    // the only reliable means to get the global object is
+    // `Function('return this')()`
+    // However, this causes CSP violations in Chrome apps.
+    if (typeof self !== 'undefined') {
+      return self;
+    }
+
+    if (typeof window !== 'undefined') {
+      return window;
+    }
+
+    if (typeof global !== 'undefined') {
+      return global;
+    }
+
+    throw new Error('unable to locate global object');
+  }();
+
+  if (!('Promise' in globalNS)) {
+    globalNS['Promise'] = Promise;
+  } else if (!globalNS.Promise.prototype['finally']) {
+    globalNS.Promise.prototype['finally'] = finallyConstructor;
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8).setImmediate, __webpack_require__(0)))
 
 /***/ }),
 /* 8 */
@@ -1307,7 +1386,7 @@ __webpack_require__(9); // On some exotic environments, it's not clear which obj
 
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || this && this.setImmediate;
 exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || typeof global !== "undefined" && global.clearImmediate || this && this.clearImmediate;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(0)))
 
 /***/ }),
 /* 9 */
@@ -1514,7 +1593,7 @@ exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || t
   attachTo.setImmediate = setImmediate;
   attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(0), __webpack_require__(10)))
 
 /***/ }),
 /* 10 */
@@ -2204,7 +2283,7 @@ process.umask = function () {
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
@@ -2216,7 +2295,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2423,7 +2502,7 @@ SuperMap.Pixel = Pixel_Pixel;
 // CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
 function BaseTypes_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2912,7 +2991,7 @@ var ArrayExt = SuperMap.Array = {
 // CONCATENATED MODULE: ./src/common/commontypes/Util.js
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4133,7 +4212,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
   };
 };
 // CONCATENATED MODULE: ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4484,7 +4563,7 @@ function Events_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Events_createClass(Constructor, protoProps, staticProps) { if (protoProps) Events_defineProperties(Constructor.prototype, protoProps); if (staticProps) Events_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5037,7 +5116,7 @@ function ElasticSearch_defineProperties(target, props) { for (var i = 0; i < pro
 
 function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (protoProps) ElasticSearch_defineProperties(Constructor.prototype, protoProps); if (staticProps) ElasticSearch_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5773,16 +5852,9 @@ function () {
   return ElasticSearch;
 }();
 SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
-// EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(5);
-var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
+// EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
+var polyfill = __webpack_require__(7);
 
-// CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
 var fetch = __webpack_require__(11);
 
@@ -5793,7 +5865,7 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
 function FetchRequest_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { FetchRequest_typeof = function _typeof(obj) { return typeof obj; }; } else { FetchRequest_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return FetchRequest_typeof(obj); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6262,7 +6334,7 @@ function SecurityManager_defineProperties(target, props) { for (var i = 0; i < p
 
 function SecurityManager_createClass(Constructor, protoProps, staticProps) { if (protoProps) SecurityManager_defineProperties(Constructor.prototype, protoProps); if (staticProps) SecurityManager_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6691,7 +6763,7 @@ SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
 SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 // CONCATENATED MODULE: ./src/common/REST.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8144,6 +8216,160 @@ var RasterFunctionType = SuperMap.RasterFunctionType = {
   HILLSHADE: "HILLSHADE"
 };
 
+/**
+ * @enum ResourceType
+ * @memberOf SuperMap
+ * @description iportal资源类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var ResourceType = SuperMap.ResourceType = {
+  /** 地图。 */
+  MAP: "MAP",
+
+  /** 服务。 */
+  SERVICE: "SERVICE",
+
+  /** 场景。 */
+  SCENE: "SCENE",
+
+  /** 数据。 */
+  DATA: "DATA",
+
+  /** 洞察。 */
+  INSIGHTS_WORKSPACE: "INSIGHTS_WORKSPACE",
+
+  /** 大屏。 */
+  MAP_DASHBOARD: "MAP_DASHBOARD"
+};
+
+/**
+ * @enum OrderBy
+ * @memberOf SuperMap
+ * @description iportal资源排序字段。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var OrderBy = SuperMap.OrderBy = {
+  /** 按更新时间排序 */
+  UPDATETIME: "UPDATETIME",
+
+  /** 按热度(可能是访问量、下载量)排序 */
+  HEATLEVEL: "HEATLEVEL",
+
+  /** 按相关性排序 */
+  RELEVANCE: "RELEVANCE"
+};
+
+/**
+ * @enum OrderType
+ * @memberOf SuperMap
+ * @description iportal资源升序还是降序过滤
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var OrderType = SuperMap.OrderType = {
+  /** 升序 */
+  ASC: "ASC",
+
+  /** 降序 */
+  DESC: "DESC"
+};
+
+/**
+ * @enum SearchType
+ * @memberOf SuperMap
+ * @description iportal资源查询的范围进行过滤
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var SearchType = SuperMap.SearchType = {
+  /** 公开资源。 */
+  PUBLIC: "PUBLIC",
+
+  /** 我的资源。 */
+  MY_RES: "MY_RES",
+
+  /** 我的群组资源。 */
+  MYGROUP_RES: "MYGROUP_RES",
+
+  /** 我的部门资源。 */
+  MYDEPARTMENT_RES: "MYDEPARTMENT_RES",
+
+  /** 分享给我的资源。 */
+  SHARETOME_RES: "SHARETOME_RES"
+};
+
+/**
+ * @enum AggregationTypes
+ * @memberOf SuperMap
+ * @description iportal资源聚合查询的类型
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var AggregationTypes = SuperMap.AggregationTypes = {
+  /** 标签 */
+  TAG: "TAG",
+
+  /** 资源类型 */
+  TYPE: "TYPE"
+};
+
+/**
+ * @enum PermissionType
+ * @memberOf SuperMap
+ * @description iportal资源权限类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var PermissionType = SuperMap.PermissionType = {
+  /** 可检索 */
+  SEARCH: "SEARCH",
+
+  /** 可查看 */
+  READ: "READ",
+
+  /** 可编辑 */
+  READWRITE: "READWRITE",
+
+  /** 可删除 */
+  DELETE: "DELETE",
+
+  /** 可下载，包括可读、可检索 */
+  DOWNLOAD: "DOWNLOAD"
+};
+
+/**
+ * @enum EntityType
+ * @memberOf SuperMap
+ * @description iportal资源实体类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var EntityType = SuperMap.EntityType = {
+  /** 部门 */
+  DEPARTMENT: "DEPARTMENT",
+
+  /** 用户组 */
+  GROUP: "GROUP",
+
+  /** 群组 */
+  IPORTALGROUP: "IPORTALGROUP",
+
+  /** 角色 */
+  ROLE: "ROLE",
+
+  /** 用户 */
+  USER: "USER"
+};
+
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 function DatasourceConnectionInfo_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8151,7 +8377,7 @@ function DatasourceConnectionInfo_defineProperties(target, props) { for (var i =
 
 function DatasourceConnectionInfo_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceConnectionInfo_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceConnectionInfo_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8305,7 +8531,7 @@ function OutputSetting_defineProperties(target, props) { for (var i = 0; i < pro
 
 function OutputSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) OutputSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) OutputSetting_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8386,7 +8612,7 @@ function MappingParameters_defineProperties(target, props) { for (var i = 0; i <
 
 function MappingParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) MappingParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) MappingParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8481,7 +8707,7 @@ function KernelDensityJobParameter_defineProperties(target, props) { for (var i 
 
 function KernelDensityJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8670,7 +8896,7 @@ function SingleObjectQueryJobsParameter_defineProperties(target, props) { for (v
 
 function SingleObjectQueryJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8807,7 +9033,7 @@ function SummaryAttributesJobsParameter_defineProperties(target, props) { for (v
 
 function SummaryAttributesJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8944,7 +9170,7 @@ function SummaryMeshJobParameter_defineProperties(target, props) { for (var i = 
 
 function SummaryMeshJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9137,7 +9363,7 @@ function SummaryRegionJobParameter_defineProperties(target, props) { for (var i 
 
 function SummaryRegionJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9371,7 +9597,7 @@ function OverlayGeoJobParameter_defineProperties(target, props) { for (var i = 0
 
 function OverlayGeoJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9516,7 +9742,7 @@ function BuffersAnalystJobsParameter_defineProperties(target, props) { for (var 
 
 function BuffersAnalystJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9674,7 +9900,7 @@ function TopologyValidatorJobsParameter_defineProperties(target, props) { for (v
 
 function TopologyValidatorJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9812,7 +10038,7 @@ function GeoCodingParameter_defineProperties(target, props) { for (var i = 0; i 
 
 function GeoCodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoCodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoCodingParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9912,7 +10138,7 @@ function GeoDecodingParameter_defineProperties(target, props) { for (var i = 0; 
 
 function GeoDecodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoDecodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoDecodingParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10025,7 +10251,7 @@ var SuperMap_SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap_SuperMap.REST = SuperMap_SuperMap.REST || {};
 
 // EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
+var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
 function Size_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10034,7 +10260,7 @@ function Size_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function Size_createClass(Constructor, protoProps, staticProps) { if (protoProps) Size_defineProperties(Constructor.prototype, protoProps); if (staticProps) Size_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10149,7 +10375,7 @@ function LonLat_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function LonLat_createClass(Constructor, protoProps, staticProps) { if (protoProps) LonLat_defineProperties(Constructor.prototype, protoProps); if (staticProps) LonLat_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10367,7 +10593,7 @@ function Bounds_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Bounds_createClass(Constructor, protoProps, staticProps) { if (protoProps) Bounds_defineProperties(Constructor.prototype, protoProps); if (staticProps) Bounds_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11162,7 +11388,7 @@ function Geometry_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function Geometry_createClass(Constructor, protoProps, staticProps) { if (protoProps) Geometry_defineProperties(Constructor.prototype, protoProps); if (staticProps) Geometry_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  // import {WKT} from '../format/WKT';
@@ -11378,7 +11604,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11681,7 +11907,7 @@ function MultiPoint_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function MultiPoint_setPrototypeOf(o, p) { MultiPoint_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MultiPoint_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11764,7 +11990,7 @@ function Curve_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Curve_setPrototypeOf(o, p) { Curve_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Curve_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11830,7 +12056,7 @@ function Point_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Point_setPrototypeOf(o, p) { Point_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Point_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12018,7 +12244,7 @@ function LineString_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function LineString_setPrototypeOf(o, p) { LineString_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return LineString_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12404,7 +12630,7 @@ function GeoText_inherits(subClass, superClass) { if (typeof superClass !== "fun
 
 function GeoText_setPrototypeOf(o, p) { GeoText_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeoText_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12794,7 +13020,7 @@ function LinearRing_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function LinearRing_setPrototypeOf(o, p) { LinearRing_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return LinearRing_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12951,7 +13177,7 @@ function MultiLineString_inherits(subClass, superClass) { if (typeof superClass 
 
 function MultiLineString_setPrototypeOf(o, p) { MultiLineString_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MultiLineString_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13013,7 +13239,7 @@ function MultiPolygon_inherits(subClass, superClass) { if (typeof superClass !==
 
 function MultiPolygon_setPrototypeOf(o, p) { MultiPolygon_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MultiPolygon_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13082,7 +13308,7 @@ function Polygon_inherits(subClass, superClass) { if (typeof superClass !== "fun
 
 function Polygon_setPrototypeOf(o, p) { Polygon_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Polygon_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13174,7 +13400,7 @@ function Rectangle_inherits(subClass, superClass) { if (typeof superClass !== "f
 
 function Rectangle_setPrototypeOf(o, p) { Rectangle_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Rectangle_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13266,7 +13492,7 @@ function (_Geometry) {
 }(Geometry_Geometry);
 SuperMap.Geometry.Rectangle = Rectangle_Rectangle;
 // CONCATENATED MODULE: ./src/common/commontypes/geometry/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13298,7 +13524,7 @@ function Credential_defineProperties(target, props) { for (var i = 0; i < props.
 
 function Credential_createClass(Constructor, protoProps, staticProps) { if (protoProps) Credential_defineProperties(Constructor.prototype, protoProps); if (staticProps) Credential_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13402,7 +13628,7 @@ function () {
 Credential.CREDENTIAL = null;
 SuperMap.Credential = Credential;
 // CONCATENATED MODULE: ./src/common/commontypes/Date.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13505,7 +13731,7 @@ function Feature_defineProperties(target, props) { for (var i = 0; i < props.len
 
 function Feature_createClass(Constructor, protoProps, staticProps) { if (protoProps) Feature_defineProperties(Constructor.prototype, protoProps); if (staticProps) Feature_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13594,7 +13820,7 @@ function Vector_inherits(subClass, superClass) { if (typeof superClass !== "func
 
 function Vector_setPrototypeOf(o, p) { Vector_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Vector_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13928,7 +14154,7 @@ function (_Feature) {
 
 SuperMap.Feature.Vector = Vector_Vector;
 // CONCATENATED MODULE: ./src/common/commontypes/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13966,7 +14192,7 @@ function Format_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Format_createClass(Constructor, protoProps, staticProps) { if (protoProps) Format_defineProperties(Constructor.prototype, protoProps); if (staticProps) Format_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14059,7 +14285,7 @@ function JSON_inherits(subClass, superClass) { if (typeof superClass !== "functi
 
 function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return JSON_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14395,7 +14621,7 @@ function ServerColor_defineProperties(target, props) { for (var i = 0; i < props
 
 function ServerColor_createClass(Constructor, protoProps, staticProps) { if (protoProps) ServerColor_defineProperties(Constructor.prototype, protoProps); if (staticProps) ServerColor_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14498,7 +14724,7 @@ function ServerStyle_defineProperties(target, props) { for (var i = 0; i < props
 
 function ServerStyle_createClass(Constructor, protoProps, staticProps) { if (protoProps) ServerStyle_defineProperties(Constructor.prototype, protoProps); if (staticProps) ServerStyle_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14747,7 +14973,7 @@ function PointWithMeasure_inherits(subClass, superClass) { if (typeof superClass
 
 function PointWithMeasure_setPrototypeOf(o, p) { PointWithMeasure_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return PointWithMeasure_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14887,7 +15113,7 @@ function Route_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Route_setPrototypeOf(o, p) { Route_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Route_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15156,7 +15382,7 @@ function ServerGeometry_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ServerGeometry_createClass(Constructor, protoProps, staticProps) { if (protoProps) ServerGeometry_defineProperties(Constructor.prototype, protoProps); if (staticProps) ServerGeometry_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15906,7 +16132,7 @@ function GeoJSON_inherits(subClass, superClass) { if (typeof superClass !== "fun
 
 function GeoJSON_setPrototypeOf(o, p) { GeoJSON_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeoJSON_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16729,7 +16955,7 @@ function WKT_inherits(subClass, superClass) { if (typeof superClass !== "functio
 
 function WKT_setPrototypeOf(o, p) { WKT_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return WKT_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17114,7 +17340,7 @@ function (_Format) {
 }(Format_Format);
 SuperMap.Format.WKT = WKT_WKT;
 // CONCATENATED MODULE: ./src/common/format/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17126,7 +17352,7 @@ SuperMap.Format.WKT = WKT_WKT;
 
 
 // CONCATENATED MODULE: ./src/common/control/img/Logo.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var LogoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII=";
@@ -17137,7 +17363,7 @@ function TimeControlBase_defineProperties(target, props) { for (var i = 0; i < p
 
 function TimeControlBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) TimeControlBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) TimeControlBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17620,7 +17846,7 @@ function TimeFlowControl_inherits(subClass, superClass) { if (typeof superClass 
 
 function TimeFlowControl_setPrototypeOf(o, p) { TimeFlowControl_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TimeFlowControl_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17849,7 +18075,7 @@ function (_TimeControlBase) {
 }(TimeControlBase_TimeControlBase);
 SuperMap.TimeFlowControl = TimeFlowControl;
 // CONCATENATED MODULE: ./src/common/control/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17865,7 +18091,7 @@ function iManagerServiceBase_defineProperties(target, props) { for (var i = 0; i
 
 function iManagerServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) iManagerServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) iManagerServiceBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17949,7 +18175,7 @@ SuperMap.iManagerServiceBase = iManagerServiceBase_IManagerServiceBase;
 // CONCATENATED MODULE: ./src/common/iManager/iManagerCreateNodeParam.js
 function iManagerCreateNodeParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18004,7 +18230,7 @@ function iManager_inherits(subClass, superClass) { if (typeof superClass !== "fu
 
 function iManager_setPrototypeOf(o, p) { iManager_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iManager_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18116,7 +18342,7 @@ function (_IManagerServiceBase) {
 }(iManagerServiceBase_IManagerServiceBase);
 SuperMap.iManager = iManager_IManager;
 // CONCATENATED MODULE: ./src/common/iManager/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18125,159 +18351,6 @@ SuperMap.iManager = iManager_IManager;
 
 
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalServicesQueryParam.js
-function iPortalServicesQueryParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.iPortalServicesQueryParam
- * @classdesc iPortal 服务查询参数。
- * @category iPortal/Online
- * @param {Object} params - 服务参数。
- *
- */
-
-var iPortalServicesQueryParam_IPortalServicesQueryParam = function IPortalServicesQueryParam(params) {
-  iPortalServicesQueryParam_classCallCheck(this, IPortalServicesQueryParam);
-
-  params = params || {};
-  this.tags = [];
-  this.userNames = '';
-  this.types = [];
-  this.checkStatus = '';
-  this.offline = false;
-  this.orderBy = '';
-  this.orderType = '';
-  this.keywords = [];
-  this.currentPage = 0;
-  this.pageSize = 0;
-  this.isBatch = false;
-  this.dirIds = [];
-  this.isNotInDir = false;
-  this.filterFields = [];
-  this.authorizedOnly = false;
-  Util.extend(this, params);
-};
-SuperMap.iPortalServicesQueryParam = iPortalServicesQueryParam_IPortalServicesQueryParam;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapsQueryParam.js
-function iPortalMapsQueryParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.iPortalMapsQueryParam
- * @classdesc iPortal 地图资源查询参数。
- * @category iPortal/Online
- * @param {Object} params - iPortal 地图资源查询具体参数。
- *
- */
-
-var iPortalMapsQueryParam_IPortalMapsQueryParam = function IPortalMapsQueryParam(params) {
-  iPortalMapsQueryParam_classCallCheck(this, IPortalMapsQueryParam);
-
-  params = params || {};
-  this.userNames = null;
-  this.tags = null;
-  this.suggest = false;
-  this.sourceTypes = null;
-  this.keywords = null;
-  this.epsgCode = null;
-  this.orderBy = null;
-  this.currentPage = null;
-  this.pageSize = null;
-  this.dirIds = null;
-  this.isNotInDir = false;
-  this.updateStart = null;
-  this.updateEnd = null;
-  this.visitStart = null;
-  this.visitEnd = null;
-  this.filterFields = null;
-  Util.extend(this, params);
-};
-SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsightsQueryParam.js
-function iPortalInsightsQueryParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.iPortalInsightsQueryParam
- * @classdesc iPortal 地图资源查询参数。
- * @category iPortal/Online
- * @param {Object} params - iPortal 地图资源查询具体参数。
- *
- */
-
-var iPortalInsightsQueryParam_IPortalInsightsQueryParam = function IPortalInsightsQueryParam(params) {
-  iPortalInsightsQueryParam_classCallCheck(this, IPortalInsightsQueryParam);
-
-  params = params || {};
-  this.createEnd = null;
-  this.createStart = null;
-  this.filterFields = null;
-  this.orderBy = null;
-  this.tags = null;
-  this.userNames = null;
-  this.currentPage = null;
-  this.keywords = null;
-  this.pageSize = null;
-  this.currentUser = null;
-  this.departmentIds = null;
-  this.dirIds = null;
-  this.groupIds = null;
-  this.isNotInDir = false;
-  this.permissionType = null;
-  this.resourceIds = null;
-  this.returnSubDir = null;
-  this.searchScope = null;
-  Util.extend(this, params);
-};
-SuperMap.iPortalInsightsQueryParam = iPortalInsightsQueryParam_IPortalInsightsQueryParam;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalScenesQueryParam.js
-function iPortalScenesQueryParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.iPortalScenesQueryParam
- * @classdesc iPortal 地图资源查询参数。
- * @category iPortal/Online
- * @param {Object} params - iPortal 地图资源查询具体参数。
- *
- */
-
-var iPortalScenesQueryParam_IPortalScenesQueryParam = function IPortalScenesQueryParam(params) {
-  iPortalScenesQueryParam_classCallCheck(this, IPortalScenesQueryParam);
-
-  params = params || {};
-  this.tags = null;
-  this.userNames = null;
-  this.orderBy = null;
-  this.orderType = null;
-  this.keywords = null;
-  this.currentPage = null;
-  this.pageSize = null;
-  this.dirIds = null;
-  this.isNotInDir = false;
-  this.filterFields = null;
-  this.createStart = null;
-  this.createEnd = null;
-  Util.extend(this, params);
-};
-SuperMap.iPortalScenesQueryParam = iPortalScenesQueryParam_IPortalScenesQueryParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 function iPortalServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18285,7 +18358,7 @@ function iPortalServiceBase_defineProperties(target, props) { for (var i = 0; i 
 
 function iPortalServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalServiceBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18406,659 +18479,10 @@ function () {
   return IPortalServiceBase;
 }();
 SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalService.js
-function iPortalService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalService_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalService_typeof(obj); }
-
-function iPortalService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function iPortalService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function iPortalService_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalService_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalService_defineProperties(Constructor, staticProps); return Constructor; }
-
-function iPortalService_possibleConstructorReturn(self, call) { if (call && (iPortalService_typeof(call) === "object" || typeof call === "function")) { return call; } return iPortalService_assertThisInitialized(self); }
-
-function iPortalService_getPrototypeOf(o) { iPortalService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return iPortalService_getPrototypeOf(o); }
-
-function iPortalService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function iPortalService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) iPortalService_setPrototypeOf(subClass, superClass); }
-
-function iPortalService_setPrototypeOf(o, p) { iPortalService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalService_setPrototypeOf(o, p); }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalService
- * @classdesc iPortal 服务。
- * @category iPortal/Online
- * @extends {SuperMap.iPortalServiceBase}
- * @param {string} seviceUrl - 服务地址。
- * @param {Object} params - 服务请求参数。
- * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
- * @param {Object} [params.headers] - 请求头。
- */
-
-var iPortalService_IPortalService =
-/*#__PURE__*/
-function (_IPortalServiceBase) {
-  iPortalService_inherits(IPortalService, _IPortalServiceBase);
-
-  function IPortalService(serviceUrl, params) {
-    var _this;
-
-    iPortalService_classCallCheck(this, IPortalService);
-
-    _this = iPortalService_possibleConstructorReturn(this, iPortalService_getPrototypeOf(IPortalService).call(this, serviceUrl, params));
-    params = params || {};
-    _this.addedMapNames = null;
-    _this.addedSceneNames = null;
-    _this.authorizeSetting = [];
-    _this.checkStatus = "";
-    _this.createTime = 0;
-    _this.description = "";
-    _this.enable = true;
-    _this.id = 0;
-    _this.isBatch = false;
-    _this.isDataItemService = false;
-    _this.linkPage = null;
-    _this.mapInfos = [];
-    _this.metadata = null;
-    _this.nickname = "";
-    _this.offline = false;
-    _this.proxiedUrl = null;
-    _this.resTitle = "";
-    _this.scenes = [];
-    _this.serviceRootUrlId = null;
-    _this.tags = [];
-    _this.thumbnail = null;
-    _this.type = "";
-    _this.updateTime = 0;
-    _this.userName = "";
-    _this.verifyReason = null;
-    _this.version = null;
-    _this.visitCount = 0;
-    Util.extend(iPortalService_assertThisInitialized(_this), params);
-    _this.serviceUrl = serviceUrl;
-
-    if (_this.id) {
-      _this.serviceUrl = serviceUrl + "/" + _this.id;
-    }
-
-    return _this;
-  }
-  /**
-   * @function SuperMap.iPortalService.prototype.load
-   * @description 加载服务信息。
-   * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值；如果失败，Promise 返回值包含错误信息。
-   */
-
-
-  iPortalService_createClass(IPortalService, [{
-    key: "load",
-    value: function load() {
-      var me = this;
-      return me.request("GET", me.serviceUrl + ".json").then(function (serviceInfo) {
-        if (serviceInfo.error) {
-          return serviceInfo;
-        }
-
-        for (var key in serviceInfo) {
-          me[key] = serviceInfo[key];
-        }
-      });
-    }
-    /**
-     * @function SuperMap.iPortalService.prototype.update
-     * @description 更新服务。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "update",
-    value: function update() {
-      var serviceUpdateParam = {
-        authorizeSetting: this.authorizeSetting,
-        metadata: this.metadata,
-        tags: this.tags,
-        thumbnail: this.thumbnail
-      };
-      var options = {
-        headers: Object.assign({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }, this.headers || {})
-      };
-      return this.request("PUT", this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
-    }
-  }]);
-
-  return IPortalService;
-}(iPortalServiceBase_IPortalServiceBase);
-SuperMap.iPortalService = iPortalService_IPortalService;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMap.js
-function iPortalMap_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalMap_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalMap_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalMap_typeof(obj); }
-
-function iPortalMap_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function iPortalMap_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function iPortalMap_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalMap_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalMap_defineProperties(Constructor, staticProps); return Constructor; }
-
-function iPortalMap_possibleConstructorReturn(self, call) { if (call && (iPortalMap_typeof(call) === "object" || typeof call === "function")) { return call; } return iPortalMap_assertThisInitialized(self); }
-
-function iPortalMap_getPrototypeOf(o) { iPortalMap_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return iPortalMap_getPrototypeOf(o); }
-
-function iPortalMap_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function iPortalMap_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) iPortalMap_setPrototypeOf(subClass, superClass); }
-
-function iPortalMap_setPrototypeOf(o, p) { iPortalMap_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalMap_setPrototypeOf(o, p); }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalMap
- * @classdesc iPortal 地图服务类。
- * @category iPortal/Online
- * @param {string} mapUrl - 地图地址。
- * @param {Object} [params] - 服务参数。
- * @extends {SuperMap.iPortalServiceBase}
- *
- */
-
-var iPortalMap_IPortalMap =
-/*#__PURE__*/
-function (_IPortalServiceBase) {
-  iPortalMap_inherits(IPortalMap, _IPortalServiceBase);
-
-  function IPortalMap(mapUrl, params) {
-    var _this;
-
-    iPortalMap_classCallCheck(this, IPortalMap);
-
-    _this = iPortalMap_possibleConstructorReturn(this, iPortalMap_getPrototypeOf(IPortalMap).call(this, mapUrl));
-    params = params || {};
-    _this.authorizeSetting = [];
-    _this.center = "";
-    _this.controls = null;
-    _this.checkStatus = "";
-    _this.createTime = 0;
-    _this.description = "";
-    _this.epsgCode = 0;
-    _this.extent = "";
-    _this.id = 0;
-    _this.isDefaultBottomMap = false;
-    _this.layers = [];
-    _this.level = null;
-    _this.nickname = "";
-    _this.sourceType = "";
-    _this.status = null;
-    _this.tags = [];
-    _this.thumbnail = "";
-    _this.title = "";
-    _this.units = null;
-    _this.updateTime = 0;
-    _this.userName = "";
-    _this.visitCount = 0;
-    Util.extend(iPortalMap_assertThisInitialized(_this), params);
-    _this.mapUrl = mapUrl; // if (this.id) {
-    //     this.mapUrl = mapUrl + "/" + this.id;
-    // }
-
-    return _this;
-  }
-  /**
-   * @function SuperMap.iPortalMap.prototype.load
-   * @description 加载地图信息。
-   * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-   */
-
-
-  iPortalMap_createClass(IPortalMap, [{
-    key: "load",
-    value: function load() {
-      var me = this;
-      return me.request("GET", me.mapUrl + ".json").then(function (mapInfo) {
-        if (mapInfo.error) {
-          return mapInfo;
-        }
-
-        for (var key in mapInfo) {
-          me[key] = mapInfo[key];
-        }
-      });
-    }
-    /**
-     * @function SuperMap.iPortalMap.prototype.update
-     * @description 更新地图参数。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "update",
-    value: function update() {
-      var mapUpdateParam = {
-        units: this.units,
-        level: this.level,
-        center: this.center,
-        controls: this.controls,
-        description: this.description,
-        epsgCode: this.epsgCode,
-        extent: this.extent,
-        status: this.status,
-        tags: this.tags,
-        layers: this.layers,
-        title: this.title,
-        thumbnail: this.thumbnail,
-        sourceType: this.sourceType,
-        authorizeSetting: this.authorizeSetting
-      };
-      var options = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      };
-      return this.request("PUT", this.mapUrl, JSON.stringify(mapUpdateParam), options);
-    }
-  }]);
-
-  return IPortalMap;
-}(iPortalServiceBase_IPortalServiceBase);
-SuperMap.iPortalMap = iPortalMap_IPortalMap;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsight.js
-function iPortalInsight_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalInsight_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalInsight_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalInsight_typeof(obj); }
-
-function iPortalInsight_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function iPortalInsight_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function iPortalInsight_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalInsight_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalInsight_defineProperties(Constructor, staticProps); return Constructor; }
-
-function iPortalInsight_possibleConstructorReturn(self, call) { if (call && (iPortalInsight_typeof(call) === "object" || typeof call === "function")) { return call; } return iPortalInsight_assertThisInitialized(self); }
-
-function iPortalInsight_getPrototypeOf(o) { iPortalInsight_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return iPortalInsight_getPrototypeOf(o); }
-
-function iPortalInsight_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function iPortalInsight_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) iPortalInsight_setPrototypeOf(subClass, superClass); }
-
-function iPortalInsight_setPrototypeOf(o, p) { iPortalInsight_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalInsight_setPrototypeOf(o, p); }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalInsight
- * @classdesc iPortal 洞察服务类。
- * @category iPortal/Online
- * @param {string} insightUrl - 洞察地址。
- * @param {Object} [params] - 服务参数。
- * @extends {SuperMap.iPortalServiceBase}
- *
- */
-
-var iPortalInsight_IPortalInsight =
-/*#__PURE__*/
-function (_IPortalServiceBase) {
-  iPortalInsight_inherits(IPortalInsight, _IPortalServiceBase);
-
-  function IPortalInsight(insightUrl, params) {
-    var _this;
-
-    iPortalInsight_classCallCheck(this, IPortalInsight);
-
-    _this = iPortalInsight_possibleConstructorReturn(this, iPortalInsight_getPrototypeOf(IPortalInsight).call(this, insightUrl));
-    params = params || {};
-    _this.authorizeSetting = [];
-    _this.name = "";
-    _this.checkStatus = "";
-    _this.createTime = 0;
-    _this.description = "";
-    _this.id = 0;
-    _this.nickname = "";
-    _this.tags = [];
-    _this.thumbnail = "";
-    _this.updateTime = 0;
-    _this.userName = "";
-    _this.visitCount = 0;
-    Util.extend(iPortalInsight_assertThisInitialized(_this), params);
-    _this.insightUrl = insightUrl;
-    return _this;
-  }
-  /**
-   * @function SuperMap.iPortalInsight.prototype.load
-   * @description 加载洞察信息。
-   * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-   */
-
-
-  iPortalInsight_createClass(IPortalInsight, [{
-    key: "load",
-    value: function load() {
-      var me = this;
-      return me.request("GET", me.insightUrl + ".json").then(function (insightInfo) {
-        if (insightInfo.error) {
-          return insightInfo;
-        }
-
-        for (var key in insightInfo) {
-          me[key] = insightInfo[key];
-        }
-      });
-    }
-    /**
-     * @function SuperMap.iPortalInsight.prototype.update
-     * @description 更新洞察参数。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "update",
-    value: function update() {
-      var insightUpdateParam = {
-        authorizeSetting: this.authorizeSetting,
-        description: this.description,
-        tags: this.tags,
-        thumbnail: this.thumbnail,
-        name: this.name
-      };
-      var options = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      };
-      return this.request("PUT", this.insightUrl, JSON.stringify(insightUpdateParam), options);
-    }
-  }]);
-
-  return IPortalInsight;
-}(iPortalServiceBase_IPortalServiceBase);
-SuperMap.iPortalInsight = iPortalInsight_IPortalInsight;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalScene.js
-function iPortalScene_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalScene_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalScene_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalScene_typeof(obj); }
-
-function iPortalScene_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function iPortalScene_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function iPortalScene_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalScene_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalScene_defineProperties(Constructor, staticProps); return Constructor; }
-
-function iPortalScene_possibleConstructorReturn(self, call) { if (call && (iPortalScene_typeof(call) === "object" || typeof call === "function")) { return call; } return iPortalScene_assertThisInitialized(self); }
-
-function iPortalScene_getPrototypeOf(o) { iPortalScene_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return iPortalScene_getPrototypeOf(o); }
-
-function iPortalScene_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function iPortalScene_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) iPortalScene_setPrototypeOf(subClass, superClass); }
-
-function iPortalScene_setPrototypeOf(o, p) { iPortalScene_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalScene_setPrototypeOf(o, p); }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalScene
- * @classdesc iPortal 场景服务类。
- * @category iPortal/Online
- * @param {string} sceneUrl - 场景地址。
- * @param {Object} [params] - 服务参数。
- * @extends {SuperMap.iPortalServiceBase}
- *
- */
-
-var iPortalScene_IPortalScene =
-/*#__PURE__*/
-function (_IPortalServiceBase) {
-  iPortalScene_inherits(IPortalScene, _IPortalServiceBase);
-
-  function IPortalScene(sceneUrl, params) {
-    var _this;
-
-    iPortalScene_classCallCheck(this, IPortalScene);
-
-    _this = iPortalScene_possibleConstructorReturn(this, iPortalScene_getPrototypeOf(IPortalScene).call(this, sceneUrl));
-    params = params || {};
-    _this.authorizeSetting = [];
-    _this.content = null;
-    _this.createTime = 0;
-    _this.description = "";
-    _this.id = 0;
-    _this.layers = [];
-    _this.name = "";
-    _this.nickname = "";
-    _this.tags = [];
-    _this.thumbnail = "";
-    _this.title = "";
-    _this.updateTime = 0;
-    _this.url = "";
-    _this.userName = "";
-    _this.visitCount = 0;
-    Util.extend(iPortalScene_assertThisInitialized(_this), params);
-    _this.sceneUrl = sceneUrl; // if (this.id) {
-    //     this.sceneUrl = sceneUrl + "/" + this.id;
-    // }
-
-    return _this;
-  }
-  /**
-   * @function SuperMap.iPortalScene.prototype.load
-   * @description 加载场景信息。
-   * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-   */
-
-
-  iPortalScene_createClass(IPortalScene, [{
-    key: "load",
-    value: function load() {
-      var me = this;
-      return me.request("GET", me.sceneUrl + ".json").then(function (sceneInfo) {
-        if (sceneInfo.error) {
-          return sceneInfo;
-        }
-
-        for (var key in sceneInfo) {
-          me[key] = sceneInfo[key];
-        }
-      });
-    }
-    /**
-     * @function SuperMap.iPortalScene.prototype.update
-     * @description 更新场景参数。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "update",
-    value: function update() {
-      var sceneUpdateParam = {
-        authorizeSetting: this.authorizeSetting,
-        name: this.name,
-        tags: this.tags,
-        description: this.description,
-        thumbnail: this.thumbnail
-      };
-      var options = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      };
-      return this.request("PUT", this.sceneUrl, JSON.stringify(sceneUpdateParam), options);
-    }
-  }]);
-
-  return IPortalScene;
-}(iPortalServiceBase_IPortalServiceBase);
-SuperMap.iPortalScene = iPortalScene_IPortalScene;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboard.js
-function iPortalMapdashboard_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalMapdashboard_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalMapdashboard_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalMapdashboard_typeof(obj); }
-
-function iPortalMapdashboard_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function iPortalMapdashboard_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function iPortalMapdashboard_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalMapdashboard_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalMapdashboard_defineProperties(Constructor, staticProps); return Constructor; }
-
-function iPortalMapdashboard_possibleConstructorReturn(self, call) { if (call && (iPortalMapdashboard_typeof(call) === "object" || typeof call === "function")) { return call; } return iPortalMapdashboard_assertThisInitialized(self); }
-
-function iPortalMapdashboard_getPrototypeOf(o) { iPortalMapdashboard_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return iPortalMapdashboard_getPrototypeOf(o); }
-
-function iPortalMapdashboard_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function iPortalMapdashboard_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) iPortalMapdashboard_setPrototypeOf(subClass, superClass); }
-
-function iPortalMapdashboard_setPrototypeOf(o, p) { iPortalMapdashboard_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalMapdashboard_setPrototypeOf(o, p); }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalMapdashboard
- * @classdesc iPortal 大屏服务类。
- * @category iPortal/Online
- * @param {string} mapdashboardUrl - 大屏地址。
- * @param {Object} [params] - 服务参数。
- * @extends {SuperMap.iPortalServiceBase}
- *
- */
-
-var iPortalMapdashboard_IPortalMapdashboard =
-/*#__PURE__*/
-function (_IPortalServiceBase) {
-  iPortalMapdashboard_inherits(IPortalMapdashboard, _IPortalServiceBase);
-
-  function IPortalMapdashboard(mapdashboardUrl, params) {
-    var _this;
-
-    iPortalMapdashboard_classCallCheck(this, IPortalMapdashboard);
-
-    _this = iPortalMapdashboard_possibleConstructorReturn(this, iPortalMapdashboard_getPrototypeOf(IPortalMapdashboard).call(this, mapdashboardUrl));
-    params = params || {};
-    _this.authorizeSetting = [];
-    _this.content = "";
-    _this.createTime = 0;
-    _this.description = "";
-    _this.id = 0;
-    _this.name = "";
-    _this.nickname = "";
-    _this.tags = [];
-    _this.thumbnail = "";
-    _this.updateTime = 0;
-    _this.userName = "";
-    _this.visitCount = 0;
-    Util.extend(iPortalMapdashboard_assertThisInitialized(_this), params);
-    _this.mapdashboardUrl = mapdashboardUrl;
-    return _this;
-  }
-  /**
-   * @function SuperMap.iPortalMapdashboard.prototype.load
-   * @description 加载大屏信息。
-   * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-   */
-
-
-  iPortalMapdashboard_createClass(IPortalMapdashboard, [{
-    key: "load",
-    value: function load() {
-      var me = this;
-      return me.request("GET", me.mapdashboardUrl + ".json").then(function (mapdashboardInfo) {
-        if (mapdashboardInfo.error) {
-          return mapdashboardInfo;
-        }
-
-        for (var key in mapdashboardInfo) {
-          me[key] = mapdashboardInfo[key];
-        }
-      });
-    }
-    /**
-     * @function SuperMap.iPortalMapdashboard.prototype.update
-     * @description 更新大屏参数。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "update",
-    value: function update() {
-      var mapdashboardUpdateParam = {
-        authorizeSetting: this.authorizeSetting,
-        description: this.description,
-        name: this.name,
-        tags: this.tags,
-        thumbnail: this.thumbnail
-      };
-      var options = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      };
-      return this.request("PUT", this.mapdashboardUrl, JSON.stringify(mapdashboardUpdateParam), options);
-    }
-  }]);
-
-  return IPortalMapdashboard;
-}(iPortalServiceBase_IPortalServiceBase);
-SuperMap.iPortalMapdashboard = iPortalMapdashboard_IPortalMapdashboard;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboardsQueryParam.js
-function iPortalMapdashboardsQueryParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.iPortalMapdashboardsQueryParam
- * @classdesc iPortal 大屏资源查询参数。
- * @category iPortal/Online
- * @param {Object} params - iPortal 大屏资源查询具体参数。
- *
- */
-
-var iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam = function IPortalMapdashboardsQueryParam(params) {
-  iPortalMapdashboardsQueryParam_classCallCheck(this, IPortalMapdashboardsQueryParam);
-
-  params = params || {};
-  this.userNames = null;
-  this.tags = null;
-  this.orderBy = null;
-  this.filterFields = null;
-  this.currentUser = null;
-  this.dirIds = null;
-  this.returnSubDir = false;
-  this.isNotInDir = false;
-  this.groupIds = null;
-  this.departmentIds = null;
-  this.resourceIds = null;
-  this.searchScope = null;
-  this.permissionType = null;
-  this.keywords = null;
-  this.currentPage = null;
-  this.pageSize = null;
-  this.orderType = null;
-  Util.extend(this, params);
-};
-SuperMap.iPortalMapdashboardsQueryParam = iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
 function iPortalQueryParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -19066,9 +18490,22 @@ function iPortalQueryParam_classCallCheck(instance, Constructor) { if (!(instanc
 /**
  * @class SuperMap.iPortalQueryParam
  * @classdesc iPortal 资源查询参数。
+ * @version 10.0.1
  * @category iPortal/Online
  * @param {Object} params - iPortal 资源查询具体参数。
- *
+ * @param {SuperMap.ResourceType} [params.resourceType] - 资源类型
+ * @param {number} [params.pageSize] - 分页中每页大小。
+ * @param {number} [params.currentPage] - 分页页码。
+ * @param {SuperMap.OrderBy} [params.orderBy] - 排序字段。
+ * @param {SuperMap.OrderType} [params.orderType] - 根据升序还是降序过滤。
+ * @param {SuperMap.SearchType} [params.searchType] - 根据查询的范围进行过滤。
+ * @param {Array} [params.tags] - 标签。
+ * @param {Array} [params.dirIds] - 目录 id
+ * @param {Array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
+ * @param {SuperMap.AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
+ * @param {string} [params.text] - 	搜索的关键词。
+ * @param {Array} [params.groupIds] - 	根据群组进行过滤。
+ * @param {Array} [params.departmentIds] - 根据部门进行过滤。
  */
 
 var iPortalQueryParam_IPortalQueryParam = function IPortalQueryParam(params) {
@@ -19107,30 +18544,34 @@ SuperMap.iPortalQueryParam = iPortalQueryParam_IPortalQueryParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryResult.js
 function iPortalQueryResult_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
- * @class SuperMap.iPortalQueryResult
+ * @class SuperMap.iPortalQueryqueryResult
  * @classdesc iPortal 资源结果集封装类。
+ * @version 10.0.1
  * @category iPortal/Online
- * @param {string} resourceUrl - 资源地址。
- * @param {Object} [params] - 资源参数。
- *
+ * @param {Object} queryResult - 资源参数。
+ * @param {Array} [queryResult.content] - 页面内容。
+ * @param {number} [queryResult.total] - 总记录数。
+ * @param {number} [queryResult.currentPage] - 当前第几页。
+ * @param {number} [queryResult.pageSize] - 每页大小。
+ * @param {Object} [queryResult.aggregations] - 聚合查询的结果。
  */
 
-var iPortalQueryResult_IPortalQueryResult = function IPortalQueryResult(params) {
+var iPortalQueryResult_IPortalQueryResult = function IPortalQueryResult(queryResult) {
   iPortalQueryResult_classCallCheck(this, IPortalQueryResult);
 
-  params = params || {};
+  queryResult = queryResult || {};
   this.content = [];
   this.total = 0;
   this.currentPage = 1;
   this.pageSize = 12;
   this.aggregations = null;
-  Util.extend(this, params);
+  Util.extend(this, queryResult);
 };
 SuperMap.iPortalQueryResult = iPortalQueryResult_IPortalQueryResult;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalResource.js
@@ -19152,20 +18593,41 @@ function iPortalResource_inherits(subClass, superClass) { if (typeof superClass 
 
 function iPortalResource_setPrototypeOf(o, p) { iPortalResource_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalResource_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
 /**
- * @class SuperMap.IPortalResource
+ * @class SuperMap.iPortalResource
  * @classdesc iPortal 资源详情类。
+ * @version 10.0.1
  * @category iPortal/Online
  * @param {string} portalUrl - 资源地址。
- * @param {Object} [resourceInfo] - 资源详情参数。
+ * @param {Object} resourceInfo - 资源详情参数。
+ * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息
+ * @param {string} [resourceInfo.bounds] - 资源的坐标范围
+ * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为EPSG 4326坐标系统后的地理范围。
+ * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED
+ * @param {Date} [resourceInfo.createTime] - 资源的创建时间
+ * @param {string} [resourceInfo.description] - 资源描述
+ * @param {number} [resourceInfo.dirId] - 资源所在的门户目录的id
+ * @param {number} [resourceInfo.epsgCode] - 门户资源基于的坐标系的EPSG值。
+ * @param {number} [resourceInfo.heatLevel] - 记录资源的访问量或下载量。
+ * @param {string} [resourceInfo.id] - 资源存储到ElasticSearch中的文档id
+ * @param {string} [resourceInfo.name] - 资源名称
+ * @param {number} [resourceInfo.personalDirId] - 资源所在的个人目录的id
+ * @param {number} [resourceInfo.resourceId] - 资源表(maps,services等)里的id
+ * @param {string} [resourceInfo.resourceSubType] - 某类资源的具体子类型。
+ * @param {SuperMap.ResourceType} [resourceInfo.resourceType] - 资源类型
+ * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID
+ * @param {Array} [resourceInfo.tags] - 资源的标签
+ * @param {string} [resourceInfo.thumbnail] - 资源的缩略图
+ * @param {Date} [resourceInfo.updateTime] - 资源的更新时间
+ * @param {string} [resourceInfo.userName] - 搜索的关键词
+ * @param {Object} [resourceInfo.sourceJSON] - 提供了门户项目返回的所有信息。
  * @extends {SuperMap.iPortalServiceBase}
- *
  */
 
 var iPortalResource_IPortalResource =
@@ -19216,7 +18678,7 @@ function (_IPortalServiceBase) {
     return _this;
   }
   /**
-   * @function SuperMap.IPortalResource.prototype.load
+   * @function SuperMap.iPortalResource.prototype.load
    * @description 加载资源信息。
    * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
    */
@@ -19235,7 +18697,7 @@ function (_IPortalServiceBase) {
       });
     }
     /**
-     * @function SuperMap.IPortalResource.prototype.update
+     * @function SuperMap.iPortalResource.prototype.update
      * @description 更新资源属性信息。
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
@@ -19277,17 +18739,20 @@ SuperMap.iPortalResource = iPortalResource_IPortalResource;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
 function iPortalShareParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
  * @class SuperMap.iPortalShareParam
- * @classdesc iPortal 资源查询参数。
+ * @classdesc iPortal 资源共享参数。
+ * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 资源查询具体参数。
- *
+ * @param {Object} params - iPortal 资源共享具体参数。
+ * @param {SuperMap.ResourceType} [params.resourceType] - 资源类型。
+ * @param {Array} [params.ids] - 资源的id数组。
+ * @param {SuperMap.iPortalShareEntity} [params.entities] - 资源的实体共享参数
  */
 
 var iPortalShareParam_IPortalShareParam = function IPortalShareParam(params) {
@@ -19320,19 +18785,9 @@ function iPortal_inherits(subClass, superClass) { if (typeof superClass !== "fun
 
 function iPortal_setPrototypeOf(o, p) { iPortal_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortal_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -19346,6 +18801,8 @@ function iPortal_setPrototypeOf(o, p) { iPortal_setPrototypeOf = Object.setProto
  * @category iPortal/Online
  * @extends {SuperMap.iPortalServiceBase}
  * @param {string} iportalUrl - 地址。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  */
 
 var iPortal_IPortal =
@@ -19379,6 +18836,7 @@ function (_IPortalServiceBase) {
     /**
      * @function SuperMap.iPortal.prototype.queryResources
      * @description 查询资源。
+     * @version 10.0.1
      * @param {SuperMap.iPortalQueryParam} queryParams - 查询参数。
      * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
      */
@@ -19411,9 +18869,10 @@ function (_IPortalServiceBase) {
     }
     /**
      * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
-     * @description 查询资源。
-     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
-     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     * @description 更新共享设置。
+     * @version 10.0.1
+     * @param {SuperMap.iPortalShareParam} shareParams - 共享的参数。
+     * @returns {Promise} 返回包含共享资源结果的 Promise 对象。
      */
 
   }, {
@@ -19440,352 +18899,6 @@ function (_IPortalServiceBase) {
         return result;
       });
     }
-    /**
-     * @function SuperMap.iPortal.prototype.queryServices
-     * @description 查询服务。
-     * @param {SuperMap.iPortalServicesQueryParam} queryParams - 查询参数。
-     * @returns {Promise} 返回包含所有服务的 Promise 对象。
-     */
-
-  }, {
-    key: "queryServices",
-    value: function queryServices(queryParams) {
-      if (!(queryParams instanceof iPortalServicesQueryParam_IPortalServicesQueryParam)) {
-        return null;
-      }
-
-      var serviceUrl = this.iportalUrl + "/web/services";
-      return this.request("GET", serviceUrl, queryParams).then(function (result) {
-        var services = [];
-        result.content.map(function (serviceJsonObj) {
-          services.push(new iPortalService_IPortalService(serviceUrl, serviceJsonObj));
-          return serviceJsonObj;
-        });
-        return services;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.deleteServices
-     * @param {Array} ids - 服务的序号。
-     * @description 删除服务。
-     * @returns {Promise} 返回包含服务删除操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "deleteServices",
-    value: function deleteServices(ids) {
-      var serviceUrl = this.iportalUrl + "/web/services";
-      return this.request("DELETE", serviceUrl, {
-        ids: ids
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryService
-     * @param {Array} ids - 服务的序号。
-     * @description 查看单个服务资源的详情。
-     * @returns {Promise} 返回包含单个服务资源操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "queryService",
-    value: function queryService(id) {
-      var serviceUrl = this.iportalUrl + "/web/services/" + id;
-      var service = new iPortalService_IPortalService(serviceUrl);
-      return service.load().then(function () {
-        return service;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryMaps
-     * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数。
-     * @description 获取地图信息。
-     * @returns {Promise} 返回包含所有地图服务信息的 Promise 对象。
-     */
-
-  }, {
-    key: "queryMaps",
-    value: function queryMaps(queryParams) {
-      if (!(queryParams instanceof iPortalMapsQueryParam_IPortalMapsQueryParam)) {
-        return null;
-      }
-
-      var mapsUrl;
-
-      if (this.withCredentials) {
-        mapsUrl = this.iportalUrl + "/web/mycontent/maps";
-      } else {
-        mapsUrl = this.iportalUrl + "/web/maps";
-      }
-
-      return this.request("GET", mapsUrl, queryParams).then(function (result) {
-        var mapRetult = {
-          content: []
-        };
-        var maps = [];
-
-        if (result.content && result.content.length > 0) {
-          result.content.map(function (mapJsonObj) {
-            maps.push(new iPortalMap_IPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
-            return mapJsonObj;
-          });
-          mapRetult.content = maps;
-          mapRetult.currentPage = result.currentPage;
-          mapRetult.pageSize = result.pageSize;
-          mapRetult.total = result.total;
-          mapRetult.totalPage = result.totalPage;
-        }
-
-        return mapRetult;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryMapdashboards
-     * @param {SuperMap.iPortalMapdashboardsQueryParam} queryParams - 查询参数。
-     * @description 获取大屏信息。
-     * @returns {Promise} 返回包含所有大屏服务信息的 Promise 对象。
-     */
-
-  }, {
-    key: "queryMapdashboards",
-    value: function queryMapdashboards(queryParams) {
-      if (!(queryParams instanceof iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam)) {
-        return null;
-      }
-
-      var mapdashboardsUrl;
-
-      if (this.withCredentials) {
-        mapdashboardsUrl = this.iportalUrl + "web/mycontent/mapdashboards";
-      } else {
-        mapdashboardsUrl = this.iportalUrl + "/web/mapdashboards";
-      }
-
-      return this.request("GET", mapdashboardsUrl, queryParams).then(function (result) {
-        var mapdashboardRetult = {
-          content: []
-        };
-        var mapdashboards = [];
-
-        if (result.content && result.content.length > 0) {
-          result.content.map(function (mapdashboardJsonObj) {
-            mapdashboards.push(new iPortalMapdashboard_IPortalMapdashboard(mapdashboardsUrl + "/" + mapdashboardJsonObj.id, mapdashboardJsonObj));
-            return mapdashboardJsonObj;
-          });
-          mapdashboardRetult.content = mapdashboards;
-          mapdashboardRetult.currentPage = result.currentPage;
-          mapdashboardRetult.pageSize = result.pageSize;
-          mapdashboardRetult.total = result.total;
-          mapdashboardRetult.totalPage = result.totalPage;
-        }
-
-        return mapdashboardRetult;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.deleteMapdashboards
-     * @param {Array} ids - 大屏的序号。
-     * @description 删除大屏。
-     * @returns {Promise} 返回包含大屏删除操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "deleteMapdashboards",
-    value: function deleteMapdashboards(ids) {
-      var mapdashboardUrl = this.iportalUrl + "/web/mapdashboardsworkspaces.json";
-      return this.request("DELETE", mapdashboardUrl, {
-        ids: encodeURI(JSON.stringify(ids))
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryMapdashboard
-     * @param {Array} ids - 大屏的序号。
-     * @description 查看某个大屏资源的详情。
-     * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "queryMapdashboard",
-    value: function queryMapdashboard(id) {
-      var mapdashboardUrl = this.iportalUrl + "/web/mapdashboards/" + id;
-      var mapdashboard = new iPortalMapdashboard_IPortalMapdashboard(mapdashboardUrl);
-      return mapdashboard.load().then(function () {
-        return mapdashboard;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryInsights
-     * @param {SuperMap.iPortalInsightsQueryParam} queryParams - 查询参数。
-     * @description 获取洞察信息。
-     * @returns {Promise} 返回包含所有洞察服务信息的 Promise 对象。
-     */
-
-  }, {
-    key: "queryInsights",
-    value: function queryInsights(queryParams) {
-      if (!(queryParams instanceof iPortalInsightsQueryParam_IPortalInsightsQueryParam)) {
-        return null;
-      }
-
-      var insightsUrl;
-
-      if (this.withCredentials) {
-        insightsUrl = this.iportalUrl + "web/mycontent/insightsworkspaces";
-      } else {
-        insightsUrl = this.iportalUrl + "/web/insightsworkspaces";
-      }
-
-      return this.request("GET", insightsUrl, queryParams).then(function (result) {
-        var insightRetult = {
-          content: []
-        };
-        var insights = [];
-
-        if (result.content && result.content.length > 0) {
-          result.content.map(function (insightJsonObj) {
-            insights.push(new iPortalInsight_IPortalInsight(insightsUrl + "/" + insightJsonObj.id, insightJsonObj));
-            return insightJsonObj;
-          });
-          insightRetult.content = insights;
-          insightRetult.currentPage = result.currentPage;
-          insightRetult.pageSize = result.pageSize;
-          insightRetult.total = result.total;
-          insightRetult.totalPage = result.totalPage;
-        }
-
-        return insightRetult;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.deleteInsights
-     * @param {Array} ids - 洞察的序号。
-     * @description 删除洞察。
-     * @returns {Promise} 返回包含洞察删除操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "deleteInsights",
-    value: function deleteInsights(ids) {
-      var insightUrl = this.iportalUrl + "/web/insightsworkspaces.json";
-      return this.request("DELETE", insightUrl, {
-        ids: encodeURI(JSON.stringify(ids))
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryInsight
-     * @param {Array} ids - 洞察的序号。
-     * @description 查看某个洞察资源的详情。
-     * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "queryInsight",
-    value: function queryInsight(id) {
-      var insightUrl = this.iportalUrl + "/web/insightsworkspaces/" + id;
-      var insight = new iPortalInsight_IPortalInsight(insightUrl);
-      return insight.load().then(function () {
-        return insight;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.updateInsightAttrs
-     * @param {Array} ids - 洞察的序号。
-     * @description 更新某个洞察信息。
-     * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "updateInsightAttrs",
-    value: function updateInsightAttrs(id, updateParam) {
-      var insightAttributesUrl = this.iportalUrl + "/web/insightsworkspaces/" + id + "/attributes.json";
-      return new iPortalInsight_IPortalInsight(insightAttributesUrl, updateParam).update();
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.deleteScenes
-     * @param {Array} ids - 场景的序号。
-     * @description 删除场景。
-     * @returns {Promise} 返回包含场景删除操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "deleteScenes",
-    value: function deleteScenes(ids) {
-      var sceneUrl = this.iportalUrl + "/web/scenes.json";
-      return this.request("DELETE", sceneUrl, {
-        ids: encodeURI(JSON.stringify(ids))
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryScenes
-     * @param {SuperMap.iPortalScenesQueryParam} queryParams - 查询参数。
-     * @description 获取场景信息。
-     * @returns {Promise} 返回包含所有场景服务信息的 Promise 对象。
-     */
-
-  }, {
-    key: "queryScenes",
-    value: function queryScenes(queryParams) {
-      if (!(queryParams instanceof iPortalScenesQueryParam_IPortalScenesQueryParam)) {
-        return null;
-      }
-
-      var scenesUrl;
-
-      if (this.withCredentials) {
-        scenesUrl = this.iportalUrl + "/web/mycontent/scenes";
-      } else {
-        scenesUrl = this.iportalUrl + "/web/scenes";
-      }
-
-      return this.request("GET", scenesUrl, queryParams).then(function (result) {
-        var sceneRetult = {
-          content: []
-        };
-        var scenes = [];
-
-        if (result.content && result.content.length > 0) {
-          result.content.map(function (sceneJsonObj) {
-            scenes.push(new iPortalScene_IPortalScene(scenesUrl + "/" + sceneJsonObj.id, sceneJsonObj));
-            return sceneJsonObj;
-          });
-          sceneRetult.content = scenes;
-          sceneRetult.currentPage = result.currentPage;
-          sceneRetult.pageSize = result.pageSize;
-          sceneRetult.total = result.total;
-          sceneRetult.totalPage = result.totalPage;
-        }
-
-        return sceneRetult;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.queryScene
-     * @param {Array} ids - 场景的序号。
-     * @description 查看某个场景资源的详情。
-     * @returns {Promise} 返回包含某条场景资源操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "queryScene",
-    value: function queryScene(id) {
-      var sceneUrl = this.iportalUrl + "/web/scenes/" + id;
-      var scene = new iPortalScene_IPortalScene(sceneUrl);
-      return scene.load().then(function () {
-        return scene;
-      });
-    }
-    /**
-     * @function SuperMap.iPortal.prototype.updateSceneAttrs
-     * @param {Array} ids - 场景的序号。
-     * @description 更新某个场景信息。
-     * @returns {Promise} 返回包含更新场景属性操作状态的 Promise 对象。
-     */
-
-  }, {
-    key: "updateSceneAttrs",
-    value: function updateSceneAttrs(id, updateParam) {
-      var sceneAttributesUrl = this.iportalUrl + "/web/scenes/" + id + "/attributes.json";
-      return new iPortalScene_IPortalScene(sceneAttributesUrl, updateParam).update();
-    }
   }]);
 
   return IPortal;
@@ -19794,23 +18907,27 @@ SuperMap.iPortal = iPortal_IPortal;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
 function iPortalShareEntity_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
  * @class SuperMap.iPortalShareEntity
- * @classdesc iPortal 资源查询参数。
+ * @classdesc iPortal 资源共享实体参数。
+ * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 资源查询具体参数。
- *
+ * @param {Object} shareEntity - iPortal 资源共享实体具体参数。
+ * @param {SuperMap.PermissionType} [shareEntity.permissionType] - 权限类型。
+ * @param {SuperMap.EntityType} [shareEntity.entityType] - 实体类型
+ * @param {string} [shareEntity.entityName] - 实体 Name。对应的 USER（用户）、 ROLE（角色）、GROUP（用户组）、IPORTALGROUP（群组）的名称。
+ * @param {number} [shareEntity.entityId] - 实体的 id。用于群组的授权。
  */
 
-var iPortalShareEntity_IPortalShareEntity = function IPortalShareEntity(params) {
+var iPortalShareEntity_IPortalShareEntity = function IPortalShareEntity(shareEntity) {
   iPortalShareEntity_classCallCheck(this, IPortalShareEntity);
 
-  params = params || {};
+  shareEntity = shareEntity || {};
   this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
 
   this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
@@ -19818,7 +18935,7 @@ var iPortalShareEntity_IPortalShareEntity = function IPortalShareEntity(params) 
   this.entityName = "GUEST"; // GUEST or 具体用户 name
 
   this.entityId = null;
-  Util.extend(this, params);
+  Util.extend(this, shareEntity);
 };
 SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
@@ -19840,14 +18957,15 @@ function iPortalUser_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function iPortalUser_setPrototypeOf(o, p) { iPortalUser_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalUser_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
- * @class SuperMap.IPortalUser
+ * @class SuperMap.iPortalUser
  * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @version 10.0.1
  * @category iPortal/Online
  * @param {string} iportalUrl - iportal根地址。
  * @extends {SuperMap.iPortalServiceBase}
@@ -19869,22 +18987,22 @@ function (_IPortalServiceBase) {
     return _this;
   }
   /**
-   * @function SuperMap.prototype.deleteResources
+   * @function SuperMap.iPortalUser.prototype.deleteResources
    * @description 删除资源。
-   * @param {Object} deleteParams - 删除资源所需的参数对象：{ids,resourceType}。
+   * @param {Object} params - 删除资源所需的参数对象：{ids,resourceType}。
    * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
    */
 
 
   iPortalUser_createClass(IPortalUser, [{
     key: "deleteResources",
-    value: function deleteResources(deleteParams) {
-      var resourceName = deleteParams.resourceType.replace("_", "").toLowerCase();
-      var deleteResourceUrl = this.iportalUrl + "/web/" + resourceName + "s.json?ids=" + encodeURI(JSON.stringify(deleteParams.ids));
+    value: function deleteResources(params) {
+      var resourceName = params.resourceType.replace("_", "").toLowerCase();
+      var deleteResourceUrl = this.iportalUrl + "/web/" + resourceName + "s.json?ids=" + encodeURI(JSON.stringify(params.ids));
 
       if (resourceName === 'data') {
         deleteResourceUrl = this.iportalUrl + "/web/mycontent/datas/delete.json";
-        return this.request("POST", deleteResourceUrl, JSON.stringify(deleteParams.ids));
+        return this.request("POST", deleteResourceUrl, JSON.stringify(params.ids));
       }
 
       return this.request("DELETE", deleteResourceUrl);
@@ -19895,29 +19013,9 @@ function (_IPortalServiceBase) {
 }(iPortalServiceBase_IPortalServiceBase);
 SuperMap.iPortalUser = IPortalUser;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -19941,7 +19039,7 @@ function CommonServiceBase_defineProperties(target, props) { for (var i = 0; i <
 
 function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) CommonServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) CommonServiceBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20377,7 +19475,7 @@ function AddressMatchService_inherits(subClass, superClass) { if (typeof superCl
 
 function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AddressMatchService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20517,7 +19615,7 @@ function AggQueryBuilderParameter_defineProperties(target, props) { for (var i =
 
 function AggQueryBuilderParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) AggQueryBuilderParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) AggQueryBuilderParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20571,7 +19669,7 @@ function AggregationParameter_defineProperties(target, props) { for (var i = 0; 
 
 function AggregationParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) AggregationParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) AggregationParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20645,7 +19743,7 @@ function AreaSolarRadiationParameters_defineProperties(target, props) { for (var
 
 function AreaSolarRadiationParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) AreaSolarRadiationParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) AreaSolarRadiationParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20851,7 +19949,7 @@ function SpatialAnalystBase_inherits(subClass, superClass) { if (typeof superCla
 
 function SpatialAnalystBase_setPrototypeOf(o, p) { SpatialAnalystBase_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SpatialAnalystBase_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21006,7 +20104,7 @@ function AreaSolarRadiationService_inherits(subClass, superClass) { if (typeof s
 
 function AreaSolarRadiationService_setPrototypeOf(o, p) { AreaSolarRadiationService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AreaSolarRadiationService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21109,7 +20207,7 @@ function BufferDistance_defineProperties(target, props) { for (var i = 0; i < pr
 
 function BufferDistance_createClass(Constructor, protoProps, staticProps) { if (protoProps) BufferDistance_defineProperties(Constructor.prototype, protoProps); if (staticProps) BufferDistance_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21167,7 +20265,7 @@ function BufferSetting_defineProperties(target, props) { for (var i = 0; i < pro
 
 function BufferSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) BufferSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) BufferSetting_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21272,7 +20370,7 @@ function BufferAnalystParameters_defineProperties(target, props) { for (var i = 
 
 function BufferAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) BufferAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) BufferAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21330,7 +20428,7 @@ function DataReturnOption_defineProperties(target, props) { for (var i = 0; i < 
 
 function DataReturnOption_createClass(Constructor, protoProps, staticProps) { if (protoProps) DataReturnOption_defineProperties(Constructor.prototype, protoProps); if (staticProps) DataReturnOption_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21409,7 +20507,7 @@ function JoinItem_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function JoinItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) JoinItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) JoinItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21532,7 +20630,7 @@ function LinkItem_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function LinkItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) LinkItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) LinkItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21696,7 +20794,7 @@ function FilterParameter_defineProperties(target, props) { for (var i = 0; i < p
 
 function FilterParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) FilterParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) FilterParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21867,7 +20965,7 @@ function DatasetBufferAnalystParameters_inherits(subClass, superClass) { if (typ
 
 function DatasetBufferAnalystParameters_setPrototypeOf(o, p) { DatasetBufferAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetBufferAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22014,7 +21112,7 @@ function GeometryBufferAnalystParameters_inherits(subClass, superClass) { if (ty
 
 function GeometryBufferAnalystParameters_setPrototypeOf(o, p) { GeometryBufferAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeometryBufferAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22139,7 +21237,7 @@ function BufferAnalystService_inherits(subClass, superClass) { if (typeof superC
 
 function BufferAnalystService_setPrototypeOf(o, p) { BufferAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BufferAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22275,7 +21373,7 @@ function ProcessingServiceBase_inherits(subClass, superClass) { if (typeof super
 
 function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingServiceBase_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22492,7 +21590,7 @@ function BuffersAnalystJobsService_inherits(subClass, superClass) { if (typeof s
 
 function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BuffersAnalystJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22579,7 +21677,7 @@ function BurstPipelineAnalystParameters_defineProperties(target, props) { for (v
 
 function BurstPipelineAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) BurstPipelineAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) BurstPipelineAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22674,7 +21772,7 @@ function NetworkAnalystServiceBase_inherits(subClass, superClass) { if (typeof s
 
 function NetworkAnalystServiceBase_setPrototypeOf(o, p) { NetworkAnalystServiceBase_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return NetworkAnalystServiceBase_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22792,7 +21890,7 @@ function BurstPipelineAnalystService_inherits(subClass, superClass) { if (typeof
 
 function BurstPipelineAnalystService_setPrototypeOf(o, p) { BurstPipelineAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BurstPipelineAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22909,7 +22007,7 @@ function ChartFeatureInfoSpecsService_inherits(subClass, superClass) { if (typeo
 
 function ChartFeatureInfoSpecsService_setPrototypeOf(o, p) { ChartFeatureInfoSpecsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ChartFeatureInfoSpecsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23004,7 +22102,7 @@ function ChartQueryFilterParameter_defineProperties(target, props) { for (var i 
 
 function ChartQueryFilterParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) ChartQueryFilterParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) ChartQueryFilterParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23108,7 +22206,7 @@ function ChartQueryParameters_defineProperties(target, props) { for (var i = 0; 
 
 function ChartQueryParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) ChartQueryParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) ChartQueryParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23262,7 +22360,7 @@ function QueryParameters_defineProperties(target, props) { for (var i = 0; i < p
 
 function QueryParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) QueryParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) QueryParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23415,7 +22513,7 @@ function ChartQueryService_inherits(subClass, superClass) { if (typeof superClas
 
 function ChartQueryService_setPrototypeOf(o, p) { ChartQueryService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ChartQueryService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23616,7 +22714,7 @@ function ClipParameter_defineProperties(target, props) { for (var i = 0; i < pro
 
 function ClipParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) ClipParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) ClipParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23722,7 +22820,7 @@ function ColorDictionary_defineProperties(target, props) { for (var i = 0; i < p
 
 function ColorDictionary_createClass(Constructor, protoProps, staticProps) { if (protoProps) ColorDictionary_defineProperties(Constructor.prototype, protoProps); if (staticProps) ColorDictionary_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23803,7 +22901,7 @@ function TransportationAnalystResultSetting_defineProperties(target, props) { fo
 
 function TransportationAnalystResultSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) TransportationAnalystResultSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) TransportationAnalystResultSetting_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23917,7 +23015,7 @@ function TransportationAnalystParameter_defineProperties(target, props) { for (v
 
 function TransportationAnalystParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) TransportationAnalystParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) TransportationAnalystParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24029,7 +23127,7 @@ function ComputeWeightMatrixParameters_defineProperties(target, props) { for (va
 
 function ComputeWeightMatrixParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) ComputeWeightMatrixParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) ComputeWeightMatrixParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24119,7 +23217,7 @@ function ComputeWeightMatrixService_inherits(subClass, superClass) { if (typeof 
 
 function ComputeWeightMatrixService_setPrototypeOf(o, p) { ComputeWeightMatrixService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ComputeWeightMatrixService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24263,7 +23361,7 @@ function DataFlowService_inherits(subClass, superClass) { if (typeof superClass 
 
 function DataFlowService_setPrototypeOf(o, p) { DataFlowService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DataFlowService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24553,7 +23651,7 @@ function DatasetInfo_defineProperties(target, props) { for (var i = 0; i < props
 
 function DatasetInfo_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasetInfo_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasetInfo_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24695,7 +23793,7 @@ function OverlayAnalystParameters_defineProperties(target, props) { for (var i =
 
 function OverlayAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24766,7 +23864,7 @@ function DatasetOverlayAnalystParameters_inherits(subClass, superClass) { if (ty
 
 function DatasetOverlayAnalystParameters_setPrototypeOf(o, p) { DatasetOverlayAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetOverlayAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24948,7 +24046,7 @@ function SurfaceAnalystParametersSetting_defineProperties(target, props) { for (
 
 function SurfaceAnalystParametersSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) SurfaceAnalystParametersSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) SurfaceAnalystParametersSetting_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25101,7 +24199,7 @@ function SurfaceAnalystParameters_defineProperties(target, props) { for (var i =
 
 function SurfaceAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SurfaceAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SurfaceAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25211,7 +24309,7 @@ function DatasetSurfaceAnalystParameters_inherits(subClass, superClass) { if (ty
 
 function DatasetSurfaceAnalystParameters_setPrototypeOf(o, p) { DatasetSurfaceAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetSurfaceAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25336,7 +24434,7 @@ function ThiessenAnalystParameters_defineProperties(target, props) { for (var i 
 
 function ThiessenAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThiessenAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThiessenAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25445,7 +24543,7 @@ function DatasetThiessenAnalystParameters_inherits(subClass, superClass) { if (t
 
 function DatasetThiessenAnalystParameters_setPrototypeOf(o, p) { DatasetThiessenAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetThiessenAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25546,7 +24644,7 @@ function DensityKernelAnalystParameters_defineProperties(target, props) { for (v
 
 function DensityKernelAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) DensityKernelAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) DensityKernelAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25689,7 +24787,7 @@ function DensityAnalystService_inherits(subClass, superClass) { if (typeof super
 
 function DensityAnalystService_setPrototypeOf(o, p) { DensityAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DensityAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25801,7 +24899,7 @@ function EditFeaturesParameters_defineProperties(target, props) { for (var i = 0
 
 function EditFeaturesParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) EditFeaturesParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) EditFeaturesParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25955,7 +25053,7 @@ function EditFeaturesService_inherits(subClass, superClass) { if (typeof superCl
 
 function EditFeaturesService_setPrototypeOf(o, p) { EditFeaturesService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return EditFeaturesService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26102,7 +25200,7 @@ function FacilityAnalyst3DParameters_defineProperties(target, props) { for (var 
 
 function FacilityAnalyst3DParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FacilityAnalyst3DParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FacilityAnalyst3DParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26198,7 +25296,7 @@ function FacilityAnalystSinks3DParameters_inherits(subClass, superClass) { if (t
 
 function FacilityAnalystSinks3DParameters_setPrototypeOf(o, p) { FacilityAnalystSinks3DParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystSinks3DParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26268,7 +25366,7 @@ function FacilityAnalystSinks3DService_inherits(subClass, superClass) { if (type
 
 function FacilityAnalystSinks3DService_setPrototypeOf(o, p) { FacilityAnalystSinks3DService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystSinks3DService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26383,7 +25481,7 @@ function FacilityAnalystSources3DParameters_inherits(subClass, superClass) { if 
 
 function FacilityAnalystSources3DParameters_setPrototypeOf(o, p) { FacilityAnalystSources3DParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystSources3DParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26457,7 +25555,7 @@ function FacilityAnalystSources3DService_inherits(subClass, superClass) { if (ty
 
 function FacilityAnalystSources3DService_setPrototypeOf(o, p) { FacilityAnalystSources3DService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystSources3DService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26549,7 +25647,7 @@ function FacilityAnalystStreamParameters_defineProperties(target, props) { for (
 
 function FacilityAnalystStreamParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FacilityAnalystStreamParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FacilityAnalystStreamParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26649,7 +25747,7 @@ function FacilityAnalystStreamService_inherits(subClass, superClass) { if (typeo
 
 function FacilityAnalystStreamService_setPrototypeOf(o, p) { FacilityAnalystStreamService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystStreamService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26774,7 +25872,7 @@ function FacilityAnalystTracedown3DParameters_inherits(subClass, superClass) { i
 
 function FacilityAnalystTracedown3DParameters_setPrototypeOf(o, p) { FacilityAnalystTracedown3DParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystTracedown3DParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26846,7 +25944,7 @@ function FacilityAnalystTracedown3DService_inherits(subClass, superClass) { if (
 
 function FacilityAnalystTracedown3DService_setPrototypeOf(o, p) { FacilityAnalystTracedown3DService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystTracedown3DService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26950,7 +26048,7 @@ function FacilityAnalystTraceup3DParameters_inherits(subClass, superClass) { if 
 
 function FacilityAnalystTraceup3DParameters_setPrototypeOf(o, p) { FacilityAnalystTraceup3DParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystTraceup3DParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27021,7 +26119,7 @@ function FacilityAnalystTraceup3DService_inherits(subClass, superClass) { if (ty
 
 function FacilityAnalystTraceup3DService_setPrototypeOf(o, p) { FacilityAnalystTraceup3DService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystTraceup3DService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27134,7 +26232,7 @@ function FacilityAnalystUpstream3DParameters_inherits(subClass, superClass) { if
 
 function FacilityAnalystUpstream3DParameters_setPrototypeOf(o, p) { FacilityAnalystUpstream3DParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystUpstream3DParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27211,7 +26309,7 @@ function FacilityAnalystUpstream3DService_inherits(subClass, superClass) { if (t
 
 function FacilityAnalystUpstream3DService_setPrototypeOf(o, p) { FacilityAnalystUpstream3DService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FacilityAnalystUpstream3DService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27315,7 +26413,7 @@ function FilterAggParameter_inherits(subClass, superClass) { if (typeof superCla
 
 function FilterAggParameter_setPrototypeOf(o, p) { FilterAggParameter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FilterAggParameter_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27383,7 +26481,7 @@ function FieldParameters_defineProperties(target, props) { for (var i = 0; i < p
 
 function FieldParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FieldParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FieldParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27458,7 +26556,7 @@ function FieldStatisticsParameters_inherits(subClass, superClass) { if (typeof s
 
 function FieldStatisticsParameters_setPrototypeOf(o, p) { FieldStatisticsParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FieldStatisticsParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27548,7 +26646,7 @@ function FieldStatisticService_inherits(subClass, superClass) { if (typeof super
 
 function FieldStatisticService_setPrototypeOf(o, p) { FieldStatisticService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FieldStatisticService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27675,7 +26773,7 @@ function FindClosestFacilitiesParameters_defineProperties(target, props) { for (
 
 function FindClosestFacilitiesParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FindClosestFacilitiesParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FindClosestFacilitiesParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27804,7 +26902,7 @@ function FindClosestFacilitiesService_inherits(subClass, superClass) { if (typeo
 
 function FindClosestFacilitiesService_setPrototypeOf(o, p) { FindClosestFacilitiesService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FindClosestFacilitiesService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27986,7 +27084,7 @@ function FindLocationParameters_defineProperties(target, props) { for (var i = 0
 
 function FindLocationParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FindLocationParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FindLocationParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28097,7 +27195,7 @@ function FindLocationService_inherits(subClass, superClass) { if (typeof superCl
 
 function FindLocationService_setPrototypeOf(o, p) { FindLocationService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FindLocationService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28252,7 +27350,7 @@ function FindMTSPPathsParameters_defineProperties(target, props) { for (var i = 
 
 function FindMTSPPathsParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FindMTSPPathsParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FindMTSPPathsParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28365,7 +27463,7 @@ function FindMTSPPathsService_inherits(subClass, superClass) { if (typeof superC
 
 function FindMTSPPathsService_setPrototypeOf(o, p) { FindMTSPPathsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FindMTSPPathsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28539,7 +27637,7 @@ function FindPathParameters_defineProperties(target, props) { for (var i = 0; i 
 
 function FindPathParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FindPathParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FindPathParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28649,7 +27747,7 @@ function FindPathService_inherits(subClass, superClass) { if (typeof superClass 
 
 function FindPathService_setPrototypeOf(o, p) { FindPathService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FindPathService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28817,7 +27915,7 @@ function FindServiceAreasParameters_defineProperties(target, props) { for (var i
 
 function FindServiceAreasParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FindServiceAreasParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FindServiceAreasParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28941,7 +28039,7 @@ function FindServiceAreasService_inherits(subClass, superClass) { if (typeof sup
 
 function FindServiceAreasService_setPrototypeOf(o, p) { FindServiceAreasService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FindServiceAreasService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29113,7 +28211,7 @@ function FindTSPPathsParameters_defineProperties(target, props) { for (var i = 0
 
 function FindTSPPathsParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) FindTSPPathsParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) FindTSPPathsParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29218,7 +28316,7 @@ function FindTSPPathsService_inherits(subClass, superClass) { if (typeof superCl
 
 function FindTSPPathsService_setPrototypeOf(o, p) { FindTSPPathsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return FindTSPPathsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29398,7 +28496,7 @@ function GenerateSpatialDataParameters_defineProperties(target, props) { for (va
 
 function GenerateSpatialDataParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) GenerateSpatialDataParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) GenerateSpatialDataParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29568,7 +28666,7 @@ function GenerateSpatialDataService_inherits(subClass, superClass) { if (typeof 
 
 function GenerateSpatialDataService_setPrototypeOf(o, p) { GenerateSpatialDataService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GenerateSpatialDataService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29722,7 +28820,7 @@ function GeoBoundingBoxQueryBuilderParameter_inherits(subClass, superClass) { if
 
 function GeoBoundingBoxQueryBuilderParameter_setPrototypeOf(o, p) { GeoBoundingBoxQueryBuilderParameter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeoBoundingBoxQueryBuilderParameter_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29802,7 +28900,7 @@ function GeoHashGridAggParameter_inherits(subClass, superClass) { if (typeof sup
 
 function GeoHashGridAggParameter_setPrototypeOf(o, p) { GeoHashGridAggParameter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeoHashGridAggParameter_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29904,7 +29002,7 @@ function GeometryOverlayAnalystParameters_inherits(subClass, superClass) { if (t
 
 function GeometryOverlayAnalystParameters_setPrototypeOf(o, p) { GeometryOverlayAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeometryOverlayAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30061,7 +29159,7 @@ function GeometrySurfaceAnalystParameters_inherits(subClass, superClass) { if (t
 
 function GeometrySurfaceAnalystParameters_setPrototypeOf(o, p) { GeometrySurfaceAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeometrySurfaceAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30164,7 +29262,7 @@ function GeometryThiessenAnalystParameters_inherits(subClass, superClass) { if (
 
 function GeometryThiessenAnalystParameters_setPrototypeOf(o, p) { GeometryThiessenAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeometryThiessenAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30258,7 +29356,7 @@ function GeoRelationAnalystParameters_defineProperties(target, props) { for (var
 
 function GeoRelationAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoRelationAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoRelationAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30404,7 +29502,7 @@ function GeoRelationAnalystService_inherits(subClass, superClass) { if (typeof s
 
 function GeoRelationAnalystService_setPrototypeOf(o, p) { GeoRelationAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeoRelationAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30524,7 +29622,7 @@ function GetFeaturesParametersBase_defineProperties(target, props) { for (var i 
 
 function GetFeaturesParametersBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) GetFeaturesParametersBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) GetFeaturesParametersBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30657,7 +29755,7 @@ function GetFeaturesByBoundsParameters_inherits(subClass, superClass) { if (type
 
 function GetFeaturesByBoundsParameters_setPrototypeOf(o, p) { GetFeaturesByBoundsParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByBoundsParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30846,7 +29944,7 @@ function GetFeaturesServiceBase_inherits(subClass, superClass) { if (typeof supe
 
 function GetFeaturesServiceBase_setPrototypeOf(o, p) { GetFeaturesServiceBase_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesServiceBase_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31055,7 +30153,7 @@ function GetFeaturesByBoundsService_inherits(subClass, superClass) { if (typeof 
 
 function GetFeaturesByBoundsService_setPrototypeOf(o, p) { GetFeaturesByBoundsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByBoundsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31152,7 +30250,7 @@ function GetFeaturesByBufferParameters_inherits(subClass, superClass) { if (type
 
 function GetFeaturesByBufferParameters_setPrototypeOf(o, p) { GetFeaturesByBufferParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByBufferParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31321,7 +30419,7 @@ function GetFeaturesByBufferService_inherits(subClass, superClass) { if (typeof 
 
 function GetFeaturesByBufferService_setPrototypeOf(o, p) { GetFeaturesByBufferService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByBufferService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31421,7 +30519,7 @@ function GetFeaturesByGeometryParameters_inherits(subClass, superClass) { if (ty
 
 function GetFeaturesByGeometryParameters_setPrototypeOf(o, p) { GetFeaturesByGeometryParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByGeometryParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31599,7 +30697,7 @@ function GetFeaturesByGeometryService_inherits(subClass, superClass) { if (typeo
 
 function GetFeaturesByGeometryService_setPrototypeOf(o, p) { GetFeaturesByGeometryService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByGeometryService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31696,7 +30794,7 @@ function GetFeaturesByIDsParameters_inherits(subClass, superClass) { if (typeof 
 
 function GetFeaturesByIDsParameters_setPrototypeOf(o, p) { GetFeaturesByIDsParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByIDsParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31837,7 +30935,7 @@ function GetFeaturesByIDsService_inherits(subClass, superClass) { if (typeof sup
 
 function GetFeaturesByIDsService_setPrototypeOf(o, p) { GetFeaturesByIDsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesByIDsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31934,7 +31032,7 @@ function GetFeaturesBySQLParameters_inherits(subClass, superClass) { if (typeof 
 
 function GetFeaturesBySQLParameters_setPrototypeOf(o, p) { GetFeaturesBySQLParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesBySQLParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32064,7 +31162,7 @@ function GetFeaturesBySQLService_inherits(subClass, superClass) { if (typeof sup
 
 function GetFeaturesBySQLService_setPrototypeOf(o, p) { GetFeaturesBySQLService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFeaturesBySQLService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32163,7 +31261,7 @@ function GetFieldsService_inherits(subClass, superClass) { if (typeof superClass
 
 function GetFieldsService_setPrototypeOf(o, p) { GetFieldsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetFieldsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32272,7 +31370,7 @@ function GetGridCellInfosParameters_defineProperties(target, props) { for (var i
 
 function GetGridCellInfosParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) GetGridCellInfosParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) GetGridCellInfosParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32363,7 +31461,7 @@ function GetGridCellInfosService_inherits(subClass, superClass) { if (typeof sup
 
 function GetGridCellInfosService_setPrototypeOf(o, p) { GetGridCellInfosService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetGridCellInfosService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32560,7 +31658,7 @@ function ThemeMemoryData_defineProperties(target, props) { for (var i = 0; i < p
 
 function ThemeMemoryData_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeMemoryData_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeMemoryData_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32643,7 +31741,7 @@ function Theme_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function Theme_createClass(Constructor, protoProps, staticProps) { if (protoProps) Theme_defineProperties(Constructor.prototype, protoProps); if (staticProps) Theme_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32731,7 +31829,7 @@ function ServerTextStyle_defineProperties(target, props) { for (var i = 0; i < p
 
 function ServerTextStyle_createClass(Constructor, protoProps, staticProps) { if (protoProps) ServerTextStyle_defineProperties(Constructor.prototype, protoProps); if (staticProps) ServerTextStyle_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32952,7 +32050,7 @@ function ThemeLabelItem_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeLabelItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeLabelItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeLabelItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33071,7 +32169,7 @@ function ThemeUniqueItem_defineProperties(target, props) { for (var i = 0; i < p
 
 function ThemeUniqueItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeUniqueItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeUniqueItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33193,7 +32291,7 @@ function ThemeFlow_defineProperties(target, props) { for (var i = 0; i < props.l
 
 function ThemeFlow_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeFlow_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeFlow_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33294,7 +32392,7 @@ function ThemeOffset_defineProperties(target, props) { for (var i = 0; i < props
 
 function ThemeOffset_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeOffset_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeOffset_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33386,7 +32484,7 @@ function LabelMixedTextStyle_defineProperties(target, props) { for (var i = 0; i
 
 function LabelMixedTextStyle_createClass(Constructor, protoProps, staticProps) { if (protoProps) LabelMixedTextStyle_defineProperties(Constructor.prototype, protoProps); if (staticProps) LabelMixedTextStyle_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33533,7 +32631,7 @@ function ThemeLabelText_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeLabelText_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeLabelText_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeLabelText_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33667,7 +32765,7 @@ function ThemeLabelAlongLine_defineProperties(target, props) { for (var i = 0; i
 
 function ThemeLabelAlongLine_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeLabelAlongLine_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeLabelAlongLine_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33785,7 +32883,7 @@ function ThemeLabelBackground_defineProperties(target, props) { for (var i = 0; 
 
 function ThemeLabelBackground_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeLabelBackground_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeLabelBackground_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33891,7 +32989,7 @@ function ThemeLabel_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function ThemeLabel_setPrototypeOf(o, p) { ThemeLabel_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeLabel_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34280,7 +33378,7 @@ function ThemeUnique_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function ThemeUnique_setPrototypeOf(o, p) { ThemeUnique_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeUnique_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34452,7 +33550,7 @@ function ThemeGraphAxes_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeGraphAxes_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGraphAxes_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGraphAxes_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34571,7 +33669,7 @@ function ThemeGraphSize_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeGraphSize_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGraphSize_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGraphSize_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34648,7 +33746,7 @@ function ThemeGraphText_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeGraphText_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGraphText_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGraphText_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34741,7 +33839,7 @@ function ThemeGraphItem_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeGraphItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGraphItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGraphItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34860,7 +33958,7 @@ function ThemeGraph_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function ThemeGraph_setPrototypeOf(o, p) { ThemeGraph_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeGraph_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35276,7 +34374,7 @@ function ThemeDotDensity_inherits(subClass, superClass) { if (typeof superClass 
 
 function ThemeDotDensity_setPrototypeOf(o, p) { ThemeDotDensity_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeDotDensity_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35410,7 +34508,7 @@ function ThemeGraduatedSymbolStyle_defineProperties(target, props) { for (var i 
 
 function ThemeGraduatedSymbolStyle_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGraduatedSymbolStyle_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGraduatedSymbolStyle_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35535,7 +34633,7 @@ function ThemeGraduatedSymbol_inherits(subClass, superClass) { if (typeof superC
 
 function ThemeGraduatedSymbol_setPrototypeOf(o, p) { ThemeGraduatedSymbol_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeGraduatedSymbol_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35737,7 +34835,7 @@ function ThemeRangeItem_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ThemeRangeItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeRangeItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeRangeItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35893,7 +34991,7 @@ function ThemeRange_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function ThemeRange_setPrototypeOf(o, p) { ThemeRange_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeRange_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36054,7 +35152,7 @@ function UGCLayer_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function UGCLayer_createClass(Constructor, protoProps, staticProps) { if (protoProps) UGCLayer_defineProperties(Constructor.prototype, protoProps); if (staticProps) UGCLayer_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36195,7 +35293,7 @@ function OverlapDisplayedOptions_defineProperties(target, props) { for (var i = 
 
 function OverlapDisplayedOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlapDisplayedOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlapDisplayedOptions_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36367,7 +35465,7 @@ function UGCMapLayer_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function UGCMapLayer_setPrototypeOf(o, p) { UGCMapLayer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return UGCMapLayer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36523,7 +35621,7 @@ function UGCSubLayer_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function UGCSubLayer_setPrototypeOf(o, p) { UGCSubLayer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return UGCSubLayer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36687,7 +35785,7 @@ function ServerTheme_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function ServerTheme_setPrototypeOf(o, p) { ServerTheme_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ServerTheme_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36850,7 +35948,7 @@ function Grid_inherits(subClass, superClass) { if (typeof superClass !== "functi
 
 function Grid_setPrototypeOf(o, p) { Grid_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Grid_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37098,7 +36196,7 @@ function Image_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Image_setPrototypeOf(o, p) { Image_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Image_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37244,7 +36342,7 @@ function iServer_Vector_inherits(subClass, superClass) { if (typeof superClass !
 
 function iServer_Vector_setPrototypeOf(o, p) { iServer_Vector_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iServer_Vector_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37358,7 +36456,7 @@ function GetLayersInfoService_inherits(subClass, superClass) { if (typeof superC
 
 function GetLayersInfoService_setPrototypeOf(o, p) { GetLayersInfoService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GetLayersInfoService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37539,7 +36637,7 @@ function InterpolationAnalystParameters_defineProperties(target, props) { for (v
 
 function InterpolationAnalystParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) InterpolationAnalystParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) InterpolationAnalystParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37746,7 +36844,7 @@ function InterpolationRBFAnalystParameters_inherits(subClass, superClass) { if (
 
 function InterpolationRBFAnalystParameters_setPrototypeOf(o, p) { InterpolationRBFAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return InterpolationRBFAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37916,7 +37014,7 @@ function InterpolationDensityAnalystParameters_inherits(subClass, superClass) { 
 
 function InterpolationDensityAnalystParameters_setPrototypeOf(o, p) { InterpolationDensityAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return InterpolationDensityAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38011,7 +37109,7 @@ function InterpolationIDWAnalystParameters_inherits(subClass, superClass) { if (
 
 function InterpolationIDWAnalystParameters_setPrototypeOf(o, p) { InterpolationIDWAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return InterpolationIDWAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38140,7 +37238,7 @@ function InterpolationKrigingAnalystParameters_inherits(subClass, superClass) { 
 
 function InterpolationKrigingAnalystParameters_setPrototypeOf(o, p) { InterpolationKrigingAnalystParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return InterpolationKrigingAnalystParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38399,7 +37497,7 @@ function InterpolationAnalystService_inherits(subClass, superClass) { if (typeof
 
 function InterpolationAnalystService_setPrototypeOf(o, p) { InterpolationAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return InterpolationAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38563,7 +37661,7 @@ function KernelDensityJobsService_inherits(subClass, superClass) { if (typeof su
 
 function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return KernelDensityJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38647,7 +37745,7 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
 // CONCATENATED MODULE: ./src/common/iServer/LabelMatrixCell.js
 function LabelMatrixCell_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38684,7 +37782,7 @@ function LabelImageCell_inherits(subClass, superClass) { if (typeof superClass !
 
 function LabelImageCell_setPrototypeOf(o, p) { LabelImageCell_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return LabelImageCell_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38804,7 +37902,7 @@ function LabelSymbolCell_inherits(subClass, superClass) { if (typeof superClass 
 
 function LabelSymbolCell_setPrototypeOf(o, p) { LabelSymbolCell_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return LabelSymbolCell_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38907,7 +38005,7 @@ function LabelThemeCell_inherits(subClass, superClass) { if (typeof superClass !
 
 function LabelThemeCell_setPrototypeOf(o, p) { LabelThemeCell_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return LabelThemeCell_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38988,7 +38086,7 @@ function LayerStatus_defineProperties(target, props) { for (var i = 0; i < props
 
 function LayerStatus_createClass(Constructor, protoProps, staticProps) { if (protoProps) LayerStatus_defineProperties(Constructor.prototype, protoProps); if (staticProps) LayerStatus_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39122,7 +38220,7 @@ function MapService_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function MapService_setPrototypeOf(o, p) { MapService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39267,7 +38365,7 @@ function MathExpressionAnalysisParameters_defineProperties(target, props) { for 
 
 function MathExpressionAnalysisParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) MathExpressionAnalysisParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) MathExpressionAnalysisParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39436,7 +38534,7 @@ function MathExpressionAnalysisService_inherits(subClass, superClass) { if (type
 
 function MathExpressionAnalysisService_setPrototypeOf(o, p) { MathExpressionAnalysisService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MathExpressionAnalysisService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39534,7 +38632,7 @@ function MeasureParameters_defineProperties(target, props) { for (var i = 0; i <
 
 function MeasureParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) MeasureParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) MeasureParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39639,7 +38737,7 @@ function MeasureService_inherits(subClass, superClass) { if (typeof superClass !
 
 function MeasureService_setPrototypeOf(o, p) { MeasureService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MeasureService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39806,7 +38904,7 @@ function OverlayAnalystService_inherits(subClass, superClass) { if (typeof super
 
 function OverlayAnalystService_setPrototypeOf(o, p) { OverlayAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OverlayAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39944,7 +39042,7 @@ function OverlayGeoJobsService_inherits(subClass, superClass) { if (typeof super
 
 function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OverlayGeoJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40051,7 +39149,7 @@ function QueryByBoundsParameters_inherits(subClass, superClass) { if (typeof sup
 
 function QueryByBoundsParameters_setPrototypeOf(o, p) { QueryByBoundsParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryByBoundsParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40156,7 +39254,7 @@ function QueryService_inherits(subClass, superClass) { if (typeof superClass !==
 
 function QueryService_setPrototypeOf(o, p) { QueryService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40382,7 +39480,7 @@ function QueryByBoundsService_inherits(subClass, superClass) { if (typeof superC
 
 function QueryByBoundsService_setPrototypeOf(o, p) { QueryByBoundsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryByBoundsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40492,7 +39590,7 @@ function QueryByDistanceParameters_inherits(subClass, superClass) { if (typeof s
 
 function QueryByDistanceParameters_setPrototypeOf(o, p) { QueryByDistanceParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryByDistanceParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40625,7 +39723,7 @@ function QueryByDistanceService_inherits(subClass, superClass) { if (typeof supe
 
 function QueryByDistanceService_setPrototypeOf(o, p) { QueryByDistanceService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryByDistanceService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40733,7 +39831,7 @@ function QueryByGeometryParameters_inherits(subClass, superClass) { if (typeof s
 
 function QueryByGeometryParameters_setPrototypeOf(o, p) { QueryByGeometryParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryByGeometryParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40848,7 +39946,7 @@ function QueryByGeometryService_inherits(subClass, superClass) { if (typeof supe
 
 function QueryByGeometryService_setPrototypeOf(o, p) { QueryByGeometryService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryByGeometryService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40964,7 +40062,7 @@ function QueryBySQLParameters_inherits(subClass, superClass) { if (typeof superC
 
 function QueryBySQLParameters_setPrototypeOf(o, p) { QueryBySQLParameters_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryBySQLParameters_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41059,7 +40157,7 @@ function QueryBySQLService_inherits(subClass, superClass) { if (typeof superClas
 
 function QueryBySQLService_setPrototypeOf(o, p) { QueryBySQLService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return QueryBySQLService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41163,7 +40261,7 @@ function RouteCalculateMeasureParameters_defineProperties(target, props) { for (
 
 function RouteCalculateMeasureParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) RouteCalculateMeasureParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) RouteCalculateMeasureParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41266,7 +40364,7 @@ function RouteCalculateMeasureService_inherits(subClass, superClass) { if (typeo
 
 function RouteCalculateMeasureService_setPrototypeOf(o, p) { RouteCalculateMeasureService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return RouteCalculateMeasureService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41417,7 +40515,7 @@ function RouteLocatorParameters_defineProperties(target, props) { for (var i = 0
 
 function RouteLocatorParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) RouteLocatorParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) RouteLocatorParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41583,7 +40681,7 @@ function RouteLocatorService_inherits(subClass, superClass) { if (typeof superCl
 
 function RouteLocatorService_setPrototypeOf(o, p) { RouteLocatorService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return RouteLocatorService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41735,7 +40833,7 @@ function ServerFeature_defineProperties(target, props) { for (var i = 0; i < pro
 
 function ServerFeature_createClass(Constructor, protoProps, staticProps) { if (protoProps) ServerFeature_defineProperties(Constructor.prototype, protoProps); if (staticProps) ServerFeature_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41874,7 +40972,7 @@ function SetLayerInfoParameters_defineProperties(target, props) { for (var i = 0
 
 function SetLayerInfoParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SetLayerInfoParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SetLayerInfoParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41959,7 +41057,7 @@ function SetLayerInfoService_inherits(subClass, superClass) { if (typeof superCl
 
 function SetLayerInfoService_setPrototypeOf(o, p) { SetLayerInfoService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SetLayerInfoService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42050,7 +41148,7 @@ function SetLayersInfoParameters_defineProperties(target, props) { for (var i = 
 
 function SetLayersInfoParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SetLayersInfoParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SetLayersInfoParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42135,7 +41233,7 @@ function SetLayersInfoService_inherits(subClass, superClass) { if (typeof superC
 
 function SetLayersInfoService_setPrototypeOf(o, p) { SetLayersInfoService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SetLayersInfoService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42298,7 +41396,7 @@ function SetLayerStatusParameters_defineProperties(target, props) { for (var i =
 
 function SetLayerStatusParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SetLayerStatusParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SetLayerStatusParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42409,7 +41507,7 @@ function SetLayerStatusService_inherits(subClass, superClass) { if (typeof super
 
 function SetLayerStatusService_setPrototypeOf(o, p) { SetLayerStatusService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SetLayerStatusService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42605,7 +41703,7 @@ function SingleObjectQueryJobsService_inherits(subClass, superClass) { if (typeo
 
 function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SingleObjectQueryJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42692,7 +41790,7 @@ function StopQueryParameters_defineProperties(target, props) { for (var i = 0; i
 
 function StopQueryParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) StopQueryParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) StopQueryParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42767,7 +41865,7 @@ function StopQueryService_inherits(subClass, superClass) { if (typeof superClass
 
 function StopQueryService_setPrototypeOf(o, p) { StopQueryService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return StopQueryService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42883,7 +41981,7 @@ function SummaryAttributesJobsService_inherits(subClass, superClass) { if (typeo
 
 function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryAttributesJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42986,7 +42084,7 @@ function SummaryMeshJobsService_inherits(subClass, superClass) { if (typeof supe
 
 function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryMeshJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43093,7 +42191,7 @@ function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof su
 
 function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43180,7 +42278,7 @@ function SupplyCenter_defineProperties(target, props) { for (var i = 0; i < prop
 
 function SupplyCenter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SupplyCenter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SupplyCenter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43299,7 +42397,7 @@ function SurfaceAnalystService_inherits(subClass, superClass) { if (typeof super
 
 function SurfaceAnalystService_setPrototypeOf(o, p) { SurfaceAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SurfaceAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43423,7 +42521,7 @@ function TerrainCurvatureCalculationParameters_defineProperties(target, props) {
 
 function TerrainCurvatureCalculationParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) TerrainCurvatureCalculationParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) TerrainCurvatureCalculationParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43556,7 +42654,7 @@ function TerrainCurvatureCalculationService_inherits(subClass, superClass) { if 
 
 function TerrainCurvatureCalculationService_setPrototypeOf(o, p) { TerrainCurvatureCalculationService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TerrainCurvatureCalculationService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43653,7 +42751,7 @@ function ThemeGridRangeItem_defineProperties(target, props) { for (var i = 0; i 
 
 function ThemeGridRangeItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGridRangeItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGridRangeItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43803,7 +42901,7 @@ function ThemeGridRange_inherits(subClass, superClass) { if (typeof superClass !
 
 function ThemeGridRange_setPrototypeOf(o, p) { ThemeGridRange_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeGridRange_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43951,7 +43049,7 @@ function ThemeGridUniqueItem_defineProperties(target, props) { for (var i = 0; i
 
 function ThemeGridUniqueItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeGridUniqueItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeGridUniqueItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44088,7 +43186,7 @@ function ThemeGridUnique_inherits(subClass, superClass) { if (typeof superClass 
 
 function ThemeGridUnique_setPrototypeOf(o, p) { ThemeGridUnique_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeGridUnique_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44236,7 +43334,7 @@ function ThemeLabelUniqueItem_defineProperties(target, props) { for (var i = 0; 
 
 function ThemeLabelUniqueItem_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeLabelUniqueItem_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeLabelUniqueItem_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44359,7 +43457,7 @@ function ThemeParameters_defineProperties(target, props) { for (var i = 0; i < p
 
 function ThemeParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) ThemeParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) ThemeParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44506,7 +43604,7 @@ function ThemeService_inherits(subClass, superClass) { if (typeof superClass !==
 
 function ThemeService_setPrototypeOf(o, p) { ThemeService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44690,7 +43788,7 @@ function ThiessenAnalystService_inherits(subClass, superClass) { if (typeof supe
 
 function ThiessenAnalystService_setPrototypeOf(o, p) { ThiessenAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThiessenAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44829,7 +43927,7 @@ function GeometryBatchAnalystService_inherits(subClass, superClass) { if (typeof
 
 function GeometryBatchAnalystService_setPrototypeOf(o, p) { GeometryBatchAnalystService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeometryBatchAnalystService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45005,7 +44103,7 @@ function TilesetsService_inherits(subClass, superClass) { if (typeof superClass 
 
 function TilesetsService_setPrototypeOf(o, p) { TilesetsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TilesetsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45100,7 +44198,7 @@ function TopologyValidatorJobsService_inherits(subClass, superClass) { if (typeo
 
 function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TopologyValidatorJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45187,7 +44285,7 @@ function TransferLine_defineProperties(target, props) { for (var i = 0; i < prop
 
 function TransferLine_createClass(Constructor, protoProps, staticProps) { if (protoProps) TransferLine_defineProperties(Constructor.prototype, protoProps); if (staticProps) TransferLine_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45321,7 +44419,7 @@ function TransferPathParameters_defineProperties(target, props) { for (var i = 0
 
 function TransferPathParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) TransferPathParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) TransferPathParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45414,7 +44512,7 @@ function TransferPathService_inherits(subClass, superClass) { if (typeof superCl
 
 function TransferPathService_setPrototypeOf(o, p) { TransferPathService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TransferPathService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45509,7 +44607,7 @@ function TransferSolutionParameters_defineProperties(target, props) { for (var i
 
 function TransferSolutionParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) TransferSolutionParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) TransferSolutionParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45668,7 +44766,7 @@ function TransferSolutionService_inherits(subClass, superClass) { if (typeof sup
 
 function TransferSolutionService_setPrototypeOf(o, p) { TransferSolutionService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TransferSolutionService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45790,7 +44888,7 @@ function UpdateEdgeWeightParameters_defineProperties(target, props) { for (var i
 
 function UpdateEdgeWeightParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) UpdateEdgeWeightParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) UpdateEdgeWeightParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45893,7 +44991,7 @@ function UpdateEdgeWeightService_inherits(subClass, superClass) { if (typeof sup
 
 function UpdateEdgeWeightService_setPrototypeOf(o, p) { UpdateEdgeWeightService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return UpdateEdgeWeightService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46041,7 +45139,7 @@ function UpdateTurnNodeWeightParameters_defineProperties(target, props) { for (v
 
 function UpdateTurnNodeWeightParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) UpdateTurnNodeWeightParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) UpdateTurnNodeWeightParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46144,7 +45242,7 @@ function UpdateTurnNodeWeightService_inherits(subClass, superClass) { if (typeof
 
 function UpdateTurnNodeWeightService_setPrototypeOf(o, p) { UpdateTurnNodeWeightService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return UpdateTurnNodeWeightService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46291,7 +45389,7 @@ function VectorClipJobsParameter_defineProperties(target, props) { for (var i = 
 
 function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46441,7 +45539,7 @@ function VectorClipJobsService_inherits(subClass, superClass) { if (typeof super
 
 function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VectorClipJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46528,7 +45626,7 @@ function RasterFunctionParameter_defineProperties(target, props) { for (var i = 
 
 function RasterFunctionParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) RasterFunctionParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) RasterFunctionParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46596,7 +45694,7 @@ function NDVIParameter_inherits(subClass, superClass) { if (typeof superClass !=
 
 function NDVIParameter_setPrototypeOf(o, p) { NDVIParameter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return NDVIParameter_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46712,7 +45810,7 @@ function HillshadeParameter_inherits(subClass, superClass) { if (typeof superCla
 
 function HillshadeParameter_setPrototypeOf(o, p) { HillshadeParameter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return HillshadeParameter_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46820,7 +45918,7 @@ function (_RasterFunctionParame) {
 }(RasterFunctionParameter_RasterFunctionParameter);
 SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
 // CONCATENATED MODULE: ./src/common/iServer/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47268,7 +46366,7 @@ SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
 
 
 // CONCATENATED MODULE: ./src/common/online/OnlineResources.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47454,7 +46552,7 @@ function OnlineServiceBase_defineProperties(target, props) { for (var i = 0; i <
 
 function OnlineServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) OnlineServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) OnlineServiceBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47563,7 +46661,7 @@ function OnlineData_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function OnlineData_setPrototypeOf(o, p) { OnlineData_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OnlineData_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47696,7 +46794,7 @@ function Online_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Online_createClass(Constructor, protoProps, staticProps) { if (protoProps) Online_defineProperties(Constructor.prototype, protoProps); if (staticProps) Online_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47801,7 +46899,7 @@ function OnlineQueryDatasParameter_defineProperties(target, props) { for (var i 
 
 function OnlineQueryDatasParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) OnlineQueryDatasParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) OnlineQueryDatasParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47921,7 +47019,7 @@ function () {
 }();
 SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter_OnlineQueryDatasParameter;
 // CONCATENATED MODULE: ./src/common/online/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47941,7 +47039,7 @@ function KeyServiceParameter_defineProperties(target, props) { for (var i = 0; i
 
 function KeyServiceParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) KeyServiceParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) KeyServiceParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47996,7 +47094,7 @@ SuperMap.KeyServiceParameter = KeyServiceParameter_KeyServiceParameter;
 // CONCATENATED MODULE: ./src/common/security/ServerInfo.js
 function ServerInfo_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48075,7 +47173,7 @@ function TokenServiceParameter_defineProperties(target, props) { for (var i = 0;
 
 function TokenServiceParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) TokenServiceParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) TokenServiceParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48165,7 +47263,7 @@ function () {
 }();
 SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 // CONCATENATED MODULE: ./src/common/security/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48177,13 +47275,13 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 // CONCATENATED MODULE: ./src/common/thirdparty/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48197,7 +47295,7 @@ function Util_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function Util_createClass(Constructor, protoProps, staticProps) { if (protoProps) Util_defineProperties(Constructor.prototype, protoProps); if (staticProps) Util_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48513,7 +47611,7 @@ function Color_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function Color_createClass(Constructor, protoProps, staticProps) { if (protoProps) Color_defineProperties(Constructor.prototype, protoProps); if (staticProps) Color_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50185,7 +49283,7 @@ var MapCalculateUtil_getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
   return meterPerMapUnit;
 };
 // CONCATENATED MODULE: ./src/common/util/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50194,7 +49292,7 @@ var MapCalculateUtil_getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(6);
+var lodash_topairs = __webpack_require__(5);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -50206,7 +49304,7 @@ function CartoCSS_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function CartoCSS_createClass(Constructor, protoProps, staticProps) { if (protoProps) CartoCSS_defineProperties(Constructor.prototype, protoProps); if (staticProps) CartoCSS_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -54907,7 +54005,7 @@ SuperMap.CartoCSS.Tree.Zoom.ranges = {
 // CONCATENATED MODULE: ./src/common/style/ThemeStyle.js
 function ThemeStyle_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55126,7 +54224,7 @@ var ThemeStyle_ThemeStyle = function ThemeStyle(options) {
 };
 SuperMap.ThemeStyle = ThemeStyle_ThemeStyle;
 // CONCATENATED MODULE: ./src/common/style/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55140,7 +54238,7 @@ function ShapeParameters_defineProperties(target, props) { for (var i = 0; i < p
 
 function ShapeParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) ShapeParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) ShapeParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55273,7 +54371,7 @@ function feature_Point_inherits(subClass, superClass) { if (typeof superClass !=
 
 function feature_Point_setPrototypeOf(o, p) { feature_Point_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return feature_Point_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55384,7 +54482,7 @@ function Line_inherits(subClass, superClass) { if (typeof superClass !== "functi
 
 function Line_setPrototypeOf(o, p) { Line_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Line_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55486,7 +54584,7 @@ function feature_Polygon_inherits(subClass, superClass) { if (typeof superClass 
 
 function feature_Polygon_setPrototypeOf(o, p) { feature_Polygon_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return feature_Polygon_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55599,7 +54697,7 @@ function feature_Rectangle_inherits(subClass, superClass) { if (typeof superClas
 
 function feature_Rectangle_setPrototypeOf(o, p) { feature_Rectangle_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return feature_Rectangle_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55721,7 +54819,7 @@ function Sector_inherits(subClass, superClass) { if (typeof superClass !== "func
 
 function Sector_setPrototypeOf(o, p) { Sector_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Sector_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55863,7 +54961,7 @@ function Label_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Label_setPrototypeOf(o, p) { Label_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Label_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55983,7 +55081,7 @@ function feature_Image_inherits(subClass, superClass) { if (typeof superClass !=
 
 function feature_Image_setPrototypeOf(o, p) { feature_Image_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return feature_Image_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -56127,7 +55225,7 @@ function Circle_inherits(subClass, superClass) { if (typeof superClass !== "func
 
 function Circle_setPrototypeOf(o, p) { Circle_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Circle_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -56207,7 +55305,7 @@ function Eventful_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function Eventful_createClass(Constructor, protoProps, staticProps) { if (protoProps) Eventful_defineProperties(Constructor.prototype, protoProps); if (staticProps) Eventful_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -56489,7 +55587,7 @@ function levelRenderer_Vector_defineProperties(target, props) { for (var i = 0; 
 
 function levelRenderer_Vector_createClass(Constructor, protoProps, staticProps) { if (protoProps) levelRenderer_Vector_defineProperties(Constructor.prototype, protoProps); if (staticProps) levelRenderer_Vector_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -56906,7 +56004,7 @@ function Curve_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function Curve_createClass(Constructor, protoProps, staticProps) { if (protoProps) Curve_defineProperties(Constructor.prototype, protoProps); if (staticProps) Curve_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -57510,7 +56608,7 @@ function Area_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function Area_createClass(Constructor, protoProps, staticProps) { if (protoProps) Area_defineProperties(Constructor.prototype, protoProps); if (staticProps) Area_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -58669,7 +57767,7 @@ function ComputeBoundingBox_defineProperties(target, props) { for (var i = 0; i 
 
 function ComputeBoundingBox_createClass(Constructor, protoProps, staticProps) { if (protoProps) ComputeBoundingBox_defineProperties(Constructor.prototype, protoProps); if (staticProps) ComputeBoundingBox_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -58886,7 +57984,7 @@ function Env_defineProperties(target, props) { for (var i = 0; i < props.length;
 
 function Env_createClass(Constructor, protoProps, staticProps) { if (protoProps) Env_defineProperties(Constructor.prototype, protoProps); if (staticProps) Env_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59059,7 +58157,7 @@ function Event_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function Event_createClass(Constructor, protoProps, staticProps) { if (protoProps) Event_defineProperties(Constructor.prototype, protoProps); if (staticProps) Event_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59143,7 +58241,7 @@ function Http_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function Http_createClass(Constructor, protoProps, staticProps) { if (protoProps) Http_defineProperties(Constructor.prototype, protoProps); if (staticProps) Http_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59211,7 +58309,7 @@ function () {
 // CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Config.js
 function Config_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var Config = function Config() {
@@ -59288,7 +58386,7 @@ function Log_defineProperties(target, props) { for (var i = 0; i < props.length;
 
 function Log_createClass(Constructor, protoProps, staticProps) { if (protoProps) Log_defineProperties(Constructor.prototype, protoProps); if (staticProps) Log_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59349,7 +58447,7 @@ function Math_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function Math_createClass(Constructor, protoProps, staticProps) { if (protoProps) Math_defineProperties(Constructor.prototype, protoProps); if (staticProps) Math_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59440,7 +58538,7 @@ function Matrix_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Matrix_createClass(Constructor, protoProps, staticProps) { if (protoProps) Matrix_defineProperties(Constructor.prototype, protoProps); if (staticProps) Matrix_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59673,7 +58771,7 @@ function SUtil_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function SUtil_createClass(Constructor, protoProps, staticProps) { if (protoProps) SUtil_defineProperties(Constructor.prototype, protoProps); if (staticProps) SUtil_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -59927,7 +59025,7 @@ function Transformable_defineProperties(target, props) { for (var i = 0; i < pro
 
 function Transformable_createClass(Constructor, protoProps, staticProps) { if (protoProps) Transformable_defineProperties(Constructor.prototype, protoProps); if (staticProps) Transformable_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -60220,7 +59318,7 @@ function Shape_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Shape_setPrototypeOf(o, p) { Shape_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Shape_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61172,7 +60270,7 @@ function SmicPoint_inherits(subClass, superClass) { if (typeof superClass !== "f
 
 function SmicPoint_setPrototypeOf(o, p) { SmicPoint_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicPoint_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61355,7 +60453,7 @@ function SmicText_inherits(subClass, superClass) { if (typeof superClass !== "fu
 
 function SmicText_setPrototypeOf(o, p) { SmicText_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicText_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61917,7 +61015,7 @@ function SmicCircle_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function SmicCircle_setPrototypeOf(o, p) { SmicCircle_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicCircle_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -62111,7 +61209,7 @@ function SmicPolygon_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function SmicPolygon_setPrototypeOf(o, p) { SmicPolygon_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicPolygon_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -62616,7 +61714,7 @@ function SmicBrokenLine_inherits(subClass, superClass) { if (typeof superClass !
 
 function SmicBrokenLine_setPrototypeOf(o, p) { SmicBrokenLine_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicBrokenLine_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -62935,7 +62033,7 @@ function SmicImage_inherits(subClass, superClass) { if (typeof superClass !== "f
 
 function SmicImage_setPrototypeOf(o, p) { SmicImage_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicImage_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -63224,7 +62322,7 @@ function SmicRectangle_inherits(subClass, superClass) { if (typeof superClass !=
 
 function SmicRectangle_setPrototypeOf(o, p) { SmicRectangle_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicRectangle_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -63507,7 +62605,7 @@ function SmicSector_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function SmicSector_setPrototypeOf(o, p) { SmicSector_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicSector_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -63734,7 +62832,7 @@ function ShapeFactory_defineProperties(target, props) { for (var i = 0; i < prop
 
 function ShapeFactory_createClass(Constructor, protoProps, staticProps) { if (protoProps) ShapeFactory_defineProperties(Constructor.prototype, protoProps); if (staticProps) ShapeFactory_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -64619,7 +63717,7 @@ function feature_Theme_defineProperties(target, props) { for (var i = 0; i < pro
 
 function feature_Theme_createClass(Constructor, protoProps, staticProps) { if (protoProps) feature_Theme_defineProperties(Constructor.prototype, protoProps); if (staticProps) feature_Theme_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -64768,7 +63866,7 @@ function Graph_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Graph_setPrototypeOf(o, p) { Graph_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Graph_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -65326,7 +64424,7 @@ function Bar_inherits(subClass, superClass) { if (typeof superClass !== "functio
 
 function Bar_setPrototypeOf(o, p) { Bar_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Bar_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -65729,7 +64827,7 @@ function Bar3D_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Bar3D_setPrototypeOf(o, p) { Bar3D_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Bar3D_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66194,7 +65292,7 @@ function RankSymbol_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function RankSymbol_setPrototypeOf(o, p) { RankSymbol_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return RankSymbol_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66374,7 +65472,7 @@ function overlay_Circle_inherits(subClass, superClass) { if (typeof superClass !
 
 function overlay_Circle_setPrototypeOf(o, p) { overlay_Circle_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return overlay_Circle_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66566,7 +65664,7 @@ function overlay_Line_inherits(subClass, superClass) { if (typeof superClass !==
 
 function overlay_Line_setPrototypeOf(o, p) { overlay_Line_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return overlay_Line_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66916,7 +66014,7 @@ function Pie_inherits(subClass, superClass) { if (typeof superClass !== "functio
 
 function Pie_setPrototypeOf(o, p) { Pie_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Pie_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67221,7 +66319,7 @@ function overlay_Point_inherits(subClass, superClass) { if (typeof superClass !=
 
 function overlay_Point_setPrototypeOf(o, p) { overlay_Point_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return overlay_Point_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67540,7 +66638,7 @@ function Ring_inherits(subClass, superClass) { if (typeof superClass !== "functi
 
 function Ring_setPrototypeOf(o, p) { Ring_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Ring_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67845,7 +66943,7 @@ function ThemeVector_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function ThemeVector_setPrototypeOf(o, p) { ThemeVector_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ThemeVector_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -68489,7 +67587,7 @@ function (_Theme) {
 }(feature_Theme_Theme);
 SuperMap.Feature.Theme.ThemeVector = ThemeVector_ThemeVector;
 // CONCATENATED MODULE: ./src/common/overlay/feature/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -68537,7 +67635,7 @@ function Group_inherits(subClass, superClass) { if (typeof superClass !== "funct
 
 function Group_setPrototypeOf(o, p) { Group_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Group_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -68837,7 +67935,7 @@ function Storage_defineProperties(target, props) { for (var i = 0; i < props.len
 
 function Storage_createClass(Constructor, protoProps, staticProps) { if (protoProps) Storage_defineProperties(Constructor.prototype, protoProps); if (staticProps) Storage_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -69401,7 +68499,7 @@ function Painter_defineProperties(target, props) { for (var i = 0; i < props.len
 
 function Painter_createClass(Constructor, protoProps, staticProps) { if (protoProps) Painter_defineProperties(Constructor.prototype, protoProps); if (staticProps) Painter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -70567,7 +69665,7 @@ function Handler_inherits(subClass, superClass) { if (typeof superClass !== "fun
 
 function Handler_setPrototypeOf(o, p) { Handler_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Handler_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -71697,7 +70795,7 @@ function Easing_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Easing_createClass(Constructor, protoProps, staticProps) { if (protoProps) Easing_defineProperties(Constructor.prototype, protoProps); if (staticProps) Easing_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -72233,7 +71331,7 @@ function Clip_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function Clip_createClass(Constructor, protoProps, staticProps) { if (protoProps) Clip_defineProperties(Constructor.prototype, protoProps); if (staticProps) Clip_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -72367,7 +71465,7 @@ function Animation_inherits(subClass, superClass) { if (typeof superClass !== "f
 
 function Animation_setPrototypeOf(o, p) { Animation_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Animation_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -73084,7 +72182,7 @@ function Render_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Render_createClass(Constructor, protoProps, staticProps) { if (protoProps) Render_defineProperties(Constructor.prototype, protoProps); if (staticProps) Render_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -73717,7 +72815,7 @@ function LevelRenderer_defineProperties(target, props) { for (var i = 0; i < pro
 
 function LevelRenderer_createClass(Constructor, protoProps, staticProps) { if (protoProps) LevelRenderer_defineProperties(Constructor.prototype, protoProps); if (staticProps) LevelRenderer_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -73876,7 +72974,7 @@ function SmicEllipse_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function SmicEllipse_setPrototypeOf(o, p) { SmicEllipse_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicEllipse_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74075,7 +73173,7 @@ function SmicIsogon_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function SmicIsogon_setPrototypeOf(o, p) { SmicIsogon_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicIsogon_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74277,7 +73375,7 @@ function SmicRing_inherits(subClass, superClass) { if (typeof superClass !== "fu
 
 function SmicRing_setPrototypeOf(o, p) { SmicRing_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicRing_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74457,7 +73555,7 @@ function SmicStar_inherits(subClass, superClass) { if (typeof superClass !== "fu
 
 function SmicStar_setPrototypeOf(o, p) { SmicStar_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SmicStar_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74661,7 +73759,7 @@ function (_Shape) {
   return SmicStar;
 }(Shape_Shape);
 // CONCATENATED MODULE: ./src/common/overlay/levelRenderer/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74741,7 +73839,7 @@ function (_Shape) {
 
 
 // CONCATENATED MODULE: ./src/common/overlay/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74769,7 +73867,7 @@ function (_Shape) {
 
 
 // CONCATENATED MODULE: ./src/common/components/CommonTypes.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74794,7 +73892,7 @@ function FileModel_defineProperties(target, props) { for (var i = 0; i < props.l
 
 function FileModel_createClass(Constructor, protoProps, staticProps) { if (protoProps) FileModel_defineProperties(Constructor.prototype, protoProps); if (staticProps) FileModel_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74851,7 +73949,7 @@ function MessageBox_defineProperties(target, props) { for (var i = 0; i < props.
 
 function MessageBox_createClass(Constructor, protoProps, staticProps) { if (protoProps) MessageBox_defineProperties(Constructor.prototype, protoProps); if (staticProps) MessageBox_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74946,11 +74044,11 @@ function () {
 }();
 SuperMap.Components.MessageBox = MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
-var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(7);
+var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(6);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -75069,7 +74167,7 @@ var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(3);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -75309,7 +74407,7 @@ function ChartModel_defineProperties(target, props) { for (var i = 0; i < props.
 
 function ChartModel_createClass(Constructor, protoProps, staticProps) { if (protoProps) ChartModel_defineProperties(Constructor.prototype, protoProps); if (staticProps) ChartModel_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -75916,7 +75014,7 @@ function ChartViewModel_defineProperties(target, props) { for (var i = 0; i < pr
 
 function ChartViewModel_createClass(Constructor, protoProps, staticProps) { if (protoProps) ChartViewModel_defineProperties(Constructor.prototype, protoProps); if (staticProps) ChartViewModel_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -76653,7 +75751,7 @@ function ChartView_defineProperties(target, props) { for (var i = 0; i < props.l
 
 function ChartView_createClass(Constructor, protoProps, staticProps) { if (protoProps) ChartView_defineProperties(Constructor.prototype, protoProps); if (staticProps) ChartView_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -76849,7 +75947,7 @@ function TemplateBase_defineProperties(target, props) { for (var i = 0; i < prop
 
 function TemplateBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) TemplateBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) TemplateBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -76953,7 +76051,7 @@ function CommonContainer_inherits(subClass, superClass) { if (typeof superClass 
 
 function CommonContainer_setPrototypeOf(o, p) { CommonContainer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return CommonContainer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77056,7 +76154,7 @@ function Select_inherits(subClass, superClass) { if (typeof superClass !== "func
 
 function Select_setPrototypeOf(o, p) { Select_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Select_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77245,7 +76343,7 @@ function DropDownBox_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function DropDownBox_setPrototypeOf(o, p) { DropDownBox_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DropDownBox_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77492,7 +76590,7 @@ function PopContainer_inherits(subClass, superClass) { if (typeof superClass !==
 
 function PopContainer_setPrototypeOf(o, p) { PopContainer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return PopContainer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77591,7 +76689,7 @@ function AttributesPopContainer_inherits(subClass, superClass) { if (typeof supe
 
 function AttributesPopContainer_setPrototypeOf(o, p) { AttributesPopContainer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AttributesPopContainer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77683,7 +76781,7 @@ function IndexTabsPageContainer_inherits(subClass, superClass) { if (typeof supe
 
 function IndexTabsPageContainer_setPrototypeOf(o, p) { IndexTabsPageContainer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return IndexTabsPageContainer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77837,7 +76935,7 @@ function CityTabsPage_inherits(subClass, superClass) { if (typeof superClass !==
 
 function CityTabsPage_setPrototypeOf(o, p) { CityTabsPage_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return CityTabsPage_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78007,7 +77105,7 @@ function NavTabsPage_inherits(subClass, superClass) { if (typeof superClass !== 
 
 function NavTabsPage_setPrototypeOf(o, p) { NavTabsPage_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return NavTabsPage_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78179,7 +77277,7 @@ function PaginationContainer_inherits(subClass, superClass) { if (typeof superCl
 
 function PaginationContainer_setPrototypeOf(o, p) { PaginationContainer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return PaginationContainer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78541,7 +77639,7 @@ function (_TemplateBase) {
 }(TemplateBase);
 SuperMap.Components.PaginationContainer = PaginationContainer;
 // CONCATENATED MODULE: ./src/common/components/util/Util.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78569,7 +77667,7 @@ var ComponentsUtil = {
   }
 };
 // CONCATENATED MODULE: ./src/common/components/util/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78577,7 +77675,7 @@ var ComponentsUtil = {
 
 
 // CONCATENATED MODULE: ./src/common/components/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 //数据
@@ -78617,7 +77715,7 @@ var ComponentsUtil = {
 
 
 // CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78736,7 +77834,7 @@ var en = {
 
 SuperMap.Lang['en-US'] = en;
 // CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
-/* CCopyright© 2000 - 2019 SuperMapSoftware Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78854,7 +77952,7 @@ var zh = {
 
 SuperMap.Lang["zh-CN"] = zh;
 // CONCATENATED MODULE: ./src/common/lang/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78864,7 +77962,7 @@ SuperMap.Lang["zh-CN"] = zh;
 
 
 // CONCATENATED MODULE: ./src/common/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78922,7 +78020,7 @@ function MapVRenderer_inherits(subClass, superClass) { if (typeof superClass !==
 
 function MapVRenderer_setPrototypeOf(o, p) { MapVRenderer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapVRenderer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -79365,7 +78463,7 @@ function MapVLayer_inherits(subClass, superClass) { if (typeof superClass !== "f
 
 function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapVLayer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -79641,12 +78739,12 @@ function (_SuperMap$Layer) {
 }(SuperMap_SuperMap.Layer);
 SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 // CONCATENATED MODULE: ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -79670,7 +78768,7 @@ function services_AddressMatchService_inherits(subClass, superClass) { if (typeo
 
 function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_AddressMatchService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -79776,7 +78874,7 @@ function ProcessingService_inherits(subClass, superClass) { if (typeof superClas
 
 function ProcessingService_setPrototypeOf(o, p) { ProcessingService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80798,7 +79896,7 @@ function (_CommonServiceBase) {
 }(CommonServiceBase_CommonServiceBase);
 SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 // CONCATENATED MODULE: ./src/classic/services/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80823,7 +79921,7 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 /* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
 /* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap_SuperMap; });
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80846,4 +79944,3 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=iclient-classic.js.map

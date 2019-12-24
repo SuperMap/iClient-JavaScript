@@ -1,102 +1,108 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title data-i18n="resources.title_swipeBetweenMaps"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="compare" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: #fff;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-        }
-        body * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        .map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-<div id='before' class='map'></div>
-<div id='after' class='map'></div>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        chinaUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
-        chinaDarkUrl = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}',
-        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-    var beforeMap = new mapboxgl.Map({
-        container: 'before',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [chinaUrl],
-                    "tileSize": 256,
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_swipeBetweenMaps"></title>
+        <script type="text/javascript" src="../js/include-web.js"></script>
+        <script type="text/javascript" include="compare" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+            }
+            body * {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            .map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="before" class="map"></div>
+            <div id="after" class="map"></div>
+            <div class="controls"></div>
+        </div>
+        <script type="text/javascript">
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
+                chinaUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
+                chinaDarkUrl =
+                    host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}',
+                attribution =
+                    "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                    " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                    " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+            var beforeMap = new mapboxgl.Map({
+                container: 'before',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            attribution: attribution,
+                            type: 'raster',
+                            tiles: [chinaUrl],
+                            tileSize: 256
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'before',
+                            type: 'raster',
+                            source: 'raster-tiles',
+                            minzoom: 0,
+                            maxzoom: 22
+                        }
+                    ]
                 },
-            },
-            "layers": [{
-                "id": "before",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 22
-            }],
-        },
-        center: [0, 0],
-        zoom: 0
-    });
+                center: [0, 0],
+                zoom: 0
+            });
 
-    beforeMap.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
-    beforeMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    var afterMap = new mapboxgl.Map({
-        container: 'after',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "type": "raster",
-                    "tiles": [chinaDarkUrl],
-                    "tileSize": 256,
+            beforeMap.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+            beforeMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+            var afterMap = new mapboxgl.Map({
+                container: 'after',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            type: 'raster',
+                            tiles: [chinaDarkUrl],
+                            tileSize: 256
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'after',
+                            type: 'raster',
+                            source: 'raster-tiles',
+                            minzoom: 0,
+                            maxzoom: 22
+                        }
+                    ]
                 },
-            },
-            "layers": [{
-                "id": "after",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 22
-            }],
-        },
-        center: [0, 0],
-        zoom: 0
-    });
+                center: [0, 0],
+                zoom: 0
+            });
 
-    //mapbox 卷帘（对比）控件
-    var map = new mapboxgl.Compare(beforeMap, afterMap, {
-        // Set this to enable comparing two maps by mouse movement:
-        // mousemove: true
-    });
-</script>
-</body>
+            //mapbox 卷帘（对比）控件, mapbox-gl-compare v0.3.0版本，新增container属性
+            var map = new mapboxgl.Compare(beforeMap, afterMap, '#wrapper');
+        </script>
+    </body>
 </html>

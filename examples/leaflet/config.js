@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * Leaflet 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -493,59 +493,6 @@ var exampleConfig = {
                     thumbnail: "l_iPortalQueryResources.png",
                     fileName: "iPortalQueryMyResources"
                 }]
-            },
-            "ip_querymaps": {
-                name: "地图列表",
-                name_en: "Web map list",
-                content: [{
-                    name: "地图列表",
-                    name_en: "web map list",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMaps"
-                }]
-            },
-            "ip_queryservices": {
-                name: "服务列表",
-                name_en: "Web service list",
-                content: [{
-                    name: "服务列表",
-                    name_en: "web service list",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryServices"
-                }]
-            },
-            "ip_querymapdashboards": {
-                name: "大屏列表",
-                name_en: "Web mapdashboard list",
-                content: [{
-                    name: "大屏列表",
-                    name_en: "web mapdashboard list",
-                    version: "10.0.1",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMapdashboards"
-                }]
-            },
-            "ip_queryscenes": {
-                name: "场景列表",
-                name_en: "Web scene list",
-                content: [{
-                    name: "场景列表",
-                    name_en: "web scene list",
-                    version: "10.0.1",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryScenes"
-                }]
-            },
-            "ip_queryinsights": {
-                name: "洞察列表",
-                name_en: "Web insight list",
-                content: [{
-                    name: "洞察列表",
-                    name_en: "web insight list",
-                    version: "10.0.1",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryInsights"
-                }]
             }
         }
     },
@@ -999,12 +946,10 @@ var exampleConfig = {
             pixi: {
                 name: 'Pixi',
                 name_en: 'Pixi',
-                version: "10.0.1",
                 content: [
                     {
                         name: '纽约出租车上车点分布图（140万点数据绘制）',
                         name_en: 'Use Pixi to draw 1.4 millions New York Taxi Points',
-                        version: "10.0.1",
                         thumbnail: 'l_pixiOverlay_taxi.png',
                         fileName: 'l_pixiOverlay_taxi'
                     }

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -181,7 +181,7 @@
         }
 
         if (!popup) {
-            popup = new mapboxgl.Popup();
+            popup = new mapboxgl.Popup({maxWidth: 'none'});
         }
 
         var statisticsData = getStatisticsData();

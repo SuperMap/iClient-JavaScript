@@ -1,3 +1,6 @@
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(include-leaflet\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -50,8 +53,8 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         // 在线
         if (!inArray(excludes, 'leaflet')) {
-            inputCSS("https://cdn.bootcss.com/leaflet/1.5.1/leaflet.css");
-            inputScript("https://cdn.bootcss.com/leaflet/1.5.1/leaflet.js");
+            inputCSS('https://cdn.bootcss.com/leaflet/1.6.0/leaflet.css');
+            inputScript('https://cdn.bootcss.com/leaflet/1.6.0/leaflet.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
           inputScript("https://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");
@@ -65,35 +68,35 @@
             inputCSS("https://cdn.bootcss.com/leaflet.draw/1.0.4/leaflet.draw.css");
             inputScript("https://cdn.bootcss.com/leaflet.draw/1.0.4/leaflet.draw.js");
         }
-        if (inArray(includes, 'leaflet.pm')) {
-            inputCSS("https://cdn.bootcss.com/leaflet.pm/2.2.0/leaflet.pm.css");
-            inputScript("https://cdn.bootcss.com/leaflet.pm/2.2.0/leaflet.pm.min.js");
+        if (inArray(includes, 'leaflet-geoman')) {
+            inputCSS('https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css');
+            inputScript('https://unpkg.com/@geoman-io/leaflet-geoman-free@2.3.0/dist/leaflet-geoman.min.js');
         }
         if (inArray(includes, 'leaflet.miniMap')) {
             inputCSS("https://cdn.bootcss.com/leaflet-minimap/3.6.1/Control.MiniMap.min.css");
             inputScript("https://cdn.bootcss.com/leaflet-minimap/3.6.1/Control.MiniMap.min.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("https://mapv.baidu.com/build/mapv.min.js");
+            inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.42/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
             inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'elasticsearch')) {
-            inputScript("https://cdn.bootcss.com/elasticsearch/16.3.0/elasticsearch.js");
+            inputScript('https://cdn.bootcss.com/elasticsearch/16.5.0/elasticsearch.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript("https://cdn.bootcss.com/xlsx/0.15.1/xlsx.core.min.js");
+            inputScript('https://cdn.jsdelivr.net/npm/xlsx@0.15.4/dist/xlsx.core.min.js');
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
             inputScript("https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js");
         }
         if (inArray(includes, 'd3')) {
-          inputScript("https://iclient.supermap.io/web/libs/d3/5.12.0/d3.js");
+            inputScript('https://cdnjs.cloudflare.com/ajax/libs/d3/5.14.2/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
           inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
@@ -142,7 +145,7 @@
           inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
         }
         if (inArray(includes, 'echarts-vue')) {
-          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+          inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
           inputScript("https://cdn.jsdelivr.net/npm/vue-echarts@4.0.4/dist/vue-echarts.min.js");
           inputScript("https://iclient.supermap.io/web/libs/echarts-liquidfill/echarts-liquidfill.min.js");
           inputScript("https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js");
