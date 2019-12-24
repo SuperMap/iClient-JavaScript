@@ -89,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -134,7 +134,7 @@ module.exports = g;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(21)
+var utils = __webpack_require__(20)
 
 var AND = '&&'
   , OR = '||'
@@ -571,18 +571,12 @@ module.exports = function(){try{return turf}catch(e){return {}}}();
 
 /***/ }),
 /* 8 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"a\":\"2.5.0\"}");
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileFeature = __webpack_require__(10);
+var VectorTileFeature = __webpack_require__(9);
 
 module.exports = VectorTileLayer;
 
@@ -644,13 +638,13 @@ VectorTileLayer.prototype.feature = function(i) {
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(24);
+var Point = __webpack_require__(23);
 
 module.exports = VectorTileFeature;
 
@@ -701,7 +695,7 @@ VectorTileFeature.prototype.loadGeometry = function() {
         line;
 
     while (pbf.pos < end) {
-        if (!length) {
+        if (length <= 0) {
             var cmdLen = pbf.readVarint();
             cmd = cmdLen & 0x7;
             length = cmdLen >> 3;
@@ -752,7 +746,7 @@ VectorTileFeature.prototype.bbox = function() {
         y2 = -Infinity;
 
     while (pbf.pos < end) {
-        if (!length) {
+        if (length <= 0) {
             var cmdLen = pbf.readVarint();
             cmd = cmdLen & 0x7;
             length = cmdLen >> 3;
@@ -884,13 +878,13 @@ function signedArea(ring) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -1606,7 +1600,7 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,10 +1608,10 @@ module.exports = toPairs;
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(22);
+var ieee754 = __webpack_require__(21);
 
 function Pbf(buf) {
-    this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
+    this.buf = ArrayBuffer.isView && ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
     this.pos = 0;
     this.type = 0;
     this.length = this.buf.length;
@@ -1630,6 +1624,11 @@ Pbf.Fixed32 = 5; // 32-bit: float, fixed32, sfixed32
 
 var SHIFT_LEFT_32 = (1 << 16) * (1 << 16),
     SHIFT_RIGHT_32 = 1 / SHIFT_LEFT_32;
+
+// Threshold chosen based on both benchmarking and knowledge about browser string
+// data structures (which currently switch structure types at 12 bytes or more)
+var TEXT_DECODER_MIN_LENGTH = 12;
+var utf8TextDecoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf8');
 
 Pbf.prototype = {
 
@@ -1724,10 +1723,16 @@ Pbf.prototype = {
     },
 
     readString: function() {
-        var end = this.readVarint() + this.pos,
-            str = readUtf8(this.buf, this.pos, end);
+        var end = this.readVarint() + this.pos;
+        var pos = this.pos;
         this.pos = end;
-        return str;
+
+        if (end - pos >= TEXT_DECODER_MIN_LENGTH && utf8TextDecoder) {
+            // longer strings are fast with the built-in browser TextDecoder API
+            return readUtf8TextDecoder(this.buf, pos, end);
+        }
+        // short strings are fast with our custom implementation
+        return readUtf8(this.buf, pos, end);
     },
 
     readBytes: function() {
@@ -1740,54 +1745,63 @@ Pbf.prototype = {
     // verbose for performance reasons; doesn't affect gzipped size
 
     readPackedVarint: function(arr, isSigned) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readVarint(isSigned));
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readVarint(isSigned));
         return arr;
     },
     readPackedSVarint: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readSVarint());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readSVarint());
         return arr;
     },
     readPackedBoolean: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readBoolean());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readBoolean());
         return arr;
     },
     readPackedFloat: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readFloat());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readFloat());
         return arr;
     },
     readPackedDouble: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readDouble());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readDouble());
         return arr;
     },
     readPackedFixed32: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readFixed32());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readFixed32());
         return arr;
     },
     readPackedSFixed32: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readSFixed32());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readSFixed32());
         return arr;
     },
     readPackedFixed64: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readFixed64());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readFixed64());
         return arr;
     },
     readPackedSFixed64: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readSFixed64());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readSFixed64());
@@ -1937,15 +1951,15 @@ Pbf.prototype = {
         this.writeRawMessage(fn, obj);
     },
 
-    writePackedVarint:   function(tag, arr) { this.writeMessage(tag, writePackedVarint, arr);   },
-    writePackedSVarint:  function(tag, arr) { this.writeMessage(tag, writePackedSVarint, arr);  },
-    writePackedBoolean:  function(tag, arr) { this.writeMessage(tag, writePackedBoolean, arr);  },
-    writePackedFloat:    function(tag, arr) { this.writeMessage(tag, writePackedFloat, arr);    },
-    writePackedDouble:   function(tag, arr) { this.writeMessage(tag, writePackedDouble, arr);   },
-    writePackedFixed32:  function(tag, arr) { this.writeMessage(tag, writePackedFixed32, arr);  },
-    writePackedSFixed32: function(tag, arr) { this.writeMessage(tag, writePackedSFixed32, arr); },
-    writePackedFixed64:  function(tag, arr) { this.writeMessage(tag, writePackedFixed64, arr);  },
-    writePackedSFixed64: function(tag, arr) { this.writeMessage(tag, writePackedSFixed64, arr); },
+    writePackedVarint:   function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedVarint, arr);   },
+    writePackedSVarint:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedSVarint, arr);  },
+    writePackedBoolean:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedBoolean, arr);  },
+    writePackedFloat:    function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedFloat, arr);    },
+    writePackedDouble:   function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedDouble, arr);   },
+    writePackedFixed32:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedFixed32, arr);  },
+    writePackedSFixed32: function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedSFixed32, arr); },
+    writePackedFixed64:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedFixed64, arr);  },
+    writePackedSFixed64: function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedSFixed64, arr); },
 
     writeBytesField: function(tag, buffer) {
         this.writeTag(tag, Pbf.Bytes);
@@ -2070,7 +2084,7 @@ function makeRoomForExtraLength(startPos, len, pbf) {
     var extraLen =
         len <= 0x3fff ? 1 :
         len <= 0x1fffff ? 2 :
-        len <= 0xfffffff ? 3 : Math.ceil(Math.log(len) / (Math.LN2 * 7));
+        len <= 0xfffffff ? 3 : Math.floor(Math.log(len) / (Math.LN2 * 7));
 
     // if 1 byte isn't enough for encoding message length, shift the data to the right
     pbf.realloc(extraLen);
@@ -2176,6 +2190,10 @@ function readUtf8(buf, pos, end) {
     return str;
 }
 
+function readUtf8TextDecoder(buf, pos, end) {
+    return utf8TextDecoder.decode(buf.subarray(pos, end));
+}
+
 function writeUtf8(buf, str, pos) {
     for (var i = 0, c, lead; i < str.length; i++) {
         c = str.charCodeAt(i); // code point
@@ -2231,24 +2249,24 @@ function writeUtf8(buf, str, pos) {
 
 
 /***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports.VectorTile = __webpack_require__(22);
+module.exports.VectorTileFeature = __webpack_require__(9);
+module.exports.VectorTileLayer = __webpack_require__(8);
+
+
+/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports.VectorTile = __webpack_require__(23);
-module.exports.VectorTileFeature = __webpack_require__(10);
-module.exports.VectorTileLayer = __webpack_require__(9);
+__webpack_require__(24);
+module.exports = __webpack_require__(25);
 
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(25);
-module.exports = __webpack_require__(26);
-
-
-/***/ }),
-/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate, global) {(function (global, factory) {
@@ -2552,10 +2570,10 @@ if (!('Promise' in globalNS)) {
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17).setImmediate, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(16).setImmediate, __webpack_require__(2)))
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -2611,7 +2629,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(18);
+__webpack_require__(17);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -2625,7 +2643,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -2815,10 +2833,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(18)))
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -3008,7 +3026,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(self) {
@@ -3432,7 +3450,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports) {
 
 function getObjectType(obj) {
@@ -3464,7 +3482,7 @@ module.exports = {
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -3554,13 +3572,13 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileLayer = __webpack_require__(9);
+var VectorTileLayer = __webpack_require__(8);
 
 module.exports = VectorTile;
 
@@ -3578,7 +3596,7 @@ function readTile(tag, layers, pbf) {
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3897,7 +3915,7 @@ Point.convert = function (a) {
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5110,6 +5128,139 @@ var RasterFunctionType = SuperMap.RasterFunctionType = {
     NDVI: "NDVI",
     /** 阴影面分析。 */
     HILLSHADE: "HILLSHADE"
+}
+
+
+/**
+ * @enum ResourceType
+ * @memberOf SuperMap
+ * @description iportal资源类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var ResourceType = SuperMap.ResourceType = {
+    /** 地图。 */
+    MAP: "MAP",
+    /** 服务。 */
+    SERVICE: "SERVICE",
+    /** 场景。 */
+    SCENE: "SCENE",
+    /** 数据。 */
+    DATA: "DATA",
+    /** 洞察。 */
+    INSIGHTS_WORKSPACE: "INSIGHTS_WORKSPACE",
+    /** 大屏。 */
+    MAP_DASHBOARD: "MAP_DASHBOARD"
+}
+
+
+/**
+ * @enum OrderBy
+ * @memberOf SuperMap
+ * @description iportal资源排序字段。
+ * @version 10.0.1
+ * @type {string}
+ */
+var OrderBy = SuperMap.OrderBy = {
+    /** 按更新时间排序 */
+    UPDATETIME: "UPDATETIME",
+    /** 按热度(可能是访问量、下载量)排序 */
+    HEATLEVEL: "HEATLEVEL",
+    /** 按相关性排序 */
+    RELEVANCE: "RELEVANCE"
+}
+
+
+/**
+ * @enum OrderType
+ * @memberOf SuperMap
+ * @description iportal资源升序还是降序过滤
+ * @version 10.0.1
+ * @type {string}
+ */
+var OrderType = SuperMap.OrderType = {
+    /** 升序 */
+    ASC: "ASC",
+    /** 降序 */
+    DESC: "DESC"
+}
+
+
+/**
+ * @enum SearchType
+ * @memberOf SuperMap
+ * @description iportal资源查询的范围进行过滤
+ * @version 10.0.1
+ * @type {string}
+ */
+var SearchType = SuperMap.SearchType = {
+    /** 公开资源。 */
+    PUBLIC: "PUBLIC",
+    /** 我的资源。 */
+    MY_RES: "MY_RES",
+    /** 我的群组资源。 */
+    MYGROUP_RES: "MYGROUP_RES",
+    /** 我的部门资源。 */
+    MYDEPARTMENT_RES: "MYDEPARTMENT_RES",
+    /** 分享给我的资源。 */
+    SHARETOME_RES: "SHARETOME_RES"
+}
+
+
+/**
+ * @enum AggregationTypes
+ * @memberOf SuperMap
+ * @description iportal资源聚合查询的类型
+ * @version 10.0.1
+ * @type {string}
+ */
+var AggregationTypes = SuperMap.AggregationTypes = {
+    /** 标签 */
+    TAG: "TAG",
+    /** 资源类型 */
+    TYPE: "TYPE"
+}
+
+
+/**
+ * @enum PermissionType
+ * @memberOf SuperMap
+ * @description iportal资源权限类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var PermissionType = SuperMap.PermissionType = {
+    /** 可检索 */
+    SEARCH:"SEARCH",
+    /** 可查看 */
+    READ: "READ",
+    /** 可编辑 */
+    READWRITE: "READWRITE",
+    /** 可删除 */
+    DELETE: "DELETE",
+    /** 可下载，包括可读、可检索 */
+    DOWNLOAD:"DOWNLOAD"
+}
+
+
+/**
+ * @enum EntityType
+ * @memberOf SuperMap
+ * @description iportal资源实体类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var EntityType = SuperMap.EntityType = {
+    /** 部门 */
+    DEPARTMENT: "DEPARTMENT",
+    /** 用户组 */
+    GROUP: "GROUP",
+    /** 群组 */
+    IPORTALGROUP: "IPORTALGROUP",
+    /** 角色 */
+    ROLE: "ROLE",
+    /** 用户 */
+    USER: "USER"
 }
 
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
@@ -14442,10 +14593,10 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(16);
+var polyfill = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(20);
+var fetch = __webpack_require__(19);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(4);
@@ -15456,172 +15607,6 @@ SuperMap.iManager = iManager_IManager;
 
 
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalServicesQueryParam.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalServicesQueryParam
- * @classdesc iPortal 服务查询参数。
- * @category iPortal/Online
- * @param {Object} params - 服务参数。
- *
- */
-class iPortalServicesQueryParam_IPortalServicesQueryParam {
-
-
-    constructor(params) {
-        params = params || {};
-        this.tags = [];
-        this.userNames = '';
-        this.types = [];
-        this.checkStatus = '';
-        this.offline = false;
-        this.orderBy = '';
-        this.orderType = '';
-        this.keywords = [];
-        this.currentPage = 0;
-        this.pageSize = 0;
-        this.isBatch = false;
-        this.dirIds = [];
-        this.isNotInDir = false;
-        this.filterFields = [];
-        this.authorizedOnly = false;
-        Util.extend(this, params);
-    }
-
-}
-
-SuperMap.iPortalServicesQueryParam = iPortalServicesQueryParam_IPortalServicesQueryParam;
-
-
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapsQueryParam.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalMapsQueryParam
- * @classdesc iPortal 地图资源查询参数。
- * @category iPortal/Online
- * @param {Object} params - iPortal 地图资源查询具体参数。
- *
- */
-class iPortalMapsQueryParam_IPortalMapsQueryParam {
-
-    constructor(params) {
-        params = params || {};
-        this.userNames = null;
-        this.tags = null;
-        this.suggest = false;
-        this.sourceTypes = null;
-        this.keywords = null;
-        this.epsgCode = null;
-        this.orderBy = null;
-        this.currentPage = null;
-        this.pageSize = null;
-        this.dirIds = null;
-        this.isNotInDir = false;
-        this.updateStart = null;
-        this.updateEnd = null;
-        this.visitStart = null;
-        this.visitEnd = null;
-        this.filterFields = null;
-        Util.extend(this, params);
-    }
-
-}
-
-SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
-
-
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsightsQueryParam.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- 
- 
- /**
-  * @class SuperMap.iPortalInsightsQueryParam
-  * @classdesc iPortal 地图资源查询参数。
-  * @category iPortal/Online
-  * @param {Object} params - iPortal 地图资源查询具体参数。
-  *
-  */
- class iPortalInsightsQueryParam_IPortalInsightsQueryParam {
- 
-    constructor(params) {
-        params = params || {};
-        this.createEnd = null;
-        this.createStart = null;
-        this.filterFields = null;
-        this.orderBy = null;
-        this.tags = null;
-        this.userNames = null;
-        this.currentPage = null;
-        this.keywords = null;
-        this.pageSize = null;
-        this.currentUser = null;
-        this.departmentIds = null;
-        this.dirIds = null;
-        this.groupIds = null;
-        this.isNotInDir = false;
-        this.permissionType = null;
-        this.resourceIds = null;
-        this.returnSubDir = null;
-        this.searchScope = null;
-        Util.extend(this, params);
-    }
- 
- }
- 
- SuperMap.iPortalInsightsQueryParam = iPortalInsightsQueryParam_IPortalInsightsQueryParam;
- 
- 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalScenesQueryParam.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- 
- 
- /**
-  * @class SuperMap.iPortalScenesQueryParam
-  * @classdesc iPortal 地图资源查询参数。
-  * @category iPortal/Online
-  * @param {Object} params - iPortal 地图资源查询具体参数。
-  *
-  */
- class iPortalScenesQueryParam_IPortalScenesQueryParam {
- 
-     constructor(params) {
-         params = params || {};
-         this.tags = null;
-         this.userNames = null;
-         this.orderBy = null;
-         this.orderType = null;
-         this.keywords = null;
-         this.currentPage = null;
-         this.pageSize = null;
-         this.dirIds = null;
-         this.isNotInDir = false;
-         this.filterFields = null;
-         this.createStart = null;
-         this.createEnd = null;
-         Util.extend(this, params);
-     }
- 
- }
- 
- SuperMap.iPortalScenesQueryParam = iPortalScenesQueryParam_IPortalScenesQueryParam;
- 
- 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -15731,500 +15716,6 @@ class iPortalServiceBase_IPortalServiceBase {
 
 SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SuperMap.iPortalService
- * @classdesc iPortal 服务。
- * @category iPortal/Online
- * @extends {SuperMap.iPortalServiceBase}
- * @param {string} seviceUrl - 服务地址。
- * @param {Object} params - 服务请求参数。
- * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
- * @param {Object} [params.headers] - 请求头。
- */
-class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBase {
-
-
-
-    constructor(serviceUrl, params) {
-        super(serviceUrl, params);
-        params = params || {};
-        this.addedMapNames = null;
-        this.addedSceneNames = null;
-        this.authorizeSetting = [];
-        this.checkStatus = "";
-        this.createTime = 0;
-        this.description = "";
-        this.enable = true;
-        this.id = 0;
-        this.isBatch = false;
-        this.isDataItemService = false;
-        this.linkPage = null;
-        this.mapInfos = [];
-        this.metadata = null;
-        this.nickname = "";
-        this.offline = false;
-        this.proxiedUrl = null;
-        this.resTitle = "";
-        this.scenes = [];
-        this.serviceRootUrlId = null;
-        this.tags = [];
-        this.thumbnail = null;
-        this.type = "";
-        this.updateTime = 0;
-        this.userName = "";
-        this.verifyReason = null;
-        this.version = null;
-        this.visitCount = 0;
-        Util.extend(this, params);
-        this.serviceUrl = serviceUrl;
-        if (this.id) {
-            this.serviceUrl = serviceUrl + "/" + this.id;
-        }
-    }
-
-    /**
-     * @function SuperMap.iPortalService.prototype.load
-     * @description 加载服务信息。
-     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值；如果失败，Promise 返回值包含错误信息。
-     */
-
-    load() {
-        var me = this;
-        return me.request("GET", me.serviceUrl + ".json")
-            .then(function (serviceInfo) {
-                if (serviceInfo.error) {
-                    return serviceInfo;
-                }
-                for (var key in serviceInfo) {
-                    me[key] = serviceInfo[key];
-                }
-            });
-    }
-
-    /**
-     * @function SuperMap.iPortalService.prototype.update
-     * @description 更新服务。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-    update() {
-        var serviceUpdateParam = {
-            authorizeSetting: this.authorizeSetting,
-            metadata: this.metadata,
-            tags: this.tags,
-            thumbnail: this.thumbnail
-        };
-        var options = {
-            headers: Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded' }, this.headers || {})
-        };
-        return this.request("PUT", this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
-    }
-
-}
-
-SuperMap.iPortalService = iPortalService_IPortalService;
-
-
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMap.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SuperMap.iPortalMap
- * @classdesc iPortal 地图服务类。
- * @category iPortal/Online
- * @param {string} mapUrl - 地图地址。
- * @param {Object} [params] - 服务参数。
- * @extends {SuperMap.iPortalServiceBase}
- *
- */
-class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
-
-
-    constructor(mapUrl, params) {
-        super(mapUrl);
-        params = params || {};
-        this.authorizeSetting = [];
-        this.center = "";
-        this.controls = null;
-        this.checkStatus = "";
-        this.createTime = 0;
-        this.description = "";
-        this.epsgCode = 0;
-        this.extent = "";
-        this.id = 0;
-        this.isDefaultBottomMap = false;
-        this.layers = [];
-        this.level = null;
-        this.nickname = "";
-        this.sourceType = "";
-        this.status = null;
-        this.tags = [];
-        this.thumbnail = "";
-        this.title = "";
-        this.units = null;
-        this.updateTime = 0;
-        this.userName = "";
-        this.visitCount = 0;
-        Util.extend(this, params);
-        this.mapUrl = mapUrl;
-        // if (this.id) {
-        //     this.mapUrl = mapUrl + "/" + this.id;
-        // }
-    }
-
-    /**
-     * @function SuperMap.iPortalMap.prototype.load
-     * @description 加载地图信息。
-     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-     */
-    load() {
-        var me = this;
-        return me.request("GET", me.mapUrl + ".json")
-            .then(function (mapInfo) {
-                if (mapInfo.error) {
-                    return mapInfo;
-                }
-                for (var key in mapInfo) {
-                    me[key] = mapInfo[key];
-                }
-            });
-    }
-
-    /**
-     * @function SuperMap.iPortalMap.prototype.update
-     * @description 更新地图参数。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-    update() {
-        var mapUpdateParam = {
-            units: this.units,
-            level: this.level,
-            center: this.center,
-            controls: this.controls,
-            description: this.description,
-            epsgCode: this.epsgCode,
-            extent: this.extent,
-            status: this.status,
-            tags: this.tags,
-            layers: this.layers,
-            title: this.title,
-            thumbnail: this.thumbnail,
-            sourceType: this.sourceType,
-            authorizeSetting: this.authorizeSetting
-        };
-        var options = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        };
-        return this.request("PUT", this.mapUrl, JSON.stringify(mapUpdateParam), options);
-    }
-
-}
-
-SuperMap.iPortalMap = iPortalMap_IPortalMap;
-
-
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsight.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- 
- 
- 
- /**
-  * @class SuperMap.iPortalInsight
-  * @classdesc iPortal 洞察服务类。
-  * @category iPortal/Online
-  * @param {string} insightUrl - 洞察地址。
-  * @param {Object} [params] - 服务参数。
-  * @extends {SuperMap.iPortalServiceBase}
-  *
-  */
- class iPortalInsight_IPortalInsight extends iPortalServiceBase_IPortalServiceBase {
- 
- 
-     constructor(insightUrl, params) {
-         super(insightUrl);
-         params = params || {};
-         this.authorizeSetting = [];
-         this.name = "";
-         this.checkStatus = "";
-         this.createTime = 0;
-         this.description = "";
-         this.id = 0;
-         this.nickname = "";
-         this.tags = [];
-         this.thumbnail = "";
-         this.updateTime = 0;
-         this.userName = "";
-         this.visitCount = 0;
-         Util.extend(this, params);
-         this.insightUrl = insightUrl;
-     }
- 
-     /**
-      * @function SuperMap.iPortalInsight.prototype.load
-      * @description 加载洞察信息。
-      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-      */
-     load() {
-         var me = this;
-         return me.request("GET", me.insightUrl + ".json")
-             .then(function (insightInfo) {
-                 if (insightInfo.error) {
-                     return insightInfo;
-                 }
-                 for (var key in insightInfo) {
-                     me[key] = insightInfo[key];
-                 }
-             });
-     }
- 
-     /**
-      * @function SuperMap.iPortalInsight.prototype.update
-      * @description 更新洞察参数。
-      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-      */
-     update() {
-         var insightUpdateParam = {
-            authorizeSetting: this.authorizeSetting,
-            description: this.description,
-            tags: this.tags,
-            thumbnail: this.thumbnail,
-            name:this.name
-         };
-         var options = {
-             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-         };
-         return this.request("PUT", this.insightUrl, JSON.stringify(insightUpdateParam), options);
-     }
- 
- }
- 
- SuperMap.iPortalInsight = iPortalInsight_IPortalInsight;
- 
- 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalScene.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- 
- 
- 
- /**
-  * @class SuperMap.iPortalScene
-  * @classdesc iPortal 场景服务类。
-  * @category iPortal/Online
-  * @param {string} sceneUrl - 场景地址。
-  * @param {Object} [params] - 服务参数。
-  * @extends {SuperMap.iPortalServiceBase}
-  *
-  */
- class iPortalScene_IPortalScene extends iPortalServiceBase_IPortalServiceBase {
- 
- 
-     constructor(sceneUrl, params) {
-         super(sceneUrl);
-         params = params || {};
-         this.authorizeSetting = [];
-         this.content = null;
-         this.createTime = 0;
-         this.description = "";
-         this.id = 0;
-         this.layers = [];
-         this.name  = "";
-         this.nickname = "";
-         this.tags = [];
-         this.thumbnail = "";
-         this.title = "";
-         this.updateTime = 0;
-         this.url = "";
-         this.userName = "";
-         this.visitCount = 0;
-         Util.extend(this, params);
-         this.sceneUrl = sceneUrl;
-         // if (this.id) {
-         //     this.sceneUrl = sceneUrl + "/" + this.id;
-         // }
-     }
- 
-     /**
-      * @function SuperMap.iPortalScene.prototype.load
-      * @description 加载场景信息。
-      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-      */
-     load() {
-         var me = this;
-         return me.request("GET", me.sceneUrl + ".json")
-             .then(function (sceneInfo) {
-                 if (sceneInfo.error) {
-                     return sceneInfo;
-                 }
-                 for (var key in sceneInfo) {
-                     me[key] = sceneInfo[key];
-                 }
-             });
-     }
- 
-     /**
-      * @function SuperMap.iPortalScene.prototype.update
-      * @description 更新场景参数。
-      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-      */
-     update() {
-         var sceneUpdateParam = {
-             authorizeSetting: this.authorizeSetting,
-             name:this.name,
-             tags:this.tags,
-             description: this.description,
-             thumbnail:this.thumbnail
-         };
-         var options = {
-             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-         };
-         return this.request("PUT", this.sceneUrl, JSON.stringify(sceneUpdateParam), options);
-     }
- 
- }
- 
- SuperMap.iPortalScene = iPortalScene_IPortalScene;
- 
- 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboard.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- 
- 
- 
-/**
- * @class SuperMap.iPortalMapdashboard
- * @classdesc iPortal 大屏服务类。
- * @category iPortal/Online
- * @param {string} mapdashboardUrl - 大屏地址。
- * @param {Object} [params] - 服务参数。
- * @extends {SuperMap.iPortalServiceBase}
- *
- */
-class iPortalMapdashboard_IPortalMapdashboard extends iPortalServiceBase_IPortalServiceBase {
-
-
-    constructor(mapdashboardUrl, params) {
-        super(mapdashboardUrl);
-        params = params || {};
-        this.authorizeSetting = [];
-        this.content = "";
-        this.createTime = 0;
-        this.description = "";
-        this.id = 0;
-        this.name = "";
-        this.nickname = "";
-        this.tags = [];
-        this.thumbnail = "";
-        this.updateTime = 0;
-        this.userName = "";
-        this.visitCount = 0;
-        Util.extend(this, params);
-        this.mapdashboardUrl = mapdashboardUrl;
-    }
-
-    /**
-     * @function SuperMap.iPortalMapdashboard.prototype.load
-     * @description 加载大屏信息。
-     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
-     */
-    load() {
-        var me = this;
-        return me.request("GET", me.mapdashboardUrl + ".json")
-            .then(function (mapdashboardInfo) {
-                if (mapdashboardInfo.error) {
-                    return mapdashboardInfo;
-                }
-                for (var key in mapdashboardInfo) {
-                    me[key] = mapdashboardInfo[key];
-                }
-            });
-    }
-
-    /**
-     * @function SuperMap.iPortalMapdashboard.prototype.update
-     * @description 更新大屏参数。
-     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
-     */
-    update() {
-        var mapdashboardUpdateParam = {
-            authorizeSetting: this.authorizeSetting,
-            description: this.description,
-            name: this.name,
-            tags: this.tags,
-            thumbnail: this.thumbnail
-        };
-        var options = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        };
-        return this.request("PUT", this.mapdashboardUrl, JSON.stringify(mapdashboardUpdateParam), options);
-    }
-
-}
-
-SuperMap.iPortalMapdashboard = iPortalMapdashboard_IPortalMapdashboard;
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboardsQueryParam.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.iPortalMapdashboardsQueryParam
- * @classdesc iPortal 大屏资源查询参数。
- * @category iPortal/Online
- * @param {Object} params - iPortal 大屏资源查询具体参数。
- *
- */
-class iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam {
-
-
-    constructor(params) {
-        params = params || {};
-        this.userNames = null;
-        this.tags = null;
-        this.orderBy = null;
-        this.filterFields = null;
-        this.currentUser = null;
-        this.dirIds = null;
-        this.returnSubDir = false;
-        this.isNotInDir = false;
-        this.groupIds = null;
-        this.departmentIds = null;
-        this.resourceIds = null;
-        this.searchScope = null;
-        this.permissionType = null;
-        this.keywords = null;
-        this.currentPage = null;
-        this.pageSize = null;
-        this.orderType = null;
-        Util.extend(this, params);
-    }
-
-}
-
-SuperMap.iPortalMapdashboardsQueryParam = iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -16235,9 +15726,22 @@ SuperMap.iPortalMapdashboardsQueryParam = iPortalMapdashboardsQueryParam_IPortal
 /**
  * @class SuperMap.iPortalQueryParam
  * @classdesc iPortal 资源查询参数。
+ * @version 10.0.1
  * @category iPortal/Online
  * @param {Object} params - iPortal 资源查询具体参数。
- *
+ * @param {SuperMap.ResourceType} [params.resourceType] - 资源类型
+ * @param {number} [params.pageSize] - 分页中每页大小。
+ * @param {number} [params.currentPage] - 分页页码。
+ * @param {SuperMap.OrderBy} [params.orderBy] - 排序字段。
+ * @param {SuperMap.OrderType} [params.orderType] - 根据升序还是降序过滤。
+ * @param {SuperMap.SearchType} [params.searchType] - 根据查询的范围进行过滤。
+ * @param {Array} [params.tags] - 标签。
+ * @param {Array} [params.dirIds] - 目录 id
+ * @param {Array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
+ * @param {SuperMap.AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
+ * @param {string} [params.text] - 	搜索的关键词。
+ * @param {Array} [params.groupIds] - 	根据群组进行过滤。
+ * @param {Array} [params.departmentIds] - 根据部门进行过滤。
  */
 class iPortalQueryParam_IPortalQueryParam {
 
@@ -16270,22 +15774,26 @@ SuperMap.iPortalQueryParam = iPortalQueryParam_IPortalQueryParam;
 
 
 /**
- * @class SuperMap.iPortalQueryResult
+ * @class SuperMap.iPortalQueryqueryResult
  * @classdesc iPortal 资源结果集封装类。
+ * @version 10.0.1
  * @category iPortal/Online
- * @param {string} resourceUrl - 资源地址。
- * @param {Object} [params] - 资源参数。
- *
+ * @param {Object} queryResult - 资源参数。
+ * @param {Array} [queryResult.content] - 页面内容。
+ * @param {number} [queryResult.total] - 总记录数。
+ * @param {number} [queryResult.currentPage] - 当前第几页。
+ * @param {number} [queryResult.pageSize] - 每页大小。
+ * @param {Object} [queryResult.aggregations] - 聚合查询的结果。
  */
 class iPortalQueryResult_IPortalQueryResult {
-    constructor(params) {
-        params = params || {};
+    constructor(queryResult) {
+        queryResult = queryResult || {};
         this.content = [];
         this.total = 0;
         this.currentPage = 1;
         this.pageSize = 12;
         this.aggregations = null;
-        Util.extend(this, params);
+        Util.extend(this, queryResult);
     }
 
 }
@@ -16301,13 +15809,34 @@ SuperMap.iPortalQueryResult = iPortalQueryResult_IPortalQueryResult;
 
 
 /**
- * @class SuperMap.IPortalResource
+ * @class SuperMap.iPortalResource
  * @classdesc iPortal 资源详情类。
+ * @version 10.0.1
  * @category iPortal/Online
  * @param {string} portalUrl - 资源地址。
- * @param {Object} [resourceInfo] - 资源详情参数。
+ * @param {Object} resourceInfo - 资源详情参数。
+ * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息
+ * @param {string} [resourceInfo.bounds] - 资源的坐标范围
+ * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为EPSG 4326坐标系统后的地理范围。
+ * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED
+ * @param {Date} [resourceInfo.createTime] - 资源的创建时间
+ * @param {string} [resourceInfo.description] - 资源描述
+ * @param {number} [resourceInfo.dirId] - 资源所在的门户目录的id
+ * @param {number} [resourceInfo.epsgCode] - 门户资源基于的坐标系的EPSG值。
+ * @param {number} [resourceInfo.heatLevel] - 记录资源的访问量或下载量。
+ * @param {string} [resourceInfo.id] - 资源存储到ElasticSearch中的文档id
+ * @param {string} [resourceInfo.name] - 资源名称
+ * @param {number} [resourceInfo.personalDirId] - 资源所在的个人目录的id
+ * @param {number} [resourceInfo.resourceId] - 资源表(maps,services等)里的id
+ * @param {string} [resourceInfo.resourceSubType] - 某类资源的具体子类型。
+ * @param {SuperMap.ResourceType} [resourceInfo.resourceType] - 资源类型
+ * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID
+ * @param {Array} [resourceInfo.tags] - 资源的标签
+ * @param {string} [resourceInfo.thumbnail] - 资源的缩略图
+ * @param {Date} [resourceInfo.updateTime] - 资源的更新时间
+ * @param {string} [resourceInfo.userName] - 搜索的关键词
+ * @param {Object} [resourceInfo.sourceJSON] - 提供了门户项目返回的所有信息。
  * @extends {SuperMap.iPortalServiceBase}
- *
  */
 class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceBase {
     constructor(portalUrl, resourceInfo) {
@@ -16345,7 +15874,7 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
     }
 
     /**
-     * @function SuperMap.IPortalResource.prototype.load
+     * @function SuperMap.iPortalResource.prototype.load
      * @description 加载资源信息。
      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
      */
@@ -16361,7 +15890,7 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
     }
 
     /**
-     * @function SuperMap.IPortalResource.prototype.update
+     * @function SuperMap.iPortalResource.prototype.update
      * @description 更新资源属性信息。
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
@@ -16402,10 +15931,13 @@ SuperMap.iPortalResource = iPortalResource_IPortalResource;
  
 /**
  * @class SuperMap.iPortalShareParam
- * @classdesc iPortal 资源查询参数。
+ * @classdesc iPortal 资源共享参数。
+ * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 资源查询具体参数。
- *
+ * @param {Object} params - iPortal 资源共享具体参数。
+ * @param {SuperMap.ResourceType} [params.resourceType] - 资源类型。
+ * @param {Array} [params.ids] - 资源的id数组。
+ * @param {SuperMap.iPortalShareEntity} [params.entities] - 资源的实体共享参数
  */
 class iPortalShareParam_IPortalShareParam {
 
@@ -16432,22 +15964,14 @@ SuperMap.iPortalShareParam = iPortalShareParam_IPortalShareParam;
 
 
 
-
-
-
-
-
-
-
-
-
-
 /**
  * @class SuperMap.iPortal
  * @classdesc 对接 SuperMap iPortal 基础服务。
  * @category iPortal/Online
  * @extends {SuperMap.iPortalServiceBase}
  * @param {string} iportalUrl - 地址。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  */
 class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     constructor(iportalUrl, options) {
@@ -16469,6 +15993,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortal.prototype.queryResources
      * @description 查询资源。
+     * @version 10.0.1
      * @param {SuperMap.iPortalQueryParam} queryParams - 查询参数。
      * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
      */
@@ -16501,9 +16026,10 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
-     * @description 查询资源。
-     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
-     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     * @description 更新共享设置。
+     * @version 10.0.1
+     * @param {SuperMap.iPortalShareParam} shareParams - 共享的参数。
+     * @returns {Promise} 返回包含共享资源结果的 Promise 对象。
      */
     updateResourcesShareSetting(shareParams) {
         if (!(shareParams instanceof iPortalShareParam_IPortalShareParam)) {
@@ -16526,284 +16052,6 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             return result;
         });
     }
-    /**
-     * @function SuperMap.iPortal.prototype.queryServices
-     * @description 查询服务。
-     * @param {SuperMap.iPortalServicesQueryParam} queryParams - 查询参数。
-     * @returns {Promise} 返回包含所有服务的 Promise 对象。
-     */
-    queryServices(queryParams) {
-        if (!(queryParams instanceof iPortalServicesQueryParam_IPortalServicesQueryParam)) {
-            return null;
-        }
-        var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request("GET", serviceUrl, queryParams).then(function(result) {
-            var services = [];
-            result.content.map(function(serviceJsonObj) {
-                services.push(new iPortalService_IPortalService(serviceUrl, serviceJsonObj));
-                return serviceJsonObj;
-            });
-            return services;
-        });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.deleteServices
-     * @param {Array} ids - 服务的序号。
-     * @description 删除服务。
-     * @returns {Promise} 返回包含服务删除操作状态的 Promise 对象。
-     */
-    deleteServices(ids) {
-        var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request("DELETE", serviceUrl, { ids: ids });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryService
-     * @param {Array} ids - 服务的序号。
-     * @description 查看单个服务资源的详情。
-     * @returns {Promise} 返回包含单个服务资源操作状态的 Promise 对象。
-     */
-    queryService(id){
-        var serviceUrl = this.iportalUrl + "/web/services/" + id;
-        var service = new iPortalService_IPortalService(serviceUrl);
-        return service.load().then(()=>{
-            return service
-        })
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryMaps
-     * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数。
-     * @description 获取地图信息。
-     * @returns {Promise} 返回包含所有地图服务信息的 Promise 对象。
-     */
-    queryMaps(queryParams) {
-        if (!(queryParams instanceof iPortalMapsQueryParam_IPortalMapsQueryParam)) {
-            return null;
-        }
-        let mapsUrl;
-        if (this.withCredentials) {
-            mapsUrl = this.iportalUrl + "/web/mycontent/maps";
-        } else {
-            mapsUrl = this.iportalUrl + "/web/maps";
-        }
-        return this.request("GET", mapsUrl, queryParams).then(function(result) {
-            var mapRetult = {content:[]};
-            var maps = [];
-            if (result.content && result.content.length > 0) {
-                result.content.map(function(mapJsonObj) {
-                    maps.push(new iPortalMap_IPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
-                    return mapJsonObj;
-                });
-                mapRetult.content = maps;
-                mapRetult.currentPage = result.currentPage;
-                mapRetult.pageSize = result.pageSize;
-                mapRetult.total = result.total;
-                mapRetult.totalPage = result.totalPage;
-            }
-            return mapRetult;
-        });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryMapdashboards
-     * @param {SuperMap.iPortalMapdashboardsQueryParam} queryParams - 查询参数。
-     * @description 获取大屏信息。
-     * @returns {Promise} 返回包含所有大屏服务信息的 Promise 对象。
-     */
-    queryMapdashboards(queryParams) {
-        if (!(queryParams instanceof iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam)) {
-            return null;
-        }
-        let mapdashboardsUrl;
-        if (this.withCredentials) {
-            mapdashboardsUrl = this.iportalUrl + "web/mycontent/mapdashboards";
-        } else {
-            mapdashboardsUrl = this.iportalUrl + "/web/mapdashboards";
-        }
-        return this.request("GET", mapdashboardsUrl, queryParams).then(function(result) {
-            var mapdashboardRetult = {content:[]};
-            var mapdashboards = [];
-            if (result.content && result.content.length > 0) {
-                result.content.map(function(mapdashboardJsonObj) {
-                    mapdashboards.push(new iPortalMapdashboard_IPortalMapdashboard(mapdashboardsUrl + "/" + mapdashboardJsonObj.id, mapdashboardJsonObj));
-                    return mapdashboardJsonObj;
-                });
-                mapdashboardRetult.content = mapdashboards;
-                mapdashboardRetult.currentPage = result.currentPage;
-                mapdashboardRetult.pageSize = result.pageSize;
-                mapdashboardRetult.total = result.total;
-                mapdashboardRetult.totalPage = result.totalPage;
-            }
-            return mapdashboardRetult; 
-        });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.deleteMapdashboards
-     * @param {Array} ids - 大屏的序号。
-     * @description 删除大屏。
-     * @returns {Promise} 返回包含大屏删除操作状态的 Promise 对象。
-     */
-    deleteMapdashboards(ids) {
-        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboardsworkspaces.json";
-        return this.request("DELETE", mapdashboardUrl, { ids: encodeURI(JSON.stringify(ids)) });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryMapdashboard
-     * @param {Array} ids - 大屏的序号。
-     * @description 查看某个大屏资源的详情。
-     * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
-     */
-    queryMapdashboard(id){
-        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboards/"+id;
-        var mapdashboard = new iPortalMapdashboard_IPortalMapdashboard(mapdashboardUrl);
-        return mapdashboard.load().then(()=>{
-            return mapdashboard
-        })
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryInsights
-     * @param {SuperMap.iPortalInsightsQueryParam} queryParams - 查询参数。
-     * @description 获取洞察信息。
-     * @returns {Promise} 返回包含所有洞察服务信息的 Promise 对象。
-     */
-    queryInsights(queryParams) {
-        if (!(queryParams instanceof iPortalInsightsQueryParam_IPortalInsightsQueryParam)) {
-            return null;
-        }
-        let insightsUrl;
-        if (this.withCredentials) {
-            insightsUrl = this.iportalUrl + "web/mycontent/insightsworkspaces";
-        } else {
-            insightsUrl = this.iportalUrl + "/web/insightsworkspaces";
-        }
-        return this.request("GET", insightsUrl, queryParams).then(function(result) {
-            var insightRetult = {content:[]};
-            var insights = [];
-            if (result.content && result.content.length > 0) {
-                result.content.map(function(insightJsonObj) {
-                    insights.push(new iPortalInsight_IPortalInsight(insightsUrl + "/" + insightJsonObj.id, insightJsonObj));
-                    return insightJsonObj;
-                });
-                insightRetult.content = insights;
-                insightRetult.currentPage = result.currentPage;
-                insightRetult.pageSize = result.pageSize;
-                insightRetult.total = result.total;
-                insightRetult.totalPage = result.totalPage;
-            }
-            return insightRetult; 
-        });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.deleteInsights
-     * @param {Array} ids - 洞察的序号。
-     * @description 删除洞察。
-     * @returns {Promise} 返回包含洞察删除操作状态的 Promise 对象。
-     */
-    deleteInsights(ids) {
-        var insightUrl = this.iportalUrl + "/web/insightsworkspaces.json";
-        return this.request("DELETE", insightUrl, { ids: encodeURI(JSON.stringify(ids)) });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryInsight
-     * @param {Array} ids - 洞察的序号。
-     * @description 查看某个洞察资源的详情。
-     * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
-     */
-    queryInsight(id){
-        var insightUrl = this.iportalUrl + "/web/insightsworkspaces/"+id;
-        var insight = new iPortalInsight_IPortalInsight(insightUrl);
-        return insight.load().then(()=>{
-            return insight
-        })
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.updateInsightAttrs
-     * @param {Array} ids - 洞察的序号。
-     * @description 更新某个洞察信息。
-     * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
-     */
-    updateInsightAttrs(id,updateParam){
-        var insightAttributesUrl = this.iportalUrl + "/web/insightsworkspaces/"+id+"/attributes.json";
-        return new iPortalInsight_IPortalInsight(insightAttributesUrl, updateParam).update();
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.deleteScenes
-     * @param {Array} ids - 场景的序号。
-     * @description 删除场景。
-     * @returns {Promise} 返回包含场景删除操作状态的 Promise 对象。
-     */
-    deleteScenes(ids) {
-        var sceneUrl = this.iportalUrl + "/web/scenes.json";
-        return this.request("DELETE", sceneUrl, { ids: encodeURI(JSON.stringify(ids)) });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryScenes
-     * @param {SuperMap.iPortalScenesQueryParam} queryParams - 查询参数。
-     * @description 获取场景信息。
-     * @returns {Promise} 返回包含所有场景服务信息的 Promise 对象。
-     */
-    queryScenes(queryParams) {
-        if (!(queryParams instanceof iPortalScenesQueryParam_IPortalScenesQueryParam)) {
-            return null;
-        }
-        let scenesUrl;
-        if (this.withCredentials) {
-            scenesUrl = this.iportalUrl + "/web/mycontent/scenes";
-        } else {
-            scenesUrl = this.iportalUrl + "/web/scenes";
-        }
-        return this.request("GET", scenesUrl, queryParams).then(function(result) {
-            var sceneRetult = {content:[]};
-            var scenes = [];
-            if (result.content && result.content.length > 0) {
-                result.content.map(function(sceneJsonObj) {
-                    scenes.push(new iPortalScene_IPortalScene(scenesUrl + "/" + sceneJsonObj.id, sceneJsonObj));
-                    return sceneJsonObj;
-                });
-                sceneRetult.content = scenes;
-                sceneRetult.currentPage = result.currentPage;
-                sceneRetult.pageSize = result.pageSize;
-                sceneRetult.total = result.total;
-                sceneRetult.totalPage = result.totalPage;
-            }
-            return sceneRetult;
-        });
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.queryScene
-     * @param {Array} ids - 场景的序号。
-     * @description 查看某个场景资源的详情。
-     * @returns {Promise} 返回包含某条场景资源操作状态的 Promise 对象。
-     */
-    queryScene(id){
-        var sceneUrl = this.iportalUrl + "/web/scenes/"+id;
-        var scene = new iPortalScene_IPortalScene(sceneUrl);
-        return scene.load().then(()=>{
-            return scene
-        })
-    }
-
-    /**
-     * @function SuperMap.iPortal.prototype.updateSceneAttrs
-     * @param {Array} ids - 场景的序号。
-     * @description 更新某个场景信息。
-     * @returns {Promise} 返回包含更新场景属性操作状态的 Promise 对象。
-     */
-    updateSceneAttrs(id,updateParam){
-        var sceneAttributesUrl = this.iportalUrl + "/web/scenes/"+id+"/attributes.json";
-        return new iPortalScene_IPortalScene(sceneAttributesUrl, updateParam).update();
-    }
 }
 
 SuperMap.iPortal = iPortal_IPortal;
@@ -16817,20 +16065,24 @@ SuperMap.iPortal = iPortal_IPortal;
  
 /**
  * @class SuperMap.iPortalShareEntity
- * @classdesc iPortal 资源查询参数。
+ * @classdesc iPortal 资源共享实体参数。
+ * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 资源查询具体参数。
- *
+ * @param {Object} shareEntity - iPortal 资源共享实体具体参数。
+ * @param {SuperMap.PermissionType} [shareEntity.permissionType] - 权限类型。
+ * @param {SuperMap.EntityType} [shareEntity.entityType] - 实体类型
+ * @param {string} [shareEntity.entityName] - 实体 Name。对应的 USER（用户）、 ROLE（角色）、GROUP（用户组）、IPORTALGROUP（群组）的名称。
+ * @param {number} [shareEntity.entityId] - 实体的 id。用于群组的授权。
  */
 class iPortalShareEntity_IPortalShareEntity {
 
-    constructor(params) {
-        params = params || {};
+    constructor(shareEntity) {
+        shareEntity = shareEntity || {};
         this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
         this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
         this.entityName = "GUEST"; // GUEST or 具体用户 name
         this.entityId = null;
-        Util.extend(this, params);
+        Util.extend(this, shareEntity);
     }
 }
 SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
@@ -16843,8 +16095,9 @@ SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
 
 
 /**
- * @class SuperMap.IPortalUser
+ * @class SuperMap.iPortalUser
  * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @version 10.0.1
  * @category iPortal/Online
  * @param {string} iportalUrl - iportal根地址。
  * @extends {SuperMap.iPortalServiceBase}
@@ -16857,17 +16110,17 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.prototype.deleteResources
+     * @function SuperMap.iPortalUser.prototype.deleteResources
      * @description 删除资源。
-     * @param {Object} deleteParams - 删除资源所需的参数对象：{ids,resourceType}。
+     * @param {Object} params - 删除资源所需的参数对象：{ids,resourceType}。
      * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
      */
-    deleteResources(deleteParams) {
-        var resourceName = deleteParams.resourceType.replace("_","").toLowerCase();
-        var deleteResourceUrl = this.iportalUrl+"/web/" + resourceName +"s.json?ids=" + encodeURI(JSON.stringify(deleteParams.ids));
+    deleteResources(params) {
+        var resourceName = params.resourceType.replace("_","").toLowerCase();
+        var deleteResourceUrl = this.iportalUrl+"/web/" + resourceName +"s.json?ids=" + encodeURI(JSON.stringify(params.ids));
         if( resourceName === 'data') {
             deleteResourceUrl = this.iportalUrl + "/web/mycontent/datas/delete.json";
-            return this.request("POST", deleteResourceUrl, JSON.stringify(deleteParams.ids));
+            return this.request("POST", deleteResourceUrl, JSON.stringify(params.ids));
         }
         return this.request("DELETE", deleteResourceUrl);
     }
@@ -16878,26 +16131,6 @@ SuperMap.iPortalUser = iPortalUser_IPortalUser;
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -40560,7 +39793,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(11);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(10);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -43014,7 +42247,7 @@ var getMeterPerMapUnit = function(mapUnit) {
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(12);
+var lodash_topairs = __webpack_require__(11);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -68869,7 +68102,7 @@ let en_US_en = {
 SuperMap.Lang['en-US'] = en_US_en;
 
 // CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
-/* Copyright© 2000 - 2020 SuperMapSoftware Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -71118,14 +70351,15 @@ function transform(source, dest, point) {
   if (source.projName === 'longlat') {
     point = {
       x: point.x * D2R,
-      y: point.y * D2R
+      y: point.y * D2R,
+      z: point.z || 0
     };
-  }
-  else {
+  } else {
     if (source.to_meter) {
       point = {
         x: point.x * source.to_meter,
-        y: point.y * source.to_meter
+        y: point.y * source.to_meter,
+        z: point.z || 0
       };
     }
     point = source.inverse(point); // Convert Cartesian to longlat
@@ -71142,7 +70376,8 @@ function transform(source, dest, point) {
   if (dest.from_greenwich) {
     point = {
       x: point.x - dest.from_greenwich,
-      y: point.y
+      y: point.y,
+      z: point.z || 0
     };
   }
 
@@ -71150,14 +70385,16 @@ function transform(source, dest, point) {
     // convert radians to decimal degrees
     point = {
       x: point.x * R2D,
-      y: point.y * R2D
+      y: point.y * R2D,
+      z: point.z || 0
     };
   } else { // else project
     point = dest.forward(point);
     if (dest.to_meter) {
       point = {
         x: point.x / dest.to_meter,
-        y: point.y / dest.to_meter
+        y: point.y / dest.to_meter,
+        z: point.z || 0
       };
     }
   }
@@ -71178,23 +70415,35 @@ var core_wgs84 = Proj('WGS84');
 function transformer(from, to, coords) {
   var transformedArray, out, keys;
   if (Array.isArray(coords)) {
-    transformedArray = transform(from, to, coords);
-    if (coords.length === 3) {
-      return [transformedArray.x, transformedArray.y, transformedArray.z];
-    }
-    else {
+    transformedArray = transform(from, to, coords) || {x: NaN, y: NaN};
+    if (coords.length > 2) {
+      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
+        if (typeof transformedArray.z === 'number') {
+          return [transformedArray.x, transformedArray.y, transformedArray.z].concat(coords.splice(3));
+        } else {
+          return [transformedArray.x, transformedArray.y, coords[2]].concat(coords.splice(3));
+        }
+      } else {
+        return [transformedArray.x, transformedArray.y].concat(coords.splice(2));
+      }
+    } else {
       return [transformedArray.x, transformedArray.y];
     }
-  }
-  else {
+  } else {
     out = transform(from, to, coords);
     keys = Object.keys(coords);
     if (keys.length === 2) {
       return out;
     }
     keys.forEach(function (key) {
-      if (key === 'x' || key === 'y') {
-        return;
+      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
+        if (key === 'x' || key === 'y' || key === 'z') {
+          return;
+        }
+      } else {
+        if (key === 'x' || key === 'y') {
+          return;
+        }
       }
       out[key] = coords[key];
     });
@@ -71211,6 +70460,7 @@ function checkProj(item) {
   }
   return Proj(item);
 }
+
 function core_proj4(fromProj, toProj, coord) {
   fromProj = checkProj(fromProj);
   var single = false;
@@ -71219,8 +70469,7 @@ function core_proj4(fromProj, toProj, coord) {
     toProj = fromProj;
     fromProj = core_wgs84;
     single = true;
-  }
-  else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
+  } else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
     coord = toProj;
     toProj = fromProj;
     fromProj = core_wgs84;
@@ -71229,13 +70478,12 @@ function core_proj4(fromProj, toProj, coord) {
   toProj = checkProj(toProj);
   if (coord) {
     return transformer(fromProj, toProj, coord);
-  }
-  else {
+  } else {
     obj = {
-      forward: function(coords) {
+      forward: function (coords) {
         return transformer(fromProj, toProj, coords);
       },
-      inverse: function(coords) {
+      inverse: function (coords) {
         return transformer(toProj, fromProj, coords);
       }
     };
@@ -71246,7 +70494,6 @@ function core_proj4(fromProj, toProj, coord) {
   }
 }
 /* harmony default export */ var core = (core_proj4);
-
 // CONCATENATED MODULE: ./node_modules/mgrs/mgrs.js
 
 
@@ -72030,12 +71277,6 @@ lib_Point_Point.prototype.toMGRS = function(accuracy) {
   return mgrs_forward([this.x, this.y], accuracy);
 };
 /* harmony default export */ var lib_Point = (lib_Point_Point);
-
-// EXTERNAL MODULE: ./node_modules/proj4/package.json
-var proj4_package = __webpack_require__(8);
-
-// CONCATENATED MODULE: ./node_modules/proj4/lib/version.js
-
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_enfn.js
 var C00 = 1;
@@ -75976,7 +75217,33 @@ var robin_names = ["Robinson", "robin"];
   names: robin_names
 });
 
+// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geocent.js
+
+
+function geocent_init() {
+    this.name = 'geocent';
+
+}
+
+function geocent_forward(p) {
+    var point = geodeticToGeocentric(p, this.es, this.a);
+    return point;
+}
+
+function geocent_inverse(p) {
+    var point = geocentricToGeodetic(p, this.es, this.a, this.b);
+    return point;
+}
+
+var geocent_names = ["Geocentric", 'geocentric', "geocent", "Geocent"];
+/* harmony default export */ var geocent = ({
+    init: geocent_init,
+    forward: geocent_forward,
+    inverse: geocent_inverse,
+    names: geocent_names
+});
 // CONCATENATED MODULE: ./node_modules/proj4/projs.js
+
 
 
 
@@ -76030,9 +75297,9 @@ var robin_names = ["Robinson", "robin"];
   proj4.Proj.projections.add(ortho);
   proj4.Proj.projections.add(qsc);
   proj4.Proj.projections.add(robin);
+  proj4.Proj.projections.add(geocent);
 });
 // CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
-
 
 
 
@@ -76050,7 +75317,7 @@ core.toPoint = toPoint;
 core.defs = lib_defs;
 core.transform = transform;
 core.mgrs = mgrs;
-core.version = proj4_package["a" /* version */];
+core.version = '__VERSION__';
 proj4_projs(core);
 /* harmony default export */ var lib = (core);
 
@@ -87667,11 +86934,11 @@ var RegionSymbolizer = external_L_default.a.Polygon.extend({
     }
 });
 // EXTERNAL MODULE: ./node_modules/pbf/index.js
-var node_modules_pbf = __webpack_require__(13);
+var node_modules_pbf = __webpack_require__(12);
 var pbf_default = /*#__PURE__*/__webpack_require__.n(node_modules_pbf);
 
 // EXTERNAL MODULE: ./node_modules/@mapbox/vector-tile/index.js
-var vector_tile = __webpack_require__(14);
+var vector_tile = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/VectorTilePBF.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -97408,17 +96675,7 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 /* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
 /* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
 /* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
-/* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
-/* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
-/* concated harmony reexport IPortalInsight */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
-/* concated harmony reexport IPortalInsightsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
-/* concated harmony reexport IPortalScene */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
-/* concated harmony reexport IPortalScenesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
-/* concated harmony reexport IPortalService */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
 /* concated harmony reexport IPortalServiceBase */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
-/* concated harmony reexport IPortalServicesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
-/* concated harmony reexport IPortalMapdashboard */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
-/* concated harmony reexport IPortalMapdashboardsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
 /* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return iPortalUser_IPortalUser; });
 /* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
@@ -97747,68 +97004,68 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/webmapfont/iconfont.css
-var iconfont = __webpack_require__(27);
+var iconfont = __webpack_require__(26);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(33);
+var supermapol_icons = __webpack_require__(32);
 
 // EXTERNAL MODULE: ./src/common/components/css/components-icon.css
-var components_icon = __webpack_require__(38);
+var components_icon = __webpack_require__(37);
 
 // EXTERNAL MODULE: ./src/common/components/css/Icon.css
-var Icon = __webpack_require__(43);
+var Icon = __webpack_require__(42);
 
 // EXTERNAL MODULE: ./src/common/components/css/OpenFile.css
-var OpenFile = __webpack_require__(55);
+var OpenFile = __webpack_require__(54);
 
 // EXTERNAL MODULE: ./src/common/components/css/MessageBox.css
-var MessageBox = __webpack_require__(56);
+var MessageBox = __webpack_require__(55);
 
 // EXTERNAL MODULE: ./src/common/components/css/DataFlow.css
-var DataFlow = __webpack_require__(57);
+var DataFlow = __webpack_require__(56);
 
 // EXTERNAL MODULE: ./src/common/components/css/Search.css
-var Search = __webpack_require__(58);
+var Search = __webpack_require__(57);
 
 // EXTERNAL MODULE: ./src/common/components/css/CommonContainer.css
-var CommonContainer = __webpack_require__(59);
+var CommonContainer = __webpack_require__(58);
 
 // EXTERNAL MODULE: ./src/common/components/css/DropDownBox.css
-var DropDownBox = __webpack_require__(60);
+var DropDownBox = __webpack_require__(59);
 
 // EXTERNAL MODULE: ./src/common/components/css/Select.css
-var Select = __webpack_require__(61);
+var Select = __webpack_require__(60);
 
 // EXTERNAL MODULE: ./src/common/components/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(62);
+var CityTabsPage = __webpack_require__(61);
 
 // EXTERNAL MODULE: ./src/common/components/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(63);
+var NavTabsPage = __webpack_require__(62);
 
 // EXTERNAL MODULE: ./src/common/components/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(64);
+var PaginationContainer = __webpack_require__(63);
 
 // EXTERNAL MODULE: ./src/common/components/css/PopContainer.css
-var PopContainer = __webpack_require__(65);
+var PopContainer = __webpack_require__(64);
 
 // EXTERNAL MODULE: ./src/common/components/css/Analysis.css
-var Analysis = __webpack_require__(66);
+var Analysis = __webpack_require__(65);
 
 // EXTERNAL MODULE: ./src/common/components/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(67);
+var DistributedAnalysis = __webpack_require__(66);
 
 // EXTERNAL MODULE: ./src/common/components/css/ClientComputation.css
-var ClientComputation = __webpack_require__(68);
+var ClientComputation = __webpack_require__(67);
 
 // EXTERNAL MODULE: ./src/common/components/css/DataServiceQuery.css
-var DataServiceQuery = __webpack_require__(69);
+var DataServiceQuery = __webpack_require__(68);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -97837,7 +97094,7 @@ var DataServiceQuery = __webpack_require__(69);
 
 
 // EXTERNAL MODULE: ./src/leaflet/css/ChangeTileVersion.css
-var ChangeTileVersion = __webpack_require__(70);
+var ChangeTileVersion = __webpack_require__(69);
 
 // CONCATENATED MODULE: ./src/leaflet/css/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -97849,43 +97106,44 @@ var ChangeTileVersion = __webpack_require__(70);
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 27 */,
 /* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
-/* 32 */,
-/* 33 */
+/* 32 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
-/* 37 */,
-/* 38 */
+/* 37 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 38 */,
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */
+/* 42 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
@@ -97896,7 +97154,12 @@ var ChangeTileVersion = __webpack_require__(70);
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */,
+/* 54 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 55 */
 /***/ (function(module, exports) {
 
@@ -97982,12 +97245,6 @@ var ChangeTileVersion = __webpack_require__(70);
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 70 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

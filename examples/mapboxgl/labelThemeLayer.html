@@ -181,7 +181,7 @@
         }
 
         if (!popup) {
-            popup = new mapboxgl.Popup();
+            popup = new mapboxgl.Popup({maxWidth: 'none'});
         }
 
         var statisticsData = getStatisticsData();

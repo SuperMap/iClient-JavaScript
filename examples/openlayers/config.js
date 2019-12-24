@@ -461,59 +461,6 @@ var exampleConfig = {
                     thumbnail: "l_iPortalQueryResources.png",
                     fileName: "iPortalQueryMyResources"
                 }]
-            },
-            "ip_querymaps": {
-                name: "地图列表",
-                name_en: "Web map list",
-                content: [{
-                    name: "地图列表",
-                    name_en: "web map list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMaps"
-                }]
-            },
-            "ip_queryservices": {
-                name: "服务列表",
-                name_en: "Web service list",
-                content: [{
-                    name: "服务列表",
-                    name_en: "web service list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryServices"
-                }]
-            },
-            "ip_querymapdashboards": {
-                name: "大屏列表",
-                name_en: "Web mapdashboard list",
-                content: [{
-                    name: "大屏列表",
-                    name_en: "web mapdashboard list",
-                    version: "10.0.1",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMapdashboards"
-                }]
-            },
-            "ip_queryscenes": {
-                name: "场景列表",
-                name_en: "Web scene list",
-                content: [{
-                    name: "场景列表",
-                    name_en: "web scene list",
-                    version: "10.0.1",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryScenes"
-                }]
-            },
-            "ip_queryinsights": {
-                name: "洞察列表",
-                name_en: "Web insight list",
-                content: [{
-                    name: "洞察列表",
-                    name_en: "web insight list",
-                    version: "10.0.1",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryInsights"
-                }]
             }
         }
     },
