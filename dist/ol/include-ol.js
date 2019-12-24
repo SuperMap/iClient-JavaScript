@@ -66,16 +66,16 @@
             inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("https://mapv.baidu.com/build/mapv.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.42/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
             inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+          inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-          inputScript("https://cdn.bootcss.com/proj4js/2.5.0/proj4.js");
+          inputScript('https://cdn.bootcss.com/proj4js/2.6.0/proj4.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
           inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.1/dist/ol3Echarts.min.js");
@@ -106,7 +106,7 @@
             inputScript("https://iclient.supermap.io/web/libs/geostats/geostats.js");
         }
         if (inArray(includes, 'canvg')) {
-            inputScript("https://iclient.supermap.io/web/libs/canvg/canvg.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/canvg@3.0.2/lib/umd.min.js");
         }
         
         // dist

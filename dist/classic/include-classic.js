@@ -59,10 +59,10 @@
             inputScript("https://iclient.supermap.io/web/libs/iclient8c/libs/SuperMap.Include.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("https://mapv.baidu.com/build/mapv.min.js");
+            inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.42/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'nanoscroller')) {
             inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/nanoscroller.css");
