@@ -102,17 +102,7 @@ import {
     IPortalQueryResult,
     IPortalShareParam,
     IPortalShareEntity,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalInsight,
-    IPortalInsightsQueryParam,
-    IPortalScene,
-    IPortalScenesQueryParam,
-    IPortalService,
     IPortalServiceBase,
-    IPortalServicesQueryParam,
-    IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam,
     IPortalUser
 } from './iPortal';
 import {
@@ -575,17 +565,7 @@ export {
     IPortalQueryResult,
     IPortalShareParam,
     IPortalShareEntity,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalInsight,
-    IPortalInsightsQueryParam,
-    IPortalScene,
-    IPortalScenesQueryParam,
-    IPortalService,
     IPortalServiceBase,
-    IPortalServicesQueryParam,
-    IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam,
     IPortalUser
 };
 export {
