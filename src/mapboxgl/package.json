@@ -20,7 +20,7 @@
     "three": "0.92.0",
     "xlsx": "0.15.3",
     "@supermap/iclient-common": "10.0.1",
-    "canvg": "1.5.3",
+    "canvg": "3.0.2",
     "xml-js": "1.6.8"
   }
 }
