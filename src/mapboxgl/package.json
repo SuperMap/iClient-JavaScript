@@ -18,7 +18,7 @@
     "mapv": "2.0.38",
     "mapbox-gl": "1.6.1",
     "three": "0.92.0",
-    "xlsx": "0.15.3",
+    "xlsx": "0.15.4",
     "@supermap/iclient-common": "10.0.1",
     "canvg": "1.5.3",
     "xml-js": "1.6.8"
