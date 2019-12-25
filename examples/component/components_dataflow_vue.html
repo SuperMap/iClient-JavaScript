@@ -31,13 +31,13 @@
         </div>
         <script>
             var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-            var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
+            var wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
             var attribution =
                 "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
                 " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                 " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
             SuperMap.SecurityManager.registerToken(
-                "ws://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow",
+                "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow",
                 window.exampleToken
             );
             // 模拟 dataflow 实时数据

@@ -65,7 +65,7 @@
             });
             var resultLayer,
                 urlQuery = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326",
-                wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
+                wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
             var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
             var timer, featureResult, dataFlowBroadcast, source;
             new ol.supermap.MapService(urlQuery).getMapInfo(function(serviceResult) {

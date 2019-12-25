@@ -15,7 +15,7 @@
     <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-        var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
+        var wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
         var map,
             urlMap = host + "/iserver/services/map-china400/rest/maps/China",
             urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
