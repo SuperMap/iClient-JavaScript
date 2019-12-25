@@ -15965,7 +15965,7 @@ function iPortalQueryResult_classCallCheck(instance, Constructor) { if (!(instan
 
 
 /**
- * @class SuperMap.iPortalQueryqueryResult
+ * @class SuperMap.iPortalQueryResult
  * @classdesc iPortal 资源结果集封装类。
  * @version 10.0.1
  * @category iPortal/Online
