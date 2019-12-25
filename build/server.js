@@ -25,7 +25,7 @@ if (product) {
 
     const compiler = webpack(config);
     const instance = webpackDevMiddleware(compiler, {
-        publicPath: `/dist/${product}`,
+        publicPath: `/dist/${dirname}`,
         stats: {
             colors: true
         }
