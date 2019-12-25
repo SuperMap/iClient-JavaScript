@@ -7,7 +7,8 @@ import { QueryBySQLParameters } from '../../../../src/common/iServer/QueryBySQLP
 import { FilterParameter } from '../../../../src/common/iServer/FilterParameter';
 import { GeometryType } from '../../../../src/common/REST';
 import { QueryOption } from '../../../../src/common/REST';
-import 'leaflet.pm';
+import '@geoman-io/leaflet-geoman-free';
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 import '../../../resources/QueryService.js';
 
 var map, url = GlobeParameter.WorldURL, testDiv, clientComputation;

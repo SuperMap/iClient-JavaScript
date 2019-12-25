@@ -2,7 +2,8 @@
 import { tiledMapLayer } from '../../../../src/leaflet/mapping/TiledMapLayer';
 import { dataServiceQueryView } from '../../../../src/leaflet/components/dataservicequery/DataServiceQueryView'
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
-import '../../../../node_modules/leaflet.pm';
+import '@geoman-io/leaflet-geoman-free';
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 var map, url = GlobeParameter.WorldURL, testDiv, dataServiceQuery;
 var dataServiceURL = GlobeParameter.dataServiceURL;
 describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
