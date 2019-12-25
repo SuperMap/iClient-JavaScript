@@ -16746,11 +16746,10 @@ SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
  * @param {Object} [options.headers] - 请求头。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.options = options || {}
-        this.CLASS_NAME = "SuperMap.AddressMatchService";
+        this.options = options || {};
+        this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
     /**
@@ -16794,7 +16793,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         this.request({
-            method: "GET",
+            method: 'GET',
             url,
             params,
             scope: this,
@@ -16809,6 +16808,9 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
      * @description 服务流程是否完成
      */
     serviceProcessCompleted(result) {
+        if (result.succeed) {
+            delete result.succeed;
+        }
         super.serviceProcessCompleted(result);
     }
 
@@ -16823,6 +16825,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 }
 
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
+
 // CONCATENATED MODULE: ./src/common/iServer/AggQueryBuilderParameter.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88519,7 +88522,7 @@ external_L_default.a.supermap.turfLayer = TurfLayer_turfLayer;
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
- * @param {boolean} [options.blur] - 模糊量，默认值为半径的二分之一。
+ * @param {number} [options.blur] - 模糊量，，单位为 px。默认值为半径的二分之一。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  *
  * @extends {L.Layer}

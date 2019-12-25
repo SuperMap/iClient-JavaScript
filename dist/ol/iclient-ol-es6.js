@@ -17739,11 +17739,10 @@ SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
  * @param {Object} [options.headers] - 请求头。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.options = options || {}
-        this.CLASS_NAME = "SuperMap.AddressMatchService";
+        this.options = options || {};
+        this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
     /**
@@ -17787,7 +17786,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         this.request({
-            method: "GET",
+            method: 'GET',
             url,
             params,
             scope: this,
@@ -17802,6 +17801,9 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
      * @description 服务流程是否完成
      */
     serviceProcessCompleted(result) {
+        if (result.succeed) {
+            delete result.succeed;
+        }
         super.serviceProcessCompleted(result);
     }
 
@@ -17816,6 +17818,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 }
 
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
+
 // CONCATENATED MODULE: ./src/common/iServer/AggQueryBuilderParameter.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -94209,8 +94212,6 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 /* concated harmony reexport GeoFeature */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport pointStyle */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport lineStyle */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport polygonStyle */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -94219,6 +94220,8 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 /* concated harmony reexport lineMap */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport polygonMap */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport StyleMap */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });

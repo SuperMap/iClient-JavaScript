@@ -19504,7 +19504,7 @@ function (_CommonServiceBase) {
 
     _this = AddressMatchService_possibleConstructorReturn(this, AddressMatchService_getPrototypeOf(AddressMatchService).call(this, url, options));
     _this.options = options || {};
-    _this.CLASS_NAME = "SuperMap.AddressMatchService";
+    _this.CLASS_NAME = 'SuperMap.AddressMatchService';
     return _this;
   }
   /**
@@ -19559,7 +19559,7 @@ function (_CommonServiceBase) {
     key: "processAsync",
     value: function processAsync(url, params) {
       this.request({
-        method: "GET",
+        method: 'GET',
         url: url,
         params: params,
         scope: this,
@@ -19576,6 +19576,10 @@ function (_CommonServiceBase) {
   }, {
     key: "serviceProcessCompleted",
     value: function serviceProcessCompleted(result) {
+      if (result.succeed) {
+        delete result.succeed;
+      }
+
       AddressMatchService_get(AddressMatchService_getPrototypeOf(AddressMatchService.prototype), "serviceProcessCompleted", this).call(this, result);
     }
     /**

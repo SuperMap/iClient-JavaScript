@@ -127,16 +127,14 @@ describe('mapboxgl_AddressMatchService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(codeFailEscapedJson));
         });
-        service.code(geoCodingParams, (result) => {
-            serviceResult = result;
+        service.code(geoCodingParams, (serviceResult) => {
             try {
                 expect(service).not.toBeNull();
-                expect(serviceResult.type).toBe("processCompleted");
-                var result = serviceResult.result;
-                expect(result).not.toBeNull();
-                expect(result.success).toBeFalsy();
-                expect(result.error.code).toEqual(400);
-                expect(result.error.errorMsg).toBe("address cannot be null!");
+                expect(serviceResult.type).toBe("processFailed");
+                var error = serviceResult.error;
+                expect(error).not.toBeNull();
+                expect(error.code).toEqual(400);
+                expect(error.errorMsg).toBe("address cannot be null!");
                 done();
             } catch (exception) {
                 console.log("'code_failEvent'案例失败：" + exception.name + ":" + exception.message);
@@ -166,17 +164,14 @@ describe('mapboxgl_AddressMatchService', () => {
             return Promise.resolve(new Response(decodeFailEscapedJson));
         });
 
-        service.decode(geoDecodingParams, (result) => {
-            serviceResult = result;
+        service.decode(geoDecodingParams, (serviceResult) => {
             try {
                 expect(service).not.toBeNull();
-                expect(serviceResult.type).toBe("processCompleted");
-                var result = serviceResult.result;
-                expect(result).not.toBeNull();
-                expect(result).not.toBeNull();
-                expect(result.success).toBeFalsy();
-                expect(result.error.code).toEqual(400);
-                expect(result.error.errorMsg).toBe("location not valid!");
+                expect(serviceResult.type).toBe("processFailed");
+                var error = serviceResult.error;
+                expect(error).not.toBeNull();
+                expect(error.code).toEqual(400);
+                expect(error.errorMsg).toBe("location not valid!");
                 done();
             } catch (exception) {
                 console.log("'decode_failEvent'案例失败：" + exception.name + ":" + exception.message);

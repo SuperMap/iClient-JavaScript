@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from './CommonServiceBase';
-import {GeoCodingParameter} from './GeoCodingParameter';
-import {GeoDecodingParameter} from './GeoDecodingParameter';
+import { SuperMap } from '../SuperMap';
+import { CommonServiceBase } from './CommonServiceBase';
+import { GeoCodingParameter } from './GeoCodingParameter';
+import { GeoDecodingParameter } from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
@@ -16,11 +16,10 @@ import {GeoDecodingParameter} from './GeoDecodingParameter';
  * @param {Object} [options.headers] - 请求头。
  */
 export class AddressMatchService extends CommonServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.options = options || {}
-        this.CLASS_NAME = "SuperMap.AddressMatchService";
+        this.options = options || {};
+        this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
     /**
@@ -64,7 +63,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     processAsync(url, params) {
         this.request({
-            method: "GET",
+            method: 'GET',
             url,
             params,
             scope: this,
@@ -79,6 +78,9 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 服务流程是否完成
      */
     serviceProcessCompleted(result) {
+        if (result.succeed) {
+            delete result.succeed;
+        }
         super.serviceProcessCompleted(result);
     }
 

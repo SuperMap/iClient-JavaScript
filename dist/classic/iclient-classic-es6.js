@@ -17091,11 +17091,10 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {Object} [options.headers] - 请求头。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.options = options || {}
-        this.CLASS_NAME = "SuperMap.AddressMatchService";
+        this.options = options || {};
+        this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
     /**
@@ -17139,7 +17138,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         this.request({
-            method: "GET",
+            method: 'GET',
             url,
             params,
             scope: this,
@@ -17154,6 +17153,9 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
      * @description 服务流程是否完成
      */
     serviceProcessCompleted(result) {
+        if (result.succeed) {
+            delete result.succeed;
+        }
         super.serviceProcessCompleted(result);
     }
 
@@ -17168,6 +17170,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 }
 
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
+
 // CONCATENATED MODULE: ./src/common/iServer/AggQueryBuilderParameter.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
