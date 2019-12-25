@@ -6,14 +6,15 @@ const serveIndex = require('serve-index');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const product = process.argv[2];
+var dirname = product === 'openlayers' ? 'ol' : product
 const app = (module.exports = express());
 if (product) {
     const config = require(`./webpack.config.${product}.js`);
     const configBase = require(`./webpack.config.base.js`);
     const entry = [`./src/${product}/${product === 'openlayers' ? 'namespace.js' : 'index.js'}`];
-    const filename = product === 'classic' ? `iclient-classic` : `iclient-${product}`;
+    const filename = `iclient-${dirname}`;
     config.output.filename = `${filename}-es6.min.js`;
-    config.output.path = path.resolve(`${__dirname}/../dist/${product}`);
+    config.output.path = path.resolve(`${__dirname}/../dist/${dirname}`);
     if (['leaflet', 'openlayers'].includes(product)) {
         entry.push(`./src/${product}/css/index.js`);
         config.plugins = configBase.plugins(product, `${filename}.min`);

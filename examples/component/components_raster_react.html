@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsRasterTile_React"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       html,
       body {
@@ -26,8 +26,8 @@
     <div id="main"></div>
     <script type="text/babel">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmRasterTileLayer = window.SuperMap.Components.SmRasterTileLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmRasterTileLayer = SuperMap.Components.SmRasterTileLayer;
       var mapUrl = host + '/iserver/services/map-Population/rest/maps/PopulationDistribution';
 
       ReactDOM.render(

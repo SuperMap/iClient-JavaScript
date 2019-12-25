@@ -102,6 +102,11 @@
             inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
             inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
         }
+        if (inArray(includes, 'antd')) {
+            inputCSS("https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.min.css");
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js");
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.js");
+        }
         if (inArray(includes, 'deck')) {
             inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }

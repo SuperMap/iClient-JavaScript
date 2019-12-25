@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsWebmap_React"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       html,
       body {
@@ -23,10 +23,9 @@
   <body>
     <div id="main"></div>
     <script type="text/babel">
-      // import {WebMap} from '@supermap/react-iclient'
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
+      var SmWebMap = SuperMap.Components.SmWebMap;
       ReactDOM.render(
-        <SmWebMap mapId={'801571284'} serverUrl={'https://iportal.supermap.io/iportal'} />,
+        <SmWebMap mapId='801571284' serverUrl='https://iportal.supermap.io/iportal' />,
         document.getElementById('main')
       );
     </script>

@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsGraphThemeLayer_React"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript" src="../data/chinaConsumptionLevel.js"></script>
     <style>
       html,
@@ -37,8 +37,8 @@
       </div>
     </div>
     <script type="text/babel">
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmGraphThemeLayer = window.SuperMap.Components.SmGraphThemeLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmGraphThemeLayer = SuperMap.Components.SmGraphThemeLayer;
       var features, chartsSettingForPie, themeOptions, popup;
       var feas = [];
       for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {

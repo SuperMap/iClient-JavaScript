@@ -43,7 +43,7 @@
       </div>
     </div>
     <script type="text/javascript" include="widgets,react,bootstrap" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/babel">
       widgets.loader.showLoader('data loading...');
       var HOST = window.isLocal ? window.server : "https://iserver.supermap.io";
@@ -53,8 +53,8 @@
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
       var dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
 
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmUniqueThemeLayer = window.SuperMap.Components.SmUniqueThemeLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmUniqueThemeLayer = SuperMap.Components.SmUniqueThemeLayer;
       var mapOptions = {
         container: 'map',
         style: {

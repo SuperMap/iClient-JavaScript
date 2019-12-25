@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_componentsMap_React'></title>
   <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-  <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     html,
     body {
@@ -32,7 +32,7 @@
       "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
       " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-    var SmWebMap = window.SuperMap.Components.SmWebMap;
+    var SmWebMap = SuperMap.Components.SmWebMap;
     var mapOptions = {
       container: 'map',
       style: {

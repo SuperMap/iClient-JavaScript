@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsRankSymbolTheme_React"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript" src="../data/chinaConsumptionLevel.js"></script>
     <style>
       html,
@@ -36,10 +36,9 @@
   <body>
     <div id="main"></div>
     <script type="text/babel">
-      // import {SmRanksymbolThemeLayer} from '@supermap/react-iclient'
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmRanksymbolThemeLayer = window.SuperMap.Components.SmRanksymbolThemeLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmRanksymbolThemeLayer = SuperMap.Components.SmRanksymbolThemeLayer;
 
       var features = [], popup, map;
       for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {

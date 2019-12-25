@@ -8,7 +8,7 @@
     <title data-i18n="resources.title_componentsDeckGL_React"></title>
     <script type="text/javascript" include="react,jquery,papaparse,widgets" src="../js/include-web.js"></script>
     <script
-      include="deck,iclient-mapboxgl-react,mapbox-gl-enhance"
+      include="antd,deck,iclient-mapboxgl-react,mapbox-gl-enhance"
       src="../../dist/mapboxgl/include-mapboxgl.js"
     ></script>
     <style>
@@ -28,8 +28,8 @@
     <script type="text/babel">
       // import {SmDeckglLayer} from '@supermap/react-iclient'
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmDeckglLayer = window.SuperMap.Components.SmDeckglLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmDeckglLayer = SuperMap.Components.SmDeckglLayer;
       var mapOptions = {
         container: 'map', // container id
         style: {

@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsLabelTheme_React"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript" src="../data/themeLableData.js"></script>
     <style>
       html,
@@ -24,9 +24,8 @@
   <body>
     <div id="main"></div>
     <script type="text/babel">
-      // import {SmLabelThemeLayer} from '@supermap/react-iclient'
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmLabelThemeLayer = window.SuperMap.Components.SmLabelThemeLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmLabelThemeLayer = SuperMap.Components.SmLabelThemeLayer;
       var host = window.isLocal ? window.server : "https://iserver.supermap.io";
       var features = [];
       var feat, popup, map;

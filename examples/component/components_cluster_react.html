@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsCluster_React"></title>
     <script type="text/javascript" include="react,jquery,papaparse" src="../js/include-web.js"></script>
-    <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       html,
       body {
@@ -24,8 +24,8 @@
     <div id="main"></div>
     <script type="text/babel">
       // import {SmClusterLayer} from '@supermap/react-iclient'
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmClusterLayer = window.SuperMap.Components.SmClusterLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmClusterLayer = SuperMap.Components.SmClusterLayer;
 
       $.get('../data/chinaEarthquake.csv', function(response) {
         var dataObj = Papa.parse(response, {
@@ -62,7 +62,7 @@
         }
 
         ReactDOM.render(
-          <SmWebMap mapId={'1329428269'} serverUrl={'https://iportal.supermap.io/iportal'}>
+          <SmWebMap mapId='1329428269' serverUrl='https://iportal.supermap.io/iportal'>
             <SmClusterLayer data={geojson} radius={100} />
           </SmWebMap>,
           document.getElementById('main')

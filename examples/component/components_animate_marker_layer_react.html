@@ -9,7 +9,7 @@
     <script type="text/javascript" include="react,jquery" src="../js/include-web.js"></script>
     <script
       type="text/javascript"
-      include="mapbox-gl-enhance,iclient-mapboxgl-react"
+      include="antd,mapbox-gl-enhance,iclient-mapboxgl-react"
       src="../../dist/mapboxgl/include-mapboxgl.js"
     ></script>
     <style>
@@ -99,8 +99,8 @@
         pitch: 60
       };
 
-      var SmWebMap = window.SuperMap.Components.SmWebMap;
-      var SmAnimateMarkerLayer = window.SuperMap.Components.SmAnimateMarkerLayer;
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmAnimateMarkerLayer = SuperMap.Components.SmAnimateMarkerLayer;
       // 类型选择
       class RadioButton extends React.Component {
         constructor(props) {
