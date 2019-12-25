@@ -338,7 +338,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
                 resultLayer = e.layer;
                 queryRangeTextArea.value = JSON.stringify(e.layer.toGeoJSON());
             }
-            if (e.shape === 'Poly') {
+            if (e.shape === 'Polygon') {
                 resultLayer = e.layer;
                 queryRangeTextArea.value = JSON.stringify(e.layer.toGeoJSON());
             }
