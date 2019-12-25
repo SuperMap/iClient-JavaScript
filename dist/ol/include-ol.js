@@ -66,7 +66,7 @@
             inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js");
         }
         if (inArray(includes, 'mapv')) {
-          inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.42/build/mapv.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.43/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
             inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");

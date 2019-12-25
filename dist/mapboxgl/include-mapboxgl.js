@@ -73,7 +73,7 @@
             );
         }
         if (inArray(includes, 'mapv')) {
-          inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.42/build/mapv.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.43/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
