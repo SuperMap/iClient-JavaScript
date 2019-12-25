@@ -2,7 +2,7 @@ import {IPortalResource} from '../../../src/common/iPortal/iPortalResource';
 
 describe('iPortalResource', () => {
     it('constructor_default', () => {
-        var iPortalResource = new IPortalResource();
+        var iPortalResource = new IPortalResource("https://iportal.supermap.io/iportal",{resourceType:'MAP'});
         expect(iPortalResource).not.toBeNull();
         expect(iPortalResource.CLASS_NAME).toBe("SuperMap.iPortalServiceBase");
         expect(iPortalResource.authorizeSetting.length).toEqual(0);
