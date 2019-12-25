@@ -424,9 +424,9 @@ var exampleConfig = {
                 name: "地图",
                 name_en: "Web map",
                 content: [{
-                    name: "举办过奥运会的城市",
-                    name_en: "city hosted the Olympic Games",
-                    thumbnail: "ol_iPortalWebMap.png",
+                    name: "分段专题图",
+                    name_en: "Range",
+                    thumbnail: "iPortalWebmap_range.png",
                     fileName: "iportalWebMap"
                 }]
             },
