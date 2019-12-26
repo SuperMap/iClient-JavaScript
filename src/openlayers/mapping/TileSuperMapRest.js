@@ -213,11 +213,13 @@ export class TileSuperMapRest extends ol.source.TileImage {
                     }
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        // me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892], options.maxZoom, options.minZoom);
                         me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        // me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90], options.maxZoom, options.minZoom);
                         me.extent = [-180, -90, 180, 90];
                     }
                 }
