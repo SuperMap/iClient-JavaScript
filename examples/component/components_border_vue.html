@@ -1,0 +1,482 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsBorder_Vue"></title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script
+      include="ant-design-vue,echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: 0;
+      }
+
+      #main {
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+      }
+      .all-borders {
+        width: 98%;
+        margin: 0 auto;
+        position: absolute;
+        left: 1%;
+        bottom: 0px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap-reverse;
+        align-content: flex-start;
+      }
+      .common-border {
+        margin-bottom: 10px;
+        width: 300px;
+        height: 230px;
+        z-index: 1000;
+      }
+
+      .select-group {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        width: 240px;
+        left: 40px;
+        top: 40px;
+      }
+      .select-group span {
+        color: #fff;
+        font-size: 15px;
+        margin-right: 10px;
+      }
+      .select-border {
+        width: 110px;
+      }
+      .ant-select-selection {
+        background: #262626;
+        color: #fff;
+      }
+      .ant-select-dropdown-content ul::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+        background-color: rgba(245, 245, 245, 0);
+      }
+      .ant-select-dropdown-content ul::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: gray;
+      }
+      .ant-select-dropdown-menu-item {
+        background: #262626;
+        color: #909399;
+      }
+      .ant-select-dropdown-menu-item-active {
+        background: #dddcdc !important;
+        color: #4f4f4f !important;
+      }
+      .ant-select-dropdown-menu-item-selected,
+      .ant-select-dropdown-menu-item-selected:hover {
+        background: #dddcdc !important;
+        color: #4f4f4f !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <!-- WebMap组件 -->
+      <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" ref="map"></sm-web-map>
+      <div class="all-borders">
+        <!-- Border组件 -->
+        <sm-border :type="borderType" class="common-border">
+          <sm-chart icon-class="" :options="barChartOptions"></sm-chart>
+        </sm-border>
+        <!-- Border组件 -->
+        <sm-border :type="borderType" class="common-border">
+          <sm-chart icon-class="" :options="lineChartOptions"></sm-chart>
+        </sm-border>
+        <!-- Border组件 -->
+        <sm-border :type="borderType" class="common-border">
+          <sm-chart icon-class="" :options="scatterChartOptions"></sm-chart>
+        </sm-border>
+        <!-- Border组件 -->
+        <sm-border :type="borderType" class="common-border">
+          <sm-chart icon-class="" :options="radarChartOptions"></sm-chart>
+        </sm-border>
+        <!-- Border组件 -->
+        <sm-border :type="borderType" class="common-border">
+          <sm-chart icon-class="" :options="pieChartOptions"></sm-chart>
+        </sm-border>
+        <!-- Border组件 -->
+        <sm-border :type="borderType" class="common-border">
+          <sm-chart icon-class="" :options="gaugeChartOptions"></sm-chart>
+        </sm-border>
+      </div>
+
+      <!-- 切换{{resources.text_opt_border}}类型 -->
+      <div class="select-group">
+        <span>{{ resources.text_sel_border }}:</span>
+        <a-select class="select-border" v-model="borderType">
+          <a-select-option value="border1">{{ resources.text_opt_border }}1</a-select-option>
+          <a-select-option value="border2">{{ resources.text_opt_border }}2</a-select-option>
+          <a-select-option value="border3">{{ resources.text_opt_border }}3</a-select-option>
+          <a-select-option value="border4">{{ resources.text_opt_border }}4</a-select-option>
+          <a-select-option value="border5">{{ resources.text_opt_border }}5</a-select-option>
+          <a-select-option value="border6">{{ resources.text_opt_border }}6</a-select-option>
+          <a-select-option value="border7">{{ resources.text_opt_border }}7</a-select-option>
+          <a-select-option value="border8">{{ resources.text_opt_border }}8</a-select-option>
+          <a-select-option value="border9">{{ resources.text_opt_border }}9</a-select-option>
+          <a-select-option value="border10">{{ resources.text_opt_border }}10</a-select-option>
+          <a-select-option value="border11">{{ resources.text_opt_border }}11</a-select-option>
+          <a-select-option value="border12">{{ resources.text_opt_border }}12</a-select-option>
+          <a-select-option value="border13">{{ resources.text_opt_border }}13</a-select-option>
+        </a-select>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#main',
+        data() {
+          var chartXAxis = {
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            axisLabel: {
+              rotate: 0,
+              fontFamily: 'MicrosoftYaHei'
+            },
+            show: true,
+            name: '',
+            nameGap: 2,
+            nameLocation: 'end',
+            type: 'category'
+          };
+          var chartYAxis = {
+            name: '',
+            axisLine: {
+              lineStyle: {}
+            },
+            axisLabel: {
+              rotate: 0,
+              fontFamily: 'MicrosoftYaHei'
+            },
+            show: true,
+            splitArea: {
+              show: false
+            },
+            nameGap: 5,
+            nameLocation: 'end',
+            type: 'value',
+            nameTextStyle: {
+              padding: [0, 0, 5, 0]
+            }
+          };
+          var chartGrid = {
+            left: 50,
+            right: 50,
+            top: 35,
+            bottom: 35
+          };
+          return {
+            borderType: 'border7',
+            // 和echarts一样的配置
+            barChartOptions: {
+              xAxis: chartXAxis,
+              yAxis: chartYAxis,
+              grid: chartGrid,
+              series: [
+                {
+                  data: ['500', '800', '3000', '3617', '3400', '4200', '1842'],
+                  name: 'Y2',
+                  type: 'bar'
+                },
+                {
+                  data: ['100', '520', '2000', '3340', '3900', '3300', '2500'],
+                  name: 'Y1',
+                  type: 'bar'
+                },
+                {
+                  data: ['1', '1', '0', '0', '0', '1', '0'],
+                  name: 'Y3',
+                  emphasis: {
+                    itemStyle: {}
+                  },
+                  type: 'bar'
+                }
+              ]
+            },
+            lineChartOptions: {
+              xAxis: chartXAxis,
+              yAxis: chartYAxis,
+              grid: chartGrid,
+              series: [
+                {
+                  data: ['3900', '3340', '3300', '2500', '2000', '520', '100'],
+                  name: 'Y1',
+                  emphasis: {
+                    itemStyle: {}
+                  },
+                  type: 'line',
+                  smooth: false
+                },
+                {
+                  data: ['3400', '3617', '4200', '1842', '3000', '800', '500'],
+                  name: 'Y2',
+                  emphasis: {
+                    itemStyle: {}
+                  },
+                  type: 'line',
+                  smooth: false
+                }
+              ],
+            },
+            scatterChartOptions: {
+              xAxis: chartXAxis,
+              yAxis: chartYAxis,
+              grid: chartGrid,
+              series: [
+                {
+                  data: ['3900', '3340', '3300', '2500', '2000', '520', '100'],
+                  name: 'Y1',
+                  emphasis: {
+                    itemStyle: {}
+                  },
+                  type: 'scatter'
+                },
+                {
+                  data: ['3400', '3617', '4200', '1842', '3000', '800', '500'],
+                  name: 'Y2',
+                  emphasis: {
+                    itemStyle: {}
+                  },
+                  type: 'scatter'
+                }
+              ]
+            },
+            radarChartOptions: {
+              radar: {
+                indicator: [
+                  {
+                    max: '500',
+                    name: 'Mon'
+                  },
+                  {
+                    max: '800',
+                    name: 'Tue'
+                  },
+                  {
+                    max: '3000',
+                    name: 'Wed'
+                  },
+                  {
+                    max: '3617',
+                    name: 'Thu'
+                  },
+                  {
+                    max: '3400',
+                    name: 'Fri'
+                  },
+                  {
+                    max: '4200',
+                    name: 'Sat'
+                  },
+                  {
+                    max: '1842',
+                    name: 'Sun'
+                  }
+                ],
+                shape: 'circle',
+                splitArea: {
+                  show: false
+                },
+                axisLine: {
+                  lineStyle: {}
+                },
+                name: {
+                  textStyle: {}
+                },
+                splitLine: {
+                  lineStyle: {}
+                },
+                splitNumber: 5,
+                radius: '70%'
+              },
+              grid: {
+                top: 35,
+                left: 50,
+                bottom: 25
+              },
+              legend: {
+                data: ['Y1'],
+                textStyle: {},
+                show: false,
+                top: 'auto',
+                bottom: 'auto'
+              },
+              series: [
+                {
+                  barWidth: '80%',
+                  data: [
+                    {
+                      name: 'Y1',
+                      value: ['100', '520', '2000', '3340', '3900', '3300', '2500']
+                    }
+                  ],
+                  name: '示范数据',
+                  emphasis: {
+                    itemStyle: {}
+                  },
+                  type: 'radar'
+                }
+              ],
+              tooltip: {
+                axisPointer: {
+                  shadowStyle: {},
+                  type: 'shadow'
+                },
+                trigger: 'axis',
+                textStyle: {
+                  align: 'left'
+                }
+              },
+              textStyle: {
+                fontFamily: 'Microsoft YaHei Light'
+              },
+              title: {
+                padding: [5, 0, 0, 20],
+                x: 'left',
+                text: '',
+                textStyle: {
+                  fontFamily: 'Microsoft YaHei Light',
+                  fontWeight: '100'
+                }
+              }
+            },
+            pieChartOptions: {
+              tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+              },
+              legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                show: true,
+                top: 'auto',
+                bottom: 'auto'
+              },
+              series: [
+                {
+                  name: '示范数据',
+                  type: 'pie',
+                  radius: '80%',
+                  avoidLabelOverlap: false,
+                  label: {
+                    normal: {
+                      show: false,
+                      position: 'center'
+                    },
+                    emphasis: {
+                      show: true,
+                      textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                      }
+                    }
+                  },
+                  labelLine: {
+                    normal: {
+                      show: false
+                    }
+                  },
+                  data: [
+                    {
+                      value: 500,
+                      name: 'Mon'
+                    },
+                    {
+                      value: 800,
+                      name: 'Tue'
+                    },
+                    {
+                      value: 3000,
+                      name: 'Wed'
+                    },
+                    {
+                      value: 3617,
+                      name: 'Thu'
+                    },
+                    {
+                      value: 3400,
+                      name: 'Fri'
+                    },
+                    {
+                      value: 4200,
+                      name: 'Sat'
+                    },
+                    {
+                      value: 1842,
+                      name: 'Sun'
+                    }
+                  ]
+                }
+              ]
+            },
+            gaugeChartOptions: {
+              tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+              },
+              series: [
+                {
+                  name: '业务指标',
+                  type: 'gauge',
+                  radius: '100%',
+                  pointer: {
+                    width: 5
+                  },
+                  axisLine: {
+                    lineStyle: {
+                      // 属性lineStyle控制线条样式
+                      width: 12
+                    }
+                  },
+                  splitLine: {
+                    // 分隔线
+                    length: 6 // 属性length控制线长
+                  },
+                  axisTick: {
+                    // 坐标轴小标记
+                    length: 12, // 属性length控制线长
+                    lineStyle: {
+                      // 属性lineStyle控制线条样式
+                      color: 'auto'
+                    }
+                  },
+                  detail: {
+                    formatter: '{value}%',
+                    fontSize: 20
+                  },
+                  data: [{ value: 50 }]
+                }
+              ]
+            }
+          };
+        },
+        mounted() {
+          //{{resources.text_opt_border}}最好配上透明主题， body设置一个底色
+          SuperMap.Components.setTheme({
+            textColor: '#eee',
+            background: 'rgba(0,0,0,0)',
+            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8']
+          });
+          document.getElementsByTagName('body')[0].style.background = 'rgba(0, 0, 0, 0.9)';
+        }
+      });
+    </script>
+  </body>
+</html>

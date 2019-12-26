@@ -2,11 +2,11 @@
 import './openlayers/control/ChangeTileVersionSpec.js';
 
 /*openlayers -- core*/
-import './openlayers/core/StyleUtilsSpec.js';
+import './openlayers/core/StyleUtilsSpec.js'; 
 import './openlayers/core/UtilSpec.js';
 import './openlayers/core/MapExtendSpec.js';
 
-/*openlayers -- mapping*/
+// /*openlayers -- mapping*/
 import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/TileSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
@@ -18,7 +18,7 @@ import './openlayers/overlay/GraphicSpec.js';
 
 import './openlayers/overlay/GraphSpec.js';
 import './openlayers/overlay/HeatMapSpec.js';
-import './openlayers/overlay/LabelSpec';
+import './openlayers/overlay/LabelSpec.js';
 import './openlayers/overlay/MapvSpec.js';
 import './openlayers/overlay/RangeSpec.js';
 import './openlayers/overlay/RankSymbolSpec.js';
@@ -29,10 +29,10 @@ import './openlayers/overlay/theme/GeoFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeSpec.js';
 import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
-import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
+// import './openlayers/overlay/vectortile/MapboxStylesSpec.js';  // OLMS ol is not defined
 import './openlayers/overlay/TurfSpec.js';
 
-/**openlayers --services**/
+// /**openlayers --services**/
 import './openlayers/services/BufferAnalysisSpec.js';
 import './openlayers/services/DensityAnalysisSpec.js';
 import './openlayers/services/EditFeaturesSpec.js';

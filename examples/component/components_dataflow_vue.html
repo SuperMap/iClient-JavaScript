@@ -1,0 +1,122 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_componentsDataFlow_Vue"></title>
+        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+        <script
+            include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <style>
+            #main {
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-web-map :map-options="mapOptions">
+                <sm-data-flow-layer
+                    :service-url="dataFlowUrl"
+                    :layer-style="layerStyle"
+                ></sm-data-flow-layer>
+            </sm-web-map>
+        </div>
+        <script>
+            var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+            var wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
+            var attribution =
+                "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+            SuperMap.SecurityManager.registerToken(
+                "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow",
+                window.exampleToken
+            );
+            // 模拟 dataflow 实时数据
+            var featureResult, dataFlowBroadcast, timer;
+            function broadcast() {
+                var features = [];
+                for (var index = 0; index < featureResult.length; index++) {
+                    var count = parseInt(Math.random() * featureResult.length);
+                    var geometry = featureResult[count].geometry;
+                    var feature = {
+                        geometry: geometry,
+                        type: "Feature",
+                        properties: { id: index + 1, time: new Date() }
+                    };
+                    features.push(feature);
+                }
+                dataFlowBroadcast.broadcast(features);
+            }
+
+            function query() {
+                var param = new SuperMap.QueryBySQLParameters({
+                    queryParams: { name: "Capitals@World#3", attributeFilter: "SMID > 0" }
+                });
+                var queryService = new mapboxgl.supermap.QueryService(
+                    host + "/iserver/services/map-world/rest/maps/World"
+                ).queryBySQL(param, function(serviceResult) {
+                    featureResult = serviceResult.result && serviceResult.result.recordsets[0].features.features;
+                    dataFlowBroadcast = new mapboxgl.supermap.DataFlowService(
+                        wsHost + "/iserver/services/dataflowTest/dataflow"
+                    ).initBroadcast();
+                    dataFlowBroadcast.on("broadcastSocketConnected", function(e) {
+                        timer = window.setInterval(broadcast, 2000);
+                    });
+                });
+            }
+            query();
+
+            new Vue({
+                el: "#main",
+                data() {
+                    return {
+                        dataFlowUrl: wsHost + "/iserver/services/dataflowTest/dataflow",
+                        layerStyle: {
+                            circle: new SuperMap.Components.commontypes.CircleStyle({
+                                "circle-color": "#3fb1e3",
+                                "circle-radius": 6
+                            })
+                        },
+                        mapOptions: {
+                            container: "map",
+                            style: {
+                                version: 8,
+                                sources: {
+                                    "raster-tiles": {
+                                        attribution: attribution,
+                                        type: "raster",
+                                        tiles: [
+                                            host +
+                                                "/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}"
+                                        ],
+                                        tileSize: 256
+                                    }
+                                },
+                                layers: [
+                                    {
+                                        id: "simple-tiles",
+                                        type: "raster",
+                                        source: "raster-tiles",
+                                        minzoom: 0,
+                                        maxzoom: 22
+                                    }
+                                ]
+                            },
+                            center: [120.143, 30.236],
+                            zoom: 0
+                        }
+                    };
+                }
+            });
+        </script>
+    </body>
+</html>

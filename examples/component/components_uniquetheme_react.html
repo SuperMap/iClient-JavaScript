@@ -1,0 +1,446 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsUniqueTheme_React"></title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main,
+      #map-container {
+        height: 100%;
+        position: relative;
+      }
+
+      .info-container {
+        width: 272px;
+        position: absolute;
+        right: 0;
+        top: 250px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="map-container"></div>
+      <div class="info-container">
+        <div id="infoBox" class="panel panel-primary infoPane" style="display: none;">
+          <div class="panel-heading">
+            <h5 class="panel-title text-center" data-i18n="resources.text_attributeTable"></h5>
+          </div>
+          <div id="infoContent" class="panel-body content"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" include="widgets,react,bootstrap" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/babel">
+      widgets.loader.showLoader('data loading...');
+      var HOST = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
+
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmUniqueThemeLayer = SuperMap.Components.SmUniqueThemeLayer;
+      var mapOptions = {
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [HOST + '/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+      };
+
+      var themeOptions = {
+        //                map: map, //该可选参数将在下个版本遗弃
+        attributions: ' ',
+        style: {
+          shadowBlur: 3,
+          shadowColor: '#000000',
+          shadowOffsetX: 1,
+          shadowOffsetY: 1,
+          fillColor: '#FFFFFF'
+        },
+        isHoverAble: true,
+        highlightStyle: {
+          stroke: true,
+          strokeWidth: 2,
+          strokeColor: 'blue',
+          fillColor: '#00F5FF',
+          fillOpacity: 0.2
+        },
+        themeField: 'LANDTYPE',
+        styleGroups: [
+          {
+            value: '草地',
+            style: {
+              fillColor: '#C1FFC1'
+            }
+          },
+          {
+            value: '城市',
+            style: {
+              fillColor: '#CD7054'
+            }
+          },
+          {
+            value: '灌丛',
+            style: {
+              fillColor: '#7CCD7C'
+            }
+          },
+          {
+            value: '旱地',
+            style: {
+              fillColor: '#EE9A49'
+            }
+          },
+          {
+            value: '湖泊水库',
+            style: {
+              fillColor: '#8EE5EE'
+            }
+          },
+          {
+            value: '经济林',
+            style: {
+              fillColor: '#548B54'
+            }
+          },
+          {
+            value: '沙漠',
+            style: {
+              fillColor: '#DEB887'
+            }
+          },
+          {
+            value: '水浇地',
+            style: {
+              fillColor: '#E0FFFF'
+            }
+          },
+          {
+            value: '水田',
+            style: {
+              fillColor: '#388E8E'
+            }
+          },
+          {
+            value: '用材林',
+            style: {
+              fillColor: '#556B2F'
+            }
+          },
+          {
+            value: '沼泽',
+            style: {
+              fillColor: '#2F4F4F'
+            }
+          },
+          {
+            value: '缺省风格',
+            style: {
+              fillColor: '#ABABAB'
+            }
+          }
+        ]
+      };
+      var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+      getFeatureParam = new SuperMap.FilterParameter({
+        name: 'Jingjin',
+        attributeFilter: 'SMID > -1'
+      });
+      getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        toIndex: 500,
+        datasetNames: ['Jingjin:Landuse_R']
+      });
+      getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+        format: SuperMap.DataFormat.ISERVER,
+        eventListeners: { processCompleted: processCompleted }
+      });
+      getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+
+      function processCompleted(getFeaturesEventArgs) {
+        var result = getFeaturesEventArgs.result;
+        var feas = [];
+        if (result && result.features) {
+          widgets.loader.removeLoader();
+          var resultFeatures = result.features;
+          var IHFeas = [],
+            features; //岛洞多面
+          for (var i = 0, len = resultFeatures.length; i < len; i++) {
+            var feature = resultFeatures[i];
+            var smid = feature.fieldValues[0];
+            if (smid === '86' || smid === '87' || smid === '89') {
+              // islandHoleHandlerForFeature 处理岛洞面
+              IHFeas.push(islandHoleHandlerForFeature(feature));
+            } else {
+              feas.push(feature);
+            }
+          }
+          // 岛洞多面要素必需在其他要素之前添加
+          features = IHFeas.concat(feas);
+
+          ReactDOM.render(
+            <SmWebMap mapOptions={mapOptions}>
+              <SmUniqueThemeLayer options={themeOptions} data={features} onMousemove={handleLayerMousemove} />
+            </SmWebMap>,
+            document.getElementById('map-container')
+          );
+        }
+      }
+
+      function handleLayerMousemove(params) {
+        var e = params.mapboxEvent;
+        var themeLayer = params.map.getLayer(params.layerId);
+        if (e.target && e.target.refDataID) {
+          document.getElementById('infoBox').style.display = 'block';
+          var fid = e.target.refDataID;
+          var fea = themeLayer.getFeatureById(fid);
+          if (fea) {
+            document.getElementById('infoContent').innerHTML = '';
+            document.getElementById('infoContent').innerHTML += 'ID: ' + fea.attributes.SMID + '<br/>';
+            document.getElementById('infoContent').innerHTML +=
+              resources.text_landType + ': ' + fea.attributes.LANDTYPE + '<br/>';
+            document.getElementById('infoContent').innerHTML +=
+              resources.text_area + parseFloat(fea.attributes.SMAREA).toFixed(5) + '<br/>';
+          }
+        } else {
+          document.getElementById('infoContent').innerHTML = '';
+          document.getElementById('infoBox').style.display = 'none';
+        }
+      }
+
+      /*
+       * Method: islandHoleHandlerForFeature。
+       * 要素岛洞处理。
+       *
+       * 多面中，一个子面包含另一个子面，则被包含子面处理为岛洞。
+       *
+       * Parameters:
+       * multiPolygon - {<SuperMap.Feature.Vector>} 需要进行岛洞处理的要素。
+       *
+       * Returns:
+       * {<SuperMap.Feature.Vector>} 处理后的要素。
+       */
+      function islandHoleHandlerForFeature(feature) {
+        if (feature.geometry instanceof SuperMap.Geometry.MultiPolygon && feature.geometry.components.length > 1) {
+          var newGeometry = islandHoleHandlerForMultiPolygon(feature.geometry);
+          feature.geometry = newGeometry;
+        }
+        return feature;
+
+        /*
+         * Method: islandHoleHandlerForMultiPolygon
+         * 处理误判为岛洞的多面。
+         *
+         * iClient 在解析 iServer 数据时，默认将面要素处理为 MultiPolygon 类型，但有的面要素带有岛洞，
+         * 这种情况下应该做特殊处理，本函数可以对一个多面进行岛洞处理，并返回新的多面。
+         *
+         * Parameters:
+         * multiPolygon - {<SuperMap.Geometry.MultiPolygon>} 需要进行岛洞处理的多面。
+         *
+         * Returns:
+         * {<SuperMap.Geometry.MultiPolygon>} 处理后的多面。
+         */
+        function islandHoleHandlerForMultiPolygon(multiPolygon) {
+          if (multiPolygon instanceof SuperMap.Geometry.MultiPolygon && multiPolygon.components.length > 1) {
+            var mPTmp = multiPolygon.clone();
+            var componentsPolygons = mPTmp.components;
+
+            //洞面关系数组
+            var polygonHoleGroup = [];
+
+            for (var k = 0, len = componentsPolygons.length; k < len; k++) {
+              var geoPolygon = componentsPolygons[k];
+
+              //不处理已经是岛洞的面
+              if ((geoPolygon.components.length = 1)) {
+                var lineRings = geoPolygon.components[0];
+
+                //将每个点放到面中进行判断
+                for (var j = 0, len1 = componentsPolygons.length; j < len1; j++) {
+                  if (componentsPolygons[j].components.length != 1) continue;
+
+                  if (j != k) {
+                    var polygonGeoComp = componentsPolygons[j].components[0].components;
+
+                    //假设此面为岛洞
+                    var isAllPoiIn = true;
+
+                    for (var i = 0, len2 = geoPolygon.components.length; i < len2; i++) {
+                      var point = lineRings.components[i];
+                      if (isPointInPoly(point, polygonGeoComp) == false) {
+                        isAllPoiIn = false;
+                        continue;
+                      }
+                    }
+
+                    //确定并记录洞面关系
+                    if (isAllPoiIn == true) {
+                      var polygonHole = [j, k];
+                      polygonHoleGroup.push(polygonHole);
+                    }
+                  }
+                }
+              } else {
+                continue;
+              }
+            }
+            // 根据洞面信息重构多面 Geometry。
+            var bPsTmp = [];
+            var hPsTmp = [];
+            for (var m = 0, len3 = polygonHoleGroup.length; m < len3; m++) {
+              bPsTmp.push(polygonHoleGroup[m][0]);
+              hPsTmp.push(polygonHoleGroup[m][1]);
+            }
+
+            //岛洞基础面
+            var bPs = delRepeatInArray(bPsTmp);
+            //洞面
+            var hPs = delRepeatInArray(hPsTmp);
+
+            //独立面
+            var iPs = [];
+            //查找独立面
+            for (var isIPs = 0, compLen = componentsPolygons.length; isIPs < compLen; isIPs++) {
+              var isNoHP = true;
+
+              for (var o = 0, len = bPs.length; o < len; o++) {
+                if (isIPs == bPs[o]) {
+                  isNoHP = false;
+                  break;
+                }
+              }
+
+              if (isNoHP == true) {
+                for (var o = 0, len = hPs.length; o < len; o++) {
+                  if (isIPs == hPs[o]) {
+                    isNoHP = false;
+                    break;
+                  }
+                }
+              }
+
+              if (isNoHP == true) {
+                iPs.push(isIPs);
+              }
+            }
+
+            //新洞面信息
+            var hpInfo = [];
+
+            //组织新geometry所需要的信息
+            for (var o = 0, len4 = bPs.length; o < len4; o++) {
+              var ph = [];
+              ph.push(bPs[o]);
+              for (var m = 0, len3 = polygonHoleGroup.length; m < len3; m++) {
+                if (bPs[o] == polygonHoleGroup[m][0]) {
+                  ph.push(polygonHoleGroup[m][1]);
+                }
+              }
+
+              if (ph.length > 1) {
+                hpInfo.push(ph);
+              }
+            }
+
+            var newComponents = [];
+            //岛洞子面处理
+            for (var m = 0, len3 = hpInfo.length; m < len3; m++) {
+              var geoP = hpInfo[m];
+              var newLineRings = [];
+              for (var n = 0, len6 = geoP.length; n < len6; n++) {
+                newLineRings.push(componentsPolygons[geoP[n]].components[0]);
+              }
+              var newGeoPolygon = new SuperMap.Geometry.Polygon(newLineRings);
+              newComponents.push(newGeoPolygon);
+            }
+
+            //独立子面处理
+            for (var s = 0, len7 = iPs.length; s < len7; s++) {
+              var is = iPs[s];
+              newComponents.push(componentsPolygons[is]);
+            }
+
+            multiPolygon.components = newComponents;
+          }
+
+          return multiPolygon;
+        }
+
+        /*
+         * Method: delRepeatInArray
+         * 删除数组中的重复元素。
+         *
+         * Parameters:
+         * arr - {Array} 要进行重复元素删除的数组。
+         *
+         * Returns:
+         * {Array} 无重复元素的数组。
+         */
+        function delRepeatInArray(arr) {
+          var newArray = [];
+          var provisionalTable = {};
+          for (var i = 0, a; (a = arr[i]) != null; i++) {
+            if (!provisionalTable[a]) {
+              newArray.push(a);
+              provisionalTable[a] = true;
+            }
+          }
+          return newArray;
+        }
+
+        /*
+         * Method: PointInPoly
+         * 判断一个点是否在多边形里面。(射线法)
+         *
+         * Parameters:
+         * pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+         * poly - {Array(Objecy)}  多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+         *
+         * Returns:
+         * {Boolean} 点是否在多边形内。
+         */
+        function isPointInPoly(pt, poly) {
+          for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y)) &&
+              pt.x < ((poly[j].x - poly[i].x) * (pt.y - poly[i].y)) / (poly[j].y - poly[i].y) + poly[i].x &&
+              (isIn = !isIn);
+          return isIn;
+        }
+      }
+    </script>
+  </body>
+</html>

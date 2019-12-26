@@ -1,0 +1,100 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsFireLayer_React"></title>
+    <script type="text/javascript" include="react,jquery" src="../js/include-web.js"></script>
+    <script include="antd,three,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmFireLayer = SuperMap.Components.SmFireLayer;
+      var mapOptions = {
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            },
+            buildings: {
+              type: 'geojson',
+              data: 'https://iclient.supermap.io/examples/data/buildings.json'
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            },
+            {
+              id: '3d-buildings',
+              source: 'buildings',
+              type: 'fill-extrusion',
+              paint: {
+                'fill-extrusion-color': [
+                  'case',
+                  ['<', ['get', 'height'], 2],
+                  '#fbb03b',
+                  ['<', ['get', 'height'], 4],
+                  '#223b53',
+                  ['<', ['get', 'height'], 8],
+                  '#15D1F2',
+                  ['<', ['get', 'height'], 16],
+                  '#15D1F2',
+                  '#3bb2d0'
+                ],
+                'fill-extrusion-height': ['*', ['get', 'height'], 5],
+                'fill-extrusion-opacity': 0.6
+              }
+            }
+          ]
+        },
+        center: [116.45423056455218, 39.91980158816503],
+        zoom: 14.27415578362124,
+        bearing: 0.8568,
+        pitch: 60
+      };
+
+      $.get('../data/fire.json', function(features) {
+        var features = features;
+
+        ReactDOM.render(
+          <SmWebMap mapOptions={mapOptions}>
+            <SmFireLayer features={features} modelScale={5.41843220338983e-6} />
+          </SmWebMap>,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>

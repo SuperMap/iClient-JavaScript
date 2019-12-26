@@ -1,4 +1,7 @@
-﻿(function () {
+﻿/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+(function () {
     var r = new RegExp("(^|(.*?\\/))(include-openlayers\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'),
         targetScript;
@@ -49,66 +52,74 @@
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
-        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug')) {
-            inputCSS("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js");
+        // 在线
+        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5')) {
+            inputCSS("https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css");
+            inputScript("https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js");
+        }
+        if (inArray(includes, 'ol@4.6.5')){
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol.js");
         }
         if (inArray(includes, 'ol-debug')) {
-            inputCSS("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.js");
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("http://mapv.baidu.com/build/mapv.min.js");
+            inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.43/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js");
-        }
-        if (inArray(includes, 'ol-mapbox-style')) {
-            inputScript("http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
-        }
-
-        if (inArray(includes, 'deck')) {
-            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
-        }
-        if (!inArray(excludes, 'iclient9-openlayers')) {
-            if (supportES6()) {
-                inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
-            } else {
-                inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
-            }
-        }
-        if (!inArray(excludes, 'iclient9-openlayers-css')) {
-            inputCSS("../../dist/openlayers/iclient9-openlayers.min.css");
+            inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
-        }
-        if (inArray(includes, 'ol3-echarts')) {
-            inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/1.3.4/ol3Echarts.min.js");
-        }
-        if (inArray(includes, 'osmbuildings')) {
-            inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");
-        }
-        if (inArray(includes, 'animatedclusterlayer')) {
-            inputScript("http://iclient.supermap.io/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
+            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js");
+            inputScript('https://cdn.bootcss.com/proj4js/2.6.0/proj4.js');
+        }
+        if (inArray(includes, 'ol3-echarts')) {
+          inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.1/dist/ol3Echarts.min.js");
+        }
+        if (inArray(includes, 'ol3-echarts@1.3.6')) {
+          inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js");
+        }
+        if (inArray(includes, 'ol-mapbox-style')) {
+            inputScript("https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
+        }
+        if (inArray(includes, 'deck')) {
+            inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
+        }
+        if (inArray(includes, 'osmbuildings')) {
+            inputScript("https://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-OL3.js");
+        }
+        if (inArray(includes, 'animatedclusterlayer')) {
+            inputScript("https://iclient.supermap.io/web/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
         }
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
-            inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.js");
+            inputCSS("https://iclient.supermap.io/web/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
+            inputScript("https://iclient.supermap.io/web/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.js");
         }
         if (inArray(includes, 'jsonsql')) {
-            inputScript("http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js");
+            inputScript("https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js");
         }
         if (inArray(includes, 'geostats')) {
-            inputScript("http://iclient.supermap.io/web/libs/geostats/geostats.js");
+            inputScript("https://iclient.supermap.io/web/libs/geostats/geostats.js");
         }
         if (inArray(includes, 'canvg')) {
-            inputScript("http://iclient.supermap.io/web/libs/canvg/canvg.min.js");
+            inputScript("https://cdn.jsdelivr.net/npm/canvg@3.0.2/lib/umd.min.js");
         }
-
+        
+        // dist
+        if (!inArray(excludes, 'iclient-openlayers')) {
+          if (supportES6()) {
+              inputScript("../../dist/openlayers/iclient-openlayers-es6.min.js");
+          } else {
+              inputScript("../../dist/openlayers/iclient-openlayers.min.js");
+          }
+        }
+        if (!inArray(excludes, 'iclient-openlayers-css')) {
+            inputCSS("../../dist/openlayers/iclient-openlayers.min.css");
+        }
     }
 
     load();

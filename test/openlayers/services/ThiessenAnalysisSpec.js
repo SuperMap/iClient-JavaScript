@@ -1,8 +1,17 @@
-import ol from 'openlayers';
-import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
-import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
-import {GeometryThiessenAnalystParameters} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
-import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import {
+    SpatialAnalystService
+} from '../../../src/openlayers/services/SpatialAnalystService';
+import {
+    DatasetThiessenAnalystParameters
+} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
+import {
+    GeometryThiessenAnalystParameters
+} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
+
+import Point from 'ol/geom/Point';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -44,16 +53,16 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
     it('thiessenAnalysis_geometry', (done) => {
         //创建几何泰森多边形参数
         var pointsList = [
-            new ol.geom.Point([5238.998556, -1724.229865]),
-            new ol.geom.Point([4996.270055, -2118.538477]),
-            new ol.geom.Point([5450.34263, -2070.794081]),
-            new ol.geom.Point([5317.70775, -2521.162355]),
-            new ol.geom.Point([5741.149405, -1970.130198]),
-            new ol.geom.Point([4716.133098, -1575.858795]),
-            new ol.geom.Point([5447.671615, -2255.928819]),
-            new ol.geom.Point([4783.423507, -1135.598744]),
-            new ol.geom.Point([5472.712382, -2189.15344]),
-            new ol.geom.Point([5752.716961, -2425.40363])
+            new Point([5238.998556, -1724.229865]),
+            new Point([4996.270055, -2118.538477]),
+            new Point([5450.34263, -2070.794081]),
+            new Point([5317.70775, -2521.162355]),
+            new Point([5741.149405, -1970.130198]),
+            new Point([4716.133098, -1575.858795]),
+            new Point([5447.671615, -2255.928819]),
+            new Point([4783.423507, -1135.598744]),
+            new Point([5472.712382, -2189.15344]),
+            new Point([5752.716961, -2425.40363])
         ];
         var gThiessenAnalystParameters = new GeometryThiessenAnalystParameters({
             points: pointsList

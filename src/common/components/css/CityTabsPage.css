@@ -1,0 +1,77 @@
+/**CityTabsPage 样式**/
+.component-tabpage {
+    width: 488px;
+    margin: 3px auto 0 auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+/*header*/
+.component-tabpage ul {
+    margin: 0;
+    padding: 0;
+    height: 39px;
+    line-height: 31px;
+    overflow: hidden;
+}
+
+.component-tabpage ul li {
+    float: left;
+    list-style: none;
+    padding: 7px 7px 0 7px;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    display: inline;
+    color: #0083CB;
+}
+
+.component-tabpage ul li.on {
+    border-bottom-color: #0083cb;
+    position: relative;
+}
+
+/*content*/
+.component-tabpage__content {
+    border-top: 1px solid #DDD;
+    margin-top: -1px;
+    clear: left;
+    overflow: hidden;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.component-tabpage__content div {
+    float: left;
+}
+
+/** CityTabsPage 样式**/
+.component-citytabpage--noneBoxShadow {
+    box-shadow: none;
+}
+
+.component-citytabpag__py-key {
+    display: inline-block;
+    padding-left: 7px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #0083CB;
+    vertical-align: top;
+}
+
+.component-citytabpag__content {
+    margin-left: 14px;
+    max-width: 450px;
+}
+
+.component-citytabpag__content > span {
+    display: inline-block;
+    float: left;
+    height: 18px;
+    line-height: 18px;
+    margin: 8px 24px 8px 0;
+    text-align: left;
+    cursor: pointer;
+}
+
+.component-citytabpag__content > span:hover {
+    color: #0083CB;
+}

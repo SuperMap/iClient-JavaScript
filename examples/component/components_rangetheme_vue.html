@@ -1,0 +1,202 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsRangeTheme_Vue"></title>
+    <style>
+        #main {
+            margin: 0 auto;
+        }
+
+        #main,
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%
+        }
+
+        .legendItemHeader,
+        .legendItemValue {
+            width: 120px;
+            height: 18px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="main">
+        <sm-web-map :map-options="mapOptions" @load="mapIsLoaded">
+            <sm-range-theme-layer :options="themeOptions" layer-name="RangeThemeLayer"
+                :data="features" @load="layerLoaded" v-show="!!features.length">
+            </sm-range-theme-layer>
+        </sm-web-map>
+        <!-- 属性表 -->
+        <div style="width: 272px;float:right">
+            <div id="infoBox" class="panel panel-primary infoPane"
+                style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
+                <div class="panel-heading">
+                    <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable"></h5>
+                </div>
+                <div id="infoContent" class="panel-body content">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" include="widgets,vue,bootstrap" src="../js/include-web.js"></script>
+    <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+        src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script>
+        widgets.loader.showLoader('data loading...');
+        var HOST = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var features = [];
+        function createThemeFeatures() {
+            var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+            getFeatureParam = new SuperMap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            });
+            getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+                queryParameter: getFeatureParam,
+                toIndex: 500,
+                datasetNames: ["Jingjin:BaseMap_R"]
+            });
+            var dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
+            getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+                format: SuperMap.DataFormat.ISERVER,
+                eventListeners: { "processCompleted": processCompleted }
+            });
+            getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        };
+
+        createThemeFeatures();
+
+        function processCompleted(getFeaturesEventArgs) {
+            var result = getFeaturesEventArgs.result;
+            if (result && result.features) {
+				widgets.loader.removeLoader();
+                features = result.features;
+                new Vue({
+                    el: '#main',
+                    data() {
+                        var attribution =
+                            "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+                        return {
+                            mapOptions: {
+                                container: 'map',
+                                style: {
+                                    "version": 8,
+                                    "sources": {
+                                        "raster-tiles": {
+                                            "attribution": attribution,
+                                            "type": "raster",
+                                            "tiles": [HOST + '/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                                            "tileSize": 256,
+                                        },
+                                    },
+                                    "layers": [{
+                                        "id": "simple-tiles",
+                                        "type": "raster",
+                                        "source": "raster-tiles",
+                                        "minzoom": 0,
+                                        "maxzoom": 22
+                                    }]
+                                },
+                                center: [116.85, 39.79],
+                                zoom: 7
+                            },
+                            features,
+                            themeOptions: {
+                                //                map: map,//该可选参数将在下个版本遗弃
+                                attributions: " ",
+                                opacity: 0.8,
+                                style: {
+                                    shadowBlur: 16,
+                                    shadowColor: "#000000",
+                                    fillColor: "#FFFFFF"
+                                },
+                                isHoverAble: true,
+                                highlightStyle: {
+                                    stroke: true,
+                                    strokeWidth: 4,
+                                    strokeColor: 'blue',
+                                    fillColor: "#00EEEE",
+                                    fillOpacity: 0.8
+                                },
+                                themeField: "POP_DENSITY99",
+                                styleGroups: [
+                                    {
+                                        start: 0,
+                                        end: 0.02,
+                                        style: {
+                                            color: '#FDE2CA'
+                                        }
+                                    },
+                                    {
+                                        start: 0.02,
+                                        end: 0.04,
+                                        style: {
+                                            color: '#FACE9C'
+                                        }
+                                    },
+                                    {
+                                        start: 0.04,
+                                        end: 0.06,
+                                        style: {
+                                            color: '#F09C42'
+                                        }
+                                    },
+                                    {
+                                        start: 0.06,
+                                        end: 0.1,
+                                        style: {
+                                            color: '#D0770B'
+                                        }
+                                    },
+                                    {
+                                        start: 0.1,
+                                        end: 0.2,
+                                        style: {
+                                            color: '#945305'
+                                        }
+                                    }]
+                            }
+                        };
+                    },
+                    methods: {
+                        mapIsLoaded(e) {
+                            this.map = e.map;
+                        },
+                        layerLoaded(themeLayer) {
+                            themeLayer.on('mousemove', function (e) {
+                                if (e.target && e.target.refDataID) {
+                                    document.getElementById("infoBox").style.display = "block";
+                                    var fid = e.target.refDataID;
+                                    var fea = themeLayer.getFeatureById(fid);
+                                    if (fea) {
+                                        document.getElementById("infoContent").innerHTML = "";
+                                        document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
+                                        document.getElementById("infoContent").innerHTML += resources.text_districtName + fea.attributes.NAME + "<br/>";
+                                        document.getElementById("infoContent").innerHTML += resources.text_populationDensity + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + "<br/>";
+                                    }
+                                }
+                                else {
+                                    document.getElementById("infoContent").innerHTML = "";
+                                    document.getElementById("infoBox").style.display = "none";
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+    </script>
+</body>
+
+</html>

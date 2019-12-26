@@ -1,10 +1,18 @@
 // 开发代码有bug，因为用的静态方法，所以一旦设置了客户端样式就会一直保留，其它变量也可能有未被清除掉的现象。
 // 本测试待开发改好bug后需要调整测顺序，验证出图结果。
 // 目前一旦将使用客户端样式的测试放到最前面，则会影响后续测试。
-import ol from 'openlayers';
 import {VectorTileStyles} from '../../../../src/openlayers/overlay/vectortile/VectorTileStyles';
 import {MapService} from '../../../../src/openlayers/services/MapService';
 import {VectorTileSuperMapRest} from '../../../../src/openlayers/overlay/VectorTileSuperMapRest';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import GeoJSON from 'ol/format/GeoJSON';
+import Style from 'ol/style/Style';
+import CircleStyle from 'ol/style/Circle';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Text from 'ol/style/Text';
+import VectorTileLayer from 'ol/layer/VectorTile';
 
 var url = GlobeParameter.ChinaURL;
 describe('openlayers_VectorTileStyles', () => {
@@ -18,9 +26,9 @@ describe('openlayers_VectorTileStyles', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [12957388, 4853991],
                 zoom: 11
             })
@@ -51,7 +59,7 @@ describe('openlayers_VectorTileStyles', () => {
             view: mapView
         };
         var vectorTileStyles = new VectorTileStyles(stylesOptions);
-        // featureJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
+        // featureJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureJSON = {
             "type": "Feature",
             "geometry": {
@@ -66,7 +74,7 @@ describe('openlayers_VectorTileStyles', () => {
                 "type": "LINE"
             }
         };
-        var feature = (new ol.format.GeoJSON()).readFeature(featureJSON);
+        var feature = (new GeoJSON()).readFeature(featureJSON);
         var style = vectorTileStyles.getFeatureStyle(feature);
         setTimeout(() => {
             expect(style).not.toBeNull();
@@ -93,7 +101,7 @@ describe('openlayers_VectorTileStyles', () => {
             var vectorLayer;
             var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
-            vectorLayer = new ol.layer.VectorTile({
+            vectorLayer = new VectorTileLayer({
                 source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
@@ -112,36 +120,36 @@ describe('openlayers_VectorTileStyles', () => {
             url: url,
             view: mapView,
             donotNeedServerCartoCss: false,
-            selectedPointStyle: new ol.style.Style({
-                image: new ol.style.Circle({
+            selectedPointStyle: new Style({
+                image: new CircleStyle({
                     radius: 5,
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: 'red'
                     })
                 })
             }),
-            selectedLineStyle: new ol.style.Style({
-                stroke: new ol.style.Stroke({
+            selectedLineStyle: new Style({
+                stroke: new Stroke({
                     color: 'red',
                     width: 3
                 })
             }),
-            selectedRegionStyle: new ol.style.Style({
-                fill: new ol.style.Fill({
+            selectedRegionStyle: new Style({
+                fill: new Fill({
                     color: [0, 0, 255, 0.5]
                 }),
-                stroke: new ol.style.Stroke({
+                stroke: new Stroke({
                     color: 'red',
                     width: 3
                 })
             }),
-            selectedTextStyle: new ol.style.Style({
-                text: new ol.style.Text({
+            selectedTextStyle: new Style({
+                text: new Text({
                     font: '15px 微软雅黑',
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: 'red'
                     }),
-                    stroke: new ol.style.Stroke({
+                    stroke: new Stroke({
                         color: 'white',
                         width: 1
                     })
@@ -149,7 +157,7 @@ describe('openlayers_VectorTileStyles', () => {
             })
         };
         var vectorTileStyles = new VectorTileStyles(stylesOptions);
-        // featureJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
+        // featureJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureJSON = {
             "type": "Feature",
             "geometry": {
@@ -164,7 +172,7 @@ describe('openlayers_VectorTileStyles', () => {
                 "type": "LINE"
             }
         };
-        var feature = (new ol.format.GeoJSON()).readFeature(featureJSON);
+        var feature = (new GeoJSON()).readFeature(featureJSON);
         var style = vectorTileStyles.getFeatureStyle(feature);
         setTimeout(() => {
             expect(style).not.toBeNull();
@@ -190,7 +198,7 @@ describe('openlayers_VectorTileStyles', () => {
             var vectorLayer;
             var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
-            vectorLayer = new ol.layer.VectorTile({
+            vectorLayer = new VectorTileLayer({
                 source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
@@ -211,7 +219,7 @@ describe('openlayers_VectorTileStyles', () => {
             donotNeedServerCartoCss: true
         };
         var vectorTileStyles = new VectorTileStyles(stylesOptions);
-        // featureLineJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
+        // featureLineJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureLineJSON = {
             "type": "Feature",
             "geometry": {
@@ -226,7 +234,7 @@ describe('openlayers_VectorTileStyles', () => {
                 "type": "LINE"
             }
         };
-        var featureLine = (new ol.format.GeoJSON()).readFeature(featureLineJSON);
+        var featureLine = (new GeoJSON()).readFeature(featureLineJSON);
         var styleLine = vectorTileStyles.getFeatureStyle(featureLine);
         setTimeout(() => {
             expect(styleLine).not.toBeNull();
@@ -235,7 +243,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(styleLine.getStroke().getLineJoin()).toBe("round");
             expect(styleLine.getStroke().getMiterLimit()).toEqual(10);
         }, 1000);
-        // featureRegionJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
+        // featureRegionJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
         var featureRegionJSON = {
             "type": "Feature",
             "geometry": {
@@ -250,7 +258,7 @@ describe('openlayers_VectorTileStyles', () => {
                 "type": "REGION"
             }
         };
-        var featureRegion = (new ol.format.GeoJSON()).readFeature(featureRegionJSON);
+        var featureRegion = (new GeoJSON()).readFeature(featureRegionJSON);
         var styleRegion = vectorTileStyles.getFeatureStyle(featureRegion);
         setTimeout(() => {
             expect(styleRegion).not.toBeNull();
@@ -270,36 +278,36 @@ describe('openlayers_VectorTileStyles', () => {
             url: url,
             view: mapView,
             donotNeedServerCartoCss: false,
-            selectedPointStyle: new ol.style.Style({
-                image: new ol.style.Circle({
+            selectedPointStyle: new Style({
+                image: new CircleStyle({
                     radius: 5,
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: 'red'
                     })
                 })
             }),
-            selectedLineStyle: new ol.style.Style({
-                stroke: new ol.style.Stroke({
+            selectedLineStyle: new Style({
+                stroke: new Stroke({
                     color: 'red',
                     width: 3
                 })
             }),
-            selectedRegionStyle: new ol.style.Style({
-                fill: new ol.style.Fill({
+            selectedRegionStyle: new Style({
+                fill: new Fill({
                     color: [0, 0, 255, 0.5]
                 }),
-                stroke: new ol.style.Stroke({
+                stroke: new Stroke({
                     color: 'red',
                     width: 3
                 })
             }),
-            selectedTextStyle: new ol.style.Style({
-                text: new ol.style.Text({
+            selectedTextStyle: new Style({
+                text: new Text({
                     font: '15px 微软雅黑',
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: 'red'
                     }),
-                    stroke: new ol.style.Stroke({
+                    stroke: new Stroke({
                         color: 'white',
                         width: 1
                     })
@@ -312,7 +320,7 @@ describe('openlayers_VectorTileStyles', () => {
             var vectorLayer;
             var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
-            vectorLayer = new ol.layer.VectorTile({
+            vectorLayer = new VectorTileLayer({
                 source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
@@ -334,7 +342,7 @@ describe('openlayers_VectorTileStyles', () => {
             cartoCss: initClientCssStr()
         };
         var vectorTileStyles = new VectorTileStyles(stylesOptions);
-        // featureLineJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
+        // featureLineJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureLineJSON = {
             "type": "Feature",
             "geometry": {
@@ -349,7 +357,7 @@ describe('openlayers_VectorTileStyles', () => {
                 "type": "LINE"
             }
         };
-        var featureLine = (new ol.format.GeoJSON()).readFeature(featureLineJSON);
+        var featureLine = (new GeoJSON()).readFeature(featureLineJSON);
         var styleLine = vectorTileStyles.getFeatureStyle(featureLine);
         setTimeout(() => {
             expect(styleLine).not.toBeNull();
@@ -358,7 +366,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(styleLine.getStroke().getLineJoin()).toBe("round");
             expect(styleLine.getStroke().getMiterLimit()).toEqual(10);
         }, 1000);
-        // featureRegionJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
+        // featureRegionJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
         var featureRegionJSON = {
             "type": "Feature",
             "geometry": {
@@ -373,7 +381,7 @@ describe('openlayers_VectorTileStyles', () => {
                 "type": "REGION"
             }
         };
-        var featureRegion = (new ol.format.GeoJSON()).readFeature(featureRegionJSON);
+        var featureRegion = (new GeoJSON()).readFeature(featureRegionJSON);
         var styleRegion = vectorTileStyles.getFeatureStyle(featureRegion);
         setTimeout(() => {
             expect(styleRegion).not.toBeNull();
@@ -402,7 +410,7 @@ describe('openlayers_VectorTileStyles', () => {
             var vectorLayer;
             var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
-            vectorLayer = new ol.layer.VectorTile({
+            vectorLayer = new VectorTileLayer({
                 source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });

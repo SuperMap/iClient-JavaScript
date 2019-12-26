@@ -1,0 +1,256 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsAnimateMarkerLayer_React"></title>
+    <script type="text/javascript" include="react,jquery" src="../js/include-web.js"></script>
+    <script
+      type="text/javascript"
+      include="antd,mapbox-gl-enhance,iclient-mapboxgl-react"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      #main {
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+      }
+      .radio-group {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        text-align: center;
+        background: transparent;
+        z-index: 1000;
+      }
+      .radio-btn-wrap {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+      }
+      .radio-btn-item {
+        display: inline-block;
+        height: 32px;
+        line-height: 30px;
+        padding: 1px 15px;
+        background: rgb(0, 0, 0);
+        border: 1px solid rgb(73, 73, 73);
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+      }
+      .radio-btn-item:hover {
+        cursor: pointer;
+      }
+      .active-btn-item {
+        color: #1890ff;
+        border: 1px solid #1890ff;
+        border-radius: 4px 0 0 4px;
+        border-left: 1px solid #1890ff !important;
+      }
+    </style>
+  </head>
+
+  <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="main"></div>
+    <script type="text/babel">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-china400/rest/maps/China';
+      var param = new SuperMap.QueryBySQLParameters({
+        queryParams: {
+          name: 'China_provincename_A_txt@China',
+          attributeFilter: 'SMID > 0'
+        }
+      });
+      var mapUrl = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var mapOptions = {
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [mapUrl + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [105.98046235680022, 28.528014198723596],
+        zoom: 5.151412188068154,
+        bearing: 0.8568,
+        pitch: 60
+      };
+
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmAnimateMarkerLayer = SuperMap.Components.SmAnimateMarkerLayer;
+      // 类型选择
+      class RadioButton extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { type: 'breathingAperture' };
+          this.clickHandler = this.clickHandler.bind(this);
+        }
+        clickHandler(type) {
+          this.setState({ type });
+          this.props.onTypeChange(type);
+        }
+        render() {
+          return (
+            <div class="radio-group">
+              <ul class="radio-btn-wrap">
+                <li
+                  class={this.state.type === 'breathingAperture' ? 'radio-btn-item active-btn-item' : 'radio-btn-item'}
+                  value="breathingAperture"
+                  onClick={e => {
+                    this.clickHandler('breathingAperture');
+                  }}
+                >
+                  {resources.btn_breathingAperture}
+                </li>
+                <li
+                  class={this.state.type === 'haloRing' ? 'radio-btn-item active-btn-item' : 'radio-btn-item'}
+                  value="haloRing"
+                  onClick={e => {
+                    this.clickHandler('haloRing');
+                  }}
+                >
+                  {resources.btn_haloRing}
+                </li>
+                <li
+                  class={this.state.type === 'rotatingAperture' ? 'radio-btn-item active-btn-item' : 'radio-btn-item'}
+                  value="rotatingAperture"
+                  onClick={e => {
+                    this.clickHandler('rotatingAperture');
+                  }}
+                >
+                  {resources.btn_rotatingAperture}
+                </li>
+                <li
+                  class={this.state.type === 'diffusedAperture' ? 'radio-btn-item active-btn-item' : 'radio-btn-item'}
+                  value="diffusedAperture"
+                  onClick={e => {
+                    this.clickHandler('diffusedAperture');
+                  }}
+                >
+                  {resources.btn_diffusedAperture}
+                </li>
+                <li
+                  class={this.state.type === 'rotatingTextBorder' ? 'radio-btn-item active-btn-item' : 'radio-btn-item'}
+                  value="rotatingTextBorder"
+                  onClick={e => {
+                    this.clickHandler('rotatingTextBorder');
+                  }}
+                >
+                  {resources.btn_rotatingTextBorder}
+                </li>
+                <li
+                  class={this.state.type === 'fluorescence' ? 'radio-btn-item active-btn-item' : 'radio-btn-item'}
+                  value="fluorescence"
+                  onClick={e => {
+                    this.clickHandler('fluorescence');
+                  }}
+                >
+                  {resources.btn_fluorescence}
+                </li>
+              </ul>
+            </div>
+          );
+        }
+      }
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            type: 'breathingAperture',
+            breathingApertureParam: {
+              width: 80
+            },
+            haloRingParam: {
+              width: 44
+            },
+            rotatingTextBorderParam: {
+              width: 120
+            },
+            param: null
+          };
+          this.onTypeChange = this.onTypeChange.bind(this);
+          this.changeParam = this.changeParam.bind(this);
+        }
+        onTypeChange(type) {
+          this.setState({ type });
+          this.changeParam(type);
+        }
+        changeParam(type) {
+          let param;
+          if (this.state[type + 'Param']) {
+            param = this.state[type + 'Param'];
+          } else {
+            param = null;
+          }
+          this.setState({
+            param
+          });
+        }
+        componentDidMount() {
+          this.setState({
+            param: this.state.breathingApertureParam
+          });
+        }
+        render() {
+          return (
+            <SmWebMap mapOptions={this.props.mapOptions}>
+              <RadioButton onTypeChange={this.onTypeChange} />
+              <SmAnimateMarkerLayer
+                features={this.props.features}
+                type={this.state.type}
+                width={this.state.param && this.state.param.width}
+                textField="name"
+                fitBounds={false}
+              />
+            </SmWebMap>
+          );
+        }
+      }
+      var queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(param, function(serviceResult) {
+        var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
+        var features = recordsets && recordsets[0] && recordsets[0].features;
+        features.features.forEach(function(feature) {
+          feature.geometry.coordinates = _unproject(feature.geometry.coordinates);
+          feature.properties.name = feature.properties.texts[0];
+        });
+        // 渲染App组件
+        ReactDOM.render(<App mapOptions={mapOptions} features={features} />, document.getElementById('main'));
+      });
+      function _unproject(point) {
+        var d = 180 / Math.PI,
+          r = 6378137,
+          ts = Math.exp(-point[1] / r),
+          phi = Math.PI / 2 - 2 * Math.atan(ts);
+        for (var i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {
+          con = 1;
+          dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi;
+          phi += dphi;
+        }
+        return [(point[0] * d) / r, phi * d];
+      }
+    </script>
+  </body>
+</html>

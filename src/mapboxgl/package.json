@@ -1,12 +1,12 @@
 {
   "name": "@supermap/iclient-mapboxgl",
   "description": "",
-  "version": "10.0.0-beta",
+  "version": "10.0.1",
   "keywords": [
     "SuperMap",
     "MapboxGL"
   ],
-  "homepage": "http://iclient.supermap.io",
+  "homepage": "https://iclient.supermap.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/SuperMap/iClient-JavaScript.git"
@@ -14,13 +14,13 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "echarts": "4.1.0",
-    "mapv": "2.0.20",
-    "mapbox-gl": "0.45.0",
+    "echarts": "4.5.0",
+    "mapv": "2.0.43",
+    "mapbox-gl": "1.6.1",
     "three": "0.92.0",
-    "xlsx": "0.12.13",
-    "@supermap/iclient-common": "10.0.0-beta",
-    "canvg": "1.5.3",
+    "xlsx": "0.15.4",
+    "@supermap/iclient-common": "10.0.1",
+    "canvg": "3.0.2",
     "xml-js": "1.6.8"
   }
 }

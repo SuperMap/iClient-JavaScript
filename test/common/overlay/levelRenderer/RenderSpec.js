@@ -193,7 +193,7 @@ describe('Render', () => {
     });
 
     //动画对象为Shape数组, 且动画循环
-    it('animate_shape', () => {
+    it('animate_shape_loop', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();

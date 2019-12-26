@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title data-i18n='resources.title_chart_iPortal'></title>
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css,echarts" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="iclient-leaflet-css,echarts" src="../../dist/leaflet/include-leaflet.js"></script>
 
     <style>
         .chart-setting {
@@ -82,7 +82,7 @@
         init();
 
         function init() {
-            let container = document.getElementsByClassName("chart-setting")[0];
+            var container = document.getElementsByClassName("chart-setting")[0];
             container.innerHTML =
                 "<div class='chart-type-btn'>" +
                 "<button type='button' class='btn btn-default graph' id='scatter' title='" + resources.title_Scatter +
@@ -92,7 +92,7 @@
                 "<button type='button' class='btn btn-default graph active' id='bar' title='" + resources.title_GraphBar +
                 "''></button></div>"
         }
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map, resultLayer, url = host + "/iserver/services/map-world/rest/maps/World";
         //加载底图
         map = L.map('map', {
@@ -103,11 +103,11 @@
         });
         L.supermap.tiledMapLayer(url).addTo(map);
         //图表组件
-        let options = {
+        var options = {
             type: 'bar',
             datasets: {
                 type: 'iPortal',
-                url: 'http://support.supermap.com.cn:8092/web/datas/1920557079',
+                url: 'https://iportal.supermap.io/iportal/web/datas/975651597',
                 queryInfo: {
                     attributeFilter: "SmID > 0"
                 }
@@ -118,17 +118,17 @@
                     name: "Airport"
                 },
                 yAxis: {
-                    field: "同比增速%",
+                    field: "同比增速_",
                     name: "GrowthRate%"
                 }
             }]
         }
-        let barChart = new SuperMap.Widgets.Chart("chart", options);
+        var barChart = new SuperMap.Components.Chart("chart", options);
         //加载图表之后，将要素添加到地图上
         barChart.onAdd(addDataToMap);
 
         function addDataToMap() {
-            let features = barChart.getFeatures();
+            var features = barChart.getFeatures();
             resultLayer = L.geoJSON(features).addTo(map);
         }
 

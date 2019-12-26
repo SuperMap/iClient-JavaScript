@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import '../../../src/openlayers/core/MapExtend';
 import {
     Graphic as GraphicObj
@@ -8,6 +7,19 @@ import {
     Graphic as GraphicSource
 } from '../../../src/openlayers/overlay/Graphic.js';
 
+//ol接口的最新引入方式
+import Map from 'ol/Map';
+import View from 'ol/View';
+import CircleStyle from 'ol/style/Circle';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Point from 'ol/geom/Point';
+import ImageLayer from 'ol/layer/Image';
+import Feature from 'ol/Feature';
+import Polygon from 'ol/geom/Polygon';
+import VectorLayer from 'ol/layer/Vector';
+import LayerGroup from 'ol/layer/Group';
+import VectorSource from 'ol/source/Vector';
 
 describe('openlayers_MapExtend', () => {
     let originalTimeout, map, testDiv;
@@ -27,9 +39,9 @@ describe('openlayers_MapExtend', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [30, 30],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -41,26 +53,26 @@ describe('openlayers_MapExtend', () => {
         document.body.removeChild(testDiv);
     });
     it('forEachFeatureAtPixel_graphics', (done) => {
-        var randomCircleStyles = new ol.style.Circle({
+        var randomCircleStyles = new CircleStyle({
             radius: 5,
-            fill: new ol.style.Fill({
+            fill: new Fill({
                 color: '#000000'
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new Stroke({
                 color: '#000000'
             })
         });
         const graphics = [];
-        graphics[0] = new GraphicObj(new ol.geom.Point([30, 30]));
+        graphics[0] = new GraphicObj(new Point([30, 30]));
         graphics[0].setId(0);
         graphics[0].setAttributes({
             name: "graphic_0"
         });
         graphics[0].setStyle(randomCircleStyles);
-        graphics[1] = new GraphicObj(new ol.geom.Point([30, 30]));
+        graphics[1] = new GraphicObj(new Point([30, 30]));
         graphics[1].setId(1);
         graphics[1].setStyle(randomCircleStyles);
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -88,7 +100,7 @@ describe('openlayers_MapExtend', () => {
         }, 4000)
     })
     it('forEachFeatureAtPixel_layerGroup_issue26', (done) => {
-        var feature = new ol.Feature(new ol.geom.Polygon([
+        var feature = new Feature(new Polygon([
             [
                 [0, 0],
                 [-10, 30],
@@ -96,13 +108,13 @@ describe('openlayers_MapExtend', () => {
                 [0, 0]
             ]
         ]));
-        var vectorLayer = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        var vectorLayer = new VectorLayer({
+            source: new VectorSource({
                 features: [feature],
                 wrapX: false
             })
         });
-        var feature1 = new ol.Feature(new ol.geom.Polygon([
+        var feature1 = new Feature(new Polygon([
             [
                 [0, 0],
                 [-15, 30],
@@ -110,13 +122,13 @@ describe('openlayers_MapExtend', () => {
                 [0, 0]
             ]
         ]));
-        var vectorLayer1 = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        var vectorLayer1 = new VectorLayer({
+            source: new VectorSource({
                 features: [feature1],
                 wrapX: false
             })
         });
-        var feature2 = new ol.Feature(new ol.geom.Polygon([
+        var feature2 = new Feature(new Polygon([
             [
                 [0, 0],
                 [-15, 30],
@@ -124,15 +136,15 @@ describe('openlayers_MapExtend', () => {
                 [0, 0]
             ]
         ]));
-        var polygonSource2 = new ol.source.Vector({
+        var polygonSource2 = new VectorSource({
             features: [feature2],
             wrapX: false
         });
-        var vectorLayer2 = new ol.layer.Vector({
+        var vectorLayer2 = new VectorLayer({
             source: polygonSource2
         });
-        const layers = new ol.layer.Group({
-            layers: [vectorLayer1, new ol.layer.Group({
+        const layers = new LayerGroup({
+            layers: [vectorLayer1, new LayerGroup({
                 layers: [vectorLayer, vectorLayer2]
             })]
         })

@@ -1,15 +1,14 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Unit, Bounds, GeoJSON as GeoJSONFormat, FilterParameter,
     GetFeaturesBySQLParameters,
     GetFeaturesBySQLService,
     QueryBySQLParameters,
     QueryOption
 } from '@supermap/iclient-common';
-
-ol.supermap = ol.supermap || {};
+import { QueryService } from '../services/QueryService';
+import * as olUtil from 'ol/util';
 
 /**
  * @class ol.supermap.Util
@@ -20,6 +19,21 @@ export class Util {
 
     constructor() {
 
+    }
+
+    static getOlVersion(){
+      if(olUtil && olUtil.VERSION) {
+        return olUtil.VERSION.split('.')[0]
+      }
+      if(window && window.ol){
+        if(window.ol.util){
+          return '6'
+        }
+        if(window.ol.WebGLMap){
+          return '5'
+        }
+      }
+      return '4'
     }
 
     /**
@@ -283,7 +297,7 @@ export class Util {
      * @param {string} str - 需要裁剪的字符串
      * @returns {boolean}
      */
-    static trim(str) {
+    static trim(str = '') {
         return str.replace(/(^\s*)|(\s*$)/g, "");
     }
     /**
@@ -377,7 +391,7 @@ export class Util {
             }
         }
         queryBySQLParams = new QueryBySQLParameters(params);
-        queryBySQLService = new ol.supermap.QueryService(url);
+        queryBySQLService = new QueryService(url);
         queryBySQLService.queryBySQL(queryBySQLParams, function (data) {
             data.type === 'processCompleted' ? processCompleted(data) : processFaild(data)
         });
@@ -393,7 +407,7 @@ export class Util {
         let properties = [];
         if (Util.isArray(features) && features.length) {
             features.forEach(feature => {
-                let property = feature.attributes || feature.get('Properties');
+                let property = feature.get('attributes');
                 property && properties.push(property);
             });
         }
@@ -418,5 +432,3 @@ export class Util {
         return false;
     }
 }
-
-ol.supermap.Util = Util;

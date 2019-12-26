@@ -1,6 +1,7 @@
-import ol from 'openlayers';
 import { Turf } from '../../../src/openlayers/overlay/Turf';
 import * as turf from '@turf/turf';
+import Collection from 'ol/Collection';
+
 describe('openlayers_Turf', () => {
     var opt_options;
     var serviceResult;
@@ -8,7 +9,7 @@ describe('openlayers_Turf', () => {
     it('parse,parseOption,rocess_Measurement.along,', (done) => {
         opt_options = {
             attributions: " ",
-            features: " ",
+            features: new Collection(),
             format: "",
             logo: "",
             projection: "",

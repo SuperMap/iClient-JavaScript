@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -23,6 +23,7 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export var ChartService = ServiceBase.extend({
 
@@ -45,6 +46,7 @@ export var ChartService = ServiceBase.extend({
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -69,6 +71,7 @@ export var ChartService = ServiceBase.extend({
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

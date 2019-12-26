@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     Unit,
     ServerType,
@@ -13,14 +12,20 @@ import {
 import {
     Util
 } from '../core/Util';
+import TileImage from 'ol/source/TileImage';
+import Geometry from 'ol/geom/Geometry';
+import GeoJSON from 'ol/format/GeoJSON';
+import * as olSize from 'ol/size';
+import * as olTilegrid from 'ol/tilegrid';
+import TileGrid from 'ol/tilegrid/TileGrid';
 
 /**
  * @class ol.source.TileSuperMapRest
  * @category iServer Map
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址。
- * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
+ * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
@@ -28,15 +33,16 @@ import {
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否只地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
- * @param {(ol.geom.Geometry|ol.geom.Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {(ol/geom/Geometry|ol/geom/Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {boolean} [options.overlapDisplayed = false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
  * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
- * @extends {ol.source.TileImage}
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @extends {ol/source/TileImage}
  */
-export class TileSuperMapRest extends ol.source.TileImage {
+export class TileSuperMapRest extends TileImage {
 
     constructor(options) {
         options = options || {};
@@ -44,10 +50,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             return;
         }
 
-        options.attributions = options.attributions ||
-            new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            });
+        options.attributions = options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
 
         options.format = options.format ? options.format : "png";
         var layerUrl = options.url + "/tileImage." + options.format + "?";
@@ -57,7 +60,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             attributions: options.attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            logo: options.logo,
+            logo: Util.getOlVersion() === '4' ? options.logo : null,
             opaque: options.opaque,
             projection: options.projection,
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
@@ -144,9 +147,9 @@ export class TileSuperMapRest extends ol.source.TileImage {
             }
 
 
-            if (options.clipRegion instanceof ol.geom.Geometry) {
+            if (options.clipRegion instanceof Geometry) {
                 options.clipRegionEnabled = true;
-                options.clipRegion = Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
+                options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
                 options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
                 params["clipRegionEnabled"] = options.clipRegionEnabled;
                 params["clipRegion"] = JSON.stringify(options.clipRegion);
@@ -161,8 +164,11 @@ export class TileSuperMapRest extends ol.source.TileImage {
                 params["overlapDisplayed"] = true;
             }
 
-            if (options.cacheEnabled && options.tileversion) {
+            if (params.cacheEnabled && options.tileversion) {
                 params["tileversion"] = options.tileversion.toString();
+            }
+            if (options.rasterfunction) {
+                params["rasterfunction"] = JSON.stringify(options.rasterfunction);
             }
 
             return params;
@@ -227,7 +233,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             me.origin = me.tileGrid.getOrigin(0);
             var z = tileCoord[0];
             var x = tileCoord[1];
-            var y = -tileCoord[2] - 1;
+            var y = ['4', '5'].includes(Util.getOlVersion()) ? - tileCoord[2] - 1 : tileCoord[2];
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
             var unit = projection.getUnits() || Unit.DEGREE;
@@ -240,7 +246,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
                 unit = Unit.METER;
             }
             var scale = Util.resolutionToScale(resolution, dpi, unit);
-            var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
+            var tileSize = olSize.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
             var url = layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
             //支持代理
@@ -397,7 +403,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             return resolutions.sort(sortNumber);
         }
 
-        options.tileGrid = new ol.tilegrid.TileGrid({
+        options.tileGrid = new TileGrid({
             extent: extent,
             resolutions: resolutions
         });
@@ -414,13 +420,13 @@ export class TileSuperMapRest extends ol.source.TileImage {
      * @param {number} origin - 原点。
      * */
     static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
-        var tilegrid = ol.tilegrid.createXYZ({
+        var tilegrid = olTilegrid.createXYZ({
             extent: extent,
             maxZoom: maxZoom,
             minZoom: minZoom,
             tileSize: tileSize
         });
-        return new ol.tilegrid.TileGrid({
+        return new TileGrid({
             extent: extent,
             minZoom: minZoom,
             origin: origin,
@@ -429,5 +435,3 @@ export class TileSuperMapRest extends ol.source.TileImage {
         });
     }
 }
-
-ol.source.TileSuperMapRest = TileSuperMapRest;

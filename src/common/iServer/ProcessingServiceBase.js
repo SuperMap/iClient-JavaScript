@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -30,6 +30,7 @@ import {
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class ProcessingServiceBase extends CommonServiceBase {
 
@@ -94,13 +95,14 @@ export class ProcessingServiceBase extends CommonServiceBase {
             parameterObject = new Object();
             paramType.toObject(params, parameterObject);
         }
+        let headers = Object.assign({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }, me.headers || {})
         var options = {
             proxy: me.proxy,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
+            headers,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {

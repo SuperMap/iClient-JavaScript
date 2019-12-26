@@ -1,7 +1,11 @@
-import ol from 'openlayers';
 import {HeatMap} from '../../../src/openlayers/overlay/HeatMap';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
-
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import ImageLayer from 'ol/layer/Image';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 var url = GlobeParameter.worldMapURL;
 describe('openlayers_HeatMapLayer', () => {
     var originalTimeout;
@@ -16,15 +20,15 @@ describe('openlayers_HeatMapLayer', () => {
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
 
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 3,
                 projection: 'EPSG:4326'
             })
         });
-        map.addLayer(new ol.layer.Tile({
+        map.addLayer(new TileLayer({
             source: new TileSuperMapRest({
                 url: url,
             }),
@@ -58,7 +62,7 @@ describe('openlayers_HeatMapLayer', () => {
             }]
         };
         heatMapSource.addFeatures(heatPoints);
-        var heatMapLayer = new ol.layer.Image({
+        var heatMapLayer = new ImageLayer({
             source: heatMapSource
         });
         map.addLayer(heatMapLayer);
@@ -82,8 +86,8 @@ describe('openlayers_HeatMapLayer', () => {
     });
 
     it("toiClientFeature, add HeatMapFeature", () => {
-        var toiClientFeature = heatMapSource.toiClientFeature([new ol.Feature({
-            geometry: new ol.geom.Point([0, 0]),
+        var toiClientFeature = heatMapSource.toiClientFeature([new Feature({
+            geometry: new Point([0, 0]),
             Properties: {
                 "value": 2,
             }

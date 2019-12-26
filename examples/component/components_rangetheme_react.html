@@ -1,0 +1,201 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsRangeTheme_React"></title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main,
+      #map-container {
+        height: 100%;
+        position: relative;
+      }
+
+      .info-container {
+        width: 272px;
+        position: absolute;
+        right: 0;
+        top: 250px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="map-container"></div>
+      <div class="info-container">
+        <div id="infoBox" class="panel panel-primary infoPane" style="display: none;">
+          <div class="panel-heading">
+            <h5 class="panel-title text-center" data-i18n="resources.text_attributeTable"></h5>
+          </div>
+          <div id="infoContent" class="panel-body content"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" include="widgets,react,bootstrap" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/babel">
+      widgets.loader.showLoader('data loading...');
+      var HOST = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
+
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmRangeThemeLayer = SuperMap.Components.SmRangeThemeLayer;
+      var mapOptions = {
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [HOST + '/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+      };
+
+      var themeOptions = {
+        //                map: map,//该可选参数将在下个版本遗弃
+        attributions: ' ',
+        opacity: 0.8,
+        style: {
+          shadowBlur: 16,
+          shadowColor: '#000000',
+          fillColor: '#FFFFFF'
+        },
+        isHoverAble: true,
+        highlightStyle: {
+          stroke: true,
+          strokeWidth: 4,
+          strokeColor: 'blue',
+          fillColor: '#00EEEE',
+          fillOpacity: 0.8
+        },
+        themeField: 'POP_DENSITY99',
+        styleGroups: [
+          {
+            start: 0,
+            end: 0.02,
+            style: {
+              color: '#FDE2CA'
+            }
+          },
+          {
+            start: 0.02,
+            end: 0.04,
+            style: {
+              color: '#FACE9C'
+            }
+          },
+          {
+            start: 0.04,
+            end: 0.06,
+            style: {
+              color: '#F09C42'
+            }
+          },
+          {
+            start: 0.06,
+            end: 0.1,
+            style: {
+              color: '#D0770B'
+            }
+          },
+          {
+            start: 0.1,
+            end: 0.2,
+            style: {
+              color: '#945305'
+            }
+          }
+        ]
+      };
+
+      function createThemeFeatures() {
+        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+        getFeatureParam = new SuperMap.FilterParameter({
+          name: 'Jingjin',
+          attributeFilter: 'SMID > -1'
+        });
+        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+          queryParameter: getFeatureParam,
+          toIndex: 500,
+          datasetNames: ['Jingjin:BaseMap_R']
+        });
+        var dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
+        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+          format: SuperMap.DataFormat.ISERVER,
+          eventListeners: { processCompleted: processCompleted }
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+      }
+
+      createThemeFeatures();
+
+      function processCompleted(getFeaturesEventArgs) {
+        var result = getFeaturesEventArgs.result,
+          features;
+        if (result && result.features) {
+          widgets.loader.removeLoader();
+          features = result.features;
+
+          ReactDOM.render(
+            <SmWebMap mapOptions={mapOptions}>
+              <SmRangeThemeLayer options={themeOptions} data={features} onMousemove={handleLayerMousemove} />
+            </SmWebMap>,
+            document.getElementById('map-container')
+          );
+        }
+      }
+
+      function handleLayerMousemove(params) {
+        var e = params.mapboxEvent;
+        var themeLayer = params.map.getLayer(params.layerId);
+
+        if (e.target && e.target.refDataID) {
+          document.getElementById('infoBox').style.display = 'block';
+          var fid = e.target.refDataID;
+          var fea = themeLayer.getFeatureById(fid);
+          if (fea) {
+            document.getElementById('infoContent').innerHTML = '';
+            document.getElementById('infoContent').innerHTML += 'ID: ' + fea.attributes.SMID + '<br/>';
+            document.getElementById('infoContent').innerHTML +=
+              resources.text_districtName + fea.attributes.NAME + '<br/>';
+            document.getElementById('infoContent').innerHTML +=
+              resources.text_populationDensity + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + '<br/>';
+          }
+        } else {
+          document.getElementById('infoContent').innerHTML = '';
+          document.getElementById('infoBox').style.display = 'none';
+        }
+      }
+    </script>
+  </body>
+</html>

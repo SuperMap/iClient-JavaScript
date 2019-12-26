@@ -157,21 +157,23 @@ import './common/online/OnlineQueryDatasParameterSpec';
 import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
-import './common/iPortal/iPortalMapSpec.js';
-import './common/iPortal/iPortalMapsQueryParamSpec.js';
-import './common/iPortal/iPortalServiceSpec.js';
-import './common/iPortal/iPortalServicesQueryParamSpec.js';
+import './common/iPortal/iPortalQueryParamSpec.js';
+import './common/iPortal/iPortalUserSpec.js';
+import './common/iPortal/iPortalShareEntitySpec.js';
+import './common/iPortal/iPortalShareParamSpec.js';
+import './common/iPortal/iPortalResourceSpec.js';
+import './common/iPortal/iPortalQueryResultSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
 
-/**common -- widget**/
-import './common/widgets/templates/IndexTabsPageContainerSpec.js';
-import './common/widgets/templates/NavTabsPageSpec.js';
-import './common/widgets/templates/CommonContainerSpec.js';
-import './common/widgets/chart/ChartModelSpec.js';
-import './common/widgets/chart/ChartViewModelSpec';
-import './common/widgets/chart/ChartViewSpec';
+/**common -- component**/
+import './common/components/templates/IndexTabsPageContainerSpec.js';
+import './common/components/templates/NavTabsPageSpec.js';
+import './common/components/templates/CommonContainerSpec.js';
+import './common/components/chart/ChartModelSpec.js';
+import './common/components/chart/ChartViewModelSpec';
+import './common/components/chart/ChartViewSpec';
 
 import './common/util/FetchRequestSpec';
 

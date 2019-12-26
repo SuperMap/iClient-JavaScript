@@ -1,4 +1,7 @@
 import {imageMapLayer} from '../../../src/leaflet/mapping/ImageMapLayer';
+import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
+import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
+import {getQueryValue} from '../../tool/utils';
 
 var url = GlobeParameter.WorldURL;
 describe('leaflet_ImageMapLayer', () => {
@@ -51,7 +54,7 @@ describe('leaflet_ImageMapLayer', () => {
             errorOverlayUrl: false,
             zIndex: 1,
             className: '',
-            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             updateInterval: 150
         };
         imageLayer = imageMapLayer(url, tempOptions);
@@ -170,7 +173,7 @@ describe('leaflet_ImageMapLayer', () => {
         expect(format).toBe("gif");
     });
 
-    it('getImageUrl', () => {
+    it('getImageUrl_t', () => {
         imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
         expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
@@ -186,6 +189,78 @@ describe('leaflet_ImageMapLayer', () => {
         var imageUrlArray = imageUrl.split('?');
         expect(imageUrlArray[0]).toBe(url + '/image.png');
         expect(imageUrlArray[1]).toContain("&_t=")
+    });
+    it("getImageUrl, rasterfunction_ndviParameter", () => {
+        // NDVIParameter
+        const tempOptions = {
+            rasterfunction:new NDVIParameter({redIndex:0,nirIndex:2}),
+        };
+        const imageLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageLayerObject).not.toBeNull();
+        const tileUrl = imageLayerObject.getImageUrl( L.point(1, 4));
+        const ndviParameterValue = getQueryValue(tileUrl,'rasterfunction');
+        expect(ndviParameterValue).not.toBeNull;
+        const ndviParameter = JSON.parse(decodeURIComponent(ndviParameterValue));
+        expect(ndviParameter.type).toBe("NDVI");
+        expect(ndviParameter.redIndex).toBe(0);
+        expect(ndviParameter.nirIndex).toBe(2);
+        expect(ndviParameter.colorMap).toBe("0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff");
+    });
+    it("getImageUrl, rasterfunction_hillshadeParameter", () => {
+        // HillshadeParameter
+        const tempOptions = {
+            rasterfunction:new HillshadeParameter({altitude:10,azimuth:200}),
+        };
+        const imageLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageLayerObject).not.toBeNull();
+        const tileUrl = imageLayerObject.getImageUrl(L.point(1, 4));
+        const hillshadeParameterValue = getQueryValue(tileUrl,'rasterfunction');
+        expect(hillshadeParameterValue).not.toBeNull;
+        const hillshadeParameter = JSON.parse(decodeURIComponent(hillshadeParameterValue));
+        expect(hillshadeParameter.type).toBe("HILLSHADE");
+        expect(hillshadeParameter.altitude).toBe(10);
+        expect(hillshadeParameter.azimuth).toBe(200);
+        expect(hillshadeParameter.zFactor).toBe(1);
+    });
+    it("getImageUrl, clipRegion_grojson", () => {
+        const tempOptions = {
+            clipRegion:{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[20,-20],[20,0],[40,0],[40,-20],[20,-20]]]}},
+            clipRegionEnabled:true
+        };
+        const imageMapLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageMapLayerObject).not.toBeNull();
+        const tileUrl = imageMapLayerObject.getImageUrl(L.point(1, 4));
+        const clipRegionEnabledValue = getQueryValue(tileUrl,'clipRegionEnabled');
+        expect(clipRegionEnabledValue).toBeTruthy();
+        const clipRegionValue = getQueryValue(tileUrl,'clipRegion');
+        expect(clipRegionValue).not.toBeNull;
+        const clipRegionParameter = JSON.parse(decodeURIComponent(clipRegionValue));
+        expect(clipRegionParameter.parts[0]).toBe(5);
+        expect(clipRegionParameter.points.length).toBe(5);
+        expect(clipRegionParameter.points[0].x).toBe(20);
+        expect(clipRegionParameter.points[0].y).toBe(-20);
+        expect(clipRegionParameter.points[4].x).toBe(20);
+        expect(clipRegionParameter.points[4].y).toBe(-20);
+    });
+    it("getImageUrl, clipRegion_polygon", () => {
+        const tempOptions = {
+            clipRegion:L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]], {color: 'red'}),
+            clipRegionEnabled:true
+        };
+        const imageMapLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageMapLayerObject).not.toBeNull();
+        const tileUrl = imageMapLayerObject.getImageUrl(L.point(1, 4));
+        const clipRegionEnabledValue = getQueryValue(tileUrl,'clipRegionEnabled');
+        expect(clipRegionEnabledValue).toBeTruthy();
+        const clipRegionValue = getQueryValue(tileUrl,'clipRegion');
+        expect(clipRegionValue).not.toBeNull;
+        const clipRegionParameter = JSON.parse(decodeURIComponent(clipRegionValue));
+        expect(clipRegionParameter.parts[0]).toBe(5);
+        expect(clipRegionParameter.points.length).toBe(5);
+        expect(clipRegionParameter.points[0].x).toBe(20);
+        expect(clipRegionParameter.points[0].y).toBe(-20);
+        expect(clipRegionParameter.points[4].x).toBe(20);
+        expect(clipRegionParameter.points[4].y).toBe(-20);
     });
 
 });

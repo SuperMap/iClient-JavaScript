@@ -1,7 +1,11 @@
-import ol from 'openlayers';
 import {Mapv} from '../../../src/openlayers/overlay/Mapv';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {utilCityCenter, DataSet} from 'mapv';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import * as olProj from 'ol/proj';
+import ImageLayer from 'ol/layer/Image';
 
 var url = GlobeParameter.ChinaURL;
 describe('openlayers_MapV', () => {
@@ -31,20 +35,18 @@ describe('openlayers_MapV', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
-                center: ol.proj.transform([105.403119, 38.028658], 'EPSG:4326', 'EPSG:3857'),
+            view: new View({
+                center: olProj.transform([105.403119, 38.028658], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 4,
                 projection: 'EPSG:3857'
             })
         });
-        map.addLayer(new ol.layer.Tile({
+        map.addLayer(new TileLayer({
             source: new TileSuperMapRest({
                 url: url,
-                attributions: new ol.Attribution({
-                    html: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
-                })
+                attributions: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
             })
         }));
 
@@ -62,7 +64,7 @@ describe('openlayers_MapV', () => {
             data.push({
                 geometry: {
                     type: 'Point',
-                    coordinates: ol.proj.transform([cityCenter.lng - 2 + Math.random() * 4, cityCenter.lat - 2 + Math.random() * 4], 'EPSG:4326', 'EPSG:3857')
+                    coordinates: olProj.transform([cityCenter.lng - 2 + Math.random() * 4, cityCenter.lat - 2 + Math.random() * 4], 'EPSG:4326', 'EPSG:3857')
                 },
                 count: 30 * Math.random()
             });
@@ -74,7 +76,7 @@ describe('openlayers_MapV', () => {
         };
 
         mapVSource = new Mapv(options);
-        mapVLayer = new ol.layer.Image({
+        mapVLayer = new ImageLayer({
             source: mapVSource
         });
         map.addLayer(mapVLayer);

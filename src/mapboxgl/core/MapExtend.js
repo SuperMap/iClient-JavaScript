@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -14,7 +14,7 @@ export var MapExtend = function () {
     mapboxgl.Map.prototype.overlayLayersManager = {};
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
-        if (layer.source || layer.type === 'custom') {
+        if (layer.source || layer.type === 'custom' || layer.type === "background") {
             this.addLayerBak(layer, before);
             return this;
         }
@@ -99,7 +99,7 @@ export var MapExtend = function () {
 
 
     function addLayer(layer, map) {
-        layer.onAdd(map);
+        layer.onAdd && layer.onAdd(map);
     }
 
     /**
@@ -107,7 +107,7 @@ export var MapExtend = function () {
      * @description  移除事件。
      */
     function removeLayer(layer) {
-        layer.removeFromMap();
+        layer.removeFromMap && layer.removeFromMap();
     }
 
     /**
@@ -116,7 +116,7 @@ export var MapExtend = function () {
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     function setVisibility(layer, visibility) {
-        layer.setVisibility(visibility);
+        layer.setVisibility && layer.setVisibility(visibility);
     }
 
     /**

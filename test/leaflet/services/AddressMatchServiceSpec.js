@@ -21,6 +21,15 @@ describe('leaflet_AddressMatchService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var geoCodingService = addressMatchService(addressMatchURL, { headers: myHeaders });
+        expect(geoCodingService).not.toBeNull();
+        expect(geoCodingService.options).not.toBeNull();
+        expect(geoCodingService.options.headers).not.toBeNull();
+        geoCodingService.destroy();
+    });
+
     it('successEvent:code', (done) => {
         var geoCodingParams = new GeoCodingParameter({
             address: '公司',
@@ -139,12 +148,11 @@ describe('leaflet_AddressMatchService', () => {
             try {
                 expect(geoCodingService).not.toBeNull();
                 expect(geoCodingService.options.serverType).toBe("iServer");
-                expect(serviceResult.type).toBe("processCompleted");
-                var result = serviceResult.result;
-                expect(result).not.toBeNull();
-                expect(result.success).toBeFalsy();
-                expect(result.error.code).toEqual(400);
-                expect(result.error.errorMsg).toBe("address cannot be null!");
+                expect(serviceResult.type).toBe("processFailed");
+                var error = serviceResult.error;
+                expect(error).not.toBeNull();
+                expect(error.code).toEqual(400);
+                expect(error.errorMsg).toBe("address cannot be null!");
                 geoCodingService.destroy();
                 done();
             } catch (exception) {
@@ -180,13 +188,11 @@ describe('leaflet_AddressMatchService', () => {
             try {
                 expect(geoDecodingService).not.toBeNull();
                 expect(geoDecodingService.options.serverType).toBe("iServer");
-                expect(serviceResult.type).toBe("processCompleted");
-                var result = serviceResult.result;
-                expect(result).not.toBeNull();
-                expect(result).not.toBeNull();
-                expect(result.success).toBeFalsy();
-                expect(result.error.code).toEqual(400);
-                expect(result.error.errorMsg).toBe("location not valid!");
+                expect(serviceResult.type).toBe("processFailed");
+                var error = serviceResult.error;
+                expect(error).not.toBeNull();
+                expect(error.code).toEqual(400);
+                expect(error.errorMsg).toBe("location not valid!");
                 geoDecodingService.destroy();
                 done();
             } catch (exception) {

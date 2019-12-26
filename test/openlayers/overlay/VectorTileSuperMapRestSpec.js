@@ -1,11 +1,12 @@
-import ol from 'openlayers';
 import {VectorTileSuperMapRest} from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
 import {MapService} from '../../../src/openlayers/services/MapService';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import VectorTileLayer from 'ol/layer/VectorTile';
 
 var url = GlobeParameter.ChinaURL;
 describe('openlayers_VectorTileSuperMapRest', () => {
-    var originalTimeout;
-    var testDiv, map, vectorTileOptions, vectorTileSource;
+    var testDiv, map, vectorTileOptions, vectorTileSource,originalTimeout;
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -16,16 +17,16 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
         new MapService(url).getMapInfo((serviceResult) => {
-            map = new ol.Map({
+            map = new Map({
                 target: 'map',
-                view: new ol.View({
+                view: new View({
                     center: [12957388, 4853991],
                     zoom: 11
                 })
             });
             vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
-            var vectorLayer = new ol.layer.VectorTile({
+            var vectorLayer = new VectorTileLayer({
                 source: vectorTileSource
             });
             map.addLayer(vectorLayer);

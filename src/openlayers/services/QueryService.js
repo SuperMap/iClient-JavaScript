@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     DataFormat,
     Bounds,
@@ -13,6 +12,8 @@ import {
 } from '@supermap/iclient-common';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
+import Point from 'ol/geom/Point';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.supermap.QueryService
@@ -26,6 +27,7 @@ import {ServiceBase} from './ServiceBase';
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  *    new ol.supermap.QueryService(url)
  *      .queryByBounds(param,function(result){
@@ -52,6 +54,7 @@ export class QueryService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -77,6 +80,7 @@ export class QueryService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -102,6 +106,7 @@ export class QueryService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -127,6 +132,7 @@ export class QueryService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -156,10 +162,10 @@ export class QueryService extends ServiceBase {
             );
         }
         if (params.geometry) {
-            if (params.geometry instanceof ol.geom.Point) {
+            if (params.geometry instanceof Point) {
                 params.geometry = new GeometryPoint(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
             } else {
-                params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+                params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
             }
         }
         return params;
@@ -169,5 +175,3 @@ export class QueryService extends ServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
-
-ol.supermap.QueryService = QueryService;

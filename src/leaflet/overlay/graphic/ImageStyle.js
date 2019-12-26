@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -7,7 +7,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.imageStyle
  * @classdesc 自定义图形要素风格。
- * @category Graphic
+ * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 图形要素风格参数。
  * @param {HTMLImageElement} options.img - image 对象。

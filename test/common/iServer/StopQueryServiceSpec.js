@@ -24,6 +24,21 @@ describe('StopQueryService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var stopQueryService = new StopQueryService(GlobeParameter.trafficTransferURL, { headers: myHeaders });
+        expect(stopQueryService).not.toBeNull();
+        expect(stopQueryService.headers).not.toBeNull();
+        stopQueryService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var stopQueryService = new StopQueryService(GlobeParameter.trafficTransferURL, { crossOrigin: false });
+        expect(stopQueryService).not.toBeNull();
+        expect(stopQueryService.crossOrigin).toBeFalsy();
+        stopQueryService.destroy();
+    });
+
     it('processAsync_noParams', () => {
         var trafficTransferURL = GlobeParameter.trafficTransferURL;
         var flag=false;

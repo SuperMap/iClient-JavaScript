@@ -23,6 +23,21 @@ describe('testQueryBySQLService_processAsync', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var queryBySQLService = new QueryBySQLService(GlobeParameter.mapServiceURL + "World Map", { headers: myHeaders });
+        expect(queryBySQLService).not.toBeNull();
+        expect(queryBySQLService.headers).not.toBeNull();
+        queryBySQLService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var queryBySQLService = new QueryBySQLService(GlobeParameter.mapServiceURL + "World Map", { crossOrigin: false });
+        expect(queryBySQLService).not.toBeNull();
+        expect(queryBySQLService.crossOrigin).toBeFalsy();
+        queryBySQLService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var queryBySQLService = initQueryBySQLService(worldMapURL);

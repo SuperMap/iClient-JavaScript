@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_kernelDensityJobService"></title>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -119,7 +119,7 @@
     </div>
     <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://iclient.supermap.io";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var layer,
             processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
             mapURL = host + "/iserver/services/map-world/rest/maps/World",
@@ -134,7 +134,8 @@
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
-                    projection: 'EPSG:4326'
+                    projection: 'EPSG:4326',
+                    multiWorld: true
                 })
             });
         map.addLayer(new ol.layer.Tile({

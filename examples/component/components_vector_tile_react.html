@@ -1,0 +1,43 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsVectorTile_React"></title>
+    <script type="text/javascript" include="react" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmVectorTileLayer = SuperMap.Components.SmVectorTileLayer;
+      var styleOptions =
+        host +
+        '/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true';
+
+      ReactDOM.render(
+        <SmWebMap serverUrl="https://iportal.supermap.io/iportal" mapId="1329428269">
+          <SmVectorTileLayer styleOptions={styleOptions} />
+        </SmWebMap>,
+        document.getElementById('main')
+      );
+    </script>
+  </body>
+</html>

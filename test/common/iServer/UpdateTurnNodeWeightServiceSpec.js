@@ -24,6 +24,21 @@ describe('UpdateTurnNodeWeightService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var myUpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(GlobeParameter.networkAnalystURL, { headers: myHeaders });
+        expect(myUpdateTurnNodeWeightService).not.toBeNull();
+        expect(myUpdateTurnNodeWeightService.headers).not.toBeNull();
+        myUpdateTurnNodeWeightService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var myUpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(GlobeParameter.networkAnalystURL, { crossOrigin: false });
+        expect(myUpdateTurnNodeWeightService).not.toBeNull();
+        expect(myUpdateTurnNodeWeightService.crossOrigin).toBeFalsy();
+        myUpdateTurnNodeWeightService.destroy();
+    });
+
     it('processAsync', (done) => {
         var networkAnalystURL = GlobeParameter.networkAnalystURL;
         var myUpdateTurnNodeWeightService;

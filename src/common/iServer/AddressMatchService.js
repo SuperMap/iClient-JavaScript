@@ -1,11 +1,10 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from './CommonServiceBase';
-import {FetchRequest} from '../util/FetchRequest';
-import {GeoCodingParameter} from './GeoCodingParameter';
-import {GeoDecodingParameter} from './GeoDecodingParameter';
+import { SuperMap } from '../SuperMap';
+import { CommonServiceBase } from './CommonServiceBase';
+import { GeoCodingParameter } from './GeoCodingParameter';
+import { GeoDecodingParameter } from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
@@ -14,13 +13,13 @@ import {GeoDecodingParameter} from './GeoDecodingParameter';
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class AddressMatchService extends CommonServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.options = options || {}
-        this.CLASS_NAME = "SuperMap.AddressMatchService";
+        this.options = options || {};
+        this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
     /**
@@ -63,17 +62,13 @@ export class AddressMatchService extends CommonServiceBase {
      */
 
     processAsync(url, params) {
-        var me = this;
-        FetchRequest.get(url, params,{crossOrigin:me.crossOrigin, proxy: me.proxy}).then(function (response) {
-            return response.json();
-        }).then(function (result) {
-            if (result) {
-                me.serviceProcessCompleted(result);
-            } else {
-                me.serviceProcessFailed(result);
-            }
-        }).catch(function (e) {
-            me.eventListeners.processFailed({error: e});
+        this.request({
+            method: 'GET',
+            url,
+            params,
+            scope: this,
+            success: this.serviceProcessCompleted,
+            failure: this.serviceProcessFailed
         });
     }
 
@@ -83,6 +78,9 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 服务流程是否完成
      */
     serviceProcessCompleted(result) {
+        if (result.succeed) {
+            delete result.succeed;
+        }
         super.serviceProcessCompleted(result);
     }
 

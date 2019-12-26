@@ -1,8 +1,9 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
 import {baiduMapLayer, DataSet} from 'mapv';
+import { getMeterPerMapUnit } from '@supermap/iclient-common';
 
 /**
  * @class MapVRenderer
@@ -249,13 +250,10 @@ export class MapVRenderer extends MapVBaseLayer {
         var data = self.dataSet.get(dataGetOptions);
 
         this.processData(data);
-
-        self.options._size = self.options.size;
-
-        var worldPoint = map.getViewPortPxFromLonLat(layer.transferToMapLatLng({lon: 0, lat: 0}));
-
-        var zoomUnit = Math.pow(2, 14 - map.getZoom());
-        if (self.options.unit == 'm') {
+        // 一个像素是多少米
+        var zoomUnit = map.getResolution() * getMeterPerMapUnit('DEGREE');
+        // // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
             if (self.options.size) {
                 self.options._size = self.options.size / zoomUnit;
             }
@@ -270,6 +268,8 @@ export class MapVRenderer extends MapVBaseLayer {
             self.options._height = self.options.height;
             self.options._width = self.options.width;
         }
+
+        var worldPoint = map.getViewPortPxFromLonLat(layer.transferToMapLatLng({ lon: 0, lat: 0 }));
 
         this.drawContext(context, data, self.options, worldPoint);
 

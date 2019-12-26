@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * Leaflet 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -49,6 +49,12 @@ var exampleConfig = {
                     name_en: "custom scale",
                     thumbnail: "l_tiledMapLayerProj4.png",
                     fileName: "01_tiledMapLayerProj4"
+                }, {
+                    name: "地图-栅格分析",
+                    name_en: "map rasterFunction",
+                    version: "10.0.0",
+                    thumbnail: "l_tiledMapLayerRasterfunction.png",
+                    fileName: "01_tiledMapLayer_rasterfunction"
                 }, {
                     name: "地图信息",
                     name_en: "map query service",
@@ -466,14 +472,26 @@ var exampleConfig = {
                     fileName: "iPortalSecurity"
                 }]
             },
-            "ip_querymaps": {
-                name: "地图列表",
-                name_en: "Web map list",
+            "ip_queryresources": {
+                name: "资源中心",
+                name_en: "Resources Center",
                 content: [{
-                    name: "地图列表",
-                    name_en: "web map list",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMaps"
+                    name: "资源中心",
+                    name_en: "Resources Center",
+                    version: "10.0.1",
+                    thumbnail: "l_iPortalQueryResources.png",
+                    fileName: "iPortalQueryResources"
+                }]
+            },
+            "ip_querymyresources": {
+                name: "我的资源",
+                name_en: "My Resource",
+                content: [{
+                    name: "我的资源",
+                    name_en: "My Resource",
+                    version: "10.0.1",
+                    thumbnail: "l_iPortalQueryResources.png",
+                    fileName: "iPortalQueryMyResources"
                 }]
             }
         }
@@ -880,19 +898,19 @@ var exampleConfig = {
                         name_en: "natural style",
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
-                    }, {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "l_tileVectorLayer_normal.png",
-                        fileName: "vectorTileLayerMVT"
-
-                    }, {
-                        name: "默认风格(MVT 4326)",
-                        name_en: "normal(MVT 4326)",
-                        thumbnail: "l_tileVectorLayer_mvt4326.png",
-                        fileName: "vectorTileLayerMVT_4326"
-
                     }
+                    // , {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "l_tileVectorLayer_normal.png",
+                    //     fileName: "vectorTileLayerMVT"
+
+                    // }, {
+                    //     name: "默认风格(MVT 4326)",
+                    //     name_en: "normal(MVT 4326)",
+                    //     thumbnail: "l_tileVectorLayer_mvt4326.png",
+                    //     fileName: "vectorTileLayerMVT_4326"
+                    // }
                 ]
             },
             "themeLayer": {
@@ -924,6 +942,18 @@ var exampleConfig = {
                     thumbnail: "l_graphThemeLayer.png",
                     fileName: "graphThemeLayer"
                 }]
+            },
+            pixi: {
+                name: 'Pixi',
+                name_en: 'Pixi',
+                content: [
+                    {
+                        name: '纽约出租车上车点分布图（140万点数据绘制）',
+                        name_en: 'Use Pixi to draw 1.4 millions New York Taxi Points',
+                        thumbnail: 'l_pixiOverlay_taxi.png',
+                        fileName: 'l_pixiOverlay_taxi'
+                    }
+                ]
             }
         }
     },

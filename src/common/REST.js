@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -719,13 +719,13 @@ export {
 var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
-    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
     ERASE: "ERASE",
     /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
     IDENTITY: "IDENTITY",
     /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
     INTERSECT: "INTERSECT",
-    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    /** 对两个面数据集（几何对象）进行合并操作。 */
     UNION: "UNION",
     /** 对两个面数据集（几何对象）进行更新操作。 */
     UPDATE: "UPDATE",
@@ -911,7 +911,7 @@ export {
  * @type {string}
  */
 var LayerType = SuperMap.LayerType = {
-    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
     WMS: "WMS",
@@ -1300,4 +1300,167 @@ var GetFeatureMode = SuperMap.GetFeatureMode = {
 }
 export {
     GetFeatureMode
+}
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+export {
+    RasterFunctionType
+}
+
+/**
+ * @enum ResourceType
+ * @memberOf SuperMap
+ * @description iportal资源类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var ResourceType = SuperMap.ResourceType = {
+    /** 地图。 */
+    MAP: "MAP",
+    /** 服务。 */
+    SERVICE: "SERVICE",
+    /** 场景。 */
+    SCENE: "SCENE",
+    /** 数据。 */
+    DATA: "DATA",
+    /** 洞察。 */
+    INSIGHTS_WORKSPACE: "INSIGHTS_WORKSPACE",
+    /** 大屏。 */
+    MAP_DASHBOARD: "MAP_DASHBOARD"
+}
+export {
+    ResourceType
+}
+
+/**
+ * @enum OrderBy
+ * @memberOf SuperMap
+ * @description iportal资源排序字段。
+ * @version 10.0.1
+ * @type {string}
+ */
+var OrderBy = SuperMap.OrderBy = {
+    /** 按更新时间排序 */
+    UPDATETIME: "UPDATETIME",
+    /** 按热度(可能是访问量、下载量)排序 */
+    HEATLEVEL: "HEATLEVEL",
+    /** 按相关性排序 */
+    RELEVANCE: "RELEVANCE"
+}
+export {
+    OrderBy
+}
+
+/**
+ * @enum OrderType
+ * @memberOf SuperMap
+ * @description iportal资源升序还是降序过滤
+ * @version 10.0.1
+ * @type {string}
+ */
+var OrderType = SuperMap.OrderType = {
+    /** 升序 */
+    ASC: "ASC",
+    /** 降序 */
+    DESC: "DESC"
+}
+export {
+    OrderType
+}
+
+/**
+ * @enum SearchType
+ * @memberOf SuperMap
+ * @description iportal资源查询的范围进行过滤
+ * @version 10.0.1
+ * @type {string}
+ */
+var SearchType = SuperMap.SearchType = {
+    /** 公开资源。 */
+    PUBLIC: "PUBLIC",
+    /** 我的资源。 */
+    MY_RES: "MY_RES",
+    /** 我的群组资源。 */
+    MYGROUP_RES: "MYGROUP_RES",
+    /** 我的部门资源。 */
+    MYDEPARTMENT_RES: "MYDEPARTMENT_RES",
+    /** 分享给我的资源。 */
+    SHARETOME_RES: "SHARETOME_RES"
+}
+export {
+    SearchType
+}
+
+/**
+ * @enum AggregationTypes
+ * @memberOf SuperMap
+ * @description iportal资源聚合查询的类型
+ * @version 10.0.1
+ * @type {string}
+ */
+var AggregationTypes = SuperMap.AggregationTypes = {
+    /** 标签 */
+    TAG: "TAG",
+    /** 资源类型 */
+    TYPE: "TYPE"
+}
+export {
+    AggregationTypes
+}
+
+/**
+ * @enum PermissionType
+ * @memberOf SuperMap
+ * @description iportal资源权限类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var PermissionType = SuperMap.PermissionType = {
+    /** 可检索 */
+    SEARCH:"SEARCH",
+    /** 可查看 */
+    READ: "READ",
+    /** 可编辑 */
+    READWRITE: "READWRITE",
+    /** 可删除 */
+    DELETE: "DELETE",
+    /** 可下载，包括可读、可检索 */
+    DOWNLOAD:"DOWNLOAD"
+}
+export {
+    PermissionType
+}
+
+/**
+ * @enum EntityType
+ * @memberOf SuperMap
+ * @description iportal资源实体类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var EntityType = SuperMap.EntityType = {
+    /** 部门 */
+    DEPARTMENT: "DEPARTMENT",
+    /** 用户组 */
+    GROUP: "GROUP",
+    /** 群组 */
+    IPORTALGROUP: "IPORTALGROUP",
+    /** 角色 */
+    ROLE: "ROLE",
+    /** 用户 */
+    USER: "USER"
+}
+export {
+    EntityType
 }

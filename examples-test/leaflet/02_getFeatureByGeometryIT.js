@@ -1,4 +1,5 @@
 var commonTools = require('../base/commonTools');
+
 module.exports = {
     'leaflet_02_getFeatureByGeometry': function (browser) {
         var type = 'leaflet';
@@ -14,9 +15,7 @@ module.exports = {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
         });
         browser.pause(1000);
-        // browser.pause();
-        //a.leaflet-control-zoom-out
-        browser.moveTo( null,700, 700, function () {
+        browser.moveTo(null,-40,40, function () {
             browser.pause(1000);
             browser.doubleClick(function () {
                 browser.waitForElementPresent('.leaflet-popup-content-wrapper', 10000);
@@ -33,7 +32,6 @@ module.exports = {
             browser.pause(1000);
             browser.end();
         });
-
     }
 };
 

@@ -1,0 +1,113 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsHeatmap_React"></title>
+    <script type="text/javascript" include="react,jquery,papaparse" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmHeatmapLayer = SuperMap.Components.SmHeatmapLayer;
+      var mapOptions = {
+        container: 'map', // container id
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [120.143, 30.236],
+        zoom: 3
+      };
+      var layerStyle = new SuperMap.Components.commontypes.HeatMapStyle({
+        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 9, 3],
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0,
+          'rgba(33,102,172,0)',
+          0.2,
+          'rgb(103,169,207)',
+          0.4,
+          'rgb(209,229,240)',
+          0.6,
+          'rgb(253,219,199)',
+          0.8,
+          'rgb(239,138,98)',
+          1,
+          'rgb(178,24,43)'
+        ],
+        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
+        'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0]
+      });
+
+      $.get('../data/chinaEarthquake.csv', function(csvstr) {
+        var data = Papa.parse(csvstr, { skipEmptyLines: true, header: true }).data,
+          features,
+          heatFeatures = [];
+        for (var i = 0; i < data.length; i += 6) {
+          if (data[i].Y <= 85) {
+            heatFeatures.push({
+              geometry: {
+                coordinates: [parseFloat(data[i].X), parseFloat(data[i].Y)],
+                type: 'Point'
+              },
+              properties: { value: data[i].level / 50, id: i },
+              type: 'Feature'
+            });
+          }
+        }
+        features = {
+          type: 'FeatureCollection',
+          features: heatFeatures
+        };
+
+        ReactDOM.render(
+          <SmWebMap mapOptions={mapOptions}>
+            <SmHeatmapLayer data={features} layerStyle={layerStyle} />
+          </SmWebMap>,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>

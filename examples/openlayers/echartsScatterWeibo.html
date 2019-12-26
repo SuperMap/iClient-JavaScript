@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -7,12 +7,17 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_scatterWeibo"></title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      .ol-overlaycontainer-stopevent{
+        height: 0% !important;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, option, url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var map = new ol.Map({
         target: 'map',
@@ -21,7 +26,8 @@
         view: new ol.View({
             center: [104, 36],
             zoom: 5,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({

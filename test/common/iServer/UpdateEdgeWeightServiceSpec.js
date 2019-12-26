@@ -23,6 +23,21 @@ describe('UpdateEdgeWeightService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var myUpdateEdgeWeightService = new UpdateEdgeWeightService(GlobeParameter.networkAnalystURL, { headers: myHeaders });
+        expect(myUpdateEdgeWeightService).not.toBeNull();
+        expect(myUpdateEdgeWeightService.headers).not.toBeNull();
+        myUpdateEdgeWeightService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var myUpdateEdgeWeightService = new UpdateEdgeWeightService(GlobeParameter.networkAnalystURL, { crossOrigin: false });
+        expect(myUpdateEdgeWeightService).not.toBeNull();
+        expect(myUpdateEdgeWeightService.crossOrigin).toBeFalsy();
+        myUpdateEdgeWeightService.destroy();
+    });
+
     it('processAsync_noParams', (done) => {
         var networkAnalystURL = GlobeParameter.networkAnalystURL;
         var myUpdateEdgeWeightService;

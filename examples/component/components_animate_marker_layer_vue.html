@@ -1,0 +1,165 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_componentsAnimateMarkerLayer_Vue"></title>
+        <script type="text/javascript" include="vue,jquery" src="../js/include-web.js"></script>
+        <script
+            type="text/javascript"
+            include="mapbox-gl-enhance,ant-design-vue,iclient-mapboxgl-vue"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <style>
+            #main {
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+            .radio-group {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                text-align: center;
+                background: transparent;
+                z-index: 1000;
+            }
+            .ant-radio-button-wrapper {
+                background: rgb(0, 0, 0);
+                border: 1px solid rgb(73, 73, 73);
+                color: rgb(255, 255, 255);
+                font-weight: bold;
+            }
+            .ant-radio-button-wrapper-checked {
+                color: #1890ff;
+                border: 1px solid #1890ff;
+                border-left: 1px solid #1890ff !important;
+            }
+            .ant-radio-button-wrapper:first-child {
+                border-left: 1px solid rgb(73, 73, 73);
+            }
+            .ant-radio-button-wrapper:not(:first-child):before {
+                background-color: transparent;
+            }
+        </style>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-web-map :map-options="mapOptions" style="background:black">
+                <sm-animate-marker-layer
+                    :features="features"
+                    :type="type"
+                    text-field="name"
+                    :fit-bounds="false"
+                    v-bind="param"
+                ></sm-animate-marker-layer>
+            </sm-web-map>
+            <a-radio-group class="radio-group" v-model="type" @change="changeType">
+                <a-radio-button value="breathingAperture">{{ resources.btn_breathingAperture }}</a-radio-button>
+                <a-radio-button value="haloRing">{{ resources.btn_haloRing }}</a-radio-button>
+                <a-radio-button value="rotatingAperture">{{ resources.btn_rotatingAperture }}</a-radio-button>
+                <a-radio-button value="diffusedAperture">{{ resources.btn_diffusedAperture }}</a-radio-button>
+                <a-radio-button value="rotatingTextBorder">{{ resources.btn_rotatingTextBorder }}</a-radio-button>
+                <a-radio-button value="fluorescence">{{ resources.btn_fluorescence }}</a-radio-button>
+            </a-radio-group>
+        </div>
+        <script>
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var url = host + '/iserver/services/map-china400/rest/maps/China';
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: 'China_provincename_A_txt@China',
+                    attributeFilter: 'SMID > 0'
+                }
+            });
+
+            var queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(param, function(serviceResult) {
+                var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
+                var features = recordsets && recordsets[0] && recordsets[0].features;
+                features.features.forEach(function(feature){
+                    feature.geometry.coordinates = _unproject(feature.geometry.coordinates);
+                    feature.properties.name = feature.properties.texts[0];
+                });
+                new Vue({
+                    el: '#main',
+                    data() {
+                        var mapUrl = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+                        var attribution =
+                            "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+                        return {
+                            features: features,
+                            type: 'breathingAperture',
+                            breathingApertureParam: {
+                                width: 80
+                            },
+                            haloRingParam: {
+                                width: 44
+                            },
+                            rotatingTextBorderParam: {
+                                width: 120
+                            },
+                            param: null,
+                            mapOptions: {
+                                container: 'map',
+                                style: {
+                                    version: 8,
+                                    sources: {
+                                        'raster-tiles': {
+                                            attribution: attribution,
+                                            type: 'raster',
+                                            tiles: [mapUrl + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                                            tileSize: 256
+                                        }
+                                    },
+                                    layers: [
+                                        {
+                                            id: 'simple-tiles',
+                                            type: 'raster',
+                                            source: 'raster-tiles',
+                                            minzoom: 0,
+                                            maxzoom: 22
+                                        }
+                                    ]
+                                },
+                                center: [105.98046235680022, 28.528014198723596],
+                                zoom: 5.151412188068154,
+                                bearing: 0.8568,
+                                pitch: 60
+                            }
+                        };
+                    },
+                    mounted() {
+                        this.param = this.breathingApertureParam;
+                    },
+                    methods: {
+                        changeType() {
+                            if (this[this.type + 'Param']) {
+                                this.param = this[this.type + 'Param'];
+                            } else {
+                                this.param = null;
+                            }
+                        }
+                    }
+                });
+            });
+
+            function _unproject(point) {
+                var d = 180 / Math.PI,
+                    r = 6378137,
+                    ts = Math.exp(-point[1] / r),
+                    phi = Math.PI / 2 - 2 * Math.atan(ts);
+                for (var i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {
+                    con = 1;
+                    dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi;
+                    phi += dphi;
+                }
+                return [(point[0] * d) / r, phi * d];
+            }
+        </script>
+    </body>
+</html>

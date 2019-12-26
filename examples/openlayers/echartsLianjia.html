@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/ol/include-ol.js"></script>
     <title data-i18n="resources.title_lianjia"></title>
     <style>
         body {
@@ -23,7 +23,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #titleContainer {
@@ -38,6 +37,10 @@
         #titleContainer>#title {
             letter-spacing: 0.1em;
         }
+
+        .ol-overlaycontainer-stopevent{
+            height: 0% !important;
+        }
     </style>
 </head>
 
@@ -49,7 +52,7 @@
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script>
        
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
         var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
         var queryUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_格网";
@@ -61,7 +64,8 @@
             view: new ol.View({
                 center: [12954583.524137927, 4860747.532344677],
                 zoom: 10,
-                projection: 'EPSG:3857'
+                projection: 'EPSG:3857',
+                multiWorld: true
             }),
             layers: [new ol.layer.Tile({
                 source: new ol.source.TileSuperMapRest({

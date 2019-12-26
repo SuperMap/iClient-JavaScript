@@ -1,0 +1,139 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsDeckGL_React"></title>
+    <script type="text/javascript" include="react,jquery,papaparse,widgets" src="../js/include-web.js"></script>
+    <script
+      include="antd,deck,iclient-mapboxgl-react,mapbox-gl-enhance"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      // import {SmDeckglLayer} from '@supermap/react-iclient'
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmDeckglLayer = SuperMap.Components.SmDeckglLayer;
+      var mapOptions = {
+        container: 'map', // container id
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tiles: [host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [-122.430844, 37.772276],
+        zoom: 12,
+        pitch: 60,
+        bearing: 36
+      };
+
+      widgets.loader.showLoader('data loading...');
+      var popup, map;
+
+      function mapIsLoaded(e) {
+        map = e.map;
+      }
+
+      $.get('../data/deck.gl/strees_data.csv', function(csvstr) {
+        widgets.loader.removeLoader();
+        // 构造数据
+        var features = Papa.parse(csvstr, { skipEmptyLines: true, header: true });
+        var deckglOptions = {
+          data: features.data,
+          props: {
+            extruded: true,
+            radius: 55,
+            autoHighlight: true,
+            upperPercentile: 99,
+            coverage: 0.8,
+            elevationScale: 400,
+            colorRange: [
+              [43, 30, 61, 255],
+              [56, 60, 101, 255],
+              [62, 95, 126, 255],
+              [73, 131, 138, 255],
+              [94, 162, 141, 255],
+              [130, 187, 146, 255],
+              [174, 206, 161, 255],
+              [214, 222, 191, 255]
+            ],
+            opacity: 0.8,
+            // lightSettings 光照配置参数，配置三维光照效果，
+            lightSettings: {
+              lightsPosition: [-122.5, 37.7, 3000, -122.2, 37.9, 3000], // 指定为`[x，y，z]`的光在平面阵列中的位置
+              ambientRatio: 0.2, //光照的环境比例
+              diffuseRatio: 0.5, //光的漫反射率
+              specularRatio: 0.3, //光的镜面反射率
+              lightsStrength: [1.0, 0.0, 2.0, 0.0], //平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`
+              numberOfLights: 4 //光照值
+            },
+            //如需了解其他配置详情，请查看 DeckglLayer api
+            onHover: function(feature) {
+              if (!popup) {
+                popup = new mapboxgl.Popup({
+                  anchor: 'bottom',
+                  closeButton: false,
+                  offset: {
+                    bottom: [0, -10]
+                  }
+                });
+              }
+              if (!feature.object) {
+                popup.remove();
+                return;
+              }
+              //+" "+feature.lngLat
+              popup.setHTML('Point Count： ' + feature.object.points.length);
+              popup.setLngLat(map.unproject([feature.x, feature.y]));
+              popup.addTo(map);
+            }
+          },
+          callback: {
+            getPosition: function(feature) {
+              if (!feature.latitude || !feature.longitude) {
+                return [0, 0];
+              }
+              return [Number(feature.longitude), Number(feature.latitude)];
+            }
+          }
+        };
+        ReactDOM.render(
+          <SmWebMap mapOptions={mapOptions} onLoad={mapIsLoaded}>
+            <SmDeckglLayer layerType={'hexagon-layer'} options={deckglOptions} />
+          </SmWebMap>,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>

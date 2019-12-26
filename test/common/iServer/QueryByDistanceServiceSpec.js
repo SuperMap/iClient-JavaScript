@@ -27,6 +27,21 @@ describe('QueryByBoundsService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var queryByDistanceService = new QueryByDistanceService(GlobeParameter.mapServiceURL + "World Map", { headers: myHeaders });
+        expect(queryByDistanceService).not.toBeNull();
+        expect(queryByDistanceService.headers).not.toBeNull();
+        queryByDistanceService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var queryByDistanceService = new QueryByDistanceService(GlobeParameter.mapServiceURL + "World Map", { crossOrigin: false });
+        expect(queryByDistanceService).not.toBeNull();
+        expect(queryByDistanceService.crossOrigin).toBeFalsy();
+        queryByDistanceService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryByDistanceFailed = (serviceFailedEventArgs) => {

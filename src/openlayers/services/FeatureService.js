@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     DataFormat,
     GetFeaturesByIDsService,
@@ -17,6 +16,7 @@ import {
 import {
     ServiceBase
 } from './ServiceBase';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.supermap.FeatureService
@@ -34,6 +34,7 @@ import {
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {ol.supermap.ServiceBase}
  */
 export class FeatureService extends ServiceBase {
@@ -55,6 +56,7 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -79,6 +81,7 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -102,6 +105,7 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -125,6 +129,7 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -149,6 +154,7 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -179,6 +185,7 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -200,7 +207,7 @@ export class FeatureService extends ServiceBase {
             params.bounds = Util.toSuperMapBounds(params.bounds);
         }
         if (params.geometry) {
-            params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+            params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
         }
         if (params.editType) {
             params.editType = params.editType.toLowerCase();
@@ -237,7 +244,7 @@ export class FeatureService extends ServiceBase {
         if (geoFeature.getId()) {
             feature.id = geoFeature.getId();
         }
-        feature.geometry = Util.toSuperMapGeometry((new ol.format.GeoJSON()).writeFeatureObject(geoFeature));
+        feature.geometry = Util.toSuperMapGeometry((new GeoJSON()).writeFeatureObject(geoFeature));
         return feature;
     }
 
@@ -245,5 +252,3 @@ export class FeatureService extends ServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
-
-ol.supermap.FeatureService = FeatureService;

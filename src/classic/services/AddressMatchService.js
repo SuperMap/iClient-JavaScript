@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -13,6 +13,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class AddressMatchService extends CommonServiceBase {
 
@@ -30,6 +31,7 @@ export class AddressMatchService extends CommonServiceBase {
     code(params, callback) {
         var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
@@ -52,6 +54,7 @@ export class AddressMatchService extends CommonServiceBase {
     decode(params, callback) {
         var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,

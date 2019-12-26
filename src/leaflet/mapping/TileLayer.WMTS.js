@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -12,7 +12,7 @@ import "../core/Base";
  * @param {string} url - wmts 图层地址。
  * @param {Object} options - wmts 图层可选参数。
  * @param {string} options.layer - 需要显示的图层。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] - 代理地址。
  * @param {Object} [options.style] - 图层样式。
  * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
  * @param {(number|L.Point)} [options.tileSize='256'] - 瓦片大小。

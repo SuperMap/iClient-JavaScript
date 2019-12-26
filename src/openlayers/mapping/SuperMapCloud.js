@@ -1,7 +1,8 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
+
+import XYZ from 'ol/source/XYZ';
 
 /**
  * @class ol.source.SuperMapCloud
@@ -10,16 +11,14 @@ import ol from 'openlayers';
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
- * @extends {ol.source.XYZ}
+ * @extends {ol/source/XYZ}
  */
-export class SuperMapCloud extends ol.source.XYZ {
+export class SuperMapCloud extends XYZ {
 
     constructor(opt_options) {
         var options = opt_options || {};
 
-        var attributions = options.attributions || new ol.Attribution({
-            html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-        });
+        var attributions = options.attributions || "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';
         var url = options.url || 'http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
@@ -52,5 +51,3 @@ export class SuperMapCloud extends ol.source.XYZ {
         }
     }
 }
-
-ol.source.SuperMapCloud = SuperMapCloud;

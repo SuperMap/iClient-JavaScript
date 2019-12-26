@@ -1,0 +1,36 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_tiledMapLayer_rasterfunction"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+  </head>
+  <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var map,
+        url = host + '/iserver/services/map-ndvi/rest/maps/ndvi';
+      map = L.map('map', {
+        center: L.CRS.EPSG3857.unproject(L.point(15600549.07, 4306191.95)),
+        maxZoom: 12,
+        zoom: 12
+      });
+      L.supermap
+        .tiledMapLayer(url, {
+          cacheEnabled: false,
+          rasterfunction: new SuperMap.NDVIParameter({ redIndex: 0, nirIndex: 2 })
+          // rasterfunction: new SuperMap.HillshadeParameter({
+          //   altitude: 45,
+          //   azimuth: 315,
+          //   zFactor:1
+          // }),
+        })
+        .addTo(map);
+    </script>
+  </body>
+</html>

@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     GeometryVector as FeatureVector,
     ThemeVector,
@@ -13,6 +12,7 @@ import {
 import {
     GeoFeature
 } from './theme/GeoFeature';
+import Point from 'ol/geom/Point';
 
 /**
  * @class ol.source.Label
@@ -20,15 +20,15 @@ import {
  * @classdesc 标签专题图图层源。
  * @param {string} name - 名称。
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {ol/Map} opt_options.map - 当前 Map 对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {string|Object} [opt_options.attributions] - 版权信息。
- * @param {string} [opt_options.logo] - Logo。
- * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
+ * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {ol/proj/Projection} [opt_options.projection] - 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是1或更高。
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
- * @param {ol.source.State} [opt_options.state] - 资源状态。
+ * @param {ol/source/State} [opt_options.state] - 资源状态。
  * @param {string} [opt_options.themeField] - 指定创建专题图字段。
  * @param {Object} [opt_options.style] - 专题图样式。
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
@@ -453,7 +453,7 @@ export class Label extends GeoFeature {
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
         var locTmp = this.map.getPixelFromCoordinate([locationTmp.x, locationTmp.y]);
-        var loc = new ol.geom.Point([locTmp[0], locTmp[1]]);
+        var loc = new Point([locTmp[0], locTmp[1]]);
 
         //偏移处理
         if (styleTmp.labelXOffset || styleTmp.labelYOffset) {
@@ -727,10 +727,10 @@ export class Label extends GeoFeature {
      * @returns {Array.<Object>} bounds 旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     rotationBounds(bounds, rotationCenterPoi, angle) {
-        var ltPoi = new ol.geom.Point([bounds.left, bounds.top]);
-        var rtPoi = new ol.geom.Point([bounds.right, bounds.top]);
-        var rbPoi = new ol.geom.Point([bounds.right, bounds.bottom]);
-        var lbPoi = new ol.geom.Point([bounds.left, bounds.bottom]);
+        var ltPoi = new Point([bounds.left, bounds.top]);
+        var rtPoi = new Point([bounds.right, bounds.top]);
+        var rbPoi = new Point([bounds.right, bounds.bottom]);
+        var lbPoi = new Point([bounds.left, bounds.bottom]);
 
         var ver = [];
         ver.push(this.getRotatedLocation(ltPoi.getCoordinates()[0], ltPoi.getCoordinates()[1], rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -960,5 +960,3 @@ export class Label extends GeoFeature {
         return super.canvasFunctionInternal_.apply(this, arguments);
     }
 }
-
-ol.source.Label = Label;

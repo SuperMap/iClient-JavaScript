@@ -1,0 +1,264 @@
+/**图层查询组件样式 search**/
+.component-search-container {
+    position: absolute;
+    top: 32px;
+    right: 96px;
+    width: 385px;
+}
+
+.component-search {
+    float: right;
+    min-width: 290px;
+    height: 36px;
+    line-height: 36px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26);
+    border-radius: 4px;
+    z-index: 999;
+    font-size: 12px;
+}
+
+.component-search > div {
+    float: left;
+}
+
+/*下拉框*/
+.component-search__settings {
+    position: relative;
+}
+
+.component-search__settings .component-search__settings__name {
+    background-color: #F5F5F5;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    max-width: 120px;
+    padding-left: 12px;
+    padding-right: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.component-search__settings__name > div:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.component-search__settings .supermapol-icons-solid-down-triangle {
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    margin-left: 4px;
+}
+
+/*搜索框*/
+.component-search input[type='text'] {
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #919191;
+    height: 18px;
+    width: 155px;
+    line-height: 18px;
+    padding-left: 8px;
+    padding-right: 24px;
+    border: none !important;
+    outline: none !important;
+}
+
+.component-search__input input[type='text'] ~ span.supermapol-icons-close {
+    position: absolute;
+    right: 2px;
+    cursor: pointer;
+    color: #E9E9E9;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    top: 9px;
+    text-align: center;
+    z-index: 10;
+}
+
+/*搜索*/
+.component-search__input {
+    position: relative;
+}
+
+.component-search .supermapol-icons-search {
+    font-size: 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 39px;
+    line-height: 16px;
+    text-align: center;
+    color: #4A90E2;
+    margin-top: 10px;
+    border-left: 1px solid #E9E9E9;
+}
+
+/*图层查询*/
+
+.component-search__layers {
+    box-sizing: border-box;
+    padding-top: 2px;
+    margin: 0 auto;
+    width: 488px;
+    max-height: 364px;
+}
+
+.component-search__layers__header {
+    width: 100%;
+    height: 41px;
+    border-bottom: 1px solid #E9E9E9;
+}
+
+.component-search__layers__header > div {
+    float: left;
+    height: 100%;
+    line-height: 42px;
+    cursor: pointer;
+}
+
+.component-search__layers__header > div > span {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 16px;
+}
+
+.component-search__layers__header > div > span:first-child {
+    font-size: 16px;
+    color: #0083CB;
+    margin-right: 8px;
+}
+
+.component-search__layers__body {
+    position: relative;
+    overflow: hidden;
+    width: 490px;
+    max-height: 310px;
+    padding-bottom: 8px;
+}
+
+.component-search__layers__itme {
+    width: 100%;
+    margin-top: 8px;
+    line-height: 24px;
+}
+
+.component-search__layers__itme > div {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+}
+
+/*单选框*/
+.component-search__layers__itme__singleselect {
+    width: 145px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 24px;
+    line-height: 24px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.component-search__layers__itme__singleselect > div {
+    float: left;
+}
+
+.component-search__layers__itme__singleselect > .single-label {
+    float: left;
+    margin-left: 6px;
+}
+
+.component-search__layers__itme__singleselect > div:first-child {
+    width: 12px;
+    height: 12px;
+}
+
+.component-search__layers__itme__singleselect .component-single-checked-img, .component-search__layers__itme__singleselect .component-single-default-img {
+    margin-top: 6px;
+    width: 12px;
+    height: 12px;
+}
+
+.component-search__layers__itme > .component-search__layers__itme--select {
+    float: right;
+    /* 复写模板的margin 后续确认模板margin是否删除*/
+    margin-right: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+    width: 280px;
+    height: 22px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    line-height: 22px;
+    outline: none;
+}
+
+/*查询结果单元样式*/
+.component-search__resultitme {
+    width: 100%;
+    height: 56px;
+    margin: 8px auto;
+    cursor: pointer;
+}
+
+.component-search__resultitme:hover, .component-search__resultitme.selected {
+    background-color: #F5F5F5;
+}
+
+.component-search__resultitme > div {
+    float: left;
+    height: 100%;
+    cursor: pointer;
+}
+
+.component-search__resultitme > .component-search-result-icon {
+    width: 34px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 43px;
+    text-align: right;
+    color: #0083CB;
+}
+
+.component-search__resultitme > .component-search__resultitme-selected {
+    color: red;
+    font-size: 24px;
+}
+
+.component-search-result-info {
+    width: 180px;
+    padding-left: 11px;
+    margin-right: 48px;
+}
+
+.component-search-result-info > div {
+    height: 18px;
+    line-height: 18px;
+    width: 100%;
+    margin-top: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.component-search-result-info > div:first-child {
+    color: #292929;
+}
+
+.component-search-result-info > div:last-child {
+    color: #919191;
+}
+
+.component-search__resultitme > div.component-checkbox {
+    float: right;
+    margin: 14px 16px 14px 0;
+    width: 14px;
+    height: 14px;
+}

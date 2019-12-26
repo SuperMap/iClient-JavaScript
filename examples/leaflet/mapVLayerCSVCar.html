@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -16,13 +16,13 @@
         center: [29.56, 106.56],
         zoom: 11,
     });
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     L.supermap.tiledMapLayer(url).addTo(map);
     loadData();
 
-    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理
+    //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
     function loadData() {
         $.get('../data/car.csv', function (csvstr) {
             var dataSet = mapv.csv.getDataSet(csvstr);
@@ -32,10 +32,10 @@
                 globalCompositeOperation: 'lighter',
                 draw: 'simple'
             };
-            var dataAttr = resources.text_dataSources + "<a target='_blank' href='http://mapv.baidu.com/examples/csv-car.html'> MapV</a>,";
+            var dataAttr = resources.text_dataSources + "<a target='_blank' href='https://mapv.baidu.com/examples/csv-car.html'> MapV</a>,";
             L.supermap.mapVLayer(dataSet, options, {attributionPrefix: dataAttr}).addTo(map);
             setTimeout(function () {
-                map.openPopup(resources.text_iClient9, map.getCenter());
+                map.openPopup(resources.text_iClient, map.getCenter());
             }, 1000)
         });
     }

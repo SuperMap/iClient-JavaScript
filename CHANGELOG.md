@@ -1,3 +1,145 @@
+# 10.0.1 #
+
+
+
+# 10.0.0 #
+
+## Distribution package changes
+
+### for Leaflet
+
+- `iclient9-leaflet.js` 更名 `iclient-leaflet.js`
+  
+- `iclient9-leaflet.min.js` 更名 `iclient-leaflet.min.js`
+
+- `iclient9-leaflet-es6.js` 更名 `iclient-leaflet-es6.js`
+
+- `iclient9-leaflet-es6.min.js` 更名 `iclient-leaflet-es6.min.js`
+  
+- `iclient9-leaflet.css` 更名 `iclient-leaflet.css`
+
+- `iclient9-leaflet.min.css` 更名 `iclient-leaflet.min.css`
+
+
+### for OpenLayers
+
+- `iclient9-openlayers.js` 更名 `iclient-openlayers.js`
+  
+- `iclient9-openlayers.min.js` 更名 `iclient-openlayers.min.js`
+
+- `iclient9-openlayers-es6.js` 更名 `iclient-openlayers-es6.js`
+
+- `iclient9-openlayers-es6.min.js` 更名 `iclient-openlayers-es6.min.js`
+  
+- `iclient9-openlayers.css` 更名 `iclient-openlayers.css`
+
+- `iclient9-openlayers.min.css` 更名 `iclient-openlayers.min.css`
+
+### for MapboxGL
+
+- `iclient9-mapboxgl.js` 更名 `iclient-mapboxgl.js`
+  
+- `iclient9-mapboxgl.min.js` 更名 `iclient-mapboxgl.min.js`
+
+- `iclient9-mapboxgl-es6.js` 更名 `iclient-mapboxgl-es6.js`
+
+- `iclient9-mapboxgl-es6.min.js` 更名 `iclient-mapboxgl-es6.min.js`
+  
+- `iclient9-mapboxgl.css` 更名 `iclient-mapboxgl.css`
+
+- `iclient9-mapboxgl.min.css` 更名 `iclient-mapboxgl.min.css`
+
+
+## API changes
+
+### for Leaflet
+
+- `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 新增 `options.rasterfunction` 参数，支持对接 SuperMap iServer 的栅格运算。
+
+- `L.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.headers` 参数，支持设置请求头内容。
+
+- 命名空间 `L.supermap.widgets` 更名为 `L.supermap.components`
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+### for OpenLayers
+
+- `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 新增 `options.rasterfunction` 参数，支持对接 SuperMap iServer 的栅格运算。
+
+- `ol.supermap.ServiceBase` 及其子类
+
+  - 新增 `options. headers` 参数，支持设置请求头内容
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+
+### for MapboxGL
+
+- `mapboxgl.supermap.ServiceBase` 及其子类
+
+  - 新增 `options. headers` 参数，支持设置请求头内容
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+## Fixed
+
+### for Leaflet
+
+- 修复 SuperMap iServer 地图设置可见比例尺时，手机端用双指缩放时，超出最大最小级别时出错的问题
+
+- 修复 `L.supermap.mapVLayer` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+  
+- 修复 `L.supermap.tiledVectorLayer` 使用自定义 `cartoCSS` 样式时配置 `pointurl` 不生效的问题 
+
+
+### for OpenLayers
+
+- 修复 `ol.source.Mapv` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.MapvLayer` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+
+
+## Examples
+
+- 新增 Component 分类
+
+  - 新增 “Vue - 地图” 分类及相关示例
+  
+  - 新增 “Vue - 地图子组件” 分类及相关示例
+
+  - 新增 “Vue - 天地图子组件” 分类及相关示例
+  
+  - 新增 “Vue - 可视化” 分类及相关示例
+  
+  - 新增 “Vue - 图表” 分类及相关示例
+  
+  - 新增 “Vue – 基础” 分类及相关示例
+  
+  - 新增 “Vue - 其他” 分类及相关示例
+
+### for Leaflet
+
+- iServer – 地图
+  
+  - 增加 “地图-栅格分析” 例子
+
+### for OpenLayers
+
+- iServer – 地图
+  
+  - 增加 “地图-栅格分析” 例子
+
+### for MapboxGL
+
+- 可视化 - 矢量瓦片
+  
+  - 增加 “iServer数据服务矢量瓦片(2000万点)” 例子
+
+
 # 10.0.0 beta #
 
 ## 新特性
@@ -110,7 +252,7 @@
 
 - iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格）
 
-![whatsNewMapboxGlWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
+![whatsNewMapboxGlComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
  
 ## API changes
 
@@ -191,7 +333,7 @@
 - iClient for MapboxGL新增支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，覆盖MVT矢量瓦片、栅格瓦片、可视化图层、标绘等功能
 
 - 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
- http://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
+ https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
 
 ![whatsNewMultiCoordinate](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-1.png)
  
@@ -199,7 +341,7 @@
 
 -	iClient for Leaflet新增：文件打开组件、数据流组件、地址匹配与图层查询组件、客户端计算组件、分布式分析组件、数据服务查询组件
 
-![whatsNewWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
+![whatsNewClientComputaion](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
  
 ## API changes
 
@@ -228,7 +370,7 @@
 ### for MapboxGL
 
 - 支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，需单独引用iClient对MapboxGL的增强库：
- http://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
+ https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
 
 ## Fixed
 
@@ -414,29 +556,29 @@
 
 ### 渲染性能再升级
 
-- 高效率点图层GraphicLayer支持数据量由之前的30万提升至100万，相较9D版本有了3倍以上的性能提升，100万点数据可在1秒内完成渲染；同时，新增支持任意带经纬度的点数据格式，例如GeoJSON，TopoJSON，二维表等多种格式，同时可以实时改变点的样式，并支持交互操作如根据属性筛选和过滤和鼠标事件。[示例>>](http://iclient.supermap.io/examples/leaflet/editor.html#12_graphiclayer_webgl)
+- 高效率点图层GraphicLayer支持数据量由之前的30万提升至100万，相较9D版本有了3倍以上的性能提升，100万点数据可在1秒内完成渲染；同时，新增支持任意带经纬度的点数据格式，例如GeoJSON，TopoJSON，二维表等多种格式，同时可以实时改变点的样式，并支持交互操作如根据属性筛选和过滤和鼠标事件。[示例>>](https://iclient.supermap.io/examples/leaflet/editor.html#12_graphiclayer_webgl)
 
 ![GraphicLayer](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-1.png)
 
-- 数据流图层DataFlowLayer增了MapV引擎，大幅提高了绘制Marker的性能，对于矢量点的渲染数据量由之前的1万提升至10万，对于栅格图片的渲染数据量由之前的3000提升至1万。[示例>>](http://iclient.supermap.io/examples/leaflet/editor.html#dataFlowService_mapv)
+- 数据流图层DataFlowLayer增了MapV引擎，大幅提高了绘制Marker的性能，对于矢量点的渲染数据量由之前的1万提升至10万，对于栅格图片的渲染数据量由之前的3000提升至1万。[示例>>](https://iclient.supermap.io/examples/leaflet/editor.html#dataFlowService_mapv)
 
 ![DataFlowLayer](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-2.png)
 
 ### 对接最新ECharts，渲染千万级数据
 
-- ECharts在今年1月发布了最新的版本4.0，新版本最大的亮点是支持了千万级数据的可视化渲染，通过对数据进行分块后加载，不需要漫长地等待所有数据加载完再进行绘制，以增量渲染的方式对数据进行可视化，从而提升性能。9D(2019)版本对EChartsLayer也同时进行了升级，已让Leaflet、OpenLayers、MapboxGL地图库都支持了ECharts 4.0的增量渲染能力。[示例>>](http://iclient.supermap.io/examples/leaflet/editor.html#echarts_linesDrawMillionsBeijingRoadsNetwork)
+- ECharts在今年1月发布了最新的版本4.0，新版本最大的亮点是支持了千万级数据的可视化渲染，通过对数据进行分块后加载，不需要漫长地等待所有数据加载完再进行绘制，以增量渲染的方式对数据进行可视化，从而提升性能。9D(2019)版本对EChartsLayer也同时进行了升级，已让Leaflet、OpenLayers、MapboxGL地图库都支持了ECharts 4.0的增量渲染能力。[示例>>](https://iclient.supermap.io/examples/leaflet/editor.html#echarts_linesDrawMillionsBeijingRoadsNetwork)
 
 ![EChartsLayer](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-3.png)
 
 ### MVT矢量瓦片细节优化
 
-- OpenLayers地图库的三方插件对于MVT矢量瓦片的特性支持的不够完美，9D(2019)版本在MVT矢量瓦片的细节呈现方面做了很多优化并增加了新特性，例如：支持面填充、支持文字标签避让、优化中文沿线标注、支持自定义字体、解决多面丢失、优化了渲染性能等，从而让OpenLayers拥有了可以媲美MapboxGL对MVT矢量瓦片的渲染效果，同时还支持除3857以外的其它任意标准坐标系。[示例>>](http://iclient.supermap.io/examples/openlayers/editor.html#mvtvectorlayer_mbstyle_landuse)
+- OpenLayers地图库的三方插件对于MVT矢量瓦片的特性支持的不够完美，9D(2019)版本在MVT矢量瓦片的细节呈现方面做了很多优化并增加了新特性，例如：支持面填充、支持文字标签避让、优化中文沿线标注、支持自定义字体、解决多面丢失、优化了渲染性能等，从而让OpenLayers拥有了可以媲美MapboxGL对MVT矢量瓦片的渲染效果，同时还支持除3857以外的其它任意标准坐标系。[示例>>](https://iclient.supermap.io/examples/openlayers/editor.html#mvtvectorlayer_mbstyle_landuse)
 
 ![MVT](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-4.png)
 
 ### 更多优秀的可视化特效
 
-- 9D版本为我们带来了很多炫酷的可视化效果，9D(2019)版本在这方面继续加强，新增集成了echarts / echartsgl / deck.gl可视化库的更多特效和范例。[示例>>](http://iclient.supermap.io/examples/mapboxgl/editor.html#deckglLayer_sfcontour)
+- 9D版本为我们带来了很多炫酷的可视化效果，9D(2019)版本在这方面继续加强，新增集成了echarts / echartsgl / deck.gl可视化库的更多特效和范例。[示例>>](https://iclient.supermap.io/examples/mapboxgl/editor.html#deckglLayer_sfcontour)
 
 ![deck.gl](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-5.png)
 

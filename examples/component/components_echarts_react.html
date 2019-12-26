@@ -1,0 +1,115 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsEcharts_React"></title>
+    <script type="text/javascript" include="react,jquery" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance,echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmEchartsLayer = SuperMap.Components.SmEchartsLayer;
+      var mapOptions = {
+        container: 'map', // container id
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [125.35, 43.86],
+        zoom: 10
+      };
+
+      $.get('../data/changchunBus.json', function(data) {
+        var echartsOptions = {
+          animation: false,
+          GLMap: {
+            roam: true
+          },
+          coordinateSystem: 'GLMap',
+          geo: {
+            map: 'GLMap'
+          },
+          series: [
+            {
+              type: 'lines',
+              polyline: true,
+              data: data,
+              silent: true,
+              lineStyle: {
+                normal: {
+                  opacity: 0.2,
+                  width: 1
+                }
+              },
+              progressiveThreshold: 500,
+              progressive: 100
+            },
+            {
+              type: 'lines',
+              coordinateSystem: 'GLMap',
+              polyline: true,
+              data: data,
+              lineStyle: {
+                normal: {
+                  width: 0.2
+                }
+              },
+              effect: {
+                constantSpeed: 40,
+                show: true,
+                trailLength: 0.02,
+                symbolSize: 2
+              }
+            }
+          ]
+        };
+
+        ReactDOM.render(
+          <SmWebMap mapOptions={mapOptions}>
+            <SmEchartsLayer options={echartsOptions} />
+          </SmWebMap>,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>

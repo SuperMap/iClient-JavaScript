@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -83,7 +83,7 @@ export class GeoJSON extends JSONFormat {
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
             "point": function (array) {
-                if (this.ignoreExtraDims == false &&
+                if (this.ignoreExtraDims === false &&
                     array.length != 2) {
                     throw "Only 2D points are supported: " + array;
                 }

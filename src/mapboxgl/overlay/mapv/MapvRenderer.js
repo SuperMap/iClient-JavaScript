@@ -1,10 +1,9 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    baiduMapLayer
-} from "mapv";
+import { baiduMapLayer } from 'mapv';
 import mapboxgl from 'mapbox-gl';
+import { getMeterPerMapUnit } from '@supermap/iclient-common';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -168,8 +167,8 @@ export class MapvRenderer extends BaseLayer {
             return;
         }
         var newData = this.dataSet.get({
-            filter: function (data) {
-                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+            filter: function(data) {
+                return filter != null && typeof filter === 'function' ? !filter(data) : true;
             }
         });
         this.dataSet.set(newData);
@@ -239,7 +238,10 @@ export class MapvRenderer extends BaseLayer {
             context.clear(context.COLOR_BUFFER_BIT);
         }
 
-        if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
+        if (
+            (self.options.minZoom && map.getZoom() < self.options.minZoom) ||
+            (self.options.maxZoom && map.getZoom() > self.options.maxZoom)
+        ) {
             return;
         }
 
@@ -248,13 +250,14 @@ export class MapvRenderer extends BaseLayer {
             dh = bounds.getNorth() - bounds.getSouth();
         var resolutionX = dw / this.canvasLayer.canvas.width,
             resolutionY = dh / this.canvasLayer.canvas.height;
-
+        // 一个像素是多少米
+        var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
-            transferCoordinate: function (coordinate) {
+            transferCoordinate: function(coordinate) {
                 if (map.transform.rotationMatrix || self.context === '2d') {
-                    var worldPoint = map.project((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
+                    var worldPoint = map.project(new mapboxgl.LngLat(coordinate[0], coordinate[1]));
                     return [worldPoint.x, worldPoint.y];
                 }
                 var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
@@ -263,17 +266,32 @@ export class MapvRenderer extends BaseLayer {
         };
 
         if (time !== undefined) {
-            dataGetOptions.filter = function (item) {
+            dataGetOptions.filter = function(item) {
                 var trails = animationOptions.trails || 10;
-                return (time && item.time > (time - trails) && item.time < time);
-            }
+                return time && item.time > time - trails && item.time < time;
+            };
         }
 
         var data = self.dataSet.get(dataGetOptions);
 
         this.processData(data);
 
-        self.options._size = self.options.size;
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
 
         var worldPoint = map.project(new mapboxgl.LngLat(0, 0));
         this.drawContext(context, data, self.options, worldPoint);
@@ -282,7 +300,6 @@ export class MapvRenderer extends BaseLayer {
     }
 
     init(options) {
-
         var self = this;
 
         self.options = options;
@@ -299,12 +316,22 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
+     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @description 释放资源。
+     */
+    destroy() {
+        this.unbindEvent();
+        this.clearData();
+        this.animator && this.animator.stop();
+        this.animator = null;
+        this.canvasLayer = null;
+    }
+
+    /**
      * @function MapvRenderer.prototype.addAnimatorEvent
      * @description 添加动画事件。
      */
-    addAnimatorEvent() {
-
-    }
+    addAnimatorEvent() {}
 
     /**
      * @function MapvRenderer.prototype.removeEvent
@@ -322,10 +349,10 @@ export class MapvRenderer extends BaseLayer {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var canvas = this.canvasLayer.canvas;
         canvas.style.position = 'absolute';
-        canvas.style.top = 0 + "px";
-        canvas.style.left = 0 + "px";
+        canvas.style.top = 0 + 'px';
+        canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio || 1;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
         if (!this.canvasLayer.mapVOptions.context || this.canvasLayer.mapVOptions.context == '2d') {
@@ -371,7 +398,18 @@ export class MapvRenderer extends BaseLayer {
         var tMoveX = endMovePoint.x - this.startMoveX;
         var tMoveY = endMovePoint.y - this.startMoveY;
         var canvas = this.getContext().canvas;
-        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
+        canvas.style.transform =
+            'rotateX(' +
+            tPitch +
+            'deg)' +
+            ' rotateZ(' +
+            tBearing +
+            'deg)' +
+            ' translate3d(' +
+            tMoveX +
+            'px, ' +
+            tMoveY +
+            'px, 0px)';
     }
 
     zoomStartEvent() {
@@ -382,7 +420,6 @@ export class MapvRenderer extends BaseLayer {
     zoomEndEvent() {
         this.zooming = false;
     }
-
 
     rotateStartEvent() {
         this.rotating = true;
@@ -396,7 +433,7 @@ export class MapvRenderer extends BaseLayer {
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
         var canvas = this.getContext().canvas;
-        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)'
+        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)';
     }
 
     rotateEndEvent() {
@@ -408,7 +445,14 @@ export class MapvRenderer extends BaseLayer {
      * @description 清除环境。
      */
     clear(context) {
-        context && context.clearRect && context.clearRect(0, 0, parseInt(this.map.getCanvas().style.width), parseInt(this.map.getCanvas().style.height));
+        context &&
+            context.clearRect &&
+            context.clearRect(
+                0,
+                0,
+                parseInt(this.map.getCanvas().style.width),
+                parseInt(this.map.getCanvas().style.height)
+            );
     }
 
     /**
@@ -426,7 +470,4 @@ export class MapvRenderer extends BaseLayer {
     _show() {
         this.canvasLayer.canvas.style.display = 'block';
     }
-
-
-
 }

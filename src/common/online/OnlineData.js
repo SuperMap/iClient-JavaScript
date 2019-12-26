@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -10,7 +10,9 @@ import {OnlineServiceBase} from './OnlineServiceBase';
  * @classdesc Online myData 服务。
  * @category iPortal/Online
  * @param {string} serviceRootUrl - 服务根地址。
- * @param {Object} options - 服务相关参数。
+ * @param {Object} options - 服务相关参数。 
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class OnlineData extends OnlineServiceBase {
 

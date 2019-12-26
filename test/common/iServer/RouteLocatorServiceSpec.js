@@ -26,6 +26,21 @@ describe('RouteLocatorService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var routeLocatorService = new RouteLocatorService(GlobeParameter.spatialAnalystURL, { headers: myHeaders });
+        expect(routeLocatorService).not.toBeNull();
+        expect(routeLocatorService.headers).not.toBeNull();
+        routeLocatorService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var routeLocatorService = new RouteLocatorService(GlobeParameter.spatialAnalystURL, { crossOrigin: false });
+        expect(routeLocatorService).not.toBeNull();
+        expect(routeLocatorService.crossOrigin).toBeFalsy();
+        routeLocatorService.destroy();
+    });
+
     it('processAsync_RouteLocatorPoint', (done) => {
         var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
         var routeLocatorCompleted = (routeLocatorEventArgs) => {

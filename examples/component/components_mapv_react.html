@@ -1,0 +1,143 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsMapV_React"></title>
+    <script type="text/javascript" include="react,jquery" src="../js/include-web.js"></script>
+    <script
+      include="antd,iclient-mapboxgl-react,mapbox-gl-enhance,proj4,mapv"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmMapvLayer = SuperMap.Components.SmMapvLayer;
+      var mapOptions = {
+        container: 'map', // container id
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [114.321317, 30.398428],
+        zoom: 10
+      };
+      var lineMapvOptions = {
+        strokeStyle: 'rgba(53,57,255,0.5)',
+        coordType: 'bd09mc',
+        shadowColor: 'rgba(53,57,255,0.2)',
+        shadowBlur: 3,
+        lineWidth: 3.0,
+        draw: 'simple'
+      };
+      var pointMapvOptions = {
+        fillStyle: 'rgba(255, 250, 250, 0.2)',
+        coordType: 'bd09mc',
+        globalCompositeOperation: 'lighter',
+        size: 1.5,
+        animation: {
+          stepsRange: {
+            start: 0,
+            end: 100
+          },
+          trails: 3,
+          duration: 5
+        },
+        draw: 'simple'
+      };
+
+      function addPopup(e) {
+        var map = e.map;
+        new mapboxgl.Popup({ closeOnClick: false })
+          .setLngLat(map.getCenter())
+          .setHTML(resources.text_iClient)
+          .addTo(map);
+      }
+
+      $.get('../data/wuhan-car', function(rs) {
+        // 构造数据
+        var data = [];
+        var timeData = [];
+        rs = rs.split('\n');
+        var maxLength = 0;
+        for (var i = 0; i < rs.length; i++) {
+          var item = rs[i].split(',');
+
+          var coordinates = [];
+          if (item.length > maxLength) {
+            maxLength = item.length;
+          }
+          for (var j = 0; j < item.length; j += 2) {
+            if (item.length === 1) {
+              continue;
+            }
+            coordinates.push(proj4('EPSG:3857', 'EPSG:4326', [parseInt(item[j]), parseInt(item[j + 1])]));
+            timeData.push({
+              geometry: {
+                type: 'Point',
+                coordinates: proj4('EPSG:3857', 'EPSG:4326', [parseInt(item[j]), parseInt(item[j + 1])])
+              },
+              count: 1,
+              time: j
+            });
+          }
+
+          data.push({
+            geometry: {
+              type: 'LineString',
+              coordinates: coordinates
+            }
+          });
+        }
+        var lineDataSet = new mapv.DataSet(data);
+        var ponitDataSet = new mapv.DataSet(timeData);
+
+        ReactDOM.render(
+          <SmWebMap mapOptions={mapOptions} onLoad={addPopup}>
+            <SmMapvLayer data={lineDataSet} options={lineMapvOptions} />
+            <SmMapvLayer data={ponitDataSet} options={pointMapvOptions} />
+          </SmWebMap>,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>

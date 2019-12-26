@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     DataFormat,
     KernelDensityJobsService,
@@ -33,6 +32,7 @@ import {ServiceBase} from './ServiceBase';
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class ProcessingService extends ServiceBase {
 
@@ -62,6 +62,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -87,6 +88,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -112,6 +114,8 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.proxy,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -148,6 +152,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -172,6 +177,7 @@ export class ProcessingService extends ServiceBase {
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.options.proxy,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
@@ -198,6 +204,8 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -234,6 +242,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -259,6 +268,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -284,6 +294,8 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -320,6 +332,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -345,6 +358,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -370,6 +384,8 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -406,6 +422,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -431,6 +448,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -458,6 +476,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -495,6 +514,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -520,6 +540,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -548,6 +569,7 @@ export class ProcessingService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -584,6 +606,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -609,6 +632,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -636,6 +660,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -673,6 +698,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -698,6 +724,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -725,6 +752,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -762,6 +790,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -787,6 +816,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -814,6 +844,7 @@ export class ProcessingService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -861,5 +892,3 @@ export class ProcessingService extends ServiceBase {
         return params;
     }
 }
-
-ol.supermap.ProcessingService = ProcessingService;

@@ -1,0 +1,62 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_tiledMapLayer_rasterfunction"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tileSize: 256,
+              tiles: [host + '/iserver/services/map-ndvi/rest/maps/ndvi'],
+              rasterfunction: new SuperMap.NDVIParameter({ redIndex: 0, nirIndex: 2 }),
+              cacheEnabled: false,
+              rasterSource: 'iserver'
+            }
+          },
+
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [140.14211670237586, 36.04047391197882],
+        zoom: 11,
+        maxZoom: 11
+      });
+    </script>
+  </body>
+</html>

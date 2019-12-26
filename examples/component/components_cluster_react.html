@@ -1,0 +1,73 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsCluster_React"></title>
+    <script type="text/javascript" include="react,jquery,papaparse" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      // import {SmClusterLayer} from '@supermap/react-iclient'
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmClusterLayer = SuperMap.Components.SmClusterLayer;
+
+      $.get('../data/chinaEarthquake.csv', function(response) {
+        var dataObj = Papa.parse(response, {
+          skipEmptyLines: true,
+          header: true
+        });
+
+        var data = dataObj.data;
+        var geojson = {
+          type: 'FeatureCollection',
+          features: []
+        };
+
+        for (var i = 0; i < data.length; i++) {
+          var item = data[i];
+          var date = new Date(item.date);
+          var year = date.getFullYear();
+
+          //2w+地震数据
+          if (year > 2000 && year < 2015) {
+            var feature = {
+              type: 'feature',
+              geometry: {
+                type: 'Point',
+                coordinates: []
+              },
+              properties: {
+                value: parseFloat(item.level)
+              }
+            };
+            feature.geometry.coordinates = [parseFloat(item.X), parseFloat(item.Y)];
+            geojson.features.push(feature);
+          }
+        }
+
+        ReactDOM.render(
+          <SmWebMap mapId='1329428269' serverUrl='https://iportal.supermap.io/iportal'>
+            <SmClusterLayer data={geojson} radius={100} />
+          </SmWebMap>,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>

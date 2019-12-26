@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -34,8 +34,7 @@ export class MapvCanvasLayer {
         canvas.style.mixBlendMode = this.mixBlendMode;
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-        this.devicePixelRatio = devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         canvas.width = parseInt(this.width) * devicePixelRatio;
         canvas.height = parseInt(this.height) * devicePixelRatio;
         if (this.context === '2d') {
@@ -63,9 +62,8 @@ export class MapvCanvasLayer {
      * @description 调整地图大小。
      */
     resize(mapWidth, mapHeight) {
-        console.log("resize");
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         this.canvas.width = mapWidth * devicePixelRatio;
         this.canvas.height = mapHeight * devicePixelRatio;
         if (this.context === '2d') {

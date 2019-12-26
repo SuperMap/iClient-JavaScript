@@ -1,0 +1,198 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsGraphThemeLayer_React"></title>
+    <script type="text/javascript" include="react" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" src="../data/chinaConsumptionLevel.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main,
+      #map-container {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="map-container"></div>
+      <div class="info-container">
+        <div id="infoBox" class="panel panel-primary infoPane" style="display: none;">
+          <div class="panel-heading">
+            <h5 class="panel-title text-center" data-i18n="resources.text_attributeTable"></h5>
+          </div>
+          <div id="infoContent" class="panel-body content"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/babel">
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmGraphThemeLayer = SuperMap.Components.SmGraphThemeLayer;
+      var features, chartsSettingForPie, themeOptions, popup;
+      var feas = [];
+      for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+        // 省居民消费水平（单位：元）信息
+        var provinceInfo = chinaConsumptionLevel[i];
+        var fea = {
+          type: 'feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [provinceInfo[1], provinceInfo[2]]
+          },
+          properties: {
+            NAME: provinceInfo[0],
+            CON2009: provinceInfo[3],
+            CON2010: provinceInfo[4],
+            CON2011: provinceInfo[5],
+            CON2012: provinceInfo[6],
+            CON2013: provinceInfo[7]
+          }
+        };
+
+        feas.push(fea);
+      }
+
+      features = {
+        type: 'FeatureCollection',
+        features: feas
+      };
+
+      chartsSettingForPie = {
+        width: 240,
+        height: 100,
+        codomain: [0, 40000], // 允许图表展示的值域范围，此范围外的数据将不制作图表
+        sectorStyle: { fillOpacity: 0.8 }, // 柱状图中柱条的（表示字段值的图形）样式
+        sectorStyleByFields: [
+          { fillColor: '#FFB980' },
+          { fillColor: '#5AB1EF' },
+          { fillColor: '#B6A2DE' },
+          { fillColor: '#2EC7C9' },
+          { fillColor: '#D87A80' }
+        ],
+        sectorHoverStyle: { fillOpacity: 1 },
+        xShapeBlank: [10, 10, 10], // 水平方向上的空白间距参数
+        axisYLabels: ['4万', '3万', '2万', '1万', '0'], // y 轴标签内容
+        axisXLabels: ['09年', '10年', '11年', '12年', '13年'], // x 轴标签内容
+        backgroundStyle: { fillColor: '#CCE8CF' }, // 背景样式
+        backgroundRadius: [5, 5, 5, 5] // 背景框圆角参数
+      };
+
+      // 设置 graphThemeLayer option 参数
+      themeOptions = {
+        attributions: ' ',
+        themeFields: ['CON2009', 'CON2010', 'CON2011', 'CON2012', 'CON2013'],
+        opacity: 0.9,
+        chartsSetting: chartsSettingForPie
+      };
+
+      function handleLayerMousemove(params) {
+        var e = params.mapboxEvent;
+        var map = params.map;
+        var themeLayer = map.getLayer(params.layerId);
+
+        if (popup) {
+          popup.remove();
+        }
+        if (e.target && e.target.refDataID && e.target.dataInfo) {
+          // 获取图形对应的数据 (feature)
+          var fea = themeLayer.getFeatureById(e.target.refDataID);
+          var info = e.target.dataInfo;
+
+          // 弹窗内容
+          var contentHTML = "<div style='color: #000; background-color: #fff'>";
+          contentHTML += resources.text_Name + '<br><strong>' + fea.attributes.NAME + '</strong>';
+          contentHTML += "<hr style='margin: 3px'>";
+
+          switch (info.field) {
+            case 'CON2009':
+              contentHTML +=
+                resources.text_consumptionLevel1 +
+                '09' +
+                resources.text_consumptionLevel2 +
+                '<br/><strong>' +
+                info.value +
+                '</strong>（' +
+                resources.text_yuan +
+                '）';
+              break;
+            case 'CON2010':
+              contentHTML +=
+                resources.text_consumptionLevel1 +
+                '10' +
+                resources.text_consumptionLevel2 +
+                '<br/><strong>' +
+                info.value +
+                '</strong>（' +
+                resources.text_yuan +
+                '）';
+              break;
+            case 'CON2011':
+              contentHTML +=
+                resources.text_consumptionLevel1 +
+                '11' +
+                resources.text_consumptionLevel2 +
+                '<br/><strong>' +
+                info.value +
+                '</strong>（' +
+                resources.text_yuan +
+                '）';
+              break;
+            case 'CON2012':
+              contentHTML +=
+                resources.text_consumptionLevel1 +
+                '12' +
+                resources.text_consumptionLevel2 +
+                ' <br/><strong>' +
+                info.value +
+                '</strong>（' +
+                resources.text_yuan +
+                '）';
+              break;
+            case 'CON2013':
+              contentHTML +=
+                resources.text_consumptionLevel1 +
+                '13' +
+                resources.text_consumptionLevel2 +
+                ' <br/><strong>' +
+                info.value +
+                '</strong>（' +
+                resources.text_yuan +
+                '）';
+              break;
+            default:
+              contentHTML += 'No Data';
+          }
+          contentHTML += '</div>';
+
+          var tempPoint = map.unproject({ x: e.event.x, y: e.event.y });
+          popup = new mapboxgl.Popup({ closeOnClick: false })
+            .setLngLat([tempPoint.lng, tempPoint.lat])
+            .setHTML(contentHTML)
+            .addTo(map);
+          return;
+        }
+        if (popup) {
+          popup.remove();
+        }
+      }
+
+      ReactDOM.render(
+        <SmWebMap serverUrl="https://iportal.supermap.io/iportal" mapId="1329428269">
+          <SmGraphThemeLayer chartsType="Pie" options={themeOptions} data={features} onMousemove={handleLayerMousemove} />
+        </SmWebMap>,
+        document.getElementById('map-container')
+      );
+    </script>
+  </body>
+</html>

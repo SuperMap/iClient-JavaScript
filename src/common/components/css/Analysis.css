@@ -1,0 +1,282 @@
+/**分析组件公共样式**/
+.hidden,
+.display_none {
+    display: none;
+}
+
+/**分析面板滚动条**/
+.component-content--scroll {
+    max-height: 500px;
+    overflow: auto;
+    padding: 16px 10px 16px 16px;
+    font-size: 12px;
+    overflow-x: hidden;
+}
+
+/**分析组件相关样式**/
+.component-analysis {
+    position: absolute;
+    right: 10px;
+    top: 32px;
+    font-size: 12px;
+}
+
+.component-content--analysis {
+    font-size: 12px;
+    padding: 16px 10px 16px 16px;
+}
+
+.component-analysis__container__analysisbtn {
+    position: relative;
+    font-size: 12px;
+    margin-bottom: 12px;
+    margin-top: 16px;
+    z-index: 100;
+}
+
+.component-analysis__container .component-textarea {
+    display: block;
+    width: 183px;
+    margin-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    outline: none;
+    font-size: 12px;
+    color: #595959;
+    letter-spacing: 0.14px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+}
+
+.component-analysis__container span,
+.component-analysis__container input,
+.component-analysis__container select {
+    display: block;
+    color: #595959;
+    letter-spacing: 0.14px;
+}
+
+.component-analysis__container input,
+.component-analysis__container select {
+    margin-top: 8px;
+    height: 28px;
+    width: 183px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    outline: none;
+    font-size: 12px;
+    /* margin-bottom: 16px; */
+}
+
+.component-analysis__container input:hover,
+.component-analysis__container select:hover {
+    border: 1px solid #108EE9;
+}
+
+.component-analysis__container .component-textarea:hover {
+    border: 1px solid #108EE9;
+}
+
+.component-analysis__container input:focus,
+.component-analysis__container select:focus,
+.component-textarea:focus {
+    border: 1px solid #108EE9;
+}
+
+.component-analysis__container__selectpram .clip-layer,
+.component-analysis__container__selectpram .operateLayer,
+.component-analysis__container__analysisLayer {
+    margin-bottom: 16px;
+}
+
+.component-clientcomputation__buffer > div, .component-clientcomputation__isoline > div {
+    margin-bottom: 16px;
+}
+
+/* 分析按钮 */
+.component-analysis__analysisbtn button {
+    border: none;
+    border-radius: 2px;
+    color: #FFFFFF;
+    padding-right: 0;
+    line-height: 2em;
+    text-transform: none;
+
+}
+
+.component-analysis__analysisbtn button.disabled {
+    cursor: not-allowed;
+    background-color: #80B5CF;
+}
+
+.component-analysis__analysisbtn--analysis,
+.component-analysis__analysisbtn--analysising-container {
+    width: 100%;
+    height: 28px;
+    padding-right: 0;
+    background: #108EE9;
+    outline: none;
+}
+
+.component-analysis__analysisbtn--analysis:hover {
+    background: #38ADF5;
+}
+
+.component-analysis__analysisbtn--analysising {
+    position: relative;
+    width: 64%;
+    height: 28px;
+    line-height: 28px;
+    /* padding-left: 25px; */
+    display: inline-block;
+    border-radius: 2px;
+    background: #38ADF5;
+    cursor: not-allowed;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.component-analysis__analysisbtn--cancel {
+    width: 29%;
+    height: 28px;
+    margin-left: 12px;
+    padding-left: 0;
+    line-height: 27px;
+    text-align: center;
+    background: #485465;
+}
+
+.component-analysis__analysisbtn--cancel:hover {
+    background: #747D8A;
+}
+
+.component-analysis__analysisbtn--cancel:focus {
+    background: #3E4857;
+    outline: none;
+}
+
+.component-analysis__analysisbtn--analysising span {
+    position: relative;
+    /* left: 30px; */
+    height: 28px;
+    line-height: 28px;
+    vertical-align: bottom;
+    display: inline-block;
+    margin-left: 10px;
+    color: #FFFFFF;
+}
+
+.component-analysis__svg-container {
+    position: relative;
+    /* left: 30px; */
+    /* top: 4px; */
+    display: inline-block;
+    cursor: not-allowed;
+    vertical-align: bottom;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+.component-analysis__svg-rotate {
+    position: relative;
+    top: 4px;
+    animation-name: svgrotate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    -ms-animation-name: svgrotate;
+    -ms-animation-duration: 1s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    -moz-animation-name: svgrotate;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -webkit-animation-name: svgrotate;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+
+@keyframes svgrotate {
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+        transform: rotate(0deg) translateZ(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg) translateZ(0);
+        transform: rotate(180deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(1turn) translateZ(0);
+        transform: rotate(1turn) translateZ(0);
+    }
+}
+
+@-webkit-keyframes svgrotate {
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+        transform: rotate(0deg) translateZ(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg) translateZ(0);
+        transform: rotate(180deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(1turn) translateZ(0);
+        transform: rotate(1turn) translateZ(0);
+    }
+}
+
+@-moz-keyframes svgrotate {
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+        transform: rotate(0deg) translateZ(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg) translateZ(0);
+        transform: rotate(180deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(1turn) translateZ(0);
+        transform: rotate(1turn) translateZ(0);
+    }
+}
+
+select.component-select-options {
+    width: 202px;
+    height: 28px;
+    margin-top: -3px;
+    margin-bottom: 16px;
+}
+
+select.component-select-options > option {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.component-content--scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: #F5F5F5;
+}
+
+.component-content--scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(191, 195, 201);
+}
+
+.component-content--analysis .component-selecttool {
+    margin-bottom: 16px;
+}
+
+.component-analysis__analysisbtn--deletelayers {
+    margin-top: 10px;
+}

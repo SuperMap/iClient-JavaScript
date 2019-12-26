@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
 import {QueryService} from '../../../src/openlayers/services/QueryService';
@@ -6,6 +5,8 @@ import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParame
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
+import Point from 'ol/geom/Point';
+import LineString from 'ol/geom/LineString';
 
 var originalTimeout, serviceResults;
 var changchunBaseUrl = GlobeParameter.tileSetsURL;
@@ -57,9 +58,9 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', () => {
             for (var i = 0; i < routeObj.length; i++) {
                 pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
-            var routeLine = new ol.geom.LineString([pointsList]);
+            var routeLine = new LineString([pointsList]);
             //在组成路由的点中选取一个查询点(数组中第8个点),并添加到地图上
-            var point = new ol.geom.Point([routeObj[3][0], routeObj[3][1]]);
+            var point = new Point([routeObj[3][0], routeObj[3][1]]);
             //点定里程服务
             var routeCalculateMeasureService = new SpatialAnalystService(changchunServiceUrl);
             var routeCalculateMeasureParameters = new RouteCalculateMeasureParameters({

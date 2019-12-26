@@ -1,0 +1,372 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_componentsEstateMonitoringPlatform_Vue"></title>
+        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+        <script
+            include="echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance,ant-design-vue"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <script type="text/javascript" src="../data/estateMonitoringPlatformData.js"></script>
+        <style>
+            body {
+                margin: 0px;
+                background: #fff;
+            }
+            #main {
+                margin: 0 auto;
+                width: 100%;
+                height: 100vh;
+                overflow: hidden;
+                box-sizing: border-box;
+                background: #000;
+                position: relative;
+            }
+
+            @media screen and (max-width: 992px) {
+                #main {
+                    overflow: auto;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="main">
+            <a-row id="map-row">
+                <a-col v-if="!showMap" :md="12" id="map-col">
+                    <div class="map-holder">
+                        <sm-web-map :map-options="mapOptions">
+                            <sm-geojson-layer v-if="!showMap" :data="data" :layer-style="layerStyle"></sm-geojson-layer>
+                        </sm-web-map>
+                    </div>
+                </a-col>
+                <a-col :md="12" v-if="!showMap">
+                    <sm-text
+                        :font-style="{fontSize: '2.4rem', lineHeight: '2.6rem'}"
+                        title="房产项目可视化监控平台"
+                    ></sm-text>
+                    <div class="indicator-holder">
+                        <sm-indicator title="土地出让金" unit="亿元" num="12320"> </sm-indicator>
+                        <sm-indicator title="回款金额" unit="元" num="12320"> </sm-indicator>
+                        <sm-indicator title="净利润" unit="元" num="12320"> </sm-indicator>
+                    </div>
+                </a-col>
+                <a-col :md="6">
+                    <sm-time-text timeType="date"> </sm-time-text>
+                    <div class="year-plan-wrap">
+                        <sm-text :font-style="{lineHeight: '1.67vw'}" title="年度计划"></sm-text>
+                        <div class="progress-holder">
+                            <div class="progress-item">
+                                <sm-progress type="circle" :percent="55" :stroke-width="8"> </sm-progress>
+                                <sm-text title="销售金额"></sm-text>
+                            </div>
+                            <div class="progress-item">
+                                <sm-progress type="circle" :stroke-width="8" :percent="35"> </sm-progress>
+                                <sm-text title="销售回款"></sm-text>
+                            </div>
+                            <div class="progress-item">
+                                <sm-progress type="circle" :stroke-width="8" :percent="60"> </sm-progress>
+                                <sm-text title="营业收入"></sm-text>
+                            </div>
+                            <div class="progress-item">
+                                <sm-progress type="circle" :stroke-width="8" :percent="40"></sm-progress>
+                                <sm-text title="净利润"></sm-text>
+                            </div>
+                        </div>
+                    </div>
+                </a-col>
+                <a-col :md="12" v-if="showMap">
+                    <sm-text
+                        :font-style="{fontSize: '2.4rem', lineHeight: '2.6rem'}"
+                        title="房产项目可视化监控平台"
+                    ></sm-text>
+                    <div class="indicator-holder">
+                        <sm-indicator title="土地出让金" unit="亿元" num="12320"> </sm-indicator>
+                        <sm-indicator title="回款金额" unit="元" num="12320"> </sm-indicator>
+                        <sm-indicator title="净利润" unit="元" num="12320"> </sm-indicator>
+                    </div>
+                </a-col>
+                <a-col :md="6">
+                    <sm-text title="常规项目指标"></sm-text>
+                    <div class="normal-index-progress-holder">
+                        <div class="progress-item">
+                            <sm-progress type="circle" :percent="20" :stroke-width="10"> </sm-progress>
+                            <sm-text title="施工类型"></sm-text>
+                        </div>
+                        <div class="progress-item">
+                            <sm-progress type="circle" :percent="60" :stroke-width="10"> </sm-progress>
+                            <sm-text title="施工总进度"></sm-text>
+                        </div>
+                    </div>
+                </a-col>
+            </a-row>
+            <a-row>
+                <a-col :md="6">
+                    <div class="chart-item">
+                        <sm-text title="销售金额统计"></sm-text>
+                        <sm-chart icon-class="" :options="saleAmountOption"> </sm-chart>
+                    </div>
+                    <div class="chart-item">
+                        <sm-text title="销售回款趋势"></sm-text>
+                        <sm-chart icon-class="" :options="saleReturnOption"> </sm-chart>
+                    </div>
+                </a-col>
+                <a-col v-if="showMap" :md="12" id="map-col">
+                    <div class="map-holder">
+                        <sm-web-map :map-options="mapOptions">
+                            <sm-geojson-layer v-if="showMap" :data="data" :layer-style="layerStyle"></sm-geojson-layer>
+                        </sm-web-map>
+                    </div>
+                </a-col>
+                <a-col :md="6">
+                    <div class="chart-item">
+                        <sm-text title="库存指标"></sm-text>
+                        <sm-chart icon-class="" :options="stockIndexOption"> </sm-chart>
+                    </div>
+                    <div class="chart-item">
+                        <sm-text title="项目价值指标"></sm-text>
+                        <sm-progress type="circle" :percent="80" :stroke-width="10"> </sm-progress>
+                    </div>
+                </a-col>
+            </a-row>
+            <a-row>
+                <a-col :md="6">
+                    <div class="chart-item">
+                        <sm-text title="项目成本表"></sm-text>
+                        <sm-chart icon-class="" :options="projectCostOption"> </sm-chart>
+                    </div>
+                </a-col>
+                <a-col :md="12">
+                    <div class="chart-holder">
+                        <div class="chart-item">
+                            <sm-text title="营业收入情况"></sm-text>
+                            <sm-chart icon-class="" :options="revenueOption"> </sm-chart>
+                        </div>
+                        <div class="chart-item">
+                            <sm-text title="投资盈利情况"></sm-text>
+                            <sm-chart icon-class="" :options="investProfitOption"> </sm-chart>
+                        </div>
+                    </div>
+                </a-col>
+                <a-col :md="6">
+                    <div class="chart-item">
+                        <sm-text title="库存情况"></sm-text>
+                        <sm-chart icon-class="" :options="stockSituationOption"> </sm-chart>
+                    </div>
+                </a-col>
+            </a-row>
+            <a-button @click="changeTheme" class="theme-btn">{{ resources.btn_switchTheme }}</a-button>
+        </div>
+
+        <script>
+            //本示例数据纯属虚构
+            new Vue({
+                el: '#main',
+                data() {
+                    var mergeData = Object.assign(
+                        {
+                            theme: 'custom',
+                            mapOptions: {
+                                pitch: 60,
+                                container: 'map', // container id
+                                style: {
+                                    version: 8,
+                                    sources: {},
+                                    layers: []
+                                },
+                                center: [116.47, 39.92], // starting position
+                                zoom: 16 // starting zoom
+                            },
+                            data: '../data/buildings.json',
+                            layerStyle: {
+                                paint: {
+                                    'fill-extrusion-color': [
+                                        'case',
+                                        ['<', ['get', 'height'], 2],
+                                        '#fbb03b',
+                                        ['<', ['get', 'height'], 4],
+                                        '#223b53',
+                                        ['<', ['get', 'height'], 8],
+                                        '#15D1F2',
+                                        ['<', ['get', 'height'], 16],
+                                        '#15D1F2',
+                                        '#3bb2d0'
+                                    ],
+                                    'fill-extrusion-height': ['*', ['get', 'height'], 5],
+                                    'fill-extrusion-opacity': 0.6
+                                }
+                            },
+                            colorGroup: ['#15D1F2', '#499BFF', '#2C61FF', '#243BCC', '#67A9FF']
+                        },
+                        estatePlatformDatas
+                    );
+                    return { ...mergeData, showMap: false };
+                },
+                mounted() {
+                    console.log(this.showMap);
+                    let screenWidth = document.body.clientWidth;
+                    if (screenWidth <= 540) {
+                        this.showMap = false;
+                    } else {
+                        this.showMap = true;
+                    }
+                    console.log(this.showMap);
+                    SuperMap.Components.setTheme({
+                        background: 'transparent',
+                        textColor: '#fff',
+                        colorGroup: this.colorGroup
+                    });
+                },
+                methods: {
+                    changeTheme() {
+                        this.theme = this.theme === 'custom' ? 'dark' : 'custom';
+                        var themeInfo = {
+                            dark: {
+                                typeInfo: 'dark',
+                                themeColor: ['#dd6b66', ['<', ['get', 'height'], 16], '#dd6b66', '#3bb2d0']
+                            },
+                            custom: {
+                                typeInfo: {
+                                    background: 'transparent',
+                                    textColor: '#fff',
+                                    colorGroup: this.colorGroup
+                                },
+                                themeColor: ['#15D1F2', ['<', ['get', 'height'], 16], '#15D1F2', '#3bb2d0']
+                            }
+                        };
+                        this.layerStyle.paint['fill-extrusion-color'] = [
+                            'case',
+                            ['<', ['get', 'height'], 2],
+                            '#fbb03b',
+                            ['<', ['get', 'height'], 4],
+                            '#223b53',
+                            ['<', ['get', 'height'], 8]
+                        ].concat(themeInfo[this.theme].themeColor);
+                        SuperMap.Components.setTheme(themeInfo[this.theme].typeInfo);
+                    }
+                }
+            });
+        </script>
+        <style>
+            html {
+                font-size: 10px;
+            }
+            #main .sm-component-text {
+                display: block;
+                font-weight: bold;
+                text-align: center;
+                font-size: 1.4rem;
+                line-height: 1.4rem;
+            }
+
+            .ant-row .sm-component-time-text {
+                display: block;
+            }
+
+            .progress-holder .progress-item {
+                width: 23%;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .progress-holder .progress-item .sm-component-text,
+            .normal-index-progress-holder .progress-item .sm-component-text {
+                margin-top: 1.07vh;
+            }
+
+            .progress-holder .progress-item .sm-component-progress {
+                height: 11.34vh;
+            }
+
+            .indicator-holder {
+                padding: 0 1.2vw;
+                margin-top: 2vh;
+                display: flex;
+                justify-content: space-around;
+            }
+            .sm-component-indicator__content {
+                align-items: center;
+            }
+            .indicator-holder .sm-component-indicator {
+                margin-right: 1.56vw;
+            }
+
+            .indicator-holder .sm-component-indicator .sm-component-indicator__title {
+                font-size: 1.6rem;
+            }
+
+            .indicator-holder .sm-component-indicator .sm-component-indicator__num {
+                font-size: 1.8rem;
+                text-indent: 0.26vw;
+            }
+
+            .indicator-holder .sm-component-indicator .sm-component-indicator__unit {
+                font-size: 1.3rem;
+            }
+
+            .normal-index-progress-holder {
+                margin: 1.07vh auto 0;
+            }
+
+            .normal-index-progress-holder .progress-item {
+                width: 48%;
+                display: inline-block;
+            }
+
+            .normal-index-progress-holder .progress-item .sm-component-progress,
+            .chart-item .sm-component-progress {
+                height: 13.9vh;
+            }
+
+            .chart-item .sm-component-text {
+                margin: 0.6vh 0;
+            }
+
+            .ant-row .chart-item .sm-component-chart {
+                height: 20.86vh;
+            }
+
+            .ant-row .chart-item .sm-component-card__content {
+                width: 100%;
+                height: 100%;
+            }
+
+            .map-holder {
+                height: 50vh;
+                padding: 0 0.78vw;
+            }
+
+            .chart-holder .chart-item {
+                width: 49%;
+                display: inline-block;
+            }
+
+            .theme-btn {
+                position: fixed;
+                left: 15px;
+                bottom: 15px;
+            }
+            @media (max-width: 540px) {
+                html {
+                    font-size: 10px;
+                }
+                .map-holder {
+                    height: 90vh;
+                }
+                .ant-row .chart-item .sm-component-chart {
+                    height: 25.86vh;
+                }
+            }
+            @media (min-width: 1200px) {
+                html {
+                    font-size: 12px;
+                }
+            }
+        </style>
+    </body>
+</html>

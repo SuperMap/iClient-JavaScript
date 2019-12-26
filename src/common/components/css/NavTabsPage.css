@@ -1,0 +1,45 @@
+/** NavTabsPage 标签组件样式**/
+.component-navtabspage {
+    position: absolute;
+    overflow: hidden;
+    min-width: 520px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26);
+    border-radius: 4px;
+    font-family: MicrosoftYaHei-Bold;
+    font-size: 12px;
+    color: #595959;
+    top: 44px;
+    right: 0;
+    z-index: 1000;
+}
+
+.component-navtabspage .supermapol-icons-close {
+    position: absolute;
+    cursor: pointer;
+    top: 11px;
+    right: 15px;
+    color: #BFBFBF;
+}
+
+.component-navtabspage__title {
+    height: 35px;
+    line-height: 36px;
+    background-color: #F5F5F5;
+    box-shadow: 0 1px 0 0 #E9E9E9;
+}
+
+.component-navtabspage__title > span {
+    float: left;
+    color: #919191;
+    cursor: pointer;
+    height: 100%;
+    width: 90px;
+    text-align: center;
+}
+
+.component-navtabspage__title > span.component-navtabspage__tabs--select {
+    color: #595959;
+    background: white;
+    border-bottom: 2px solid transparent;
+}
