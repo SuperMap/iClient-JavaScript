@@ -15,4 +15,9 @@ describe('iPortalResource', () => {
         var load = iPortalResource.load();
         expect(load).not.toBeNull();
     });
+
+    it('update', ()=> {
+        var iPortalResource = new IPortalResource("https://iportal.supermap.io/iportal",{resourceType:'DATA'});
+        expect(iPortalResource.update() instanceof Promise).toBeTruthy();
+    });
 });
