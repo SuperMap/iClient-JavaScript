@@ -163,6 +163,7 @@ import './common/iPortal/iPortalShareEntitySpec.js';
 import './common/iPortal/iPortalShareParamSpec.js';
 import './common/iPortal/iPortalResourceSpec.js';
 import './common/iPortal/iPortalQueryResultSpec.js';
+import './common/iPortal/iPortalSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
