@@ -305,12 +305,12 @@ export class WebMap extends mapboxgl.Evented {
 				CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
 				OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 				GOOGLE:
-					'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+					'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
 				GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-				JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-				JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-				JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-				JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+				JAPAN_STD: 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+				JAPAN_PALE: 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+				JAPAN_RELIEF: 'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+				JAPAN_ORT: 'https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
 			},
 			url;
 		switch (layerType) {
@@ -461,7 +461,7 @@ export class WebMap extends mapboxgl.Evented {
 	 */
 	_createBingLayer(layerName) {
 		let bingUrl =
-			'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadkey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
+			'https://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadkey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
 		this.addLayer([bingUrl], 'bing-layers-' + layerName);
 	}
 
@@ -570,7 +570,7 @@ export class WebMap extends mapboxgl.Evented {
 		let layerType = mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();
 		let isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
 		// let isLabel = true;
-		let url = 'http://t0.tianditu.gov.cn/{layer}_{proj}/wmts?';
+		let url = 'https://t0.tianditu.gov.cn/{layer}_{proj}/wmts?';
 		let labelUrl = url;
 		let layerLabelMap = {
 			vec: 'cva',

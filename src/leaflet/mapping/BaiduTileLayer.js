@@ -9,7 +9,7 @@ import Attributions from '../core/Attributions'
  * @classdesc 百度地图图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
- * @param {string} [url='http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
+ * @param {string} [url='https://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
  * @param {Object} options - 切片参数。
  * @param {number} [options.minZoom=3] - 最小缩放级别。 
  * @param {number} [options.maxZoom=19] - 最大缩放级别。

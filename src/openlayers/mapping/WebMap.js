@@ -56,7 +56,7 @@ const MAX_MIGRATION_ANIMATION_COUNT = 1000;
  * @param {number} id - 地图的id
  * @param {Object} options - 参数
  * @param {string} [options.target='map'] - 地图容器id
- * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数
  * @param {string} [options.credentialKey] - 凭证密钥。例如为"key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填
@@ -616,7 +616,7 @@ export class WebMap extends Observable {
             case ('TIANDITU_VEC_3857'):
             case ('TIANDITU_IMG_3857'):
             case ('TIANDITU_TER_3857'):
-                baseLayerInfo.iserverUrl= 'http://map.tianditu.gov.cn/';
+                baseLayerInfo.iserverUrl= 'https://map.tianditu.gov.cn/';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 0;
                 baseLayerInfo.maxZoom= 19;
@@ -629,7 +629,7 @@ export class WebMap extends Observable {
             case ('TIANDITU_VEC_4326'):
             case ('TIANDITU_IMG_4326'):
             case ('TIANDITU_TER_4326'):
-                baseLayerInfo.iserverUrl= 'http://map.tianditu.gov.cn/';
+                baseLayerInfo.iserverUrl= 'https://map.tianditu.gov.cn/';
                 baseLayerInfo.epsgCode= 'EPSG:4326';
                 baseLayerInfo.minZoom= 0;
                 baseLayerInfo.maxZoom= 19;
@@ -649,16 +649,16 @@ export class WebMap extends Observable {
                 baseLayerInfo.iserverUrl= 'https://www.openstreetmap.org';
                 break;
             case ('GOOGLE'):
-                baseLayerInfo.url= 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0';
+                baseLayerInfo.url= 'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 22;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= osmBounds;
-                baseLayerInfo.iserverUrl= 'http://www.google.cn/maps';
+                baseLayerInfo.iserverUrl= 'https://www.google.cn/maps';
                 break;
             case ('JAPAN_STD'):
-                baseLayerInfo.url= 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png';
+                baseLayerInfo.url= 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 19;
@@ -666,7 +666,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.extent= osmBounds;
                 break;
             case ('JAPAN_PALE'):
-                baseLayerInfo.url= 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png';
+                baseLayerInfo.url= 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 2;
                 baseLayerInfo.maxZoom= 19;
@@ -674,7 +674,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.extent= osmBounds;
                 break;
             case ('JAPAN_RELIEF'):
-                baseLayerInfo.url= 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png';
+                baseLayerInfo.url= 'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 5;
                 baseLayerInfo.maxZoom= 14;
@@ -682,7 +682,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.extent= japanReliefBounds;
                 break ;
             case ('JAPAN_ORT'):
-                baseLayerInfo.url= 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg';
+                baseLayerInfo.url= 'https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 2;
                 baseLayerInfo.maxZoom= 12;
@@ -776,7 +776,7 @@ export class WebMap extends Observable {
      * @returns {ol/source/XYZ} bing地图的source
      */
     createBingSource(layerInfo, projection) {
-        let url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
+        let url = 'https://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
         return new olSource.XYZ({
             wrapX: false,
             projection: projection,

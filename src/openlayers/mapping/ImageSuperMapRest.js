@@ -38,7 +38,7 @@ export class ImageSuperMapRest extends TileImage {
       return;
     }
     options.attributions =
-      options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
+      options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>"
 
     options.format = options.format ? options.format : 'png';
     var layerUrl = options.url + '/image.' + options.format + '?';

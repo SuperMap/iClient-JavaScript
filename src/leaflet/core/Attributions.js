@@ -7,7 +7,7 @@
 
 let Attributions = {
 
-    Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
+    Prefix: `<a href='https://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
                 with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
@@ -39,7 +39,7 @@ let Attributions = {
     },
 
     Tianditu: {
-        attribution: `Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
+        attribution: `Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
     }
 };
 

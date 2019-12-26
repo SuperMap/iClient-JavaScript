@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <title data-i18n="resources.title_pixiOverlay_taxi"></title>
-        <link href="https://cdn.bootcss.com/leaflet/1.5.1/leaflet.css" rel="stylesheet" />
         <script type="text/javascript" include="jquery,bootstrap,papaparse,widgets" src="../js/include-web.js"></script>
     </head>
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -12,7 +11,7 @@
         <script type="text/javascript" include="pixi" src="../../dist/leaflet/include-leaflet.js"></script>
         <script>
             let host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-            var url = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+            var url = host + '/iserver/services/map-china400/rest/maps/China';
             var map = L.map('map', {
                 center: [40.7594, -73.91426],
                 maxZoom: 18,

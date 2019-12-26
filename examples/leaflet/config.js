@@ -946,10 +946,12 @@ var exampleConfig = {
             pixi: {
                 name: 'Pixi',
                 name_en: 'Pixi',
+                version: '10.0.1',
                 content: [
                     {
                         name: '纽约出租车上车点分布图（140万点数据绘制）',
                         name_en: 'Use Pixi to draw 1.4 millions New York Taxi Points',
+                        version: '10.0.1',
                         thumbnail: 'l_pixiOverlay_taxi.png',
                         fileName: 'l_pixiOverlay_taxi'
                     }

@@ -89,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -134,7 +134,7 @@ module.exports = g;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(21)
+var utils = __webpack_require__(20)
 
 var AND = '&&'
   , OR = '||'
@@ -571,18 +571,12 @@ module.exports = function(){try{return turf}catch(e){return {}}}();
 
 /***/ }),
 /* 8 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"a\":\"2.5.0\"}");
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileFeature = __webpack_require__(10);
+var VectorTileFeature = __webpack_require__(9);
 
 module.exports = VectorTileLayer;
 
@@ -644,13 +638,13 @@ VectorTileLayer.prototype.feature = function(i) {
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(24);
+var Point = __webpack_require__(23);
 
 module.exports = VectorTileFeature;
 
@@ -701,7 +695,7 @@ VectorTileFeature.prototype.loadGeometry = function() {
         line;
 
     while (pbf.pos < end) {
-        if (!length) {
+        if (length <= 0) {
             var cmdLen = pbf.readVarint();
             cmd = cmdLen & 0x7;
             length = cmdLen >> 3;
@@ -752,7 +746,7 @@ VectorTileFeature.prototype.bbox = function() {
         y2 = -Infinity;
 
     while (pbf.pos < end) {
-        if (!length) {
+        if (length <= 0) {
             var cmdLen = pbf.readVarint();
             cmd = cmdLen & 0x7;
             length = cmdLen >> 3;
@@ -884,13 +878,13 @@ function signedArea(ring) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -1606,7 +1600,7 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,10 +1608,10 @@ module.exports = toPairs;
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(22);
+var ieee754 = __webpack_require__(21);
 
 function Pbf(buf) {
-    this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
+    this.buf = ArrayBuffer.isView && ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
     this.pos = 0;
     this.type = 0;
     this.length = this.buf.length;
@@ -1630,6 +1624,11 @@ Pbf.Fixed32 = 5; // 32-bit: float, fixed32, sfixed32
 
 var SHIFT_LEFT_32 = (1 << 16) * (1 << 16),
     SHIFT_RIGHT_32 = 1 / SHIFT_LEFT_32;
+
+// Threshold chosen based on both benchmarking and knowledge about browser string
+// data structures (which currently switch structure types at 12 bytes or more)
+var TEXT_DECODER_MIN_LENGTH = 12;
+var utf8TextDecoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf8');
 
 Pbf.prototype = {
 
@@ -1724,10 +1723,16 @@ Pbf.prototype = {
     },
 
     readString: function() {
-        var end = this.readVarint() + this.pos,
-            str = readUtf8(this.buf, this.pos, end);
+        var end = this.readVarint() + this.pos;
+        var pos = this.pos;
         this.pos = end;
-        return str;
+
+        if (end - pos >= TEXT_DECODER_MIN_LENGTH && utf8TextDecoder) {
+            // longer strings are fast with the built-in browser TextDecoder API
+            return readUtf8TextDecoder(this.buf, pos, end);
+        }
+        // short strings are fast with our custom implementation
+        return readUtf8(this.buf, pos, end);
     },
 
     readBytes: function() {
@@ -1740,54 +1745,63 @@ Pbf.prototype = {
     // verbose for performance reasons; doesn't affect gzipped size
 
     readPackedVarint: function(arr, isSigned) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readVarint(isSigned));
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readVarint(isSigned));
         return arr;
     },
     readPackedSVarint: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readSVarint());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readSVarint());
         return arr;
     },
     readPackedBoolean: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readBoolean());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readBoolean());
         return arr;
     },
     readPackedFloat: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readFloat());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readFloat());
         return arr;
     },
     readPackedDouble: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readDouble());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readDouble());
         return arr;
     },
     readPackedFixed32: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readFixed32());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readFixed32());
         return arr;
     },
     readPackedSFixed32: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readSFixed32());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readSFixed32());
         return arr;
     },
     readPackedFixed64: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readFixed64());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readFixed64());
         return arr;
     },
     readPackedSFixed64: function(arr) {
+        if (this.type !== Pbf.Bytes) return arr.push(this.readSFixed64());
         var end = readPackedEnd(this);
         arr = arr || [];
         while (this.pos < end) arr.push(this.readSFixed64());
@@ -1937,15 +1951,15 @@ Pbf.prototype = {
         this.writeRawMessage(fn, obj);
     },
 
-    writePackedVarint:   function(tag, arr) { this.writeMessage(tag, writePackedVarint, arr);   },
-    writePackedSVarint:  function(tag, arr) { this.writeMessage(tag, writePackedSVarint, arr);  },
-    writePackedBoolean:  function(tag, arr) { this.writeMessage(tag, writePackedBoolean, arr);  },
-    writePackedFloat:    function(tag, arr) { this.writeMessage(tag, writePackedFloat, arr);    },
-    writePackedDouble:   function(tag, arr) { this.writeMessage(tag, writePackedDouble, arr);   },
-    writePackedFixed32:  function(tag, arr) { this.writeMessage(tag, writePackedFixed32, arr);  },
-    writePackedSFixed32: function(tag, arr) { this.writeMessage(tag, writePackedSFixed32, arr); },
-    writePackedFixed64:  function(tag, arr) { this.writeMessage(tag, writePackedFixed64, arr);  },
-    writePackedSFixed64: function(tag, arr) { this.writeMessage(tag, writePackedSFixed64, arr); },
+    writePackedVarint:   function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedVarint, arr);   },
+    writePackedSVarint:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedSVarint, arr);  },
+    writePackedBoolean:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedBoolean, arr);  },
+    writePackedFloat:    function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedFloat, arr);    },
+    writePackedDouble:   function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedDouble, arr);   },
+    writePackedFixed32:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedFixed32, arr);  },
+    writePackedSFixed32: function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedSFixed32, arr); },
+    writePackedFixed64:  function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedFixed64, arr);  },
+    writePackedSFixed64: function(tag, arr) { if (arr.length) this.writeMessage(tag, writePackedSFixed64, arr); },
 
     writeBytesField: function(tag, buffer) {
         this.writeTag(tag, Pbf.Bytes);
@@ -2070,7 +2084,7 @@ function makeRoomForExtraLength(startPos, len, pbf) {
     var extraLen =
         len <= 0x3fff ? 1 :
         len <= 0x1fffff ? 2 :
-        len <= 0xfffffff ? 3 : Math.ceil(Math.log(len) / (Math.LN2 * 7));
+        len <= 0xfffffff ? 3 : Math.floor(Math.log(len) / (Math.LN2 * 7));
 
     // if 1 byte isn't enough for encoding message length, shift the data to the right
     pbf.realloc(extraLen);
@@ -2176,6 +2190,10 @@ function readUtf8(buf, pos, end) {
     return str;
 }
 
+function readUtf8TextDecoder(buf, pos, end) {
+    return utf8TextDecoder.decode(buf.subarray(pos, end));
+}
+
 function writeUtf8(buf, str, pos) {
     for (var i = 0, c, lead; i < str.length; i++) {
         c = str.charCodeAt(i); // code point
@@ -2231,24 +2249,24 @@ function writeUtf8(buf, str, pos) {
 
 
 /***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports.VectorTile = __webpack_require__(22);
+module.exports.VectorTileFeature = __webpack_require__(9);
+module.exports.VectorTileLayer = __webpack_require__(8);
+
+
+/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports.VectorTile = __webpack_require__(23);
-module.exports.VectorTileFeature = __webpack_require__(10);
-module.exports.VectorTileLayer = __webpack_require__(9);
+__webpack_require__(24);
+module.exports = __webpack_require__(25);
 
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(25);
-module.exports = __webpack_require__(26);
-
-
-/***/ }),
-/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate, global) {(function (global, factory) {
@@ -2552,10 +2570,10 @@ if (!('Promise' in globalNS)) {
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17).setImmediate, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(16).setImmediate, __webpack_require__(2)))
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -2611,7 +2629,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(18);
+__webpack_require__(17);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -2625,7 +2643,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -2815,10 +2833,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(18)))
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -3008,7 +3026,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(self) {
@@ -3432,7 +3450,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports) {
 
 function getObjectType(obj) {
@@ -3464,7 +3482,7 @@ module.exports = {
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -3554,13 +3572,13 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileLayer = __webpack_require__(9);
+var VectorTileLayer = __webpack_require__(8);
 
 module.exports = VectorTile;
 
@@ -3578,7 +3596,7 @@ function readTile(tag, layers, pbf) {
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3897,7 +3915,7 @@ Point.convert = function (a) {
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14575,10 +14593,10 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(16);
+var polyfill = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(20);
+var fetch = __webpack_require__(19);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(4);
@@ -39772,7 +39790,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(11);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(10);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -42226,7 +42244,7 @@ var getMeterPerMapUnit = function(mapUnit) {
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(12);
+var lodash_topairs = __webpack_require__(11);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -70330,14 +70348,15 @@ function transform(source, dest, point) {
   if (source.projName === 'longlat') {
     point = {
       x: point.x * D2R,
-      y: point.y * D2R
+      y: point.y * D2R,
+      z: point.z || 0
     };
-  }
-  else {
+  } else {
     if (source.to_meter) {
       point = {
         x: point.x * source.to_meter,
-        y: point.y * source.to_meter
+        y: point.y * source.to_meter,
+        z: point.z || 0
       };
     }
     point = source.inverse(point); // Convert Cartesian to longlat
@@ -70354,7 +70373,8 @@ function transform(source, dest, point) {
   if (dest.from_greenwich) {
     point = {
       x: point.x - dest.from_greenwich,
-      y: point.y
+      y: point.y,
+      z: point.z || 0
     };
   }
 
@@ -70362,14 +70382,16 @@ function transform(source, dest, point) {
     // convert radians to decimal degrees
     point = {
       x: point.x * R2D,
-      y: point.y * R2D
+      y: point.y * R2D,
+      z: point.z || 0
     };
   } else { // else project
     point = dest.forward(point);
     if (dest.to_meter) {
       point = {
         x: point.x / dest.to_meter,
-        y: point.y / dest.to_meter
+        y: point.y / dest.to_meter,
+        z: point.z || 0
       };
     }
   }
@@ -70390,23 +70412,35 @@ var core_wgs84 = Proj('WGS84');
 function transformer(from, to, coords) {
   var transformedArray, out, keys;
   if (Array.isArray(coords)) {
-    transformedArray = transform(from, to, coords);
-    if (coords.length === 3) {
-      return [transformedArray.x, transformedArray.y, transformedArray.z];
-    }
-    else {
+    transformedArray = transform(from, to, coords) || {x: NaN, y: NaN};
+    if (coords.length > 2) {
+      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
+        if (typeof transformedArray.z === 'number') {
+          return [transformedArray.x, transformedArray.y, transformedArray.z].concat(coords.splice(3));
+        } else {
+          return [transformedArray.x, transformedArray.y, coords[2]].concat(coords.splice(3));
+        }
+      } else {
+        return [transformedArray.x, transformedArray.y].concat(coords.splice(2));
+      }
+    } else {
       return [transformedArray.x, transformedArray.y];
     }
-  }
-  else {
+  } else {
     out = transform(from, to, coords);
     keys = Object.keys(coords);
     if (keys.length === 2) {
       return out;
     }
     keys.forEach(function (key) {
-      if (key === 'x' || key === 'y') {
-        return;
+      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
+        if (key === 'x' || key === 'y' || key === 'z') {
+          return;
+        }
+      } else {
+        if (key === 'x' || key === 'y') {
+          return;
+        }
       }
       out[key] = coords[key];
     });
@@ -70423,6 +70457,7 @@ function checkProj(item) {
   }
   return Proj(item);
 }
+
 function core_proj4(fromProj, toProj, coord) {
   fromProj = checkProj(fromProj);
   var single = false;
@@ -70431,8 +70466,7 @@ function core_proj4(fromProj, toProj, coord) {
     toProj = fromProj;
     fromProj = core_wgs84;
     single = true;
-  }
-  else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
+  } else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
     coord = toProj;
     toProj = fromProj;
     fromProj = core_wgs84;
@@ -70441,13 +70475,12 @@ function core_proj4(fromProj, toProj, coord) {
   toProj = checkProj(toProj);
   if (coord) {
     return transformer(fromProj, toProj, coord);
-  }
-  else {
+  } else {
     obj = {
-      forward: function(coords) {
+      forward: function (coords) {
         return transformer(fromProj, toProj, coords);
       },
-      inverse: function(coords) {
+      inverse: function (coords) {
         return transformer(toProj, fromProj, coords);
       }
     };
@@ -70458,7 +70491,6 @@ function core_proj4(fromProj, toProj, coord) {
   }
 }
 /* harmony default export */ var core = (core_proj4);
-
 // CONCATENATED MODULE: ./node_modules/mgrs/mgrs.js
 
 
@@ -71242,12 +71274,6 @@ lib_Point_Point.prototype.toMGRS = function(accuracy) {
   return mgrs_forward([this.x, this.y], accuracy);
 };
 /* harmony default export */ var lib_Point = (lib_Point_Point);
-
-// EXTERNAL MODULE: ./node_modules/proj4/package.json
-var proj4_package = __webpack_require__(8);
-
-// CONCATENATED MODULE: ./node_modules/proj4/lib/version.js
-
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_enfn.js
 var C00 = 1;
@@ -75188,7 +75214,33 @@ var robin_names = ["Robinson", "robin"];
   names: robin_names
 });
 
+// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geocent.js
+
+
+function geocent_init() {
+    this.name = 'geocent';
+
+}
+
+function geocent_forward(p) {
+    var point = geodeticToGeocentric(p, this.es, this.a);
+    return point;
+}
+
+function geocent_inverse(p) {
+    var point = geocentricToGeodetic(p, this.es, this.a, this.b);
+    return point;
+}
+
+var geocent_names = ["Geocentric", 'geocentric', "geocent", "Geocent"];
+/* harmony default export */ var geocent = ({
+    init: geocent_init,
+    forward: geocent_forward,
+    inverse: geocent_inverse,
+    names: geocent_names
+});
 // CONCATENATED MODULE: ./node_modules/proj4/projs.js
+
 
 
 
@@ -75242,9 +75294,9 @@ var robin_names = ["Robinson", "robin"];
   proj4.Proj.projections.add(ortho);
   proj4.Proj.projections.add(qsc);
   proj4.Proj.projections.add(robin);
+  proj4.Proj.projections.add(geocent);
 });
 // CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
-
 
 
 
@@ -75262,7 +75314,7 @@ core.toPoint = toPoint;
 core.defs = lib_defs;
 core.transform = transform;
 core.mgrs = mgrs;
-core.version = proj4_package["a" /* version */];
+core.version = '__VERSION__';
 proj4_projs(core);
 /* harmony default export */ var lib = (core);
 
@@ -75668,7 +75720,7 @@ external_L_default.a.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 
 let Attributions = {
 
-    Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
+    Prefix: `<a href='https://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
                 with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
@@ -75700,7 +75752,7 @@ let Attributions = {
     },
 
     Tianditu: {
-        attribution: `Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
+        attribution: `Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
     }
 };
 
@@ -76762,7 +76814,7 @@ external_L_default.a.Util.transform = Transform_transform;
  * @classdesc 百度地图图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
- * @param {string} [url='http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
+ * @param {string} [url='https://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
  * @param {Object} options - 切片参数。
  * @param {number} [options.minZoom=3] - 最小缩放级别。 
  * @param {number} [options.maxZoom=19] - 最大缩放级别。
@@ -77464,14 +77516,14 @@ external_L_default.a.supermap.wmtsLayer = wmtsLayer;
  * @category ThirdPartyMap
  * @extends L.supermap.wmtsLayer
  * @param {Object} options - 切片图层参数。
- * @param {string} [options.url='http://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 地图地址。
- * @param {string} options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
+ * @param {string} [options.url='https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 地图地址。
+ * @param {string} options.key - 天地图服务密钥。详见{@link https://lbs.tianditu.gov.cn/server/MapService.html}
  * @param {string} [options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
  * @param {string} [options.style='default'] - 图层风格。
  * @param {string} [options.format='tiles'] - 格式。
  * @param {boolean} [options.isLabel=false] - 是否是标注图层。
  * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
- * @param {string} [options.attribution='Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权信息
+ * @param {string} [options.attribution='Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权信息
  */
 var TiandituTileLayer = WMTSLayer.extend({
 
@@ -77489,7 +77541,7 @@ var TiandituTileLayer = WMTSLayer.extend({
         layerType: "vec", //(vec:矢量图层，vec:矢量标签图层，img:影像图层,cia:影像标签图层，ter:地形,cta:地形标签图层)
         isLabel: false,
         attribution: core_Attributions.Tianditu.attribution,
-        url: "http://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?",
+        url: "https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?",
         zoomOffset: 1,
         key: "",
         dpi: 96,
@@ -86879,11 +86931,11 @@ var RegionSymbolizer = external_L_default.a.Polygon.extend({
     }
 });
 // EXTERNAL MODULE: ./node_modules/pbf/index.js
-var node_modules_pbf = __webpack_require__(13);
+var node_modules_pbf = __webpack_require__(12);
 var pbf_default = /*#__PURE__*/__webpack_require__.n(node_modules_pbf);
 
 // EXTERNAL MODULE: ./node_modules/@mapbox/vector-tile/index.js
-var vector_tile = __webpack_require__(14);
+var vector_tile = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/VectorTilePBF.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -88172,7 +88224,7 @@ var external_function_try_return_turf_catch_e_return_ = __webpack_require__(7);
  * @category Visualization Turf
  * @extends {L.Layer}
  * @param {Object} options - 可选参数。
- * @param {string} [options.attribution='<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
  */
 var TurfLayer = external_L_default.a.GeoJSON.extend({
 
@@ -96949,68 +97001,68 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/webmapfont/iconfont.css
-var iconfont = __webpack_require__(27);
+var iconfont = __webpack_require__(26);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(33);
+var supermapol_icons = __webpack_require__(32);
 
 // EXTERNAL MODULE: ./src/common/components/css/components-icon.css
-var components_icon = __webpack_require__(38);
+var components_icon = __webpack_require__(37);
 
 // EXTERNAL MODULE: ./src/common/components/css/Icon.css
-var Icon = __webpack_require__(43);
+var Icon = __webpack_require__(42);
 
 // EXTERNAL MODULE: ./src/common/components/css/OpenFile.css
-var OpenFile = __webpack_require__(55);
+var OpenFile = __webpack_require__(54);
 
 // EXTERNAL MODULE: ./src/common/components/css/MessageBox.css
-var MessageBox = __webpack_require__(56);
+var MessageBox = __webpack_require__(55);
 
 // EXTERNAL MODULE: ./src/common/components/css/DataFlow.css
-var DataFlow = __webpack_require__(57);
+var DataFlow = __webpack_require__(56);
 
 // EXTERNAL MODULE: ./src/common/components/css/Search.css
-var Search = __webpack_require__(58);
+var Search = __webpack_require__(57);
 
 // EXTERNAL MODULE: ./src/common/components/css/CommonContainer.css
-var CommonContainer = __webpack_require__(59);
+var CommonContainer = __webpack_require__(58);
 
 // EXTERNAL MODULE: ./src/common/components/css/DropDownBox.css
-var DropDownBox = __webpack_require__(60);
+var DropDownBox = __webpack_require__(59);
 
 // EXTERNAL MODULE: ./src/common/components/css/Select.css
-var Select = __webpack_require__(61);
+var Select = __webpack_require__(60);
 
 // EXTERNAL MODULE: ./src/common/components/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(62);
+var CityTabsPage = __webpack_require__(61);
 
 // EXTERNAL MODULE: ./src/common/components/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(63);
+var NavTabsPage = __webpack_require__(62);
 
 // EXTERNAL MODULE: ./src/common/components/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(64);
+var PaginationContainer = __webpack_require__(63);
 
 // EXTERNAL MODULE: ./src/common/components/css/PopContainer.css
-var PopContainer = __webpack_require__(65);
+var PopContainer = __webpack_require__(64);
 
 // EXTERNAL MODULE: ./src/common/components/css/Analysis.css
-var Analysis = __webpack_require__(66);
+var Analysis = __webpack_require__(65);
 
 // EXTERNAL MODULE: ./src/common/components/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(67);
+var DistributedAnalysis = __webpack_require__(66);
 
 // EXTERNAL MODULE: ./src/common/components/css/ClientComputation.css
-var ClientComputation = __webpack_require__(68);
+var ClientComputation = __webpack_require__(67);
 
 // EXTERNAL MODULE: ./src/common/components/css/DataServiceQuery.css
-var DataServiceQuery = __webpack_require__(69);
+var DataServiceQuery = __webpack_require__(68);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -97039,7 +97091,7 @@ var DataServiceQuery = __webpack_require__(69);
 
 
 // EXTERNAL MODULE: ./src/leaflet/css/ChangeTileVersion.css
-var ChangeTileVersion = __webpack_require__(70);
+var ChangeTileVersion = __webpack_require__(69);
 
 // CONCATENATED MODULE: ./src/leaflet/css/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -97051,43 +97103,44 @@ var ChangeTileVersion = __webpack_require__(70);
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 27 */,
 /* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
-/* 32 */,
-/* 33 */
+/* 32 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
-/* 37 */,
-/* 38 */
+/* 37 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 38 */,
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */
+/* 42 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
@@ -97098,7 +97151,12 @@ var ChangeTileVersion = __webpack_require__(70);
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */,
+/* 54 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 55 */
 /***/ (function(module, exports) {
 
@@ -97184,12 +97242,6 @@ var ChangeTileVersion = __webpack_require__(70);
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 70 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
