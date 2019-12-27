@@ -148,9 +148,9 @@
                         graphics: graphics,
                         render:"canvas",
                         map: map,
-                        onClick: function (graphic,e) {
+                        onClick: function (graphic) {
                             if (graphic) {
-                                var coords = e.coordinate;
+                              var coords = graphic.getGeometry().getCoordinates();
                                 content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
                                 overlay.setPosition(coords);
                                 return;
