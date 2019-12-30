@@ -184,6 +184,11 @@ function vertifyEpsgCode(firstFeature) {
     if (firstCoord[0][0] instanceof Array) {
       // type: Polygon
       firstCoord = firstCoord[0][0];
+
+      if (firstCoord[0] instanceof Array) {
+        // type: MultiPolygon
+        firstCoord = firstCoord[0];
+      }
     } else {
       // type: LineString
       firstCoord = firstCoord[0];
@@ -2103,7 +2108,7 @@ function (_WebMapBase) {
       var mapUrls = this.getMapurls({
         CLOUD: 'http://t2.supermapcloud.com/FileService/image',
         CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp',
-        OSM: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        OSM: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       });
       var url;
       var layer;
@@ -2410,7 +2415,7 @@ function (_WebMapBase) {
   }, {
     key: "_createBingLayer",
     value: function _createBingLayer() {
-      var url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
+      var url = 'https://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
       _leafletWrapper.default.TileLayer.BingLayer = _leafletWrapper.default.TileLayer.extend({
         getTileUrl: function getTileUrl(coordinates) {
           var z = coordinates.z,
@@ -3320,6 +3325,23 @@ var staticRenderFns = []
 
 /***/ }),
 
+/***/ "0ow9":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/web-map/WebMap.vue?vue&type=template&id=33038e71&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[(_vm.ready)?_vm._t("default"):_vm._e(),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/leaflet/web-map/WebMap.vue?vue&type=template&id=33038e71&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "0zgg":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3747,7 +3769,7 @@ function (_Events) {
     (0, _classCallCheck2.default)(this, WebMapService);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebMapService).call(this));
     _this.mapId = mapId;
-    _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
+    _this.serverUrl = options.serverUrl || 'https://www.supermapol.com';
     _this.accessToken = options.accessToken;
     _this.accessKey = options.accessKey;
     _this.tiandituKey = options.tiandituKey || '';
@@ -8149,7 +8171,7 @@ exports.default = _default2;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WebMap_vue_vue_type_template_id_9adbc450___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("XHcj");
+/* harmony import */ var _WebMap_vue_vue_type_template_id_33038e71___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("0ow9");
 /* harmony import */ var _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("dZA3");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("KHd+");
@@ -8162,8 +8184,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _WebMap_vue_vue_type_template_id_9adbc450___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _WebMap_vue_vue_type_template_id_9adbc450___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _WebMap_vue_vue_type_template_id_33038e71___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _WebMap_vue_vue_type_template_id_33038e71___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -19622,23 +19644,6 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhYAAAD+CAYAAABm
 
 /***/ }),
 
-/***/ "XHcj":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/web-map/WebMap.vue?vue&type=template&id=9adbc450&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[(_vm.ready)?_vm._t("default"):_vm._e(),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/leaflet/web-map/WebMap.vue?vue&type=template&id=9adbc450&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "XaGS":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26726,7 +26731,7 @@ __decorate([(0, _vuePropertyDecorator.Prop)({
 })], SmWebMap.prototype, "target", void 0);
 
 __decorate([(0, _vuePropertyDecorator.Prop)({
-  default: 'http://www.supermapol.com'
+  default: 'https://www.supermapol.com'
 })], SmWebMap.prototype, "serverUrl", void 0);
 
 __decorate([(0, _vuePropertyDecorator.Prop)()], SmWebMap.prototype, "accessToken", void 0);
@@ -38323,7 +38328,7 @@ function (_Events) {
     _this.echartslayer = [];
     _this._layers = [];
     _this.mapId = id;
-    _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
+    _this.serverUrl = options.serverUrl || 'https://www.supermapol.com';
     _this.accessToken = options.accessToken;
     _this.accessKey = options.accessKey;
     _this.tiandituKey = options.tiandituKey || '';
@@ -38476,13 +38481,13 @@ function (_Events) {
       var mapUrls = {
         CLOUD: mapurl.CLOUD || 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
         CLOUD_BLACK: mapurl.CLOUD_BLACK || 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
-        OSM: mapurl.OSM || 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+        OSM: mapurl.OSM || 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        GOOGLE: 'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
         GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-        JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-        JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-        JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-        JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+        JAPAN_STD: 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+        JAPAN_PALE: 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+        JAPAN_RELIEF: 'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+        JAPAN_ORT: 'https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
       };
       return mapUrls;
     }
