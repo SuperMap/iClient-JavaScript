@@ -1558,6 +1558,8 @@ window.examplesResources = {
         "msg_externalTangentSquare": "使用左侧绘制控件绘制矩形，点击右侧按钮计算最小外切正方形",
         "msg_drawLayer": "请画出图层",
         "msg_vectorClip": "矢量裁剪分析仅支持单面裁剪!",
+        "msg_clickToPopup": '点击地图，弹出弹窗',
+        "msg_clickLayerToPopup": '点击图层上的要素，查看属性',
 
         "set_style": "top: -23px;left: 86px;",
         "style_width420px": 'width: 420px',

@@ -1610,6 +1610,8 @@ window.examplesResources = {
         "msg_externalTangentSquare": "Draw the rectangle with the left drawing control and click the right button to calculate the minimum tangent square",
         "msg_drawLayer": "Please draw layer",
         "msg_vectorClip": "Vector clipping analysis only supports single side clipping!",
+        "msg_clickToPopup": 'Please click the map to open popup',
+        "msg_clickLayerToPopup": 'Please click the layer\'s feature to check properties',
 
         "set_style": "",
         "style_width420px": 'width: 500px',
