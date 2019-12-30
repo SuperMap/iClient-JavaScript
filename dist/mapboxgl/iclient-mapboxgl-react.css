@@ -319,8 +319,8 @@
 .sm-component-animate-marker__dot-point {
   background: #009fd9;
   position: absolute;
-  left: -3px;
-  top: -3px;
+  left: -5px;
+  top: -5px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
