@@ -2,21 +2,21 @@
 
 ## 新特性
 
-### SuperMap iClient for OpenLayers升级支持OpenLayers 5/6，支持模块化开发，提升应用的可维护性
+### SuperMap iClient for OpenLayers 升级支持 OpenLayers 5/6，支持模块化开发，提升应用的可维护性
 
 ![1001-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-1.png)
 
 （具体兼容情况详见compatibility一节）
 
-### 新增SuperMap iPortal 资源访问系列接口和范例，支持对资源中心的地图、服务、大屏、洞察等资源进行更新
+### 新增 SuperMap iPortal 资源访问系列接口和范例，支持对资源中心的地图、服务、大屏、洞察等资源进行更新
 ![1001-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-6.png)
 
-### 新增Vue-iClient-Leaflet组件库，提供二维地图、图表等常用组件
+### 新增 Vue-iClient-Leaflet 组件库，提供二维地图、图表等常用组件
 
-### 更新Vue-iClient-MapboxGL组件库，新增点选查询、图层管理等地图交互组件
+### 更新 Vue-iClient-MapboxGL 组件库，新增点选查询、图层管理等地图交互组件
 ![1001-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-3.png)
 
-### 微信小程版示例正式上线
+### 微信小程序版示例正式上线
 ![1001-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-4.png)
 ![1001-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-5.jpg)
 
