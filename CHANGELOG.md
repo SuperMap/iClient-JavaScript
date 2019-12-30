@@ -1,5 +1,261 @@
 # 10.0.1 #
 
+## 新特性
+
+### SuperMap iClient for OpenLayers升级支持OpenLayers 5/6，支持模块化开发，提升应用的可维护性
+
+![1001-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-1.png)
+
+（具体兼容情况详见compatibility一节）
+
+### 新增SuperMap iPortal 资源访问系列接口和范例，支持对资源中心的地图、服务、大屏、洞察等资源进行更新
+![1001-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-6.png)
+
+### 新增Vue-iClient-Leaflet组件库，提供二维地图、图表等常用组件
+
+### 更新Vue-iClient-MapboxGL组件库，新增点选查询、图层管理等地图交互组件
+![1001-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-3.png)
+
+### 微信小程版示例正式上线
+![1001-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-4.png)
+![1001-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-5.jpg)
+
+## API changes
+
+
+### for Leaflet
+
+- `SuperMap.GetFeaturesParametersBase` 及其子类
+
+  - 新增 `options.targetEpsgCode`，`options.targetPrj` 参数，支持设置是返回结果的投影
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+- `L.supermap.heatMapLayer` 新增 `options.blur` 参数，支持设置热力图的模糊半径。
+
+- `L.supermap.graphicLayer` 的 `options.render` 为 canvas 时，支持通过 on 方法绑定 click、 mousemove、 dblclick、 mousedown 、mouseup、 mouseout 、contextmenu鼠标事件。
+
+### for OpenLayers
+
+- `SuperMap.GetFeaturesParametersBase` 及其子类
+
+  - 新增 `options.targetEpsgCode`，`options.targetPrj` 参数，支持设置是返回结果的投影
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+### for MapboxGL
+
+- `SuperMap.GetFeaturesParametersBase` 及其子类
+
+  - 新增 `options.targetEpsgCode`，`options.targetPrj` 参数，支持设置是返回结果的投影
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+### Classic
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+### Web Components
+
+- vue-iclient-mapboxgl
+
+   - 新增点选查询(Identify)组件
+
+   - 新增图层管理(LayerManager)组件
+
+   - 图表组件 `dataset` 参数新增 `proxy` 字段，支持代理请求
+
+   - 图表组件新增 `associatedMap` 参数，支持与地图联动
+
+   - 文本/水球/进度条组件新增 `field` 参数，支持指定三方服务字段值
+
+   - 指标组件新增 `titleField` 、`numField` 、`unitField` 参数，支持指定三方服务字段值
+
+   - 文本列表组件新增 `startTiming` 、`frequency` 参数，支持定时刷新功能
+
+- vue-iclient-leaflet
+
+   - 新增基础组件：图标(Icon)、指标(Indicator)、水球(LiquidFill)、进度条(Progress)、文本(Text)、时间(TimeText)、图片(Image)、视频(VideoPlayer)、Iframe(Iframe)、边框(Border)
+
+   - 新增地图(WebMap)组件
+
+   - 新增瓦片图层(TileLayer)组件
+
+   - 新增弹窗(Popup)组件
+
+   - 新增点选查询(Identify)组件
+
+   - 新增图表(Chart)组件
+
+
+## Fixed
+
+### for Leaflet
+
+ - 修复在https站点下SecurityManager注册及获取token/key失效的问题
+ - 修复L.supermap.mapVLayer的options. mapVOptions.unit为 ’m’ 时不起作用的问题
+ - 修复L.supermap.tiledMapLayer在经纬度地图下设置 options. clipRegion出图错乱的问题
+
+### for OpenLayers
+
+ - 修复ol.source.Mapv的options. mapVOptions.unit为 ’m’ 时不起作用的问题
+ - 修复ol.supermap.MapboxStyles 的 updateStyles 方法在传入的更新样式内容不完整时样式丢失的问题
+ - 修复ol.supermap.WebMap加载EPSG:-1000坐标系的地图失败的问题
+ - 修复ol.supermap.WebMap加载迁徙图失败的问题
+ - 修复ol.supermap.WebMap加载EPSG:4326的小范围的WMTS地图的出图失败的问题
+
+### for MapboxGL
+
+ - 修复mapboxgl.supermap.MapvLayer的options. mapVOptions.unit为 ’m’ 时不起作用的问题
+
+### Classic
+
+ - 修复SuperMap.Layer.MapVLayer的options.unit为 ’m’ 时不起作用的问题
+
+
+## Examples
+
+### for Leaflet
+
+- iPortal 
+
+  - 新增 “资源中心” 示例
+
+  - 新增 “我的资源” 示例
+
+  - 移除 “地图列表” 示例
+
+- 可视化 – Pixi
+
+  - 新增 “纽约出租车上车点分布图（140万点数据绘制）” 示例
+
+### for OpenLayers
+
+-iPortal
+
+  - 新增 “资源中心” 示例
+
+  - 新增 “我的资源” 示例
+
+  - 移除 “地图列表” 示例
+
+### Web Components
+
+- 新增 “Vue - Leaflet” 分类及示例
+
+- Vue – MapboxGL
+
+  - 新增“点选查询”示例
+
+  - 新增“图层管理”示例
+
+
+## Compatibility
+
+### for OpenLayers
+
+- 不兼容 openlayers 6 的功能点
+
+  - 矢量瓦片
+
+    - 多面（MultiPolygon）
+  
+    - 中文沿线标注
+
+- 不兼容 openlayers 6 的三方插件
+
+  - OSMBuildings-OL3 https://github.com/kekscom/osmbuildings
+
+  - OL3-AnimatedCluster https://github.com/Viglino/OL3-AnimatedCluster
+
+- 不兼容 openlayers 6 的示例
+
+  - 可视化 – OSMBuildings
+
+  - 可视化 – 聚点图
+
+  - 可视化 – ECharts - 2005到2016年地震概况统计
+
 
 
 # 10.0.0 #
