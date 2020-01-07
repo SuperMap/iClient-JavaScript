@@ -202,8 +202,19 @@
         queryResouces(queryParams);
     });
 
+    // 编码请求参数中的数组
+    function encodeResquestURI(obj) {
+        for(let key in obj) {
+            if(obj[key] instanceof Array) {
+                obj[key] = encodeURI(obj[key]);
+            }
+        }
+        return obj;
+    }
+
     // 查询iPortal中的资源
     function queryResouces(queryParams) {
+        var queryParams = encodeResquestURI(queryParams);
         iPortal.queryResources(queryParams).then(function (resourcesReslut) {
             //返回的结果集，需要查看可打开下行代码
             // console.log(resourcesReslut);
