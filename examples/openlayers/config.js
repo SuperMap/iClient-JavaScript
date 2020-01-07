@@ -458,7 +458,7 @@ var exampleConfig = {
                     name: "我的资源",
                     name_en: "My Resource",
                     version: "10.0.1",
-                    thumbnail: "ol_iPortalQueryResources.png",
+                    thumbnail: "ol_iPortalQueryMyResources.png",
                     fileName: "iPortalQueryMyResources"
                 }]
             }
