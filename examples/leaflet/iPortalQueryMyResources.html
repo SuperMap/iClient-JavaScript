@@ -7,6 +7,9 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_iPortalQueryMyResources"></title>
     <style>
+    .container-wrap {
+        padding-left: 200px!important;
+    }
     .gallery-item {
         margin-bottom: 30px;
     }
@@ -15,10 +18,6 @@
         -webkit-box-shadow: 0px 2px 3px #dcdcdc;
         box-shadow: 0px 2px 3px #dcdcdc;
         background: white;
-    }
-    .thumbnail > img, .thumbnail a > img {
-        margin-right: auto;
-        margin-left: auto;
     }
     .gallery-item-img {
         height: 170px !important;
@@ -32,12 +31,8 @@
         font-size: 14px !important;
         color: #7c7c7c;
     }
-    .resourcesDetails a {
-        display: block;
-        margin-right: 12px;
-    }
     .title-checkbox-container p{
-        max-width: 150px;
+        max-width: 160px;
         float: left;
     }
     .title-checkbox-container input{
@@ -82,13 +77,16 @@
         top: 50%;
         margin-left: 64px;
     }
+    .input-group-addon {
+        cursor: pointer;
+    }
     </style>
 </head>
 <body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
     <!-- 登录按钮 -->
     <input type="button" class="btn btn-default" data-i18n="[value]resources.text_login" id="login-btn" onclick="showLoginModel()">
     <!-- 登录模态框（Modal） -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -166,7 +164,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="removeUser()"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" data-i18n="resources.title_share_setting"></h4>
                     </div>
                 </div>
@@ -182,10 +180,59 @@
                                                     <li role="presentation" class="active">
                                                         <a href="#public" aria-controls="public" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesPublic"></a>
                                                     </li>
+                                                    <li role="presentation">
+                                                        <a href="#group" aria-controls="group" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesGroup"></a>
+                                                    </li>
+                                                    <li role="presentation">
+                                                        <a href="#department" aria-controls="department" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesDepartment"></a>
+                                                    </li>
+                                                    <li role="presentation">
+                                                        <a href="#user" aria-controls="user" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesUser"></a>
+                                                    </li>
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div role="tabpanel" class="tab-pane active" id="public">
                                                         
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane" id="group">
+                                                        <table border="1" bordercolor="black" width="100%">
+                                                            <thead id="group_thead">
+                                                                
+                                                            </thead>
+                                                            <tbody id="group_tbody">
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane" id="user">
+                                                        <div class="input-group" style="margin-top: 12px;" style="width: 100%;">
+                                                            <input type="text" class="form-control" data-i18n="[placeholder]resources.text_input_user_name" id="add-user-val">
+                                                            <span class="input-group-addon" onclick="searchUser()" data-i18n="resources.btn_add"></span>
+                                                        </div>
+                                                        <span data-i18n="resources.text_choose_user"></span>
+                                                        <table border="1" bordercolor="black" width="100%">
+                                                            <thead id="user_thead">
+                                                                
+                                                            </thead>
+                                                            <tbody id="user_tbody">
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane" id="department">
+                                                        <div class="input-group" style="margin-top: 12px;" style="width: 100%;">
+                                                            <input type="text" class="form-control" data-i18n="[placeholder]resources.text_input_department_name" id="add-department-val">
+                                                            <span class="input-group-addon"  onclick="searchDepartment()" data-i18n="resources.btn_add"></span>
+                                                        </div>
+                                                        <span data-i18n="resources.text_choose_department"></span>
+                                                        <table border="1" bordercolor="black" width="100%">
+                                                            <thead id="department_thead">
+                                                                
+                                                            </thead>
+                                                            <tbody id="department_tbody">
+                                                                
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                         </fieldset>
@@ -196,7 +243,7 @@
                         </tbody>
                     </table>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="resources.text_close">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="resources.text_close" onclick="removeUser()">
                     </button>
                     <button type="button" class="btn btn-primary" onclick="requestShareUrl()" data-i18n="resources.btn_save">
                     </button>
@@ -214,7 +261,7 @@
         </div>
     </div>
     <!-- 资源过滤 and 资源展示 -->
-    <div class="container" style="margin-bottom: 100px">
+    <div style="margin-bottom: 100px">
         <div id="toolbar" class="panel panel-primary" style="position: absolute;top: 10px;right: 70px;text-align: center;z-index: 800;border-radius: 4px;">
             <div class='panel-heading' id="panelheading">
                 <h5 class='panel-title text-center' data-i18n="resources.title_iPortalQueryMyResources"></h5>
@@ -235,16 +282,18 @@
             </div>
         </div>
         <br />
-        <div class="col-md-10">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="operate-list">
-                        <input type='button' class="btn btn-default" onclick="deleteResource()" data-i18n="[value]resources.text_input_value_delete"/>
-                        <input type='button' class="btn btn-default" onclick="shareResource()" data-i18n="[value]resources.title_share_setting"/>
-                    </div>
-                    <!--所有资源的承载DIV-->
-                    <div class="row" id="resourcesList">
-                        <!--单个资源数据的可视化承载DIV 添加在此位置中-->
+        <div class="container container-wrap">
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="operate-list">
+                            <input type='button' class="btn btn-default" onclick="deleteResource()" data-i18n="[value]resources.text_input_value_delete"/>
+                            <input type='button' class="btn btn-default" onclick="shareResource()" data-i18n="[value]resources.title_share_setting"/>
+                        </div>
+                        <!--所有资源的承载DIV-->
+                        <div class="row" id="resourcesList">
+                            <!--单个资源数据的可视化承载DIV 添加在此位置中-->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -271,7 +320,7 @@
     var deleteIds = [];//批量删除id
     var shareIds = [];//批量共享设置id
     var itemData = {};//某条资源的详细信息
-    //共享设置
+    //公开权限共享实体参数
     var publicSettingEntity = {
         "permissionType": "",
         "entityType": "USER",
@@ -279,13 +328,40 @@
         "entityId": null,
         "authorizeList": []
     }
+    // 用户权限共享实体参数
+    var usersSettingEntities = [];
+    // 部门权限共享实体参数
+    var departmentSettingEntities = [];
+    // 群组权限共享实体参数
+    var groupsSettingEntities = [];
+    // 用户的登陆信息对象
+    var userStateObj = {};
+    // 部门列表
+    var departmentList = [];
+    // 群组列表
+    var groupList = [];
     $(document).ready(function () {
+        // 获取群组列表数据
+        getGroupList();
+        // 获取登录用户信息数据
+        getLoginUserInfos();
         $("#loginModal").modal();
         $("#resource_address").attr("value",iPortalUrl)
     });
+    // 编码请求参数中的数组
+    function encodeResquestURI(obj) {
+        for(let key in obj) {
+            if(obj[key] instanceof Array) {
+                obj[key] = encodeURI(obj[key]);
+            }
+        }
+        return obj;
+    }
+    //获取默认url
     function getDefaultUrl(){
         iPortal = new SuperMap.iPortal(iPortalUrl);
     }
+    // 展示用户登录弹框 获取token
     function showLoginModel (){
         $("#loginModal").modal("show");
     }
@@ -327,8 +403,17 @@
         });
     }
 
+    //获取用户的登陆信息
+    function getLoginUserInfos() {
+        var url = iPortalUrl + "/web/config/userprofile.json";
+        $.get(url,(res)=>{
+            userStateObj = res;
+        })
+    }
+
     // 查询iPortal中的资源
     function queryResouces(queryParams) {
+        var queryParams = encodeResquestURI(queryParams)
         iPortal.queryResources(queryParams).then(function (resourcesReslut) {
             $("#login-btn").css("display","none");
             //返回的结果集，需要查看可打开下行代码
@@ -341,9 +426,9 @@
                 var thumbnail = resourceItem.thumbnail;
                 // 此判断获取部分相对路径的default图片
                 if(thumbnail.indexOf("./") === 0){
-                    thumbnail = iPortalUrl + thumbnail;
+                    thumbnail = iPortalUrl + thumbnail.replace("./","/");
                 }
-                var resourcesDOM = $("<div class='col-md-4 gallery-item' id='map'>" +
+                var resourcesDOM = $("<div class='col-xs-10 col-md-6 col-lg-4 gallery-item' id='map'>" +
                     "<div class='gallery-item-border'>" +
                     "<a class='thumbnail' style='margin-bottom: 10px'>" +
                     "<img  class='gallery-item-img' src='" + thumbnail + "' alt=''>" +
@@ -747,126 +832,469 @@
         })
     }
     
-    //共享设置代码块    
-    //点击共享设置前 确认弹框
+    //共享设置代码块
+    //搜索添加用户
+    function searchUser(){
+        var userName = $("#add-user-val").val();
+        var nicknameInfosUrl = iPortalUrl+"/web/users/nicknameinfos.json?name="+userName;
+        $.get(nicknameInfosUrl,(res)=>{
+            if(res.length === 0){
+                widgets.alert.showAlert(resources.msg_user_not_exist,false);
+            }
+            for(var item of res){
+                if(item.roles.includes("ADMIN")){
+                    widgets.alert.showAlert(resources.msg_not_share_admin,false);
+                    break;
+                }else if(!checkUser(true, item.name)){
+                    break;
+                }
+                putUserToSettingEntities(item.name,item.nickname,null);
+            }
+        })
+    }
+    // 检查选择的用户是否符合分享条件
+    function checkUser(enableTips,username){
+        //验证分享的用户列表中是否已存在该用户
+        for(var user of usersSettingEntities){
+            if(user.entityName === username || user.aliasName === username){
+                if(enableTips) {
+                    widgets.alert.showAlert(resources.msg_user_added,false);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    // 构造用户实体参数对象
+    function putUserToSettingEntities(name,nickname,id){
+        var authorizeList = getAuthorizeList("SEARCH");//添加的用户默认具有搜索权限
+        var entity = {
+            "permissionType": null,
+            "aliasName": nickname,
+            "entityRoles": [],
+            "entityType": "USER",
+            "entityName": name,
+            "entityId": id,
+            "authorizeList": authorizeList
+        };
+        usersSettingEntities.push(entity);
+        showUserShare();
+    }
+    // 根据查询的用户记录，渲染页面，进行共享设置
+    function showUserShare() {
+        $("#user_tbody").empty();
+        var cloneUsersList = Object.assign([],usersSettingEntities);
+        for (var i = 0; i < cloneUsersList.length; i++) {
+            switch (resourceType) {
+                case 'MAP':
+                case 'SCENE':
+                case 'INSIGHTS_WORKSPACE':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneUsersList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-user"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='view-user"+i+"'" +
+                                "onclick='clickViewCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='edit-user"+i+"'" +
+                                "onclick='clickEditCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td onclick='removeUsersSettingEntity("+i+")'>"+resources.text_input_value_delete+"</td>" +
+                    "</tr>")
+                    $("#user_tbody").append(shareMapDOM);
+                    break;
+                case 'SERVICE':
+                case 'MAP_DASHBOARD':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneUsersList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-user"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='view-user"+i+"'" +
+                                "onclick='clickViewCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td onclick='removeUsersSettingEntity("+i+")'>"+resources.text_input_value_delete+"</td>" +
+                    "</tr>")
+                    $("#user_tbody").append(shareMapDOM);
+                    break;
+                case 'DATA':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneUsersList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-user"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='download-user"+i+"'" +
+                                "onclick='clickDownloadCheckBox("+JSON.stringify(cloneUsersList[i])+","+JSON.stringify("user")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td onclick='removeUsersSettingEntity("+i+")'>"+resources.text_input_value_delete+"</td>" +
+                    "</tr>")
+                    $("#user_tbody").append(shareMapDOM);
+                    break;
+            }
+            cloneUsersList[i].authorizeList.forEach((authorizeListItem,index)=>{
+                $("input[value='"+authorizeListItem+"-user"+i+"']").prop("checked", true);
+            })
+        }
+    }
+    //删除用户的共享权限设置
+    function removeUsersSettingEntity(index) {
+        var obj = this.usersSettingEntities[index];
+        this.usersSettingEntities.splice(index,1);
+        this.showUserShare();
+    }
+
+    // 获取部门列表数据函数
+    function getDepartmentList() {
+        var departmentUrl = iPortalUrl + "/manager/iportalconfig/departments.json"
+        $.get(departmentUrl,(res)=>{
+            departmentList = res;
+        })
+    }
+    // 搜索添加部门函数
+    function searchDepartment(){
+        var departmentName = $("#add-department-val").val();
+        if(departmentName) {
+            for(var dep of departmentSettingEntities){
+                if(dep.entityName === departmentName){
+                    widgets.alert.showAlert(resources.msg_department_added,false);
+                    return;
+                }
+            }
+            let department = checkDepartmentIsExist(departmentName,departmentList);
+            if(department){
+                let authorizeList= getAuthorizeList("SEARCH");//添加的用户默认具有搜索权限
+                let entity = {
+                    "permissionType": null,
+                    "aliasName": null,
+                    "entityRoles": [],
+                    "entityType": "DEPARTMENT",
+                    "entityName": department.name,
+                    "entityId": department.id,
+                    "authorizeList": authorizeList
+                };
+                departmentSettingEntities.push(entity);
+                showDepartmentShare();
+                return;
+            }
+            widgets.alert.showAlert(resources.msg_department_not_exist,false);
+        }else {
+            widgets.alert.showAlert(resources.msg_input_department_name,false);
+        }
+    }
+    // 根据查询的部门记录，渲染页面，进行共享设置
+    function showDepartmentShare() {
+        $("#department_tbody").empty();
+        var cloneDepartmentList = Object.assign([],departmentSettingEntities);
+        for (var i = 0; i < cloneDepartmentList.length; i++) {
+            switch (resourceType) {
+                case 'MAP':
+                case 'SCENE':
+                case 'INSIGHTS_WORKSPACE':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneDepartmentList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-department"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='view-department"+i+"'" +
+                                "onclick='clickViewCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='edit-department"+i+"'" +
+                                "onclick='clickEditCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td onclick='removeDepartmentSettingEntity("+i+")'>"+resources.text_input_value_delete+"</td>" +
+                    "</tr>")
+                    $("#department_tbody").append(shareMapDOM);
+                    break;
+                case 'SERVICE':
+                case 'MAP_DASHBOARD':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneDepartmentList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-department"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='view-department"+i+"'" +
+                                "onclick='clickViewCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td onclick='removeDepartmentSettingEntity("+i+")'>"+resources.text_input_value_delete+"</td>" +
+                    "</tr>")
+                    $("#department_tbody").append(shareMapDOM);
+                    break;
+                case 'DATA':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneDepartmentList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-department"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='download-department"+i+"'" +
+                                "onclick='clickDownloadCheckBox("+JSON.stringify(cloneDepartmentList[i])+","+JSON.stringify("department")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td onclick='removeDepartmentSettingEntity("+i+")'>"+resources.text_input_value_delete+"</td>" +
+                    "</tr>")
+                    $("#department_tbody").append(shareMapDOM);
+                    break;
+            }
+            cloneDepartmentList[i].authorizeList.forEach((authorizeListItem,index)=>{
+                $("input[value='"+authorizeListItem+"-department"+i+"']").prop("checked", true);
+            })
+        }
+    }
+    // 检查输入的部门是否存在
+    function checkDepartmentIsExist(name,departments) {
+        var department = null;
+        for(var dep of departments){
+            if(dep.name === name){
+                department = dep;
+                break;
+            }else {
+                if(dep.childs){
+                    department = this.checkDepartmentIsExist(name,dep.childs);
+                    if(department){
+                        break;
+                    }
+                }
+            }
+        }
+        return department;
+    }
+
+
+    // 获取群组列表数据函数
+    function getGroupList() {
+        var groupUrl = iPortalUrl + "/web/groups/sharegroups.json"
+        $.get(groupUrl,(res)=>{
+            if(res.length>0) {
+                groupList = res;
+                return;
+            }
+        })
+    }
+    // 根据群组列表数据，渲染页面，进行共享设置
+    function showGroupShare() {
+        $("#group_tbody").empty();
+        var cloneGroupsList = Object.assign([],groupsSettingEntities);
+        for (var i = 0; i < cloneGroupsList.length; i++) {
+            switch (resourceType) {
+                case 'MAP':
+                case 'SCENE':
+                case 'INSIGHTS_WORKSPACE':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneGroupsList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-group"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='view-group"+i+"'" +
+                                "onclick='clickViewCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='edit-group"+i+"'" +
+                                "onclick='clickEditCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                    "</tr>")
+                    $("#group_tbody").append(shareMapDOM);
+                    break;
+                case 'SERVICE':
+                case 'MAP_DASHBOARD':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneGroupsList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-group"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='view-group"+i+"'" +
+                                "onclick='clickViewCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                    "</tr>")
+                    $("#group_tbody").append(shareMapDOM);
+                    break;
+                case 'DATA':
+                    var shareMapDOM = $("<tr>" +
+                        "<td>" + cloneGroupsList[i].entityName + "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='search-group"+i+"'" +
+                                "onclick='clickSearchCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                        "<td>" +
+                            "<input type='checkbox'" +
+                                "value='download-group"+i+"'" +
+                                "onclick='clickDownloadCheckBox("+JSON.stringify(cloneGroupsList[i])+","+JSON.stringify("group")+")'"+
+                            "/>" +
+                        "</td>" +
+                    "</tr>")
+                    $("#group_tbody").append(shareMapDOM);
+                    break;
+            }
+            cloneGroupsList[i].authorizeList.forEach((authorizeListItem,index)=>{
+                $("input[value='"+authorizeListItem+"-group"+i+"']").prop("checked", true);
+            })
+        }
+    }
+    //删除部门的共享权限设置
+    function removeDepartmentSettingEntity(index){
+        let obj = this.departmentSettingEntities[index];
+        this.departmentSettingEntities.splice(index,1);
+        this.showDepartmentShare();
+    }
+
+    //点击共享设置前，确认弹框（初始化弹框内容）
     function shareResource(ids){
+        groupsSettingEntities = [];
+        for(let group of groupList){
+            let settingEntity = {
+                "permissionType": "",
+                "aliasName": null,
+                "entityRoles": [],
+                "entityType": "IPORTALGROUP",
+                "entityName": group.groupName,
+                "entityId": group.id,
+                "authorizeList": []
+            };
+            groupsSettingEntities.push(settingEntity);
+        }
+        $('#shareModal').modal('show');
+        getDepartmentList();
         shareIds = ids ? [ids] : getDeleteAndShareCheckArr();
         if(shareIds.length<=0) {
-            widgets.alert.showAlert("请选择要共享的资源。", false);
+            widgets.alert.showAlert(resources.msg_choise_resources_share, false);
             return;
         }
         $("#public").empty();
+        $("#user_thead").empty();
+        $("#user_tbody").empty();
+        $("#group_thead").empty();
+        $("#group_tbody").empty();
+        $("#department_thead").empty();
+        $("#department_tbody").empty();
+        $("#add-user-val").val("");
+        $("#add-department-val").val("");
         //公开
-        if(resourceType === 'MAP') {
-            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
-                "<div class='publicPane sub-font' id='search'>" +
-                    "<input type='checkbox'" +
-                        "value='search'" +
-                        "onclick='clickSearchCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可检索</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='view'>" +
-                    "<input type='checkbox'" +
-                        "value='view'" +
-                        "onclick='clickViewCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可查看</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='edit'>" +
-                    "<input type='checkbox'" +
-                        "value='edit'" +
-                        "onclick='clickEditCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可编辑（仅限登录用户）</span>" +
-                "</div>" +
-            "</div>")
-        }else if(resourceType === 'SERVICE') {
-            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
-                "<div class='publicPane sub-font' id='search'>" +
-                    "<input type='checkbox'" +
-                        "value='search'" +
-                        "onclick='clickSearchCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可检索</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='view'>" +
-                    "<input type='checkbox'" +
-                        "value='view'" +
-                        "onclick='clickViewCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可查看</span>" +
-                "</div>" +
-            "</div>")
-        }else if(resourceType === 'SCENE') {
-            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
-                "<div class='publicPane sub-font' id='search'>" +
-                    "<input type='checkbox'" +
-                        "value='search'" +
-                        "onclick='clickSearchCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可检索</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='view'>" +
-                    "<input type='checkbox'" +
-                        "value='view'" +
-                        "onclick='clickViewCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可查看</span>" +
-                "</div>" +
-            "</div>")
-        }else if(resourceType === 'DATA') {
-            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
-                "<div class='publicPane sub-font' id='search'>" +
-                    "<input type='checkbox'" +
-                        "value='search'" +
-                        "onclick='clickSearchCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可检索</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='download'>" +
-                    "<input type='checkbox'" +
-                        "value='download'" +
-                        "onclick='clickDownloadCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可下载</span>" +
-                "</div>" +
-            "</div>")
-        }else if(resourceType === 'INSIGHTS_WORKSPACE') {
-            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
-                "<div class='publicPane sub-font' id='search'>" +
-                    "<input type='checkbox'" +
-                        "value='search'" +
-                        "onclick='clickSearchCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可检索</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='view'>" +
-                    "<input type='checkbox'" +
-                        "value='view'" +
-                        "onclick='clickViewCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可查看</span>" +
-                "</div>" +
-            "</div>")
-        }else if(resourceType === 'MAP_DASHBOARD') {
-            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
-                "<div class='publicPane sub-font' id='search'>" +
-                    "<input type='checkbox'" +
-                        "value='search'" +
-                        "onclick='clickSearchCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可检索</span>" +
-                "</div>" +
-                "<div class='publicPane sub-font' id='view'>" +
-                    "<input type='checkbox'" +
-                        "value='view'" +
-                        "onclick='clickViewCheckBox()'"+
-                    "/>" +
-                    "&nbsp; <span>所有用户可查看</span>" +
-                "</div>" +
-            "</div>")
+        switch (resourceType) {
+            case 'MAP':
+            case 'SCENE':
+            case 'INSIGHTS_WORKSPACE':
+                sharePublicDOM = $("<div class='col-md-4 col-xl-4 gallery-item' id='shareCheckboxs'>" +
+                    "<div class='publicPane sub-font' id='search'>" +
+                        "<input type='checkbox'" +
+                            "value='search'" +
+                            "onchange='clickSearchCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_search+"</span>" +
+                    "</div>" +
+                    "<div class='publicPane sub-font' id='view'>" +
+                        "<input type='checkbox'" +
+                            "value='view'" +
+                            "onchange='clickViewCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_view+"</span>" +
+                    "</div>" +
+                    "<div class='publicPane sub-font' id='edit'>" +
+                        "<input type='checkbox'" +
+                            "value='edit'" +
+                            "onchange='clickEditCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_editor+"</span>" +
+                    "</div>" +
+                "</div>")
+                break;
+            case 'SERVICE':
+            case 'MAP_DASHBOARD':
+                sharePublicDOM = $("<div class='col-md-4 col-xl-4 gallery-item' id='shareCheckboxs'>" +
+                    "<div class='publicPane sub-font' id='search'>" +
+                        "<input type='checkbox'" +
+                            "value='search'" +
+                            "onchange='clickSearchCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_search+"</span>" +
+                    "</div>" +
+                    "<div class='publicPane sub-font' id='view'>" +
+                        "<input type='checkbox'" +
+                            "value='view'" +
+                            "onchange='clickViewCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_view+"</span>" +
+                    "</div>" +
+                "</div>")
+                break;
+            case 'DATA':
+                sharePublicDOM = $("<div class='col-md-4 col-xl-4 gallery-item' id='shareCheckboxs'>" +
+                    "<div class='publicPane sub-font' id='search'>" +
+                        "<input type='checkbox'" +
+                            "value='search'" +
+                            "onchange='clickSearchCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_search+"</span>" +
+                    "</div>" +
+                    "<div class='publicPane sub-font' id='download'>" +
+                        "<input type='checkbox'" +
+                            "value='download'" +
+                            "onchange='clickDownloadCheckBox("+JSON.stringify(publicSettingEntity).replace(/\“/g,"'")+","+JSON.stringify("public")+")'"+
+                        "/>" +
+                        "&nbsp; <span>"+resources.text_user_download+"</span>" +
+                    "</div>" +
+                "</div>")
+                break;
         }
+        initDepartmentUserGroupThead("user",resources.text_nickname);
+        initDepartmentUserGroupThead("department",resources.text_department);
+        initDepartmentUserGroupThead("group",resources.text_group);
+
         $("#public").append(sharePublicDOM)
         var item = new SuperMap.iPortalResource(iPortalUrl,{resourceId:shareIds[0],resourceType:resourceType});
         item.load().then(()=>{
@@ -880,16 +1308,111 @@
                                 var entityObj = Object.assign({},entity);
                                 entityObj["authorizeList"] = getAuthorizeList(permissionType);
                                 publicSettingEntity = entityObj;
+                            }else {
+                                if(!entity.entityName || userStateObj.userName === entity.entityName){
+                                    break;
+                                }
+                                var entityObj = Object.assign({},entity);
+                                entityObj["authorizeList"] = getAuthorizeList(permissionType);
+                                usersSettingEntities.push(entityObj);
                             }
+                            break;
+                        case "IPORTALGROUP":
+                            var cloneGroupsEntities = Object.assign([],groupsSettingEntities)
+                            for(var groupItem of cloneGroupsEntities){
+                                if(groupItem.entityId === entity.entityId){
+                                    groupItem.authorizeList = getAuthorizeList(permissionType);
+                                    groupItem.permissionType = entity.permissionType;
+                                    break;
+                                }
+                            }
+                            groupsSettingEntities = cloneGroupsEntities;
+                            break;
+                        case "DEPARTMENT":
+                            var entityObj = Object.assign({},entity);
+                            entityObj["authorizeList"] = getAuthorizeList(permissionType);
+                            departmentSettingEntities.push(entityObj);
                             break;
                     }
                 }
             }
-            $('#shareModal').modal('show');
             publicSettingEntity.authorizeList.forEach((authorizeListItem,index)=>{
                 $("input[value='"+authorizeListItem+"']").prop("checked", true);
             })
+            if(departmentSettingEntities.length>0) {
+                showDepartmentShare();
+            }
+            if(usersSettingEntities.length>0) {
+                showUserShare();
+            }
+            if(groupsSettingEntities.length>0) {
+                showGroupShare();
+            }
         })
+    }
+    //初始化部门用户群组的表格头部内容
+    function initDepartmentUserGroupThead(renderDOMType,name){
+        var tr = document.createElement("tr");
+        //添加昵称（用户名）
+        var td_Name = document.createElement("th");
+        var text_Name = document.createTextNode(name);
+        td_Name.append(text_Name);
+        tr.append(td_Name);
+        $("#"+renderDOMType+"_thead").append(tr);
+        //添加可检索
+        var td_Name = document.createElement("th");
+        var text_Name = document.createTextNode(resources.text_is_search);
+        td_Name.append(text_Name);
+        tr.append(td_Name);
+        $("#"+renderDOMType+"_thead").append(tr);
+
+        switch (resourceType) {
+            case 'MAP':
+            case 'SCENE':
+            case 'INSIGHTS_WORKSPACE':
+                //可查看
+                var td_Value = document.createElement("th");
+                var text_Value = document.createTextNode(resources.text_is_view);
+                td_Value.append(text_Value);
+                tr.append(td_Value);
+                $("#"+renderDOMType+"_thead").append(tr);
+
+                //可编辑
+                var td_Value = document.createElement("th");
+                var text_Value = document.createTextNode(resources.text_is_edit);
+                td_Value.append(text_Value);
+                tr.append(td_Value);
+                $("#"+renderDOMType+"_thead").append(tr);
+
+                break;
+            case 'SERVICE':
+            case 'MAP_DASHBOARD':
+                //可查看
+                var td_Value = document.createElement("th");
+                var text_Value = document.createTextNode(resources.text_is_view);
+                td_Value.append(text_Value);
+                tr.append(td_Value);
+                $("#"+renderDOMType+"_thead").append(tr);
+
+                break;
+            case 'DATA':
+                //可下载
+                var td_Value = document.createElement("th");
+                var text_Value = document.createTextNode(resources.text_is_download);
+                td_Value.append(text_Value);
+                tr.append(td_Value);
+                $("#"+renderDOMType+"_thead").append(tr);
+
+                break;
+        }
+        if(renderDOMType === 'group') {
+            return;
+        }
+        var td_Value = document.createElement("th");
+        var text_Value = document.createTextNode(resources.btn_operate);
+        td_Value.append(text_Value);
+        tr.append(td_Value);
+        $("#"+renderDOMType+"_thead").append(tr);
     }
     //发送共享设置请求
     function requestShareUrl(){
@@ -902,15 +1425,39 @@
         });
         iPortal.updateResourcesShareSetting(queryShareParams).then(result=>{
             $('#shareModal').modal('hide');
+            usersSettingEntities = [];
+            departmentSettingEntities = [];
+            groupsSettingEntities = [];
             widgets.alert.showAlert(resources.msg_shareSuccess, true);
         }).catch(err => {
             widgets.alert.showAlert(resources.msg_shareFailed, false);
         })
     }
+    
+    //关闭弹框后 清空实体参数对象 防止重复渲染
+    function removeUser(){
+        usersSettingEntities = [];
+        departmentSettingEntities = [];
+        groupsSettingEntities = [];
+    }
+
+    //获取共享的实体参数
     function getShareEntities(){
         shareSettingList = [];
         //公开
         addSettingEntity(publicSettingEntity);
+        //用户
+        for(var user of usersSettingEntities){
+            addSettingEntity(user);
+        }
+        //部门
+        for(var department of departmentSettingEntities){
+            addSettingEntity(department);
+        }
+        //群组
+        for(var group of groupsSettingEntities){
+            addSettingEntity(group);
+        }
         return shareSettingList;
     }
     //生成分享的entities参数
@@ -920,13 +1467,14 @@
             shareSettingList.push(settingEntity);
         }
     }
+    //处理共享设置的参数
     function dealShareSettingParam(obj) {
         var authorize = "";
         if(!obj.authorizeList){
             return null;
         }
         if(obj.authorizeList.includes("edit")){
-            authorize = "READWRITE";
+            authorize = obj.entityName === userStateObj.userName ? "DELETE" : "READWRITE";
         }else if(obj.authorizeList.includes("view")){
             authorize =  "READ";
         }else if(obj.authorizeList.includes("download")){
@@ -935,7 +1483,7 @@
             authorize = "SEARCH";
         }
         if(authorize){
-            if(resourceType === "data") {
+            if(resourceType === "DATA") {
                 obj.dataPermissionType = authorize;
             }
             obj.permissionType = authorize;
@@ -947,46 +1495,6 @@
         }else {
             return null;
         }
-    }
-    function clickSearchCheckBox(){
-        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("search") === -1){
-            publicSettingEntity.authorizeList = ["search"];
-        }else {
-            publicSettingEntity.authorizeList = [];
-        }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
-    }
-    function clickDownloadCheckBox(){
-        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("download") === -1){
-            publicSettingEntity.authorizeList = ["search","download"];
-        }else if((publicSettingEntity.authorizeList).indexOf("search") !== -1){
-            publicSettingEntity.authorizeList = ["search"];
-        }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
-    }
-    function clickViewCheckBox(){
-        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("view") === -1){
-            publicSettingEntity.authorizeList = ["search","view"];
-        }else if((publicSettingEntity.authorizeList).indexOf("search") !== -1){
-            publicSettingEntity.authorizeList = ["search"];
-        }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
-    }
-    function clickEditCheckBox(){
-        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("edit") === -1){
-            publicSettingEntity.authorizeList = ["search","view","edit"];
-        }else if((publicSettingEntity.authorizeList).indexOf("view") !== -1){
-            publicSettingEntity.authorizeList = ["search","view"];
-        }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
     }
     //根据已有的权限生成authorizeList，用于复选框双向绑定
     function getAuthorizeList(permissionType){
@@ -1012,6 +1520,241 @@
         }
         return authorizeList;
     }
+    
+    //点击可检索逻辑
+    function clickSearchCheckBox(obj,type){
+        if(!obj.authorizeList || (obj.authorizeList).indexOf("search") === -1){
+            obj.authorizeList = ["search"];
+        }else {
+            obj.authorizeList = [];
+        }
+        if(type === 'public') {
+            publicSettingEntity = obj;
+            if($("input[value='search']").is(':checked')){
+                obj.authorizeList.forEach(authorizeListItem=>{
+                    $("input[value='"+authorizeListItem+"']").prop("checked", true);
+                    $("input[value='view']").prop("checked", false);
+                    $("input[value='edit']").prop("checked", false);
+                    $("input[value='download']").prop("checked", false);
+                })
+            }else {
+                $("input[value='search']").prop("checked", false);
+                $("input[value='view']").prop("checked", false);
+                $("input[value='edit']").prop("checked", false);
+                $("input[value='download']").prop("checked", false);
+            }
+        }else if(type === 'user') {
+            usersSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    usersSettingEntities[index] = obj;
+                }
+                if($("input[value='search-user"+index+"']").is(':checked')){
+                    obj.authorizeList.forEach(authorizeListItem=>{
+                        $("input[value='"+authorizeListItem+"-user"+index+"']").prop("checked", true);
+                        $("input[value='view-user"+index+"']").prop("checked", false);
+                        $("input[value='edit-user"+index+"']").prop("checked", false);
+                        $("input[value='download-user"+index+"']").prop("checked", false);
+                    })
+                }else {
+                    $("input[value='search-user"+index+"']").prop("checked", false);
+                    $("input[value='view-user"+index+"']").prop("checked", false);
+                    $("input[value='edit-user"+index+"']").prop("checked", false);
+                    $("input[value='download-user"+index+"']").prop("checked", false);
+                }
+            })
+        }else if(type === 'department') {
+            departmentSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    departmentSettingEntities[index] = obj;
+                }
+                if($("input[value='search-department"+index+"']").is(':checked')){
+                    obj.authorizeList.forEach(authorizeListItem=>{
+                        $("input[value='"+authorizeListItem+"-department"+index+"']").prop("checked", true);
+                        $("input[value='view-department"+index+"']").prop("checked", false);
+                        $("input[value='edit-department"+index+"']").prop("checked", false);
+                        $("input[value='download-department"+index+"']").prop("checked", false);
+                    })
+                }else {
+                    $("input[value='search-department"+index+"']").prop("checked", false);
+                    $("input[value='view-department"+index+"']").prop("checked", false);
+                    $("input[value='edit-department"+index+"']").prop("checked", false);
+                    $("input[value='download-department"+index+"']").prop("checked", false);
+                }
+            })
+        }else if(type === 'group') {
+            groupsSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    groupsSettingEntities[index] = obj;
+                }
+                if($("input[value='search-group"+index+"']").is(':checked')){
+                    console.log(11)
+                    obj.authorizeList.forEach(authorizeListItem=>{
+                        $("input[value='"+authorizeListItem+"-group"+index+"']").prop("checked", true);
+                        $("input[value='view-group"+index+"']").prop("checked", false);
+                        $("input[value='edit-group"+index+"']").prop("checked", false);
+                        $("input[value='download-group"+index+"']").prop("checked", false);
+                    })
+                }else {
+                    $("input[value='search-group"+index+"']").prop("checked", false);
+                    $("input[value='view-group"+index+"']").prop("checked", false);
+                    $("input[value='edit-group"+index+"']").prop("checked", false);
+                    $("input[value='download-group"+index+"']").prop("checked", false);
+                }
+            })
+        }
+    }
+    //点击可下载逻辑
+    function clickDownloadCheckBox(obj,type){
+        if(!obj.authorizeList || (obj.authorizeList).indexOf("download") === -1){
+            obj.authorizeList = ["search","download"];
+        }else if((obj.authorizeList).indexOf("search") !== -1){
+            obj.authorizeList = ["search"];
+        }
+        if(type === 'public') {
+            publicSettingEntity = obj;
+        }else if(type === 'user') {
+            usersSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    usersSettingEntities[index] = obj;
+                    if($("input[value='download-user"+index+"']").is(':checked')){
+                        obj.authorizeList.forEach(authorizeListItem=>{
+                            $("input[value='"+authorizeListItem+"-user"+index+"']").prop("checked", true);
+                        })
+                    }
+                }
+            })
+        }else if(type === 'department') {
+            departmentSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    departmentSettingEntities[index] = obj;
+                    if($("input[value='download-department"+index+"']").is(':checked')){
+                        obj.authorizeList.forEach(authorizeListItem=>{
+                            $("input[value='"+authorizeListItem+"-department"+index+"']").prop("checked", true);
+                        })
+                    }
+                }
+            })
+        }else if(type === 'group') {
+            groupsSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    groupsSettingEntities[index] = obj;
+                    if($("input[value='download-group"+index+"']").is(':checked')){
+                        obj.authorizeList.forEach(authorizeListItem=>{
+                            $("input[value='"+authorizeListItem+"-group"+index+"']").prop("checked", true);
+                        })
+                    }
+                }
+            })
+        }
+    }
+    //点击可查看逻辑
+    function clickViewCheckBox(obj,type){
+        if(!obj.authorizeList || (obj.authorizeList).indexOf("view") === -1){
+            obj.authorizeList = ["search","view"];
+        }else if((obj.authorizeList).indexOf("search") !== -1){
+            obj.authorizeList = ["search"];
+        }
+        if(type === 'public') {
+            publicSettingEntity = obj;
+            if($("input[value='view']").is(':checked')){
+                obj.authorizeList.forEach(authorizeListItem=>{
+                    $("input[value='"+authorizeListItem+"']").prop("checked", true);
+                })
+            }
+        }else if(type === 'user') {
+            usersSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    usersSettingEntities[index] = obj;
+                    if($("input[value='view-user"+index+"']").is(':checked')){
+                        obj.authorizeList.forEach(authorizeListItem=>{
+                            $("input[value='"+authorizeListItem+"-user"+index+"']").prop("checked", true);
+                            $("input[value='edit-user"+index+"']").prop("checked", false);
+                        })
+                    }else {
+                        $("input[value='edit-user"+index+"']").prop("checked", false);
+                    }
+                }
+            })
+        }else if(type === 'department') {
+            departmentSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    departmentSettingEntities[index] = obj;
+                    if($("input[value='view-department"+index+"']").is(':checked')){
+                        obj.authorizeList.forEach(authorizeListItem=>{
+                            $("input[value='"+authorizeListItem+"-department"+index+"']").prop("checked", true);
+                            $("input[value='edit-department"+index+"']").prop("checked", false);
+                        })
+                    }else {
+                        $("input[value='edit-department"+index+"']").prop("checked", false);
+                    }
+                }
+            })
+        }else if(type === 'group') {
+            groupsSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    groupsSettingEntities[index] = obj;
+                    if($("input[value='view-group"+index+"']").is(':checked')){
+                        obj.authorizeList.forEach(authorizeListItem=>{
+                            $("input[value='"+authorizeListItem+"-group"+index+"']").prop("checked", true);
+                            $("input[value='edit-group"+index+"']").prop("checked", false);
+                        })
+                    }else {
+                        $("input[value='edit-group"+index+"']").prop("checked", false);
+                    }
+                }
+            })
+        }
+    }
+    //点击可编辑逻辑
+    function clickEditCheckBox(obj,type){
+        if(!obj.authorizeList || (obj.authorizeList).indexOf("edit") === -1){
+            obj.authorizeList = ["search","view","edit"];
+        }else if((obj.authorizeList).indexOf("view") !== -1){
+            obj.authorizeList = ["search","view"];
+        }
+        if(type === 'public') {
+            publicSettingEntity = obj;
+            if($("input[value='edit']").is(':checked')){
+                obj.authorizeList.forEach(authorizeListItem=>{
+                    $("input[value='"+authorizeListItem+"']").prop("checked", true);
+                })
+            }   
+        }else if(type === 'user') {
+            usersSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    usersSettingEntities[index] = obj;
+                }
+                if($("input[value='edit-user"+index+"']").is(':checked')){
+                    obj.authorizeList.forEach(authorizeListItem=>{
+                        $("input[value='"+authorizeListItem+"-user"+index+"']").prop("checked", true);
+                    })
+                }
+            })
+        }else if(type === 'department') {
+            departmentSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    departmentSettingEntities[index] = obj;
+                }
+                if($("input[value='edit-department"+index+"']").is(':checked')){
+                    obj.authorizeList.forEach(authorizeListItem=>{
+                        $("input[value='"+authorizeListItem+"-department"+index+"']").prop("checked", true);
+                    })
+                }
+            })
+        }else if(type === 'group') {
+            groupsSettingEntities.forEach((item,index)=>{
+                if(item.entityName === obj.entityName) {
+                    groupsSettingEntities[index] = obj;
+                }
+                if($("input[value='edit-group"+index+"']").is(':checked')){
+                    obj.authorizeList.forEach(authorizeListItem=>{
+                        $("input[value='"+authorizeListItem+"-group"+index+"']").prop("checked", true);
+                    })
+                }
+            })
+        }
+    }
+    
     // 选择资源类型  查询资源
     function onSelectResourcesType(){
         iPortal = new SuperMap.iPortal(iPortalUrl);
