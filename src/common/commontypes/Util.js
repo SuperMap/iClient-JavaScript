@@ -278,17 +278,8 @@ SuperMap.Util.getParameterString = function (params) {
         var value = params[key];
         if ((value != null) && (typeof value !== 'function')) {
             var encodedValue;
-            if (typeof value === 'object' && value.constructor === Array) {
-                /* value is an array; encode items and separate with "," */
-                var encodedItemArray = [];
-                var item;
-                for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                    item = value[itemIndex];
-                    encodedItemArray.push(encodeURIComponent(
-                        (item === null || item === undefined) ? "" : item)
-                    );
-                }
-                encodedValue = encodedItemArray.join(",");
+            if (Array.isArray(value) || value.toString() === '[object Object]') {
+                encodedValue = encodeURIComponent(JSON.stringify(value));
             } else {
                 /* value is a string; simply encode */
                 encodedValue = encodeURIComponent(value);

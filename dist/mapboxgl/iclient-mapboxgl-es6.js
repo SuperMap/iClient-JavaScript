@@ -4594,17 +4594,8 @@ SuperMap.Util.getParameterString = function (params) {
         var value = params[key];
         if ((value != null) && (typeof value !== 'function')) {
             var encodedValue;
-            if (typeof value === 'object' && value.constructor === Array) {
-                /* value is an array; encode items and separate with "," */
-                var encodedItemArray = [];
-                var item;
-                for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                    item = value[itemIndex];
-                    encodedItemArray.push(encodeURIComponent(
-                        (item === null || item === undefined) ? "" : item)
-                    );
-                }
-                encodedValue = encodedItemArray.join(",");
+            if (Array.isArray(value) || value.toString() === '[object Object]') {
+                encodedValue = encodeURIComponent(JSON.stringify(value));
             } else {
                 /* value is a string; simply encode */
                 encodedValue = encodeURIComponent(value);
@@ -13146,15 +13137,8 @@ var FetchRequest = SuperMap.FetchRequest = {
             var value = params[key];
             if ((value != null) && (typeof value !== 'function')) {
                 var encodedValue;
-                if (typeof value === 'object' && value.constructor === Array) {
-                    var encodedItemArray = [];
-                    var item;
-                    for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                        item = value[itemIndex];
-                        encodedItemArray.push(encodeURIComponent(
-                            (item === null || item === undefined) ? "" : item));
-                    }
-                    encodedValue = '[' + encodedItemArray.join(",") + ']';
+                if (Array.isArray(value) || value.toString() === '[object Object]') {
+                    encodedValue = encodeURIComponent(JSON.stringify(value));
                 } else {
                     encodedValue = encodeURIComponent(value);
                 }
@@ -14854,19 +14838,9 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {number} [options.maxReturn] - 最大返回结果数。
  */
 class GeoCodingParameter_GeoCodingParameter {
-
-
-
-
     constructor(options) {
-        if (options.filters) {
-            let strs = [];
-            let fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-                return field;
-            });
-            options.filters = strs;
+        if (options.filters && typeof(options.filters) === 'string') {        
+            options.filters =  options.filters.split(',');
         }
         /**
          * @member {string} SuperMap.GeoCodingParameter.prototype.address
@@ -14948,13 +14922,7 @@ class GeoDecodingParameter_GeoDecodingParameter {
     constructor(options) {
 
         if (options.filters) {
-            let strs = [];
-            let fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-                return field
-            });
-            options.filters = strs;
+            options.filters = options.filters.split(',');
         }
         /**
          * @member {number} SuperMap.GeoDecodingParameter.prototype.x

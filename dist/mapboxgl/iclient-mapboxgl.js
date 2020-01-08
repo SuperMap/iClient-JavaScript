@@ -5062,17 +5062,8 @@ SuperMap.Util.getParameterString = function (params) {
     if (value != null && typeof value !== 'function') {
       var encodedValue;
 
-      if (_typeof(value) === 'object' && value.constructor === Array) {
-        /* value is an array; encode items and separate with "," */
-        var encodedItemArray = [];
-        var item;
-
-        for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-          item = value[itemIndex];
-          encodedItemArray.push(encodeURIComponent(item === null || item === undefined ? "" : item));
-        }
-
-        encodedValue = encodedItemArray.join(",");
+      if (Array.isArray(value) || value.toString() === '[object Object]') {
+        encodedValue = encodeURIComponent(JSON.stringify(value));
       } else {
         /* value is a string; simply encode */
         encodedValue = encodeURIComponent(value);
@@ -14600,8 +14591,6 @@ var fetch_jsonp = __webpack_require__(4);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-function FetchRequest_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { FetchRequest_typeof = function _typeof(obj) { return typeof obj; }; } else { FetchRequest_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return FetchRequest_typeof(obj); }
-
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14870,16 +14859,8 @@ var FetchRequest = SuperMap.FetchRequest = {
       if (value != null && typeof value !== 'function') {
         var encodedValue;
 
-        if (FetchRequest_typeof(value) === 'object' && value.constructor === Array) {
-          var encodedItemArray = [];
-          var item;
-
-          for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-            item = value[itemIndex];
-            encodedItemArray.push(encodeURIComponent(item === null || item === undefined ? "" : item));
-          }
-
-          encodedValue = '[' + encodedItemArray.join(",") + ']';
+        if (Array.isArray(value) || value.toString() === '[object Object]') {
+          encodedValue = encodeURIComponent(JSON.stringify(value));
         } else {
           encodedValue = encodeURIComponent(value);
         }
@@ -16898,14 +16879,8 @@ function () {
   function GeoCodingParameter(options) {
     GeoCodingParameter_classCallCheck(this, GeoCodingParameter);
 
-    if (options.filters) {
-      var strs = [];
-      var fields = options.filters.split(',');
-      fields.map(function (field) {
-        strs.push("\"" + field + "\"");
-        return field;
-      });
-      options.filters = strs;
+    if (options.filters && typeof options.filters === 'string') {
+      options.filters = options.filters.split(',');
     }
     /**
      * @member {string} SuperMap.GeoCodingParameter.prototype.address
@@ -17000,13 +16975,7 @@ function () {
     GeoDecodingParameter_classCallCheck(this, GeoDecodingParameter);
 
     if (options.filters) {
-      var strs = [];
-      var fields = options.filters.split(',');
-      fields.map(function (field) {
-        strs.push("\"" + field + "\"");
-        return field;
-      });
-      options.filters = strs;
+      options.filters = options.filters.split(',');
     }
     /**
      * @member {number} SuperMap.GeoDecodingParameter.prototype.x

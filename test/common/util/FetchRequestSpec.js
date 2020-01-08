@@ -30,6 +30,21 @@ describe('FetchRequest', () => {
         expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(4);
     });
 
+    it('Get_arrayObject', () => {
+        var url = "http://test.supermap.io/examples/leaflet/editor.html#addressMatchService";
+        var params = {
+            tags:["bb","aa"],
+            aa:{aa:1}
+        };
+        setCORS(true);
+        spyOn(FetchRequest, '_fetch').and.callFake((url) => {
+            expect(url).toContain('%5B%22bb%22%2C%22aa%22%5D');
+            expect(url).toContain('%7B%22aa%22%3A1%7D');
+        });
+        FetchRequest.get(url, params);
+        expect(FetchRequest._fetch.calls.count()).toBe(1);
+    });
+
     afterAll(() => {
         SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
         setCORS(defaltCors);
