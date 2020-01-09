@@ -75,6 +75,8 @@ export {
     IPortalShareEntity,
     IPortalServiceBase,
     IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
     //Online
     Online,
     OnlineData,

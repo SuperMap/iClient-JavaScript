@@ -461,6 +461,17 @@ var exampleConfig = {
                     thumbnail: "ol_iPortalQueryMyResources.png",
                     fileName: "iPortalQueryMyResources"
                 }]
+            },
+            "ip_batchaddresource": {
+                name: "添加地图/场景",
+                name_en: "Batch Add Map/Scene",
+                content: [{
+                    name: "添加地图/场景",
+                    name_en: "Batch Add Map/Scene",
+                    version: "10.0.1",
+                    thumbnail: "ol_iPortalQueryMyResources.png",
+                    fileName: "iPortalBatchAddResource"
+                }]
             }
         }
     },

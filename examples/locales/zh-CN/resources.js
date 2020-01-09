@@ -470,6 +470,9 @@ window.examplesResources = {
         "title_iPortalQueryScenes1": "iPortal QueryScenes使用示例",
         "title_iPortalQueryScene": "iPortal QueryScene使用示例",
         "title_iPortalUpdateSceneAttrs": "iPortal UpdateSceneAttrs使用示例",
+        "title_iPortalAddMapOrScene": "iPortal 添加地图/场景使用示例",
+        "title_iPortalAddMap": "添加地图",
+        "title_iPortalAddScene": "添加场景",
 
         "detail_iPortal_baseInfo": "基本信息",
         "detail_iPortal_name": "名称",
@@ -1284,6 +1287,7 @@ window.examplesResources = {
         'text_is_view': "可查看",
         'text_is_edit': "可编辑",
         'text_is_download': "可下载",
+        'text_userMap': "用户地图",
 
 
         "btn_operate": "操作",
@@ -1468,6 +1472,7 @@ window.examplesResources = {
         "btn_darkTheme":"深色主题",
         "btn_customTheme":"自定义主题",
         "btn_switchTheme":"切换主题",
+        "btn_OK":"确定",
 
         "msg_user_not_exist":"该用户不存在",
         "msg_department_not_exist":"该部门不存在",
@@ -1587,6 +1592,8 @@ window.examplesResources = {
         "msg_vectorClip": "矢量裁剪分析仅支持单面裁剪!",
         "msg_clickToPopup": '点击地图，弹出弹窗',
         "msg_clickLayerToPopup": '点击图层上的要素，查看属性',
+        "msg_addSuccess": "添加成功!",
+        "msg_addFailed": "添加失败!",
 
         "set_style": "top: -23px;left: 86px;",
         "style_width420px": 'width: 420px',

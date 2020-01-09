@@ -103,7 +103,9 @@ import {
     IPortalShareParam,
     IPortalShareEntity,
     IPortalServiceBase,
-    IPortalUser
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam
 } from './iPortal';
 import {
     AddressMatchService,
@@ -566,7 +568,9 @@ export {
     IPortalShareParam,
     IPortalShareEntity,
     IPortalServiceBase,
-    IPortalUser
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam
 };
 export {
     AddressMatchService,

@@ -9,6 +9,8 @@ import {IPortalShareParam} from './iPortalShareParam';
 import {IPortalShareEntity} from './iPortalShareEntity';
 import {IPortalServiceBase} from './iPortalServiceBase';
 import {IPortalUser} from "./iPortalUser";
+import {IPortalAddResourceParam} from "./iPortalAddResourceParam";
+import {IPortalRegisterServiceParam} from "./iPortalRegisterServiceParam";
 
 export {IPortal} ;
 export {IPortalQueryParam};
@@ -17,4 +19,6 @@ export {IPortalQueryResult};
 export {IPortalShareParam};
 export {IPortalShareEntity};
 export {IPortalServiceBase};
-export {IPortalUser}
+export {IPortalUser};
+export {IPortalAddResourceParam};
+export {IPortalRegisterServiceParam};

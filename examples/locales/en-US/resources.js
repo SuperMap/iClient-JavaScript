@@ -529,6 +529,9 @@ window.examplesResources = {
         "title_iPortalQueryScenes1": "Examples of iPortal QueryScenes",
         "title_iPortalQueryScene": "Examples of iPortal QueryScene",
         "title_iPortalUpdateSceneAttrs": "Examples of iPortal UpdateSceneAttrs",
+        "title_iPortalAddMapOrScene": "Examples of iPortal AddMap/AddScene",
+        "title_iPortalAddMap": "Add Map",
+        "title_iPortalAddScene": "Add Scene",
 
         "detail_iPortal_baseInfo": "Basic Info",
         "detail_iPortal_name": "Name",
@@ -1333,6 +1336,7 @@ window.examplesResources = {
         'text_is_view': "View",
         'text_is_edit': "Edit",
         'text_is_download': "Download",
+        'text_userMap': "Map from users",
         "title_componentsTianditu_Vue": 'Tianditu',
         "title_componentsTianditu_route_Vue": 'Route Plan',
         "title_componentsTianditu_search_Vue": 'POI Search',
@@ -1520,6 +1524,7 @@ window.examplesResources = {
         "btn_darkTheme":"Dark theme",
         "btn_customTheme":"Custom theme",
         "btn_switchTheme":"Switch theme",
+        "btn_OK":"OK",
 
         "msg_user_not_exist":"This user doesn't exist",
         "msg_department_not_exist":"This department doesn't exist",
@@ -1639,6 +1644,8 @@ window.examplesResources = {
         "msg_vectorClip": "Vector clipping analysis only supports single side clipping!",
         "msg_clickToPopup": 'Please click the map to open popup',
         "msg_clickLayerToPopup": 'Please click the layer\'s feature to check properties',
+        "msg_addSuccess": "Added successfully!",
+        "msg_addFailed": "Added failed!",
 
         "set_style": "",
         "style_width420px": 'width: 500px',

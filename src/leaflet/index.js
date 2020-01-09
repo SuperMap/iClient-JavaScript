@@ -75,6 +75,8 @@ import {
     IPortalShareEntity,
     IPortalServiceBase,
     IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
     //Online
     Online,
     OnlineData,
@@ -530,6 +532,8 @@ export {
     IPortalShareEntity,
     IPortalServiceBase,
     IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
     //Online
     Online,
     OnlineData,
