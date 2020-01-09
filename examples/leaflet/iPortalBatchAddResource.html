@@ -100,9 +100,9 @@
 <script type="text/javascript" include="iPortalStylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
-    var iPortalUrl = "http://rdc.ispeco.com/";
-    // rdc的admin用户的token，模拟admin用户登录状态
-    var token = "qbzq4N7oA7sC6xJwP_VzbtEqoscT-sLATh83DzePead0gK4Tf5qEnypDY0iO3x7qM4pRSQxM98Zr5WAxLZhONw..";
+    var iPortalUrl = "https://iportal.supermap.io/iportal";
+    // iptl的admin1用户的token，模拟admin1用户登录状态
+    var token = "Uqag_k3dTfo9FoTj26IlGlLEhn1e276OZ-4twNtVr_etQ-2u6sUKYr9jwjWCtQKNwzTCV2CIMxiaKuOwvKwMag..";
     //默认请求资源类型
     var resourceType = "MAP";
     //共享设置
@@ -214,9 +214,17 @@
         }else {
             publicSettingEntity.authorizeList = [];
         }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
+        if($("input[value='search']").is(':checked')){
+            publicSettingEntity.authorizeList.forEach(authorizeListItem=>{
+                $("input[value='"+authorizeListItem+"']").prop("checked", true);
+                $("input[value='view']").prop("checked", false);
+                $("input[value='edit']").prop("checked", false);
+            })
+        }else {
+            $("input[value='search']").prop("checked", false);
+            $("input[value='view']").prop("checked", false);
+            $("input[value='edit']").prop("checked", false);
+        }
     }
     // 点击所有用户可查看
     function clickViewCheckBox(){
@@ -225,9 +233,13 @@
         }else if((publicSettingEntity.authorizeList).indexOf("search") !== -1){
             publicSettingEntity.authorizeList = ["search"];
         }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
+        if($("input[value='view']").is(':checked')){
+            publicSettingEntity.authorizeList.forEach(authorizeListItem=>{
+                $("input[value='"+authorizeListItem+"']").prop("checked", true);
+            })
+        }else {
+            $("input[value='edit']").prop("checked", false);
+        }
     }
     // 点击所有用户可编辑
     function clickEditCheckBox(){
@@ -236,9 +248,11 @@
         }else if((publicSettingEntity.authorizeList).indexOf("view") !== -1){
             publicSettingEntity.authorizeList = ["search","view"];
         }
-        publicSettingEntity.authorizeList.forEach( authorizeListItem=> {
-            $("input[value='"+authorizeListItem+"']").prop("checked", true);
-        })
+        if($("input[value='edit']").is(':checked')){
+            publicSettingEntity.authorizeList.forEach(authorizeListItem=>{
+                $("input[value='"+authorizeListItem+"']").prop("checked", true);
+            })
+        }   
     }
 </script>
 </body>
