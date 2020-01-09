@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("./static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("video.js"), require("echarts"), require("ant-design-vue"), require("vue-echarts"), require("echarts-liquidfill"), require("leaflet"), require("vue"));
+		module.exports = factory(require("vue"), require("ant-design-vue"), require("echarts"), require("echarts-liquidfill"), require("video.js"), require("leaflet"), require("../static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("vue-echarts"));
 	else if(typeof define === 'function' && define.amd)
-		define(["./static/libs/iclient-leaflet/iclient-leaflet.min.js", "video.js", "echarts", "ant-design-vue", "vue-echarts", "echarts-liquidfill", "leaflet", "vue"], factory);
+		define(["vue", "ant-design-vue", "echarts", "echarts-liquidfill", "video.js", "leaflet", "../static/libs/iclient-leaflet/iclient-leaflet.min.js", "vue-echarts"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("./static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("video.js"), require("echarts"), require("ant-design-vue"), require("vue-echarts"), require("echarts-liquidfill"), require("leaflet"), require("vue"));
+		exports["Components"] = factory(require("vue"), require("ant-design-vue"), require("echarts"), require("echarts-liquidfill"), require("video.js"), require("leaflet"), require("../static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("vue-echarts"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["SuperMap"], root["_videojs"], root["echarts"], root["antd"], root["VueECharts"], root["echarts-liquidfill"], root["L"], root["Vue"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__17FK__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_hgx0__, __WEBPACK_EXTERNAL_MODULE_i7_w__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["Vue"], root["antd"], root["echarts"], root["echarts-liquidfill"], root["_videojs"], root["L"], root["SuperMap"], root["VueECharts"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_hgx0__, __WEBPACK_EXTERNAL_MODULE__8slI__, __WEBPACK_EXTERNAL_MODULE_Zni2__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1955,7 +1955,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _leafletWrapper = _interopRequireDefault(__webpack_require__("uTlj"));
 
-__webpack_require__("17FK");
+__webpack_require__("8slI");
 
 __webpack_require__("e/Qi");
 
@@ -3440,13 +3440,6 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ "17FK":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__17FK__;
 
 /***/ }),
 
@@ -8225,6 +8218,13 @@ exports.default = AddressMatchParameter;
 
 /***/ }),
 
+/***/ "8slI":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__8slI__;
+
+/***/ }),
+
 /***/ "9csQ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9109,7 +9109,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _leaflet = _interopRequireDefault(__webpack_require__("hgx0"));
 
-__webpack_require__("17FK");
+__webpack_require__("8slI");
 
 var _propsBinder = __webpack_require__("hS5c");
 
@@ -14140,7 +14140,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _leafletWrapper = _interopRequireDefault(__webpack_require__("uTlj"));
 
-__webpack_require__("17FK");
+__webpack_require__("8slI");
 
 var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
 
@@ -19056,6 +19056,9 @@ var _default = {
     title: 'Indicator Title',
     unit: 'Unit'
   },
+  layerManager: {
+    title: 'Layer Manager'
+  },
   tdtResults: {
     on: 'on ',
     station: ' station',
@@ -22572,14 +22575,16 @@ exports.default = _default;
 /***/ "cDf5":
 /***/ (function(module, exports) {
 
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
 function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
     module.exports = _typeof = function _typeof(obj) {
-      return typeof obj;
+      return _typeof2(obj);
     };
   } else {
     module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
     };
   }
 
