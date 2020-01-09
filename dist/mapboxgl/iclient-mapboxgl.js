@@ -16334,6 +16334,71 @@ var iPortalShareEntity_IPortalShareEntity = function IPortalShareEntity(shareEnt
   Util_Util.extend(this, shareEntity);
 };
 SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddResourceParam.js
+function iPortalAddResourceParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.iPortalAddResourceParam
+ * @classdesc iPortal 添加资源参数。
+ * @version 10.0.1
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 添加资源具体参数。
+ * @param {String} [params.rootUrl] - 服务地址。
+ * @param {Array} [params.tags] - 标签。
+ * @param {SuperMap.iPortalShareEntity} [params.entities] - 资源的实体共享参数
+ */
+
+var iPortalAddResourceParam_IPortalAddResourceParam = function IPortalAddResourceParam(params) {
+  iPortalAddResourceParam_classCallCheck(this, IPortalAddResourceParam);
+
+  params = params || {};
+  this.rootUrl = "";
+  this.tags = [];
+  this.entities = [];
+  Util_Util.extend(this, params);
+};
+SuperMap.iPortalAddResourceParam = iPortalAddResourceParam_IPortalAddResourceParam;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalRegisterServiceParam.js
+function iPortalRegisterServiceParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.iPortalRegisterServiceParam
+ * @classdesc iPortal 注册服务参数。
+ * @version 10.0.1
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 注册服务具体参数。
+ * @param {String} [params.type] - 服务类型。
+ * @param {Array} [params.tags] - 服务标签。
+ * @param {SuperMap.iPortalShareEntity} [params.entities] - 资源的实体共享参数
+ * @param {Object} [params.metadata] - 服务元信息。
+ * @param {Array} [params.addedMapNames] - 地图服务列表。
+ * @param {Array} [params.addedSceneNames] - 场景服务列表。
+ */
+
+var iPortalRegisterServiceParam_IPortalRegisterServiceParam = function IPortalRegisterServiceParam(params) {
+  iPortalRegisterServiceParam_classCallCheck(this, IPortalRegisterServiceParam);
+
+  params = params || {};
+  this.type = ""; // SUPERMAP_REST ARCGIS_REST WMS WFS WCS WPS WMTS OTHERS
+
+  this.tags = [];
+  this.entities = [];
+  this.metadata = {};
+  this.addedMapNames = [];
+  this.addedSceneNames = [];
+  Util_Util.extend(this, params);
+};
+SuperMap.iPortalRegisterServiceParam = iPortalRegisterServiceParam_IPortalRegisterServiceParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
 function iPortalUser_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalUser_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalUser_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalUser_typeof(obj); }
 
@@ -16358,6 +16423,8 @@ function iPortalUser_setPrototypeOf(o, p) { iPortalUser_setPrototypeOf = Object.
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
+
+
 /**
  * @class SuperMap.iPortalUser
  * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
@@ -16368,7 +16435,7 @@ function iPortalUser_setPrototypeOf(o, p) { iPortalUser_setPrototypeOf = Object.
  *
  */
 
-var IPortalUser =
+var iPortalUser_IPortalUser =
 /*#__PURE__*/
 function (_IPortalServiceBase) {
   iPortalUser_inherits(IPortalUser, _IPortalServiceBase);
@@ -16403,15 +16470,112 @@ function (_IPortalServiceBase) {
 
       return this.request("DELETE", deleteResourceUrl);
     }
+    /**
+     * @function SuperMap.iPortal.prototype.addMap
+     * @description 添加地图。
+     * @version 10.0.1
+     * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
+     * @returns {Promise} 返回包含添加地图结果的 Promise 对象。
+     */
+
+  }, {
+    key: "addMap",
+    value: function addMap(addMapParams) {
+      if (!(addMapParams instanceof iPortalAddResourceParam_IPortalAddResourceParam)) {
+        this.getErrMsgPromise("addMapParams is not instanceof IPortalAddResourceParam !");
+      }
+
+      var cloneAddMapParams = {
+        rootUrl: addMapParams.rootUrl,
+        tags: addMapParams.tags,
+        authorizeSetting: addMapParams.entities
+      };
+      var addMapUrl = this.iportalUrl + "/web/maps/batchaddmaps.json";
+      return this.request("POST", addMapUrl, JSON.stringify(cloneAddMapParams)).then(function (result) {
+        return result;
+      });
+    }
+    /**
+     * @function SuperMap.iPortal.prototype.addScene
+     * @description 添加场景。
+     * @version 10.0.1
+     * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
+     * @returns {Promise} 返回包含添加场景结果的 Promise 对象。
+     */
+
+  }, {
+    key: "addScene",
+    value: function addScene(addSceneParams) {
+      if (!(addSceneParams instanceof iPortalAddResourceParam_IPortalAddResourceParam)) {
+        this.getErrMsgPromise("addSceneParams is not instanceof IPortalAddResourceParam !");
+      }
+
+      var cloneAddSceneParams = {
+        rootUrl: addSceneParams.rootUrl,
+        tags: addSceneParams.tags,
+        authorizeSetting: addSceneParams.entities
+      };
+      var addSceneUrl = this.iportalUrl + "/web/scenes/batchaddscenes.json";
+      return this.request("POST", addSceneUrl, JSON.stringify(cloneAddSceneParams)).then(function (result) {
+        return result;
+      });
+    }
+    /**
+     * @function SuperMap.iPortal.prototype.registerService
+     * @description 注册服务。
+     * @version 10.0.1
+     * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
+     * @returns {Promise} 返回包含注册服务结果的 Promise 对象。
+     */
+
+  }, {
+    key: "registerService",
+    value: function registerService(registerParams) {
+      if (!(registerParams instanceof iPortalRegisterServiceParam_IPortalRegisterServiceParam)) {
+        this.getErrMsgPromise("registerParams is not instanceof IPortalRegisterServiceParam !");
+      }
+
+      var cloneRegisterParams = {
+        type: registerParams.type,
+        tags: registerParams.tags,
+        authorizeSetting: registerParams.entities,
+        metadata: registerParams.metadata,
+        addedMapNames: registerParams.addedMapNames,
+        addedSceneNames: registerParams.addedSceneNames
+      };
+      var registerUrl = this.iportalUrl + "/web/services.json";
+      return this.request("POST", registerUrl, JSON.stringify(cloneRegisterParams)).then(function (result) {
+        return result;
+      });
+    }
+    /**
+     * @function SuperMap.iPortal.prototype.getErrMsgPromise
+     * @description 获取包含错误信息的Promise对象。
+     * @version 10.0.1
+     * @param {String} errMsg - 传入的错误信息。
+     * @returns {Promise} 返回包含错误信息的 Promise 对象。
+     */
+
+  }, {
+    key: "getErrMsgPromise",
+    value: function getErrMsgPromise(errMsg) {
+      return new Promise(function (resolve) {
+        resolve(errMsg);
+      });
+    }
   }]);
 
   return IPortalUser;
 }(iPortalServiceBase_IPortalServiceBase);
-SuperMap.iPortalUser = IPortalUser;
+SuperMap.iPortalUser = iPortalUser_IPortalUser;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -93481,7 +93645,9 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
 /* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
 /* concated harmony reexport IPortalServiceBase */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
-/* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return IPortalUser; });
+/* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return iPortalUser_IPortalUser; });
+/* concated harmony reexport IPortalAddResourceParam */__webpack_require__.d(__webpack_exports__, "IPortalAddResourceParam", function() { return iPortalAddResourceParam_IPortalAddResourceParam; });
+/* concated harmony reexport IPortalRegisterServiceParam */__webpack_require__.d(__webpack_exports__, "IPortalRegisterServiceParam", function() { return iPortalRegisterServiceParam_IPortalRegisterServiceParam; });
 /* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
