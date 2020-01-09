@@ -164,6 +164,8 @@ import './common/iPortal/iPortalShareParamSpec.js';
 import './common/iPortal/iPortalResourceSpec.js';
 import './common/iPortal/iPortalQueryResultSpec.js';
 import './common/iPortal/iPortalSpec.js';
+import './common/iPortal/iPortalAddResourceParamSpec';
+import './common/iPortal/iPortalRegisterServiceParamSpec';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
