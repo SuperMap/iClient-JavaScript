@@ -501,7 +501,7 @@ var exampleConfig = {
                     name: "添加地图/场景",
                     name_en: "Batch Add Map/Scene",
                     version: "10.0.1",
-                    thumbnail: "l_iPortalQueryResources.png",
+                    thumbnail: "l_iPortalAddResource.png",
                     fileName: "iPortalBatchAddResource"
                 }]
             }
