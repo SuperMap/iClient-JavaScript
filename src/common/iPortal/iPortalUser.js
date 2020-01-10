@@ -37,7 +37,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.addMap
+     * @function SuperMap.iPortalUser.prototype.addMap
      * @description 添加地图。
      * @version 10.0.1
      * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
@@ -59,7 +59,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.addScene
+     * @function SuperMap.iPortalUser.prototype.addScene
      * @description 添加场景。
      * @version 10.0.1
      * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
@@ -81,7 +81,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.registerService
+     * @function SuperMap.iPortalUser.prototype.registerService
      * @description 注册服务。
      * @version 10.0.1
      * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
@@ -106,7 +106,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.getErrMsgPromise
+     * @function SuperMap.iPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
      * @version 10.0.1
      * @param {String} errMsg - 传入的错误信息。
