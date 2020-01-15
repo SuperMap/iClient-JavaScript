@@ -14822,6 +14822,81 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
             }
         })
     }
+
+    /**
+     * @function SuperMap.iPortalUser.prototype.publishOrUnpublish
+     * @description 发布/取消发布。
+     * @param {object} options - 发布/取消发布数据服务所需的参数。
+     * @param {object} options.dataId - 数据项id。
+     * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
+     * @param {object} [options.dataServiceId] - 发布的服务 id。
+     * @param {boolean} forPublish - 是否取消发布。
+     * @returns {Promise} 返回发布/取消发布数据服务的 Promise 对象。
+     */
+    publishOrUnpublish(option,forPublish){
+        if(!option.dataId || !option.serviceType) {
+            this.getErrMsgPromise("option.dataID and option.serviceType are Required!");
+        }
+        var dataId = option.dataId;
+        var dataServiceId = option.dataServiceId;
+        var serviceType = option.serviceType;
+        var publishUrl = this.iportalUrl + "/web/mycontent/datas/" + dataId + "/publishstatus.json?serviceType=" + serviceType;
+        if (dataServiceId) {
+            publishUrl += "&dataServiceId=" + dataServiceId;
+        }
+        return this.request("PUT",publishUrl,JSON.stringify(forPublish)).then(res=>{
+            // 发起服务状态查询
+            if(forPublish) {
+                // 发布服务的结果异步处理
+                //  var publishStateUrl = this.iportalUrl + "web/mycontent/datas/" + dataId + "/publishstatus.rjson";
+                if (!dataServiceId) { // 发布服务时会回传serviceIDs，发布服务之前serviceIDs为空
+                    dataServiceId = res.customResult;
+                }
+                return dataServiceId;
+            }else {
+                // 取消发布的结果同步处理
+                return res;
+            }
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortalUser.prototype.getDataPublishedStatus
+     * @description 查询服务状态，发起服务状态查询。
+     * @param {number} dataId - 查询服务状态的数据项id。
+     * @param {string} dataServiceId - 发布的服务id。
+     * @returns {Promise} 返回查询服务状态的 Promise 对象。
+     */
+    getDataPublishedStatus(dataId,dataServiceId){
+        var publishStateUrl = this.iportalUrl + "/web/mycontent/datas/" + dataId + "/publishstatus.json?dataServiceId="+dataServiceId+"&forPublish=true";
+        return this.request("GET",publishStateUrl);
+    }
+
+    /**
+     * @function SuperMap.iPortalUser.prototype.unPublishedDataService
+     * @description 取消发布。
+     * @param {object} options - 取消发布服务具体参数。
+     * @param {object} options.dataId - 数据项id。
+     * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
+     * @param {object} [options.dataServiceId] - 发布的服务 id。
+     * @returns {Promise} 返回取消发布数据服务的 Promise 对象。
+     */
+    unPublishDataService(option){
+        return this.publishOrUnpublish(option,false);
+    }
+
+    /**
+     * @function SuperMap.iPortalUser.prototype.publishedDataService
+     * @description 发布数据服务。
+     * @param {object} options - 发布数据服务具体参数。
+     * @param {object} options.dataId - 数据项id。
+     * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
+     * @param {object} [options.dataServiceId] - 发布的服务 id。
+     * @returns {Promise} 返回发布数据服务的 Promise 对象。
+     */
+    publishDataService(option){
+        return this.publishOrUnpublish(option,true);
+    }
 }
 
 SuperMap.iPortalUser = iPortalUser_IPortalUser;
