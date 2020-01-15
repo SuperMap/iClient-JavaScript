@@ -6822,6 +6822,43 @@ var EntityType = SuperMap.EntityType = {
     USER: "USER"
 }
 
+
+/**
+ * @enum DataItemType
+ * @memberOf SuperMap
+ * @description iportal数据类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var DataItemType = SuperMap.DataItemType = {
+    /** 工作空间 sxwu, smwu, sxw, smw */
+    WORKSPACE: "WORKSPACE",
+    /** udb 数据源 */
+    UDB: "UDB",
+    /** shp空间数据 */
+    SHP: "SHP",
+    /** excel数据 */
+    EXCEL: "EXCEL",
+    /** csv数据 */
+    CSV: "CSV",
+    /** geojson数据。 */
+    GEOJSON: "GEOJSON",
+    /** smtiles */
+    SMTILES: "SMTILES",
+    /** svtiles */
+    SVTILES: "SVTILES",
+    /** mbtiles */
+    MBTILES: "MBTILES",
+    /** tpk */
+    TPK: "TPK",
+    /** ugc v5 */
+    UGCV5: "UGCV5",
+    /** UGCV5_MVT  */
+    UGCV5_MVT: "UGCV5_MVT",
+    /** json数据  */
+    JSON: "JSON"
+}
+
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

@@ -5263,6 +5263,43 @@ var EntityType = SuperMap.EntityType = {
     USER: "USER"
 }
 
+
+/**
+ * @enum DataItemType
+ * @memberOf SuperMap
+ * @description iportal数据类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var DataItemType = SuperMap.DataItemType = {
+    /** 工作空间 sxwu, smwu, sxw, smw */
+    WORKSPACE: "WORKSPACE",
+    /** udb 数据源 */
+    UDB: "UDB",
+    /** shp空间数据 */
+    SHP: "SHP",
+    /** excel数据 */
+    EXCEL: "EXCEL",
+    /** csv数据 */
+    CSV: "CSV",
+    /** geojson数据。 */
+    GEOJSON: "GEOJSON",
+    /** smtiles */
+    SMTILES: "SMTILES",
+    /** svtiles */
+    SVTILES: "SVTILES",
+    /** mbtiles */
+    MBTILES: "MBTILES",
+    /** tpk */
+    TPK: "TPK",
+    /** ugc v5 */
+    UGCV5: "UGCV5",
+    /** UGCV5_MVT  */
+    UGCV5_MVT: "UGCV5_MVT",
+    /** json数据  */
+    JSON: "JSON"
+}
+
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -16138,10 +16175,149 @@ class iPortalRegisterServiceParam_IPortalRegisterServiceParam {
 SuperMap.iPortalRegisterServiceParam = iPortalRegisterServiceParam_IPortalRegisterServiceParam;
    
    
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddDataParam.js
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+  
+ /**
+  * @class SuperMap.iPortalAddDataParam
+  * @classdesc iPortal 上传/注册数据所需的参数。
+  * @version 10.0.1
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 上传/注册数据所需的具体参数。
+  * @param {string} params.fileName - 文件名称
+  * @param {SuperMap.DataItemType} params.type - 数据类型。
+  * @param {Array} [params.tags] - 数据的标签
+  * @param {SuperMap.iPortalDataMetaInfoParam} [params.dataMetaInfo] - 数据元信息
+  */
+ class iPortalAddDataParam_IPortalAddDataParam {
+ 
+     constructor(params) {
+        params = params || {};
+        this.fileName = "";
+        this.type = "";
+        this.tags = [];
+        this.dataMetaInfo = {};
+        Util.extend(this, params);
+     }
+ }
+ SuperMap.iPortalAddDataParam = iPortalAddDataParam_IPortalAddDataParam;
+  
+  
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataMetaInfoParam.js
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+  
+ /**
+  * @class SuperMap.iPortalDataMetaInfoParam
+  * @classdesc iPortal 上传数据/注册数据元信息所需的参数。
+  * @version 10.0.1
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 获取数据项id excel csv类型的数据所需数据元信息具体参数。
+  * @param {string} params.xField - X 坐标字段
+  * @param {string} params.yField - Y 坐标字段
+  * @param {number} params.xIndex - x所在列（关系型存储下CSV或EXCEL数据时必填）
+  * @param {number} params.yIndex - y所在列（关系型存储下CSV或EXCEL数据时必填）
+  * @param {array} [params.fieldTypes] - 设置字段类型（关系型存储下CSV或EXCEL数据时可选填）。默认类型为：WTEXT。该参数按照CSV文件字段顺序从左到右依次设置，其中默认字段类型可省略不设置。例如，CSV文件中有10个字段，如果只需设定第1，2，4个字段，可设置为[a,b,,c]。
+  * @param {string} params.separator - 分隔符（关系型存储下CSV数据时必填）
+  * @param {boolean} params.firstRowIsHead - 是否带表头（关系型存储下CSV数据时必填）
+  * @param {boolean} params.url - HDFS注册目录地址
+  * @param {SuperMap.iPortalDataStoreInfoParam} params.dataStoreInfo - 注册数据时的数据存储信息
+  */
+ class iPortalDataMetaInfoParam_IPortalDataMetaInfoParam {
+ 
+     constructor(params) {
+        params = params || {};
+        this.xField = "";
+        this.yField = "";
+        this.fileEncoding = "UTF-8";
+
+        this.xIndex = 1;
+        this.yIndex = 1;
+        this.fieldTypes = [];
+        this.separator = "";
+        this.firstRowIsHead = true;
+
+        this.url = "";
+        this.dataStoreInfo = {};
+        Util.extend(this, params);
+     }
+ }
+ SuperMap.iPortalDataMetaInfoParam = iPortalDataMetaInfoParam_IPortalDataMetaInfoParam;
+  
+  
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataStoreInfoParam.js
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+  
+ /**
+  * @class SuperMap.iPortalDataStoreInfoParam
+  * @classdesc iPortal 注册一个HBASE HDFS数据存储类。
+  * @version 10.0.1
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 注册一个HBASE HDFS数据存储类具体参数。
+  * @param {string} params.type - 大数据文件共享类型和空间数据库类型，包括大数据文件共享HDFS 目录(HDFS)和空间数据库HBASE
+  * @param {string} params.url - HDFS数据存储目录地址
+  * @param {SuperMap.iPortalDataConnectionInfoParam} [params.connectionInfo] - HBASE空间数据库服务的连接信息
+  */
+ class iPortalDataStoreInfoParam_IPortalDataStoreInfoParam {
+ 
+     constructor(params) {
+        params = params || {};
+        this.type = "";
+        this.url = "";
+        this.connectionInfo = {};
+        Util.extend(this, params);
+     }
+ }
+ SuperMap.iPortalDataStoreInfoParam = iPortalDataStoreInfoParam_IPortalDataStoreInfoParam;
+  
+  
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataConnectionInfoParam.js
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+  
+ /**
+  * @class SuperMap.iPortalDataConnectionInfoParam
+  * @classdesc iPortal HBASE数据源连接信息类。
+  * @version 10.0.1
+  * @category iPortal/Online
+  * @param {Object} params - iPortal HBASE数据源连接信息类具体参数。
+  * @param {string} params.dataBase - 数据源连接的数据库名。
+  * @param {string} params.server - 服务地址。
+  */
+ class iPortalDataConnectionInfoParam_IPortalDataConnectionInfoParam {
+ 
+     constructor(params) {
+        params = params || {};
+        this.dataBase = "";
+        this.server = "";
+        Util.extend(this, params);
+     }
+ }
+ SuperMap.iPortalDataConnectionInfoParam = iPortalDataConnectionInfoParam_IPortalDataConnectionInfoParam;
+  
+  
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -16178,7 +16354,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.addMap
+     * @function SuperMap.iPortalUser.prototype.addMap
      * @description 添加地图。
      * @version 10.0.1
      * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
@@ -16200,7 +16376,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.addScene
+     * @function SuperMap.iPortalUser.prototype.addScene
      * @description 添加场景。
      * @version 10.0.1
      * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
@@ -16222,7 +16398,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.registerService
+     * @function SuperMap.iPortalUser.prototype.registerService
      * @description 注册服务。
      * @version 10.0.1
      * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
@@ -16247,7 +16423,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.getErrMsgPromise
+     * @function SuperMap.iPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
      * @version 10.0.1
      * @param {String} errMsg - 传入的错误信息。
@@ -16258,6 +16434,98 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
             resolve(errMsg);
         })
     }
+
+    /**
+     * @function SuperMap.iPortalUser.prototype.uploadDataRequest
+     * @description 上传数据。
+     * @param {number} id - 上传数据的资源id。
+     * @param {Object} formData - 请求体为文本数据流。
+     * @returns {Promise} 返回包含上传数据操作的 Promise 对象。
+     */
+    uploadDataRequest(id,formData) {
+        var uploadDataUrl = this.iportalUrl + "/web/mycontent/datas/"+id+"/upload.json";
+        return this.request("POST",uploadDataUrl,formData);
+    }
+
+    /**
+     * @function SuperMap.iPortalUser.prototype.addData
+     * @description 上传/注册数据。
+     * @param {SuperMap.iPortalAddDataParam} params - 上传/注册数据所需的参数。
+     * @param {Object} [formData] - 请求体为文本数据流(上传数据时传入)。
+     * @returns {Promise} 返回上传/注册数据的 Promise 对象。
+     */
+    addData(params,formData) {
+        if(!(params instanceof iPortalAddDataParam_IPortalAddDataParam)){
+            this.getErrMsgPromise("params is not instanceof iPortalAddDataParam !");
+        }
+        var datasUrl = this.iportalUrl + "/web/mycontent/datas.json";
+        var entity = {
+            fileName:params.fileName,
+            tags:params.tags,
+            type:params.type
+        };
+        var type = params.type.toLowerCase();
+        var dataMetaInfo;
+        if(type === "excel" || type === "csv"){
+            if(!(params.dataMetaInfo instanceof iPortalDataMetaInfoParam_IPortalDataMetaInfoParam)){
+                this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
+            }
+            dataMetaInfo = {
+                xField:params.dataMetaInfo.xField,
+                yField:params.dataMetaInfo.yField
+            }
+            if(type === 'csv') {
+                dataMetaInfo.fileEncoding = params.dataMetaInfo.fileEncoding
+            }
+            entity.coordType = "WGS84";
+            entity.dataMetaInfo = dataMetaInfo;
+        }else if(type === "hdfs" || type === "hbase") {
+            if(!(params.dataMetaInfo instanceof iPortalDataMetaInfoParam_IPortalDataMetaInfoParam)){
+                this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
+            }
+            if(!(params.dataMetaInfo.dataStoreInfo instanceof iPortalDataStoreInfoParam_IPortalDataStoreInfoParam)){
+                this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo is not instanceof iPortalDataStoreInfoParam !");
+            }
+            var dataStoreInfo = {
+                type:params.dataMetaInfo.dataStoreInfo.type
+            }
+            switch (type) {
+                case "hdfs":
+                    dataStoreInfo.url = params.dataMetaInfo.dataStoreInfo.url;
+                    dataMetaInfo = {
+                        url: params.dataMetaInfo.url,
+                        dataStoreInfo:dataStoreInfo
+                    }
+                    break;
+                case "hbase":
+                    if(!(params.dataMetaInfo.dataStoreInfo.connectionInfo instanceof iPortalDataConnectionInfoParam_IPortalDataConnectionInfoParam)){
+                        this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo.connectionInfo is not instanceof iPortalDataConnectionInfoParam !");
+                    }
+                    dataStoreInfo.connectionInfo = {
+                        dataBase:params.dataMetaInfo.dataStoreInfo.connectionInfo.dataBase,
+                        server:params.dataMetaInfo.dataStoreInfo.connectionInfo.server,
+                        engineType:'HBASE'
+                    }
+                    dataStoreInfo.datastoreType = "SPATIAL";//该字段SPATIAL表示HBASE注册
+                    dataMetaInfo = {
+                        dataStoreInfo:dataStoreInfo
+                    }
+                    break;
+            }
+            entity.dataMetaInfo = dataMetaInfo;
+        }
+        return this.request("POST",datasUrl,JSON.stringify(entity)).then(res=>{
+            if(type === "hdfs" || type === "hbase"){
+                return res;
+            }else {
+                if(res.childID) {
+                    return this.uploadDataRequest(res.childID,formData);
+                }else {
+                    return res.customResult;
+                }
+            }
+        })
+    }
 }
 
 SuperMap.iPortalUser = iPortalUser_IPortalUser;
@@ -16265,6 +16533,14 @@ SuperMap.iPortalUser = iPortalUser_IPortalUser;
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
 
 
 
@@ -39197,7 +39473,7 @@ var ServiceStatus = SuperMap.ServiceStatus = {
  * @category iPortal/Online
  * @description 数据项类型。
  */
-var DataItemType = SuperMap.DataItemType = {
+var OnlineResources_DataItemType = SuperMap.DataItemType = {
     /** AUDIO */
     AUDIO: "AUDIO",
     /** COLOR */
@@ -96798,11 +97074,15 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 /* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return iPortalUser_IPortalUser; });
 /* concated harmony reexport IPortalAddResourceParam */__webpack_require__.d(__webpack_exports__, "IPortalAddResourceParam", function() { return iPortalAddResourceParam_IPortalAddResourceParam; });
 /* concated harmony reexport IPortalRegisterServiceParam */__webpack_require__.d(__webpack_exports__, "IPortalRegisterServiceParam", function() { return iPortalRegisterServiceParam_IPortalRegisterServiceParam; });
+/* concated harmony reexport IPortalAddDataParam */__webpack_require__.d(__webpack_exports__, "IPortalAddDataParam", function() { return iPortalAddDataParam_IPortalAddDataParam; });
+/* concated harmony reexport IPortalDataMetaInfoParam */__webpack_require__.d(__webpack_exports__, "IPortalDataMetaInfoParam", function() { return iPortalDataMetaInfoParam_IPortalDataMetaInfoParam; });
+/* concated harmony reexport IPortalDataStoreInfoParam */__webpack_require__.d(__webpack_exports__, "IPortalDataStoreInfoParam", function() { return iPortalDataStoreInfoParam_IPortalDataStoreInfoParam; });
+/* concated harmony reexport IPortalDataConnectionInfoParam */__webpack_require__.d(__webpack_exports__, "IPortalDataConnectionInfoParam", function() { return iPortalDataConnectionInfoParam_IPortalDataConnectionInfoParam; });
 /* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
 /* concated harmony reexport ServiceStatus */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return ServiceStatus; });
-/* concated harmony reexport DataItemType */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return DataItemType; });
+/* concated harmony reexport DataItemType */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return OnlineResources_DataItemType; });
 /* concated harmony reexport DataItemOrderBy */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return DataItemOrderBy; });
 /* concated harmony reexport FilterField */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return FilterField; });
 /* concated harmony reexport OnlineServiceBase */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
