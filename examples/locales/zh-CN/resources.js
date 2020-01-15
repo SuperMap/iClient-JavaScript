@@ -610,8 +610,13 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_React": '动效标记图层',
         "title_componentsAnimateTextLayer_React": '动效文本标记图层',
 
+        "text_service_name":"名称",
+        "text_service_type":"类型",
+        "text_service_status":"状态",
+        "text_view_service":"查看服务",
+        "text_unpublish_service":"取消发布",
         "text_publish_message":"选择要发布的服务类型：",
-        "text_publish_data":"发布数据服务",
+        "text_publish_data":"发布数据",
         "text_dataBase_name":"数据库名称",
         "text_hdfs_directory":"HDFS目录地址",
         "text_hbase_address":"服务地址",
@@ -1504,6 +1509,8 @@ window.examplesResources = {
         "btn_OK":"确定",
 
         "msg_published":"已发布了该服务",
+        "msg_unpublish_success":"取消发布成功",
+        "msg_unpublish_failed":"取消发布失败",
         "msg_publish_success":"发布成功",
         "msg_publish_failed":"发布失败",
         "msg_register_success":"注册成功",

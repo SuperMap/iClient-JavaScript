@@ -659,8 +659,13 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_React": 'Animate Marker Layer(React)',
         "title_componentsAnimateTextLayer_React": 'Animate Text Layer(React)',
 
+        "text_service_name":"Name",
+        "text_service_type":"Type",
+        "text_service_status":"Status",
+        "text_view_service":"View Services",
+        "text_unpublish_service":"Unpublish",
         "text_publish_message":"Select the type of service to be published:",
-        "text_publish_data":"Publish Data Service",
+        "text_publish_data":"Publish Data",
         "text_dataBase_name":"Database name",
         "text_hdfs_directory":"HDFS directory",
         "text_hbase_address":"Server url",
@@ -1556,6 +1561,8 @@ window.examplesResources = {
         "btn_OK":"OK",
 
         "msg_published":"This service has already been published",
+        "msg_unpublish_success":"unPublish successfully",
+        "msg_unpublish_failed":"unPublish failed",
         "msg_publish_success":"Publish successfully",
         "msg_publish_failed":"Publish failed",
         "msg_register_success":"Register successfully",
