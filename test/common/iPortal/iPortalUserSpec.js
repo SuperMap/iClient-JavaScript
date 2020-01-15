@@ -78,4 +78,27 @@ describe('IPortalUser', () => {
             expect(res).toBe("registerParams is not instanceof iPortalRegisterServiceParam !");
         })
     })
+
+    it('uploadDataRequest', ()=> {
+        var uploadParam = {
+            id:1,
+            formData:{}
+        }
+        var iportalUrl = 'https://iptl.supermap.io/iportal';
+        var iPortalUser = new IPortalUser(iportalUrl);
+        expect(iPortalUser.uploadDataRequest(uploadParam) instanceof Promise).toBeTruthy();
+    });
+
+    it('addData', ()=> {
+        var addDataParam = {
+            fileName:'test_addData',
+            type:'WORKSPACE',
+            tags: [],
+            dataMetaInfo:{}
+        }
+        var formData = {};
+        var iportalUrl = 'https://iptl.supermap.io/iportal';
+        var iPortalUser = new IPortalUser(iportalUrl);
+        expect(iPortalUser.addData(addDataParam,formData) instanceof Promise).toBeTruthy();
+    });
 });
