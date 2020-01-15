@@ -101,4 +101,52 @@ describe('IPortalUser', () => {
         var iPortalUser = new IPortalUser(iportalUrl);
         expect(iPortalUser.addData(addDataParam,formData) instanceof Promise).toBeTruthy();
     });
+
+    it('publishOrUnpublish', ()=> {
+        var options = {
+            dataId:null,
+            serviceType:'RESTDATA',
+            dataServiceId: null
+        }
+        var forPublish = true;
+        var iportalUrl = 'https://iptl.supermap.io/iportal';
+        var iPortalUser = new IPortalUser(iportalUrl);
+        iPortalUser.publishOrUnpublish(options,forPublish).then(res => {
+            expect(res).toBe("option.dataID and option.serviceType are Required!");
+        })
+    });
+
+    it('getDataPublishedStatus', ()=> {
+        var dataId = 1;
+        var dataServiceId = "map-city";
+        var iportalUrl = 'https://iptl.supermap.io/iportal';
+        var iPortalUser = new IPortalUser(iportalUrl);
+        expect(iPortalUser.getDataPublishedStatus(dataId,dataServiceId) instanceof Promise).toBeTruthy();
+    });
+
+    it('unPublishDataService', ()=> {
+        var options = {
+            dataId:1,
+            serviceType:null,
+            dataServiceId: null
+        }
+        var iportalUrl = 'https://iptl.supermap.io/iportal';
+        var iPortalUser = new IPortalUser(iportalUrl);
+        iPortalUser.unPublishDataService(options).then(res => {
+            expect(res).toBe("option.dataID and option.serviceType are Required!");
+        })
+    });
+
+    it('publishDataService', ()=> {
+        var options = {
+            dataId:1,
+            serviceType:null,
+            dataServiceId: null
+        }
+        var iportalUrl = 'https://iptl.supermap.io/iportal';
+        var iPortalUser = new IPortalUser(iportalUrl);
+        iPortalUser.publishDataService(options).then(res => {
+            expect(res).toBe("option.dataID and option.serviceType are Required!");
+        })
+    });
 });
