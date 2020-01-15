@@ -472,6 +472,28 @@ var exampleConfig = {
                     thumbnail: "ol_iPortalAddResource.png",
                     fileName: "iPortalBatchAddResource"
                 }]
+            },
+            "ip_uploaddata": {
+                name: "上传数据",
+                name_en: "Upload Data",
+                content: [{
+                    name: "上传数据",
+                    name_en: "Upload Data",
+                    version: "10.0.1",
+                    thumbnail: "ol_iPortalUploadData.png",
+                    fileName: "iPortalUploadData"
+                }]
+            },
+            "ip_registerdata": {
+                name: "注册数据",
+                name_en: "Register Data",
+                content: [{
+                    name: "注册数据",
+                    name_en: "Register Data",
+                    version: "10.0.1",
+                    thumbnail: "ol_iPortalRegisterData.png",
+                    fileName: "iPortalRegisterData"
+                }]
             }
         }
     },
