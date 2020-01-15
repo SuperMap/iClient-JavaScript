@@ -1,0 +1,363 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.text_publish_data"></title>
+    <style>
+        .gallery-item {
+            margin-bottom: 30px;
+        }
+        .gallery-item-border {
+            border: 1px solid #dadada;
+            -webkit-box-shadow: 0px 2px 3px #dcdcdc;
+            box-shadow: 0px 2px 3px #dcdcdc;
+            background: white;
+        }
+        .thumbnail > img, .thumbnail a > img {
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .gallery-item-img {
+            height: 170px !important;
+            width: 262px !important;
+        }
+        .resourcesDetails {
+            margin: 0px 0 12px 10px;
+            height: 21px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 14px !important;
+            color: #7c7c7c;
+        }
+        .textEllipsis {
+            display: inline-block;
+            padding-left: 10px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            vertical-align: top;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .resourcesBottomList {
+            padding-left: 10px;
+            padding-top: 13px;
+            padding-bottom: 12px;
+            vertical-align: top;
+            float: right;
+            padding-right: 30px;
+            border-left: 1px solid #ececec;
+        }
+        .publish-data-hdfs,.publish-data-hbase,.publish-data-excel,.publish-data-csv,.publish-data-geojson,.publish-data-json{
+            display: none;
+        }
+        .margin10 {
+            margin-right: 10px!important;
+        }
+        .checkbox-title.disabled {
+            color: #bcbcbc;
+        }
+        .custom-checkbox.disabled {
+            cursor: default !important;
+        }
+        .view-service {
+            border-bottom:1px solid #ccc;
+        }
+        .view-service:last-child {
+            border: none;
+        }
+        .view-service p:nth-child(1) {
+            margin-top:10px;
+        }
+        .view-service a {
+            display:block;
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+<div class="container" style="margin-bottom: 100px">
+    <div class="page-header">
+        <h4 data-i18n="resources.text_publish_data"></h4>
+    </div>
+    <br />
+    <!-- 发布数据服务模态框 -->
+    <div class="modal fade" tabindex="-1" id="publishModal" role="dialog" data-backdrop="static" data-keyboard="false" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel" data-i18n="resources.text_publish_data"></h4>
+                </div>
+                    <table class="table table-bordered col-md-6">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <p data-i18n="resources.text_publish_message"></p>
+                                    <div id="serviceType">
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="resources.text_close">
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="publishDataEvent()" data-i18n="resources.text_confirm">
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+      
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-12">
+                <!--所有资源的承载DIV-->
+                <div class="row" id="resourcesList">
+                    <!--单个资源数据的可视化承载DIV 添加在此位置中-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" include="jquery,bootstrap-css,bootstrap,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
+    var iPortalUrl = "https://iportal.supermap.io/iportal";
+    var token = "MFEKl8kVmkvEDrDFcgnjoUF4o2VKXT1eZhKh7hU3tnJL1jPculOBmvCtA6Xfrw4KuAyxWj2OcUV1Aj3M41nSNQ..";
+    var queryParams = new SuperMap.iPortalQueryParam({
+        resourceType: "DATA",
+        pageSize: 12,
+        currentPage: 1,
+        orderBy: "UPDATETIME",
+        orderType: "DESC",
+        searchType:'MY_RES'
+    });
+    //资源查询初始化工作
+    var iPortal = new SuperMap.iPortal(iPortalUrl);
+    $(document).ready(function () {
+        generatePortalToken();
+    });
+    var publishDataId,serviceType;
+    // 申请，注册token并查询
+    function generatePortalToken() {
+        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+            server: iPortalUrl
+        });
+
+        SuperMap.SecurityManager.registerServers([serverInfo]);
+        SuperMap.SecurityManager.destroyToken(iPortalUrl);
+        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        //加载完DOM后，开始资源数据查询并添加
+        iPortal = new SuperMap.iPortal(iPortalUrl);
+        queryResouces(queryParams);
+    }
+
+    // 查询iPortal中的资源
+    function queryResouces(queryParams) {
+        iPortal.queryResources(queryParams).then(function (resourcesReslut) {
+            //返回的结果集，需要查看可打开下行代码
+            // console.log(resourcesReslut);
+            $("#resourcesList").children().remove();
+            //将结果集进行遍历，并添加到HTML中
+            $.each(resourcesReslut.content, function (i) {
+                var resourceItem = resourcesReslut.content[i];
+                //解析时间戳，可根据需求自行处理
+                var updateTime = new Date(parseInt(resourceItem.updateTime)).toLocaleString();
+                var thumbnail = resourceItem.thumbnail;
+                // 此判断获取部分相对路径的default图片
+                if(thumbnail.indexOf("./") === 0){
+                    thumbnail = iPortalUrl + thumbnail.replace("./","/");
+                }
+                var resourcesDOM = $("<div class='col-md-4 gallery-item'>" +
+                    "<div class='gallery-item-border'>" +
+                        "<a class='thumbnail' style='margin-bottom: 10px'>" +
+                            "<img  class='gallery-item-img' src='" + thumbnail + "' alt=''>" +
+                        "</a>" +
+                    "<div>" +
+                    "<div style='height:68px'>"+
+                        "<div style='display:flex'>"+
+                            "<p class='resourcesDetails' style='flex: 1 1 auto'>" + resourceItem.name + "</p>" +
+                            "<p style='flex: 1 1 auto;text-align:right;margin-right:13px'>"+resourceItem.resourceSubType+"</p>"+
+                        "</div>"+
+                        "<a style='margin-left:10px;' class='publish-data-"+resourceItem.resourceSubType.toLowerCase() +"' onclick='publishDataService("+resourceItem.resourceId+")'>"+resources.text_publish_data+"</a>" +
+                        "<a tabindex='"+i+"'data-animation='true' data-html='true' id='content"+i+"' data-trigger='focus' data-container='body' data-content='无' data-toggle='popover' data-placement='bottom' style='margin-right:12px;float:right;' class='publish-data-"+resourceItem.resourceSubType.toLowerCase() +"' onclick='showPublishedDataService("+resourceItem.resourceId+","+i+")'>"+resources.text_view_service+"</a>" +
+                    "</div>"+
+                    "</div>")
+                $("#resourcesList").append(resourcesDOM);
+            });
+        })
+    };
+    function publishDataService(dataId){
+        publishDataId = dataId;
+        $('#publishModal').modal('show');
+        $("#serviceType").empty();
+        var items = new SuperMap.iPortalResource(iPortalUrl,{resourceId:dataId,resourceType:"DATA"});
+        items.load().then(()=>{
+            var item = items.sourceJSON;
+            switch (item.type) {
+                case "WORKSPACE":
+                    var publishDataDom = $(
+                        "<div id='mapTypeLine'>"+
+                            "<input id='map' class='margin10' type='checkbox' value='RESTMAP'>"+
+                            "<label class='checkbox-title' for='map'>RESTMAP</label>"+
+                        "</div>"+
+                        "<div id='dataTypeLine'>"+
+                            "<input id='data' class='margin10' type='checkbox' value='RESTDATA'>"+
+                            "<label class='checkbox-title' for='data'>RESTDATA</label>"+
+                        "</div>"+
+                        "<div id='realspaceTypeLine'>"+
+                            "<input id='realspace' class='margin10' type='checkbox' value='RESTREALSPACE'>"+
+                            "<label class='checkbox-title' for='realspace'>RESTREALSPACE</label>"+
+                        "</div>"+
+                        "<div id='spatialAnalystTypeLine'>"+
+                            "<input id='spatialAnalyst' class='margin10' type='checkbox' value='RESTSPATIALANALYST'>"+
+                            "<label class='checkbox-title' for='spatialAnalyst'>RESTSPATIALANALYST</label>"+
+                        "</div>"
+                    )
+                    $("#serviceType").append(publishDataDom);
+                    break;
+                case 'UDB':
+                    var publishDataDom = $(
+                        "<div id='dataTypeLine'>"+
+                            "<input id='data' class='margin10' type='checkbox' value='RESTDATA'>"+
+                            "<label class='checkbox-title' for='data'>RESTDATA</label>"+
+                        "</div>")
+                    $("#serviceType").append(publishDataDom);
+                    break;
+                case 'SHP':
+                case 'EXCEL':
+                case 'CSV':
+                case 'GEOJSON':
+                    var publishDataDom = $(
+                        "<div id='mapTypeLine'>"+
+                            "<input id='map' class='margin10' type='checkbox' value='RESTMAP'>"+
+                            "<label class='checkbox-title' for='map'>RESTMAP</label>"+
+                        "</div>"+
+                        "<div id='dataTypeLine'>"+
+                            "<input id='data' class='margin10' type='checkbox' value='RESTDATA'>"+
+                            "<label class='checkbox-title' for='data'>RESTDATA</label>"+
+                        "</div>")
+                    $("#serviceType").append(publishDataDom);
+                    break;
+                case 'SMTILES':
+                case 'SVTILES':
+                case 'MBTILES':
+                case 'TPK':
+                case 'UGCV5':
+                case 'UGCV5_MVT':
+                    var publishDataDom = $(
+                        "<div id='mapTypeLine'>"+
+                            "<input id='map' class='margin10' type='checkbox' value='RESTMAP'>"+
+                            "<label class='checkbox-title' for='map'>RESTMAP</label>"+
+                        "</div>")
+                    $("#serviceType").append(publishDataDom);
+                    break;
+            }
+            var precheckInfos = item.dataItemServices;
+            if(!precheckInfos) {
+                return;
+            }
+            $.each(precheckInfos, function (key, value) {
+                if (value.serviceType === "RESTMAP") {
+                    refreshPublishContent("mapTypeLine");
+                } else if (value.serviceType === "RESTDATA") {
+                    refreshPublishContent("dataTypeLine");
+                } else if (value.serviceType === "RESTREALSPACE") {
+                    refreshPublishContent("realspaceTypeLine");
+                } else if (value.serviceType === "RESTSPATIALANALYST") {
+                    refreshPublishContent("spatialAnalystTypeLine");
+                }
+            });
+        });
+    }
+    function refreshPublishContent(publishTypeId){
+        $("#" + publishTypeId + " :checkbox").attr("disabled", true);
+        $("#" + publishTypeId + " :checkbox").addClass("disabled");
+        $("#" + publishTypeId + " .checkbox-title").addClass("disabled");
+        $("#" + publishTypeId + " .checkbox-title").attr("title",resources.msg_published);
+    }
+    function publishDataEvent(){
+        if (checkPublishParam()) {
+            publishOrUnpublishEvent(publishDataId, null, true);
+        }
+        $("#publishModal").modal("hide");
+    }
+    function publishOrUnpublishEvent(dataId, dataServiceId, forPublish){
+        var options = {
+            dataId:dataId,
+            serviceType:serviceType,
+            dataServiceId:dataServiceId
+        }
+        new SuperMap.iPortalUser(iPortalUrl).publishDataService(options,forPublish).then(res=>{
+            var serviceIdList = res.split(",");
+            for (var i = 0; i < serviceIdList.length; i++) {
+                new SuperMap.iPortalUser(iPortalUrl).getDataPublishedStatus(dataId,serviceIdList[i]).then(res=>{
+                    if(res.succeed){
+                        widgets.alert.showAlert(resources.msg_publish_success, true);
+                    }else {
+                        widgets.alert.showAlert(resources.msg_publish_failed, false);
+                    }
+                })
+            }
+        })
+    }
+    function checkPublishParam() {
+        var checkBoxList = $("#publishModal :checkbox");
+        var serviceTypes = "";
+        checkBoxList.each(function () {
+            if (this.checked) {
+                serviceTypes += $(this).val() + ",";
+            }
+        });
+        if (serviceTypes.length > 0) {
+            serviceType = serviceTypes.substr(0, serviceTypes.length - 1);
+            return true;
+        }
+        return false;
+    }
+    function showPublishedDataService(id,index) {
+        var items = new SuperMap.iPortalResource(iPortalUrl,{resourceId:id,resourceType:"DATA"});
+        items.load().then(()=>{
+            var template = "";
+            if(items.sourceJSON.dataItemServices.length) {
+                $.each(items.sourceJSON.dataItemServices,function(i){
+                    var option = {
+                        dataId:id,
+                        serviceType:items.sourceJSON.dataItemServices[i].serviceType,
+                        dataServiceId:items.sourceJSON.dataItemServices[i].serviceName
+                    }
+                    var msg = items.sourceJSON.dataItemServices[i].serviceStatus==='PUBLISHED'?resources.msg_publish_success:resources.msg_publish_failed
+                    template+="<div class='view-service'><p>"+resources.text_service_name+":"+items.sourceJSON.dataItemServices[i].serviceName+"</p><p>"+resources.text_service_type+":"+items.sourceJSON.dataItemServices[i].serviceType+"</p><p>"+resources.text_service_status+":"+msg+"</p><a onclick='unPublishData("+JSON.stringify(option)+")'>"+resources.text_unpublish_service+"</a></div>"
+                })
+                $("#content"+index).attr('data-content', template);
+                $("#content"+index).popover("show");
+            }else {
+                $("#content"+index).popover("show");
+            }
+        })
+    }
+    //取消发布
+    function unPublishData(option){
+        new SuperMap.iPortalUser(iPortalUrl).unPublishDataService(option).then(res=>{
+            if(res.succeed) {
+                widgets.alert.showAlert(resources.msg_unpublish_success, true);
+            }else {
+                widgets.alert.showAlert(resources.msg_unpublish_failed, false);
+            }
+        })
+    }
+</script>
+</body>
+</html>

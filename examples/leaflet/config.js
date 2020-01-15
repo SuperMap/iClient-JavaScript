@@ -526,6 +526,17 @@ var exampleConfig = {
                     thumbnail: "l_iPortalRegisterData.png",
                     fileName: "iPortalRegisterData"
                 }]
+            },
+            "ip_publishdata": {
+                name: "发布数据",
+                name_en: "Publish Data",
+                content: [{
+                    name: "发布数据",
+                    name_en: "Publish Data",
+                    version: "10.0.1",
+                    thumbnail: "l_iPortalPublishData.png",
+                    fileName: "iPortalPublishData"
+                }]
             }
         }
     },
