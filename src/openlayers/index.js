@@ -77,6 +77,10 @@ export {
     IPortalUser,
     IPortalAddResourceParam,
     IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam,
     //Online
     Online,
     OnlineData,

@@ -105,7 +105,11 @@ import {
     IPortalServiceBase,
     IPortalUser,
     IPortalAddResourceParam,
-    IPortalRegisterServiceParam
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam
 } from './iPortal';
 import {
     AddressMatchService,
@@ -570,7 +574,11 @@ export {
     IPortalServiceBase,
     IPortalUser,
     IPortalAddResourceParam,
-    IPortalRegisterServiceParam
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam
 };
 export {
     AddressMatchService,
