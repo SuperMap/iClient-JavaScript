@@ -344,8 +344,53 @@ export class WebMap extends mapboxgl.Evented {
 				url = mapUrls[layerType];
 				this._createXYZLayer(layerInfo, url);
 				break;
+			case 'MAPBOXSTYLE':
+				this._createMapboxStyle(layerInfo);
+				break;
 			default:
 				break;
+		}
+	}
+
+	/**
+	 * @private
+	 * @function mapboxgl.supermap.WebMap.prototype._createMapboxStyle
+	 * @description 创建 Mapbox 样式。
+	 * @param {Object} mapInfo - map 信息。
+	 */
+	_createMapboxStyle(mapInfo) {
+		let _this = this,
+			{ dataSource = {} } = mapInfo,
+			{ serverId, url } = dataSource,
+			styleUrl;
+		styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
+		FetchRequest.get(styleUrl, null, { 
+			withCredentials: this.withCredentials,
+			withoutFormatSuffix: true,
+			headers: {
+				'Content-Type': 'application/json;chartset=uft-8'
+			}
+		}).then(response => {
+			return response.json();
+		}).then(style => {
+			_this._matchStyleObject(style);
+			_this.map.setStyle(style);
+		})
+	}
+
+	/**
+	 * @private
+	 * @function mapboxgl.supermap.WebMap.prototype._matchStyleObject
+	 * @description 恢复 style 为标准格式。
+	 * @param {Object} style - mapbox 样式。
+	 */
+	_matchStyleObject(style) {
+		let { sprite, glyphs } = style;
+		if (sprite && typeof sprite === 'object'){
+			style.sprite = Object.values(sprite)[0];
+		}
+		if (glyphs && typeof glyphs === 'object'){
+			style.glyphs = Object.values(glyphs)[0];
 		}
 	}
 

@@ -3378,12 +3378,23 @@ export class WebMap extends Observable {
      * @param {object} mapInfo - 地图信息
      */
     getMBStyle(mapInfo) {
-        let baseLayer = mapInfo.baseLayer,
-            url = baseLayer.dataSource.url,
-            layerInfo = {};
-        return FetchRequest.get(this.getRequestUrl(url)).then(result => {
+        let _this = this,
+            baseLayer = mapInfo.baseLayer,
+            dataSource = baseLayer.dataSource || {},
+            { url, serverId } = dataSource,
+            layerInfo = {},
+            styleUrl;
+        styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
+        return FetchRequest.get(this.getRequestUrl(styleUrl), null, {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true,
+			headers: {
+				'Content-Type': 'application/json;chartset=uft-8'
+			}
+        }).then(result => {
             return result.json();
         }).then(styles => {
+            _this._matchStyleObject(styles);
             let extent = styles.metadata.mapbounds;
             baseLayer.extent = extent; // 这里把extent保存一下
 
@@ -3391,7 +3402,7 @@ export class WebMap extends Observable {
             layerInfo.epsgCode = mapInfo.projection,
             layerInfo.visible = baseLayer.visible,
             layerInfo.name = baseLayer.name,
-            layerInfo.url = url,
+            layerInfo.url = styleUrl,
             layerInfo.sourceType = 'VECTOR_TILE',
             layerInfo.layerType = 'VECTOR_TILE',
             layerInfo.styles = styles,
@@ -3407,6 +3418,23 @@ export class WebMap extends Observable {
             return layerInfo;
         })
     }
+
+    /**
+	 * @private
+	 * @function mapboxgl.supermap.WebMap.prototype._matchStyleObject
+	 * @description 恢复 style 为标准格式。
+	 * @param {Object} style - mapbox 样式。
+	 */
+	_matchStyleObject(style) {
+		let { sprite, glyphs } = style;
+		if (sprite && typeof sprite === 'object'){
+			style.sprite = Object.values(sprite)[0];
+		}
+		if (glyphs && typeof glyphs === 'object'){
+			style.glyphs = Object.values(glyphs)[0];
+		}
+	}
+
 
     /**
      * @private
