@@ -3,12 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    CommonUtil
-} from "@supermap/iclient-common";
-import {
-    Util
-} from "../core/Util";
+import { CommonUtil } from '@supermap/iclient-common';
+import { Util } from '../core/Util';
 import './graphic';
 
 /**
@@ -76,7 +72,6 @@ import './graphic';
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
  */
 export class DeckglLayer {
-
     constructor(layerTypeID, options) {
         // Util.extend(defaultProps, options);
         /**
@@ -85,7 +80,7 @@ export class DeckglLayer {
          */
         this.layerTypeID = layerTypeID;
         /**
-         * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.DeckglLayer.prototype.graphics 
+         * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.DeckglLayer.prototype.graphics
          * @description 点要素对象数组。
          */
         this.data = [].concat(options.data);
@@ -93,14 +88,15 @@ export class DeckglLayer {
         this.props = options.props ? options.props : {};
         this.callback = options.callback ? options.callback : {};
 
-        this.id = options.layerId ? options.layerId : CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_");
+        this.id = options.layerId
+            ? options.layerId
+            : CommonUtil.createUniqueID('graphicLayer_' + this.layerTypeID + '_');
 
         /**
          * @member {boolean} [mapboxgl.supermap.DeckglLayer.prototype.visibility=true]
          * @description 图层显示状态属性。
          */
         this.visibility = true;
-
     }
 
     /**
@@ -195,10 +191,8 @@ export class DeckglLayer {
     setVisibility(visibility) {
         if (this.canvas && visibility !== this.visibility) {
             this.visibility = visibility;
-            this.canvas.style.display = visibility ? "block" : "none";
+            this.canvas.style.display = visibility ? 'block' : 'none';
         }
-
-
     }
 
     /**
@@ -217,6 +211,7 @@ export class DeckglLayer {
      */
     setStyle(styleOptions) {
         Util.extend(this.props, styleOptions);
+        this._createLayerByLayerTypeID();
         this.update();
     }
 
@@ -241,7 +236,6 @@ export class DeckglLayer {
         this.update();
     }
 
-
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.addData
      * @description 添加点要素，不会覆盖之前的要素。
@@ -265,25 +259,16 @@ export class DeckglLayer {
      * @description 更新图层。
      */
     update() {
-        let changeFlags = {
+        if (this.layer.lifecycle !== 'Awaiting state') {
+            let changeFlags = {
                 dataChanged: true,
                 propsChanged: true,
                 viewportChanged: true,
                 updateTriggersChanged: true
-            },
-            state = this._getState();
-        if (this.layerTypeID === "polygon-layer") {
-            const subLayers = this.layer.getSubLayers();
-            for (let i = 0; i < subLayers.length; i++) {
-                subLayers[i].setChangeFlags(changeFlags);
-                subLayers[i].setState(state);
-            }
-            //todo 无法解释为什么 this.layer.setState(state);这样不行
-            this._draw();
-            return;
+            };
+            this.layer.setChangeFlags(changeFlags);
         }
-        this.layer.setChangeFlags(changeFlags);
-        this.layer.setState(state);
+        this._draw();
     }
 
     /**
@@ -313,6 +298,7 @@ export class DeckglLayer {
         let deckOptions = this._getState();
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
+        // this.deckGL.updateLayers();
         this.deckGL.setProps(deckOptions);
     }
 
@@ -376,25 +362,24 @@ export class DeckglLayer {
         this.props.pickable = Boolean(this.props.onClick) || Boolean(this.props.onHover);
 
         //各类型各自从 defaultProps 取出相形的参数：
-        if (this.layerTypeID === "scatter-plot") {
+        if (this.layerTypeID === 'scatter-plot') {
             this.props.id = 'scatter-plot';
             this._createScatterPlotLayer();
-        } else if (this.layerTypeID === "path-layer") {
+        } else if (this.layerTypeID === 'path-layer') {
             this.props.id = 'path-layer';
             this._createPathLayer();
-        } else if (this.layerTypeID === "polygon-layer") {
+        } else if (this.layerTypeID === 'polygon-layer') {
             this.props.id = 'polygon-layer';
             this._createPolygonLayer();
-        } else if (this.layerTypeID === "arc-layer") {
+        } else if (this.layerTypeID === 'arc-layer') {
             this.props.id = 'arc-layer';
             this._createArcLineLayer();
-        } else if (this.layerTypeID === "hexagon-layer") {
+        } else if (this.layerTypeID === 'hexagon-layer') {
             this.props.id = 'hexagon-layer';
             this._createHexagonLayer();
         } else {
-            throw new Error(this.layerTypeID + " does not support");
+            throw new Error(this.layerTypeID + ' does not support');
         }
-
     }
 
     /**
@@ -410,25 +395,31 @@ export class DeckglLayer {
               return point.geometry.coordinates;
           };*/
         var me = this;
-        this.props.getPosition = this.callback.getPosition ? this.callback.getPosition : function (point) {
-            if (!point) {
-                return [0, 0, 0];
-            }
-            let lngLat = point.getLngLat();
-            return lngLat && [lngLat.lng, lngLat.lat, 0];
-        };
+        this.props.getPosition = this.callback.getPosition
+            ? this.callback.getPosition
+            : function(point) {
+                  if (!point) {
+                      return [0, 0, 0];
+                  }
+                  let lngLat = point.getLngLat();
+                  return lngLat && [lngLat.lng, lngLat.lat, 0];
+              };
         if (this.callback.getColor) {
-            this.props.getColor = this.callback.getColor ? this.callback.getColor : function (point) {
-                let style = point && point.getStyle();
-                return style && style.color || me.props.color
-            };
+            this.props.getColor = this.callback.getColor
+                ? this.callback.getColor
+                : function(point) {
+                      let style = point && point.getStyle();
+                      return (style && style.color) || me.props.color;
+                  };
         }
 
         if (this.callback.getRadius) {
-            this.props.getRadius = this.callback.getRadius ? this.callback.getRadius : function (point) {
-                let style = point && point.getStyle();
-                return style && style.radius || me.props.radius
-            };
+            this.props.getRadius = this.callback.getRadius
+                ? this.callback.getRadius
+                : function(point) {
+                      let style = point && point.getStyle();
+                      return (style && style.radius) || me.props.radius;
+                  };
         }
 
         if (this.props.color || this.props.radius) {
@@ -437,7 +428,7 @@ export class DeckglLayer {
                 this.props.updateTriggers.getRadius = [this.props.radius];
             }
             if (this.props.color) {
-                this.props.updateTriggers.getColor = [this.props.color]
+                this.props.updateTriggers.getColor = [this.props.color];
             }
         }
         this.layer = new window.DeckGL.ScatterplotLayer(this.props);
@@ -448,9 +439,11 @@ export class DeckglLayer {
      * @private
      */
     _createPathLayer() {
-        this.props.getPath = this.callback.getPath ? this.callback.getPath : function (feature) {
-            return feature.geometry.coordinates;
-        };
+        this.props.getPath = this.callback.getPath
+            ? this.callback.getPath
+            : function(feature) {
+                  return feature.geometry.coordinates;
+              };
         //以下几个函数也可走默认值
         if (this.callback.getColor) {
             this.props.getColor = this.callback.getColor;
@@ -470,9 +463,11 @@ export class DeckglLayer {
      * @private
      */
     _createPolygonLayer() {
-        this.props.getPolygon = this.callback.getPolygon ? this.callback.getPolygon : function (feature) {
-            return feature.geometry.coordinates;
-        };
+        this.props.getPolygon = this.callback.getPolygon
+            ? this.callback.getPolygon
+            : function(feature) {
+                  return feature.geometry.coordinates;
+              };
 
         //todo 思考下真的让用户配这么多回调么，或者先判断下数据属性里面有没有配置的属性值？
 
@@ -499,20 +494,24 @@ export class DeckglLayer {
      */
     _createArcLineLayer() {
         //todo ArcLineLayer geojson coordinates数组中只能有一个线段
-        this.props.getSourcePosition = this.callback.getSourcePosition ? this.callback.getSourcePosition : function (feature) {
-            if (!feature) {
-                return [0, 0, 0];
-            }
+        this.props.getSourcePosition = this.callback.getSourcePosition
+            ? this.callback.getSourcePosition
+            : function(feature) {
+                  if (!feature) {
+                      return [0, 0, 0];
+                  }
 
-            return feature.geometry.coordinates[0];
-        };
-        this.props.getTargetPosition = this.callback.getTargetPosition ? this.callback.getTargetPosition : function (feature) {
-            if (!feature) {
-                return [0, 0, 0];
-            }
+                  return feature.geometry.coordinates[0];
+              };
+        this.props.getTargetPosition = this.callback.getTargetPosition
+            ? this.callback.getTargetPosition
+            : function(feature) {
+                  if (!feature) {
+                      return [0, 0, 0];
+                  }
 
-            return feature.geometry.coordinates[1];
-        };
+                  return feature.geometry.coordinates[1];
+              };
 
         if (this.callback.getStrokeWidth) {
             this.props.getStrokeWidth = this.callback.getStrokeWidth;
@@ -532,13 +531,15 @@ export class DeckglLayer {
      * @private
      */
     _createHexagonLayer() {
-        this.props.getPosition = this.callback.getPosition ? this.callback.getPosition : function (feature) {
-            if (!feature) {
-                return [0, 0, 0];
-            }
+        this.props.getPosition = this.callback.getPosition
+            ? this.callback.getPosition
+            : function(feature) {
+                  if (!feature) {
+                      return [0, 0, 0];
+                  }
 
-            return feature.geometry.coordinates;
-        };
+                  return feature.geometry.coordinates;
+              };
 
         if (this.callback.getColorValue) {
             this.props.getColorValue = this.callback.getColorValue;
@@ -546,9 +547,7 @@ export class DeckglLayer {
         if (this.callback.getElevationValue) {
             this.props.getElevationValue = this.callback.getElevationValue;
         }
-
         this.layer = new window.DeckGL.HexagonLayer(this.props);
-
     }
 
     _initContainer() {
@@ -561,9 +560,9 @@ export class DeckglLayer {
         let canvas = document.createElement('canvas');
         canvas.id = this.id;
         canvas.style.position = 'absolute';
-        canvas.style.top = 0 + "px";
-        canvas.style.left = 0 + "px";
-        canvas.style.cursor = "";
+        canvas.style.top = 0 + 'px';
+        canvas.style.left = 0 + 'px';
+        canvas.style.cursor = '';
         let map = this.map;
         canvas.width = parseInt(map.getCanvas().style.width);
         canvas.height = parseInt(map.getCanvas().style.height);
@@ -585,7 +584,6 @@ export class DeckglLayer {
         canvas.style.height = map.getCanvas().style.height;
         this._draw();
     }
-
 }
 
 mapboxgl.supermap.DeckglLayer = DeckglLayer;

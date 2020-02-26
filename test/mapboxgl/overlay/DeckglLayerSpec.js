@@ -52,7 +52,7 @@ describe('mapboxgl_DeckglLayer', () => {
 
     it('onAdd_PathLayer', (done) => {
         deckglLayer = new DeckglLayer("path-layer", {
-            data: null,
+            data: features,
             props: {
                 strokeWidth: 12 //线宽
             },
@@ -73,7 +73,7 @@ describe('mapboxgl_DeckglLayer', () => {
 
     it('onAdd_ArcLayer', (done) => {
         deckglLayer = new DeckglLayer("arc-layer", {
-            data: null,
+            data: features,
             props: {
                 strokeWidth: 12 //线宽
             },
@@ -95,7 +95,7 @@ describe('mapboxgl_DeckglLayer', () => {
 
     it('onAdd_HexagonLayer', (done) => {
         deckglLayer = new DeckglLayer("hexagon-layer", {
-            data: null,
+            data: features,
             props: {
                 strokeWidth: 12 //线宽
             },
@@ -116,7 +116,7 @@ describe('mapboxgl_DeckglLayer', () => {
 
     it('onAdd_PolygonLayer', (done) => {
         deckglLayer = new DeckglLayer("polygon-layer", {
-            data: null,
+            data: features,
             props: {
                 strokeWidth: 12 //线宽
             },
@@ -247,5 +247,24 @@ describe('mapboxgl_DeckglLayer', () => {
             expect(deckglLayer.data.length).toEqual(0);
             done();
         }, 3000)
+    });
+
+    it('setStyle,hexagon-layer', (done) => {
+        deckglLayer = new DeckglLayer("hexagon-layer", {
+            data: features,
+            props: {
+                radius: 100 //线宽
+            }
+        });
+        map.addLayer(deckglLayer);
+
+        setTimeout(() => {
+            expect(deckglLayer.deckGL).not.toBeNull();
+            expect(deckglLayer.deckGL.props.radius).toEqual(100);
+            deckglLayer.setStyle({ radius: 1000 });
+            expect(deckglLayer.deckGL.props.radius).toEqual(1000);
+            done();
+        }, 3000)
+        
     });
 });

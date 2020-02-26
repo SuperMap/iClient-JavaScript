@@ -86636,14 +86636,14 @@ function () {
      */
     this.layerTypeID = layerTypeID;
     /**
-     * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.DeckglLayer.prototype.graphics 
+     * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.DeckglLayer.prototype.graphics
      * @description 点要素对象数组。
      */
 
     this.data = [].concat(options.data);
     this.props = options.props ? options.props : {};
     this.callback = options.callback ? options.callback : {};
-    this.id = options.layerId ? options.layerId : Util_Util.createUniqueID("graphicLayer_" + this.layerTypeID + "_");
+    this.id = options.layerId ? options.layerId : Util_Util.createUniqueID('graphicLayer_' + this.layerTypeID + '_');
     /**
      * @member {boolean} [mapboxgl.supermap.DeckglLayer.prototype.visibility=true]
      * @description 图层显示状态属性。
@@ -86768,7 +86768,7 @@ function () {
     value: function setVisibility(visibility) {
       if (this.canvas && visibility !== this.visibility) {
         this.visibility = visibility;
-        this.canvas.style.display = visibility ? "block" : "none";
+        this.canvas.style.display = visibility ? 'block' : 'none';
       }
     }
     /**
@@ -86790,6 +86790,9 @@ function () {
     key: "setStyle",
     value: function setStyle(styleOptions) {
       core_Util_Util.extend(this.props, styleOptions);
+
+      this._createLayerByLayerTypeID();
+
       this.update();
     }
     /**
@@ -86848,30 +86851,17 @@ function () {
   }, {
     key: "update",
     value: function update() {
-      var changeFlags = {
-        dataChanged: true,
-        propsChanged: true,
-        viewportChanged: true,
-        updateTriggersChanged: true
-      },
-          state = this._getState();
-
-      if (this.layerTypeID === "polygon-layer") {
-        var subLayers = this.layer.getSubLayers();
-
-        for (var i = 0; i < subLayers.length; i++) {
-          subLayers[i].setChangeFlags(changeFlags);
-          subLayers[i].setState(state);
-        } //todo 无法解释为什么 this.layer.setState(state);这样不行
-
-
-        this._draw();
-
-        return;
+      if (this.layer.lifecycle !== 'Awaiting state') {
+        var changeFlags = {
+          dataChanged: true,
+          propsChanged: true,
+          viewportChanged: true,
+          updateTriggersChanged: true
+        };
+        this.layer.setChangeFlags(changeFlags);
       }
 
-      this.layer.setChangeFlags(changeFlags);
-      this.layer.setState(state);
+      this._draw();
     }
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.clear
@@ -86907,7 +86897,8 @@ function () {
       var deckOptions = this._getState();
 
       deckOptions.layers = [this.layer];
-      deckOptions.canvas = this.canvas;
+      deckOptions.canvas = this.canvas; // this.deckGL.updateLayers();
+
       this.deckGL.setProps(deckOptions);
     }
   }, {
@@ -86971,28 +86962,28 @@ function () {
 
       this.props.pickable = Boolean(this.props.onClick) || Boolean(this.props.onHover); //各类型各自从 defaultProps 取出相形的参数：
 
-      if (this.layerTypeID === "scatter-plot") {
+      if (this.layerTypeID === 'scatter-plot') {
         this.props.id = 'scatter-plot';
 
         this._createScatterPlotLayer();
-      } else if (this.layerTypeID === "path-layer") {
+      } else if (this.layerTypeID === 'path-layer') {
         this.props.id = 'path-layer';
 
         this._createPathLayer();
-      } else if (this.layerTypeID === "polygon-layer") {
+      } else if (this.layerTypeID === 'polygon-layer') {
         this.props.id = 'polygon-layer';
 
         this._createPolygonLayer();
-      } else if (this.layerTypeID === "arc-layer") {
+      } else if (this.layerTypeID === 'arc-layer') {
         this.props.id = 'arc-layer';
 
         this._createArcLineLayer();
-      } else if (this.layerTypeID === "hexagon-layer") {
+      } else if (this.layerTypeID === 'hexagon-layer') {
         this.props.id = 'hexagon-layer';
 
         this._createHexagonLayer();
       } else {
-        throw new Error(this.layerTypeID + " does not support");
+        throw new Error(this.layerTypeID + ' does not support');
       }
     }
     /**
@@ -87184,9 +87175,9 @@ function () {
       var canvas = document.createElement('canvas');
       canvas.id = this.id;
       canvas.style.position = 'absolute';
-      canvas.style.top = 0 + "px";
-      canvas.style.left = 0 + "px";
-      canvas.style.cursor = "";
+      canvas.style.top = 0 + 'px';
+      canvas.style.left = 0 + 'px';
+      canvas.style.cursor = '';
       var map = this.map;
       canvas.width = parseInt(map.getCanvas().style.width);
       canvas.height = parseInt(map.getCanvas().style.height);
@@ -91778,22 +91769,22 @@ function (_mapboxgl$Evented) {
    * @version 9.1.2
    */
   function WebMap(id, options) {
-    var _this;
+    var _this2;
 
     WebMap_classCallCheck(this, WebMap);
 
-    _this = WebMap_possibleConstructorReturn(this, WebMap_getPrototypeOf(WebMap).call(this));
-    _this.mapId = id;
+    _this2 = WebMap_possibleConstructorReturn(this, WebMap_getPrototypeOf(WebMap).call(this));
+    _this2.mapId = id;
     options = options || {};
-    _this.server = options.server || 'https://www.supermapol.com';
-    _this.credentialKey = options.credentialKey;
-    _this.credentialValue = options.credentialValue;
-    _this.withCredentials = options.withCredentials || false;
-    _this.target = options.target || 'map';
+    _this2.server = options.server || 'https://www.supermapol.com';
+    _this2.credentialKey = options.credentialKey;
+    _this2.credentialValue = options.credentialValue;
+    _this2.withCredentials = options.withCredentials || false;
+    _this2.target = options.target || 'map';
 
-    _this._createWebMap();
+    _this2._createWebMap();
 
-    return _this;
+    return _this2;
   }
   /**
    * @function mapboxgl.supermap.WebMap.prototype.resize
@@ -91949,7 +91940,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_getMapInfo",
     value: function _getMapInfo(url) {
-      var _this2 = this;
+      var _this3 = this;
 
       var mapUrl = url.indexOf('.json') === -1 ? "".concat(url, ".json") : url;
       FetchRequest.get(mapUrl, null, {
@@ -91957,9 +91948,9 @@ function (_mapboxgl$Evented) {
       }).then(function (response) {
         return response.json();
       }).then(function (mapInfo) {
-        _this2.baseProjection = mapInfo.projection; //存储地图的名称以及描述等信息，返回给用户
+        _this3.baseProjection = mapInfo.projection; //存储地图的名称以及描述等信息，返回给用户
 
-        _this2.mapParams = {
+        _this3.mapParams = {
           title: mapInfo.title,
           description: mapInfo.description
         };
@@ -91971,18 +91962,18 @@ function (_mapboxgl$Evented) {
           'EPSG:4326': 'EPSG:4326'
         }; // 坐标系异常处理
 
-        if (_this2.baseProjection in projectionMap) {
-          _this2._createMap(mapInfo, _this2.mapSetting);
+        if (_this3.baseProjection in projectionMap) {
+          _this3._createMap(mapInfo, _this3.mapSetting);
 
           var layers = mapInfo.layers;
 
-          _this2.map.on('load', function () {
-            _this2._addBaseMap(mapInfo);
+          _this3.map.on('load', function () {
+            _this3._addBaseMap(mapInfo);
 
             if (!layers || layers.length === 0) {
-              _this2._sendMapToUser(0, 0);
+              _this3._sendMapToUser(0, 0);
             } else {
-              _this2._addLayers(layers);
+              _this3._addLayers(layers);
             }
           });
         } else {
@@ -91994,7 +91985,7 @@ function (_mapboxgl$Evented) {
          * @description 获取地图信息失败。
          * @property {Object} error - 失败原因。
          */
-        _this2.fire('getmapfailed', {
+        _this3.fire('getmapfailed', {
           error: error
         });
       });
@@ -92085,8 +92076,66 @@ function (_mapboxgl$Evented) {
 
           break;
 
+        case 'MAPBOXSTYLE':
+          this._createMapboxStyle(layerInfo);
+
+          break;
+
         default:
           break;
+      }
+    }
+    /**
+     * @private
+     * @function mapboxgl.supermap.WebMap.prototype._createMapboxStyle
+     * @description 创建 Mapbox 样式。
+     * @param {Object} mapInfo - map 信息。
+     */
+
+  }, {
+    key: "_createMapboxStyle",
+    value: function _createMapboxStyle(mapInfo) {
+      var _this = this,
+          _mapInfo$dataSource = mapInfo.dataSource,
+          dataSource = _mapInfo$dataSource === void 0 ? {} : _mapInfo$dataSource,
+          serverId = dataSource.serverId,
+          url = dataSource.url,
+          styleUrl;
+
+      styleUrl = serverId !== undefined ? "".concat(this.server, "web/datas/").concat(serverId, "/download") : url;
+      FetchRequest.get(styleUrl, null, {
+        withCredentials: this.withCredentials,
+        withoutFormatSuffix: true,
+        headers: {
+          'Content-Type': 'application/json;chartset=uft-8'
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (style) {
+        _this._matchStyleObject(style);
+
+        _this.map.setStyle(style);
+      });
+    }
+    /**
+     * @private
+     * @function mapboxgl.supermap.WebMap.prototype._matchStyleObject
+     * @description 恢复 style 为标准格式。
+     * @param {Object} style - mapbox 样式。
+     */
+
+  }, {
+    key: "_matchStyleObject",
+    value: function _matchStyleObject(style) {
+      var sprite = style.sprite,
+          glyphs = style.glyphs;
+
+      if (sprite && WebMap_typeof(sprite) === 'object') {
+        style.sprite = Object.values(sprite)[0];
+      }
+
+      if (glyphs && WebMap_typeof(glyphs) === 'object') {
+        style.glyphs = Object.values(glyphs)[0];
       }
     }
     /**
@@ -92120,12 +92169,12 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createWMTSLayer",
     value: function _createWMTSLayer(layerInfo) {
-      var _this3 = this;
+      var _this4 = this;
 
       var wmtsUrl = this._getWMTSUrl(layerInfo);
 
       this._filterWMTSIsMatched(layerInfo, function (isMatched, matchMaxZoom) {
-        isMatched && _this3._addBaselayer([wmtsUrl], 'wmts-layers' + layerInfo.name, 0, matchMaxZoom);
+        isMatched && _this4._addBaselayer([wmtsUrl], 'wmts-layers' + layerInfo.name, 0, matchMaxZoom);
       });
     }
     /**
@@ -92139,7 +92188,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_filterWMTSIsMatched",
     value: function _filterWMTSIsMatched(mapInfo, matchedCallback) {
-      var _this4 = this;
+      var _this5 = this;
 
       var isMatched = false,
           matchMaxZoom = 22,
@@ -92164,7 +92213,7 @@ function (_mapboxgl$Evented) {
             } else if (tileMatrixSet[i]['WellKnownScaleSet'] && tileMatrixSet[i]['WellKnownScaleSet']['_text'] === 'Custom') {
               var matchedScaleDenominator = []; //坐标系判断
 
-              var defaultCRSScaleDenominators = _this4.map.crs === 'EPSG:3857' ? MB_SCALEDENOMINATOR_3857 : MB_SCALEDENOMINATOR_4326;
+              var defaultCRSScaleDenominators = _this5.map.crs === 'EPSG:3857' ? MB_SCALEDENOMINATOR_3857 : MB_SCALEDENOMINATOR_4326;
 
               for (var j = 0, len = defaultCRSScaleDenominators.length; j < len; j++) {
                 if (!tileMatrixSet[i].TileMatrix[j]) {
@@ -92199,9 +92248,9 @@ function (_mapboxgl$Evented) {
          * @property {Object} error - 失败原因。
          * @property {mapboxgl.Map} map - MapBoxGL Map 对象。
          */
-        _this4.fire('getwmtsfailed', {
+        _this5.fire('getwmtsfailed', {
           error: error,
-          map: _this4.map
+          map: _this5.map
         });
       });
     }
@@ -92424,7 +92473,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_addLayers",
     value: function _addLayers(layers) {
-      var _this5 = this;
+      var _this6 = this;
 
       //存储地图上所有的图层对象
       this.layers = layers;
@@ -92435,10 +92484,10 @@ function (_mapboxgl$Evented) {
         if (layer.dataSource && layer.dataSource.serverId || layer.layerType === 'MARKER') {
           // 获取 serverID
           var serverId = layer.dataSource ? layer.dataSource.serverId : layer.serverId;
-          var url = "".concat(_this5.server, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1"); // 获取图层数据
+          var url = "".concat(_this6.server, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1"); // 获取图层数据
 
           serverId && FetchRequest.get(url, null, {
-            withCredentials: _this5.withCredentials
+            withCredentials: _this6.withCredentials
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -92446,7 +92495,7 @@ function (_mapboxgl$Evented) {
               //请求失败
               layerAdded++;
 
-              _this5._sendMapToUser(layerAdded, len);
+              _this6._sendMapToUser(layerAdded, len);
               /**
                * @event mapboxgl.supermap.WebMap#getlayersfailed
                * @description 获取图层信息失败。
@@ -92455,9 +92504,9 @@ function (_mapboxgl$Evented) {
                */
 
 
-              _this5.fire('getlayersfailed', {
+              _this6.fire('getlayersfailed', {
                 error: data.error,
-                map: _this5.map
+                map: _this6.map
               });
 
               return;
@@ -92466,54 +92515,54 @@ function (_mapboxgl$Evented) {
             if (data.type) {
               if (data.type === 'JSON' || data.type === 'GEOJSON') {
                 data.content = JSON.parse(data.content.trim());
-                features = _this5._formatGeoJSON(data.content, layer);
+                features = _this6._formatGeoJSON(data.content, layer);
               } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-                features = _this5._excelData2Feature(data.content, layer);
+                features = _this6._excelData2Feature(data.content, layer);
               }
 
-              _this5._addLayer(layer, features, index);
+              _this6._addLayer(layer, features, index);
 
               layerAdded++;
 
-              _this5._sendMapToUser(layerAdded, len);
+              _this6._sendMapToUser(layerAdded, len);
             }
           })["catch"](function (error) {
             layerAdded++;
 
-            _this5._sendMapToUser(layerAdded, len);
+            _this6._sendMapToUser(layerAdded, len);
 
-            _this5.fire('getlayersfailed', {
+            _this6.fire('getlayersfailed', {
               error: error,
-              map: _this5.map
+              map: _this6.map
             });
           });
         } else if (layer.layerType === 'SUPERMAP_REST' || layer.layerType === 'TILE' || layer.layerType === 'WMS' || layer.layerType === 'WMTS') {
-          _this5._createBaseLayer(layer);
+          _this6._createBaseLayer(layer);
 
           layerAdded++;
 
-          _this5._sendMapToUser(layerAdded, len);
+          _this6._sendMapToUser(layerAdded, len);
         } else if (layer.dataSource && layer.dataSource.type === 'REST_DATA') {
           var dataSource = layer.dataSource; //从restData获取数据
 
-          _this5._getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
-            features = _this5._parseGeoJsonData2Feature({
+          _this6._getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
+            features = _this6._parseGeoJsonData2Feature({
               allDatas: {
                 features: result.result.features.features
               },
               fileCode: layer.projection,
-              featureProjection: _this5.baseProjection
+              featureProjection: _this6.baseProjection
             });
 
-            _this5._addLayer(layer, features, index);
+            _this6._addLayer(layer, features, index);
 
             layerAdded++;
 
-            _this5._sendMapToUser(layerAdded, len);
+            _this6._sendMapToUser(layerAdded, len);
           }, function (err) {
             layerAdded++;
 
-            _this5._sendMapToUser(layerAdded, len);
+            _this6._sendMapToUser(layerAdded, len);
             /**
              * @event mapboxgl.supermap.WebMap#getfeaturesfailed
              * @description 获取图层要素失败。
@@ -92521,12 +92570,12 @@ function (_mapboxgl$Evented) {
              */
 
 
-            _this5.fire('getfeaturesfailed', {
+            _this6.fire('getfeaturesfailed', {
               error: err
             });
           });
         } else if (layer.dataSource && layer.dataSource.type === 'REST_MAP' && layer.dataSource.url) {
-          _this5._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
+          _this6._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
             var recordsets = result && result.result.recordsets;
             var recordset = recordsets && recordsets[0];
             var attributes = recordset.fields;
@@ -92542,25 +92591,25 @@ function (_mapboxgl$Evented) {
                 }
               }
 
-              _this5._getFeatures(fileterAttrs, layer, function (features) {
-                _this5._addLayer(layer, features, index);
+              _this6._getFeatures(fileterAttrs, layer, function (features) {
+                _this6._addLayer(layer, features, index);
 
                 layerAdded++;
 
-                _this5._sendMapToUser(layerAdded, len);
+                _this6._sendMapToUser(layerAdded, len);
               }, function (err) {
                 layerAdded++;
 
-                _this5.fire('getfeaturesfailed', {
+                _this6.fire('getfeaturesfailed', {
                   error: err,
-                  map: _this5.map
+                  map: _this6.map
                 });
               });
             }
           }, function (err) {
-            _this5.fire('getlayersfailed', {
+            _this6.fire('getlayersfailed', {
               error: err,
-              map: _this5.map
+              map: _this6.map
             });
           });
         }
@@ -92577,7 +92626,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_getFeatures",
     value: function _getFeatures(fields, layerInfo, resolve, reject) {
-      var _this6 = this;
+      var _this7 = this;
 
       var source = layerInfo.dataSource; //示例数据
 
@@ -92587,12 +92636,12 @@ function (_mapboxgl$Evented) {
         var recordsets = result.result.recordsets[0];
         var features = recordsets.features.features;
 
-        var featuresObj = _this6._parseGeoJsonData2Feature({
+        var featuresObj = _this7._parseGeoJsonData2Feature({
           allDatas: {
             features: features
           },
           fileCode: fileCode,
-          featureProjection: _this6.baseProjection
+          featureProjection: _this7.baseProjection
         }, 'JSON');
 
         resolve(featuresObj);
@@ -92741,7 +92790,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createGraphicLayer",
     value: function _createGraphicLayer(layerInfo, features) {
-      var _this7 = this;
+      var _this8 = this;
 
       var style = layerInfo.style;
       var layerStyle = {};
@@ -92770,9 +92819,9 @@ function (_mapboxgl$Evented) {
 
           var iconSize = Number.parseFloat((style.radius / image.height).toFixed(2)) * 2;
 
-          _this7.map.addImage('imageIcon', image);
+          _this8.map.addImage('imageIcon', image);
 
-          _this7.map.addLayer({
+          _this8.map.addLayer({
             id: layerID,
             type: 'symbol',
             source: source,
@@ -92793,16 +92842,16 @@ function (_mapboxgl$Evented) {
 
         this._getCanvasFromSVG(svg_url, this.svgDiv, function (canvas) {
           var imgUrl = canvas.toDataURL('img/png');
-          imgUrl && _this7.map.loadImage(imgUrl, function (error, image) {
+          imgUrl && _this8.map.loadImage(imgUrl, function (error, image) {
             if (error) {
               console.log(error);
             }
 
             var iconSize = Number.parseFloat((style.radius / canvas.width).toFixed(2));
 
-            _this7.map.addImage('imageIcon', image);
+            _this8.map.addImage('imageIcon', image);
 
-            _this7.map.addLayer({
+            _this8.map.addLayer({
               id: layerID,
               type: 'symbol',
               source: source,
@@ -92812,7 +92861,7 @@ function (_mapboxgl$Evented) {
                 visibility: layerInfo.visible
               }
             });
-          }, _this7);
+          }, _this8);
         });
       } else {
         layerStyle.style = this._transformStyleToMapBoxGl(style, layerInfo.featureType);
@@ -92963,7 +93012,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createMarkerLayer",
     value: function _createMarkerLayer(layerInfo, features) {
-      var _this8 = this;
+      var _this9 = this;
 
       features && features.forEach(function (feature) {
         var geomType = feature.geometry.type.toUpperCase();
@@ -92974,14 +93023,14 @@ function (_mapboxgl$Evented) {
           geomType = 'TEXT';
         }
 
-        var featureInfo = _this8.setFeatureInfo(feature);
+        var featureInfo = _this9.setFeatureInfo(feature);
 
         feature.properties['useStyle'] = defaultStyle;
         feature.properties['featureInfo'] = featureInfo;
 
         if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
           //说明地址不完整
-          defaultStyle.src = _this8.server + defaultStyle.src;
+          defaultStyle.src = _this9.server + defaultStyle.src;
         }
 
         var source = {
@@ -92991,14 +93040,14 @@ function (_mapboxgl$Evented) {
         var index = feature.properties.index;
         var layerID = geomType + '-' + index; // image-marker
 
-        geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') <= -1 && _this8.map.loadImage(defaultStyle.src, function (error, image) {
+        geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') <= -1 && _this9.map.loadImage(defaultStyle.src, function (error, image) {
           if (error) {
             console.log(error);
           }
 
-          _this8.map.addImage(index + '', image);
+          _this9.map.addImage(index + '', image);
 
-          _this8.map.addLayer({
+          _this9.map.addLayer({
             id: layerID,
             type: 'symbol',
             source: source,
@@ -93008,24 +93057,24 @@ function (_mapboxgl$Evented) {
               visibility: layerInfo.visible
             }
           });
-        }, _this8); // svg-marker
+        }, _this9); // svg-marker
 
         if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') > -1) {
-          if (!_this8.svgDiv) {
-            _this8.svgDiv = document.createElement('div');
-            document.body.appendChild(_this8.svgDiv);
+          if (!_this9.svgDiv) {
+            _this9.svgDiv = document.createElement('div');
+            document.body.appendChild(_this9.svgDiv);
           }
 
-          _this8._getCanvasFromSVG(defaultStyle.src, _this8.svgDiv, function (canvas) {
+          _this9._getCanvasFromSVG(defaultStyle.src, _this9.svgDiv, function (canvas) {
             var imgUrl = canvas.toDataURL('img/png');
-            imgUrl && _this8.map.loadImage(imgUrl, function (error, image) {
+            imgUrl && _this9.map.loadImage(imgUrl, function (error, image) {
               if (error) {
                 console.log(error);
               }
 
-              _this8.map.addImage(index + '', image);
+              _this9.map.addImage(index + '', image);
 
-              _this8.map.addLayer({
+              _this9.map.addLayer({
                 id: layerID,
                 type: 'symbol',
                 source: source,
@@ -93035,7 +93084,7 @@ function (_mapboxgl$Evented) {
                   visibility: layerInfo.visible
                 }
               });
-            }, _this8);
+            }, _this9);
           });
         } // point-line-polygon-marker
 
@@ -93055,12 +93104,12 @@ function (_mapboxgl$Evented) {
           var visible = layerInfo.visible;
           layeStyle.layout.visibility = visible; // get style
 
-          layeStyle.style = _this8._transformStyleToMapBoxGl(defaultStyle, geomType);
+          layeStyle.style = _this9._transformStyleToMapBoxGl(defaultStyle, geomType);
 
-          _this8._addOverlayToMap(geomType, source, layerID, layeStyle); // 若面有边框
+          _this9._addOverlayToMap(geomType, source, layerID, layeStyle); // 若面有边框
 
 
-          geomType === 'POLYGON' && defaultStyle.strokeColor && _this8._addStrokeLineForPoly(defaultStyle, source, layerID + '-strokeLine', visible);
+          geomType === 'POLYGON' && defaultStyle.strokeColor && _this9._addStrokeLineForPoly(defaultStyle, source, layerID + '-strokeLine', visible);
         }
       }, this);
     }
