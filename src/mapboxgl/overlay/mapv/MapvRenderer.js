@@ -1,9 +1,13 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { baiduMapLayer } from 'mapv';
+ import {
+    baiduMapLayer
+} from 'mapv';
 import mapboxgl from 'mapbox-gl';
-import { getMeterPerMapUnit } from '@supermap/iclient-common';
+import {
+    getMeterPerMapUnit
+} from '@supermap/iclient-common';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -35,17 +39,7 @@ export class MapvRenderer extends BaseLayer {
         this.animation = options.animation;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
-        this.map.on('resize', this.resizeEvent.bind(this));
-        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
-        this.map.on('zoomend', this.zoomEndEvent.bind(this));
-        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
-        this.map.on('rotate', this.rotateEvent.bind(this));
-        this.map.on('rotateend', this.rotateEndEvent.bind(this));
-        // this.map.on('dragend', this.dragEndEvent.bind(this));
-        this.map.on('movestart', this.moveStartEvent.bind(this));
-        this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('moveend', this.moveEndEvent.bind(this));
-        this.map.on('remove', this.removeEvent.bind(this));
+        this.bindMapEvent();
         this.bindEvent();
         this._expectShow = true;
     }
@@ -92,7 +86,6 @@ export class MapvRenderer extends BaseLayer {
      */
     unbindEvent() {
         var map = this.map;
-
         if (this.options.methods) {
             if (this.options.methods.click) {
                 map.off('click', this.clickEvent);
@@ -167,7 +160,7 @@ export class MapvRenderer extends BaseLayer {
             return;
         }
         var newData = this.dataSet.get({
-            filter: function(data) {
+            filter: function (data) {
                 return filter != null && typeof filter === 'function' ? !filter(data) : true;
             }
         });
@@ -255,7 +248,7 @@ export class MapvRenderer extends BaseLayer {
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
-            transferCoordinate: function(coordinate) {
+            transferCoordinate: function (coordinate) {
                 if (map.transform.rotationMatrix || self.context === '2d') {
                     var worldPoint = map.project(new mapboxgl.LngLat(coordinate[0], coordinate[1]));
                     return [worldPoint.x, worldPoint.y];
@@ -266,7 +259,7 @@ export class MapvRenderer extends BaseLayer {
         };
 
         if (time !== undefined) {
-            dataGetOptions.filter = function(item) {
+            dataGetOptions.filter = function (item) {
                 var trails = animationOptions.trails || 10;
                 return time && item.time > time - trails && item.time < time;
             };
@@ -297,6 +290,7 @@ export class MapvRenderer extends BaseLayer {
         this.drawContext(context, data, self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);
+
     }
 
     init(options) {
@@ -307,12 +301,56 @@ export class MapvRenderer extends BaseLayer {
         this.initDataRange(options);
 
         this.context = self.options.context || '2d';
-
         if (self.options.zIndex) {
             this.canvasLayer && this.canvasLayer.setZIndex(self.options.zIndex);
         }
-
         this.initAnimator();
+    }
+    /**
+     * @function L.supermap.MapVRenderer.prototype.bindMapEvent
+     * @description 绑定鼠标移动事件。
+     */
+    bindMapEvent() {
+        this.mapEvent = {
+            resizeEvent: this.resizeEvent.bind(this),
+            zoomStartEvent: this.zoomStartEvent.bind(this),
+            zoomEndEvent: this.zoomEndEvent.bind(this),
+            rotateStartEvent: this.rotateStartEvent.bind(this),
+            rotateEvent: this.rotateEvent.bind(this),
+            moveStartEvent: this.moveStartEvent.bind(this),
+            rotateEndEvent: this.rotateEndEvent.bind(this),
+            moveEvent: this.moveEvent.bind(this),
+            moveEndEvent: this.moveEndEvent.bind(this),
+            removeEvent: this.removeEvent.bind(this)
+        }
+        this.map.on('resize', this.mapEvent.resizeEvent);
+        this.map.on('zoomstart', this.mapEvent.zoomStartEvent);
+        this.map.on('zoomend', this.mapEvent.zoomEndEvent);
+        this.map.on('rotatestart', this.mapEvent.rotateStartEvent);
+        this.map.on('rotate', this.mapEvent.rotateEvent);
+        this.map.on('rotateend', this.mapEvent.rotateEndEvent);
+        // this.map.on('dragend', this.dragEndEvent.bind(this));
+        this.map.on('movestart', this.mapEvent.moveStartEvent);
+        this.map.on('move', this.mapEvent.moveEvent);
+        this.map.on('moveend', this.mapEvent.moveEndEvent);
+        this.map.on('remove', this.mapEvent.removeEvent);
+    }
+
+    /**
+     * @function L.supermap.MapVRenderer.prototype.unbindMapEvent
+     * @description 解绑鼠标移动事件。
+     */
+    unbindMapEvent() {
+        this.map.off('resize', this.mapEvent.resizeEvent);
+        this.map.off('zoomstart', this.mapEvent.zoomStartEvent);
+        this.map.off('zoomend', this.mapEvent.zoomEndEvent);
+        this.map.off('rotatestart', this.mapEvent.rotateStartEvent);
+        this.map.off('rotate', this.mapEvent.rotateEvent);
+        this.map.off('rotateend', this.mapEvent.rotateEndEvent);
+        this.map.off('movestart', this.mapEvent.moveStartEvent);
+        this.map.off('move', this.mapEvent.moveEvent);
+        this.map.off('moveend', this.mapEvent.moveEndEvent);
+        this.map.off('remove', this.mapEvent.removeEvent);
     }
 
     /**
@@ -320,12 +358,14 @@ export class MapvRenderer extends BaseLayer {
      * @description 释放资源。
      */
     destroy() {
+        this.unbindMapEvent();
         this.unbindEvent();
         this.clearData();
         this.animator && this.animator.stop();
         this.animator = null;
         this.canvasLayer = null;
     }
+
 
     /**
      * @function MapvRenderer.prototype.addAnimatorEvent
