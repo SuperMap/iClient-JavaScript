@@ -60,7 +60,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var view = datavizWebmap.map.getView();
-            expect(Math.floor(view.getZoom())).toBe(1);
             expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('tianditu');
             expect(datavizWebmap.mapParams.description).toBe('');
@@ -110,8 +109,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var view = datavizWebmap.map.getView();
-            expect(view.getZoom()).toBe(2);
-            expect(view.getCenter()).toEqual([-10.195312499999957, -0.7031249999999929]);
             expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
             expect(datavizWebmap.mapParams.description).toBe('This is a image');
             expect(options.successCallback).toHaveBeenCalled();
@@ -148,8 +145,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBe('keyValue');
 
             var view = datavizWebmap.map.getView();
-            expect(view.getZoom()).toBe(4);
-            expect(view.getCenter()).toEqual([95.88885232500002, 26.710421085]);
             expect(datavizWebmap.mapParams.title).toBe('ter');
             expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
             expect(options.successCallback).toHaveBeenCalled();
@@ -180,8 +175,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var view = datavizWebmap.map.getView();
-            expect(view.getZoom()).toBe(3);
-            expect(view.getCenter()).toEqual([9565084.985351142, 6230623.14371253]);
             expect(datavizWebmap.mapParams.title).toBe('百度');
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
@@ -209,10 +202,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
-
-            var view = datavizWebmap.map.getView();
-            expect(view.getZoom()).toBe(2);
-            expect(view.getCenter()).toEqual([7044436.526761844, -1643701.8562444348]);
             expect(datavizWebmap.mapParams.title).toBe('openstreet');
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
@@ -266,8 +255,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var view = datavizWebmap.map.getView();
-            expect(Math.floor(view.getZoom())).toBe(1);
-            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('GAOD');
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
@@ -296,10 +283,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
-
-            var view = datavizWebmap.map.getView();
-            expect(view.getZoom()).toBe(1);
-            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
@@ -584,8 +567,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var view = datavizWebmap.map.getView();
-            expect(view.getZoom()).toBe(2);
-            expect(view.getCenter()).toEqual([939258.2035682459, -860986.6866042276]);
+            expect(Math.floor(view.getZoom())).toBe(2);
             expect(datavizWebmap.mapParams.title).toBe('标注图层');
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
@@ -701,7 +683,6 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var view = datavizWebmap.map.getView();
-            expect(Math.floor(view.getZoom())).toBe(1);
             expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('wms');
             expect(datavizWebmap.mapParams.description).toBe('');
@@ -878,17 +859,16 @@ describe('openlayers_WebMap', () => {
         });
         var datavizWebmap = new WebMap(id, {});
         setTimeout(() => {
-            var mapInfo = {
-                baseLayer: {
-                    zIndex: 1,
-                    visible: true,
-                    layerType: 'WMTS',
-                    projection: 'EPSG:3857'
-                }
-            };
-            spyOn(datavizWebmap, "getWmtsInfo");
-            datavizWebmap.createBaseLayer(mapInfo);
-            expect(datavizWebmap.getWmtsInfo).toHaveBeenCalled();
+            var layerInfo = {
+                layerType: 'WMTS',
+                zIndex: 1,
+                visible: true,
+                projection: "EPSG:4326",
+                tileMatrixSet: "c"
+            }
+            spyOn(datavizWebmap, "createWMTSSource");
+            datavizWebmap.createBaseLayer(layerInfo);
+            expect(datavizWebmap.createWMTSSource).toHaveBeenCalled();
             done();
         }, 1000)
     });
