@@ -6,7 +6,7 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 
 describe('openlayers_ChangeTileVersion', () => {
-    var map, baseLayer;
+    var map, baseLayer,testDiv;
     var tileVersions = [
         {
             desc: "V1",
@@ -45,7 +45,7 @@ describe('openlayers_ChangeTileVersion', () => {
 
         }];
     beforeAll(() => {
-        var testDiv = window.document.createElement("div");
+        testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
         testDiv.style.marginLeft = "8px";
@@ -71,6 +71,9 @@ describe('openlayers_ChangeTileVersion', () => {
             source: baseLayer,
             projection: 'EPSG:4326'
         }));
+    });
+    afterAll(() => {
+        document.body.removeChild(testDiv);
     });
 
     it("initialize", () => {
