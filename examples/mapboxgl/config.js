@@ -1064,7 +1064,14 @@ var exampleConfig = {
                         version: "9.1.1",
                         thumbnail: "mvt_4326.png",
                         fileName: "mvtVectorTile_4326"
-                    }
+                    },
+                    {
+                        name: "地图打印",
+                        name_en: "Map Print",
+                        version: "10.0.2",
+                        thumbnail: "print_pdf.png",
+                        fileName: "print_pdf"
+                    },
                 ]
             },
             Multi_coordinate_cluster: {

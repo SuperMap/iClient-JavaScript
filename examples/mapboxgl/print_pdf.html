@@ -1,0 +1,423 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_tiledMapLayer_4326WGS84"></title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script
+      type="text/javascript"
+      include="mapbox-gl-enhance,mapbox-print-pdf"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      #wrapper {
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      .fill-height {
+        min-height: 100%;
+        height: 100%;
+      }
+
+      .sidebar-wrapper {
+        overflow-y: auto;
+        background: #000;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #pdfViewer {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        padding: 0;
+      }
+
+      #pdfContainer {
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .progress-bar.animate {
+        width: 100%;
+      }
+
+      .sidebar-nav > .sidebar-brand {
+        height: 65px;
+        line-height: 60px;
+        text-align: center;
+      }
+
+      .sidebar-nav > .sidebar-brand a {
+        color: #999999;
+      }
+
+      label {
+        color: #999999;
+      }
+
+      .big-label {
+        font-size: 25px;
+        font-weight: bold;
+      }
+
+      .sidebar-nav > .sidebar-brand a:hover {
+        color: #fff;
+        background: none;
+      }
+
+      #printBtn {
+        float: right;
+        margin-bottom: 10px;
+        margin-right: 15px;
+      }
+
+      #resetBtn {
+        float: left;
+        margin-bottom: 10px;
+        margin-left: 15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid fill-height" id="wrapper">
+      <div class="row fill-height">
+        <!-- Sidebar -->
+        <div class="sidebar-wrapper fill-height col-sm-4">
+          <div class="sidebar-nav">
+            <h3 class="sidebar-brand">
+              <a href="https://github.com/SuperMap/mapbox-print-pdf/tree/enhance">Mapbox Print PDF</a>
+            </h3>
+            <form id="printForm" role="form">
+              <div class="form-group col-sm-4">
+                <label for="formatInp">Format</label>
+                <input type="text" class="form-control" id="formatInp" value="a4" placeholder="a4" required />
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="dpiInp">DPI</label>
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  class="form-control"
+                  id="dpiInp"
+                  placeholder="Resolution"
+                  value="150"
+                />
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="orientationInp">Orientation</label>
+                <select class="form-control" id="orientationInp">
+                  <option value="p">Portrait</option>
+                  <option value="l">Landscape</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="form-group">
+                  <label class="big-label">Header</label>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="headerHtmlInp">HTML</label>
+                  <textarea class="form-control" id="headerHtmlInp" form="printForm" rows="3"></textarea>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="headerBaselineInp">Baseline</label>
+                  <div class="form-row">
+                    <div class="col">
+                      <input
+                        type="text"
+                        min="1"
+                        class="form-control"
+                        id="headerBaselineFormatInp"
+                        placeholder="Format name"
+                      />
+                    </div>
+                    <div class="col">
+                      <select class="form-control" id="headerBaselineOrientationInp">
+                        <option value="p">Portrait</option>
+                        <option value="l">Landscape</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="form-group">
+                  <label class="big-label">Footer</label>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="footerHtmlInp">HTML</label>
+                  <textarea class="form-control" id="footerHtmlInp" form="printForm" rows="3"></textarea>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="footerBaselineInp">Baseline</label>
+                  <div class="form-row">
+                    <div class="col">
+                      <input
+                        type="text"
+                        min="1"
+                        class="form-control"
+                        id="footerBaselineFormatInp"
+                        placeholder="Format name"
+                      />
+                    </div>
+                    <div class="col">
+                      <select class="form-control" id="footerBaselineOrientationInp">
+                        <option value="p">Portrait</option>
+                        <option value="l">Landscape</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="form-group">
+                  <label class="big-label">Map scale control</label>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="scaleMaxWidthInp">Max width percentage</label>
+                  <input type="number" class="form-control" id="scaleMaxWidthInp" placeholder="Width percentage" />
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="scaleUnitInp">Scale unit</label>
+                  <select class="form-control" id="scaleUnitInp">
+                    <option value="metric">Metric</option>
+                    <option value="imperial">Imperial</option>
+                    <option value="nautical">Nautical</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="form-group">
+                  <label class="big-label">Margins</label>
+                </div>
+                <div class="form-group col-sm-3">
+                  <label for="marginTopInp" class="col col-form-label">Top</label>
+                  <div class="col">
+                    <input type="number" min="0" class="form-control" id="marginTopInp" placeholder="0" />
+                  </div>
+                </div>
+                <div class="form-group col-sm-3">
+                  <label for="marginRightInp" class="col col-form-label">Right</label>
+                  <div class="col">
+                    <input type="number" min="0" class="form-control" id="marginRightInp" placeholder="0" />
+                  </div>
+                </div>
+                <div class="form-group col-sm-3">
+                  <label for="marginBottomInp" class="col col-form-label">Bottom</label>
+                  <div class="col">
+                    <input type="number" min="0" class="form-control" id="marginBottomInp" placeholder="0" />
+                  </div>
+                </div>
+                <div class="form-group col-sm-3">
+                  <label for="marginLeftInp" class="col col-form-label">Left</label>
+                  <div class="col">
+                    <input type="number" min="0" class="form-control" id="marginLeftInp" placeholder="0" />
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label for="marginUnitInp" class="col col-form-label">Unit</label>
+                  <div class="col">
+                    <select class="form-control" id="marginUnitInp">
+                      <option value="pt">Points</option>
+                      <option value="in">Inches</option>
+                      <option value="mm">Millimeters</option>
+                      <option value="cm">Centimeters</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="printBtn">Print</button>
+              <button type="reset" class="btn btn-danger" id="resetBtn">Reset</button>
+            </form>
+          </div>
+        </div>
+        <div id="map" class="fill-height col-sm-8"></div>
+      </div>
+    </div>
+    <div class="modal" id="progressModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Printing</h4>
+          </div>
+          <div class="modal-body">
+            <div class="progress" id="printPendingDisplay">
+              <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                aria-valuenow="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 100%"
+              >
+                Printing...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $('#printForm').on('submit', printMap);
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tileSize: 256,
+              tiles: [host + '/iserver/services/map-world/rest/maps/World'],
+              rasterSource: 'iserver'
+            }
+          },
+
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        crs: 'EPSG:4326',
+        center: [117, 40],
+        zoom: 6
+      });
+      map.on('load', function() {
+        map.addStyle(
+          host +
+            '/iserver/services/map-jingjin/rest/maps/%E4%BA%AC%E6%B4%A5%E5%9C%B0%E5%8C%BA%E5%9F%8E%E9%95%87%E5%B7%A5%E7%9F%BF%E7%94%A8%E5%9C%B0%E8%A7%84%E6%A8%A1%E6%8E%A7%E5%88%B6%E5%9B%BE/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
+        );
+        new mapboxgl.Marker().setLngLat([117, 40]).addTo(map);
+      });
+      function printMap(e) {
+        e.preventDefault();
+        // 其他参数详见：https://github.com/SuperMap/mapbox-print-pdf/tree/enhance
+        showProgress();
+        var builder = mapboxgl.mapPrint.build();
+        setFormat(builder);
+        setDPI(builder);
+        setOrientation(builder);
+        setHeader(builder);
+        setFooter(builder);
+        setScaleControl(builder);
+        setMargins(builder);
+        builder
+          .print(map, mapboxgl)
+          .then(displayPdf)
+          .then(hideProgress);
+      }
+      function setFormat(builder) {
+        var format = $('#formatInp').val();
+        if (format != '') builder.format(format);
+      }
+
+      function setDPI(builder) {
+        var dpi = parseInt($('#dpiInp').val());
+        if (!isNaN(dpi) && dpi > 0) builder.dpi(dpi);
+      }
+      function setOrientation(builder) {
+        var orientation = $('#orientationInp').val();
+        if (orientation === 'l') builder.landscape();
+      }
+
+      function setHeader(builder) {
+        var header = $('#headerHtmlInp').val();
+        if (header == null || header.trim() === '') return;
+        var height = parseInt($('#headerHeightInp').val());
+        if (height < 1) return;
+        var heightUnit = $('#headerHeightUnitInp').val();
+        var baseline = $('#headerBaselineFormatInp').val();
+        if (baseline.trim() == '') return;
+        var orientation = $('#headerBaselineOrientationInp').val();
+        builder.header({
+          html: header,
+          height: {
+            value: height,
+            unit: heightUnit
+          },
+          baseline: {
+            format: baseline,
+            orientation: orientation
+          }
+        });
+      }
+
+      function setFooter(builder) {
+        var footer = $('#footerHtmlInp').val();
+        if (footer == null || footer.trim() === '') return;
+        var height = parseInt($('#footerHeightInp').val());
+        if (height < 1) return;
+        var heightUnit = $('#footerHeightUnitInp').val();
+        var baseline = $('#footerBaselineFormatInp').val();
+        if (baseline.trim() == '') return;
+        var orientation = $('#footerBaselineOrientationInp').val();
+        builder.footer({
+          html: footer,
+          height: {
+            value: height,
+            unit: heightUnit
+          },
+          baseline: {
+            format: baseline,
+            orientation: orientation
+          }
+        });
+      }
+
+      function setScaleControl(builder) {
+        var maxWidth = parseInt($('#scaleMaxWidthInp').val());
+        if (isNaN(maxWidth) || maxWidth <= 0) return;
+        var unit = $('#scaleUnitInp').val();
+        builder.scale({ maxWidthPercent: maxWidth, unit: unit });
+      }
+
+      function getMargin(id) {
+        var val = parseInt($('#' + id).val());
+        return isNaN(val) || val < 0 ? 0 : val;
+      }
+
+      function setMargins(builder) {
+        var obj = {
+          top: getMargin('marginTopInp'),
+          right: getMargin('marginRightInp'),
+          bottom: getMargin('marginBottomInp'),
+          left: getMargin('marginLeftInp')
+        };
+        builder.margins(obj, $('#marginUnitInp').val());
+      }
+      function displayPdf(pdf) {
+        pdf.save('map.pdf');
+      }
+      function showProgress() {
+        $('#progressModal').modal('show');
+      }
+
+      function hideProgress() {
+        $('#progressModal').modal('hide');
+      }
+    </script>
+  </body>
+</html>

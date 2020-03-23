@@ -19,7 +19,7 @@ import {SpatialQueryMode} from '../REST';
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {Object} [options.prjCoordSys] -自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
