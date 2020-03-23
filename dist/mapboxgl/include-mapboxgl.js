@@ -143,7 +143,7 @@
             inputScript("https://iclient.supermap.io/web/libs/echarts-gl/1.1.1/echarts-gl.min.js");
         }
         if (inArray(includes, 'mapbox-print-pdf')) {
-            inputScript("../../../web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js");
         }
         // dist
         if (!inArray(excludes, 'iclient-mapboxgl')) {
