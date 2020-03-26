@@ -45,6 +45,22 @@ var exampleConfig = {
             thumbnail: 'components_vector_tile_vue.png',
             fileName: 'components_vector_tile_vue',
             localIgnore: true
+          },
+          {
+            name: '中国疫情',
+            name_en: 'China NCP',
+            version: '10.0.2',
+            thumbnail: 'components_ncp_china_vue.png',
+            fileName: 'components_ncp_china_vue',
+            localIgnore: true
+          },
+          {
+            name: '全球疫情',
+            name_en: 'Global NCP',
+            version: '10.0.2',
+            thumbnail: 'components_ncp_world_vue.png',
+            fileName: 'components_ncp_world_vue',
+            localIgnore: true
           }
         ]
       },
