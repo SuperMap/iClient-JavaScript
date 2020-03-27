@@ -5,38 +5,36 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
         <title></title>
     </head>
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
             <sm-web-map :map-options="mapOptions" @load="mapLoaded" @click="mapClicked"></sm-web-map>
-            <a-radio-group class="radio-group" v-model="type" default-value="china-riskLevel" size="large">
-                <a-radio-button value="china-riskLevel" data-i18n="resources.text_ncp_riskLevel"></a-radio-button>
-                <a-radio-button
-                    value="china-incrementConfirmed"
-                    data-i18n="resources.text_ncp_incrementConfirmed"
-                ></a-radio-button>
-                <a-radio-button value="china-nowConfirmed" data-i18n="resources.text_ncp_nowConfirmed"></a-radio-button>
-                <a-radio-button value="china-incidence" data-i18n="resources.text_ncp_incidence"></a-radio-button>
-            </a-radio-group>
-            <sm-indicator
-                :title="title"
-                unit=""
-                mode="horizontal"
-                :num="num"
-                font-size="44px"
-                font-weight="400"
-                style="position: absolute; left: 10px;top: 60px;text-align: center;z-index: 1000;"
-            >
-            </sm-indicator>
-            <sm-text
-                :title="time"
-                text-color="rgba(255, 255, 255, 0.6)"
-                :font-style='{ fontSize: "18px", fontWeight: "400" ,display: "block"}'
-                style="position: absolute; left: 10px;top: 110px;text-align: center;z-index: 1000;padding-left: 15px"
-            >
-            </sm-text>
+            <div id="group">
+                <a-radio-group class="radio-group" v-model="type" default-value="china-riskLevel" size="large">
+                    <a-radio-button value="china-riskLevel" data-i18n="resources.text_ncp_riskLevel"></a-radio-button>
+                    <a-radio-button
+                        value="china-incrementConfirmed"
+                        data-i18n="resources.text_ncp_incrementConfirmed"
+                    ></a-radio-button>
+                    <a-radio-button
+                        value="china-nowConfirmed"
+                        data-i18n="resources.text_ncp_nowConfirmed"
+                    ></a-radio-button>
+                    <a-radio-button value="china-incidence" data-i18n="resources.text_ncp_incidence"></a-radio-button>
+                </a-radio-group>
+                <br />
+                <sm-indicator :title="title" unit="" mode="horizontal" :num="num" font-size="44px" font-weight="400">
+                </sm-indicator>
+                <sm-text
+                    :title="time"
+                    text-color="rgba(255, 255, 255, 0.6)"
+                    :font-style='{ fontSize: "18px", fontWeight: "400" ,display: "block"}'
+                >
+                </sm-text>
+            </div>
             <sm-image
                 repeat="noRepeat"
                 src="../img/online-qr.png"
@@ -56,16 +54,16 @@
                 width: 100%;
                 height: 100%;
             }
-            .radio-group {
+            #group {
                 position: absolute;
                 left: 10px;
                 top: 10px;
-                text-align: center;
                 z-index: 1000;
             }
             .ant-radio-button-wrapper {
                 color: #fff;
                 background: #333333;
+                padding: 0px 10px;
             }
             .mapboxgl-popup-content {
                 border: solid 1px #464646;
@@ -84,9 +82,41 @@
             .ant-radio-button-wrapper-checked:first-child {
                 color: #1890ff;
             }
+            .sm-component-indicator {
+                padding-left: 0px;
+            }
+            .sm-component-text {
+                margin-top: -16px;
+            }
             .sm-component-count-to__numItem {
                 letter-spacing: 0 !important;
                 text-indent: 1px !important;
+            }
+            @media screen and (max-width: 768px) {
+                .sm-component-count-to__numItem {
+                    font-size: 32px !important;
+                }
+                .sm-component-indicator__title {
+                    font-size: 20px !important;
+                }
+                .sm-component-indicator__num {
+                    font-size: 32px !important;
+                }
+                .sm-component-text {
+                    font-size: 16px !important;
+                }
+                .sm-component-text {
+                    margin-top: -10px;
+                }
+                #group {
+                    margin-top: 28px;
+                }
+                .ant-radio-group-large .ant-radio-button-wrapper {
+                    height: 32px;
+                    line-height: 30px;
+                    font-size: 14px;
+                    padding: 0 10px;
+                }
             }
         </style>
         <script>
@@ -249,6 +279,7 @@
                                         tiles: [
                                             'https://maptiles.supermapol.com/iserver/services/map-China/rest/maps/China_Dark_Nolable'
                                         ],
+                                        transparent: false,
                                         rasterSource: 'iserver',
                                         tileSize: 256
                                     }
@@ -268,7 +299,7 @@
                                 [137.0563536922412, 54.36513803178008]
                             ],
                             center: [105.9002304535943, 31.9592716277851],
-                            minZoom: 2.5,
+                            minZoom: 1.5,
                             maxZoom: 6,
                             zoom: 3.55
                         }
@@ -298,14 +329,16 @@
                         background: 'rgba(0, 0, 0,0)',
                         colorGroup: ['rgb(225, 2, 0)']
                     });
-                    $.get('https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ui.json?time=' + new Date().getTime(), function(response) {
-                        document.title = response[utils.getLanguage()].title;
-                    });
+                    $.get(
+                        'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ui.json?time=' + new Date().getTime(),
+                        function(response) {
+                            document.title = response[utils.getLanguage()].title;
+                        }
+                    );
                 },
                 methods: {
                     mapLoaded(e) {
                         this.map = e.map;
-                        window.map1 = e.map;
                         $.get(
                             'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ncp.json?time=' + new Date().getTime(),
                             function(response) {
