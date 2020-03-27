@@ -1324,6 +1324,7 @@ window.examplesResources = {
         'text_ncp_nowConfirmed':"现有确诊",
         'text_ncp_incrementConfirmed':"新增确诊",
         'text_ncp_incidence':"报告发病率",
+        'text_ncp_nodata_tooltip':"{name}：数据暂缺",
         'text_ncp_riskLevel_tooltip':"{name}：连续 {daysNoConfirmedAdd} 天无新增确诊",
         'text_ncp_riskLevel_tooltip1':"{name}：近3天最高新增确诊 {daysMaxConfirmedAdd}<br>昨新增确诊 {confirmedAdd}",
         'text_ncp_riskLevel_title':"疫情风险等级图",

@@ -1378,6 +1378,7 @@ window.examplesResources = {
         'text_ncp_nowConfirmed':"Current Confirmed",
         'text_ncp_incrementConfirmed':"New Confirmed",
         'text_ncp_incidence':"Reported Incidence",
+        'text_ncp_nodata_tooltip':"{name}: No Data",
         'text_ncp_riskLevel_tooltip':"{name}: No new confirmed for {daysNoConfirmedAdd} consecutive days",
         'text_ncp_riskLevel_tooltip1':"{name}: The highest newly diagnosed in the past 3 days {daysMaxConfirmedAdd}<br>New confirmed {confirmedAdd} yesterday",
         'text_ncp_riskLevel_title':"Epidemic Risk Level Map",

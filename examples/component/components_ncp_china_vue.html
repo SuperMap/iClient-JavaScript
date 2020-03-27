@@ -127,6 +127,9 @@
                 },
                 'china-incrementConfirmed': {
                     tooltip: function(properties) {
+                        if (isNaN(properties['confirmedAdd'])) {
+                            return resources.text_ncp_nodata_tooltip.replace('{name}', properties['省份']);
+                        }
                         return resources.text_ncp_incrementConfirmed_tooltip
                             .replace('{name}', properties['省份'])
                             .replace('{confirmedAdd}', properties['confirmedAdd']);
@@ -134,17 +137,22 @@
                     title: resources.text_ncp_incrementConfirmed_title,
                     'fill-color': [
                         'case',
-                        ['>=', ['get', 'confirmedAdd'], 200],
-                        '#d7301f',
-                        ['>=', ['get', 'confirmedAdd'], 100],
-                        '#ef6548',
-                        ['>=', ['get', 'confirmedAdd'], 50],
-                        '#fc8d59',
-                        ['>=', ['get', 'confirmedAdd'], 10],
-                        '#fdbb84',
-                        ['>=', ['get', 'confirmedAdd'], 1],
-                        '#fdd49e',
-                        '#F4F4F4'
+                        ['has', 'confirmedAdd'],
+                        [
+                            'case',
+                            ['>=', ['get', 'confirmedAdd'], 200],
+                            '#d7301f',
+                            ['>=', ['get', 'confirmedAdd'], 100],
+                            '#ef6548',
+                            ['>=', ['get', 'confirmedAdd'], 50],
+                            '#fc8d59',
+                            ['>=', ['get', 'confirmedAdd'], 10],
+                            '#fdbb84',
+                            ['>=', ['get', 'confirmedAdd'], 1],
+                            '#fdd49e',
+                            '#F4F4F4'
+                        ],
+                        '#D9D9D9'
                     ],
                     'text-field': [
                         'concat',
@@ -155,6 +163,9 @@
                 },
                 'china-nowConfirmed': {
                     tooltip: function(properties) {
+                        if (isNaN(properties['nowConfirmed'])) {
+                            return resources.text_ncp_nodata_tooltip.replace('{name}', properties['省份']);
+                        }
                         return resources.text_ncp_nowConfirmed_tooltip
                             .replace('{name}', properties['省份'])
                             .replace('{nowConfirmed}', properties['nowConfirmed']);
@@ -162,17 +173,22 @@
                     title: resources.text_ncp_nowConfirmed_title,
                     'fill-color': [
                         'case',
-                        ['>=', ['get', 'nowConfirmed'], 200],
-                        '#d7301f',
-                        ['>=', ['get', 'nowConfirmed'], 100],
-                        '#ef6548',
-                        ['>=', ['get', 'nowConfirmed'], 50],
-                        '#fc8d59',
-                        ['>=', ['get', 'nowConfirmed'], 10],
-                        '#fdbb84',
-                        ['>=', ['get', 'nowConfirmed'], 1],
-                        '#fdd49e',
-                        '#F4F4F4'
+                        ['has', 'nowConfirmed'],
+                        [
+                            'case',
+                            ['>=', ['get', 'nowConfirmed'], 200],
+                            '#d7301f',
+                            ['>=', ['get', 'nowConfirmed'], 100],
+                            '#ef6548',
+                            ['>=', ['get', 'nowConfirmed'], 50],
+                            '#fc8d59',
+                            ['>=', ['get', 'nowConfirmed'], 10],
+                            '#fdbb84',
+                            ['>=', ['get', 'nowConfirmed'], 1],
+                            '#fdd49e',
+                            '#F4F4F4'
+                        ],
+                        '#D9D9D9'
                     ],
                     'text-field': ['get', '省份'],
                     'line-color': '#83838D'
