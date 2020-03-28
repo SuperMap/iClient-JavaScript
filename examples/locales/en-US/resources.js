@@ -1394,6 +1394,9 @@ window.examplesResources = {
         'text_ncp_confirmed_tooltip':"{name}: Cumulative Confirmed {confirmed}",
         'text_ncp_confirmed':"Cumulative Confirmed",
         'text_ncpworld_incidence_title':"Reported incidence by World (per 100,000)",
+        'text_ncp_world':"Global NCP",
+        'text_ncp_china':"China NCP",
+
 
         "btn_previous":"Previous",
         "btn_next":"Next",

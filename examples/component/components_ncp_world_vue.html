@@ -257,12 +257,9 @@
                         background: 'rgba(0, 0, 0,0)',
                         colorGroup: ['rgb(225, 2, 0)']
                     });
-                    $.get(
-                        'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ui.json?time=' + new Date().getTime(),
-                        function(response) {
-                            document.title = response[utils.getLanguage()].title;
-                        }
-                    );
+                    $.get('https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ui.json?time=' + new Date().getTime(), function(response) {
+                        document.title = getTitle(response);
+                    });
                 },
                 computed: {
                     num() {
@@ -318,7 +315,8 @@
                     mapLoaded(e) {
                         this.map = e.map;
                         $.get(
-                            'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/worldNcp.json?time=' + new Date().getTime(),
+                            'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/worldNcp.json?time=' +
+                                new Date().getTime(),
                             function(response) {
                                 this.time = resources.text_ncp_time.replace('{time}', response.time);
                                 var latestProvinceData = this.getLatestWorldData(response);
@@ -628,6 +626,18 @@
                     return CountriesNameEn[name];
                 }
                 return name;
+            }
+            function getTitle(response) {
+                var titles = response[utils.getLanguage()];
+                if (titles) {
+                    if (titles.firstPriorityTitle) {
+                        return titles.firstPriorityTitle;
+                    }
+                    if (titles.title && titles.title.indexOf('{') < 0) {
+                        return titles.title;
+                    }
+                }
+                return resources.text_ncp_world;
             }
         </script>
     </body>

@@ -1340,6 +1340,8 @@ window.examplesResources = {
         'text_ncp_confirmed_tooltip':"{name}：累计确诊 {confirmed}",
         'text_ncp_confirmed':"累计确诊",
         'text_ncpworld_incidence_title':"全球报告发病率（每10万人）",
+        'text_ncp_world':"世界疫情",
+        'text_ncp_china':"中国疫情",
 
 
         "btn_previous":"上一步",
