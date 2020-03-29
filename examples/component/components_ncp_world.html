@@ -11,11 +11,7 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-web-map
-                style="background: #081f30;"
-                :map-options="mapOptions"
-                @load="mapLoaded"
-            ></sm-web-map>
+            <sm-web-map style="background: #081f30;" :map-options="mapOptions" @load="mapLoaded"></sm-web-map>
             <div id="group"></div>
         </div>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
@@ -40,7 +36,6 @@
                 '美国',
                 '法国',
                 '韩国',
-                '法国',
                 '瑞士',
                 '南非',
                 '格鲁吉亚',
