@@ -61,6 +61,14 @@ var exampleConfig = {
             thumbnail: 'components_ncp_world_vue.png',
             fileName: 'components_ncp_world_vue',
             localIgnore: true
+          },
+          {
+            name: '疫情国家紧急状态',
+            name_en: 'National Emergency',
+            version: '10.0.2',
+            thumbnail: 'components_ncp_world.png',
+            fileName: 'components_ncp_world',
+            localIgnore: true
           }
         ]
       },
