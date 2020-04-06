@@ -8,7 +8,7 @@ import { CloverShape } from './graphic/CloverShape';
 import { CommonUtil } from '@supermap/iclient-common';
 import { GraphicWebGLRenderer } from './graphic/WebGLRenderer';
 import { GraphicCanvasRenderer } from './graphic/CanvasRenderer';
-import {Graphic as OverlayGraphic} from './graphic/Graphic';
+import { Graphic as OverlayGraphic } from './graphic/Graphic';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 import Style from 'ol/style/Style';
 import CircleStyle from 'ol/style/Circle';
@@ -82,12 +82,29 @@ export class Graphic extends ImageCanvasSource {
     const me = this;
 
     if (options.onClick) {
-      me.map.on('click', function (e) {
-        me.map.forEachFeatureAtPixel(e.pixel, options.onClick, {}, e);
+      me.map.on('click', function(e) {
+        const features = me.map.getFeaturesAtPixel(e.pixel) || [];
+        for (let index = 0; index < features.length; index++) {
+          const graphic = features[index];
+          if (me.graphics.indexOf(graphic) > -1) {
+            options.onClick(graphic, e);
+            if (me.isHighLight) {
+              me._highLight(
+                graphic.getGeometry().getCoordinates(),
+                new Style({
+                  image: graphic.getStyle()
+                }).getImage(),
+                graphic,
+                e.pixel
+              );
+            }
+          }
+          break;
+        }
       });
     }
-
-    function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
+    //eslint-disable-next-line no-unused-vars
+    function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
       if (!me.renderer) {
         me.renderer = createRenderer(size, pixelRatio);
       }
@@ -122,10 +139,10 @@ export class Graphic extends ImageCanvasSource {
         opt = CommonUtil.extend(me, opt);
         opt.pixelRatio = pixelRatio;
         opt.container = me.map.getViewport().getElementsByClassName('ol-overlaycontainer')[0];
-        opt.onBeforeRender = function () {
+        opt.onBeforeRender = function() {
           return false;
         };
-        opt.onAfterRender = function () {
+        opt.onAfterRender = function() {
           return false;
         };
 
@@ -197,9 +214,6 @@ export class Graphic extends ImageCanvasSource {
         }
 
         if (contain === true) {
-          if (me.isHighLight) {
-            me._highLight(center, image, graphics[i], evtPixel);
-          }
           if (callback) {
             callback(graphics[i], e);
           }
@@ -522,13 +536,13 @@ export class Graphic extends ImageCanvasSource {
   getGraphicsInExtent(extent) {
     var graphics = [];
     if (!extent) {
-      this.graphics.map(function (graphic) {
+      this.graphics.map(function(graphic) {
         graphics.push(graphic);
         return graphic;
       });
       return graphics;
     }
-    this.graphics.map(function (graphic) {
+    this.graphics.map(function(graphic) {
       if (olExtent.containsExtent(extent, graphic.getGeometry().getExtent())) {
         graphics.push(graphic);
       }
