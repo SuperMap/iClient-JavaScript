@@ -42,7 +42,7 @@ import Style from 'ol/style/Style';
 import FillStyle from 'ol/style/Fill';
 import Text from 'ol/style/Text';
 import Collection from 'ol/Collection';
-import { getCenter } from "ol/extent";
+import { containsCoordinate, getCenter } from "ol/extent";
 
 window.proj4 = proj4;
 window.Proj4js = proj4;
@@ -190,6 +190,7 @@ export class WebMap extends Observable {
                 mapInfo.projection = "EPSG:4326";
             }
             that.baseProjection = mapInfo.projection;
+            that.webMapVersion = mapInfo.version;
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -242,7 +243,7 @@ export class WebMap extends Observable {
      */
     getScales(baseLayerInfo) {
         let scales = [], resolutions = {}, res, scale, resolutionArray = [],
-            coordUnit = baseLayerInfo.coordUnit || baseLayerInfo.units || baseLayerInfo.unit;
+            coordUnit = baseLayerInfo.coordUnit || olProj.get(baseLayerInfo.projection).getUnits();
         if(!coordUnit) {
             coordUnit = this.baseProjection === "EPSG:3857" ? "m" : "degree";
         }
@@ -253,7 +254,7 @@ export class WebMap extends Observable {
                 res = this.getResFromScale(value, coordUnit);
                 scale = `1:${value.toLocaleString()}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
-                resolutions[scale.replace(/,/g, "")] = res;
+                resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
                 scales.push(scale);
             }, this)
@@ -262,7 +263,7 @@ export class WebMap extends Observable {
                 res = this.getResFromScale(scale, coordUnit, 90.7);
                 scale = `1:${scale.toLocaleString()}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
-                resolutions[scale.replace(/,/g, "")] = res;
+                resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
                 scales.push(scale);
             }, this)
@@ -271,13 +272,15 @@ export class WebMap extends Observable {
             for(let i=minZoom; i<= maxZoom; i++) {
                 res = view.getResolutionForZoom(i);
                 scale = this.getScaleFromRes(res, coordUnit);
-                scales.push(scale);
-                let attr = scale.replace(/,/g, "");
-                resolutions[attr] = res;
-                resolutionArray.push(res);
+                if(scales.indexOf(scale) === -1) {
+                    //不添加重复的比例尺
+                    scales.push(scale);
+                    let attr = scale.replace(/,/g, "");
+                    resolutions[attr] = res;
+                    resolutionArray.push(res);
+                }
             }
         }
-        scales = Array.from(new Set(scales));
         this.scales = scales;
         this.resolutions = resolutions;
         this.resolutionArray = resolutionArray;
@@ -307,7 +310,15 @@ export class WebMap extends Observable {
         scale = resolution * dpi * mpu / .0254;
         return '1:'+ scale.toLocaleString();
     }
-
+     /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.formatScale
+     * @description 将有千位符的数字转为普通数字。例如：1,234 => 1234
+     * @param {number} scale - 比例尺分母
+     */
+    formatScale(scale) {
+        return scale.replace(/,/g, "");
+    }
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createSpecLayer
@@ -462,7 +473,9 @@ export class WebMap extends Observable {
             await this.getTileInfo(baseLayer);
         }
         baseLayer.projection = mapInfo.projection;
-        baseLayer.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+        if(!baseLayer.extent) {
+            baseLayer.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+        }
         this.createView(mapInfo);
         let layer = this.createBaseLayer(baseLayer, 0);
         //底图增加图层类型，DV分享需要用它来识别版权信息
@@ -543,6 +556,8 @@ export class WebMap extends Observable {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
         }
+        //当前中心点不在extent内,就用extent的中心点 todo
+        !containsCoordinate(extent, center) && (center = getCenter(extent));
 
         // 计算当前最大分辨率
         let baseLayer = options.baseLayer;
@@ -564,7 +579,8 @@ export class WebMap extends Observable {
         let viewOptions;
         if(baseLayer.layerType === "WMTS"){
             if(baseLayer.scales && baseLayer.scales.length >0) {
-                viewOptions = { zoom, center, projection, extent, resolutions: this.resolutionArray, maxZoom};
+                //因为新版extent超出，不可见。所以将extent去除
+                viewOptions = { zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
             } else {
                 viewOptions = { zoom, center, projection, maxZoom};
                 this.getScales(baseLayer);
@@ -672,11 +688,11 @@ export class WebMap extends Observable {
 
         let {visibleScale, autoUpdateTime} = layerInfo, minResolution, maxResolution;
         if(visibleScale) {
-            maxResolution = this.getResolution(visibleScale.minScale);
-            minResolution = this.getResolution(visibleScale.maxScale);
+            maxResolution = this.resolutions[visibleScale.minScale];
+            minResolution = this.resolutions[visibleScale.maxScale];
             //比例尺和分别率是反比的关系
-            layer.setMaxResolution(Math.ceil(maxResolution));
-            layer.setMinResolution(Math.floor(minResolution));
+            maxResolution > 1 ? layer.setMaxResolution(Math.ceil(maxResolution)) : layer.setMaxResolution(maxResolution * 1.1);
+            layer.setMinResolution(minResolution);
         }
         if(autoUpdateTime && !layerInfo.autoUpdateInterval) {
             //自动更新
@@ -1110,33 +1126,39 @@ export class WebMap extends Observable {
                     tileMatrixSet = content.TileMatrixSet,
                     layers = content.Layer,
                     layer, relSet = [],
-                    idx;
+                    idx, layerFormat;
 
                 for (let n = 0; n < layers.length; n++) {
                     if (layers[n].Title === layerInfo.name) {
                         idx = n;
                         layer = layers[idx];
+                        layerFormat = layer.Format[0];
                         var layerBounds = layer.WGS84BoundingBox;
                         // tileMatrixSetLink = layer.TileMatrixSetLink;
                         break;
                     }
                 }
-                let scales = [];
+                let scales = [], matrixIds = [];
                 for (let i = 0; i < tileMatrixSet.length; i++) {
                     if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
                         let wmtsLayerEpsg = `EPSG:${tileMatrixSet[i].SupportedCRS.split('::')[1]}`;
                         for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
-                            scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
+                            scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator);
+                            matrixIds.push(tileMatrixSet[i].TileMatrix[h].Identifier);
                         }
                         //bug wmts出图需要加上origin，否则会出现出图不正确的情况。偏移或者瓦片出不了
                         let origin = tileMatrixSet[i].TileMatrix[0].TopLeftCorner;
-                        layerInfo.origin = wmtsLayerEpsg === "EPSG:4326" ? [origin[1], origin[0]] : origin;
+                        layerInfo.origin = ["EPSG:4326", "EPSG:4490"].includes(wmtsLayerEpsg) ? [origin[1], origin[0]] : origin;
                         break;
                     }
                 }
                 let name = layerInfo.name,
-                    extent = olProj.transformExtent(layerBounds, 'EPSG:4326', that.baseProjection),
-                    matrixSet = relSet[idx];
+                    matrixSet = relSet[idx], extent;
+                if(layerBounds) {
+                    extent = olProj.transformExtent(layerBounds, 'EPSG:4326', that.baseProjection);
+                } else {
+                    extent = olProj.get(that.baseProjection).getExtent()
+                }
                 //将需要的参数补上
                 layerInfo.dpi = 90.7;
                 layerInfo.extent = extent;
@@ -1151,6 +1173,8 @@ export class WebMap extends Observable {
                 layerInfo.style = "default";
                 layerInfo.title = name;
                 layerInfo.unit = "m";
+                layerInfo.layerFormat = layerFormat;
+                layerInfo.matrixIds = matrixIds;
                 if(mapInfo){
                     callback && callback(mapInfo, null, true, that);
                 }else{
@@ -1177,10 +1201,10 @@ export class WebMap extends Observable {
         return new olSource.WMTS({
             url: layerInfo.url,
             layer: layerInfo.layer,
-            format: 'image/png',
+            format: layerInfo.layerFormat,
             matrixSet: layerInfo.tileMatrixSet,
             requestEncoding: layerInfo.requestEncoding || 'KVP',
-            tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin),
+            tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin, layerInfo.matrixIds),
             tileLoadFunction: function (imageTile, src) {
                 imageTile.getImage().src = src
             }
@@ -1198,13 +1222,13 @@ export class WebMap extends Observable {
      * @param {Array} origin 瓦片的原点
      * @returns {ol/tilegrid/WMTS}
      */
-    getWMTSTileGrid(extent, scales, unit, dpi, origin) {
+    getWMTSTileGrid(extent, scales, unit, dpi, origin, matrixIds) {
         let resolutionsInfo = this.getReslutionsFromScales(scales, dpi || 96, unit);
         return new WMTSTileGrid({
             origin,
             extent: extent,
             resolutions: resolutionsInfo.res,
-            matrixIds: resolutionsInfo.matrixIds
+            matrixIds: matrixIds || resolutionsInfo.matrixIds
         });
     }
 
@@ -1338,7 +1362,15 @@ export class WebMap extends Observable {
                                     features = that.geojsonToFeature(data.content, layer);
 
                                 } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-                                    features = that.excelData2Feature(data.content, layer);
+                                    if(layer.dataSource && layer.dataSource.administrativeInfo ) {
+                                        //行政规划信息
+                                        data.content.rows.unshift(data.content.colTitles);
+                                        let { divisionType, divisionField } = layer.dataSource.administrativeInfo;
+                                        let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
+                                        features = that._parseGeoJsonData2Feature({allDatas:{features:geojson.features},fileCode:layer.projection});
+                                    } else {
+                                        features = that.excelData2Feature(data.content, layer);
+                                    }
                                 }
                                 that.addLayer(layer, features, layerIndex);
                                 that.layerAdded++;
@@ -1466,15 +1498,27 @@ export class WebMap extends Observable {
         }).then(async function (data) {
             if (!data || data.succeed === false) {
                 //请求失败
-                that.layerAdded++;
-                that.sendMapToUser(len);
-                that.errorCallback && that.errorCallback(data.error, 'getLayerFaild', that.map);
+                if(len) {
+                    that.errorCallback && that.errorCallback(data.error, 'autoUpdateFaild', that.map)
+                } else {
+                    that.layerAdded++;
+                    that.sendMapToUser(len);
+                    that.errorCallback && that.errorCallback(data.error, 'getLayerFaild', that.map);
+                }
                 return;
             }
             let features = that.geojsonToFeature(data, layerInfo);
-            that.addLayer(layerInfo, features, layerIndex);
-            that.layerAdded++;
-            that.sendMapToUser(len);
+            if(len) {
+                //上图
+                that.addLayer(layerInfo, features, layerIndex);
+                that.layerAdded++;
+                that.sendMapToUser(len);
+            } else {
+                //自动更新
+                that.map.removeLayer(layerInfo.layer);
+                layerInfo.labelLayer && that.map.removeLayer(layerInfo.labelLayer);
+                that.addLayer(layerInfo, features, layerIndex);
+            }
         }).catch(function (error) {
             that.layerAdded++;
             that.sendMapToUser(len);
@@ -1668,29 +1712,6 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function ol.supermap.WebMap.prototype.getXYFieldFromData
-     * @description 获取二进制数据的XYindex
-     * @param {Object} layerInfo - 图层信息
-     */
-    getXYFieldFromData(layerInfo) {
-        let requestUrl = this.getRequestUrl(`${this.server}web/datas/${layerInfo.dataSource.serverId}.json`);
-        return FetchRequest.get(requestUrl, null, {
-            withCredentials: this.withCredentials
-        }).then(function (response) {
-            return response.json()
-        }).then(function (result) {
-            const { dataMetaInfo } = result;
-            layerInfo.xIdx = dataMetaInfo.xIndex;
-            layerInfo.yIdx = dataMetaInfo.yIndex;
-            layerInfo.xyField = {
-                xField: dataMetaInfo.xField,
-                yField: dataMetaInfo.yField
-            }
-        });
-    }
-
-    /**
-     * @private
      * @function ol.supermap.WebMap.prototype.excelData2Feature
      * @description 将csv和xls文件内容转换成ol.feature
      * @param {object} content - 文件内容
@@ -1707,13 +1728,10 @@ export class WebMap extends Observable {
             }
         }
         let fileCode = layerInfo.projection,
-            baseLayerEpsgCode = this.baseProjection,
-            features = [], xIdx, yIdx;
             xIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField))),
-            yIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField)));
-        if(xIdx === -1 || yIdx === -1) {
-            return features;
-        }
+            yIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField))),
+            baseLayerEpsgCode = this.baseProjection,
+            features = [];
         for (let i = 0, len = rows.length; i < len; i++) {
             let rowDatas = rows[i],
                 attributes = {},
@@ -1736,6 +1754,93 @@ export class WebMap extends Observable {
             }
         }
         return features;
+    }
+    /**
+     * 行政区划数据处理 
+     * @param {*} content 
+     * @param {*} layerInfo 
+     */
+    excelData2FeatureByDivision(content, divisionType, divisionField) {
+        let me = this;
+        let asyncInport;
+        if(divisionType === 'Province'){
+            asyncInport = window.ProvinceData;
+        }else if(divisionType === 'City'){
+            asyncInport = window.MunicipalData;
+        } else if(divisionType === 'GB-T_2260') {
+            // let geojso;
+            asyncInport = window.AdministrativeArea;
+        }
+        if(asyncInport){
+            let geojson = me.changeExcel2Geojson(asyncInport.features, content.rows, divisionType, divisionField);
+            return geojson;
+        }
+    }
+    
+    /**
+     * @description 将geojson的数据转换成ol.Feature 
+     * @author gaozy
+     * @param {any} metaData
+     * @returns 
+     */
+    _parseGeoJsonData2Feature(metaData) {
+        let allFeatures = metaData.allDatas.features,
+            features = [];
+        for (let i = 0, len = allFeatures.length; i < len; i++) {
+            //不删除properties转换后，属性全都在feature上
+            let properties = Object.assign({}, allFeatures[i].properties);
+            delete allFeatures[i].properties;
+            let feature = transformTools.readFeature(allFeatures[i], {
+                dataProjection: metaData.fileCode,
+                featureProjection: this.baseProjection || 'ESPG:4326'
+            });
+            feature.setProperties({ attributes: properties });
+            features.push(feature);
+        }
+        return features;
+    }
+
+    /**
+     * @description 将excel和csv数据转换成标准geojson数据
+     * @author chengl
+     * @param {Array} datas excel和csv数据
+     * @param {String} divisionType 行政区划类型（省份 or 城市）
+     * @param {String} divisionField 行政区划字段
+     * @returns 
+     * @memberof AddFromFileModal
+     */
+    changeExcel2Geojson(features, datas, divisionType, divisionField) {
+        let geojson = {
+            type: 'FeatureCollection',
+            features: []
+        };
+        if (datas.length < 2) {
+            return geojson; //只有一行数据时为标题
+        }
+        let titles = datas[0],
+            rows = datas.slice(1),
+            fieldIndex = titles.findIndex(title => title === divisionField);
+        rows.forEach(row => {
+            let feature = features.find(item => {
+                if(divisionType === 'GB-T_2260') {
+                    return item.properties.GB === row[fieldIndex];
+                } else {
+                    return Util.isMatchAdministrativeName(item.properties.Name, row[fieldIndex]);
+                }
+            })
+            //todo 需提示忽略无效数据
+            if (feature) {
+                let newFeature = window.cloneDeep(feature);
+                newFeature.properties = {};
+                row.forEach((item, idx) => {
+                    //空格问题，看见DV多处处理空格问题，TODO统一整理
+                    let key = titles[idx].trim();
+                    newFeature.properties[key] = item;
+                });
+                geojson.features.push(newFeature);
+            } 
+        });
+        return geojson;
     }
 
     /**
@@ -1848,7 +1953,7 @@ export class WebMap extends Observable {
             delete allFeatures[i].properties;
             let feature = transformTools.readFeature(allFeatures[i], {
                 dataProjection: metaData.fileCode || 'EPSG:4326',
-                featureProjection: metaData.featureProjection || Util.getBaseLayerProj() || 'EPSG:4326'
+                featureProjection: metaData.featureProjection || this.baseProjection || 'EPSG:4326'
             });
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
             let coordinate = feature.getGeometry().getCoordinates();
@@ -1932,11 +2037,11 @@ export class WebMap extends Observable {
             layer.setZIndex(index);
             let {visibleScale, autoUpdateTime} = layerInfo, minResolution, maxResolution;
             if(visibleScale) {
-                maxResolution = this.getResolution(visibleScale.minScale);
-                minResolution = this.getResolution(visibleScale.maxScale);
+                maxResolution = this.resolutions[visibleScale.minScale];
+                minResolution = this.resolutions[visibleScale.maxScale];
                 //比例尺和分别率是反比的关系
-                layer.setMaxResolution(Math.ceil(maxResolution));
-                layer.setMinResolution(Math.floor(minResolution));
+                maxResolution > 1 ? layer.setMaxResolution(Math.ceil(maxResolution)) : layer.setMaxResolution(maxResolution * 1.1);
+                layer.setMinResolution(minResolution);
             }
             if(autoUpdateTime && !layerInfo.autoUpdateInterval) {
                 //自动更新数据
@@ -1964,23 +2069,27 @@ export class WebMap extends Observable {
     updateFeaturesToMap(layerInfo, layerIndex) {
         let that = this, dataSource = layerInfo.dataSource, url = layerInfo.dataSource.url,
         dataSourceName= dataSource.dataSourceName || layerInfo.name;
-        let requestUrl = that.getRequestUrl(url);
-        //因为itest上使用的https，iserver是http，所以要加上代理
-        Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
-            let features = that.parseGeoJsonData2Feature({
-                allDatas: {
-                    features: result.result.features.features
-                },
-                fileCode: layerInfo.projection,
-                featureProjection: that.baseProjection
+        if(dataSource.type === "USER_DATA") {
+            that.addGeojsonFromUrl(layerInfo, null, layerIndex)
+        } else {
+            let requestUrl = that.getRequestUrl(url); 
+            //因为itest上使用的https，iserver是http，所以要加上代理
+            Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
+                let features = that.parseGeoJsonData2Feature({
+                    allDatas: {
+                        features: result.result.features.features
+                    },
+                    fileCode: layerInfo.projection,
+                    featureProjection: that.baseProjection
+                });
+                //删除之前的图层和标签图层
+                that.map.removeLayer(layerInfo.layer);
+                layerInfo.labelLayer && that.map.removeLayer(layerInfo.labelLayer);
+                that.addLayer(layerInfo, features, layerIndex);
+            }, function (err) {
+                that.errorCallback && that.errorCallback(err, 'autoUpdateFaild', that.map);
             });
-            //删除之前的图层和标签图层
-            that.map.removeLayer(layerInfo.layer);
-            layerInfo.labelLayer && that.map.removeLayer(layerInfo.labelLayer);
-            that.addLayer(layerInfo, features, layerIndex);
-        }, function (err) {
-            that.errorCallback && that.errorCallback(err, 'autoUpdateFaild', that.map)
-        });
+        }
     }
     /**
      * @private
@@ -1993,7 +2102,13 @@ export class WebMap extends Observable {
         let str = scale.split(":")[1];
         str = str.replace(/,/g, "");
         let num = Number(str.trim()), res;
-        res = num * .0254 / 96;
+        if (this.baseProjection === 'EPSG:4326') {
+            //4326
+            res = num * .0254 / 96 / ((Math.PI * 2 * 6370997) / 360);
+        } else {
+            //3857
+            res = num * .0254 / 96;
+        }
         return res;
     }
 
@@ -2250,7 +2365,7 @@ export class WebMap extends Observable {
 
         return new Style({
             text: new Text({
-                font: "14px " + parameters.fontFamily,
+                font: `${parameters.fontSize || '14px'} ${parameters.fontFamily}`,
                 placement: 'point',
                 textAlign: 'center',
                 fill: new FillStyle({
@@ -2385,7 +2500,10 @@ export class WebMap extends Observable {
             let styleSource = layer.get('styleSource');
             let labelField = styleSource.themeField;
             let label = feature.get('attributes')[labelField];
-            return styleSource.styleGroups[label].olStyle;
+            let styleGroup = styleSource.styleGroups.find(item => {
+                return item.value === label;
+            })
+            return styleGroup.olStyle;
         });
 
         return layer;
@@ -2452,10 +2570,13 @@ export class WebMap extends Observable {
         //生成styleGroup
         let styleGroup = [];
         names.forEach(function (name, index) {
-            let color = curentColors[index];
-            if (index in customSettings) {
-                color = customSettings[index];
+            //兼容之前自定义是用key，现在因为数据支持编辑，需要用属性值。
+            let key = this.webMapVersion === "1.0" ? index : name;
+            let color = curentColors[key];
+            if (key in customSettings) {
+                color = customSettings[key];
             }
+
             if (featureType === "LINE") {
                 style.strokeColor = color;
             } else {
@@ -2463,13 +2584,12 @@ export class WebMap extends Observable {
             }
             // 转化成 ol 样式
             let olStyle = StyleUtils.toOpenLayersStyle(style, featureType);
-
-            styleGroup[name] = {
+            styleGroup.push({
                 olStyle: olStyle,
                 color: color,
                 value: name
-            };
-        });
+            });
+        }, this);
 
         return styleGroup;
     }
