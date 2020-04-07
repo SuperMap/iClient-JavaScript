@@ -1781,7 +1781,7 @@ export class WebMap extends Observable {
      * @description 将geojson的数据转换成ol.Feature 
      * @author gaozy
      * @param {any} metaData
-     * @returns 
+     * @returns {Array.<ol/Feature>} features
      */
     _parseGeoJsonData2Feature(metaData) {
         let allFeatures = metaData.allDatas.features,
@@ -1806,7 +1806,7 @@ export class WebMap extends Observable {
      * @param {Array} datas excel和csv数据
      * @param {String} divisionType 行政区划类型（省份 or 城市）
      * @param {String} divisionField 行政区划字段
-     * @returns 
+     * @returns {GeoJSONObject} geojson GeoJSON数据
      * @memberof AddFromFileModal
      */
     changeExcel2Geojson(features, datas, divisionType, divisionField) {
