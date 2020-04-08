@@ -3474,8 +3474,12 @@ export class WebMap extends Observable {
         let pointData = this.createPointsData(lineData, layerInfo, properties);
         let options = this.createOptions(layerInfo, lineData, pointData);
         let layer = new window.EChartsLayer(options, {
-            hideOnMoving: true,
-            hideOnZooming: true
+            // hideOnMoving: true,
+            // hideOnZooming: true
+            //以下三个参数，如果不按照这样设置，会造成不可见图层时，缩放还会出现图层
+            hideOnMoving: false,
+            hideOnZooming: false,
+            forcedPrecomposeRerender: true
         });
         layer.type = 'ECHARTS';
         return layer;
