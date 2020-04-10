@@ -22,7 +22,7 @@ import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';
 import './leaflet/overlay/LabelThemeLayerSpec.js';
-import './leaflet/overlay/mapVLayerSpec.js';
+import './leaflet/overlay/MapVLayerSpec.js';
 import './leaflet/overlay/RangeThemeLayerSpec.js';
 import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
 import './leaflet/overlay/TileVectorLayerSpec.js';
@@ -75,5 +75,5 @@ import './leaflet/components/distributedanalysis/DistributedAnalysisViewSpec.js'
 import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/components/search/SearchViewSpec.js';
 import './leaflet/components/dataflow/DataFlowViewSpec.js';
-import './leaflet/overlay/DataFlowlayerSpec.js';
+import './leaflet/overlay/DataFlowLayerSpec.js';
 
