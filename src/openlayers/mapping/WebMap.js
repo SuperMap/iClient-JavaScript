@@ -60,6 +60,10 @@ const metersPerUnit = {
     M: 1,
     USFEET: 1200 / 3937
 };
+const dpiConfig = {
+    default: 96, // 常用dpi
+    iServerWMTS: 90.7142857142857 // iserver使用的wmts图层dpi
+}
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
@@ -509,8 +513,9 @@ export class WebMap extends Observable {
      */
     addMVTBaseMap(mapInfo) {
         // 获取地图详细信息
-        return this.getMBStyle(mapInfo).then(baseLayerInfo => {
+        return this.getMBStyle(mapInfo).then(() => {
             // 创建图层
+            let baseLayerInfo = mapInfo.baseLayer;
             return this.createMVTLayer(baseLayerInfo).then(layer => {
                 let layerID = Util.newGuid(8);
                 if (baseLayerInfo.name) {
@@ -565,7 +570,7 @@ export class WebMap extends Observable {
         if((baseLayer.visibleScales && baseLayer.visibleScales.length > 0) || (baseLayer.scales && baseLayer.scales.length >0)) {
             //底图有固定比例尺，就直接获取。不用view计算
             this.getScales(baseLayer);
-        } else if(options.baseLayer && ['TILE', 'MAPBOXSTYLE'].includes(options.baseLayer.layerType) && extent && extent.length === 4){
+        } else if(options.baseLayer && ['TILE', 'VECTOR_TILE'].includes(options.baseLayer.layerType) && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width / 512;
@@ -1159,6 +1164,8 @@ export class WebMap extends Observable {
                 } else {
                     extent = olProj.get(that.baseProjection).getExtent()
                 }
+                const isKvp = layerInfo.requestEncoding === 'KVP';
+                layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, isKvp, layerInfo.layer, layerInfo.tileMatrixSet);
                 //将需要的参数补上
                 layerInfo.dpi = 90.7;
                 layerInfo.extent = extent;
@@ -1167,8 +1174,6 @@ export class WebMap extends Observable {
                 layerInfo.name = name;
                 layerInfo.orginEpsgCode = layerInfo.projection;
                 layerInfo.overLayer = true;
-                //只有这种，Dataviz里面不应该选择
-                layerInfo.requestEncoding = 'KVP';
                 layerInfo.scales = scales;
                 layerInfo.style = "default";
                 layerInfo.title = name;
@@ -1185,6 +1190,30 @@ export class WebMap extends Observable {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
     }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getTileUrl
+     * @description 获取wmts的图层参数。
+     * @param {array} getTileArray - 图层信息。
+     * @param {boolean} isKvp - 是否是kvp方式
+     * @param {string} layer - 选择的图层
+     * @param {string} matrixSet -选择比例尺
+     */
+    getTileUrl(getTileArray, isKvp, layer, matrixSet) {
+        let url, type = isKvp ? 'KVP' : 'RESTful';
+        getTileArray.forEach(data => {
+            if(data.Constraint[0].AllowedValues.Value[0].toUpperCase() === type.toUpperCase()) {
+                url = data.href;
+            }      
+        })
+        if(!isKvp) {
+            //Restful格式
+            url = `${url}${layer}/default/${matrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png`;
+            //supermap iserver发布的restful会有一个？
+            url = url.replace('?', '/');
+        }
+        return url;
+    }
 
     /**
      * @private
@@ -1199,7 +1228,7 @@ export class WebMap extends Observable {
         // 单位通过坐标系获取 （PS: 以前代码非4326 都默认是米）
         let unit = olProj.get(this.baseProjection).getUnits();
         return new olSource.WMTS({
-            url: layerInfo.url,
+            url: layerInfo.tileUrl || layerInfo.url,
             layer: layerInfo.layer,
             format: layerInfo.layerFormat,
             matrixSet: layerInfo.tileMatrixSet,
@@ -1244,8 +1273,8 @@ export class WebMap extends Observable {
      */
     getReslutionsFromScales(scales, dpi, unit, datumAxis) {
         unit = (unit && unit.toLowerCase()) || 'degrees';
-        dpi = dpi > 0 ? dpi : 96;
-        datumAxis = datumAxis || 6378137;
+        dpi = dpi || dpiConfig.iServerWMTS;
+        datumAxis = datumAxis || 6370997;
         let res = [],
             matrixIds = [];
         //给个默认的
@@ -3762,7 +3791,6 @@ export class WebMap extends Observable {
             baseLayer = mapInfo.baseLayer,
             dataSource = baseLayer.dataSource || {},
             { url, serverId } = dataSource,
-            layerInfo = {},
             styleUrl;
         styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
         return FetchRequest.get(this.getRequestUrl(styleUrl), null, {
@@ -3778,16 +3806,14 @@ export class WebMap extends Observable {
             let extent = styles.metadata.mapbounds;
             baseLayer.extent = extent; // 这里把extent保存一下
 
-            layerInfo.projection = mapInfo.projection;
-            layerInfo.epsgCode = mapInfo.projection;
-            layerInfo.visible = baseLayer.visible;
-            layerInfo.name = baseLayer.name;
-            layerInfo.url = url;
-            layerInfo.sourceType = 'VECTOR_TILE';
-            layerInfo.layerType = 'VECTOR_TILE';
-            layerInfo.styles = styles;
-            layerInfo.extent = extent;
-            layerInfo.bounds = {
+            baseLayer.projection = mapInfo.projection;
+            baseLayer.epsgCode = mapInfo.projection;
+            baseLayer.url = url;
+            baseLayer.sourceType = 'VECTOR_TILE';
+            baseLayer.layerType = 'VECTOR_TILE';
+            baseLayer.styles = styles;
+            baseLayer.extent = extent;
+            baseLayer.bounds = {
                 bottom: extent[1],
                 left: extent[0],
                 leftBottom: { x: extent[0], y: extent[1] },
@@ -3795,7 +3821,6 @@ export class WebMap extends Observable {
                 rightTop: { x: extent[2], y: extent[3] },
                 top: extent[3]
             }
-            return layerInfo;
         })
     }
 
