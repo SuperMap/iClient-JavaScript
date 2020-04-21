@@ -3203,7 +3203,9 @@ export class WebMap extends Observable {
             segmentCount = themeSetting.segmentCount || this.defaultParameters.themeSetting.segmentCount,
             customSettings = themeSetting.customSettings,
             minR = parameters.themeSetting.minRadius,
-            maxR = parameters.themeSetting.maxRadius;
+            maxR = parameters.themeSetting.maxRadius,
+            fillColor = style.fillColor,
+            colors = parameters.themeSetting.colors;
         features.forEach(feature => {
             let attributes = feature.get('attributes'),
                 value = attributes[themeField];
@@ -3235,19 +3237,22 @@ export class WebMap extends Observable {
             let len = segements.length,
                 incrementR = (maxR - minR) / (len - 1), // 半径增量
                 start, end, radius = Number(((maxR + minR) / 2).toFixed(2));
-            for (let i = 0; i < len - 1; i++) {
-                start = Number(segements[i].toFixed(2));
-                end =  Number(segements[i + 1].toFixed(2));
+            // 获取颜色
+            let rangeColors = colors ? ColorsPickerUtil.getGradientColors(colors, len, 'RANGE') : [];
+            for (let j = 0; j < len - 1; j++) {
+                start = Number(segements[j].toFixed(2));
+                end =  Number(segements[j + 1].toFixed(2));
                 // 这里特殊处理以下分段值相同的情况（即所有字段值相同）
-                radius = start === end ? radius : minR + Math.round(incrementR * i);
+                radius = start === end ? radius : minR + Math.round(incrementR * j);
                 // 最后一个分段时将end+0.01，避免取不到最大值
-                end = i === len - 2 ? end + 0.01 : end;
+                end = j === len - 2 ? end + 0.01 : end;
                 // 处理自定义 半径
-                radius = customSettings[i] && customSettings[i].radius ? customSettings[i].radius : radius;
+                radius = customSettings[j] && customSettings[j].radius ? customSettings[j].radius : radius;
                 // 转化成 ol 样式
                 style.radius = radius;
+                style.fillColor = customSettings[j] && customSettings[j].color ? customSettings[j].color : rangeColors[j] || fillColor;
                 let olStyle = StyleUtils.getOpenlayersStyle(style, featureType, true);
-                styleGroup.push({ olStyle: olStyle, radius, start, end });
+                styleGroup.push({ olStyle: olStyle, radius, start, end, fillColor: style.fillColor });
             }
             return styleGroup;
         } else {

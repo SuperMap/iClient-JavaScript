@@ -1,5 +1,5 @@
 
-import { ClientComputationLayer } from '../../../../src/leaflet/components/clientcomputation/clientComputationLayer';
+import { ClientComputationLayer } from '../../../../src/leaflet/components/clientcomputation/ClientComputationLayer';
 import { ClientComputationView } from '../../../../src/leaflet/components/clientcomputation/ClientComputationView'
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import { QueryBySQLService } from '../../../../src/common/iServer/QueryBySQLService';
