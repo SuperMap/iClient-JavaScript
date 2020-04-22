@@ -1536,7 +1536,13 @@ export class WebMap extends Observable {
                 }
                 return;
             }
-            let features = that.geojsonToFeature(data, layerInfo);
+            var features;
+            if (data.type === 'CSV' || data.type === 'EXCEL') {
+                features = that.excelData2Feature(data.content, layerInfo);
+            } else {
+                var geoJson = data.content ? JSON.parse(data.content) : data;
+                features = that.geojsonToFeature(geoJson, layerInfo);
+            }
             if(len) {
                 //上图
                 that.addLayer(layerInfo, features, layerIndex);
@@ -2078,6 +2084,11 @@ export class WebMap extends Observable {
             }
             if(autoUpdateTime && !layerInfo.autoUpdateInterval) {
                 //自动更新数据
+                let dataSource = layerInfo.dataSource;
+                if (dataSource.accessType === "DIRECT" && !dataSource.url) {
+                    // 二进制数据更新feautre所需的url
+                    dataSource.url = `${this.server}web/datas/${dataSource.serverId}/content.json?pageSize=9999999&currentPage=1`
+                }
                 layerInfo.autoUpdateInterval = setInterval(() => {
                     that.updateFeaturesToMap(layerInfo, index, true);
                 }, autoUpdateTime);
@@ -2102,7 +2113,8 @@ export class WebMap extends Observable {
     updateFeaturesToMap(layerInfo, layerIndex) {
         let that = this, dataSource = layerInfo.dataSource, url = layerInfo.dataSource.url,
         dataSourceName= dataSource.dataSourceName || layerInfo.name;
-        if(dataSource.type === "USER_DATA") {
+
+        if(dataSource.type === "USER_DATA" || dataSource.accessType==="DIRECT" ) {
             that.addGeojsonFromUrl(layerInfo, null, layerIndex)
         } else {
             let requestUrl = that.getRequestUrl(url); 
