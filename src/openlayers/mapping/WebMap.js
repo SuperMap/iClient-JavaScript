@@ -1538,7 +1538,15 @@ export class WebMap extends Observable {
             }
             var features;
             if (data.type === 'CSV' || data.type === 'EXCEL') {
-                features = that.excelData2Feature(data.content, layerInfo);
+                if (layerInfo.dataSource && layerInfo.dataSource.administrativeInfo) {
+                    //行政规划信息
+                    data.content.rows.unshift(data.content.colTitles);
+                    let { divisionType, divisionField } = layerInfo.dataSource.administrativeInfo;
+                    let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
+                    features = that._parseGeoJsonData2Feature({ allDatas: { features: geojson.features }, fileCode: layerInfo.projection });
+                } else {
+                    features = that.excelData2Feature(data.content, layerInfo);
+                }
             } else {
                 var geoJson = data.content ? JSON.parse(data.content) : data;
                 features = that.geojsonToFeature(geoJson, layerInfo);
