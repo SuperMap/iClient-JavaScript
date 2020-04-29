@@ -30,6 +30,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @extends {ol/source/TileImage}
  */
 export class ImageSuperMapRest extends TileImage {

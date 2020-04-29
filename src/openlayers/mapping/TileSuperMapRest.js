@@ -38,7 +38,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
- * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol/source/TileImage}
  */
