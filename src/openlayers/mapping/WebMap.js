@@ -489,8 +489,7 @@ export class WebMap extends Observable {
         this.map.addLayer(layer);
 
         if(this.mapParams) {
-            let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
-            this.mapParams.extent = extent;
+            this.mapParams.extent = baseLayer.extent;
             this.mapParams.projection = mapInfo.projection;
         }
         if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
@@ -592,15 +591,17 @@ export class WebMap extends Observable {
             }
         }else {
             if(this.resolutionArray && this.resolutionArray.length > 0) {
-                viewOptions = { zoom, center, projection, extent, resolutions: this.resolutionArray, maxZoom};
+                viewOptions = { zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
             } else {
-                viewOptions = {zoom, center, projection, extent, maxResolution, minResolution, maxZoom};
+                viewOptions = {zoom, center, projection, maxResolution, minResolution, maxZoom};
                 this.getScales(baseLayer);
             }
         }
         if(!['4', '5'].includes(Util.getOlVersion())){ // 兼容 ol 4，5，6
             viewOptions.multiWorld = true;
             viewOptions.showFullExtent = true;
+            viewOptions.enableRotation = false;
+            viewOptions.constrainResolution = true; //设置此参数，是因为需要显示整数级别。为了可视比例尺中包含当前比例尺
         }
         this.map.setView(new View(viewOptions));
         if (options.visibleExtent) {
@@ -884,12 +885,16 @@ export class WebMap extends Observable {
             prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] }
         };
         if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
-            let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
+            let visibleResolutions = [];
+            for(let i in layerInfo.visibleScales){
+                let resolution = Util.scaleToResolution(layerInfo.visibleScales[i], dpiConfig.default, layerInfo.coordUnit);
+                visibleResolutions.push(resolution);
+            }
+            layerInfo.visibleResolutions = visibleResolutions;
             let tileGrid = new TileGrid({
                 extent: layerInfo.extent,
-                resolutions: result.res
+                resolutions: visibleResolutions
             });
-            layerInfo.visibleResolutions = result.res;
             options.tileGrid = tileGrid;
         }else{
             options.extent = this.baseLayerExtent;
@@ -1118,7 +1123,7 @@ export class WebMap extends Observable {
     getWmtsInfo(layerInfo, callback, mapInfo) {
         let that = this;
         let options = {
-            withCredentials: false,
+            withCredentials: true,
             withoutFormatSuffix: true
         };
         return FetchRequest.get(that.getRequestUrl(layerInfo.url), null, options).then(function (response) {
@@ -1131,7 +1136,7 @@ export class WebMap extends Observable {
                     tileMatrixSet = content.TileMatrixSet,
                     layers = content.Layer,
                     layer, relSet = [],
-                    idx, layerFormat;
+                    idx, layerFormat, style = 'default';
 
                 for (let n = 0; n < layers.length; n++) {
                     if (layers[n].Title === layerInfo.name) {
@@ -1143,6 +1148,11 @@ export class WebMap extends Observable {
                         break;
                     }
                 }
+                layer && layer.Style && layer.Style.forEach(value => {
+                    if(value.isDefault) {
+                        style = value.Identifier;
+                    }
+                });
                 let scales = [], matrixIds = [];
                 for (let i = 0; i < tileMatrixSet.length; i++) {
                     if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
@@ -1164,18 +1174,17 @@ export class WebMap extends Observable {
                 } else {
                     extent = olProj.get(that.baseProjection).getExtent()
                 }
-                const isKvp = layerInfo.requestEncoding === 'KVP';
+                const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
                 layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, isKvp, layerInfo.layer, layerInfo.tileMatrixSet);
                 //将需要的参数补上
                 layerInfo.dpi = 90.7;
                 layerInfo.extent = extent;
-                layerInfo.format = "image/png";
                 layerInfo.matrixSet = matrixSet;
                 layerInfo.name = name;
                 layerInfo.orginEpsgCode = layerInfo.projection;
                 layerInfo.overLayer = true;
                 layerInfo.scales = scales;
-                layerInfo.style = "default";
+                layerInfo.style = style;
                 layerInfo.title = name;
                 layerInfo.unit = "m";
                 layerInfo.layerFormat = layerFormat;
@@ -1231,6 +1240,7 @@ export class WebMap extends Observable {
             url: layerInfo.tileUrl || layerInfo.url,
             layer: layerInfo.layer,
             format: layerInfo.layerFormat,
+            style: layerInfo.style,
             matrixSet: layerInfo.tileMatrixSet,
             requestEncoding: layerInfo.requestEncoding || 'KVP',
             tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin, layerInfo.matrixIds),
@@ -1280,8 +1290,10 @@ export class WebMap extends Observable {
         //给个默认的
         if (Util.isArray(scales)) {
             scales && scales.forEach(function (scale, idx) {
-                matrixIds.push(idx);
-                res.push(this.getResolutionFromScale(scale, dpi, unit, datumAxis));
+                if(scale > 1.0) {
+                    matrixIds.push(idx);
+                    res.push(this.getResolutionFromScale(scale, dpi, unit, datumAxis));
+                }   
             }, this);
         } else {
             let tileMatrixSet = scales['TileMatrix'];
@@ -1306,7 +1318,7 @@ export class WebMap extends Observable {
      * @param {number} datumAxis
      * @returns {{res: Array, matrixIds: Array}}
      */
-    getResolutionFromScale(scale, dpi, unit, datumAxis) {
+    getResolutionFromScale(scale, dpi=dpiConfig.default, unit, datumAxis) {
         //radio = 10000;
         let res;
         scale = +scale;
