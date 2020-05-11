@@ -1139,7 +1139,7 @@ export class WebMap extends Observable {
                     idx, layerFormat, style = 'default';
 
                 for (let n = 0; n < layers.length; n++) {
-                    if (layers[n].Title === layerInfo.name) {
+                    if (layers[n].Identifier === layerInfo.layer) {
                         idx = n;
                         layer = layers[idx];
                         layerFormat = layer.Format[0];
