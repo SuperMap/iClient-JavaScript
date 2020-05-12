@@ -409,7 +409,7 @@ export class WebMap extends Observable {
             }).then(function(capabilitiesText) {
                 baseLayerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
                 baseLayerInfo.scales = me.getWMTSScales(baseLayerInfo.tileMatrixSet, capabilitiesText);
-                baseLayerInfo.dpi = 90.6;
+                baseLayerInfo.dpi = dpiConfig.iServerWMTS;
                 source = me.createWMTSSource(baseLayerInfo);
                 me.addSpecToMap(source);
             }).catch(function(error) {
@@ -1177,7 +1177,6 @@ export class WebMap extends Observable {
                 const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
                 layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, isKvp, layerInfo.layer, layerInfo.tileMatrixSet);
                 //将需要的参数补上
-                layerInfo.dpi = 90.7;
                 layerInfo.extent = extent;
                 layerInfo.matrixSet = matrixSet;
                 layerInfo.name = name;
@@ -1262,7 +1261,7 @@ export class WebMap extends Observable {
      * @returns {ol/tilegrid/WMTS} wmts的瓦片
      */
     getWMTSTileGrid(extent, scales, unit, dpi, origin, matrixIds) {
-        let resolutionsInfo = this.getReslutionsFromScales(scales, dpi || 96, unit);
+        let resolutionsInfo = this.getReslutionsFromScales(scales, dpi || dpiConfig.iServerWMTS, unit);
         return new WMTSTileGrid({
             origin,
             extent: extent,
