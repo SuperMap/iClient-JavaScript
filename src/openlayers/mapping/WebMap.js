@@ -2093,14 +2093,8 @@ export class WebMap extends Observable {
                 this.map.addLayer(layer);
             }
             layer.setZIndex(index);
-            let {visibleScale, autoUpdateTime} = layerInfo, minResolution, maxResolution;
-            if(visibleScale) {
-                maxResolution = this.resolutions[visibleScale.minScale];
-                minResolution = this.resolutions[visibleScale.maxScale];
-                //比例尺和分别率是反比的关系
-                maxResolution > 1 ? layer.setMaxResolution(Math.ceil(maxResolution)) : layer.setMaxResolution(maxResolution * 1.1);
-                layer.setMinResolution(minResolution);
-            }
+            const {visibleScale, autoUpdateTime} = layerInfo;
+            visibleScale && this.setVisibleScales(layer, visibleScale);
             if(autoUpdateTime && !layerInfo.autoUpdateInterval) {
                 //自动更新数据
                 let dataSource = layerInfo.dataSource;
@@ -2386,7 +2380,24 @@ export class WebMap extends Observable {
         this.map.addLayer(layer);
         layer.setVisible(layerInfo.visible);
         layer.setZIndex(1000);
+        const {visibleScale} = layerInfo; 
+        visibleScale && this.setVisibleScales(layer, visibleScale);
         return layer;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.setVisibleScales
+     * @description 改变图层可视范围
+     * @param {object} layer - 图层对象。ol.Layer
+     * @param {object} visibleScale - 图层样式参数
+     */
+    setVisibleScales(layer, visibleScale) {
+        let maxResolution = this.resolutions[visibleScale.minScale],
+            minResolution = this.resolutions[visibleScale.maxScale];
+        //比例尺和分别率是反比的关系
+        maxResolution > 1 ? layer.setMaxResolution(Math.ceil(maxResolution)) : layer.setMaxResolution(maxResolution * 1.1);
+        layer.setMinResolution(minResolution);
     }
 
     /**
