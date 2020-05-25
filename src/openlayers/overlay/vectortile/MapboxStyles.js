@@ -30,6 +30,7 @@ import Text from 'ol/style/Text';
  * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {ol/Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol/StyleFunction} [options.selectedStyle] -选中样式Function。
+ * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @example
  *  var mbStyle = new ol.supermap.MapboxStyles({
             url: url,
@@ -63,6 +64,7 @@ export class MapboxStyles extends Observable {
         this.styleTarget =
             options.style || options.url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true";
         this.resolutions = options.resolutions;
+        this.withCredentials = options.withCredentials;
         this.selectedObjects = [];
         this.selectedStyle =
             options.selectedStyle ||
@@ -239,7 +241,7 @@ export class MapboxStyles extends Observable {
             this._mbStyle = style;
             this._resolve();
         } else {
-            FetchRequest.get(style)
+            FetchRequest.get(style,null,{withCredentials:this.withCredentials})
                 .then(response => response.json())
                 .then(mbStyle => {
                     this._mbStyle = mbStyle;
@@ -257,14 +259,14 @@ export class MapboxStyles extends Observable {
             //兼容一下iServer 等iServer修改
             this._mbStyle.sprite = this._mbStyle.sprite.replace("@2x", "");
             const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".json");
-            FetchRequest.get(spriteUrl)
+            FetchRequest.get(spriteUrl,null,{withCredentials:this.withCredentials})
                 .then(response => response.json())
                 .then(spritesJson => {
                     this._spriteData = spritesJson;
                     this._spriteImageUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".png");
                     this._spriteImage = null;
                     const img = new Image();
-                    img.crossOrigin = "anonymous";
+                    img.crossOrigin = this.withCredentials?"use-credentials":"anonymous";
                     img.onload = () => {
                         this._spriteImage = img;
                         this._initStyleFunction();
