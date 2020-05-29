@@ -91,5 +91,6 @@ describe('FetchRequest', () => {
     afterAll(() => {
         SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
         setCORS(defaltCors);
+        setFetch(window.fetch);
     });
 });
