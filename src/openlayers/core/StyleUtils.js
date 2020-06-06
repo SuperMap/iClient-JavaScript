@@ -610,6 +610,8 @@ export class StyleUtils {
       lineCap,
       src,
       scale,
+      offsetX,
+      offsetY,
       //size,
       //imgSize,
       anchor
@@ -647,14 +649,15 @@ export class StyleUtils {
         }
       } else {
         newImage = new CircleStyle({
-          radius: radius,
+          radius,
           fill: new FillStyle({
             color: fillColorArray
           }),
           stroke: new StrokeStyle({
             width: strokeWidth || ZERO,
             color: strokeColorArray
-          })
+          }),
+          displacement: this.getCircleDisplacement(radius, offsetX, offsetY)
         });
       }
       olStyle.setImage(newImage);
@@ -690,6 +693,44 @@ export class StyleUtils {
       olStyle.setImage(newImage);
     }
     return olStyle;
+  }
+
+  /**
+   * @function ol.supermap.StyleUtils.getIconAnchor
+   * @description 获取图标的锚点
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {array}
+   */
+  static getIconAnchor(offsetX, offsetY) {
+    return [offsetX, offsetY];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getCircleDisplacement
+   * @description 获取圆圈的偏移
+   * @param {number} radius - 圆圈半径
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {array}
+   */
+  static getCircleDisplacement(radius, offsetX, offsetY) {
+      const dispX = radius*offsetX, dispY = radius*offsetY;
+      return [dispX, -dispY];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getTextOffset
+   * @description 获取字体图标的偏移值
+   * @param {string} fontSize - 字体大小，如12px
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {object}
+   */
+  static getTextOffset(fontSize, offsetX, offsetY) {
+    const radius = fontSize.substr(0, fontSize.length - 2) / 2;
+    return {
+          x: radius*offsetX, 
+          y: radius*offsetY
+    };     
   }
 
   /**
@@ -1033,23 +1074,28 @@ export class StyleUtils {
 
     let fontSize = isRank ? 2 * parameters.radius + "px" : parameters.fontSize;
 
+    const {offsetX, offsetY, rotation} = parameters;
+    const offset = StyleUtils.getTextOffset(fontSize, offsetX, offsetY);
     return new Style({
-      text: new Text({
-        text: text,
-        font: fontSize + " supermapol-icons",
-        placement: 'point',
-        textAlign: 'center',
-        fill: new FillStyle({
-          color: fillColor
-        }),
-        backgroundFill: new FillStyle({
-          color: [0, 0, 0, 0]
-        }),
-        stroke: new StrokeStyle({
-          width: parameters.strokeWidth || 0.000001,
-          color: strokeColor
+        text: new Text({
+            text: text,
+            font: fontSize + " supermapol-icons",
+            placement: 'point',
+            textAlign: 'center',
+            fill: new FillStyle({
+              color: fillColor
+            }),
+            backgroundFill: new FillStyle({
+              color: [0, 0, 0, 0]
+            }),
+            stroke: new StrokeStyle({
+              width: parameters.strokeWidth || 0.000001,
+              color: strokeColor
+            }),
+            offsetX: offset.x,
+            offsetY: offset.y,
+            rotation
         })
-      })
     });
   }
   /**
@@ -1063,14 +1109,18 @@ export class StyleUtils {
       that.svgDiv = document.createElement('div');
       document.body.appendChild(that.svgDiv);
     }
-    StyleUtils.getCanvasFromSVG(styleParams.url, that.svgDiv, function (canvas) {
+    const { url, radius, offsetX, offsetY, fillOpacity, rotation } = styleParams;
+    let anchor = this.getIconAnchor(offsetX, offsetY);
+    StyleUtils.getCanvasFromSVG(url, that.svgDiv, function (canvas) {
       style = new Style({
         image: new Icon({
           img: that.setColorToCanvas(canvas, styleParams),
-          scale: styleParams.radius / canvas.width,
+          scale: 2 * radius / canvas.width,
           imgSize: [canvas.width, canvas.height],
-          anchor: [0.5, 0.5],
-          opacity: styleParams.fillOpacity
+          anchor: anchor || [0.5, 0.5],
+          opacity: fillOpacity,
+          anchorOrigin: 'bottom-right',
+          rotation
         })
       });
     });
@@ -1111,14 +1161,17 @@ export class StyleUtils {
       //要组装成完整的url
       imgDom.src = imageInfo.url;
     }
+    const { offsetX, offsetY, rotation } = styleParams;
+    let anchor = this.getIconAnchor(offsetX, offsetY);
     return new Style({
       image: new Icon({
         img: imgDom,
         scale,
         imgSize: [size.w, size.h],
-        anchor: [0.5, 0.5]
+        anchor: anchor || [0.5, 0.5],
+        anchorOrigin: 'bottom-right',
+        rotation
       })
     });
   }
-
 }

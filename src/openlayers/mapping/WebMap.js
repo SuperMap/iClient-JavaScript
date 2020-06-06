@@ -40,6 +40,7 @@ import * as olSource from 'ol/source';
 import Feature from 'ol/Feature';
 import Style from 'ol/style/Style';
 import FillStyle from 'ol/style/Fill';
+import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 import Collection from 'ol/Collection';
 import { containsCoordinate, getCenter } from "ol/extent";
@@ -1113,6 +1114,25 @@ export class WebMap extends Observable {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
     }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getWMTSUrl
+     * @description 获取wmts请求文档的url
+     * @param {string} url - 图层信息。
+     * @param {boolean} isKvp - 是否为kvp模式
+     */
+    getWMTSUrl(url, isKvp) {
+        let splitStr = '?';
+        if (url.indexOf('?') > -1) {
+            splitStr = '&'
+        }
+        if (isKvp) {
+            url += splitStr + 'SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetCapabilities';
+        } else {
+            url += splitStr + '/1.0.0/WMTSCapabilities.xml';
+        }
+        return this.getRequestUrl(url);
+    }
 
     /**
      * @private
@@ -1127,7 +1147,8 @@ export class WebMap extends Observable {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest.get(that.getRequestUrl(layerInfo.url), null, options).then(function (response) {
+        const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
+        return FetchRequest.get(that.getWMTSUrl(layerInfo.url, isKvp), null, options).then(function (response) {
             return response.text();
         }).then(function (capabilitiesText) {
             const format = new WMTSCapabilities();
@@ -1175,8 +1196,7 @@ export class WebMap extends Observable {
                 } else {
                     extent = olProj.get(that.baseProjection).getExtent()
                 }
-                const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
-                layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, isKvp, layerInfo.layer, layerInfo.tileMatrixSet);
+                layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, layer, layerFormat,  isKvp);
                 //将需要的参数补上
                 layerInfo.extent = extent;
                 layerInfo.matrixSet = matrixSet;
@@ -1204,22 +1224,23 @@ export class WebMap extends Observable {
      * @function ol.supermap.WebMap.prototype.getTileUrl
      * @description 获取wmts的图层参数。
      * @param {array} getTileArray - 图层信息。
-     * @param {boolean} isKvp - 是否是kvp方式
      * @param {string} layer - 选择的图层
-     * @param {string} matrixSet -选择比例尺
+     * @param {string} format - 选择的出图方式
+     * @param {boolean} isKvp - 是否是kvp方式
      */
-    getTileUrl(getTileArray, isKvp, layer, matrixSet) {
-        let url, type = isKvp ? 'KVP' : 'RESTful';
+    getTileUrl(getTileArray, layer, format, isKvp) {
+        let url;
+        if(isKvp) {
         getTileArray.forEach(data => {
-            if(data.Constraint[0].AllowedValues.Value[0].toUpperCase() === type.toUpperCase()) {
+                if(data.Constraint[0].AllowedValues.Value[0].toUpperCase() === 'KVP') {
                 url = data.href;
-            }
+                }      
         })
-        if(!isKvp) {
-            //Restful格式
-            url = `${url}${layer}/default/${matrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png`;
-            //supermap iserver发布的restful会有一个？
-            url = url.replace('?', '/');
+        } else {
+            const reuslt = layer.ResourceURL.filter(resource => {
+                return resource.format === format;
+            })
+            url = reuslt[0].template;
         }
         return url;
     }
@@ -2250,7 +2271,7 @@ export class WebMap extends Observable {
      * @param {array} allFeatures - 图层上的feature集合
      */
     getFiterFeatures(filterCondition, allFeatures) {
-        let condition = this.replaceFilterCharacter(filterCondition);
+        let condition = this.parseFilterCondition(filterCondition);
         let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
         for (let i = 0; i < allFeatures.length; i++) {
@@ -2274,14 +2295,29 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function ol.supermap.WebMap.prototype.replaceFilterCharacter
-     * @description 替换查询语句 中的 and / AND / or / OR / = / !=
-     * @param {string} filterString - 过滤条件
+     * @function ol.supermap.WebMap.prototype.parseFilterCondition
+     * @description 1、替换查询语句 中的 and / AND / or / OR / = / !=
+     *              2、匹配 Name in ('', '')，多条件需用()包裹
+     * @param {string} filterCondition - 过滤条件
      * @return {string} 换成组件能识别的字符串
      */
-    replaceFilterCharacter(filterString) {
-        filterString = filterString.replace(/=/g, '==').replace(/AND|and/g, '&&').replace(/or|OR/g, '||').replace(/<==/g, '<=').replace(/>==/g, '>=');
-        return filterString;
+    parseFilterCondition(filterCondition) {
+        return filterCondition
+        .replace(/=/g, "==")
+        .replace(/AND|and/g, "&&")
+        .replace(/or|OR/g, "||")
+        .replace(/<==/g, "<=")
+        .replace(/>==/g, ">=")
+        .replace(/\(?[^\(]+?\s+in\s+\([^\)]+?\)\)?/g, (res) => {
+          // res格式：(省份 in ('四川', '河南'))
+          const data = res.match(/([^(]+?)\s+in\s+\(([^)]+?)\)/);
+          return data.length === 3
+            ? `(${data[2]
+                .split(",")
+                .map((c) => `${data[1]} == ${c.trim()}`)
+                .join(" || ")})`
+            : res;
+        });
     }
 
     /**
@@ -2414,28 +2450,41 @@ export class WebMap extends Observable {
      */
     getLabelStyle(parameters, layerInfo) {
         let style = layerInfo.style || layerInfo.pointStyle;
-        let radius = style.radius || 0;
-        let strokeWidth = style.strokeWidth || 0;
-        let offsetY = -1.8 * radius - strokeWidth;
-        if (offsetY > -20) {
-            offsetY = -20;
+        const {radius=0, strokeWidth=0} = style,
+            beforeOffsetY =  -(radius + strokeWidth);
+        const {
+            fontSize = '14px',
+            fontFamily,
+            fill,
+            backgroundFill,
+            offsetX = 0,
+            offsetY = beforeOffsetY,
+            placement = "point",
+            textBaseline = "bottom",
+            textAlign='center',
+            outlineColor = "#000000",
+            outlineWidth = 0
+            } = parameters;
+        const option = {
+            font: `${fontSize} ${fontFamily}`,
+            placement,
+            textBaseline,
+            textAlign,
+            fill: new FillStyle({ color: fill }),
+            backgroundFill: new FillStyle({ color: backgroundFill }),
+            padding: [3, 3, 3, 3],
+            offsetX: layerInfo.featureType === 'POINT' ? offsetX : 0,
+            offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0
+        };
+        if (outlineWidth > 0) {
+        option.stroke = new StrokeStyle({
+            color: outlineColor,
+            width: outlineWidth
+        });
         }
-        parameters.offsetY = offsetY;
 
         return new Style({
-            text: new Text({
-                font: `${parameters.fontSize || '14px'} ${parameters.fontFamily}`,
-                placement: 'point',
-                textAlign: 'center',
-                fill: new FillStyle({
-                    color: parameters.fill
-                }),
-                backgroundFill: new FillStyle({
-                    color: parameters.backgroundFill || [255, 255, 255, 0.7]
-                }),
-                padding: [3, 3, 3, 3],
-                offsetY: parameters.offsetY
-            })
+            text: new Text(option)
         });
     }
 
@@ -2896,7 +2945,7 @@ export class WebMap extends Observable {
                 });
                 if(layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
+                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.get('attributes')
@@ -3046,7 +3095,7 @@ export class WebMap extends Observable {
             return function (feature) {
                 if(layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
+                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.get('attributes')
