@@ -2267,7 +2267,7 @@ export class WebMap extends Observable {
      * @param {array} allFeatures - 图层上的feature集合
      */
     getFiterFeatures(filterCondition, allFeatures) {
-        let condition = this.replaceFilterCharacter(filterCondition);
+        let condition = this.parseFilterCondition(filterCondition);
         let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
         for (let i = 0; i < allFeatures.length; i++) {
@@ -2291,14 +2291,29 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function ol.supermap.WebMap.prototype.replaceFilterCharacter
-     * @description 替换查询语句 中的 and / AND / or / OR / = / !=
-     * @param {string} filterString - 过滤条件
+     * @function ol.supermap.WebMap.prototype.parseFilterCondition
+     * @description 1、替换查询语句 中的 and / AND / or / OR / = / !=
+     *              2、匹配 Name in ('', '')，多条件需用()包裹
+     * @param {string} filterCondition - 过滤条件
      * @return {string} 换成组件能识别的字符串
      */
-    replaceFilterCharacter(filterString) {
-        filterString = filterString.replace(/=/g, '==').replace(/AND|and/g, '&&').replace(/or|OR/g, '||').replace(/<==/g, '<=').replace(/>==/g, '>=');
-        return filterString;
+    parseFilterCondition(filterCondition) {
+        return filterCondition
+        .replace(/=/g, "==")
+        .replace(/AND|and/g, "&&")
+        .replace(/or|OR/g, "||")
+        .replace(/<==/g, "<=")
+        .replace(/>==/g, ">=")
+        .replace(/\(?[^\(]+?\s+in\s+\([^\)]+?\)\)?/g, (res) => {
+          // res格式：(省份 in ('四川', '河南'))
+          const data = res.match(/([^(]+?)\s+in\s+\(([^)]+?)\)/);
+          return data.length === 3
+            ? `(${data[2]
+                .split(",")
+                .map((c) => `${data[1]} == ${c.trim()}`)
+                .join(" || ")})`
+            : res;
+        });
     }
 
     /**
@@ -2926,7 +2941,7 @@ export class WebMap extends Observable {
                 });
                 if(layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
+                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.get('attributes')
@@ -3076,7 +3091,7 @@ export class WebMap extends Observable {
             return function (feature) {
                 if(layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
+                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.get('attributes')
