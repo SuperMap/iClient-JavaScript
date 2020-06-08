@@ -1234,7 +1234,7 @@ export class WebMap extends Observable {
         getTileArray.forEach(data => {
                 if(data.Constraint[0].AllowedValues.Value[0].toUpperCase() === 'KVP') {
                 url = data.href;
-                }      
+                }
         })
         } else {
             const reuslt = layer.ResourceURL.filter(resource => {
@@ -3885,6 +3885,7 @@ export class WebMap extends Observable {
      * @function ol.supermap.WebMap.prototype.getMBStyle
      * @description 生成图层信息
      * @param {object} mapInfo - 地图信息
+     * @param {object} layerInfo - 图层信息
      */
     getMBStyle(mapInfo, layerInfo) {
         let _this = this,
@@ -3930,10 +3931,11 @@ export class WebMap extends Observable {
         })
     }
     /**
-     * mapboxstyle图层：1. layer id重复问题  2.叠加图层背景色问题
-     * @param {web map Object} mapInfo 地图信息
+     * @private
+     * @function ol.supermap.WebMap.prototype.modifyMapboxstyleLayer
+     * @description mapboxstyle图层：1. layer id重复问题  2.叠加图层背景色问题
+     * @param {Object} mapInfo 地图信息
      * @param {Object} layerInfo 当前要添加到地图的图层
-     * @param {Number} zIndex 当前图层索引
      */
     modifyMapboxstyleLayer(mapInfo, layerInfo) {
         let that = this;
@@ -3954,9 +3956,11 @@ export class WebMap extends Observable {
         })
     }
     /**
-     * mapboxstyle图层 id重复的layer添加后缀编码 (n)[参考mapstudio]
+     * @private
+     * @function  ol.supermap.WebMap.prototype.renameLayerId
+     * @description  mapboxstyle图层 id重复的layer添加后缀编码 (n)[参考mapstudio]
      * @param {mapboxgl.Layer[]} layers 已添加到地图的图层组
-     * @param {mapboxgl.Layer} layer 当前图层
+     * @param {mapboxgl.Layer} curLayer 当前图层
      */
     renameLayerId(layers, curLayer) {
         if (layers.find((l) => l.id === curLayer.id)) {
@@ -3989,7 +3993,9 @@ export class WebMap extends Observable {
     }
 
     /**
-     * 判断url是否是iportal的代理地址
+     * @private
+     * @function  ol.supermap.WebMap.prototype.renameLayerId
+     * @description 判断url是否是iportal的代理地址
      * @param {*} serviceUrl
      */
     isIportalProxyServiceUrl(serviceUrl) {
@@ -4017,7 +4023,7 @@ export class WebMap extends Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.createMVTLayer
      * @description 创建矢量瓦片图层
-     * @param {object} mapInfo - 图层信息
+     * @param {object} layerInfo - 图层信息
      */
     createMVTLayer(layerInfo) {
         let that = this;
