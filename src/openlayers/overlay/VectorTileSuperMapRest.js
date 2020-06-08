@@ -285,14 +285,23 @@ export class VectorTileSuperMapRest extends VectorTile {
                             source = xhr.response;
                         }
                         if (source) {
-                            success.call(
-                                this,
-                                format.readFeatures(source, {
-                                    extent: extent,
-                                    featureProjection: projection
-                                }),
-                                format.readProjection(source)
-                            );
+                            if (['4', '5'].includes(Util.getOlVersion())) {
+                                success.call(
+                                    this,
+                                    format.readFeatures(source, { featureProjection: projection }),
+                                    format.readProjection(source),
+                                    format.getLastExtent()
+                                );
+                            } else {
+                                success.call(
+                                    this,
+                                    format.readFeatures(source, {
+                                        extent: extent,
+                                        featureProjection: projection
+                                    }),
+                                    format.readProjection(source)
+                                );
+                            }
                         } else {
                             failure.call(this);
                         }
