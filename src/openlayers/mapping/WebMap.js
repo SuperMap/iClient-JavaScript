@@ -2283,9 +2283,9 @@ export class WebMap extends Observable {
         .replace(/or|OR/g, "||")
         .replace(/<==/g, "<=")
         .replace(/>==/g, ">=")
-        .replace(/\(?[^\(]+?\s+in\s+\([^\)]+?\)\)?/g, (res) => {
+        .replace(/\(?[^\(]+?\s*in\s*\([^\)]+?\)\)?/gi, (res) => {
           // res格式：(省份 in ('四川', '河南'))
-          const data = res.match(/([^(]+?)\s+in\s+\(([^)]+?)\)/);
+          const data = res.match(/([^(]+?)\s*in\s*\(([^)]+?)\)/i);
           return data.length === 3
             ? `(${data[2]
                 .split(",")
