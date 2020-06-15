@@ -2497,9 +2497,17 @@ export class WebMap extends Observable {
      * @returns {ol/layer/Vector} 矢量图层
      */
     createVectorLayer(layerInfo, features) {
-        let style = StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
+        const {featureType, style} = layerInfo;
+        let newStyle;
+        if(featureType === 'LINE' && Util.isArray(style)) {
+            const [outlineStyle, strokeStyle] = style;
+            newStyle = strokeStyle.lineDash === 'solid' ? StyleUtils.getRoadPath(strokeStyle, outlineStyle) 
+            : StyleUtils.getPathway(strokeStyle, outlineStyle);
+        } else {
+            newStyle = StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
+        }
         return new olLayer.Vector({
-            style: style,
+            style: newStyle,
             source: new olSource.Vector({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
