@@ -1187,7 +1187,7 @@ export class StyleUtils {
     strokeColorArray && strokeColorArray.push(strokeOpacity);
     var stroke = new Style({
         stroke: new StrokeStyle({
-            width: strokeWidth,
+            width: strokeWidth || ZERO,
             color: strokeColorArray,
             lineCap: lineCap || 'round',
             lineDash: [0]
@@ -1198,9 +1198,10 @@ export class StyleUtils {
     let outlineColorArray = this.hexToRgb(outlineColor);
     // opacity使用style的透明度。保持两根线透明度一致
     outlineColorArray && outlineColorArray.push(strokeOpacity);
+    let outlineWidth = strokeWidth === 0 ? ZERO : strokeWidth + 2; //外部宽度=内部样式宽度 + 2
     var outlineStroke = new Style({
         stroke: new StrokeStyle({
-            width: strokeWidth + 2, //外部宽度=内部样式宽度 + 2
+            width: outlineWidth, //外部宽度=内部样式宽度 + 2
             color: outlineColorArray,
             lineCap: lineCap || 'round',
             lineDash: [0]
@@ -1222,7 +1223,7 @@ export class StyleUtils {
       strokeColorArray && strokeColorArray.push(strokeOpacity);
       var stroke = new Style({
           stroke: new StrokeStyle({
-              width: strokeWidth,
+              width: strokeWidth*0.5 || ZERO,
               color: strokeColorArray,
               lineCap,
               lineDash
@@ -1235,11 +1236,9 @@ export class StyleUtils {
     outlineColorArray && outlineColorArray.push(strokeOpacity);
     var outlineStroke = new Style({
         stroke: new StrokeStyle({
-            width: strokeWidth, 
+          width: strokeWidth || ZERO, 
             color: outlineColorArray,
-            lineCap,
-            lineDash,
-            lineDashOffset: (lineDash[0] + lineDash[1]) / 2
+            lineCap
         })
     });
     return [outlineStroke, stroke];
