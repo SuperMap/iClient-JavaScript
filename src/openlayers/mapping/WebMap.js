@@ -1820,9 +1820,9 @@ export class WebMap extends Observable {
         if (layerInfo.layerType === 'MIGRATION') {
             try {
                 if (dataSource.type === 'PORTAL_DATA') {
-                    const { dataMetaInfo } = await FetchRequest.get(`${Util.getIPortalUrl()}web/datas/${dataSource.serverId}.json`, null, {
+                    const { dataMetaInfo } = await FetchRequest.get(`${this.server}web/datas/${dataSource.serverId}.json`, null, {
                         withCredentials: true
-                    })
+                    }).then(res => res.json());
                     // eslint-disable-next-line require-atomic-updates
                     layerInfo.xyField = {
                         xField: dataMetaInfo.xField,
