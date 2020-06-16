@@ -22,7 +22,7 @@ import { DataFlowService } from '../services'
 
 import provincialCenterData from './webmap/config/ProvinceCenter.json';// eslint-disable-line import/extensions
 import municipalCenterData from './webmap/config/MunicipalCenter.json';// eslint-disable-line import/extensions
-import SampleData from './webmap/config/SampleData.json';// eslint-disable-line import/extensions
+import SampleDataInfo from './webmap/config/SampleDataInfo.json';// eslint-disable-line import/extensions
 
 import GeoJSON from 'ol/format/GeoJSON';
 import MVT from 'ol/format/MVT';
@@ -1837,7 +1837,7 @@ export class WebMap extends Observable {
                     } 
                 } else if (dataSource.type === 'SAMPLE_DATA') {
                     // 示例数据从本地拿xyField
-                    const sampleData = SampleData.find(item => item.id === dataSource.name) || {};
+                    const sampleData = SampleDataInfo.find(item => item.id === dataSource.name) || {};
                     xField = sampleData.xField;
                     yField = sampleData.yField
                     layerInfo.xyField = {
