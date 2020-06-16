@@ -38,6 +38,7 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import * as olGeometry from 'ol/geom';
 import * as olSource from 'ol/source';
 import Feature from 'ol/Feature';
+import olRenderFeature from 'ol/render/Feature';
 import Style from 'ol/style/Style';
 import FillStyle from 'ol/style/Fill';
 import StrokeStyle from 'ol/style/Stroke';
@@ -198,6 +199,7 @@ export class WebMap extends Observable {
             }
             that.baseProjection = mapInfo.projection;
             that.webMapVersion = mapInfo.version;
+            that.baseLayer = mapInfo.baseLayer;
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -1785,7 +1787,7 @@ export class WebMap extends Observable {
      */
     sendMapToUser(layersLen) {
         if (this.layerAdded === layersLen && this.successCallback) {
-            this.successCallback(this.map, this.mapParams, this.layers);
+            this.successCallback(this.map, this.mapParams, this.layers, this.baseLayer);
         }
     }
 
@@ -4048,10 +4050,6 @@ export class WebMap extends Observable {
         });
         return new Promise((resolve) => {
             mapboxStyles.on('styleloaded', function () {
-                let styleUrl = layerInfo.url;
-                if (styleUrl.indexOf('/restjsr/') > -1) {
-                    styleUrl = styleUrl + '/style.json'
-                }
                 let visibleScale = layerInfo.visibleScale;
                 let minResolution = visibleScale && that.resolutions[visibleScale.maxScale];
                 let maxResolution = visibleScale && that.resolutions[visibleScale.minScale];
@@ -4059,11 +4057,11 @@ export class WebMap extends Observable {
                     //设置避让参数
                     declutter: true,
                     source: new olSource.VectorTileSuperMapRest({
-                        style: styleUrl,
+                        style: styles,
                         withCredentials,
                         projection: layerInfo.projection,
                         format: new MVT({
-                            featureClass: Feature
+                            featureClass: olRenderFeature
                         }),
                         wrapX: false
                     }),
