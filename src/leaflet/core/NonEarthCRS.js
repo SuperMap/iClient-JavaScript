@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L from 'leaflet';
 
 L.Projection = {};
 
@@ -14,7 +14,6 @@ L.Projection = {};
  * @param {L.bounds} bounds - 坐标范围
  */
 export var NonProjection = L.Class.extend({
-
     initialize: function (bounds) {
         this.bounds = bounds;
     },
@@ -29,7 +28,7 @@ export var NonProjection = L.Class.extend({
 });
 
 export var nonProjection = function (bounds) {
-    return new NonProjection(bounds)
+    return new NonProjection(bounds);
 };
 
 /**
@@ -43,8 +42,7 @@ export var nonProjection = function (bounds) {
  * @param {Array.<number>} [options.resolutions] - 分辨率。
  */
 export var NonEarthCRS = L.Class.extend({
-
-    /** 
+    /**
      * @member {Object} [L.CRS.NonEarthCRS.prototype.includes=L.CRS]
      * @description 包含的坐标对象。
      */
@@ -52,9 +50,7 @@ export var NonEarthCRS = L.Class.extend({
 
     initialize: function (options) {
         if (options.origin) {
-            this.transformation =
-                new L.Transformation(1, -options.origin.x,
-                    -1, options.origin.y);
+            this.transformation = new L.Transformation(1, -options.origin.x, -1, options.origin.y);
         }
         this.projection = L.Projection.NonProjection(options.bounds);
         this.bounds = options.bounds;
@@ -69,12 +65,14 @@ export var NonEarthCRS = L.Class.extend({
      * @returns {number} 得到的比例尺。
      */
     scale: function (zoom) {
+        let defaultScale;
         if (!this.resolutions || this.resolutions.length === 0) {
-            var width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
-            var defaultScale = 1.0 / (width / 256);
-            return defaultScale * Math.pow(2, zoom);
+            const width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
+            defaultScale = 1.0 / (width / 256);
+        } else {
+            defaultScale = 1.0 / this.resolutions[0];
         }
-        return 1.0 / this.resolutions[zoom];
+        return defaultScale * Math.pow(2, zoom);
     },
 
     /**
@@ -84,19 +82,15 @@ export var NonEarthCRS = L.Class.extend({
      * @returns {number} 返回空间范围值。
      */
     zoom: function (scale) {
+        let defaultScale;
         if (!this.resolutions || this.resolutions.length === 0) {
-            var width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
-            var defaultScale = 1 / (width / 256);
-            return  Math.log(scale / defaultScale) / Math.LN2;
+            const width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
+            defaultScale = 1.0 / (width / 256);
+        } else {
+            defaultScale = 1.0 / this.resolutions[0];
         }
-        for (var i = 0; i < this.resolutions.length; i++) {
-            if (1.0 / this.resolutions[i] == scale) {
-                return i
-            }
-        }
-        return -1;
+        return Math.log(scale / defaultScale) / Math.LN2;
     },
-
     /**
      * @function L.CRS.NonEarthCRS.prototype.distance
      * @description 通过两个坐标点计算之间的距离。
@@ -114,7 +108,7 @@ export var NonEarthCRS = L.Class.extend({
     infinite: false
 });
 export var nonEarthCRS = function (options) {
-    return new NonEarthCRS(options)
+    return new NonEarthCRS(options);
 };
 L.Projection.NonProjection = nonProjection;
 
