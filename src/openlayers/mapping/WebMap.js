@@ -2937,11 +2937,13 @@ export class WebMap extends Observable {
             labelLayer.setZIndex(1000);
             labelSource = labelLayer.getSource();
         }
+        const {visibleScale} = layerInfo;
         if(layerInfo.lineStyle && layerInfo.visible) {
             pathLayer = this.createVectorLayer({style:layerInfo.lineStyle, featureType:"LINE"});
             pathSource = pathLayer.getSource();
             pathLayer.setZIndex(layerIndex);
             this.map.addLayer(pathLayer);
+            visibleScale && this.setVisibleScales(pathLayer, visibleScale);
         }
         let featureCache = {}, labelFeatureCache={}, pathFeatureCache = {}, that = this;
         this.createDataflowService(layerInfo, function (featureCache, labelFeatureCache, pathFeatureCache) {
