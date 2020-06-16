@@ -22,6 +22,7 @@ import { DataFlowService } from '../services'
 
 import provincialCenterData from './webmap/config/ProvinceCenter.json';// eslint-disable-line import/extensions
 import municipalCenterData from './webmap/config/MunicipalCenter.json';// eslint-disable-line import/extensions
+import SampleDataInfo from './webmap/config/SampleDataInfo.json';// eslint-disable-line import/extensions
 
 import GeoJSON from 'ol/format/GeoJSON';
 import MVT from 'ol/format/MVT';
@@ -1415,7 +1416,7 @@ export class WebMap extends Observable {
                             withCredentials: this.withCredentials
                         }).then(function (response) {
                             return response.json()
-                        }).then(function (data) {
+                        }).then(async function (data) {
                             if (data.succeed === false) {
                                 //请求失败
                                 that.layerAdded++;
@@ -1436,7 +1437,7 @@ export class WebMap extends Observable {
                                         let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
                                         features = that._parseGeoJsonData2Feature({allDatas:{features:geojson.features},fileCode:layer.projection});
                                     } else {
-                                        features = that.excelData2Feature(data.content, layer);
+                                        features = await that.excelData2Feature(data.content, layer);
                                     }
                                 }
                                 that.addLayer(layer, features, layerIndex);
@@ -1799,7 +1800,7 @@ export class WebMap extends Observable {
      * @param {object} layerInfo - 图层信息
      * @returns {Array}  ol.feature的数组集合
      */
-    excelData2Feature(content, layerInfo) {
+    async excelData2Feature(content, layerInfo) {
         let rows = content.rows,
             colTitles = content.colTitles;
         // 解决V2恢复的数据中含有空格
@@ -1809,10 +1810,50 @@ export class WebMap extends Observable {
             }
         }
         let fileCode = layerInfo.projection,
-            xIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField))),
-            yIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField))),
+            dataSource = layerInfo.dataSource,
             baseLayerEpsgCode = this.baseProjection,
-            features = [];
+            features = [],
+            xField = Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField)),
+            yField = Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField)),
+            xIdx = colTitles.indexOf(xField),
+            yIdx = colTitles.indexOf(yField);
+
+        // todo 优化 暂时这样处理
+        if (layerInfo.layerType === 'MIGRATION') {
+            try {
+                if (dataSource.type === 'PORTAL_DATA') {
+                    const { dataMetaInfo } = await FetchRequest.get(`${Util.getIPortalUrl()}web/datas/${dataSource.serverId}.json`, null, {
+                        withCredentials: true
+                    })
+                    // eslint-disable-next-line require-atomic-updates
+                    layerInfo.xyField = {
+                        xField: dataMetaInfo.xField,
+                        yField: dataMetaInfo.yField
+                    }
+                    if(!dataMetaInfo.xIndex) {
+                        xIdx = colTitles.indexOf(dataMetaInfo.xField);
+                        yIdx = colTitles.indexOf(dataMetaInfo.yField);
+                    } else {
+                        xIdx = dataMetaInfo.xIndex;
+                        yIdx = dataMetaInfo.yIndex;
+                    } 
+                } else if (dataSource.type === 'SAMPLE_DATA') {
+                    // 示例数据从本地拿xyField
+                    const sampleData = SampleDataInfo.find(item => item.id === dataSource.name) || {};
+                    xField = sampleData.xField;
+                    yField = sampleData.yField
+                    layerInfo.xyField = {
+                        xField,
+                        yField
+                    }
+                    xIdx = colTitles.findIndex(item => item === xField);
+                    yIdx = colTitles.findIndex(item => item === yField);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
         for (let i = 0, len = rows.length; i < len; i++) {
             let rowDatas = rows[i],
                 attributes = {},
@@ -1834,7 +1875,7 @@ export class WebMap extends Observable {
                 features.push(feature);
             }
         }
-        return features;
+        return Promise.resolve(features);
     }
     /**
      * @private
