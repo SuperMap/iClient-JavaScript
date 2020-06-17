@@ -69,8 +69,8 @@
             inputScript("https://cdn.bootcss.com/leaflet.draw/1.0.4/leaflet.draw.js");
         }
         if (inArray(includes, 'leaflet-geoman')) {
-            inputCSS('https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css');
-            inputScript('https://unpkg.com/@geoman-io/leaflet-geoman-free@2.3.0/dist/leaflet-geoman.min.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/@geoman-io/leaflet-geoman-free@2.3.0/dist/leaflet-geoman.css');
+            inputScript('https://cdn.jsdelivr.net/npm/@geoman-io/leaflet-geoman-free@2.3.0/dist/leaflet-geoman.min.js');
         }
         if (inArray(includes, 'leaflet.miniMap')) {
             inputCSS("https://cdn.bootcss.com/leaflet-minimap/3.6.1/Control.MiniMap.min.css");
@@ -96,7 +96,7 @@
             inputScript("https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js");
         }
         if (inArray(includes, 'd3')) {
-            inputScript('https://cdnjs.cloudflare.com/ajax/libs/d3/5.14.2/d3.min.js');
+            inputScript('https://cdn.bootcss.com/d3/5.14.2/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
           inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
@@ -115,7 +115,7 @@
           inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
         if (inArray(includes, 'pixi')) {
-            inputScript('https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.7/pixi.js');
+            inputScript('https://cdn.bootcss.com/pixi.js/4.8.7/pixi.js');
             inputScript('https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.8.1/L.PixiOverlay.min.js');
             inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/Leaflet.PixiOverlay/1.8.1/MarkerContainer.js');
             inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
@@ -141,8 +141,8 @@
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
-          inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
-          inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
+          inputCSS("https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.css");
+          inputScript("https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.js");
         }
         if (inArray(includes, 'echarts-vue')) {
           inputScript('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
