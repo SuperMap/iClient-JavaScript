@@ -204,7 +204,7 @@ window.examplesResources = {
         "title_querySymbolLib": "查询标号",
         "title_saveload": "保存和加载",
         "title_symbolAvoid": "避让区域",
-        "title_plotMovingTarget": "动目标图层",
+        "title_plotMovingTarget": "动态目标图层",
         "title_symbolExtendProperty": "自定义属性",
         "title_symbolGeometricQuery": "几何查询",
         "title_anchored": "自适应信息框",

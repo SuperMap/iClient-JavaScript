@@ -1141,7 +1141,7 @@ var exampleConfig = {
                     thumbnail: "plot_symbolAvoid.png",
                     fileName: "plot_symbolAvoid"
                 }, {
-                    name: "动目标图层",
+                    name: "动态目标图层",
                     name_en: "moving target layer",
                     version: "10.1.0",
                     thumbnail: "plot_movingTarget.gif",
