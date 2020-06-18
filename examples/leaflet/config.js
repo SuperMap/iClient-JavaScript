@@ -1140,6 +1140,12 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "plot_symbolAvoid.png",
                     fileName: "plot_symbolAvoid"
+                }, {
+                    name: "动目标图层",
+                    name_en: "moving target layer",
+                    version: "10.1.0",
+                    thumbnail: "plot_movingTarget.gif",
+                    fileName: "plot_movingTarget"
                 }]
             }
         }
@@ -1301,8 +1307,8 @@ var exampleConfig = {
                     version: "9.1.2",
                     thumbnail: "components_chart_iptl.png",
                     fileName: "components_chart_iptl"
-                } 
-            
+                }
+
             ]
             },
             "componentsAdvanced": {
