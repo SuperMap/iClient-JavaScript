@@ -302,6 +302,10 @@ ul.icl-nav-menu-sub:nth-child(1) {
 .icl-nav-menu-item:not(.icl-nav-menu-overivew) > li:last-child {
     width: 130px;
 }
+.navbar-toggle>img {
+    width: 30px;
+    height: 30px;
+}
 
 @media screen and (max-width: 1220px) {
     .navbar.default .navbar-toggle {

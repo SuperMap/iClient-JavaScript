@@ -500,7 +500,7 @@ var exampleConfig = {
                 content: [{
                     name: "添加地图/场景",
                     name_en: "Batch Add Map/Scene",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "l_iPortalAddResource.png",
                     fileName: "iPortalBatchAddResource"
                 }]
@@ -511,7 +511,7 @@ var exampleConfig = {
                 content: [{
                     name: "上传数据",
                     name_en: "Upload Data",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "l_iPortalUploadData.png",
                     fileName: "iPortalUploadData"
                 }]
@@ -522,7 +522,7 @@ var exampleConfig = {
                 content: [{
                     name: "注册数据",
                     name_en: "Register Data",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "l_iPortalRegisterData.png",
                     fileName: "iPortalRegisterData"
                 }]
@@ -533,7 +533,7 @@ var exampleConfig = {
                 content: [{
                     name: "发布数据",
                     name_en: "Publish Data",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "l_iPortalPublishData.png",
                     fileName: "iPortalPublishData"
                 }]

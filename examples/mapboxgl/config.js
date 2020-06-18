@@ -1068,7 +1068,7 @@ var exampleConfig = {
                     {
                         name: "地图打印",
                         name_en: "Map Print",
-                        version: "10.0.2",
+                        version: "10.1.0",
                         thumbnail: "print_pdf.png",
                         fileName: "print_pdf"
                     },
