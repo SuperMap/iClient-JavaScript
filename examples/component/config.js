@@ -69,6 +69,14 @@ var exampleConfig = {
             thumbnail: 'components_ncp_world.png',
             fileName: 'components_ncp_world',
             localIgnore: true
+          },
+          {
+            name: '地图卷帘',
+            name_en: 'Map Compare',
+            version: '10.1.0',
+            thumbnail: 'components_compare_vue.png',
+            fileName: 'components_compare_vue',
+            localIgnore: true
           }
         ]
       },
