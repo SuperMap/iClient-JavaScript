@@ -1866,11 +1866,21 @@ export class WebMap extends Observable {
                     olGeom.transform(fileCode, baseLayerEpsgCode);
                 }
                 for (let j = 0, leng = rowDatas.length; j < leng; j++) {
-                    attributes[colTitles[j]] = rowDatas[j];
+                    let field = colTitles[j];
+                    if (field === undefined || field === null) {continue;}
+                    field = field.trim();
+                    if(Object.keys(attributes).includes(field)) {
+                        //说明前面有个一模一样的字段
+                        const newField = field + '_1';
+                        attributes[newField] = rowDatas[j];
+                    } else {
+                        attributes[field] = rowDatas[j];
+                    }
+                    
                 }
                 let feature = new Feature({
                     geometry: olGeom,
-                    attributes: attributes
+                    attributes
                 });
                 features.push(feature);
             }
