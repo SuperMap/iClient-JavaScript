@@ -125,7 +125,7 @@
     "leaflet": "1.6.0",
     "lodash.remove": "^4.7.0",
     "lodash.topairs": "4.3.0",
-    "mapbox-gl": "1.6.1",
+    "mapbox-gl": "1.11.0",
     "mapv": "2.0.43",
     "ol": "6.1.1",
     "pbf": "3.2.1",
