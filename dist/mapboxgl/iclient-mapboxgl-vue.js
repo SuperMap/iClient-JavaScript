@@ -1,6 +1,6 @@
 /*!
  * 
- *     @supermap/vue-iclient.(http://iclient.supermap.io)
+ *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *     license: Apache-2.0
  *     version: v10.1.0-alpha
@@ -28494,9 +28494,13 @@ var install = function install(Vue) {
   Vue.use(_antDesignVue.Modal);
   Vue.use(_antDesignVue.Tree);
   Vue.use(_antDesignVue.Tabs);
-  Vue.use(_vueCesium.default, {
-    cesiumPath: opts.cesiumPath || '../../static/libs/Cesium/Cesium.js'
-  });
+
+  if (_vueCesium.default) {
+    Vue.use(_vueCesium.default, {
+      cesiumPath: opts.cesiumPath || '../../static/libs/Cesium/Cesium.js'
+    });
+  }
+
   Vue.prototype.$message = _antDesignVue.message;
   (0, _lang.initi18n)(Vue, opts);
 
