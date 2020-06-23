@@ -38,7 +38,7 @@ export var LayerInfoService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.layerInfoService.prototype.getLayerInfo
+     * @function L.supermap.layerInfoService.prototype.getLayersInfo
      * @description 获取图层信息。
      * @param {RequestCallback} callback - 获取信息完成后的回调函数。
      */
