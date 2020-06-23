@@ -43,7 +43,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addMap
      * @description 添加地图。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
      * @returns {Promise} 返回包含添加地图结果的 Promise 对象。
      */
@@ -65,7 +65,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addScene
      * @description 添加场景。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
      * @returns {Promise} 返回包含添加场景结果的 Promise 对象。
      */
@@ -87,7 +87,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.registerService
      * @description 注册服务。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
      * @returns {Promise} 返回包含注册服务结果的 Promise 对象。
      */
@@ -112,7 +112,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {String} errMsg - 传入的错误信息。
      * @returns {Promise} 返回包含错误信息的 Promise 对象。
      */
@@ -125,6 +125,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.uploadDataRequest
      * @description 上传数据。
+     * @version 10.1.0
      * @param {number} id - 上传数据的资源id。
      * @param {Object} formData - 请求体为文本数据流。
      * @returns {Promise} 返回包含上传数据操作的 Promise 对象。
@@ -137,6 +138,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addData
      * @description 上传/注册数据。
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddDataParam} params - 上传/注册数据所需的参数。
      * @param {Object} [formData] - 请求体为文本数据流(上传数据时传入)。
      * @returns {Promise} 返回上传/注册数据的 Promise 对象。
@@ -217,6 +219,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.publishOrUnpublish
      * @description 发布/取消发布。
+     * @version 10.1.0
      * @param {object} options - 发布/取消发布数据服务所需的参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -254,6 +257,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.getDataPublishedStatus
      * @description 查询服务状态，发起服务状态查询。
+     * @version 10.1.0
      * @param {number} dataId - 查询服务状态的数据项id。
      * @param {string} dataServiceId - 发布的服务id。
      * @returns {Promise} 返回查询服务状态的 Promise 对象。
@@ -266,6 +270,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.unPublishedDataService
      * @description 取消发布。
+     * @version 10.1.0
      * @param {object} options - 取消发布服务具体参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -279,6 +284,7 @@ export class IPortalUser extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.publishedDataService
      * @description 发布数据服务。
+     * @version 10.1.0
      * @param {object} options - 发布数据服务具体参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
