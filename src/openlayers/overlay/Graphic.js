@@ -83,6 +83,9 @@ export class Graphic extends ImageCanvasSource {
 
         if (options.onClick) {
             me.map.on('click', function (e) {
+                if(me.renderer instanceof GraphicWebGLRenderer){
+                    return;
+                }
                 const features = me.map.getFeaturesAtPixel(e.pixel) || [];
                 for (let index = 0; index < features.length; index++) {
                     const graphic = features[index];
