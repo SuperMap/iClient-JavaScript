@@ -116,6 +116,7 @@ export class Theme3DLayer {
          * @default 'bottom-right'
          */
         this.legendPosition = 'bottom-right';
+        this._highlightLayerId = `${this.id}-highlightLayer`;
         this._extend(this, layerOptions);
     }
 
@@ -241,10 +242,9 @@ export class Theme3DLayer {
             this.map.removeLayer(layerId);
         }
         //移除高亮图层
-        var highlightLayerId = "highlightLayer";
-        if (this.map.getLayer(highlightLayerId)) {
+        if (this.map.getLayer(this._highlightLayerId)) {
             this._selectFeatureId = null;
-            this.map.removeLayer(highlightLayerId);
+            this.map.removeLayer(this._highlightLayerId );
         }
 
         //移除图例
@@ -349,7 +349,7 @@ export class Theme3DLayer {
         }
         var map = this.map;
         map.addLayer({
-            'id': 'highlightLayer',
+            'id': this._highlightLayerId,
             'type': 'fill-extrusion',
             'source': this.sourceId,
             'paint': this.getHighlightStyleOptions(),
@@ -379,12 +379,12 @@ export class Theme3DLayer {
             return;
         }
         me._selectFeatureId = id;
-        map.setFilter("highlightLayer", ['==', '$id', me._selectFeatureId]);
+        map.setFilter(me._highlightLayerId, ['==', '$id', me._selectFeatureId]);
     }
 
     _clearHighlight() {
         if (this.map) {
-            this.map.setFilter("highlightLayer", ["in", "$id", ""]);
+            this.map.setFilter(this._highlightLayerId, ["in", "$id", ""]);
         }
     }
 
