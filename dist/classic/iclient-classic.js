@@ -3,7 +3,7 @@
  *          iclient-classic.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.1
+ *          version: v10.1.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5102,6 +5102,9 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 
 var FetchRequest_fetch = window.fetch;
+var setFetch = function setFetch(newFetch) {
+  FetchRequest_fetch = newFetch;
+};
 /**
  * @function SuperMap.setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
@@ -5266,7 +5269,7 @@ var FetchRequest = SuperMap.FetchRequest = {
     return totalLength < 2000 ? false : true;
   },
   _postSimulatie: function _postSimulatie(type, url, params, options) {
-    var separator = url.indexOf("?") > -1 ? "&" : "?";
+    var separator = url.indexOf('?') > -1 ? '&' : '?';
     url += separator + '_method=' + type;
 
     if (typeof params !== 'string') {
@@ -5281,19 +5284,19 @@ var FetchRequest = SuperMap.FetchRequest = {
     }
 
     if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-      if (url.indexOf("?") < 0) {
+      if (url.indexOf('?') < 0) {
         url += '.json';
       } else {
-        var urlArrays = url.split("?");
+        var urlArrays = url.split('?');
 
         if (urlArrays.length === 2) {
-          url = urlArrays[0] + ".json?" + urlArrays[1];
+          url = urlArrays[0] + '.json?' + urlArrays[1];
         }
       }
     }
 
     if (options && options.proxy) {
-      if (typeof options.proxy === "function") {
+      if (typeof options.proxy === 'function') {
         url = options.proxy(url);
       } else {
         url = decodeURIComponent(url);
@@ -5316,7 +5319,7 @@ var FetchRequest = SuperMap.FetchRequest = {
         method: type,
         headers: options.headers,
         body: type === 'PUT' || type === 'POST' ? params : undefined,
-        credentials: options.withCredentials ? 'include' : 'omit',
+        credentials: this._getWithCredentials(options),
         mode: 'cors',
         timeout: getRequestTimeout()
       }).then(function (response) {
@@ -5328,12 +5331,23 @@ var FetchRequest = SuperMap.FetchRequest = {
       method: type,
       body: type === 'PUT' || type === 'POST' ? params : undefined,
       headers: options.headers,
-      credentials: options.withCredentials ? 'include' : 'omit',
+      credentials: this._getWithCredentials(options),
       mode: 'cors',
       timeout: getRequestTimeout()
     }).then(function (response) {
       return response;
     });
+  },
+  _getWithCredentials: function _getWithCredentials(options) {
+    if (options.withCredentials === true) {
+      return 'include';
+    }
+
+    if (options.withCredentials === false) {
+      return 'omit';
+    }
+
+    return 'same-origin';
   },
   _fetchJsonp: function _fetchJsonp(url, options) {
     options = options || {};
@@ -5347,7 +5361,7 @@ var FetchRequest = SuperMap.FetchRequest = {
   _timeout: function _timeout(seconds, promise) {
     return new Promise(function (resolve, reject) {
       setTimeout(function () {
-        reject(new Error("timeout"));
+        reject(new Error('timeout'));
       }, seconds);
       promise.then(resolve, reject);
     });
@@ -5367,11 +5381,11 @@ var FetchRequest = SuperMap.FetchRequest = {
           encodedValue = encodeURIComponent(value);
         }
 
-        paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+        paramsArray.push(encodeURIComponent(key) + '=' + encodedValue);
       }
     }
 
-    return paramsArray.join("&");
+    return paramsArray.join('&');
   },
   _isMVTRequest: function _isMVTRequest(url) {
     return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
@@ -5388,7 +5402,7 @@ SuperMap.Util.RequestJSONPPromise = {
     for (var key in values) {
       me.queryKeys.push(key);
 
-      if (typeof values[key] !== "string") {
+      if (typeof values[key] !== 'string') {
         values[key] = SuperMap.Util.toJSON(values[key]);
       }
 
@@ -5433,23 +5447,23 @@ SuperMap.Util.RequestJSONPPromise = {
           while (leftValue.length > 0) {
             var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
 
-            if (sectionURL.indexOf("?") > -1) {
-              sectionURL += "&";
+            if (sectionURL.indexOf('?') > -1) {
+              sectionURL += '&';
             } else {
-              sectionURL += "?";
+              sectionURL += '?';
             }
 
             var tempLeftValue = leftValue.substring(0, leftLength); //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
 
-            if (tempLeftValue.substring(leftLength - 1, leftLength) === "%") {
+            if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
               leftLength -= 1;
               tempLeftValue = leftValue.substring(0, leftLength);
-            } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === "%") {
+            } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
               leftLength -= 2;
               tempLeftValue = leftValue.substring(0, leftLength);
             }
 
-            sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
+            sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
             leftValue = leftValue.substring(leftLength);
 
             if (tempLeftValue.length > 0) {
@@ -5461,19 +5475,19 @@ SuperMap.Util.RequestJSONPPromise = {
         } else {
           keysCount++;
 
-          if (sectionURL.indexOf("?") > -1) {
-            sectionURL += "&";
+          if (sectionURL.indexOf('?') > -1) {
+            sectionURL += '&';
           } else {
-            sectionURL += "?";
+            sectionURL += '?';
           }
 
-          sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
+          sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
         }
       }
     }
 
     splitQuestUrl.push(sectionURL);
-    me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
+    me.send(splitQuestUrl, 'SuperMap.Util.RequestJSONPPromise.supermap_callbacks[' + uid + ']', config && config.proxy);
     return p;
   },
   getUid: function getUid() {
@@ -5490,15 +5504,15 @@ SuperMap.Util.RequestJSONPPromise = {
       for (var i = 0; i < len; i++) {
         var url = splitQuestUrl[i];
 
-        if (url.indexOf("?") > -1) {
-          url += "&";
+        if (url.indexOf('?') > -1) {
+          url += '&';
         } else {
-          url += "?";
+          url += '?';
         }
 
-        url += "sectionCount=" + len;
-        url += "&sectionIndex=" + i;
-        url += "&jsonpUserID=" + jsonpUserID;
+        url += 'sectionCount=' + len;
+        url += '&sectionIndex=' + i;
+        url += '&jsonpUserID=' + jsonpUserID;
 
         if (proxy) {
           url = decodeURIComponent(url);
