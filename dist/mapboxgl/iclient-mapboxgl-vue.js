@@ -16317,7 +16317,7 @@ function (_mapboxgl$Evented) {
       sceneUrl = sceneUrl.slice(0, sceneUrl.indexOf('/rest/realspace') + 15);
       var promise = this.scene.open(sceneUrl);
       this.scene.fxaa = true;
-      this.scene.skyAtmosphere.show = false;
+      this.scene.skyAtmosphere.show = true;
       this.Cesium.when.all(promise, function () {
         var sc = _this4.scene.camera;
 
@@ -18220,7 +18220,9 @@ function (_mapboxgl$Evented) {
     value: function _queryByRestMap(restMapParameter) {
       var _this2 = this;
 
-      var options = {};
+      var options = {
+        withCredentials: restMapParameter.withCredentials || false
+      };
 
       if (restMapParameter.proxy) {
         options.proxy = restMapParameter.proxy;
@@ -18262,7 +18264,9 @@ function (_mapboxgl$Evented) {
 
       var maxFeatures = restDataParameter.maxFeatures || this.maxFeatures;
       var toIndex = maxFeatures === 1 ? 0 : maxFeatures - 1;
-      var options = {};
+      var options = {
+        withCredentials: restDataParameter.withCredentials || false
+      };
 
       if (restDataParameter.proxy) {
         options.proxy = restDataParameter.proxy;
@@ -18511,7 +18515,7 @@ function (_mapboxgl$Evented) {
         var sourceName, datasetName; // 请求获取数据源名
 
         SuperMap.FetchRequest.get(url, null, {
-          withCredentials: false
+          withCredentials: iportalDataParameter.withCredentials
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -18519,7 +18523,7 @@ function (_mapboxgl$Evented) {
           url = "".concat(address, "/data/datasources/").concat(sourceName, "/datasets"); // 请求获取数据集名
 
           SuperMap.FetchRequest.get(url, null, {
-            withCredentials: false
+            withCredentials: iportalDataParameter.withCredentials
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -18531,7 +18535,8 @@ function (_mapboxgl$Evented) {
               name: iportalDataParameter.name,
               attributeFilter: iportalDataParameter.attributeFilter,
               maxFeatures: iportalDataParameter.maxFeatures,
-              epsgCode: iportalDataParameter.epsgCode
+              epsgCode: iportalDataParameter.epsgCode,
+              withCredentials: iportalDataParameter.withCredentials
             });
           }).catch(function (error) {
             _this5.fire('queryfailed', {
@@ -18554,7 +18559,7 @@ function (_mapboxgl$Evented) {
         var mapName, layerName, path; // 请求获取地图名
 
         SuperMap.FetchRequest.get(_url, null, {
-          withCredentials: false
+          withCredentials: iportalDataParameter.withCredentials
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -18563,7 +18568,7 @@ function (_mapboxgl$Evented) {
           _url = _url = "".concat(address, "/maps/").concat(mapName, "/layers"); // 请求获取图层名
 
           SuperMap.FetchRequest.get(_url, null, {
-            withCredentials: false
+            withCredentials: iportalDataParameter.withCredentials
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -18575,7 +18580,8 @@ function (_mapboxgl$Evented) {
               name: iportalDataParameter.name,
               attributeFilter: iportalDataParameter.attributeFilter,
               maxFeatures: iportalDataParameter.maxFeatures,
-              epsgCode: iportalDataParameter.epsgCode
+              epsgCode: iportalDataParameter.epsgCode,
+              withCredentials: iportalDataParameter.withCredentials
             });
 
             return layerName;
@@ -54842,7 +54848,7 @@ function (_Events) {
         var datasetName; // 请求获取数据源名
 
         SuperMap.FetchRequest.get(url, null, {
-          withCredentials: (0, _util.handleWithCredentials)(url, this.iportalServiceProxyUrl, false)
+          withCredentials: (0, _util.handleWithCredentials)(url, this.iportalServiceProxyUrl, this.withCredentials)
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -54850,7 +54856,7 @@ function (_Events) {
           url = "".concat(address, "/data/datasources/").concat(dataSourceName, "/datasets"); // 请求获取数据集名
 
           SuperMap.FetchRequest.get(url, null, {
-            withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, false)
+            withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -54861,7 +54867,7 @@ function (_Events) {
               dataSourceName: dataSourceName,
               dataUrl: url.split('/datasources')[0]
             }, Object.assign({}, queryInfo, {
-              withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, false)
+              withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
             }));
           }).catch(function (error) {
             console.log(error);
@@ -54880,7 +54886,7 @@ function (_Events) {
         var path; // 请求获取地图名
 
         SuperMap.FetchRequest.get(_url, null, {
-          withCredentials: (0, _util.handleWithCredentials)(_url, this.iportalServiceProxyUrl, false)
+          withCredentials: (0, _util.handleWithCredentials)(_url, this.iportalServiceProxyUrl, this.withCredentials)
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -54889,7 +54895,7 @@ function (_Events) {
           _url = _url = "".concat(address, "/maps/").concat(mapName, "/layers"); // 请求获取图层名
 
           SuperMap.FetchRequest.get(_url, null, {
-            withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, false)
+            withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -54899,7 +54905,7 @@ function (_Events) {
               mapName: layerName,
               dataUrl: path
             }, Object.assign({}, queryInfo, {
-              withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, false)
+              withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
             }));
 
             return layerName;
@@ -56079,7 +56085,7 @@ var __decorate = void 0 && (void 0).__decorate || function (decorators, target, 
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var MAP_EVENT_NAMES = ['resize', 'webglcontextlost', 'webglcontextrestored', 'remove', 'movestart', 'contextmenu', 'dblclick', 'click', 'touchcancel', 'touchmove', 'touchend', 'touchstart', 'dataloading', 'mousemove', 'mouseup', 'mousedown', 'sourcedataloading', 'error', 'data', 'styledata', 'sourcedata', 'mouseout', 'styledataloading', 'moveend', 'move', 'render', 'zoom', 'zoomstart', 'zoomend', 'boxzoomstart', 'boxzoomcancel', 'boxzoomend', 'rotate', 'rotatestart', 'rotateend', 'dragend', 'drag', 'dragstart', 'pitch', 'idle'];
+var MAP_EVENT_NAMES = ['resize', 'webglcontextlost', 'webglcontextrestored', 'remove', 'contextmenu', 'dblclick', 'click', 'touchcancel', 'touchmove', 'touchend', 'touchstart', 'dataloading', 'mousemove', 'mouseup', 'mousedown', 'mouseenter', 'mouseleave', 'mouseover', 'mouseout', 'sourcedataloading', 'error', 'data', 'styledata', 'sourcedata', 'styledataloading', 'styleimagemissing', 'movestart', 'moveend', 'move', 'render', 'zoom', 'zoomstart', 'zoomend', 'boxzoomstart', 'boxzoomcancel', 'boxzoomend', 'rotate', 'rotatestart', 'rotateend', 'dragend', 'drag', 'dragstart', 'pitch', 'pitchend', 'pitchstart', 'idle', 'wheel'];
 
 var MapEvents =
 /*#__PURE__*/
@@ -70541,7 +70547,7 @@ function (_Events) {
           queryInfo.attributeFilter = _this2._getAttributeFilterByKeywords(fields, queryInfo.keyWord);
 
           _this2._getMapFeatureBySql(dataUrl, queryInfo);
-        });
+        }, queryInfo.withCredentials);
       } else {
         this._getMapFeatureBySql(dataUrl, queryInfo);
       }
@@ -70780,6 +70786,7 @@ function (_Events) {
     value: function _getRestMapFields(url, layerName, callBack) {
       var _this6 = this;
 
+      var withCredentials = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       var param = new SuperMap.QueryBySQLParameters({
         queryParams: [new SuperMap.FilterParameter({
           name: layerName,
@@ -70788,6 +70795,7 @@ function (_Events) {
       });
       var queryBySQLSerice = new SuperMap.QueryBySQLService(url, {
         proxy: this.options.proxy,
+        withCredentials: withCredentials,
         eventListeners: {
           processCompleted: function processCompleted(serviceResult) {
             var fields;
