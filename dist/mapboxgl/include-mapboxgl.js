@@ -87,7 +87,7 @@
             inputScript("https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js");
         }
         if (inArray(includes, 'three')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js");
+            inputScript("https://cdn.bootcss.com/three.js/92/three.min.js");
         }
         if (inArray(includes, 'xlsx')) {
             inputScript('https://cdn.bootcss.com/xlsx/0.15.3/xlsx.core.min.js');
@@ -96,16 +96,16 @@
             inputScript('https://cdn.bootcss.com/proj4js/2.6.0/proj4.js');
         }
         if (inArray(includes, 'shapefile')) {
-          inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
+          inputScript("https://cdn.jsdelivr.net/npm/shapefile@0.6.6/dist/shapefile.js");
         }
         if (inArray(includes, 'ant-design-vue')) {
-            inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
-            inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
+            inputCSS("https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.css");
+            inputScript("https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.js");
         }
         if (inArray(includes, 'antd')) {
-            inputCSS("https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.min.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.js");
+            inputCSS("https://cdn.bootcss.com/antd/3.25.3/antd.min.css");
+            inputScript("https://cdn.bootcss.com/moment.js/2.24.0/moment.min.js");
+            inputScript("https://cdn.bootcss.com/antd/3.25.3/antd.js");
         }
         if (inArray(includes, 'deck')) {
             inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");

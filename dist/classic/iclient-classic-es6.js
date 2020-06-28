@@ -3,7 +3,7 @@
  *          iclient-classic.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.1
+ *          version: v10.1.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -4706,7 +4706,10 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 
 
-const FetchRequest_fetch = window.fetch;
+let FetchRequest_fetch = window.fetch;
+var setFetch = function (newFetch) {
+    FetchRequest_fetch = newFetch;
+}
 /**
  * @function SuperMap.setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
@@ -4759,12 +4762,13 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        if(Util.isInTheSameDomain(url)){
-          return true;
-        }if(options.crossOrigin != undefined){
-          return options.crossOrigin;
-        }else{
-          return isCORS() || options.proxy
+        if (Util.isInTheSameDomain(url)) {
+            return true;
+        }
+        if (options.crossOrigin != undefined) {
+            return options.crossOrigin;
+        } else {
+            return isCORS() || options.proxy;
         }
     },
     get: function (url, params, options) {
@@ -4785,7 +4789,6 @@ var FetchRequest = SuperMap.FetchRequest = {
         } else {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
-
     },
 
     delete: function (url, params, options) {
@@ -4805,7 +4808,6 @@ var FetchRequest = SuperMap.FetchRequest = {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
         return this._fetch(url, params, options, type);
-
     },
     post: function (url, params, options) {
         options = options || {};
@@ -4818,7 +4820,6 @@ var FetchRequest = SuperMap.FetchRequest = {
             return SuperMap.Util.RequestJSONPPromise.POST(config);
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
-
     },
 
     put: function (url, params, options) {
@@ -4831,10 +4832,8 @@ var FetchRequest = SuperMap.FetchRequest = {
                 data: params
             };
             return SuperMap.Util.RequestJSONPPromise.PUT(config);
-
         }
         return this._fetch(url, params, options, 'PUT');
-
     },
     urlIsLong: function (url) {
         //当前url的字节长度。
@@ -4851,10 +4850,10 @@ var FetchRequest = SuperMap.FetchRequest = {
                 totalLength += 3;
             }
         }
-        return (totalLength < 2000) ? false : true;
+        return totalLength < 2000 ? false : true;
     },
     _postSimulatie: function (type, url, params, options) {
-        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        var separator = url.indexOf('?') > -1 ? '&' : '?';
         url += separator + '_method=' + type;
         if (typeof params !== 'string') {
             params = JSON.stringify(params);
@@ -4868,17 +4867,17 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
 
         if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-            if (url.indexOf("?") < 0) {
-                url += '.json'
+            if (url.indexOf('?') < 0) {
+                url += '.json';
             } else {
-                var urlArrays = url.split("?");
+                var urlArrays = url.split('?');
                 if (urlArrays.length === 2) {
-                    url = urlArrays[0] + ".json?" + urlArrays[1]
+                    url = urlArrays[0] + '.json?' + urlArrays[1];
                 }
             }
         }
         if (options && options.proxy) {
-            if (typeof options.proxy === "function") {
+            if (typeof options.proxy === 'function') {
                 url = options.proxy(url);
             } else {
                 url = decodeURIComponent(url);
@@ -4895,22 +4894,25 @@ var FetchRequest = SuperMap.FetchRequest = {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         }
         if (options.timeout) {
-            return this._timeout(options.timeout, FetchRequest_fetch(url, {
-                method: type,
-                headers: options.headers,
-                body: type === 'PUT' || type === 'POST' ? params : undefined,
-                credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors',
-                timeout: getRequestTimeout()
-            }).then(function (response) {
-                return response;
-            }));
+            return this._timeout(
+                options.timeout,
+                FetchRequest_fetch(url, {
+                    method: type,
+                    headers: options.headers,
+                    body: type === 'PUT' || type === 'POST' ? params : undefined,
+                    credentials: this._getWithCredentials(options),
+                    mode: 'cors',
+                    timeout: getRequestTimeout()
+                }).then(function (response) {
+                    return response;
+                })
+            );
         }
         return FetchRequest_fetch(url, {
             method: type,
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
-            credentials: options.withCredentials ? 'include' : 'omit',
+            credentials: this._getWithCredentials(options),
             mode: 'cors',
             timeout: getRequestTimeout()
         }).then(function (response) {
@@ -4918,47 +4920,56 @@ var FetchRequest = SuperMap.FetchRequest = {
         });
     },
 
+    _getWithCredentials: function (options) {
+        if (options.withCredentials === true) {
+            return 'include';
+        }
+        if (options.withCredentials === false) {
+            return 'omit';
+        }
+        return 'same-origin';
+    },
+
     _fetchJsonp: function (url, options) {
         options = options || {};
         return fetch_jsonp_default()(url, {
-                method: 'GET',
-                timeout: options.timeout
-            })
-            .then(function (response) {
-                return response;
-            });
+            method: 'GET',
+            timeout: options.timeout
+        }).then(function (response) {
+            return response;
+        });
     },
 
     _timeout: function (seconds, promise) {
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
-                reject(new Error("timeout"))
-            }, seconds)
-            promise.then(resolve, reject)
-        })
+                reject(new Error('timeout'));
+            }, seconds);
+            promise.then(resolve, reject);
+        });
     },
 
     _getParameterString: function (params) {
         var paramsArray = [];
         for (var key in params) {
             var value = params[key];
-            if ((value != null) && (typeof value !== 'function')) {
+            if (value != null && typeof value !== 'function') {
                 var encodedValue;
                 if (Array.isArray(value) || value.toString() === '[object Object]') {
                     encodedValue = encodeURIComponent(JSON.stringify(value));
                 } else {
                     encodedValue = encodeURIComponent(value);
                 }
-                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+                paramsArray.push(encodeURIComponent(key) + '=' + encodedValue);
             }
         }
-        return paramsArray.join("&");
+        return paramsArray.join('&');
     },
 
     _isMVTRequest: function (url) {
-        return (url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1);
+        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
     }
-};
+}
 SuperMap.Util.RequestJSONPPromise = {
     limitLength: 1500,
     queryKeys: [],
@@ -4968,7 +4979,7 @@ SuperMap.Util.RequestJSONPPromise = {
         var me = this;
         for (var key in values) {
             me.queryKeys.push(key);
-            if (typeof values[key] !== "string") {
+            if (typeof values[key] !== 'string') {
                 values[key] = SuperMap.Util.toJSON(values[key]);
             }
             var tempValue = encodeURIComponent(values[key]);
@@ -4994,7 +5005,8 @@ SuperMap.Util.RequestJSONPPromise = {
             keysCount = 0; //此次sectionURL中有多少个key
         var length = me.queryKeys ? me.queryKeys.length : 0;
         for (var i = 0; i < length; i++) {
-            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) { //+2 for ("&"or"?")and"="
+            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+                //+2 for ("&"or"?")and"="
                 if (keysCount == 0) {
                     return false;
                 }
@@ -5007,22 +5019,22 @@ SuperMap.Util.RequestJSONPPromise = {
                     var leftValue = me.queryValues[i];
                     while (leftValue.length > 0) {
                         var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
-                        if (sectionURL.indexOf("?") > -1) {
-                            sectionURL += "&";
+                        if (sectionURL.indexOf('?') > -1) {
+                            sectionURL += '&';
                         } else {
-                            sectionURL += "?";
+                            sectionURL += '?';
                         }
                         var tempLeftValue = leftValue.substring(0, leftLength);
                         //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
-                        if (tempLeftValue.substring(leftLength - 1, leftLength) === "%") {
+                        if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
                             leftLength -= 1;
                             tempLeftValue = leftValue.substring(0, leftLength);
-                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === "%") {
+                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
                             leftLength -= 2;
                             tempLeftValue = leftValue.substring(0, leftLength);
                         }
 
-                        sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
+                        sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
                             splitQuestUrl.push(sectionURL);
@@ -5032,20 +5044,23 @@ SuperMap.Util.RequestJSONPPromise = {
                     }
                 } else {
                     keysCount++;
-                    if (sectionURL.indexOf("?") > -1) {
-                        sectionURL += "&";
+                    if (sectionURL.indexOf('?') > -1) {
+                        sectionURL += '&';
                     } else {
-                        sectionURL += "?";
+                        sectionURL += '?';
                     }
-                    sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
+                    sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
                 }
             }
         }
         splitQuestUrl.push(sectionURL);
-        me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
+        me.send(
+            splitQuestUrl,
+            'SuperMap.Util.RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+            config && config.proxy
+        );
         return p;
     },
-
 
     getUid: function () {
         var uid = new Date().getTime(),
@@ -5059,14 +5074,14 @@ SuperMap.Util.RequestJSONPPromise = {
             var jsonpUserID = new Date().getTime();
             for (var i = 0; i < len; i++) {
                 var url = splitQuestUrl[i];
-                if (url.indexOf("?") > -1) {
-                    url += "&";
+                if (url.indexOf('?') > -1) {
+                    url += '&';
                 } else {
-                    url += "?";
+                    url += '?';
                 }
-                url += "sectionCount=" + len;
-                url += "&sectionIndex=" + i;
-                url += "&jsonpUserID=" + jsonpUserID;
+                url += 'sectionCount=' + len;
+                url += '&sectionIndex=' + i;
+                url += '&jsonpUserID=' + jsonpUserID;
                 if (proxy) {
                     url = decodeURIComponent(url);
                     url = proxy + encodeURIComponent(url);
@@ -5074,7 +5089,7 @@ SuperMap.Util.RequestJSONPPromise = {
                 fetch_jsonp_default()(url, {
                     jsonpCallbackFunction: callback,
                     timeout: 30000
-                })
+                });
             }
         }
     },

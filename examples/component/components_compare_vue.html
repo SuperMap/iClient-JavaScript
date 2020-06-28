@@ -1,0 +1,121 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n='resources.title_componentsCompare_Vue'></title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+        src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+        #main {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        .compare-title {
+            position: absolute;
+            top: 20px;
+            left: 12%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 74%;
+            z-index: 100;
+        }
+
+        .compare-title .sm-component-border {
+            width: 334px;
+            height: 48px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="main">
+        <div class="compare-title">
+            <sm-border type="border6">
+                <sm-text v-bind="textProps" title="全球疫情累积确诊">
+                </sm-text>
+            </sm-border>
+            <sm-border type="border6">
+                <sm-text v-bind="textProps" title="全球疫情累积发病率">
+                </sm-text>
+            </sm-border>
+        </div>
+        <sm-compare :before-map-options="beforeMapOptions" :after-map-options="afterMapOptions"></sm-compare>
+        <!-- <sm-compare>
+            <sm-web-map slot="beforeMap" target="beforeMap" server-url="https://www.supermapol.com/" @load="load"
+                :map-id="2134374143">
+            </sm-web-map>
+            <sm-web-map slot="afterMap" target="afterMap" server-url="https://www.supermapol.com/"
+                :map-id="1127786844">
+            </sm-web-map>
+        </sm-compare> -->
+    </div>
+
+    <script>
+        new Vue({
+            el: '#main',
+            data() {
+                return {
+                    beforeMapOptions: {
+                        target: 'beforeMap',
+                        serverUrl: 'https://www.supermapol.com',
+                        mapId: 2134374143,
+                        mapOptions: {
+                            center: [-39.9535, 38.0542],
+                            zoom: 2.44
+
+                        },
+                        legendControl: {
+                            background: "rgba(0,0,0,0.3)",
+                            textColor: "#fff",
+                            show: true,
+                            position: "bottom-left",
+                            layerNames: ["0315countrycenternpc"],
+                            mode: "simple"
+                        }
+                    },
+                    afterMapOptions: {
+                        target: 'afterMap',
+                        serverUrl: 'https://www.supermapol.com/',
+                        mapId: 1127786844,
+                        mapOptions: {
+                            center: [-39.9535, 38.0542],
+                            zoom: 2.44
+
+                        },
+                        legendControl: {
+                            background: "rgba(0,0,0,0.3)",
+                            textColor: "#fff",
+                            show: true,
+                            position: "bottom-right",
+                            layerNames: ["0315contryregion"],
+                            mode: "simple"
+                        }
+                    },
+                    textProps: {
+                        textColor: "#fff",
+                        background: "rgba(0,0,0,0)",
+                        fontStyle: {
+                            fontSize: '27px',
+                            lineHeight: 1.5,
+                            fontWeight: "normal",
+                            justifyContent: "center",
+                            textIndent: 0,
+                            fontFamily: "微软雅黑",
+                        }
+                    }
+                };
+            }
+        })
+
+    </script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@
  *          iclient-ol.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.1
+ *          version: v10.1.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -89,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 60);
+/******/ 	return __webpack_require__(__webpack_require__.s = 62);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,25 +102,25 @@ module.exports = ol.style.Style;
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = ol.format.GeoJSON;
+module.exports = ol.style.Stroke;
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = ol.style.Fill;
+module.exports = ol.format.GeoJSON;
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = ol.geom.Point;
+module.exports = ol.style.Fill;
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = ol.style.Stroke;
+module.exports = ol.geom.Point;
 
 /***/ }),
 /* 5 */
@@ -138,13 +138,13 @@ module.exports = ol.source;
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = ol.tilegrid.TileGrid;
+module.exports = ol.proj;
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = ol.proj;
+module.exports = ol.tilegrid.TileGrid;
 
 /***/ }),
 /* 9 */
@@ -156,13 +156,13 @@ module.exports = ol.style.Circle;
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = ol.Feature;
+module.exports = ol.format.MVT;
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = ol.format.MVT;
+module.exports = ol.Feature;
 
 /***/ }),
 /* 12 */
@@ -210,22 +210,28 @@ module.exports = ol.Map;
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = ol.source.TileImage;
+module.exports = ol.extent;
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = ol.size;
+module.exports = ol.source.TileImage;
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = ol.Object;
+module.exports = ol.size;
 
 /***/ }),
 /* 22 */
+/***/ (function(module, exports) {
+
+module.exports = ol.Object;
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports) {
 
 var g;
@@ -251,49 +257,49 @@ module.exports = g;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = ol.tilegrid.WMTS;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = ol.geom.LineString;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = ol.control.Control;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = ol.tilegrid;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = ol.source.Vector;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = ol.util;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = ol.proj.proj4;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -416,16 +422,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return XLSX}catch(e){return {}}}();
-
-/***/ }),
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = ol.extent;
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
 
 /***/ }),
 /* 33 */
@@ -1177,7 +1177,7 @@ var toPairs = createToPairs(keys);
 
 module.exports = toPairs;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(23)))
 
 /***/ }),
 /* 40 */
@@ -3614,7 +3614,7 @@ function property(path) {
 
 module.exports = remove;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22), __webpack_require__(66)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(23), __webpack_require__(68)(module)))
 
 /***/ }),
 /* 56 */
@@ -3630,26 +3630,38 @@ module.exports = JSON.parse("[{\"name\":\"克拉玛依市\",\"coord\":[85.014867
 
 /***/ }),
 /* 58 */
-/***/ (function(module, exports) {
+/***/ (function(module) {
 
-module.exports = ol.proj.Units;
+module.exports = JSON.parse("[{\"id\":\"SalesJan2009\",\"fileName\":\"SalesJan2009\",\"xField\":\"Longitude\",\"yField\":\"Latitude\",\"type\":\"POINT\"},{\"id\":\"Sacramentorealestatetransactions\",\"fileName\":\"Ealestate transactions\",\"xField\":\"longitude\",\"yField\":\"latitude\",\"type\":\"POINT\"},{\"id\":\"BeijingResidentialDistrict\",\"fileName\":\"北京市住宅小区\",\"xField\":\"SmX\",\"yField\":\"SmY\",\"type\":\"POINT\"},{\"id\":\"GlobalRecordOfOver7Earthquakes\",\"fileName\":\"全球历史7级以上地震记录\",\"xField\":\"经度\",\"yField\":\"纬度\",\"type\":\"POINT\"},{\"id\":\"ChinaRecordOfOver6Earthquakes\",\"fileName\":\"中国历史6级以上地震记录\",\"xField\":\"经度\",\"yField\":\"纬度\",\"type\":\"POINT\"},{\"id\":\"ChinaMeteorologicalObservationStation\",\"fileName\":\"中国气象观测站\",\"xField\":\"经度\",\"yField\":\"纬度\",\"type\":\"POINT\"},{\"id\":\"BeijingSubwayLine\",\"fileName\":\"北京市地铁交通线路\",\"type\":\"LINE\"},{\"id\":\"ChinaEarthquakeIntensityZone\",\"fileName\":\"中国地震烈度区划面\",\"type\":\"POLYGON\"}]");
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports) {
 
-module.exports = ol.Collection;
+module.exports = ol.proj.Units;
 
 /***/ }),
 /* 60 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-__webpack_require__(68);
-module.exports = __webpack_require__(67);
-
+module.exports = ol.render.Feature;
 
 /***/ }),
 /* 61 */
+/***/ (function(module, exports) {
+
+module.exports = ol.Collection;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(70);
+module.exports = __webpack_require__(69);
+
+
+/***/ }),
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate, global) {(function (global, factory) {
@@ -3953,10 +3965,10 @@ if (!('Promise' in globalNS)) {
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(62).setImmediate, __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(64).setImmediate, __webpack_require__(23)))
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -4012,7 +4024,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(63);
+__webpack_require__(65);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -4023,10 +4035,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(23)))
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -4216,10 +4228,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22), __webpack_require__(64)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(23), __webpack_require__(66)))
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4409,7 +4421,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(self) {
@@ -4833,7 +4845,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -4861,14 +4873,14 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(69);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(71);
 /* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(71);
+/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(73);
 /* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -4877,7 +4889,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15614,13 +15626,13 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(61);
+var polyfill = __webpack_require__(63);
 
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(65);
+var fetch = __webpack_require__(67);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(30);
+var fetch_jsonp = __webpack_require__(31);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -15633,7 +15645,10 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 
 
-const FetchRequest_fetch = window.fetch;
+let FetchRequest_fetch = window.fetch;
+var setFetch = function (newFetch) {
+    FetchRequest_fetch = newFetch;
+}
 /**
  * @function SuperMap.setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
@@ -15686,12 +15701,13 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        if(Util_Util.isInTheSameDomain(url)){
-          return true;
-        }if(options.crossOrigin != undefined){
-          return options.crossOrigin;
-        }else{
-          return isCORS() || options.proxy
+        if (Util_Util.isInTheSameDomain(url)) {
+            return true;
+        }
+        if (options.crossOrigin != undefined) {
+            return options.crossOrigin;
+        } else {
+            return isCORS() || options.proxy;
         }
     },
     get: function (url, params, options) {
@@ -15712,7 +15728,6 @@ var FetchRequest = SuperMap.FetchRequest = {
         } else {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
-
     },
 
     delete: function (url, params, options) {
@@ -15732,7 +15747,6 @@ var FetchRequest = SuperMap.FetchRequest = {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
         return this._fetch(url, params, options, type);
-
     },
     post: function (url, params, options) {
         options = options || {};
@@ -15745,7 +15759,6 @@ var FetchRequest = SuperMap.FetchRequest = {
             return SuperMap.Util.RequestJSONPPromise.POST(config);
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
-
     },
 
     put: function (url, params, options) {
@@ -15758,10 +15771,8 @@ var FetchRequest = SuperMap.FetchRequest = {
                 data: params
             };
             return SuperMap.Util.RequestJSONPPromise.PUT(config);
-
         }
         return this._fetch(url, params, options, 'PUT');
-
     },
     urlIsLong: function (url) {
         //当前url的字节长度。
@@ -15778,10 +15789,10 @@ var FetchRequest = SuperMap.FetchRequest = {
                 totalLength += 3;
             }
         }
-        return (totalLength < 2000) ? false : true;
+        return totalLength < 2000 ? false : true;
     },
     _postSimulatie: function (type, url, params, options) {
-        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        var separator = url.indexOf('?') > -1 ? '&' : '?';
         url += separator + '_method=' + type;
         if (typeof params !== 'string') {
             params = JSON.stringify(params);
@@ -15795,17 +15806,17 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
 
         if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-            if (url.indexOf("?") < 0) {
-                url += '.json'
+            if (url.indexOf('?') < 0) {
+                url += '.json';
             } else {
-                var urlArrays = url.split("?");
+                var urlArrays = url.split('?');
                 if (urlArrays.length === 2) {
-                    url = urlArrays[0] + ".json?" + urlArrays[1]
+                    url = urlArrays[0] + '.json?' + urlArrays[1];
                 }
             }
         }
         if (options && options.proxy) {
-            if (typeof options.proxy === "function") {
+            if (typeof options.proxy === 'function') {
                 url = options.proxy(url);
             } else {
                 url = decodeURIComponent(url);
@@ -15822,22 +15833,25 @@ var FetchRequest = SuperMap.FetchRequest = {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         }
         if (options.timeout) {
-            return this._timeout(options.timeout, FetchRequest_fetch(url, {
-                method: type,
-                headers: options.headers,
-                body: type === 'PUT' || type === 'POST' ? params : undefined,
-                credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors',
-                timeout: getRequestTimeout()
-            }).then(function (response) {
-                return response;
-            }));
+            return this._timeout(
+                options.timeout,
+                FetchRequest_fetch(url, {
+                    method: type,
+                    headers: options.headers,
+                    body: type === 'PUT' || type === 'POST' ? params : undefined,
+                    credentials: this._getWithCredentials(options),
+                    mode: 'cors',
+                    timeout: getRequestTimeout()
+                }).then(function (response) {
+                    return response;
+                })
+            );
         }
         return FetchRequest_fetch(url, {
             method: type,
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
-            credentials: options.withCredentials ? 'include' : 'omit',
+            credentials: this._getWithCredentials(options),
             mode: 'cors',
             timeout: getRequestTimeout()
         }).then(function (response) {
@@ -15845,47 +15859,56 @@ var FetchRequest = SuperMap.FetchRequest = {
         });
     },
 
+    _getWithCredentials: function (options) {
+        if (options.withCredentials === true) {
+            return 'include';
+        }
+        if (options.withCredentials === false) {
+            return 'omit';
+        }
+        return 'same-origin';
+    },
+
     _fetchJsonp: function (url, options) {
         options = options || {};
         return fetch_jsonp_default()(url, {
-                method: 'GET',
-                timeout: options.timeout
-            })
-            .then(function (response) {
-                return response;
-            });
+            method: 'GET',
+            timeout: options.timeout
+        }).then(function (response) {
+            return response;
+        });
     },
 
     _timeout: function (seconds, promise) {
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
-                reject(new Error("timeout"))
-            }, seconds)
-            promise.then(resolve, reject)
-        })
+                reject(new Error('timeout'));
+            }, seconds);
+            promise.then(resolve, reject);
+        });
     },
 
     _getParameterString: function (params) {
         var paramsArray = [];
         for (var key in params) {
             var value = params[key];
-            if ((value != null) && (typeof value !== 'function')) {
+            if (value != null && typeof value !== 'function') {
                 var encodedValue;
                 if (Array.isArray(value) || value.toString() === '[object Object]') {
                     encodedValue = encodeURIComponent(JSON.stringify(value));
                 } else {
                     encodedValue = encodeURIComponent(value);
                 }
-                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+                paramsArray.push(encodeURIComponent(key) + '=' + encodedValue);
             }
         }
-        return paramsArray.join("&");
+        return paramsArray.join('&');
     },
 
     _isMVTRequest: function (url) {
-        return (url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1);
+        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
     }
-};
+}
 SuperMap.Util.RequestJSONPPromise = {
     limitLength: 1500,
     queryKeys: [],
@@ -15895,7 +15918,7 @@ SuperMap.Util.RequestJSONPPromise = {
         var me = this;
         for (var key in values) {
             me.queryKeys.push(key);
-            if (typeof values[key] !== "string") {
+            if (typeof values[key] !== 'string') {
                 values[key] = SuperMap.Util.toJSON(values[key]);
             }
             var tempValue = encodeURIComponent(values[key]);
@@ -15921,7 +15944,8 @@ SuperMap.Util.RequestJSONPPromise = {
             keysCount = 0; //此次sectionURL中有多少个key
         var length = me.queryKeys ? me.queryKeys.length : 0;
         for (var i = 0; i < length; i++) {
-            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) { //+2 for ("&"or"?")and"="
+            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+                //+2 for ("&"or"?")and"="
                 if (keysCount == 0) {
                     return false;
                 }
@@ -15934,22 +15958,22 @@ SuperMap.Util.RequestJSONPPromise = {
                     var leftValue = me.queryValues[i];
                     while (leftValue.length > 0) {
                         var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
-                        if (sectionURL.indexOf("?") > -1) {
-                            sectionURL += "&";
+                        if (sectionURL.indexOf('?') > -1) {
+                            sectionURL += '&';
                         } else {
-                            sectionURL += "?";
+                            sectionURL += '?';
                         }
                         var tempLeftValue = leftValue.substring(0, leftLength);
                         //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
-                        if (tempLeftValue.substring(leftLength - 1, leftLength) === "%") {
+                        if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
                             leftLength -= 1;
                             tempLeftValue = leftValue.substring(0, leftLength);
-                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === "%") {
+                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
                             leftLength -= 2;
                             tempLeftValue = leftValue.substring(0, leftLength);
                         }
 
-                        sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
+                        sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
                             splitQuestUrl.push(sectionURL);
@@ -15959,20 +15983,23 @@ SuperMap.Util.RequestJSONPPromise = {
                     }
                 } else {
                     keysCount++;
-                    if (sectionURL.indexOf("?") > -1) {
-                        sectionURL += "&";
+                    if (sectionURL.indexOf('?') > -1) {
+                        sectionURL += '&';
                     } else {
-                        sectionURL += "?";
+                        sectionURL += '?';
                     }
-                    sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
+                    sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
                 }
             }
         }
         splitQuestUrl.push(sectionURL);
-        me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
+        me.send(
+            splitQuestUrl,
+            'SuperMap.Util.RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+            config && config.proxy
+        );
         return p;
     },
-
 
     getUid: function () {
         var uid = new Date().getTime(),
@@ -15986,14 +16013,14 @@ SuperMap.Util.RequestJSONPPromise = {
             var jsonpUserID = new Date().getTime();
             for (var i = 0; i < len; i++) {
                 var url = splitQuestUrl[i];
-                if (url.indexOf("?") > -1) {
-                    url += "&";
+                if (url.indexOf('?') > -1) {
+                    url += '&';
                 } else {
-                    url += "?";
+                    url += '?';
                 }
-                url += "sectionCount=" + len;
-                url += "&sectionIndex=" + i;
-                url += "&jsonpUserID=" + jsonpUserID;
+                url += 'sectionCount=' + len;
+                url += '&sectionIndex=' + i;
+                url += '&jsonpUserID=' + jsonpUserID;
                 if (proxy) {
                     url = decodeURIComponent(url);
                     url = proxy + encodeURIComponent(url);
@@ -16001,7 +16028,7 @@ SuperMap.Util.RequestJSONPPromise = {
                 fetch_jsonp_default()(url, {
                     jsonpCallbackFunction: callback,
                     timeout: 30000
-                })
+                });
             }
         }
     },
@@ -17349,7 +17376,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addMap
      * @description 添加地图。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
      * @returns {Promise} 返回包含添加地图结果的 Promise 对象。
      */
@@ -17371,7 +17398,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addScene
      * @description 添加场景。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
      * @returns {Promise} 返回包含添加场景结果的 Promise 对象。
      */
@@ -17393,7 +17420,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.registerService
      * @description 注册服务。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
      * @returns {Promise} 返回包含注册服务结果的 Promise 对象。
      */
@@ -17418,7 +17445,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {String} errMsg - 传入的错误信息。
      * @returns {Promise} 返回包含错误信息的 Promise 对象。
      */
@@ -17431,6 +17458,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.uploadDataRequest
      * @description 上传数据。
+     * @version 10.1.0
      * @param {number} id - 上传数据的资源id。
      * @param {Object} formData - 请求体为文本数据流。
      * @returns {Promise} 返回包含上传数据操作的 Promise 对象。
@@ -17443,6 +17471,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addData
      * @description 上传/注册数据。
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddDataParam} params - 上传/注册数据所需的参数。
      * @param {Object} [formData] - 请求体为文本数据流(上传数据时传入)。
      * @returns {Promise} 返回上传/注册数据的 Promise 对象。
@@ -17523,6 +17552,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.publishOrUnpublish
      * @description 发布/取消发布。
+     * @version 10.1.0
      * @param {object} options - 发布/取消发布数据服务所需的参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -17560,6 +17590,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.getDataPublishedStatus
      * @description 查询服务状态，发起服务状态查询。
+     * @version 10.1.0
      * @param {number} dataId - 查询服务状态的数据项id。
      * @param {string} dataServiceId - 发布的服务id。
      * @returns {Promise} 返回查询服务状态的 Promise 对象。
@@ -17572,6 +17603,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.unPublishedDataService
      * @description 取消发布。
+     * @version 10.1.0
      * @param {object} options - 取消发布服务具体参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -17585,6 +17617,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.publishedDataService
      * @description 发布数据服务。
+     * @version 10.1.0
      * @param {object} options - 发布数据服务具体参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -19671,7 +19704,8 @@ SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters_Dataset
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param {Object} options - 参数。 
- * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。</br>
+ * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。
+ * @param {number} options.sourceGeometrySRID - 缓冲区几何对象投影坐标参数, 如 4326，3857。
  * @param {SuperMap.BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
  * @extends {SuperMap.BufferAnalystParameters}
  */
@@ -20892,7 +20926,7 @@ SuperMap.ChartQueryParameters = ChartQueryParameters_ChartQueryParameters;
  * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
@@ -34728,7 +34762,7 @@ SuperMap.QueryByDistanceService = QueryByDistanceService_QueryByDistanceService;
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {Object} [options.prjCoordSys] -自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
@@ -34889,7 +34923,7 @@ SuperMap.QueryByGeometryService = QueryByGeometryService_QueryByGeometryService;
  * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
@@ -66573,7 +66607,7 @@ SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(31);
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(32);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
@@ -69820,7 +69854,7 @@ class services_MapService_MapService extends ServiceBase_ServiceBase {
     }
 }
 // EXTERNAL MODULE: external "ol.control.Control"
-var external_ol_control_Control_ = __webpack_require__(25);
+var external_ol_control_Control_ = __webpack_require__(26);
 var external_ol_control_Control_default = /*#__PURE__*/__webpack_require__.n(external_ol_control_Control_);
 
 // CONCATENATED MODULE: ./src/openlayers/control/ChangeTileVersion.js
@@ -70270,7 +70304,7 @@ var external_ol_control_ScaleLine_ = __webpack_require__(41);
 var external_ol_control_ScaleLine_default = /*#__PURE__*/__webpack_require__.n(external_ol_control_ScaleLine_);
 
 // EXTERNAL MODULE: external "ol.proj"
-var external_ol_proj_ = __webpack_require__(8);
+var external_ol_proj_ = __webpack_require__(7);
 
 // EXTERNAL MODULE: external "ol.AssertionError"
 var external_ol_AssertionError_ = __webpack_require__(42);
@@ -70919,11 +70953,11 @@ var DeafultCanvasStyle = {
     }
 };
 // EXTERNAL MODULE: external "ol.geom.Point"
-var external_ol_geom_Point_ = __webpack_require__(3);
+var external_ol_geom_Point_ = __webpack_require__(4);
 var external_ol_geom_Point_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_Point_);
 
 // EXTERNAL MODULE: external "ol.format.GeoJSON"
-var external_ol_format_GeoJSON_ = __webpack_require__(1);
+var external_ol_format_GeoJSON_ = __webpack_require__(2);
 var external_ol_format_GeoJSON_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_GeoJSON_);
 
 // CONCATENATED MODULE: ./src/openlayers/services/QueryService.js
@@ -71098,7 +71132,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
 }
 
 // EXTERNAL MODULE: external "ol.util"
-var external_ol_util_ = __webpack_require__(28);
+var external_ol_util_ = __webpack_require__(29);
 
 // CONCATENATED MODULE: ./src/openlayers/core/Util.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -71547,11 +71581,11 @@ var external_ol_style_Circle_ = __webpack_require__(9);
 var external_ol_style_Circle_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Circle_);
 
 // EXTERNAL MODULE: external "ol.style.Fill"
-var external_ol_style_Fill_ = __webpack_require__(2);
+var external_ol_style_Fill_ = __webpack_require__(3);
 var external_ol_style_Fill_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Fill_);
 
 // EXTERNAL MODULE: external "ol.style.Stroke"
-var external_ol_style_Stroke_ = __webpack_require__(4);
+var external_ol_style_Stroke_ = __webpack_require__(1);
 var external_ol_style_Stroke_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Stroke_);
 
 // EXTERNAL MODULE: external "ol.style.Text"
@@ -71575,6 +71609,7 @@ var external_ol_style_Text_default = /*#__PURE__*/__webpack_require__.n(external
 
 
 var padding = 8, doublePadding = padding * 2;
+const ZERO = 0.0000001;
 
 /**
  * @class ol.supermap.StyleUtils
@@ -72160,7 +72195,6 @@ class StyleUtils_StyleUtils {
     style = style || this.getDefaultStyle();
     let olStyle = new external_ol_style_Style_default.a();
     let newImage, newFill, newStroke;
-    const ZERO = 0.0000001;
     let {
       fillColor,
       fillOpacity,
@@ -72171,6 +72205,8 @@ class StyleUtils_StyleUtils {
       lineCap,
       src,
       scale,
+      offsetX,
+      offsetY,
       //size,
       //imgSize,
       anchor
@@ -72208,14 +72244,15 @@ class StyleUtils_StyleUtils {
         }
       } else {
         newImage = new external_ol_style_Circle_default.a({
-          radius: radius,
+          radius,
           fill: new external_ol_style_Fill_default.a({
             color: fillColorArray
           }),
           stroke: new external_ol_style_Stroke_default.a({
             width: strokeWidth || ZERO,
             color: strokeColorArray
-          })
+          }),
+          displacement: this.getCircleDisplacement(radius, offsetX, offsetY)
         });
       }
       olStyle.setImage(newImage);
@@ -72251,6 +72288,44 @@ class StyleUtils_StyleUtils {
       olStyle.setImage(newImage);
     }
     return olStyle;
+  }
+
+  /**
+   * @function ol.supermap.StyleUtils.getIconAnchor
+   * @description 获取图标的锚点
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {array}
+   */
+  static getIconAnchor(offsetX=0.5, offsetY=0.5) {
+    return [offsetX, offsetY];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getCircleDisplacement
+   * @description 获取圆圈的偏移
+   * @param {number} radius - 圆圈半径
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {array}
+   */
+  static getCircleDisplacement(radius, offsetX=0, offsetY=0) {
+      const dispX = radius*offsetX, dispY = radius*offsetY;
+      return [dispX, -dispY];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getTextOffset
+   * @description 获取字体图标的偏移值
+   * @param {string} fontSize - 字体大小，如12px
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {object}
+   */
+  static getTextOffset(fontSize, offsetX=0, offsetY=0) {
+    const radius = fontSize.substr(0, fontSize.length - 2) / 2;
+    return {
+          x: radius*offsetX, 
+          y: radius*offsetY
+    };     
   }
 
   /**
@@ -72594,23 +72669,28 @@ class StyleUtils_StyleUtils {
 
     let fontSize = isRank ? 2 * parameters.radius + "px" : parameters.fontSize;
 
+    const {offsetX, offsetY, rotation} = parameters;
+    const offset = StyleUtils_StyleUtils.getTextOffset(fontSize, offsetX, offsetY);
     return new external_ol_style_Style_default.a({
-      text: new external_ol_style_Text_default.a({
-        text: text,
-        font: fontSize + " supermapol-icons",
-        placement: 'point',
-        textAlign: 'center',
-        fill: new external_ol_style_Fill_default.a({
-          color: fillColor
-        }),
-        backgroundFill: new external_ol_style_Fill_default.a({
-          color: [0, 0, 0, 0]
-        }),
-        stroke: new external_ol_style_Stroke_default.a({
-          width: parameters.strokeWidth || 0.000001,
-          color: strokeColor
+        text: new external_ol_style_Text_default.a({
+            text: text,
+            font: fontSize + " supermapol-icons",
+            placement: 'point',
+            textAlign: 'center',
+            fill: new external_ol_style_Fill_default.a({
+              color: fillColor
+            }),
+            backgroundFill: new external_ol_style_Fill_default.a({
+              color: [0, 0, 0, 0]
+            }),
+            stroke: new external_ol_style_Stroke_default.a({
+              width: parameters.strokeWidth || 0.000001,
+              color: strokeColor
+            }),
+            offsetX: offset.x,
+            offsetY: offset.y,
+            rotation
         })
-      })
     });
   }
   /**
@@ -72624,14 +72704,18 @@ class StyleUtils_StyleUtils {
       that.svgDiv = document.createElement('div');
       document.body.appendChild(that.svgDiv);
     }
-    StyleUtils_StyleUtils.getCanvasFromSVG(styleParams.url, that.svgDiv, function (canvas) {
+    const { url, radius, offsetX, offsetY, fillOpacity, rotation } = styleParams;
+    let anchor = this.getIconAnchor(offsetX, offsetY);
+    StyleUtils_StyleUtils.getCanvasFromSVG(url, that.svgDiv, function (canvas) {
       style = new external_ol_style_Style_default.a({
         image: new external_ol_style_Icon_default.a({
           img: that.setColorToCanvas(canvas, styleParams),
-          scale: styleParams.radius / canvas.width,
+          scale: 2 * radius / canvas.width,
           imgSize: [canvas.width, canvas.height],
-          anchor: [0.5, 0.5],
-          opacity: styleParams.fillOpacity
+          anchor: anchor || [0.5, 0.5],
+          opacity: fillOpacity,
+          anchorOrigin: 'bottom-right',
+          rotation
         })
       });
     });
@@ -72663,25 +72747,97 @@ class StyleUtils_StyleUtils {
    * @returns {Object} style对象
    */
   static getImageStyle(styleParams) {
-    let size = styleParams.imageInfo.size,
-      scale = 2 * styleParams.radius / size.w;
-    let imageInfo = styleParams.imageInfo;
-    let imgDom = imageInfo.img;
-    if (!imgDom || !imgDom.src) {
-      imgDom = new Image();
-      //要组装成完整的url
-      imgDom.src = imageInfo.url;
-    }
-    return new external_ol_style_Style_default.a({
-      image: new external_ol_style_Icon_default.a({
-        img: imgDom,
-        scale,
-        imgSize: [size.w, size.h],
-        anchor: [0.5, 0.5]
-      })
-    });
+      let size = styleParams.imageInfo.size,
+        scale = 2 * styleParams.radius / size.w;
+      let imageInfo = styleParams.imageInfo;
+      let imgDom = imageInfo.img;
+      if (!imgDom || !imgDom.src) {
+        imgDom = new Image();
+        //要组装成完整的url
+        imgDom.src = imageInfo.url;
+      }
+      const { offsetX, offsetY, rotation } = styleParams;
+      let anchor = this.getIconAnchor(offsetX, offsetY);
+      return new external_ol_style_Style_default.a({
+        image: new external_ol_style_Icon_default.a({
+          img: imgDom,
+          scale,
+          imgSize: [size.w, size.h],
+          anchor: anchor || [0.5, 0.5],
+          anchorOrigin: 'bottom-right',
+          rotation
+        })
+      });
   }
-
+  /**
+   * @function ol.supermap.StyleUtils.getRoadPath 获取道路样式
+   * @param {object} style - 样式参数
+   * @param {object} outlineStyle - 轮廓样式参数
+   * @returns {Object} style对象
+   */
+  static getRoadPath(style, outlineStyle) {
+    const { strokeWidth=ZERO, lineCap, strokeColor, strokeOpacity } = style;
+    // 道路线都是solid
+    let strokeColorArray = this.hexToRgb(strokeColor);
+    strokeColorArray && strokeColorArray.push(strokeOpacity);
+    var stroke = new external_ol_style_Style_default.a({
+        stroke: new external_ol_style_Stroke_default.a({
+            width: strokeWidth || ZERO,
+            color: strokeColorArray,
+            lineCap: lineCap || 'round',
+            lineDash: [0]
+        })
+    });
+    
+    const { strokeColor: outlineColor } = outlineStyle;
+    let outlineColorArray = this.hexToRgb(outlineColor);
+    // opacity使用style的透明度。保持两根线透明度一致
+    outlineColorArray && outlineColorArray.push(strokeOpacity);
+    let outlineWidth = strokeWidth === 0 ? ZERO : strokeWidth + 2; //外部宽度=内部样式宽度 + 2
+    var outlineStroke = new external_ol_style_Style_default.a({
+        stroke: new external_ol_style_Stroke_default.a({
+            width: outlineWidth, //外部宽度=内部样式宽度 + 2
+            color: outlineColorArray,
+            lineCap: lineCap || 'round',
+            lineDash: [0]
+        })
+    });
+    return [outlineStroke, stroke];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getPathway 获取铁路样式
+   * @param {object} style - 样式参数
+   * @param {object} outlineStyle - 轮廓样式参数
+   * @returns {Object} style对象
+   */
+  static getPathway(style, outlineStyle) {
+      let { strokeWidth=ZERO, strokeColor, strokeOpacity } = style;
+      // 道路线都是solid, lineCap都是直角
+      const lineDash = (w => [w, w + strokeWidth * 2])(4 * strokeWidth), lineCap= 'square';
+      let strokeColorArray = this.hexToRgb(strokeColor);
+      strokeColorArray && strokeColorArray.push(strokeOpacity);
+      var stroke = new external_ol_style_Style_default.a({
+          stroke: new external_ol_style_Stroke_default.a({
+              width: strokeWidth*0.5 || ZERO,
+              color: strokeColorArray,
+              lineCap,
+              lineDash
+          })
+      });
+    
+    const { strokeColor: outlineColor } = outlineStyle;
+    let outlineColorArray = this.hexToRgb(outlineColor);
+    // opacity使用style的透明度。保持两根线透明度一致
+    outlineColorArray && outlineColorArray.push(strokeOpacity);
+    var outlineStroke = new external_ol_style_Style_default.a({
+        stroke: new external_ol_style_Stroke_default.a({
+          width: strokeWidth || ZERO, 
+            color: outlineColorArray,
+            lineCap
+        })
+    });
+    return [outlineStroke, stroke];
+  }
 }
 // EXTERNAL MODULE: external "ol.Map"
 var external_ol_Map_ = __webpack_require__(18);
@@ -72749,14 +72905,14 @@ var MapExtend = function () {
 
 
 // EXTERNAL MODULE: external "ol.source.TileImage"
-var external_ol_source_TileImage_ = __webpack_require__(19);
+var external_ol_source_TileImage_ = __webpack_require__(20);
 var external_ol_source_TileImage_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_TileImage_);
 
 // EXTERNAL MODULE: external "ol.asserts"
 var external_ol_asserts_ = __webpack_require__(45);
 
 // EXTERNAL MODULE: external "ol.tilegrid.TileGrid"
-var external_ol_tilegrid_TileGrid_ = __webpack_require__(7);
+var external_ol_tilegrid_TileGrid_ = __webpack_require__(8);
 var external_ol_tilegrid_TileGrid_default = /*#__PURE__*/__webpack_require__.n(external_ol_tilegrid_TileGrid_);
 
 // CONCATENATED MODULE: ./src/openlayers/mapping/BaiduMap.js
@@ -72856,10 +73012,10 @@ var external_ol_geom_Geometry_ = __webpack_require__(15);
 var external_ol_geom_Geometry_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_Geometry_);
 
 // EXTERNAL MODULE: external "ol.size"
-var external_ol_size_ = __webpack_require__(20);
+var external_ol_size_ = __webpack_require__(21);
 
 // EXTERNAL MODULE: external "ol.tilegrid"
-var external_ol_tilegrid_ = __webpack_require__(26);
+var external_ol_tilegrid_ = __webpack_require__(27);
 
 // CONCATENATED MODULE: ./src/openlayers/mapping/ImageSuperMapRest.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
@@ -72894,6 +73050,7 @@ var external_ol_tilegrid_ = __webpack_require__(26);
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @extends {ol/source/TileImage}
  */
 class ImageSuperMapRest_ImageSuperMapRest extends external_ol_source_TileImage_default.a {
@@ -73230,7 +73387,7 @@ var external_ol_source_WMTS_ = __webpack_require__(47);
 var external_ol_source_WMTS_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_WMTS_);
 
 // EXTERNAL MODULE: external "ol.tilegrid.WMTS"
-var external_ol_tilegrid_WMTS_ = __webpack_require__(23);
+var external_ol_tilegrid_WMTS_ = __webpack_require__(24);
 var external_ol_tilegrid_WMTS_default = /*#__PURE__*/__webpack_require__.n(external_ol_tilegrid_WMTS_);
 
 // CONCATENATED MODULE: ./src/openlayers/mapping/Tianditu.js
@@ -73416,7 +73573,7 @@ class Tianditu_Tianditu extends external_ol_source_WMTS_default.a {
  * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
- * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol/source/TileImage}
  */
@@ -80847,7 +81004,7 @@ class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
     }
 }
 // EXTERNAL MODULE: external "ol.source.Vector"
-var external_ol_source_Vector_ = __webpack_require__(27);
+var external_ol_source_Vector_ = __webpack_require__(28);
 var external_ol_source_Vector_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_Vector_);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/DataFlow.js
@@ -80966,7 +81123,7 @@ class DataFlow_DataFlow extends external_ol_source_Vector_default.a {
 }
 
 // EXTERNAL MODULE: external "ol.Feature"
-var external_ol_Feature_ = __webpack_require__(10);
+var external_ol_Feature_ = __webpack_require__(11);
 var external_ol_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol_Feature_);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/theme/ThemeFeature.js
@@ -82193,7 +82350,7 @@ class HitCloverShape_HitCloverShape extends CloverShape_CloverShape {
 }
 
 // EXTERNAL MODULE: external "ol.Object"
-var external_ol_Object_ = __webpack_require__(21);
+var external_ol_Object_ = __webpack_require__(22);
 var external_ol_Object_default = /*#__PURE__*/__webpack_require__.n(external_ol_Object_);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/graphic/WebGLRenderer.js
@@ -82933,7 +83090,7 @@ class Graphic_Graphic extends external_ol_Object_default.a {
 }
 
 // EXTERNAL MODULE: external "ol.extent"
-var external_ol_extent_ = __webpack_require__(32);
+var external_ol_extent_ = __webpack_require__(19);
 
 // EXTERNAL MODULE: external "ol.geom.Polygon"
 var external_ol_geom_Polygon_ = __webpack_require__(50);
@@ -82966,14 +83123,14 @@ var external_ol_layer_Image_default = /*#__PURE__*/__webpack_require__.n(externa
 
 
 const defaultProps = {
-  color: [0, 0, 0, 255],
-  opacity: 0.8,
-  radius: 10,
-  radiusScale: 1,
-  radiusMinPixels: 0,
-  radiusMaxPixels: Number.MAX_SAFE_INTEGER,
-  strokeWidth: 1,
-  outline: false
+    color: [0, 0, 0, 255],
+    opacity: 0.8,
+    radius: 10,
+    radiusScale: 1,
+    radiusMinPixels: 0,
+    radiusMaxPixels: Number.MAX_SAFE_INTEGER,
+    strokeWidth: 1,
+    outline: false
 };
 
 const Renderer = ['canvas', 'webgl'];
@@ -83002,486 +83159,503 @@ const Renderer = ['canvas', 'webgl'];
  * @extends {ol/source/ImageCanvas}
  */
 class overlay_Graphic_Graphic extends external_ol_source_ImageCanvas_default.a {
-  constructor(options) {
-    super({
-      attributions: options.attributions,
-      canvasFunction: canvasFunctionInternal_,
-      logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
-      projection: options.projection,
-      ratio: options.ratio,
-      resolutions: options.resolutions,
-      state: options.state
-    });
-    this.graphics = [].concat(options.graphics);
-    this.map = options.map;
-    Util_Util.extend(this, options);
-    this.render = options.render || Renderer[0];
-    if (!core_Util_Util.supportWebGL2()) {
-      this.render = Renderer[0];
-    }
-    this.highLightStyle = options.highLightStyle;
-    //是否支持高亮，默认支持
-    this.isHighLight = typeof options.isHighLight === 'undefined' ? true : options.isHighLight;
-    this.hitGraphicLayer = null;
-    this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
-
-    const me = this;
-
-    if (options.onClick) {
-      me.map.on('click', function (e) {
-        me.map.forEachFeatureAtPixel(e.pixel, options.onClick, {}, e);
-      });
-    }
-
-    function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
-      if (!me.renderer) {
-        me.renderer = createRenderer(size, pixelRatio);
-      }
-      let graphics = this.getGraphicsInExtent(extent);
-      me.renderer._clearBuffer();
-      me.renderer.selected = this.selected;
-      me.renderer.drawGraphics(graphics);
-      return me.renderer.getCanvas();
-    }
-
-    function createRenderer(size, pixelRatio) {
-      let renderer;
-      if (me.render === Renderer[0]) {
-        renderer = new CanvasRenderer_GraphicCanvasRenderer(me, {
-          size,
-          pixelRatio
+    constructor(options) {
+        super({
+            attributions: options.attributions,
+            canvasFunction: canvasFunctionInternal_,
+            logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
+            projection: options.projection,
+            ratio: options.ratio,
+            resolutions: options.resolutions,
+            state: options.state
         });
-      } else {
-        let optDefault = Util_Util.extend({}, defaultProps);
-        let opt = Util_Util.extend(optDefault, {
-          color: me.color,
-          opacity: me.opacity,
-          radius: me.radius,
-          radiusScale: me.radiusScale,
-          radiusMinPixels: me.radiusMinPixels,
-          radiusMaxPixels: me.radiusMaxPixels,
-          strokeWidth: me.strokeWidth,
-          outline: me.outline,
-          onClick: me.onClick,
-          onHover: me.onHover
-        });
-        opt = Util_Util.extend(me, opt);
-        opt.pixelRatio = pixelRatio;
-        opt.container = me.map.getViewport().getElementsByClassName('ol-overlaycontainer')[0];
-        opt.onBeforeRender = function () {
-          return false;
-        };
-        opt.onAfterRender = function () {
-          return false;
-        };
+        this.graphics = [].concat(options.graphics);
+        this.map = options.map;
+        Util_Util.extend(this, options);
+        this.render = options.render || Renderer[0];
+        if (!core_Util_Util.supportWebGL2()) {
+            this.render = Renderer[0];
+        }
+        this.highLightStyle = options.highLightStyle;
+        //是否支持高亮，默认支持
+        this.isHighLight = typeof options.isHighLight === 'undefined' ? true : options.isHighLight;
+        this.hitGraphicLayer = null;
+        this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
 
-        renderer = new WebGLRenderer_GraphicWebGLRenderer(me, opt);
-      }
-      return renderer;
+        const me = this;
+
+        if (options.onClick) {
+            me.map.on('click', function (e) {
+                if(me.renderer instanceof WebGLRenderer_GraphicWebGLRenderer){
+                    return;
+                }
+                const features = me.map.getFeaturesAtPixel(e.pixel) || [];
+                for (let index = 0; index < features.length; index++) {
+                    const graphic = features[index];
+                    if (me.graphics.indexOf(graphic) > -1) {
+                        options.onClick(graphic, e);
+                        if (me.isHighLight) {
+                            me._highLight(
+                                graphic.getGeometry().getCoordinates(),
+                                new external_ol_style_Style_default.a({
+                                    image: graphic.getStyle()
+                                }).getImage(),
+                                graphic,
+                                e.pixel
+                            );
+                        }
+                        break;
+                    }
+                }
+            });
+        }
+        //eslint-disable-next-line no-unused-vars
+        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            if (!me.renderer) {
+                me.renderer = createRenderer(size, pixelRatio);
+            }
+            let graphics = this.getGraphicsInExtent(extent);
+            me.renderer._clearBuffer();
+            me.renderer.selected = this.selected;
+            me.renderer.drawGraphics(graphics);
+            return me.renderer.getCanvas();
+        }
+
+        function createRenderer(size, pixelRatio) {
+            let renderer;
+            if (me.render === Renderer[0]) {
+                renderer = new CanvasRenderer_GraphicCanvasRenderer(me, {
+                    size,
+                    pixelRatio
+                });
+            } else {
+                let optDefault = Util_Util.extend({}, defaultProps);
+                let opt = Util_Util.extend(optDefault, {
+                    color: me.color,
+                    opacity: me.opacity,
+                    radius: me.radius,
+                    radiusScale: me.radiusScale,
+                    radiusMinPixels: me.radiusMinPixels,
+                    radiusMaxPixels: me.radiusMaxPixels,
+                    strokeWidth: me.strokeWidth,
+                    outline: me.outline,
+                    onClick: me.onClick,
+                    onHover: me.onHover
+                });
+                opt = Util_Util.extend(me, opt);
+                opt.pixelRatio = pixelRatio;
+                opt.container = me.map.getViewport().getElementsByClassName('ol-overlaycontainer')[0];
+                opt.onBeforeRender = function () {
+                    return false;
+                };
+                opt.onAfterRender = function () {
+                    return false;
+                };
+
+                renderer = new WebGLRenderer_GraphicWebGLRenderer(me, opt);
+            }
+            return renderer;
+        }
+
+        /**
+         * @private
+         * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
+         * @description 获取在视图上的要素。
+         * @param {string} coordinate -坐标。
+         * @param {number} resolution -分辨率。
+         * @param {RequestCallback} callback -回调函数。
+         * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+         */
+        function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
+            let graphics = me.getGraphicsInExtent();
+            // FIX 无法高亮元素
+            me._highLightClose();
+            for (let i = graphics.length - 1; i >= 0; i--) {
+                let style = graphics[i].getStyle();
+                if (!style) {
+                    return;
+                }
+                //已经被高亮的graphics 不被选选中
+                if (style instanceof HitCloverShape_HitCloverShape) {
+                    continue;
+                }
+                let center = graphics[i].getGeometry().getCoordinates();
+                let image = new external_ol_style_Style_default.a({
+                    image: style
+                }).getImage();
+
+                let contain = false;
+                //icl-1047  当只有一个叶片的时候，判断是否选中的逻辑处理的更准确一点
+                if (image instanceof CloverShape_CloverShape && image.getCount() === 1) {
+                    const ratation = (image.getRotation() * 180) / Math.PI;
+                    const angle = Number.parseFloat(image.getAngle());
+                    const r = image.getRadius() * resolution;
+                    //if(image.getAngle() )
+                    let geo = null;
+                    if (angle > 355) {
+                        geo = new external_ol_style_Circle_default.a(center, r);
+                    } else {
+                        const coors = [];
+                        coors.push(center);
+                        const perAngle = angle / 8;
+                        for (let index = 0; index < 8; index++) {
+                            const radian = ((ratation + index * perAngle) / 180) * Math.PI;
+                            coors.push([center[0] + r * Math.cos(radian), center[1] - r * Math.sin(radian)]);
+                        }
+                        coors.push(center);
+                        geo = new external_ol_geom_Polygon_default.a([coors]);
+                    }
+                    if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
+                        contain = true;
+                    }
+                } else {
+                    let extent = [];
+                    extent[0] = center[0] - image.getAnchor()[0] * resolution;
+                    extent[2] = center[0] + image.getAnchor()[0] * resolution;
+                    extent[1] = center[1] - image.getAnchor()[1] * resolution;
+                    extent[3] = center[1] + image.getAnchor()[1] * resolution;
+                    if (external_ol_extent_["containsCoordinate"](extent, coordinate)) {
+                        contain = true;
+                    }
+                }
+
+                if (contain === true) {
+                    if (callback) {
+                        callback(graphics[i], e);
+                    }
+                    continue;
+                }
+                // if (me.isHighLight) {
+                //   // me._highLightClose();
+                // }
+            }
+            return undefined;
+        }
     }
 
     /**
-     * @private
-     * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
-     * @description 获取在视图上的要素。
-     * @param {string} coordinate -坐标。
-     * @param {number} resolution -分辨率。
-     * @param {RequestCallback} callback -回调函数。
-     * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+     * @function ol.source.Graphic.prototype.setGraphics
+     * @description 设置绘制的点要素，会覆盖之前的所有要素。
+     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
-    function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
-      let graphics = me.getGraphicsInExtent();
-      // FIX 无法高亮元素
-      me._highLightClose();
-      for (let i = graphics.length - 1; i >= 0; i--) {
-        let style = graphics[i].getStyle();
-        if (!style) {
-          return;
-        }
-        //已经被高亮的graphics 不被选选中
-        if (style instanceof HitCloverShape_HitCloverShape) {
-          continue;
-        }
-        let center = graphics[i].getGeometry().getCoordinates();
-        let image = new external_ol_style_Style_default.a({
-          image: style
-        }).getImage();
+    setGraphics(graphics) {
+        this.graphics = this.graphics || [];
+        this.graphics.length = 0;
+        let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
+        this.graphics = [].concat(sGraphics);
+        this.update();
+    }
 
-        let contain = false;
-        //icl-1047  当只有一个叶片的时候，判断是否选中的逻辑处理的更准确一点
-        if (image instanceof CloverShape_CloverShape && image.getCount() === 1) {
-          const ratation = (image.getRotation() * 180) / Math.PI;
-          const angle = Number.parseFloat(image.getAngle());
-          const r = image.getRadius() * resolution;
-          //if(image.getAngle() )
-          let geo = null;
-          if (angle > 355) {
-            geo = new external_ol_style_Circle_default.a(center, r);
-          } else {
-            const coors = [];
-            coors.push(center);
-            const perAngle = angle / 8;
-            for (let index = 0; index < 8; index++) {
-              const radian = ((ratation + index * perAngle) / 180) * Math.PI;
-              coors.push([center[0] + r * Math.cos(radian), center[1] - r * Math.sin(radian)]);
+    /**
+     * @function ol.source.Graphic.prototype.addGraphics
+     * @description 追加点要素，不会覆盖之前的要素。
+     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     */
+    addGraphics(graphics) {
+        this.graphics = this.graphics || [];
+        let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
+        this.graphics = this.graphics.concat(sGraphics);
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicBy
+     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
+     * @param {string} property - graphic 的某个属性名称。
+     * @param {string} value - property 所对应的值。
+     * @returns {ol.Graphic} 一个匹配的 graphic。
+     */
+    getGraphicBy(property, value) {
+        let graphic = null;
+        for (let index in this.graphics) {
+            if (this.graphics[index][property] === value) {
+                graphic = this.graphics[index];
+                break;
             }
-            coors.push(center);
-            geo = new external_ol_geom_Polygon_default.a([coors]);
-          }
-          if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
-            contain = true;
-          }
-        } else {
-          let extent = [];
-          extent[0] = center[0] - image.getAnchor()[0] * resolution;
-          extent[2] = center[0] + image.getAnchor()[0] * resolution;
-          extent[1] = center[1] - image.getAnchor()[1] * resolution;
-          extent[3] = center[1] + image.getAnchor()[1] * resolution;
-          if (external_ol_extent_["containsCoordinate"](extent, coordinate)) {
-            contain = true;
-          }
         }
-
-        if (contain === true) {
-          if (me.isHighLight) {
-            me._highLight(center, image, graphics[i], evtPixel);
-          }
-          if (callback) {
-            callback(graphics[i], e);
-          }
-          continue;
-        }
-        // if (me.isHighLight) {
-        //   // me._highLightClose();
-        // }
-      }
-      return undefined;
-    }
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.setGraphics
-   * @description 设置绘制的点要素，会覆盖之前的所有要素。
-   * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
-   */
-  setGraphics(graphics) {
-    this.graphics = this.graphics || [];
-    this.graphics.length = 0;
-    let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-    this.graphics = [].concat(sGraphics);
-    this.update();
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.addGraphics
-   * @description 追加点要素，不会覆盖之前的要素。
-   * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
-   */
-  addGraphics(graphics) {
-    this.graphics = this.graphics || [];
-    let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-    this.graphics = this.graphics.concat(sGraphics);
-    this.update();
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.getGraphicBy
-   * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-   * @param {string} property - graphic 的某个属性名称。
-   * @param {string} value - property 所对应的值。
-   * @returns {ol.Graphic} 一个匹配的 graphic。
-   */
-  getGraphicBy(property, value) {
-    let graphic = null;
-    for (let index in this.graphics) {
-      if (this.graphics[index][property] === value) {
-        graphic = this.graphics[index];
-        break;
-      }
-    }
-    return graphic;
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.getGraphicById
-   * @description 通过给定一个 id，返回对应的矢量要素。
-   * @param {string} graphicId - 矢量要素的属性 id
-   * @returns {ol.Graphic} 一个匹配的 graphic。
-   */
-  getGraphicById(graphicId) {
-    return this.getGraphicBy('id', graphicId);
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.getGraphicsByAttribute
-   * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-   * @param {string} attrName - graphic 的某个属性名称。
-   * @param {string} attrValue - property 所对应的值。
-   * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
-   */
-  getGraphicsByAttribute(attrName, attrValue) {
-    var graphic,
-      foundgraphics = [];
-    for (let index in this.graphics) {
-      graphic = this.graphics[index];
-      if (graphic && graphic.attributes) {
-        if (graphic.attributes[attrName] === attrValue) {
-          foundgraphics.push(graphic);
-        }
-      }
-    }
-    return foundgraphics;
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.removeGraphics
-   * @description 删除要素数组，默认将删除所有要素。
-   * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
-   */
-  removeGraphics(graphics = null) {
-    //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
-    if (!graphics || graphics.length === 0 || graphics === this.graphics) {
-      this.graphics.length = 0;
-      this.update();
-      return;
-    }
-
-    if (!Util_Util.isArray(graphics)) {
-      graphics = [graphics];
-    }
-
-    for (let i = graphics.length - 1; i >= 0; i--) {
-      let graphic = graphics[i];
-
-      //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
-      //并将其放入未删除的数组中。
-      let findex = Util_Util.indexOf(this.graphics, graphic);
-
-      if (findex === -1) {
-        continue;
-      }
-      this.graphics.splice(findex, 1);
-    }
-
-    //删除完成后重新设置 setGraphics，以更新
-    this.update();
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.clear
-   * @description 释放图层资源。
-   */
-  clear() {
-    this.removeGraphics();
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.update
-   * @description 更新图层。
-   */
-  update() {
-    this.renderer.update(this.graphics, this._getDefaultStyle());
-  }
-
-  _getDefaultStyle() {
-    const target = {};
-    if (this.color) {
-      target.fill = new external_ol_style_Fill_default.a({
-        color: this.toRGBA(this.color)
-      });
-    }
-    if (this.radius) {
-      target.radius = this.radius;
-    }
-    if (this.outline) {
-      target.stroke = new external_ol_style_Fill_default.a({
-        color: this.toRGBA(this.color),
-        width: this.strokeWidth
-      });
-    }
-    return new external_ol_style_Circle_default.a(target);
-  }
-
-  toRGBA(colorArray) {
-    return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.setStyle
-   * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
-   * @param {Object} styleOptions - 样式对象。
-   * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-   * @param {number} [styleOptions.radius=10] - 点半径。
-   * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-   * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
-   * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-   * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-   * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
-   * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
-   * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
-   */
-  setStyle(styleOptions) {
-    let self = this;
-    let styleOpt = {
-      color: self.color,
-      radius: self.radius,
-      opacity: self.opacity,
-      highlightColor: self.highlightColor,
-      radiusScale: self.radiusScale,
-      radiusMinPixels: self.radiusMinPixels,
-      radiusMaxPixels: self.radiusMaxPixels,
-      strokeWidth: self.strokeWidth,
-      outline: self.outline
-    };
-
-    Util_Util.extend(self, Util_Util.extend(styleOpt, styleOptions));
-    self.update();
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.getLayerState
-   * @description 获取当前地图及图层状态。
-   * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
-   */
-  getLayerState() {
-    let map = this.map;
-    let width = map.getSize()[0];
-    let height = map.getSize()[1];
-
-    let view = map.getView();
-    let center = view.getCenter();
-    let longitude = center[0];
-    let latitude = center[1];
-
-    let zoom = view.getZoom();
-    let maxZoom = view.getMaxZoom();
-    let rotationRadians = view.getRotation();
-
-    let rotation = (-rotationRadians * 180) / Math.PI;
-
-    let mapViewport = {
-      longitude: longitude,
-      latitude: latitude,
-      zoom: zoom,
-      maxZoom: maxZoom,
-      pitch: 0,
-      bearing: rotation
-    };
-    let state = {};
-    for (let key in mapViewport) {
-      state[key] = mapViewport[key];
-    }
-    state.width = width;
-    state.height = height;
-
-    state.color = this.color;
-    state.radius = this.radius;
-    state.opacity = this.opacity;
-    state.highlightColor = this.highlightColor;
-    state.radiusScale = this.radiusScale;
-    state.radiusMinPixels = this.radiusMinPixels;
-    state.radiusMaxPixels = this.radiusMaxPixels;
-    state.strokeWidth = this.strokeWidth;
-    state.outline = this.outline;
-    return state;
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype._highLightClose
-   * @description 关闭高亮要素显示。
-   * @private
-   */
-  _highLightClose() {
-    this.selected = null;
-    if (this.hitGraphicLayer) {
-      this.map.removeLayer(this.hitGraphicLayer);
-      this.hitGraphicLayer = null;
-    }
-    this.changed();
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype._highLight
-   * @description 高亮显示选中要素。
-   * @param {Array.<number>} center - 中心点。
-   * @param {ol/style/Style} image - 点样式。
-   * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
-   * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
-   * @private
-   */
-  _highLight(center, image, selectGraphic, evtPixel) {
-    if (selectGraphic.getStyle() instanceof CloverShape_CloverShape) {
-      if (this.hitGraphicLayer) {
-        this.map.removeLayer(this.hitGraphicLayer);
-        this.hitGraphicLayer = null;
-      }
-      var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
-      //点击点与中心点的角度
-      evtPixel = evtPixel || [0, 0];
-      var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0]) / Math.PI) * 180;
-      angle = angle > 0 ? angle : 360 + angle;
-      //确定扇叶
-      var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
-      //扇叶的起始角度
-      var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
-      //渲染参数
-      var opts = {
-        stroke: new external_ol_style_Stroke_default.a({
-          color: '#ff0000',
-          width: 1
-        }),
-        fill: new external_ol_style_Fill_default.a({
-          color: '#0099ff'
-        }),
-        radius: image.getRadius(),
-        angle: image.getAngle(),
-        eAngle: sAngle + image.getAngle(),
-        sAngle: sAngle,
-        rotation: image.getRotation()
-      };
-      if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape_HitCloverShape) {
-        opts.stroke = this.highLightStyle.getStroke();
-        opts.fill = this.highLightStyle.getFill();
-        opts.radius = this.highLightStyle.getRadius();
-        opts.angle = this.highLightStyle.getAngle();
-      }
-      var hitGraphic = new Graphic_Graphic(new external_ol_geom_Point_default.a(center));
-      hitGraphic.setStyle(new HitCloverShape_HitCloverShape(opts));
-      this.hitGraphicLayer = new external_ol_layer_Image_default.a({
-        source: new overlay_Graphic_Graphic({
-          map: this.map,
-          graphics: [hitGraphic]
-        })
-      });
-      this.map.addLayer(this.hitGraphicLayer);
-    } else {
-      this.selected = selectGraphic;
-      this.changed();
-    }
-  }
-
-  /**
-   * @function ol.source.Graphic.prototype.getGraphicsInExtent
-   * @description 在指定范围中获取几何要素面积。
-   * @param {Object} extent - 长度范围。
-   */
-  getGraphicsInExtent(extent) {
-    var graphics = [];
-    if (!extent) {
-      this.graphics.map(function (graphic) {
-        graphics.push(graphic);
         return graphic;
-      });
-      return graphics;
     }
-    this.graphics.map(function (graphic) {
-      if (external_ol_extent_["containsExtent"](extent, graphic.getGeometry().getExtent())) {
-        graphics.push(graphic);
-      }
-      return graphic;
-    });
-    return graphics;
-  }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicById
+     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 id
+     * @returns {ol.Graphic} 一个匹配的 graphic。
+     */
+    getGraphicById(graphicId) {
+        return this.getGraphicBy('id', graphicId);
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {string} attrName - graphic 的某个属性名称。
+     * @param {string} attrValue - property 所对应的值。
+     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     */
+    getGraphicsByAttribute(attrName, attrValue) {
+        var graphic,
+            foundgraphics = [];
+        for (let index in this.graphics) {
+            graphic = this.graphics[index];
+            if (graphic && graphic.attributes) {
+                if (graphic.attributes[attrName] === attrValue) {
+                    foundgraphics.push(graphic);
+                }
+            }
+        }
+        return foundgraphics;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.removeGraphics
+     * @description 删除要素数组，默认将删除所有要素。
+     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
+     */
+    removeGraphics(graphics = null) {
+        //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
+        if (!graphics || graphics.length === 0 || graphics === this.graphics) {
+            this.graphics.length = 0;
+            this.update();
+            return;
+        }
+
+        if (!Util_Util.isArray(graphics)) {
+            graphics = [graphics];
+        }
+
+        for (let i = graphics.length - 1; i >= 0; i--) {
+            let graphic = graphics[i];
+
+            //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
+            //并将其放入未删除的数组中。
+            let findex = Util_Util.indexOf(this.graphics, graphic);
+
+            if (findex === -1) {
+                continue;
+            }
+            this.graphics.splice(findex, 1);
+        }
+
+        //删除完成后重新设置 setGraphics，以更新
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.clear
+     * @description 释放图层资源。
+     */
+    clear() {
+        this.removeGraphics();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.update
+     * @description 更新图层。
+     */
+    update() {
+        this.renderer.update(this.graphics, this._getDefaultStyle());
+    }
+
+    _getDefaultStyle() {
+        const target = {};
+        if (this.color) {
+            target.fill = new external_ol_style_Fill_default.a({
+                color: this.toRGBA(this.color)
+            });
+        }
+        if (this.radius) {
+            target.radius = this.radius;
+        }
+        if (this.outline) {
+            target.stroke = new external_ol_style_Fill_default.a({
+                color: this.toRGBA(this.color),
+                width: this.strokeWidth
+            });
+        }
+        return new external_ol_style_Circle_default.a(target);
+    }
+
+    toRGBA(colorArray) {
+        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.setStyle
+     * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
+     * @param {Object} styleOptions - 样式对象。
+     * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
+     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.opacity=0.8] - 不透明度。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
+     * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
+     * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
+     */
+    setStyle(styleOptions) {
+        let self = this;
+        let styleOpt = {
+            color: self.color,
+            radius: self.radius,
+            opacity: self.opacity,
+            highlightColor: self.highlightColor,
+            radiusScale: self.radiusScale,
+            radiusMinPixels: self.radiusMinPixels,
+            radiusMaxPixels: self.radiusMaxPixels,
+            strokeWidth: self.strokeWidth,
+            outline: self.outline
+        };
+
+        Util_Util.extend(self, Util_Util.extend(styleOpt, styleOptions));
+        self.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getLayerState
+     * @description 获取当前地图及图层状态。
+     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+     */
+    getLayerState() {
+        let map = this.map;
+        let width = map.getSize()[0];
+        let height = map.getSize()[1];
+
+        let view = map.getView();
+        let center = view.getCenter();
+        let longitude = center[0];
+        let latitude = center[1];
+
+        let zoom = view.getZoom();
+        let maxZoom = view.getMaxZoom();
+        let rotationRadians = view.getRotation();
+
+        let rotation = (-rotationRadians * 180) / Math.PI;
+
+        let mapViewport = {
+            longitude: longitude,
+            latitude: latitude,
+            zoom: zoom,
+            maxZoom: maxZoom,
+            pitch: 0,
+            bearing: rotation
+        };
+        let state = {};
+        for (let key in mapViewport) {
+            state[key] = mapViewport[key];
+        }
+        state.width = width;
+        state.height = height;
+
+        state.color = this.color;
+        state.radius = this.radius;
+        state.opacity = this.opacity;
+        state.highlightColor = this.highlightColor;
+        state.radiusScale = this.radiusScale;
+        state.radiusMinPixels = this.radiusMinPixels;
+        state.radiusMaxPixels = this.radiusMaxPixels;
+        state.strokeWidth = this.strokeWidth;
+        state.outline = this.outline;
+        return state;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype._highLightClose
+     * @description 关闭高亮要素显示。
+     * @private
+     */
+    _highLightClose() {
+        this.selected = null;
+        if (this.hitGraphicLayer) {
+            this.map.removeLayer(this.hitGraphicLayer);
+            this.hitGraphicLayer = null;
+        }
+        this.changed();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype._highLight
+     * @description 高亮显示选中要素。
+     * @param {Array.<number>} center - 中心点。
+     * @param {ol/style/Style} image - 点样式。
+     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
+     * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+     * @private
+     */
+    _highLight(center, image, selectGraphic, evtPixel) {
+        if (selectGraphic.getStyle() instanceof CloverShape_CloverShape) {
+            if (this.hitGraphicLayer) {
+                this.map.removeLayer(this.hitGraphicLayer);
+                this.hitGraphicLayer = null;
+            }
+            var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
+            //点击点与中心点的角度
+            evtPixel = evtPixel || [0, 0];
+            var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0]) / Math.PI) * 180;
+            angle = angle > 0 ? angle : 360 + angle;
+            //确定扇叶
+            var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
+            //扇叶的起始角度
+            var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
+            //渲染参数
+            var opts = {
+                stroke: new external_ol_style_Stroke_default.a({
+                    color: '#ff0000',
+                    width: 1
+                }),
+                fill: new external_ol_style_Fill_default.a({
+                    color: '#0099ff'
+                }),
+                radius: image.getRadius(),
+                angle: image.getAngle(),
+                eAngle: sAngle + image.getAngle(),
+                sAngle: sAngle,
+                rotation: image.getRotation()
+            };
+            if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape_HitCloverShape) {
+                opts.stroke = this.highLightStyle.getStroke();
+                opts.fill = this.highLightStyle.getFill();
+                opts.radius = this.highLightStyle.getRadius();
+                opts.angle = this.highLightStyle.getAngle();
+            }
+            var hitGraphic = new Graphic_Graphic(new external_ol_geom_Point_default.a(center));
+            hitGraphic.setStyle(new HitCloverShape_HitCloverShape(opts));
+            this.hitGraphicLayer = new external_ol_layer_Image_default.a({
+                source: new overlay_Graphic_Graphic({
+                    map: this.map,
+                    graphics: [hitGraphic]
+                })
+            });
+            this.map.addLayer(this.hitGraphicLayer);
+        } else {
+            this.selected = selectGraphic;
+            this.changed();
+        }
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicsInExtent
+     * @description 在指定范围中获取几何要素面积。
+     * @param {Object} extent - 长度范围。
+     */
+    getGraphicsInExtent(extent) {
+        var graphics = [];
+        if (!extent) {
+            this.graphics.map(function (graphic) {
+                graphics.push(graphic);
+                return graphic;
+            });
+            return graphics;
+        }
+        this.graphics.map(function (graphic) {
+            if (external_ol_extent_["containsExtent"](extent, graphic.getGeometry().getExtent())) {
+                graphics.push(graphic);
+            }
+            return graphic;
+        });
+        return graphics;
+    }
 }
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/theme/GeoFeature.js
@@ -86549,7 +86723,7 @@ var external_ol_source_VectorTile_ = __webpack_require__(53);
 var external_ol_source_VectorTile_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_VectorTile_);
 
 // EXTERNAL MODULE: external "ol.format.MVT"
-var external_ol_format_MVT_ = __webpack_require__(11);
+var external_ol_format_MVT_ = __webpack_require__(10);
 var external_ol_format_MVT_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_MVT_);
 
 // EXTERNAL MODULE: external "ol.proj.Projection"
@@ -86578,369 +86752,473 @@ var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(ext
  * @param {(string|undefined)} options.url - SuperMap iServer 地图服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol/format/MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
  * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
- * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @extends {ol/source/VectorTile}
  */
 class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_source_VectorTile_default.a {
-  constructor(options) {
-    if (options.url === undefined && options.style === undefined) {
-      console.error("one of 'options.style' or 'options.style' is required");
-    }
-    var zRegEx = /\{z\}/g;
-    var xRegEx = /\{x\}/g;
-    var yRegEx = /\{y\}/g;
-    var dashYRegEx = /\{-y\}/g;
-    options.crossOrigin = 'anonymous';
-    options.attributions =
-      options.attributions ||
-      "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-    if (!['4', '5'].includes(core_Util_Util.getOlVersion())) {
-      options.tileSize = options.format instanceof external_ol_format_MVT_default.a && options.style ? 512 : 256;
-    }
-    super({
-      attributions: options.attributions,
-      cacheSize: options.cacheSize,
-      format: options.format || new external_ol_format_GeoJSON_default.a(),
-      logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
-      overlaps: options.overlaps,
-      projection: options.projection,
-      state: options.format instanceof external_ol_format_MVT_default.a && options.style && Object.prototype.toString.call(options.style) == '[object String]' ? 'loading' : options.state,
-      tileClass: options.tileClass,
-      tileGrid: options.tileGrid,
-      tilePixelRatio: options.tilePixelRatio,
-      tileUrlFunction: options.format instanceof external_ol_format_MVT_default.a && options.style ? zxyTileUrlFunction : tileUrlFunction,
-      tileLoadFunction: options.format instanceof external_ol_format_MVT_default.a ? undefined : tileLoadFunction,
-      url: options.url,
-      urls: options.urls,
-      wrapX: options.wrapX !== undefined ? options.wrapX : false,
-      tileSize: options.tileSize || null,
-      zDirection: ['4', '5'].includes(core_Util_Util.getOlVersion()) ? null : 0
-    });
-
-    var me = this;
-    me._tileType = options.tileType || 'ScaleXY';
-    this.vectorTileStyles = new VectorTileStyles_VectorTileStyles();
-    if (options.format instanceof external_ol_format_MVT_default.a && options.style) {
-      if (Object.prototype.toString.call(options.style) == '[object String]') {
-        FetchRequest.get(options.style)
-          .then(response => response.json())
-          .then(mbStyle => {
-            this._fillByStyleJSON(mbStyle, options.source);
-            this.setState('ready');
-          });
-      } else {
-        this._fillByStyleJSON(options.style, options.source);
-      }
-    } else {
-      this._fillByRestMapOptions(options.url, options);
-    }
-
-    function tileUrlFunction(tileCoord, pixelRatio, projection) {
-      if (!me.tileGrid) {
-        me.tileGrid = me.getTileGridForProjection(projection);
-      }
-      var tileSize = external_ol_size_["toSize"](me.tileGrid.getTileSize(z, me.tmpSize));
-      var params = '';
-      var z = tileCoord[0];
-      var x = tileCoord[1];
-      var y = ['4', '5'].includes(core_Util_Util.getOlVersion()) ? - tileCoord[2] - 1 : tileCoord[2];
-      if (me.tileType === 'ZXY') {
-        params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&x=' + x + '&y=' + y + '&z=' + z;
-      } else if (me.tileType === 'ViewBounds') {
-        var tileExtent = me.tileGrid.getTileCoordExtent(tileCoord);
-        params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&viewBounds=' + tileExtent[0] + ',' + tileExtent[1] + ',' + tileExtent[2] + ',' + tileExtent[3];
-      } else {
-        var origin = me.tileGrid.getOrigin(z);
-        var resolution = me.tileGrid.getResolution(z);
-        var dpi = 96;
-        var unit = projection.getUnits() || 'degrees';
-        if (unit === 'degrees') {
-          unit = Unit.DEGREE;
+    constructor(options) {
+        if (options.url === undefined && options.style === undefined) {
+            console.error("one of 'options.style' or 'options.style' is required");
         }
-        if (unit === 'm') {
-          unit = Unit.METER;
+        var zRegEx = /\{z\}/g;
+        var xRegEx = /\{x\}/g;
+        var yRegEx = /\{y\}/g;
+        var dashYRegEx = /\{-y\}/g;
+
+        options.attributions =
+            options.attributions ||
+            "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+        if (!['4', '5'].includes(core_Util_Util.getOlVersion())) {
+            options.tileSize = options.format instanceof external_ol_format_MVT_default.a && options.style ? 512 : 256;
+        }
+        super({
+            attributions: options.attributions,
+            cacheSize: options.cacheSize,
+            format: options.format || new external_ol_format_GeoJSON_default.a(),
+            logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
+            overlaps: options.overlaps,
+            projection: options.projection,
+            state:
+                options.format instanceof external_ol_format_MVT_default.a &&
+                options.style &&
+                Object.prototype.toString.call(options.style) == '[object String]'
+                    ? 'loading'
+                    : options.state,
+            tileClass: options.tileClass,
+            tileGrid: options.tileGrid,
+            tilePixelRatio: options.tilePixelRatio,
+            tileUrlFunction: options.format instanceof external_ol_format_MVT_default.a && options.style ? zxyTileUrlFunction : tileUrlFunction,
+            tileLoadFunction: options.format instanceof external_ol_format_MVT_default.a ? mvtTileLoadFunction : tileLoadFunction,
+            url: options.url,
+            urls: options.urls,
+            wrapX: options.wrapX !== undefined ? options.wrapX : false,
+            tileSize: options.tileSize || null,
+            zDirection: ['4', '5'].includes(core_Util_Util.getOlVersion()) ? null : 0
+        });
+        var me = this;
+        me.withCredentials = options.withCredentials;
+        me._tileType = options.tileType || 'ScaleXY';
+        this.vectorTileStyles = new VectorTileStyles_VectorTileStyles();
+        if (options.format instanceof external_ol_format_MVT_default.a && options.style) {
+            if (Object.prototype.toString.call(options.style) == '[object String]') {
+                FetchRequest.get(options.style, null, { withCredentials: options.withCredentials })
+                    .then((response) => response.json())
+                    .then((mbStyle) => {
+                        this._fillByStyleJSON(mbStyle, options.source);
+                        this.setState('ready');
+                    });
+            } else {
+                this._fillByStyleJSON(options.style, options.source);
+            }
+        } else {
+            this._fillByRestMapOptions(options.url, options);
         }
 
-        var scale = core_Util_Util.resolutionToScale(resolution, dpi, unit);
-        params = '&x=' + x + '&y=' + y + '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&scale=' + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + '}';
-      }
-      return me._tileUrl + encodeURI(params);
-    }
-
-    function zxyTileUrlFunction(tileCoord) {
-      if (!tileCoord) {
-        return undefined;
-      } else {
-        return me._tileUrl
-          .replace(zRegEx, tileCoord[0].toString())
-          .replace(xRegEx, tileCoord[1].toString())
-          .replace(yRegEx, function () {
-            var y = ['4', '5'].includes(core_Util_Util.getOlVersion()) ? - tileCoord[2] - 1 : tileCoord[2];
-            return y.toString();
-          })
-          .replace(dashYRegEx, function () {
+        function tileUrlFunction(tileCoord, pixelRatio, projection) {
+            if (!me.tileGrid) {
+                me.tileGrid = me.getTileGridForProjection(projection);
+            }
+            var tileSize = external_ol_size_["toSize"](me.tileGrid.getTileSize(z, me.tmpSize));
+            var params = '';
             var z = tileCoord[0];
-            var range = me.tileGrid.getFullTileRange(z);
-            var y = range.getHeight() + tileCoord[2];
-            return y.toString();
-          });
-      }
-    }
-    /**
-     * @private
-     * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
-     * @description 加载瓦片。
-     * @param {Object} tile -瓦片类。
-     * @param {string} tileUrl - 瓦片地址。
-     */
-    function tileLoadFunction(tile, tileUrl) {
-      var regWidth = new RegExp('(^|\\?|&)' + 'width' + '=([^&]*)(\\s|&|$)');
-      var regHeight = new RegExp('(^|\\?|&)' + 'height' + '=([^&]*)(\\s|&|$)');
-      var width = Number(tileUrl.match(regWidth)[2]);
-      var height = Number(tileUrl.match(regHeight)[2]);
+            var x = tileCoord[1];
+            var y = ['4', '5'].includes(core_Util_Util.getOlVersion()) ? -tileCoord[2] - 1 : tileCoord[2];
+            if (me.tileType === 'ZXY') {
+                params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&x=' + x + '&y=' + y + '&z=' + z;
+            } else if (me.tileType === 'ViewBounds') {
+                var tileExtent = me.tileGrid.getTileCoordExtent(tileCoord);
+                params =
+                    '&width=' +
+                    tileSize[0] +
+                    '&height=' +
+                    tileSize[1] +
+                    '&viewBounds=' +
+                    tileExtent[0] +
+                    ',' +
+                    tileExtent[1] +
+                    ',' +
+                    tileExtent[2] +
+                    ',' +
+                    tileExtent[3];
+            } else {
+                var origin = me.tileGrid.getOrigin(z);
+                var resolution = me.tileGrid.getResolution(z);
+                var dpi = 96;
+                var unit = projection.getUnits() || 'degrees';
+                if (unit === 'degrees') {
+                    unit = Unit.DEGREE;
+                }
+                if (unit === 'm') {
+                    unit = Unit.METER;
+                }
 
-      tile.setLoader(function (extent, resolution, projection) {
-        FetchRequest.get(tileUrl)
-          .then(function (response) {
-            if (tile.getFormat() instanceof external_ol_format_GeoJSON_default.a) {
-              return response.json();
+                var scale = core_Util_Util.resolutionToScale(resolution, dpi, unit);
+                params =
+                    '&x=' +
+                    x +
+                    '&y=' +
+                    y +
+                    '&width=' +
+                    tileSize[0] +
+                    '&height=' +
+                    tileSize[1] +
+                    '&scale=' +
+                    scale +
+                    "&origin={'x':" +
+                    origin[0] +
+                    ",'y':" +
+                    origin[1] +
+                    '}';
             }
-          })
-          .then(function (tileFeatureJson) {
-            var features = [];
-            if (tile.getFormat() instanceof external_ol_format_GeoJSON_default.a) {
-              tileFeatureJson.recordsets.map(function (recordset) {
-                recordset.features.map(function (feature) {
-                  var points = [];
-                  var startIndex = 0;
-                  for (var i = 0; i < feature.geometry.parts.length; i++) {
-                    var partPointsLength = feature.geometry.parts[i] * 2;
-                    for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
-                      points.push(new Point_Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
+            return me._tileUrl + encodeURI(params);
+        }
+
+        function zxyTileUrlFunction(tileCoord) {
+            if (!tileCoord) {
+                return undefined;
+            } else {
+                return me._tileUrl
+                    .replace(zRegEx, tileCoord[0].toString())
+                    .replace(xRegEx, tileCoord[1].toString())
+                    .replace(yRegEx, function () {
+                        var y = ['4', '5'].includes(core_Util_Util.getOlVersion()) ? -tileCoord[2] - 1 : tileCoord[2];
+                        return y.toString();
+                    })
+                    .replace(dashYRegEx, function () {
+                        var z = tileCoord[0];
+                        var range = me.tileGrid.getFullTileRange(z);
+                        var y = range.getHeight() + tileCoord[2];
+                        return y.toString();
+                    });
+            }
+        }
+        /**
+         * @private
+         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @description 加载瓦片。
+         * @param {Object} tile -瓦片类。
+         * @param {string} tileUrl - 瓦片地址。
+         */
+        function tileLoadFunction(tile, tileUrl) {
+            var regWidth = new RegExp('(^|\\?|&)' + 'width' + '=([^&]*)(\\s|&|$)');
+            var regHeight = new RegExp('(^|\\?|&)' + 'height' + '=([^&]*)(\\s|&|$)');
+            var width = Number(tileUrl.match(regWidth)[2]);
+            var height = Number(tileUrl.match(regHeight)[2]);
+
+            tile.setLoader(function (extent, resolution, projection) {
+                FetchRequest.get(tileUrl)
+                    .then(function (response) {
+                        if (tile.getFormat() instanceof external_ol_format_GeoJSON_default.a) {
+                            return response.json();
+                        }
+                    })
+                    .then(function (tileFeatureJson) {
+                        var features = [];
+                        if (tile.getFormat() instanceof external_ol_format_GeoJSON_default.a) {
+                            tileFeatureJson.recordsets.map(function (recordset) {
+                                recordset.features.map(function (feature) {
+                                    var points = [];
+                                    var startIndex = 0;
+                                    for (var i = 0; i < feature.geometry.parts.length; i++) {
+                                        var partPointsLength = feature.geometry.parts[i] * 2;
+                                        for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
+                                            points.push(
+                                                new Point_Point(
+                                                    feature.geometry.points[index],
+                                                    feature.geometry.points[index + 1]
+                                                )
+                                            );
+                                        }
+                                        startIndex += partPointsLength;
+                                    }
+                                    feature.geometry.points = points;
+                                    return feature;
+                                });
+                                return recordset;
+                            });
+                            tileFeatureJson.recordsets.map(function (recordset) {
+                                recordset.features.map(function (feature) {
+                                    feature.layerName = recordset.layerName;
+                                    feature.type = feature.geometry.type;
+                                    features.push(feature);
+                                    return feature;
+                                });
+                                return recordset;
+                            });
+
+                            let dataProjection = new external_ol_proj_Projection_default.a({
+                                extent: [0, 0, 256, 256],
+                                code: 'TILE_PIXELS',
+                                units: 'tile-pixels'
+                            });
+
+                            if (['4', '5'].includes(core_Util_Util.getOlVersion())) {
+                                tile.setExtent([0, 0, width, height]);
+                                tile.setProjection(dataProjection);
+                                features = tile.getFormat().readFeatures(core_Util_Util.toGeoJSON(features));
+                            } else {
+                                features = tile.getFormat().readFeatures(core_Util_Util.toGeoJSON(features), {
+                                    extent,
+                                    dataProjection,
+                                    featureProjection: projection
+                                });
+                            }
+                            tile.setFeatures(features);
+                        }
+                    });
+            });
+        }
+        /**
+         * @private
+         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @description 加载瓦片。
+         * @param {Object} tile -瓦片类。
+         * @param {string} tileUrl - 瓦片地址。
+         */
+        function mvtTileLoadFunction(tile, tileUrl) {
+            const format = tile.getFormat();
+            const success = tile.onLoad.bind(tile);
+            const failure = tile.onError.bind(tile);
+            tile.setLoader(function (extent, resolution, projection) {
+                const xhr = new XMLHttpRequest();
+                xhr.open(
+                    'GET',
+                    typeof tileUrl === 'function' ? tileUrl(extent, resolution, projection) : tileUrl,
+                    true
+                );
+                if (format.getType() == 'arraybuffer') {
+                    xhr.responseType = 'arraybuffer';
+                }
+                xhr.withCredentials = me.withCredentials;
+                xhr.onload = function () {
+                    if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
+                        const type = format.getType();
+                        let source = void 0;
+                        if (type === 'json' || type === 'text') {
+                            source = xhr.responseText;
+                        } else if (type === 'xml') {
+                            source = xhr.responseXML;
+                            if (!source) {
+                                source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
+                            }
+                        } else if (type === 'arraybuffer') {
+                            source = xhr.response;
+                        }
+                        if (source) {
+                            if (['4', '5'].includes(core_Util_Util.getOlVersion())) {
+                                success.call(
+                                    this,
+                                    format.readFeatures(source, { featureProjection: projection }),
+                                    format.readProjection(source),
+                                    format.getLastExtent()
+                                );
+                            } else {
+                                success.call(
+                                    this,
+                                    format.readFeatures(source, {
+                                        extent: extent,
+                                        featureProjection: projection
+                                    }),
+                                    format.readProjection(source)
+                                );
+                            }
+                        } else {
+                            failure.call(this);
+                        }
+                    } else {
+                        failure.call(this);
                     }
-                    startIndex += partPointsLength;
-                  }
-                  feature.geometry.points = points;
-                  return feature;
-                });
-                return recordset;
-              });
-              tileFeatureJson.recordsets.map(function (recordset) {
-                recordset.features.map(function (feature) {
-                  feature.layerName = recordset.layerName;
-                  feature.type = feature.geometry.type;
-                  features.push(feature);
-                  return feature;
-                });
-                return recordset;
-              });
-
-              let dataProjection = new external_ol_proj_Projection_default.a({
-                extent: [0, 0, 256, 256],
-                code: 'TILE_PIXELS',
-                units: 'tile-pixels'
-              })
-
-              if (['4', '5'].includes(core_Util_Util.getOlVersion())) {
-                tile.setExtent([0, 0, width, height]);
-                tile.setProjection(dataProjection);
-                features = tile.getFormat().readFeatures(core_Util_Util.toGeoJSON(features));
-              } else {
-                features = tile.getFormat().readFeatures(core_Util_Util.toGeoJSON(features), {
-                  extent,
-                  dataProjection,
-                  featureProjection: projection
-                });
-              }
-              tile.setFeatures(features);
+                }.bind(this);
+                xhr.onerror = function () {
+                    failure.call(this);
+                }.bind(this);
+                xhr.send();
+            });
+        }
+    }
+    _fillByStyleJSON(style, source) {
+        if (!source) {
+            source = Object.keys(style.sources)[0];
+        }
+        if (style.sources && style.sources[source]) {
+            //ToDo 支持多个tiles地址
+            this._tileUrl = style.sources[source].tiles[0];
+        }
+        if (style.metadata && style.metadata.indexbounds) {
+            const indexbounds = style.metadata.indexbounds;
+            var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
+            const defaultResolutions = [];
+            for (let index = 0; index < 30; index++) {
+                defaultResolutions.push(max / 512 / Math.pow(2, index));
             }
-          });
-      });
-    }
-  }
-  _fillByStyleJSON(style, source) {
-    if (!source) {
-      source = Object.keys(style.sources)[0];
-    }
-    if (style.sources && style.sources[source]) {
-      //ToDo 支持多个tiles地址
-      this._tileUrl = style.sources[source].tiles[0];
-    }
-    if (style.metadata && style.metadata.indexbounds) {
-      const indexbounds = style.metadata.indexbounds;
-      var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
-      const defaultResolutions = [];
-      for (let index = 0; index < 30; index++) {
-        defaultResolutions.push(max / 512 / Math.pow(2, index));
-      }
-      this.tileGrid = new external_ol_tilegrid_TileGrid_default.a({
-        extent: style.metadata.indexbounds,
-        resolutions: defaultResolutions,
-        tileSize: [512, 512]
-      });
-    }
-  }
-  _fillByRestMapOptions(url, options) {
-    this._tileUrl = options.url + '/tileFeature.json?';
-    if (options.format instanceof external_ol_format_MVT_default.a) {
-      this._tileUrl = options.url + '/tileFeature.mvt?';
-    }
-    //为url添加安全认证信息片段
-    options.serverType = options.serverType || ServerType.ISERVER;
-    this._tileUrl = appendCredential(this._tileUrl, options.serverType);
-
-    function appendCredential(url, serverType) {
-      var newUrl = url,
-        credential,
-        value;
-      switch (serverType) {
-        case ServerType.IPORTAL:
-          value = SecurityManager_SecurityManager.getToken(url);
-          credential = value ? new Credential(value, 'token') : null;
-          if (!credential) {
-            value = SecurityManager_SecurityManager.getKey(url);
-            credential = value ? new Credential(value, 'key') : null;
-          }
-          break;
-        case ServerType.ONLINE:
-          value = SecurityManager_SecurityManager.getKey(url);
-          credential = value ? new Credential(value, 'key') : null;
-          break;
-        default:
-          //iserver or others
-          value = SecurityManager_SecurityManager.getToken(url);
-          credential = value ? new Credential(value, 'token') : null;
-          break;
-      }
-      if (credential) {
-        newUrl += '&' + credential.getUrlParameters();
-      }
-      return newUrl;
-    }
-
-    var returnAttributes = true;
-    if (options.returnAttributes !== undefined) {
-      returnAttributes = options.returnAttributes;
-    }
-    var params = '';
-    params += '&returnAttributes=' + returnAttributes;
-    if (options._cache !== undefined) {
-      params += '&_cache=' + options._cache;
-    }
-    if (options.layersID !== undefined) {
-      params += '&layersID=' + options.layersID;
-    }
-    if (options.layerNames !== undefined) {
-      params += '&layerNames=' + options.layerNames;
-    }
-    if (options.expands !== undefined) {
-      params += '&expands=' + options.expands;
-    }
-    if (options.compressTolerance !== undefined) {
-      params += '&compressTolerance=' + options.compressTolerance;
-    }
-    if (options.coordinateType !== undefined) {
-      params += '&coordinateType=' + options.coordinateType;
-    }
-    if (options.returnCutEdges !== undefined) {
-      params += '&returnCutEdges=' + options.returnCutEdges;
-    }
-    this._tileUrl += encodeURI(params);
-  }
-
-  /**
-   * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
-   * @param {string} url - 地址。
-   * @param {Object} mapJSONObj - 地图 JSON。
-   * @description 获取地图 JSON 信息。
-   */
-  static optionsFromMapJSON(url, mapJSONObj) {
-    var options = {};
-    options.url = url;
-    options.crossOrigin = 'anonymous';
-    var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
-    var resolutions = getResolutions();
-
-    function getResolutions() {
-      var level = 17;
-      var dpi = 96;
-      var width = extent[2] - extent[0];
-      var height = extent[3] - extent[1];
-      var tileSize = width >= height ? width : height;
-      var maxReolution;
-      if (tileSize === width) {
-        maxReolution = tileSize / mapJSONObj.viewer.width;
-      } else {
-        maxReolution = tileSize / mapJSONObj.viewer.height;
-      }
-      var resolutions = [];
-      var unit = Unit.METER;
-      if (mapJSONObj.coordUnit === Unit.DEGREE) {
-        unit = Unit.DEGREE;
-      }
-      if (mapJSONObj.visibleScales.length > 0) {
-        var scales = initScales(mapJSONObj);
-        for (let i = 0; i < scales.length; i++) {
-          resolutions.push(core_Util_Util.scaleToResolution(scales[i], dpi, unit));
+            this.tileGrid = new external_ol_tilegrid_TileGrid_default.a({
+                extent: style.metadata.indexbounds,
+                resolutions: defaultResolutions,
+                tileSize: [512, 512]
+            });
         }
-      } else {
-        for (let i = 0; i < level; i++) {
-          resolutions.push(maxReolution / Math.pow(2, i));
+    }
+    _fillByRestMapOptions(url, options) {
+        this._tileUrl = options.url + '/tileFeature.json?';
+        if (options.format instanceof external_ol_format_MVT_default.a) {
+            this._tileUrl = options.url + '/tileFeature.mvt?';
         }
-      }
-      return resolutions;
+        //为url添加安全认证信息片段
+        options.serverType = options.serverType || ServerType.ISERVER;
+        this._tileUrl = appendCredential(this._tileUrl, options.serverType);
+
+        function appendCredential(url, serverType) {
+            var newUrl = url,
+                credential,
+                value;
+            switch (serverType) {
+                case ServerType.IPORTAL:
+                    value = SecurityManager_SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, 'token') : null;
+                    if (!credential) {
+                        value = SecurityManager_SecurityManager.getKey(url);
+                        credential = value ? new Credential(value, 'key') : null;
+                    }
+                    break;
+                case ServerType.ONLINE:
+                    value = SecurityManager_SecurityManager.getKey(url);
+                    credential = value ? new Credential(value, 'key') : null;
+                    break;
+                default:
+                    //iserver or others
+                    value = SecurityManager_SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, 'token') : null;
+                    break;
+            }
+            if (credential) {
+                newUrl += '&' + credential.getUrlParameters();
+            }
+            return newUrl;
+        }
+
+        var returnAttributes = true;
+        if (options.returnAttributes !== undefined) {
+            returnAttributes = options.returnAttributes;
+        }
+        var params = '';
+        params += '&returnAttributes=' + returnAttributes;
+        if (options._cache !== undefined) {
+            params += '&_cache=' + options._cache;
+        }
+        if (options.layersID !== undefined) {
+            params += '&layersID=' + options.layersID;
+        }
+        if (options.layerNames !== undefined) {
+            params += '&layerNames=' + options.layerNames;
+        }
+        if (options.expands !== undefined) {
+            params += '&expands=' + options.expands;
+        }
+        if (options.compressTolerance !== undefined) {
+            params += '&compressTolerance=' + options.compressTolerance;
+        }
+        if (options.coordinateType !== undefined) {
+            params += '&coordinateType=' + options.coordinateType;
+        }
+        if (options.returnCutEdges !== undefined) {
+            params += '&returnCutEdges=' + options.returnCutEdges;
+        }
+        this._tileUrl += encodeURI(params);
     }
 
-    function initScales(mapJSONObj) {
-      var scales = mapJSONObj.visibleScales;
-      if (!scales) {
-        return null;
-      }
-      var viewBounds = mapJSONObj.viewBounds,
-        coordUnit = mapJSONObj.coordUnit,
-        viewer = mapJSONObj.viewer,
-        scale = mapJSONObj.scale,
-        datumAxis = mapJSONObj.datumAxis;
-      //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
-      viewBounds = new Bounds_Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
-      viewer = new Size(viewer.rightBottom.x, viewer.rightBottom.y);
-      coordUnit = coordUnit.toLowerCase();
-      datumAxis = datumAxis || 6378137;
-      var units = coordUnit;
-      var dpi = Util_Util.calculateDpi(viewBounds, viewer, scale, units, datumAxis);
-      var resolutions = _resolutionsFromScales(scales);
-      var len = resolutions.length;
-      scales = [len];
-      for (var i = 0; i < len; i++) {
-        scales[i] = Util_Util.getScaleFromResolutionDpi(resolutions[i], dpi, units, datumAxis);
-      }
+    /**
+     * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
+     * @param {string} url - 地址。
+     * @param {Object} mapJSONObj - 地图 JSON。
+     * @description 获取地图 JSON 信息。
+     */
+    static optionsFromMapJSON(url, mapJSONObj) {
+        var options = {};
+        options.url = url;
+        options.crossOrigin = 'anonymous';
+        var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
+        var resolutions = getResolutions();
 
-      function _resolutionsFromScales(scales) {
-        if (scales === null) {
-          return;
+        function getResolutions() {
+            var level = 17;
+            var dpi = 96;
+            var width = extent[2] - extent[0];
+            var height = extent[3] - extent[1];
+            var tileSize = width >= height ? width : height;
+            var maxReolution;
+            if (tileSize === width) {
+                maxReolution = tileSize / mapJSONObj.viewer.width;
+            } else {
+                maxReolution = tileSize / mapJSONObj.viewer.height;
+            }
+            var resolutions = [];
+            var unit = Unit.METER;
+            if (mapJSONObj.coordUnit === Unit.DEGREE) {
+                unit = Unit.DEGREE;
+            }
+            if (mapJSONObj.visibleScales.length > 0) {
+                var scales = initScales(mapJSONObj);
+                for (let i = 0; i < scales.length; i++) {
+                    resolutions.push(core_Util_Util.scaleToResolution(scales[i], dpi, unit));
+                }
+            } else {
+                for (let i = 0; i < level; i++) {
+                    resolutions.push(maxReolution / Math.pow(2, i));
+                }
+            }
+            return resolutions;
         }
-        var resolutions, len;
-        len = scales.length;
-        resolutions = [len];
-        for (var i = 0; i < len; i++) {
-          resolutions[i] = Util_Util.getResolutionFromScaleDpi(scales[i], dpi, units, datumAxis);
-        }
-        return resolutions;
-      }
 
-      return scales;
+        function initScales(mapJSONObj) {
+            var scales = mapJSONObj.visibleScales;
+            if (!scales) {
+                return null;
+            }
+            var viewBounds = mapJSONObj.viewBounds,
+                coordUnit = mapJSONObj.coordUnit,
+                viewer = mapJSONObj.viewer,
+                scale = mapJSONObj.scale,
+                datumAxis = mapJSONObj.datumAxis;
+            //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
+            viewBounds = new Bounds_Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
+            viewer = new Size(viewer.rightBottom.x, viewer.rightBottom.y);
+            coordUnit = coordUnit.toLowerCase();
+            datumAxis = datumAxis || 6378137;
+            var units = coordUnit;
+            var dpi = Util_Util.calculateDpi(viewBounds, viewer, scale, units, datumAxis);
+            var resolutions = _resolutionsFromScales(scales);
+            var len = resolutions.length;
+            scales = [len];
+            for (var i = 0; i < len; i++) {
+                scales[i] = Util_Util.getScaleFromResolutionDpi(resolutions[i], dpi, units, datumAxis);
+            }
+
+            function _resolutionsFromScales(scales) {
+                if (scales === null) {
+                    return;
+                }
+                var resolutions, len;
+                len = scales.length;
+                resolutions = [len];
+                for (var i = 0; i < len; i++) {
+                    resolutions[i] = Util_Util.getResolutionFromScaleDpi(scales[i], dpi, units, datumAxis);
+                }
+                return resolutions;
+            }
+
+            return scales;
+        }
+
+        options.tileGrid = new external_ol_tilegrid_TileGrid_default.a({
+            extent: extent,
+            resolutions: resolutions
+        });
+        //options.projection = 'EPSG:' + mapJSONObj.prjCoordSys.epsgCode;
+        return options;
     }
-
-    options.tileGrid = new external_ol_tilegrid_TileGrid_default.a({
-      extent: extent,
-      resolutions: resolutions
-    });
-    //options.projection = 'EPSG:' + mapJSONObj.prjCoordSys.epsgCode;
-    return options;
-  }
 }
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/HeatMap.js
@@ -86963,7 +87241,6 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_source_V
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
  * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
- * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。（当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为 false）。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
@@ -87404,7 +87681,7 @@ class HeatMap_HeatMap extends external_ol_source_ImageCanvas_default.a {
 
 
 // EXTERNAL MODULE: external "ol.geom.LineString"
-var external_ol_geom_LineString_ = __webpack_require__(24);
+var external_ol_geom_LineString_ = __webpack_require__(25);
 var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_LineString_);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/olExtends.js
@@ -87827,6 +88104,7 @@ var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
  * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {ol/Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol/StyleFunction} [options.selectedStyle] -选中样式Function。
+ * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @example
  *  var mbStyle = new ol.supermap.MapboxStyles({
             url: url,
@@ -87860,6 +88138,7 @@ class MapboxStyles_MapboxStyles extends external_ol_Observable_default.a {
         this.styleTarget =
             options.style || options.url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true";
         this.resolutions = options.resolutions;
+        this.withCredentials = options.withCredentials;
         this.selectedObjects = [];
         this.selectedStyle =
             options.selectedStyle ||
@@ -88036,7 +88315,7 @@ class MapboxStyles_MapboxStyles extends external_ol_Observable_default.a {
             this._mbStyle = style;
             this._resolve();
         } else {
-            FetchRequest.get(style)
+            FetchRequest.get(style,null,{withCredentials:this.withCredentials})
                 .then(response => response.json())
                 .then(mbStyle => {
                     this._mbStyle = mbStyle;
@@ -88054,14 +88333,14 @@ class MapboxStyles_MapboxStyles extends external_ol_Observable_default.a {
             //兼容一下iServer 等iServer修改
             this._mbStyle.sprite = this._mbStyle.sprite.replace("@2x", "");
             const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".json");
-            FetchRequest.get(spriteUrl)
+            FetchRequest.get(spriteUrl,null,{withCredentials:this.withCredentials})
                 .then(response => response.json())
                 .then(spritesJson => {
                     this._spriteData = spritesJson;
                     this._spriteImageUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".png");
                     this._spriteImage = null;
                     const img = new Image();
-                    img.crossOrigin = "anonymous";
+                    img.crossOrigin = this.withCredentials?"use-credentials":"anonymous";
                     img.onload = () => {
                         this._spriteImage = img;
                         this._initStyleFunction();
@@ -91135,15 +91414,18 @@ var ProvinceCenter = __webpack_require__(56);
 // EXTERNAL MODULE: ./src/openlayers/mapping/webmap/config/MunicipalCenter.json
 var MunicipalCenter = __webpack_require__(57);
 
+// EXTERNAL MODULE: ./src/openlayers/mapping/webmap/config/SampleDataInfo.json
+var SampleDataInfo = __webpack_require__(58);
+
 // EXTERNAL MODULE: external "ol.View"
 var external_ol_View_ = __webpack_require__(35);
 var external_ol_View_default = /*#__PURE__*/__webpack_require__.n(external_ol_View_);
 
 // EXTERNAL MODULE: external "ol.proj.proj4"
-var external_ol_proj_proj4_ = __webpack_require__(29);
+var external_ol_proj_proj4_ = __webpack_require__(30);
 
 // EXTERNAL MODULE: external "ol.proj.Units"
-var external_ol_proj_Units_ = __webpack_require__(58);
+var external_ol_proj_Units_ = __webpack_require__(59);
 var external_ol_proj_Units_default = /*#__PURE__*/__webpack_require__.n(external_ol_proj_Units_);
 
 // EXTERNAL MODULE: external "ol.layer"
@@ -91159,8 +91441,12 @@ var external_ol_geom_ = __webpack_require__(37);
 // EXTERNAL MODULE: external "ol.source"
 var external_ol_source_ = __webpack_require__(6);
 
+// EXTERNAL MODULE: external "ol.render.Feature"
+var external_ol_render_Feature_ = __webpack_require__(60);
+var external_ol_render_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol_render_Feature_);
+
 // EXTERNAL MODULE: external "ol.Collection"
-var external_ol_Collection_ = __webpack_require__(59);
+var external_ol_Collection_ = __webpack_require__(61);
 var external_ol_Collection_default = /*#__PURE__*/__webpack_require__.n(external_ol_Collection_);
 
 // CONCATENATED MODULE: ./src/openlayers/mapping/WebMap.js
@@ -91177,6 +91463,10 @@ var external_ol_Collection_default = /*#__PURE__*/__webpack_require__.n(external
 
 // eslint-disable-line import/extensions
 // eslint-disable-line import/extensions
+// eslint-disable-line import/extensions
+
+
+
 
 
 
@@ -91204,6 +91494,20 @@ window.Proj4js = lib;
 const transformTools = new external_ol_format_GeoJSON_default.a();
 // 迁徙图最大支持要素数量
 const MAX_MIGRATION_ANIMATION_COUNT = 1000;
+//不同坐标系单位。计算公式中的值
+const metersPerUnit = {
+    DEGREES: 2 * Math.PI * 6370997 / 360,
+    DEGREE: 2 * Math.PI * 6370997 / 360,
+    FEET: 0.3048,
+    METERS: 1,
+    METER: 1,
+    M: 1,
+    USFEET: 1200 / 3937
+};
+const dpiConfig = {
+    default: 96, // 常用dpi
+    iServerWMTS: 90.7142857142857 // iserver使用的wmts图层dpi
+}
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
@@ -91218,6 +91522,7 @@ const MAX_MIGRATION_ANIMATION_COUNT = 1000;
  * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey和credentialValue必须一起使用
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
+ * @param {Object} [options.serviceProxy] - iportal服务代理信息
  * @param {string} [options.tiandituKey] - 天地图的key
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @param {function} [options.mapSetting.overlays] - 地图的overlayer
@@ -91239,6 +91544,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         this.withCredentials = options.withCredentials || false;
         this.target = options.target || "map";
         this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
+        this.serviceProxy = options.serviceProxy || null;
         this.tiandituKey = options.tiandituKey;
         //计数叠加图层，处理过的数量（成功和失败都会计数）
         this.layerAdded = 0;
@@ -91321,7 +91627,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json();
-        }).then(function (mapInfo) {
+        }).then(async function (mapInfo) {
             if (mapInfo.succeed === false) {
                 that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
                 return;
@@ -91334,6 +91640,8 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 mapInfo.projection = "EPSG:4326";
             }
             that.baseProjection = mapInfo.projection;
+            that.webMapVersion = mapInfo.version;
+            that.baseLayer = mapInfo.baseLayer;
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -91342,12 +91650,12 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             // 多坐标系支持
             if(lib){
               (external_ol_proj_proj4_ && external_ol_proj_proj4_["register"]) ? external_ol_proj_proj4_["register"](lib) : window.ol.proj.setProj4(lib) ;
-            } 
+            }
             // 目前iServer服务中可能出现的EPSG 0，-1，-1000
             if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
                 //对于这两种地图，只能view，不能叠加其他图层
-                that.createSpecLayer(mapInfo);  
-                return;     
+                that.createSpecLayer(mapInfo);
+                return;
             } else if(that.addProjctionFromWKT(mapInfo.projection)){
                 mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
             }else{
@@ -91358,28 +91666,110 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 
             if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
                 // 添加矢量瓦片服务作为底图
-                that.addMVTBaseMap(mapInfo).then(() => {
+                that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
+                    that.createView(mapInfo);
                     if (!mapInfo.layers || mapInfo.layers.length === 0) {
                         that.sendMapToUser(0);
                     } else {
                         that.addLayers(mapInfo);
                     }
-                    that.createView(mapInfo);
                 });
             } else {
-                that.addBaseMap(mapInfo);
+                await that.addBaseMap(mapInfo);
                 if (!mapInfo.layers || mapInfo.layers.length === 0) {
                     that.sendMapToUser(0);
                 } else {
                     that.addLayers(mapInfo);
                 }
-                that.createView(mapInfo);
             }
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
         });
     }
-
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getScales
+     * @description 根据级别获取每个级别对应的分辨率
+     * @param {Object} baseLayerInfo - 底图的图层信息
+     */
+    getScales(baseLayerInfo) {
+        let scales = [], resolutions = {}, res, scale, resolutionArray = [],
+            coordUnit = baseLayerInfo.coordUnit || external_ol_proj_["get"](baseLayerInfo.projection).getUnits();
+        if(!coordUnit) {
+            coordUnit = this.baseProjection === "EPSG:3857" ? "m" : "degree";
+        }
+        if(baseLayerInfo.visibleScales && baseLayerInfo.visibleScales.length > 0) {
+            //底部设置过固定比例尺，则使用设置的
+            baseLayerInfo.visibleScales.forEach(scale => {
+                let value = 1/scale;
+                res = this.getResFromScale(value, coordUnit);
+                scale = `1:${value.toLocaleString()}`;
+                //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
+                resolutions[this.formatScale(scale)] = res;
+                resolutionArray.push(res);
+                scales.push(scale);
+            }, this)
+        } else if(baseLayerInfo.layerType === 'WMTS') {
+            baseLayerInfo.scales.forEach(scale => {
+                res = this.getResFromScale(scale, coordUnit, 90.7);
+                scale = `1:${scale.toLocaleString()}`;
+                //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
+                resolutions[this.formatScale(scale)] = res;
+                resolutionArray.push(res);
+                scales.push(scale);
+            }, this)
+        } else {
+            let {minZoom=0, maxZoom=22} = baseLayerInfo, view = this.map.getView();
+            for(let i=minZoom; i<= maxZoom; i++) {
+                res = view.getResolutionForZoom(i);
+                scale = this.getScaleFromRes(res, coordUnit);
+                if(scales.indexOf(scale) === -1) {
+                    //不添加重复的比例尺
+                    scales.push(scale);
+                    let attr = scale.replace(/,/g, "");
+                    resolutions[attr] = res;
+                    resolutionArray.push(res);
+                }
+            }
+        }
+        this.scales = scales;
+        this.resolutions = resolutions;
+        this.resolutionArray = resolutionArray;
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getResFromScale
+     * @description 将比例尺转换为分辨率
+     * @param {Number} scale - 比例尺
+     * @param {String} coordUnit - 比例尺单位
+     * @param {Number} dpi
+     */
+    getResFromScale(scale, coordUnit="DEGREE", dpi=96) {
+        let mpu = metersPerUnit[coordUnit.toUpperCase()];
+        return scale * .0254 / dpi / mpu;
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getScaleFromRes
+     * @description 将分辨率转换为比例尺
+     * @param {Number} resolution - 分辨率
+     * @param {String} coordUnit - 比例尺单位
+     * @param {Number} dpi
+     */
+    getScaleFromRes(resolution, coordUnit="DEGREE", dpi=96) {
+        let scale, mpu = metersPerUnit[coordUnit.toUpperCase()];
+        scale = resolution * dpi * mpu / .0254;
+        return '1:'+ scale.toLocaleString();
+    }
+     /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.formatScale
+     * @description 将有千位符的数字转为普通数字。例如：1,234 => 1234
+     * @param {number} scale - 比例尺分母
+     */
+    formatScale(scale) {
+        return scale.replace(/,/g, "");
+    }
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createSpecLayer
@@ -91387,20 +91777,20 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {object} mapInfo - 地图信息
      */
     createSpecLayer(mapInfo) {
-        let me = this, 
+        let me = this,
             baseLayerInfo = mapInfo.baseLayer,
             url = baseLayerInfo.url,
-            baseLayerType = baseLayerInfo.layerType;  
+            baseLayerType = baseLayerInfo.layerType;
         let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
         let proj = new external_ol_proj_["Projection"]({
             extent,
             units: 'm',
             code: 'EPSG:0'
-        }); 
+        });
         external_ol_proj_["addProjection"](proj);
         let options = {
             center: mapInfo.center,
-            level: 0 
+            level: 0
         }
         //添加view
         me.baseProjection = proj;
@@ -91418,7 +91808,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             me.mapParams.extent = extent;
             me.mapParams.projection = mapInfo.projection;
         }
-        
+        if(url.indexOf("?token=") > -1) {
+            //兼容iserver地址有token的情况
+            me.credentialKey = 'token';
+            me.credentialValue = mapInfo.baseLayer.credential = url.split("?token=")[1];
+            url = url.split("?token=")[0];
+        }
+
         let source;
         if(baseLayerType === "TILE"){
             FetchRequest.get(me.getRequestUrl(`${url}.json`), null, {
@@ -91427,14 +91823,28 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 return response.json();
             }).then(function (result) {
                 baseLayerInfo.originResult = result;
-                source = new TileSuperMapRest_TileSuperMapRest({
-                    url: baseLayerInfo.url,
-                    tileGrid: TileSuperMapRest_TileSuperMapRest.optionsFromMapJSON(baseLayerInfo.url, baseLayerInfo.originResult).tileGrid
-                });
+                let serverType = "IPORTAL", credential = baseLayerInfo.credential, keyfix = 'Token', keyParams = baseLayerInfo.url;
+                if (baseLayerInfo.url.indexOf("www.supermapol.com") > -1 || baseLayerInfo.url.indexOf("itest.supermapol.com") > -1) {
+                    keyfix = 'Key';
+                    keyParams = [keyParams];
+                    serverType = "ONLINE";
+                }
+                if (credential) {
+                    SecurityManager_SecurityManager[`register${keyfix}`](keyParams, credential);
+                }
+                let options = {
+                    serverType,
+                    url,
+                    tileGrid: TileSuperMapRest_TileSuperMapRest.optionsFromMapJSON(url, result).tileGrid
+                }
+                if (url && !me.isSameDomain(url)) {
+                    options.tileProxy = me.server + 'apps/viewer/getUrlResource.png?url=';
+                }
+                source = new TileSuperMapRest_TileSuperMapRest(options);
                 me.addSpecToMap(source);
             }).catch(function(error) {
                 me.errorCallback && me.errorCallback(error, 'getMapFaild', me.map);
-            });  
+            });
         } else if(baseLayerType === "WMS"){
             source = me.createWMSSource(baseLayerInfo);
             me.addSpecToMap(source);
@@ -91446,7 +91856,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             }).then(function(capabilitiesText) {
                 baseLayerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
                 baseLayerInfo.scales = me.getWMTSScales(baseLayerInfo.tileMatrixSet, capabilitiesText);
-                baseLayerInfo.dpi = 90.6;
+                baseLayerInfo.dpi = dpiConfig.iServerWMTS;
                 source = me.createWMTSSource(baseLayerInfo);
                 me.addSpecToMap(source);
             }).catch(function(error) {
@@ -91454,7 +91864,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             })
         }else{
             me.errorCallback && me.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${baseLayerType}`}, 'getMapFaild', me.map);
-        } 
+        }
     }
 
     /**
@@ -91468,8 +91878,8 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             source: source,
             zIndex: 0
         });
-        layer && this.map.addLayer(layer);
-        this.sendMapToUser(0);   
+        this.map.addLayer(layer);
+        this.sendMapToUser(0);
     }
     /**
      * @private
@@ -91502,58 +91912,74 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 添加底图
      * @param {string} mapInfo - 请求地图的url
      */
-    addBaseMap(mapInfo) {
-        let layer = this.createBaseLayer(mapInfo, null, false);
-        // 部分图层是异步的 早期异步没有设计好，所以将就将就吧
-        if(layer){
-            this.map.addLayer(layer);
+    async addBaseMap(mapInfo) {
+        let {baseLayer} = mapInfo, layerType = baseLayer.layerType;
+        //底图，使用默认的配置，不用存储的
+        if(layerType !== 'TILE' && layerType !== 'WMS' && layerType !== 'WMTS'){
+            this.getInternetMapInfo(mapInfo.baseLayer);
+        }else if(layerType === 'WMTS'){
+            // 通过请求完善信息
+            await this.getWmtsInfo(baseLayer);
+        }else if(layerType === 'TILE'){
+            await this.getTileInfo(baseLayer);
         }
+        baseLayer.projection = mapInfo.projection;
+        if(!baseLayer.extent) {
+            baseLayer.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+        }
+        this.createView(mapInfo);
+        let layer = this.createBaseLayer(baseLayer, 0);
+        //底图增加图层类型，DV分享需要用它来识别版权信息
+        layer.setProperties({
+            layerType: layerType
+        });
+        this.map.addLayer(layer);
+
         if(this.mapParams) {
-            let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
-            this.mapParams.extent = extent;
+            this.mapParams.extent = baseLayer.extent;
             this.mapParams.projection = mapInfo.projection;
         }
         if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
             let labelLayer = new external_ol_layer_["Tile"]({
-                source: this.createTiandituSource(layerInfo, layerInfo.layerType, mapInfo.projection, true),
-                zIndex: layerInfo.zIndex || 0,
+                source: this.createTiandituSource(layerInfo.layerType, mapInfo.projection, true),
+                zIndex: layerInfo.zIndex || 1,
                 visible: layerInfo.visible
             });
             this.map.addLayer(labelLayer);
         }
     }
-
     /**
      * @private
-     * @function ol.supermap.WebMap.prototype.addMVTBaseMap
-     * @description 添加矢量瓦片服务底图
+     * @function ol.supermap.WebMap.prototype.addMVTMapLayer
+     * @description 添加地图服务mapboxstyle图层
      * @param {object} mapInfo - 地图信息
+     * @param {object} layerInfo - mapboxstyle图层信息
      */
-    addMVTBaseMap(mapInfo) {
+    addMVTMapLayer(mapInfo, layerInfo, zIndex) {
+        layerInfo.zIndex = zIndex;
         // 获取地图详细信息
-        return this.getMBStyle(mapInfo).then(baseLayerInfo => {
+        return this.getMBStyle(mapInfo, layerInfo).then(() => {
             // 创建图层
-            return this.createMVTLayer(baseLayerInfo).then(layer => {
+            return this.createMVTLayer(layerInfo).then(layer => {
                 let layerID = core_Util_Util.newGuid(8);
-                if (baseLayerInfo.name) {
+                if (layerInfo.name) {
                     layer.setProperties({
-                        name: baseLayerInfo.name,
+                        name: layerInfo.name,
                         layerID: layerID,
                         layerType: 'VECTOR_TILE'
                     });
                 }
 
                 //否则没有ID，对不上号
-                baseLayerInfo.layer = layer;
-                baseLayerInfo.layerID = layerID;
+                layerInfo.layer = layer;
+                layerInfo.layerID = layerID;
 
                 this.map.addLayer(layer);
             });
         });
     }
-
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createView
@@ -91580,68 +92006,73 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
         }
+        //当前中心点不在extent内,就用extent的中心点 todo
+        !Object(external_ol_extent_["containsCoordinate"])(extent, center) && (center = Object(external_ol_extent_["getCenter"])(extent));
 
         // 计算当前最大分辨率
-        let maxResolution;
-        if(options.baseLayer && ['TILE', 'MAPBOXSTYLE'].includes(options.baseLayer.layerType) && extent && extent.length === 4){
+        let baseLayer = options.baseLayer;
+        let maxResolution, minResolution;
+        if((baseLayer.visibleScales && baseLayer.visibleScales.length > 0) || (baseLayer.scales && baseLayer.scales.length >0)) {
+            //底图有固定比例尺，就直接获取。不用view计算
+            this.getScales(baseLayer);
+        } else if(options.baseLayer && ['TILE', 'VECTOR_TILE'].includes(options.baseLayer.layerType) && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width / 512;
             let maxResolution2 = height / 512;
             maxResolution = Math.max(maxResolution1, maxResolution2);
         }
-        
-        if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
-            maxZoom = options.baseLayer.visibleScales.length;
+
+        // if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
+        //     maxZoom = options.baseLayer.visibleScales.length;
+        // }
+        let viewOptions;
+        if(baseLayer.layerType === "WMTS"){
+            if(baseLayer.scales && baseLayer.scales.length >0) {
+                //因为新版extent超出，不可见。所以将extent去除
+                viewOptions = { zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
+            } else {
+                viewOptions = { zoom, center, projection, maxZoom};
+                this.getScales(baseLayer);
+            }
+        }else {
+            if(this.resolutionArray && this.resolutionArray.length > 0) {
+                viewOptions = { zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
+            } else {
+                viewOptions = {zoom, center, projection, maxResolution, minResolution, maxZoom};
+                this.getScales(baseLayer);
+            }
         }
-        let viewOptions = {zoom, center, projection, extent, maxResolution, maxZoom}
         if(!['4', '5'].includes(core_Util_Util.getOlVersion())){ // 兼容 ol 4，5，6
-          viewOptions.multiWorld = true;
+            viewOptions.multiWorld = true;
+            viewOptions.showFullExtent = true;
+            viewOptions.enableRotation = false;
+            viewOptions.constrainResolution = true; //设置此参数，是因为需要显示整数级别。为了可视比例尺中包含当前比例尺
         }
         this.map.setView(new external_ol_View_default.a(viewOptions));
+        if (options.visibleExtent) {
+            const view = this.map.getView();
+            const resolution = view.getResolutionForExtent(options.visibleExtent, this.map.getSize());
+            view.setResolution(resolution);
+            view.setCenter(Object(external_ol_extent_["getCenter"])(options.visibleExtent));
+        }
     }
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createBaseLayer
      * @description 创建矢量图层，包括底图及其叠加的矢量图层
-     * @param {object} mapInfo - 关于地图的信息
+     * @param {object} layerInfo - 关于地图的信息
      * @param {number} index - 当前图层在地图中的index
      * @param {boolean} isCallBack - 是否调用回调函数
      * @param {scope} {object} this对象
      */
-    createBaseLayer(mapInfo, index, isCallBack, scope) { 
-        let source, layerInfo, isBaseLayer, that= this;
-        
+    createBaseLayer(layerInfo, index, isCallBack, scope) {
+        let source, isBaseLayer, that= this;
+
         if(scope){
             // 解决异步回调
             that = scope;
         }
-
-        if(mapInfo.baseLayer) {
-            isBaseLayer = true;
-            //底图，使用默认的配置，不用存储的
-            if(mapInfo.baseLayer.layerType !== 'TILE' && 
-            mapInfo.baseLayer.layerType !== 'WMS' &&
-            mapInfo.baseLayer.layerType !== 'WMTS'){
-                this.getInternetMapInfo(mapInfo.baseLayer);
-            }else if(mapInfo.baseLayer.layerType === 'WMTS' && !isCallBack){
-                // 通过请求完善信息
-               this.getWmtsInfo(mapInfo.baseLayer, this.createBaseLayer, mapInfo);
-               return;
-            }else if(mapInfo.baseLayer.layerType === 'TILE' && !isCallBack){
-                this.getTileInfo(mapInfo.baseLayer, this.createBaseLayer, mapInfo);
-                return;
-            }else{
-                mapInfo.baseLayer.projection = mapInfo.projection;
-                mapInfo.baseLayer.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
-            }
-            layerInfo = mapInfo.baseLayer;
-           // layerInfo = mapInfo.baseLayer = this.getInternetMapInfo(mapInfo.baseLayer);
-           that.createView(mapInfo);
-        } else {
-            layerInfo = mapInfo;
-        }
-        
         let layerType = layerInfo.layerType; //底图和rest地图兼容
         if (layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1 ||
             layerType.indexOf('TIANDITU_TER') > -1) {
@@ -91651,13 +92082,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                source = this.createTiandituSource(layerInfo, layerType, mapInfo.projection);
+                source = this.createTiandituSource(layerType, layerInfo.projection);
                 break;
             case "BAIDU":
                 source = this.createBaiduSource();
                 break;
             case 'BING':
-                source = this.createBingSource(layerInfo, mapInfo.projection);
+                source = this.createBingSource(layerInfo, layerInfo.projection);
                 break;
             case "WMS":
                 source = this.createWMSSource(layerInfo);
@@ -91695,22 +92126,32 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 layerID: layerID
             });
         }
-        if (!mapInfo.baseLayer) {
-            //不是底图
-            layer.setVisible(layerInfo.visible);
-            layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
-            //layerInfo没有存储index属性
-            index && layer.setZIndex(index);
-        } else {
-            //底图增加图层类型，DV分享需要用它来识别版权信息
-            layer.setProperties({
-                layerType: layerType
-            });
+        if(layerInfo.visible === undefined || layerInfo.visible === null) {
+            layerInfo.visible = true;
         }
+        layer.setVisible(layerInfo.visible);
+        layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
+        //layerInfo没有存储index属性
+        index && layer.setZIndex(index);
 
         //否则没有ID，对不上号
         layerInfo.layer = layer;
         layerInfo.layerID = layerID;
+
+        let {visibleScale, autoUpdateTime} = layerInfo, minResolution, maxResolution;
+        if(visibleScale) {
+            maxResolution = this.resolutions[visibleScale.minScale];
+            minResolution = this.resolutions[visibleScale.maxScale];
+            //比例尺和分别率是反比的关系
+            maxResolution > 1 ? layer.setMaxResolution(Math.ceil(maxResolution)) : layer.setMaxResolution(maxResolution * 1.1);
+            layer.setMinResolution(minResolution);
+        }
+        if(autoUpdateTime && !layerInfo.autoUpdateInterval) {
+            //自动更新
+            layerInfo.autoUpdateInterval = setInterval(() => {
+                that.updateTileToMap(layerInfo, index);
+            }, autoUpdateTime);
+        }
 
         if(isCallBack){
             layer.setZIndex(0); // wmts
@@ -91718,6 +92159,18 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         }
 
         return layer;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.updateTileToMap
+     * @description 获取底图对应的图层信息，不是用请求回来的底图信息
+     * @param {object} layerInfo - 图层信息
+     * @param {number} layerIndex - 图层index
+     */
+    updateTileToMap(layerInfo, layerIndex) {
+        this.map.removeLayer(layerInfo.layer);
+        this.map.addLayer(this.createBaseLayer(layerInfo, layerIndex));
     }
 
     /**
@@ -91733,7 +92186,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         const osmBounds = [-20037508.34, -20037508.34, 20037508.34, 20037508.34];
         const japanReliefBounds = [12555667.53929,1281852.98656,17525908.86651,7484870.70596];
         const japanOrtBounds = [-19741117.14519,-10003921.36848,19981677.71404,19660983.56089];
-        
+
         baseLayerInfo.units= "m";
         switch (baseLayerInfo.layerType){
             case( 'BAIDU'):
@@ -91858,7 +92311,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             credential = layerInfo.credential,
             keyfix = 'Token',
             keyParams = layerInfo.url;
-  
+
         if (layerInfo.url.indexOf("www.supermapol.com") > -1 || layerInfo.url.indexOf("itest.supermapol.com") > -1) {
             keyfix = 'Key';
             keyParams = [keyParams];
@@ -91878,15 +92331,25 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] }
         };
         if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
-            let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
+            let visibleResolutions = [];
+            for(let i in layerInfo.visibleScales){
+                let resolution = core_Util_Util.scaleToResolution(layerInfo.visibleScales[i], dpiConfig.default, layerInfo.coordUnit);
+                visibleResolutions.push(resolution);
+            }
+            layerInfo.visibleResolutions = visibleResolutions;
             let tileGrid = new external_ol_tilegrid_TileGrid_default.a({
                 extent: layerInfo.extent,
-                resolutions: result.res
+                resolutions: visibleResolutions
             });
-            layerInfo.visibleResolutions = result.res;
             options.tileGrid = tileGrid;
         }else{
             options.extent = this.baseLayerExtent;
+            //bug:ISVJ-2412,不添加下列代码出不了图。参照iserver ol3出图方式
+            let tileGrid = new external_ol_tilegrid_TileGrid_default.a({
+                extent: layerInfo.extent,
+                resolutions: this.getResolutionsFromBounds(layerInfo.extent)
+            });
+            options.tileGrid = tileGrid;
         }
          //主机名相同时不添加代理
         if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
@@ -91896,17 +92359,38 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         SecurityManager_SecurityManager[`register${keyfix}`](layerInfo.url);
         return source;
     }
+
+     /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getResolutionsFromBounds
+     * @description 获取比例尺数组
+     * @param bounds {Array} 范围数组
+     * @returns {styleResolutions} 比例尺数组
+     */
+    getResolutionsFromBounds(bounds){
+        let styleResolutions = [];
+        let temp = Math.abs(bounds[0] - bounds[2])/ 512;
+        for(let i = 0;i < 22;i++){
+            if(i === 0){
+                styleResolutions[i] = temp;
+                continue;
+            }
+            temp = temp / 2;
+            styleResolutions[i] = temp;
+        }
+        return styleResolutions;
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createTiandituSource
      * @description 创建天地图的source。
-     * @param layerInfo 图层信息
      * @param layerType 图层类型
      * @param projection 地理坐标系
      * @param isLabel  是否有路网图层
      * @returns {ol.source.Tianditu} 天地图的source
      */
-    createTiandituSource(layerInfo, layerType, projection, isLabel) {
+    createTiandituSource(layerType, projection, isLabel) {
         let options = {
             layerType: layerType.split('_')[1].toLowerCase(),
             isLabel: isLabel || false,
@@ -91976,7 +92460,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.createWMSSource
      * @description 创建wms地图source。
      * @param {Object} layerInfo - 图层信息。
-     * @returns {ol/source/TileWMS}
+     * @returns {ol/source/TileWMS} wms的source
      */
     createWMSSource(layerInfo) {
         let that = this;
@@ -92002,7 +92486,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {function} callback - 获得wmts图层参数执行的回调函数
      */
     getLayerExtent(layerInfo, callback){
-        let that = this, 
+        let that = this,
         url = layerInfo.url.trim();
         if(layerInfo.layerType  === "TILE"){
            // 直接使用动态投影方式请求数据
@@ -92011,7 +92495,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         }
         // bug IE11 不会自动编码
         url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
-        
+
         }else{
             url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
         }
@@ -92046,28 +92530,54 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
-        FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
+        if(layerInfo.url.indexOf("?token=") > -1) {
+            that.credentialKey = 'token';
+            that.credentialValue = layerInfo.credential = layerInfo.url.split("?token=")[1];
+            layerInfo.url = layerInfo.url.split("?token=")[0];
+        }
+        return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
         }).then(function (result) {
-            layerInfo.projection = mapInfo.projection;
-            layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+            // layerInfo.projection = mapInfo.projection;
+            // layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
              // 比例尺 单位
              if(result.visibleScales){
                 layerInfo.visibleScales = result.visibleScales;
                 layerInfo.coordUnit = result.coordUnit;
             }
+            layerInfo.maxZoom = result.maxZoom;
+            layerInfo.maxZoom = result.minZoom;
             // 请求结果完成 继续添加图层
             if(mapInfo){
-                callback(mapInfo, null, true, that);
+                callback && callback(mapInfo, null, true, that);
             }else{
-                callback(layerInfo);
+                callback && callback(layerInfo);
             }
-            
+
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
     }
-    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getWMTSUrl
+     * @description 获取wmts请求文档的url
+     * @param {string} url - 图层信息。
+     * @param {boolean} isKvp - 是否为kvp模式
+     */
+    getWMTSUrl(url, isKvp) {
+        let splitStr = '?';
+        if (url.indexOf('?') > -1) {
+            splitStr = '&'
+        }
+        if (isKvp) {
+            url += splitStr + 'SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetCapabilities';
+        } else {
+            url += splitStr + '/1.0.0/WMTSCapabilities.xml';
+        }
+        return this.getRequestUrl(url);
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getWmtsInfo
@@ -92078,10 +92588,11 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
     getWmtsInfo(layerInfo, callback, mapInfo) {
         let that = this;
         let options = {
-            withCredentials: false,
+            withCredentials: true,
             withoutFormatSuffix: true
         };
-        FetchRequest.get(that.getRequestUrl(layerInfo.url), null, options).then(function (response) {
+        const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
+        return FetchRequest.get(that.getWMTSUrl(layerInfo.url, isKvp), null, options).then(function (response) {
             return response.text();
         }).then(function (capabilitiesText) {
             const format = new external_ol_format_WMTSCapabilities_default.a();
@@ -92091,57 +92602,91 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                     tileMatrixSet = content.TileMatrixSet,
                     layers = content.Layer,
                     layer, relSet = [],
-                    idx;
+                    idx, layerFormat, style = 'default';
 
                 for (let n = 0; n < layers.length; n++) {
-                    if (layers[n].Title === layerInfo.name) {
+                    if (layers[n].Identifier === layerInfo.layer) {
                         idx = n;
                         layer = layers[idx];
+                        layerFormat = layer.Format[0];
                         var layerBounds = layer.WGS84BoundingBox;
                         // tileMatrixSetLink = layer.TileMatrixSetLink;
                         break;
                     }
                 }
-                let scales = [];
+                layer && layer.Style && layer.Style.forEach(value => {
+                    if(value.isDefault) {
+                        style = value.Identifier;
+                    }
+                });
+                let scales = [], matrixIds = [];
                 for (let i = 0; i < tileMatrixSet.length; i++) {
                     if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
                         let wmtsLayerEpsg = `EPSG:${tileMatrixSet[i].SupportedCRS.split('::')[1]}`;
                         for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
-                            scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
+                            scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator);
+                            matrixIds.push(tileMatrixSet[i].TileMatrix[h].Identifier);
                         }
                         //bug wmts出图需要加上origin，否则会出现出图不正确的情况。偏移或者瓦片出不了
                         let origin = tileMatrixSet[i].TileMatrix[0].TopLeftCorner;
-                        layerInfo.origin = wmtsLayerEpsg === "EPSG:4326" ? [origin[1], origin[0]] : origin;
+                        layerInfo.origin = ["EPSG:4326", "EPSG:4490"].includes(wmtsLayerEpsg) ? [origin[1], origin[0]] : origin;
                         break;
                     }
                 }
                 let name = layerInfo.name,
-                    extent = external_ol_proj_["transformExtent"](layerBounds, 'EPSG:4326', that.baseProjection),
-                    matrixSet = relSet[idx];
+                    matrixSet = relSet[idx], extent;
+                if(layerBounds) {
+                    extent = external_ol_proj_["transformExtent"](layerBounds, 'EPSG:4326', that.baseProjection);
+                } else {
+                    extent = external_ol_proj_["get"](that.baseProjection).getExtent()
+                }
+                layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, layer, layerFormat,  isKvp);
                 //将需要的参数补上
-                layerInfo.dpi = 90.7;
                 layerInfo.extent = extent;
-                layerInfo.format = "image/png";
                 layerInfo.matrixSet = matrixSet;
                 layerInfo.name = name;
                 layerInfo.orginEpsgCode = layerInfo.projection;
                 layerInfo.overLayer = true;
-                //只有这种，Dataviz里面不应该选择
-                layerInfo.requestEncoding = 'KVP';
                 layerInfo.scales = scales;
-                layerInfo.style = "default";
+                layerInfo.style = style;
                 layerInfo.title = name;
                 layerInfo.unit = "m";
-                layerInfo.zIndex = idx;
+                layerInfo.layerFormat = layerFormat;
+                layerInfo.matrixIds = matrixIds;
                 if(mapInfo){
-                    callback(mapInfo, null, true, that);
+                    callback && callback(mapInfo, null, true, that);
                 }else{
-                    callback(layerInfo);
+                    callback && callback(layerInfo);
                 }
             }
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getTileUrl
+     * @description 获取wmts的图层参数。
+     * @param {array} getTileArray - 图层信息。
+     * @param {string} layer - 选择的图层
+     * @param {string} format - 选择的出图方式
+     * @param {boolean} isKvp - 是否是kvp方式
+     */
+    getTileUrl(getTileArray, layer, format, isKvp) {
+        let url;
+        if(isKvp) {
+        getTileArray.forEach(data => {
+                if(data.Constraint[0].AllowedValues.Value[0].toUpperCase() === 'KVP') {
+                url = data.href;
+                }
+        })
+        } else {
+            const reuslt = layer.ResourceURL.filter(resource => {
+                return resource.format === format;
+            })
+            url = reuslt[0].template;
+        }
+        return url;
     }
 
     /**
@@ -92149,7 +92694,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.createWMTSSource
      * @description 获取WMTS类型图层的source。
      * @param {Object} layerInfo - 图层信息。
-     * @returns {ol/tilegrid}
+     * @returns {ol/source/WMTS} wmts的souce
      */
     createWMTSSource(layerInfo) {
         let extent = layerInfo.extent || external_ol_proj_["get"](layerInfo.projection).getExtent();
@@ -92157,12 +92702,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         // 单位通过坐标系获取 （PS: 以前代码非4326 都默认是米）
         let unit = external_ol_proj_["get"](this.baseProjection).getUnits();
         return new external_ol_source_["WMTS"]({
-            url: layerInfo.url,
+            url: layerInfo.tileUrl || layerInfo.url,
             layer: layerInfo.layer,
-            format: 'image/png',
+            format: layerInfo.layerFormat,
+            style: layerInfo.style,
             matrixSet: layerInfo.tileMatrixSet,
             requestEncoding: layerInfo.requestEncoding || 'KVP',
-            tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin),
+            tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin, layerInfo.matrixIds),
             tileLoadFunction: function (imageTile, src) {
                 imageTile.getImage().src = src
             }
@@ -92178,15 +92724,15 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {string} unit - 单位
      * @param {number} dpi - dpi
      * @param {Array} origin 瓦片的原点
-     * @returns {ol/tilegrid/WMTS}
+     * @returns {ol/tilegrid/WMTS} wmts的瓦片
      */
-    getWMTSTileGrid(extent, scales, unit, dpi, origin) {
-        let resolutionsInfo = this.getReslutionsFromScales(scales, dpi || 96, unit);
+    getWMTSTileGrid(extent, scales, unit, dpi, origin, matrixIds) {
+        let resolutionsInfo = this.getReslutionsFromScales(scales, dpi || dpiConfig.iServerWMTS, unit);
         return new external_ol_tilegrid_WMTS_default.a({
             origin,
             extent: extent,
             resolutions: resolutionsInfo.res,
-            matrixIds: resolutionsInfo.matrixIds
+            matrixIds: matrixIds || resolutionsInfo.matrixIds
         });
     }
 
@@ -92202,15 +92748,17 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      */
     getReslutionsFromScales(scales, dpi, unit, datumAxis) {
         unit = (unit && unit.toLowerCase()) || 'degrees';
-        dpi = dpi > 0 ? dpi : 96;
-        datumAxis = datumAxis || 6378137;
+        dpi = dpi || dpiConfig.iServerWMTS;
+        datumAxis = datumAxis || 6370997;
         let res = [],
             matrixIds = [];
         //给个默认的
         if (core_Util_Util.isArray(scales)) {
             scales && scales.forEach(function (scale, idx) {
-                matrixIds.push(idx);
-                res.push(this.getResolutionFromScale(scale, dpi, unit, datumAxis));
+                if(scale > 1.0) {
+                    matrixIds.push(idx);
+                    res.push(this.getResolutionFromScale(scale, dpi, unit, datumAxis));
+                }
             }, this);
         } else {
             let tileMatrixSet = scales['TileMatrix'];
@@ -92235,7 +92783,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {number} datumAxis
      * @returns {{res: Array, matrixIds: Array}}
      */
-    getResolutionFromScale(scale, dpi, unit, datumAxis) {
+    getResolutionFromScale(scale, dpi=dpiConfig.default, unit, datumAxis) {
         //radio = 10000;
         let res;
         scale = +scale;
@@ -92284,11 +92832,14 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             this.layers = layers;
             layers.forEach(function (layer, index) {
                 //加上底图的index
-                let layerIndex = index + 1, 
+                let layerIndex = index + 1,
                     dataSource = layer.dataSource,
                     isSampleData = dataSource && dataSource.type === "SAMPLE_DATA" && !!dataSource.name; //SAMPLE_DATA是本地示例数据
-
-                if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
+                if(layer.layerType === "MAPBOXSTYLE"){
+                    that.addMVTMapLayer(mapInfo, layer, layerIndex);
+                    that.layerAdded++;
+                    that.sendMapToUser(len);
+                } else if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
                     //数据存储到iportal上了
                     let dataSource = layer.dataSource,
                         serverId = dataSource ? dataSource.serverId : layer.serverId;
@@ -92306,7 +92857,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                             withCredentials: this.withCredentials
                         }).then(function (response) {
                             return response.json()
-                        }).then(function (data) {
+                        }).then(async function (data) {
                             if (data.succeed === false) {
                                 //请求失败
                                 that.layerAdded++;
@@ -92318,8 +92869,17 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                                 if (data.type === "JSON" || data.type === "GEOJSON") {
                                     data.content = data.content.type ? data.content : JSON.parse(data.content);
                                     features = that.geojsonToFeature(data.content, layer);
+
                                 } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-                                    features = that.excelData2Feature(data.content, layer);
+                                    if(layer.dataSource && layer.dataSource.administrativeInfo ) {
+                                        //行政规划信息
+                                        data.content.rows.unshift(data.content.colTitles);
+                                        let { divisionType, divisionField } = layer.dataSource.administrativeInfo;
+                                        let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
+                                        features = that._parseGeoJsonData2Feature({allDatas:{features:geojson.features},fileCode:layer.projection});
+                                    } else {
+                                        features = await that.excelData2Feature(data.content, layer);
+                                    }
                                 }
                                 that.addLayer(layer, features, layerIndex);
                                 that.layerAdded++;
@@ -92336,7 +92896,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                             serverId = dataSource ? dataSource.serverId : layer.serverId;
                         that.checkUploadToRelationship(serverId).then(function (result) {
                             if(result && result.length > 0) {
-                                let datasetName = result[0].name, 
+                                let datasetName = result[0].name,
                                     featureType = result[0].type.toUpperCase();
                                 that.getDataService(serverId,datasetName).then(function (data) {
                                     let dataItemServices = data.dataItemServices;
@@ -92350,13 +92910,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                                         //需要判断是使用tile还是mvt服务
                                         let dataService = that.getService(dataItemServices, 'RESTDATA');
                                         that.isMvt(dataService.address, datasetName).then(info => {
-                                            that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info);      
+                                            that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info);
                                         }).catch(() => {
                                             //判断失败就走之前逻辑，>数据量用tile
-                                            that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType); 
+                                            that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType);
                                         })
                                     } else {
-                                        that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType);    
+                                        that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType);
                                     }
                                 });
                             } else {
@@ -92370,9 +92930,11 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                             that.errorCallback && that.errorCallback(error, 'getLayerFaild', that.map);
                         })
                     }
-                } else if (layer.layerType === 'SUPERMAP_REST' || 
+                } else if(dataSource && dataSource.type === "USER_DATA") {
+                    that.addGeojsonFromUrl(layer, len, layerIndex);
+                } else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "TILE" ||
-                    layer.layerType === "WMS" || 
+                    layer.layerType === "WMS" ||
                     layer.layerType === "WMTS") {
                     if (layer.layerType === "WMTS") {
                         that.getWmtsInfo(layer, function (layerInfo) {
@@ -92385,12 +92947,12 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                     }
                     that.layerAdded++;
                     that.sendMapToUser(len);
-                } else if (layer.dataSource && layer.dataSource.type === "REST_DATA") {
+                } else if (dataSource && dataSource.type === "REST_DATA") {
                     //从restData获取数据
                     that.getFeaturesFromRestData(layer, layerIndex, len);
-                } else if (layer.dataSource && layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
+                } else if (dataSource && dataSource.type === "REST_MAP" && dataSource.url) {
                     //示例数据
-                    core_Util_Util.queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
+                    core_Util_Util.queryFeatureBySQL(dataSource.url, dataSource.layerName, 'smid=1', null, null, function (result) {
                         var recordsets = result && result.result.recordsets;
                         var recordset = recordsets && recordsets[0];
                         var attributes = recordset.fields;
@@ -92429,15 +92991,74 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
     }
     /**
      * @private
+     * @function ol.supermap.WebMap.prototype.addGeojsonFromUrl
+     * @description 从web服务输入geojson地址的图层
+     * @param {object} layerInfo - 图层信息
+     * @param {Number} len - 总的图层数量
+     * @param {Number} layerIndex - 当前图层index
+     */
+    addGeojsonFromUrl(layerInfo, len, layerIndex) {
+        let {dataSource} = layerInfo, {url} = dataSource, that = this;
+        FetchRequest.get(url, null, {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true
+        }).then(function (response) {
+            return response.json()
+        }).then(async function (data) {
+            if (!data || data.succeed === false) {
+                //请求失败
+                if(len) {
+                    that.errorCallback && that.errorCallback(data.error, 'autoUpdateFaild', that.map)
+                } else {
+                    that.layerAdded++;
+                    that.sendMapToUser(len);
+                    that.errorCallback && that.errorCallback(data.error, 'getLayerFaild', that.map);
+                }
+                return;
+            }
+            var features;
+            if (data.type === 'CSV' || data.type === 'EXCEL') {
+                if (layerInfo.dataSource && layerInfo.dataSource.administrativeInfo) {
+                    //行政规划信息
+                    data.content.rows.unshift(data.content.colTitles);
+                    let { divisionType, divisionField } = layerInfo.dataSource.administrativeInfo;
+                    let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
+                    features = that._parseGeoJsonData2Feature({ allDatas: { features: geojson.features }, fileCode: layerInfo.projection });
+                } else {
+                    features = that.excelData2Feature(data.content, layerInfo);
+                }
+            } else {
+                var geoJson = data.content ? JSON.parse(data.content) : data;
+                features = that.geojsonToFeature(geoJson, layerInfo);
+            }
+            if(len) {
+                //上图
+                that.addLayer(layerInfo, features, layerIndex);
+                that.layerAdded++;
+                that.sendMapToUser(len);
+            } else {
+                //自动更新
+                that.map.removeLayer(layerInfo.layer);
+                layerInfo.labelLayer && that.map.removeLayer(layerInfo.labelLayer);
+                that.addLayer(layerInfo, features, layerIndex);
+            }
+        }).catch(function (error) {
+            that.layerAdded++;
+            that.sendMapToUser(len);
+            that.errorCallback && that.errorCallback(error, 'getLayerFaild', that.map);
+        })
+    }
+    /**
+     * @private
      * @function ol.supermap.WebMap.prototype.getServiceInfoFromLayer
      * @description 判断使用哪种服务上图
      * @param {Number} layerIndex - 图层对应的index
      * @param {Number} len - 成功添加的图层个数
      * @param {Object} layer - 图层信息
      * @param {Array} dataItemServices - 数据发布的服务
-     * @param {String} datasetName - 数据服务的数据集名称 
-     * @param {String} featureType - feature类型 
-     * @param {Object} info - 数据服务的信息 
+     * @param {String} datasetName - 数据服务的数据集名称
+     * @param {String} featureType - feature类型
+     * @param {Object} info - 数据服务的信息
      */
     getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info) {
         let that = this;
@@ -92471,7 +93092,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 if(info && info.isMvt) {
                     let bounds = info.bounds;
                     layer = Object.assign(layer, {
-                        layerType: "VECTOR_TILE", 
+                        layerType: "VECTOR_TILE",
                         epsgCode: info.epsgCode,
                         projection: `EPSG:${info.epsgCode}`,
                         bounds: bounds,
@@ -92479,13 +93100,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                         name: layer.name,
                         url: info.url,
                         visible: layer.visible,
-                        featureType: featureType, 
-                        serverId: layer.serverId.toString() 
+                        featureType: featureType,
+                        serverId: layer.serverId.toString()
                     });
                     that.map.addLayer(that.addVectorTileLayer(layer, layerIndex, 'RESTDATA'));
                     that.layerAdded++;
                     that.sendMapToUser(len);
-                  
+
                 } else {
                     //数据服务
                     isAdded = true;
@@ -92527,28 +93148,12 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         }).then(function (response) {
             return response.json()
         }).then(function (result) {
+            layerInfo.featureType="POINT";
             if(result && result.featureMetaData) {
                 layerInfo.featureType = result.featureMetaData.featureType.toUpperCase();
-                layerInfo.dataSource={dataTypes:{}};
-                if(result.featureMetaData.fieldInfos && result.featureMetaData.fieldInfos.length > 0) {
-                    result.featureMetaData.fieldInfos.forEach(function (data) {
-                        let name = data.name.trim();
-                        if(data.type === 'TEXT') {
-                            layerInfo.dataSource.dataTypes[name] = "STRING";
-                        } else if(['DOUBLE','INT','FLOAT','LONG','SHORT'].includes(data.type)) {
-                            layerInfo.dataSource.dataTypes[name] = "NUMBER";
-                        } else {
-                            layerInfo.dataSource.dataTypes[name] = "UNKNOWN";
-                        }
-                    })
-                }
-                layerInfo.wsUrl = result.urls[0].url;
-                layerInfo.name = result.urls[0].url.split('iserver/services/')[1].split('/dataflow')[0];
-                success();
-            } else {
-                //失败也要到成功会调函数中，否则不会继续执行
-                faild();
             }
+            layerInfo.wsUrl = result.urls[0].url;
+            success();
         }).catch(function () {
             faild();
         });
@@ -92566,7 +93171,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         let that = this,dataSource = layer.dataSource,
             url = layer.dataSource.url,
             dataSourceName= dataSource.dataSourceName || layer.name;
-        let requestUrl = that.getRequestUrl(url); 
+        let requestUrl = that.getRequestUrl(url);
         //因为itest上使用的https，iserver是http，所以要加上代理
         core_Util_Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
             let features = that.parseGeoJsonData2Feature({
@@ -92624,7 +93229,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      */
     sendMapToUser(layersLen) {
         if (this.layerAdded === layersLen && this.successCallback) {
-            this.successCallback(this.map, this.mapParams, this.layers);
+            this.successCallback(this.map, this.mapParams, this.layers, this.baseLayer);
         }
     }
 
@@ -92636,7 +93241,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {object} layerInfo - 图层信息
      * @returns {Array}  ol.feature的数组集合
      */
-    excelData2Feature(content, layerInfo) {
+    async excelData2Feature(content, layerInfo) {
         let rows = content.rows,
             colTitles = content.colTitles;
         // 解决V2恢复的数据中含有空格
@@ -92645,12 +93250,50 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 colTitles[i] = core_Util_Util.trim(colTitles[i]);
             }
         }
-        // 迁徙图xyField暂时用from中的
         let fileCode = layerInfo.projection,
-            xIdx = colTitles.indexOf(core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField))),
-            yIdx = colTitles.indexOf(core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField))),
+            dataSource = layerInfo.dataSource,
             baseLayerEpsgCode = this.baseProjection,
-            features = [];
+            features = [],
+            xField = core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField)),
+            yField = core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField)),
+            xIdx = colTitles.indexOf(xField),
+            yIdx = colTitles.indexOf(yField);
+
+        // todo 优化 暂时这样处理
+        if (layerInfo.layerType === 'MIGRATION') {
+            try {
+                if (dataSource.type === 'PORTAL_DATA') {
+                    const { dataMetaInfo } = await FetchRequest.get(`${this.server}web/datas/${dataSource.serverId}.json`, null, {
+                        withCredentials: true
+                    }).then(res => res.json());
+                    // eslint-disable-next-line require-atomic-updates
+                    layerInfo.xyField = {
+                        xField: dataMetaInfo.xField,
+                        yField: dataMetaInfo.yField
+                    }
+                    if(!dataMetaInfo.xIndex) {
+                        xIdx = colTitles.indexOf(dataMetaInfo.xField);
+                        yIdx = colTitles.indexOf(dataMetaInfo.yField);
+                    } else {
+                        xIdx = dataMetaInfo.xIndex;
+                        yIdx = dataMetaInfo.yIndex;
+                    } 
+                } else if (dataSource.type === 'SAMPLE_DATA') {
+                    // 示例数据从本地拿xyField
+                    const sampleData = SampleDataInfo.find(item => item.id === dataSource.name) || {};
+                    xField = sampleData.xField;
+                    yField = sampleData.yField
+                    layerInfo.xyField = {
+                        xField,
+                        yField
+                    }
+                    xIdx = colTitles.findIndex(item => item === xField);
+                    yIdx = colTitles.findIndex(item => item === yField);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
         for (let i = 0, len = rows.length; i < len; i++) {
             let rowDatas = rows[i],
@@ -92673,7 +93316,98 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 features.push(feature);
             }
         }
+        return Promise.resolve(features);
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.excelData2FeatureByDivision
+     * @description 行政区划数据处理
+     * @param {object} content - 文件内容
+     * @param {object} layerInfo - 图层信息
+     * @returns {object}  geojson对象
+     */
+    excelData2FeatureByDivision(content, divisionType, divisionField) {
+        let me = this;
+        let asyncInport;
+        if(divisionType === 'Province'){
+            asyncInport = window.ProvinceData;
+        }else if(divisionType === 'City'){
+            asyncInport = window.MunicipalData;
+        } else if(divisionType === 'GB-T_2260') {
+            // let geojso;
+            asyncInport = window.AdministrativeArea;
+        }
+        if(asyncInport){
+            let geojson = me.changeExcel2Geojson(asyncInport.features, content.rows, divisionType, divisionField);
+            return geojson;
+        }
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype._parseGeoJsonData2Feature
+     * @description 将geojson的数据转换成ol.Feature
+     * @param {object} metaData - 文件内容
+     * @returns {Array.<ol/Feature>} features
+     */
+    _parseGeoJsonData2Feature(metaData) {
+        let allFeatures = metaData.allDatas.features,
+            features = [];
+        for (let i = 0, len = allFeatures.length; i < len; i++) {
+            //不删除properties转换后，属性全都在feature上
+            let properties = Object.assign({}, allFeatures[i].properties);
+            delete allFeatures[i].properties;
+            let feature = transformTools.readFeature(allFeatures[i], {
+                dataProjection: metaData.fileCode,
+                featureProjection: this.baseProjection || 'ESPG:4326'
+            });
+            feature.setProperties({ attributes: properties });
+            features.push(feature);
+        }
         return features;
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.changeExcel2Geojson
+     * @description 将excel和csv数据转换成标准geojson数据
+     * @param {array} features - feature对象
+     * @param {array} datas - 数据内容
+     * @param {string} divisionType - 行政区划类型
+     * @param {string} divisionField - 行政区划字段
+     * @returns {object} geojson对象
+     */
+    changeExcel2Geojson(features, datas, divisionType, divisionField) {
+        let geojson = {
+            type: 'FeatureCollection',
+            features: []
+        };
+        if (datas.length < 2) {
+            return geojson; //只有一行数据时为标题
+        }
+        let titles = datas[0],
+            rows = datas.slice(1),
+            fieldIndex = titles.findIndex(title => title === divisionField);
+        rows.forEach(row => {
+            let feature = features.find(item => {
+                if(divisionType === 'GB-T_2260') {
+                    return item.properties.GB === row[fieldIndex];
+                } else {
+                    return core_Util_Util.isMatchAdministrativeName(item.properties.Name, row[fieldIndex]);
+                }
+            })
+            //todo 需提示忽略无效数据
+            if (feature) {
+                let newFeature = window.cloneDeep(feature);
+                newFeature.properties = {};
+                row.forEach((item, idx) => {
+                    //空格问题，看见DV多处处理空格问题，TODO统一整理
+                    let key = titles[idx].trim();
+                    newFeature.properties[key] = item;
+                });
+                geojson.features.push(newFeature);
+            }
+        });
+        return geojson;
     }
 
     /**
@@ -92786,7 +93520,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             delete allFeatures[i].properties;
             let feature = transformTools.readFeature(allFeatures[i], {
                 dataProjection: metaData.fileCode || 'EPSG:4326',
-                featureProjection: metaData.featureProjection || core_Util_Util.getBaseLayerProj() || 'EPSG:4326'
+                featureProjection: metaData.featureProjection || this.baseProjection || 'EPSG:4326'
             });
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
             let coordinate = feature.getGeometry().getCoordinates();
@@ -92811,7 +93545,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {number} index 图层的顺序
      */
     addLayer(layerInfo, features, index) {
-        let layer;
+        let layer, that = this;
         if (layerInfo.layerType === "VECTOR") {
             if (layerInfo.featureType === "POINT") {
                 if (layerInfo.style.type === 'SYMBOL_POINT') {
@@ -92830,7 +93564,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         } else if (layerInfo.layerType === "HEAT") {
             layer = this.createHeatLayer(layerInfo, features);
         } else if (layerInfo.layerType === "MARKER") {
-            layer = this.createMarkerLayer(layerInfo, features);
+            layer = this.createMarkerLayer(features);
         } else if(layerInfo.layerType === "DATAFLOW_POINT_TRACK") {
             layer = this.createDataflowLayer(layerInfo, index);
         } else if(layerInfo.layerType === "DATAFLOW_HEAT") {
@@ -92845,15 +93579,15 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             layerInfo.name && layer.setProperties({
                 name: layerInfo.name,
                 layerID: layerID,
-                layerType: layerInfo.layerType 
+                layerType: layerInfo.layerType
             });
-            
+
             //刷新下图层，否则feature样式出不来
             if(layerInfo && layerInfo.style && layerInfo.style.imageInfo) {
                 let img = new Image();
                 img.src = layerInfo.style.imageInfo.url;
                 img.onload = function() {
-                    layer.getSource().refresh();
+                    layer.getSource().changed();
                 };
             }
             if (layerInfo.layerType === 'MIGRATION') {
@@ -92868,6 +93602,19 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 this.map.addLayer(layer);
             }
             layer.setZIndex(index);
+            const {visibleScale, autoUpdateTime} = layerInfo;
+            visibleScale && this.setVisibleScales(layer, visibleScale);
+            if(autoUpdateTime && !layerInfo.autoUpdateInterval) {
+                //自动更新数据
+                let dataSource = layerInfo.dataSource;
+                if (dataSource.accessType === "DIRECT" && !dataSource.url) {
+                    // 二进制数据更新feautre所需的url
+                    dataSource.url = `${this.server}web/datas/${dataSource.serverId}/content.json?pageSize=9999999&currentPage=1`
+                }
+                layerInfo.autoUpdateInterval = setInterval(() => {
+                    that.updateFeaturesToMap(layerInfo, index, true);
+                }, autoUpdateTime);
+            }
         }
         layerInfo.layer = layer;
         layerInfo.layerID = layerID;
@@ -92878,6 +93625,39 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             this.addLabelLayer(layerInfo, features);
         }
     }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.updateFeaturesToMap
+     * @description 更新地图上的feature,适用于专题图
+     * @param {object} layerInfo - 图层信息
+     * @param {number} index 图层的顺序
+     */
+    updateFeaturesToMap(layerInfo, layerIndex) {
+        let that = this, dataSource = layerInfo.dataSource, url = layerInfo.dataSource.url,
+        dataSourceName= dataSource.dataSourceName || layerInfo.name;
+
+        if(dataSource.type === "USER_DATA" || dataSource.accessType==="DIRECT" ) {
+            that.addGeojsonFromUrl(layerInfo, null, layerIndex)
+        } else {
+            let requestUrl = that.getRequestUrl(url);
+            //因为itest上使用的https，iserver是http，所以要加上代理
+            core_Util_Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
+                let features = that.parseGeoJsonData2Feature({
+                    allDatas: {
+                        features: result.result.features.features
+                    },
+                    fileCode: layerInfo.projection,
+                    featureProjection: that.baseProjection
+                });
+                //删除之前的图层和标签图层
+                that.map.removeLayer(layerInfo.layer);
+                layerInfo.labelLayer && that.map.removeLayer(layerInfo.labelLayer);
+                that.addLayer(layerInfo, features, layerIndex);
+            }, function (err) {
+                that.errorCallback && that.errorCallback(err, 'autoUpdateFaild', that.map);
+            });
+        }
+    }
 
     /**
      * @private
@@ -92886,14 +93666,14 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {object} layerInfo - 图层信息
      * @param {number} index 图层的顺序
      * @param {String} type 创建的图层类型，restData为创建数据服务的mvt, restMap为创建地图服务的mvt
-     * @returns {Object}  图层对象
+     * @returns {ol/layer/VectorTile}  图层对象
      */
     addVectorTileLayer(layerInfo, index, type) {
         let layer;
         if(type === 'RESTDATA') {
             //用的是restdata服务的mvt
             layer = this.createDataVectorTileLayer(layerInfo)
-        }   
+        }
         let layerID = core_Util_Util.newGuid(8);
         if (layer) {
             layerInfo.name && layer.setProperties({
@@ -92905,7 +93685,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             layer.setZIndex(index);
         }
         layerInfo.layer = layer;
-        layerInfo.layerID = layerID; 
+        layerInfo.layerID = layerID;
         return layer;
     }
     /**
@@ -92913,7 +93693,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.createDataVectorTileLayer
      * @description 创建vectorTILE图层
      * @param {object} layerInfo - 图层信息
-     * @returns {Object} 图层对象
+     * @returns {ol/layer/VectorTile} 图层对象
      */
     createDataVectorTileLayer(layerInfo) {
         //创建图层
@@ -92928,7 +93708,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 			});
         };
         let featureType = layerInfo.featureType;
-        let style = StyleUtils_StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);    
+        let style = StyleUtils_StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);
         return new external_ol_layer_["VectorTile"]({
             //设置避让参数
             source: new VectorTileSuperMapRest_VectorTileSuperMapRest({
@@ -92947,7 +93727,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {String} featureType - 要素类型
      * @returns {Object} 样式参数
      */
-    getDataVectorTileStyle(featureType) { 
+    getDataVectorTileStyle(featureType) {
         let styleParameters = {
             radius: 8, //圆点半径
             fillColor: '#EE4D5A', //填充色
@@ -92975,7 +93755,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {array} allFeatures - 图层上的feature集合
      */
     getFiterFeatures(filterCondition, allFeatures) {
-        let condition = this.replaceFilterCharacter(filterCondition);
+        let condition = this.parseFilterCondition(filterCondition);
         let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
         for (let i = 0; i < allFeatures.length; i++) {
@@ -92999,14 +93779,29 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 
     /**
      * @private
-     * @function ol.supermap.WebMap.prototype.replaceFilterCharacter
-     * @description 替换查询语句 中的 and / AND / or / OR / = / !=
-     * @param {string} filterString - 过滤条件
+     * @function ol.supermap.WebMap.prototype.parseFilterCondition
+     * @description 1、替换查询语句 中的 and / AND / or / OR / = / !=
+     *              2、匹配 Name in ('', '')，多条件需用()包裹
+     * @param {string} filterCondition - 过滤条件
      * @return {string} 换成组件能识别的字符串
      */
-    replaceFilterCharacter(filterString) {
-        filterString = filterString.replace(/=/g, '==').replace(/AND|and/g, '&&').replace(/or|OR/g, '||').replace(/<==/g, '<=').replace(/>==/g, '>=');
-        return filterString;
+    parseFilterCondition(filterCondition) {
+        return filterCondition
+        .replace(/=/g, "==")
+        .replace(/AND|and/g, "&&")
+        .replace(/or|OR/g, "||")
+        .replace(/<==/g, "<=")
+        .replace(/>==/g, ">=")
+        .replace(/\(?[^\(]+?\s*in\s*\([^\)]+?\)\)?/gi, (res) => {
+          // res格式：(省份 in ('四川', '河南'))
+          const data = res.match(/([^(]+?)\s*in\s*\(([^)]+?)\)/i);
+          return data.length === 3
+            ? `(${data[2]
+                .split(",")
+                .map((c) => `${data[1]} == ${c.trim()}`)
+                .join(" || ")})`
+            : res;
+        });
     }
 
     /**
@@ -93015,7 +93810,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 添加大数据图层到地图上
      * @param {object} layerInfo - 图层信息
      * @param {array} features - feature的集合
-     * @return {string}
+     * @return {ol/layer/image} 大数据图层
      */
     createGraphicLayer(layerInfo, features) {
         features = layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features;
@@ -93037,7 +93832,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {array} features - feature的集合
      * @param {object} style - 图层样式
      * @param {string} featureType - feature的类型
-     * @return {string}
+     * @return {array} 大数据图层要素数组
      */
     getGraphicsFromFeatures(features, style, featureType) {
         let olStyle = StyleUtils_StyleUtils.getOpenlayersStyle(style, featureType),
@@ -93059,16 +93854,17 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 添加符号图层
      * @param {object} layerInfo - 图层信息
      * @param {array} features - feature的集合
-     * @return {object}
+     * @return {ol/layer/Vector} 符号图层
      */
     createSymbolLayer(layerInfo, features) {
         let style = StyleUtils_StyleUtils.getSymbolStyle(layerInfo.style);
         return new external_ol_layer_["Vector"]({
             style: style,
-            source: new external_ol_layer_["Vector"]({
+            source: new external_ol_source_["Vector"]({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
-            })
+            }),
+            renderMode: 'image'
         });
     }
 
@@ -93078,12 +93874,12 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 添加标签图层
      * @param {object} layerInfo - 图层信息
      * @param {array} features -feature的集合
-     * @returns {object}图层对象
+     * @returns {ol/layer/Vector} 图层对象
      */
     addLabelLayer(layerInfo, features) {
         let labelStyle = layerInfo.labelStyle;
         let style = this.getLabelStyle(labelStyle, layerInfo);
-        let layer = new external_ol_layer_["Vector"]({
+        let layer = layerInfo.labelLayer = new external_ol_layer_["Vector"]({
             declutter: true,
             styleOL: style,
             labelField: labelStyle.labelField,
@@ -93108,7 +93904,24 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         this.map.addLayer(layer);
         layer.setVisible(layerInfo.visible);
         layer.setZIndex(1000);
+        const {visibleScale} = layerInfo;
+        visibleScale && this.setVisibleScales(layer, visibleScale);
         return layer;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.setVisibleScales
+     * @description 改变图层可视范围
+     * @param {object} layer - 图层对象。ol.Layer
+     * @param {object} visibleScale - 图层样式参数
+     */
+    setVisibleScales(layer, visibleScale) {
+        let maxResolution = this.resolutions[visibleScale.minScale],
+            minResolution = this.resolutions[visibleScale.maxScale];
+        //比例尺和分别率是反比的关系
+        maxResolution > 1 ? layer.setMaxResolution(Math.ceil(maxResolution)) : layer.setMaxResolution(maxResolution * 1.1);
+        layer.setMinResolution(minResolution);
     }
 
     /**
@@ -93117,32 +93930,45 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 获取标签样式
      * @param {object} parameters - 标签图层样式参数
      * @param {object} layerInfo - 图层样式参数
-     * @returns {ol/style/Style}
+     * @returns {ol/style/Style} 标签样式
      */
     getLabelStyle(parameters, layerInfo) {
         let style = layerInfo.style || layerInfo.pointStyle;
-        let radius = style.radius || 0;
-        let strokeWidth = style.strokeWidth || 0;
-        let offsetY = -1.8 * radius - strokeWidth;
-        if (offsetY > -20) {
-            offsetY = -20;
+        const {radius=0, strokeWidth=0} = style,
+            beforeOffsetY =  -(radius + strokeWidth);
+        const {
+            fontSize = '14px',
+            fontFamily,
+            fill,
+            backgroundFill,
+            offsetX = 0,
+            offsetY = beforeOffsetY,
+            placement = "point",
+            textBaseline = "bottom",
+            textAlign='center',
+            outlineColor = "#000000",
+            outlineWidth = 0
+            } = parameters;
+        const option = {
+            font: `${fontSize} ${fontFamily}`,
+            placement,
+            textBaseline,
+            textAlign,
+            fill: new external_ol_style_Fill_default.a({ color: fill }),
+            backgroundFill: new external_ol_style_Fill_default.a({ color: backgroundFill }),
+            padding: [3, 3, 3, 3],
+            offsetX: layerInfo.featureType === 'POINT' ? offsetX : 0,
+            offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0
+        };
+        if (outlineWidth > 0) {
+        option.stroke = new external_ol_style_Stroke_default.a({
+            color: outlineColor,
+            width: outlineWidth
+        });
         }
-        parameters.offsetY = offsetY;
 
         return new external_ol_style_Style_default.a({
-            text: new external_ol_style_Text_default.a({
-                font: "14px " + parameters.fontFamily,
-                placement: 'point',
-                textAlign: 'center',
-                fill: new external_ol_style_Fill_default.a({
-                    color: parameters.fill
-                }),
-                backgroundFill: new external_ol_style_Fill_default.a({
-                    color: parameters.backgroundFill || [255, 255, 255, 0.7]
-                }),
-                padding: [3, 3, 3, 3],
-                offsetY: parameters.offsetY
-            })
+            text: new external_ol_style_Text_default.a(option)
         });
     }
 
@@ -93152,12 +93978,20 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 创建vector图层
      * @param {object} layerInfo - 图层信息
      * @param {array} features -feature的集合
-     * @returns {ol/style/Style}
+     * @returns {ol/layer/Vector} 矢量图层
      */
     createVectorLayer(layerInfo, features) {
-        let style = StyleUtils_StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
+        const {featureType, style} = layerInfo;
+        let newStyle;
+        if(featureType === 'LINE' && core_Util_Util.isArray(style)) {
+            const [outlineStyle, strokeStyle] = style;
+            newStyle = strokeStyle.lineDash === 'solid' ? StyleUtils_StyleUtils.getRoadPath(strokeStyle, outlineStyle) 
+            : StyleUtils_StyleUtils.getPathway(strokeStyle, outlineStyle);
+        } else {
+            newStyle = StyleUtils_StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
+        }
         return new external_ol_layer_["Vector"]({
-            style: style,
+            style: newStyle,
             source: new external_ol_source_["Vector"]({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
@@ -93171,7 +94005,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 创建热力图图层
      * @param {object} layerInfo - 图层信息
      * @param {array} features -feature的集合
-     * @returns {ol/layer/Heatmap}
+     * @returns {ol/layer/Heatmap} 热力图图层
      */
     createHeatLayer(layerInfo, features) {
         //因为热力图，随着过滤，需要重新计算权重
@@ -93266,7 +94100,10 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             let styleSource = layer.get('styleSource');
             let labelField = styleSource.themeField;
             let label = feature.get('attributes')[labelField];
-            return styleSource.styleGroups[label].olStyle;
+            let styleGroup = styleSource.styleGroups.find(item => {
+                return item.value === label;
+            })
+            return styleGroup.olStyle;
         });
 
         return layer;
@@ -93299,7 +94136,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 获取单值专题图的styleGroup
      * @param {object} parameters- 图层信息
      * @param {array} features - feature 数组
-     * @returns {Array}
+     * @returns {Array} 单值样式
      */
     getUniqueStyleGroup(parameters, features) {
         // 找出所有的单值
@@ -93333,10 +94170,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         //生成styleGroup
         let styleGroup = [];
         names.forEach(function (name, index) {
-            let color = curentColors[index];
-            if (name in customSettings) {
-                color = customSettings[name];
+            //兼容之前自定义是用key，现在因为数据支持编辑，需要用属性值。
+            let key = this.webMapVersion === "1.0" ? index : name;
+            let color = curentColors[key];
+            if (key in customSettings) {
+                color = customSettings[key];
             }
+
             if (featureType === "LINE") {
                 style.strokeColor = color;
             } else {
@@ -93344,13 +94184,12 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             }
             // 转化成 ol 样式
             let olStyle = StyleUtils_StyleUtils.toOpenLayersStyle(style, featureType);
-
-            styleGroup[name] = {
+            styleGroup.push({
                 olStyle: olStyle,
                 color: color,
                 value: name
-            };
-        });
+            });
+        }, this);
 
         return styleGroup;
     }
@@ -93361,7 +94200,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 创建分段图层
      * @param {object} layerInfo- 图层信息
      * @param {array} features - 所有feature结合
-     * @returns {ol/layer/Vector}
+     * @returns {ol/layer/Vector} 单值图层
      */
     createRangeLayer(layerInfo, features) {
         //这里获取styleGroup要用所以的feature
@@ -93403,7 +94242,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 创建分段专题图的图层source
      * @param {object} parameters- 图层信息
      * @param {array} features - 所以的feature集合
-     * @returns {*}
+     * @returns {Object} 图层source
      */
     createRangeSource(parameters, features) {
         //找到合适的专题字段
@@ -93425,7 +94264,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 获取分段专题图的styleGroup样式
      * @param {object} parameters- 图层信息
      * @param {array} features - 所以的feature集合
-     * @returns {*}
+     * @returns {Array} styleGroups
      */
     getRangeStyleGroup(parameters, features) {
         // 找出分段值
@@ -93448,7 +94287,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 if (attributes) {
                     //过滤掉非数值的数据
                     let value = attributes[fieldName.trim()];
-                    if (value && core_Util_Util.isNumber(value)) {
+                    if (value !== undefined && value !== null && core_Util_Util.isNumber(value)) {
                         values.push(parseFloat(value));
                     }
                 } else if (feature.get(fieldName) && core_Util_Util.isNumber(feature.get(fieldName))) {
@@ -93542,11 +94381,10 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @private
      * @function ol.supermap.WebMap.prototype.createMarkerLayer
      * @description 创建标注图层
-     * @param {object} layerInfo- 图层信息
      * @param {array} features - 所以的feature集合
-     * @returns {*}
+     * @returns {ol/layer/Vector} 矢量图层
      */
-    createMarkerLayer(layerInfo, features) {
+    createMarkerLayer(features) {
         features && this.setEachFeatureDefaultStyle(features);
         return new external_ol_layer_["Vector"]({
             source: new external_ol_source_["Vector"]({
@@ -93562,7 +94400,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 创建数据流图层
      * @param {object} layerInfo- 图层信息
      * @param {number} layerIndex - 图层的zindex
-     * @returns {*}
+     * @returns {ol/layer/Vector} 数据流图层
      */
     createDataflowLayer(layerInfo, layerIndex) {
         let layerStyle = layerInfo.pointStyle, style;
@@ -93583,11 +94421,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             labelLayer.setZIndex(1000);
             labelSource = labelLayer.getSource();
         }
+        const {visibleScale} = layerInfo;
         if(layerInfo.lineStyle && layerInfo.visible) {
             pathLayer = this.createVectorLayer({style:layerInfo.lineStyle, featureType:"LINE"});
             pathSource = pathLayer.getSource();
             pathLayer.setZIndex(layerIndex);
             this.map.addLayer(pathLayer);
+            visibleScale && this.setVisibleScales(pathLayer, visibleScale);
         }
         let featureCache = {}, labelFeatureCache={}, pathFeatureCache = {}, that = this;
         this.createDataflowService(layerInfo, function (featureCache, labelFeatureCache, pathFeatureCache) {
@@ -93599,7 +94439,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 });
                 if(layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
+                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.get('attributes')
@@ -93682,7 +94522,6 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {object} layer - 图层对象
      * @param {string} directionField - 方向字段
      * @param {string} styleType - 样式的类型
-     * @returns {*} 图层上feature对应的样式
      */
     setFeatureStyle(layer, directionField, styleType) {
         let layerStyle = layer.get('styleOL');
@@ -93692,7 +94531,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             if(directionField !== undefined && directionField !== "未设置" && directionField !== "None") {
                 value = feature.get('attributes')[directionField];
             } else {
-                value = 0;  
+                value = 0;
             }
             if(value > 360 || value < 0) {
                 return null;
@@ -93714,7 +94553,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.createDataflowHeatLayer
      * @description 创建数据流服务的热力图图层
      * @param {object} layerInfo - 图层参数
-     * @returns {*} 热力图图层对象
+     * @returns {ol/layer/Heatmap} 热力图图层对象
      */
     createDataflowHeatLayer(layerInfo) {
         let source = this.createDataflowHeatSource(layerInfo);
@@ -93738,7 +94577,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.createDataflowHeatSource
      * @description 创建数据流服务的热力图的source
      * @param {object} layerInfo - 图层参数
-     * @returns {*} 热力图source对象
+     * @returns {ol/souce/Vector} 热力图source对象
      */
     createDataflowHeatSource(layerInfo) {
         let that = this,
@@ -93750,7 +94589,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             return function (feature) {
                 if(layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
+                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.get('attributes')
@@ -93842,7 +94681,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                     //说明是文字的feature类型
                     geomType = "TEXT";
                 }
-                let attributes = this.setFeatureInfo(feature);
+                let attributes = that.setFeatureInfo(feature);
                 feature.setProperties({
                     useStyle: defaultStyle,
                     attributes
@@ -93866,7 +94705,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.setFeatureInfo
      * @description 为feature设置属性
      * @param {array} feature - 单个feature
-     * @returns {*}
+     * @returns {object} 属性
      */
     setFeatureInfo(feature) {
         let attributes = feature.get('attributes'),
@@ -93875,7 +94714,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 dataViz_description: '',
                 dataViz_imgUrl: '',
                 dataViz_url:''
-            }, 
+            },
             newAttribute = Object.assign(defaultAttr, attributes);
         let properties = feature.getProperties();
         for(let key in newAttribute) {
@@ -93893,7 +94732,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @description 创建等级符号图层
      * @param {object} layerInfo - 图层信息
      * @param {array} features - 添加到图层上的features
-     * @returns {*}
+     * @returns {ol/layer/Vector} 矢量图层
      */
     createRankSymbolLayer(layerInfo, features) {
         let styleSource = this.createRankStyleSource(layerInfo, features, layerInfo.featureType);
@@ -93925,7 +94764,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {object} parameters - 图层信息
      * @param {array} features - 添加到图层上的features
      * @param {string} featureType - feature的类型
-     * @returns {*}
+     * @returns {object} styleGroups
      */
     createRankStyleSource(parameters, features, featureType) {
         let themeSetting = parameters.themeSetting,
@@ -93941,7 +94780,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @param {array} features - 添加到图层上的features
      * @param {object} parameters - 图层参数
      * @param {string} featureType - feature的类型
-     * @returns {*}
+     * @returns {array} stylegroup
      */
     getRankStyleGroup(themeField, features, parameters, featureType) {
         // 找出所有的单值
@@ -93953,7 +94792,9 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             segmentCount = themeSetting.segmentCount || this.defaultParameters.themeSetting.segmentCount,
             customSettings = themeSetting.customSettings,
             minR = parameters.themeSetting.minRadius,
-            maxR = parameters.themeSetting.maxRadius;
+            maxR = parameters.themeSetting.maxRadius,
+            fillColor = style.fillColor,
+            colors = parameters.themeSetting.colors;
         features.forEach(feature => {
             let attributes = feature.get('attributes'),
                 value = attributes[themeField];
@@ -93985,19 +94826,22 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             let len = segements.length,
                 incrementR = (maxR - minR) / (len - 1), // 半径增量
                 start, end, radius = Number(((maxR + minR) / 2).toFixed(2));
-            for (let i = 0; i < len - 1; i++) {
-                start = Number(segements[i].toFixed(2));
-                end =  Number(segements[i + 1].toFixed(2));
+            // 获取颜色
+            let rangeColors = colors ? ColorsPickerUtil.getGradientColors(colors, len, 'RANGE') : [];
+            for (let j = 0; j < len - 1; j++) {
+                start = Number(segements[j].toFixed(2));
+                end =  Number(segements[j + 1].toFixed(2));
                 // 这里特殊处理以下分段值相同的情况（即所有字段值相同）
-                radius = start === end ? radius : minR + Math.round(incrementR * i);
+                radius = start === end ? radius : minR + Math.round(incrementR * j);
                 // 最后一个分段时将end+0.01，避免取不到最大值
-                end = i === len - 2 ? end + 0.01 : end;
+                end = j === len - 2 ? end + 0.01 : end;
                 // 处理自定义 半径
-                radius = customSettings[i] && customSettings[i].radius ? customSettings[i].radius : radius;
+                radius = customSettings[j] && customSettings[j].radius ? customSettings[j].radius : radius;
                 // 转化成 ol 样式
                 style.radius = radius;
+                style.fillColor = customSettings[j] && customSettings[j].color ? customSettings[j].color : rangeColors[j] || fillColor;
                 let olStyle = StyleUtils_StyleUtils.getOpenlayersStyle(style, featureType, true);
-                styleGroup.push({ olStyle: olStyle, radius, start, end });
+                styleGroup.push({ olStyle: olStyle, radius, start, end, fillColor: style.fillColor });
             }
             return styleGroup;
         } else {
@@ -94010,7 +94854,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.checkUploadToRelationship
      * @description 检查是否上传到关系型
      * @param {String} fileId - 文件的id
-     *  @returns {Promise<T | never>} 关系型文件一些参数
+     * @returns {Promise<T | never>} 关系型文件一些参数
      */
     checkUploadToRelationship(fileId) {
         let url = this.getRequestUrl(`${this.server}web/datas/${fileId}/datasets.json`);
@@ -94032,7 +94876,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
     getDatasources(url) {
         let requestUrl = this.getRequestUrl(`${url}/data/datasources.json`);
         return FetchRequest.get(requestUrl, null, {
-            withCredentials: this.withCredentials   
+            withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
         }).then(function (datasource) {
@@ -94071,8 +94915,8 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
     getRequestUrl(url) {
         if(this.credentialValue) {
             //有token之类的配置项
-            url = url.indexOf("?") === -1 ? `${url}?${this.credentialKey}=${this.credentialValue}` : 
-            `${url}&${this.credentialKey}=${this.credentialValue}`; 
+            url = url.indexOf("?") === -1 ? `${url}?${this.credentialKey}=${this.credentialValue}` :
+            `${url}&${this.credentialKey}=${this.credentialValue}`;
         }
         //如果传入进来的url带了代理则不需要处理
         if(this.excludePortalProxyUrl) {
@@ -94088,7 +94932,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @returns {Promise<T | never>} 代理地址
      */
     getProxy() {
-        return this.server + 'apps/viewer/getUrlResource.json?url=';      
+        return this.server + 'apps/viewer/getUrlResource.json?url=';
     }
 
     /**
@@ -94129,7 +94973,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 
     /**
      * 通过wkt参数扩展支持多坐标系
-     * 
+     *
      * @param {String} wkt 字符串
      * @returns {Boolean} 坐标系是否添加成功
      */
@@ -94150,12 +94994,12 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                     return false;
                 }
             }
-        }  
+        }
     }
 
     /**
      * 通过wkt参数获取坐标信息
-     * 
+     *
      * @param {String} wkt 字符串
      * @returns {String} epsg 如："EPSG:4326"
      */
@@ -94174,7 +95018,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             }
         }
     }
-    
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createMigrationLayer
@@ -94185,14 +95029,14 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      */
     createMigrationLayer(layerInfo, features) {
         // 获取图层外包DOM
-        if (!window.ol3Echarts.prototype.getContainer) {
-            window.ol3Echarts.prototype.getContainer = function() {
+        if (!window.EChartsLayer.prototype.getContainer) {
+            window.EChartsLayer.prototype.getContainer = function() {
                 return this.$container;
             };
         }
         // 设置图层可见性
-        if (!window.ol3Echarts.prototype.setVisible) {
-            window.ol3Echarts.prototype.setVisible = function(visible) {
+        if (!window.EChartsLayer.prototype.setVisible) {
+            window.EChartsLayer.prototype.setVisible = function(visible) {
                 if (visible) {
                     let options = this.get('options');
                     if (options) {
@@ -94208,8 +95052,8 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             };
         }
         // 设置图层层级
-        if (!window.ol3Echarts.prototype.setZIndex) {
-            window.ol3Echarts.prototype.setZIndex = function(zIndex) {
+        if (!window.EChartsLayer.prototype.setZIndex) {
+            window.EChartsLayer.prototype.setZIndex = function(zIndex) {
                 let container = this.getContainer();
                 if (container) {
                     container.style.zIndex = zIndex;
@@ -94222,8 +95066,8 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
          *     cursor: default !important;
          * }
          */
-        if (!window.ol3Echarts.prototype.setCursor) {
-            window.ol3Echarts.prototype.setCursor = function(cursor = 'default') {
+        if (!window.EChartsLayer.prototype.setCursor) {
+            window.EChartsLayer.prototype.setCursor = function(cursor = 'default') {
                 let container = this.getContainer();
                 if (container && cursor === 'default') {
                     container.classList.add('cursor-default');
@@ -94234,9 +95078,13 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         let lineData = this.createLinesData(layerInfo, properties);
         let pointData = this.createPointsData(lineData, layerInfo, properties);
         let options = this.createOptions(layerInfo, lineData, pointData);
-        let layer = new window.ol3Echarts(options, {
-            hideOnMoving: true,
-            hideOnZooming: true
+        let layer = new window.EChartsLayer(options, {
+            // hideOnMoving: true,
+            // hideOnZooming: true
+            //以下三个参数，如果不按照这样设置，会造成不可见图层时，缩放还会出现图层
+            hideOnMoving: false,
+            hideOnZooming: false,
+            forcedPrecomposeRerender: true
         });
         layer.type = 'ECHARTS';
         return layer;
@@ -94434,9 +95282,9 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 });
             } else if(from.type === 'PLACE_FIELD' && from['field'] && to['field']) {
                 const centerDatas = ProvinceCenter.concat(MunicipalCenter);
-                
+
                 properties.forEach(property => {
-                    let fromField = property[from['field']], 
+                    let fromField = property[from['field']],
                         toField = property[to['field']];
                     fromCoord = centerDatas.find(item => {
                         return core_Util_Util.isMatchAdministrativeName(item.name, fromField);
@@ -94485,18 +95333,18 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
             //判断是否和底图坐标系一直
             if(info.epsgCode == that.baseProjection.split('EPSG:')[1]) {
                 return FetchRequest.get(that.getRequestUrl(`${info.url}/tilefeature.mvt`), null, {
-                    withCredentials: that.withCredentials      
+                    withCredentials: that.withCredentials
                 }).then(function (response) {
                     return response.json()
                 }).then(function (result) {
                     info.isMvt = result.error && result.error.code === 400;
                     return info;
                 }).catch(() => {
-                    return info; 
-                });   
+                    return info;
+                });
             }
             return info;
-        })   
+        })
     }
 
     /**
@@ -94510,16 +95358,16 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
     getDatasetsInfo(serviceUrl, datasetName) {
         let that = this;
         return that.getDatasources(serviceUrl).then(function(datasourceName) {
-          //判断mvt服务是否可用 
-          let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}.json`;  
+          //判断mvt服务是否可用
+          let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}.json`;
           return FetchRequest.get(that.getRequestUrl(url), null, {
-            withCredentials: that.withCredentials       
+            withCredentials: that.withCredentials
           }).then(function (response) {
                 return response.json()
           }).then(function (datasetsInfo) {
                 return {
-                    epsgCode: datasetsInfo.datasetInfo.prjCoordSys.epsgCode,   
-                    bounds: datasetsInfo.datasetInfo.bounds,  
+                    epsgCode: datasetsInfo.datasetInfo.prjCoordSys.epsgCode,
+                    bounds: datasetsInfo.datasetInfo.bounds,
                     url //返回的是原始url，没有代理。因为用于请求mvt
                 };
           });
@@ -94531,26 +95379,37 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
      * @function ol.supermap.WebMap.prototype.getMBStyle
      * @description 生成图层信息
      * @param {object} mapInfo - 地图信息
+     * @param {object} layerInfo - 图层信息
      */
-    getMBStyle(mapInfo) {
-        let baseLayer = mapInfo.baseLayer,
-            url = baseLayer.dataSource.url,
-            layerInfo = {};
-        return FetchRequest.get(this.getRequestUrl(url)).then(result => {
+    getMBStyle(mapInfo, layerInfo) {
+        let _this = this,
+            dataSource = layerInfo.dataSource || {},
+            { url, serverId } = dataSource,
+            styleUrl;
+        styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
+        if (layerInfo.layerType === "MAPBOXSTYLE" && url && url.indexOf('/restjsr/') > -1) {
+            styleUrl = styleUrl + '/style.json'
+        }
+        return FetchRequest.get(this.getRequestUrl(styleUrl), null, {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true,
+			headers: {
+				'Content-Type': 'application/json;chartset=uft-8'
+			}
+        }).then(result => {
             return result.json();
         }).then(styles => {
+            _this._matchStyleObject(styles);
             let extent = styles.metadata.mapbounds;
-            baseLayer.extent = extent; // 这里把extent保存一下
+            layerInfo.extent = extent; // 这里把extent保存一下
 
-            layerInfo.projection = mapInfo.projection,
-            layerInfo.epsgCode = mapInfo.projection,
-            layerInfo.visible = baseLayer.visible,
-            layerInfo.name = baseLayer.name,
-            layerInfo.url = url,
-            layerInfo.sourceType = 'VECTOR_TILE',
-            layerInfo.layerType = 'VECTOR_TILE',
-            layerInfo.styles = styles,
-            layerInfo.extent = extent,
+            layerInfo.projection = mapInfo.projection;
+            layerInfo.epsgCode = mapInfo.projection;
+            layerInfo.url = url;
+            layerInfo.sourceType = 'VECTOR_TILE';
+            layerInfo.layerType = 'VECTOR_TILE';
+            layerInfo.styles = styles;
+            layerInfo.extent = extent;
             layerInfo.bounds = {
                 bottom: extent[1],
                 left: extent[0],
@@ -94559,43 +95418,144 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
                 rightTop: { x: extent[2], y: extent[3] },
                 top: extent[3]
             }
-            return layerInfo;
+            if (layerInfo.zIndex > 0) {
+                // 过滤styles  非底图mapboxstyle图层才需此处理
+                _this.modifyMapboxstyleLayer(mapInfo, layerInfo);
+            }
         })
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.modifyMapboxstyleLayer
+     * @description mapboxstyle图层：1. layer id重复问题  2.叠加图层背景色问题
+     * @param {Object} mapInfo 地图信息
+     * @param {Object} layerInfo 当前要添加到地图的图层
+     */
+    modifyMapboxstyleLayer(mapInfo, layerInfo) {
+        let that = this;
+        if (mapInfo.layers && mapInfo.layers.length === 0) { return; }
+        let curLayers = layerInfo.styles.layers;
+        if (!curLayers) { return; }
+        // 非底图，则移除"background"图层
+        curLayers = curLayers.filter(layer => layer.type !== "background");
+        layerInfo.styles.layers = curLayers;
+        // 处理mapboxstyle图层layer id重复的情况
+        let addedLayersArr = mapInfo.layers.filter(layer => layer.layerType === 'VECTOR_TILE' && layer.zIndex !== layerInfo.zIndex)
+            .map(addLayer => addLayer.styles && addLayer.styles.layers);
+        if (!addedLayersArr || addedLayersArr && addedLayersArr.length === 0) { return; }
+        addedLayersArr.forEach(layers => {
+            curLayers.forEach(curLayer => {
+                that.renameLayerId(layers, curLayer);
+            })
+        })
+    }
+    /**
+     * @private
+     * @function  ol.supermap.WebMap.prototype.renameLayerId
+     * @description  mapboxstyle图层 id重复的layer添加后缀编码 (n)[参考mapstudio]
+     * @param {mapboxgl.Layer[]} layers 已添加到地图的图层组
+     * @param {mapboxgl.Layer} curLayer 当前图层
+     */
+    renameLayerId(layers, curLayer) {
+        if (layers.find((l) => l.id === curLayer.id)) {
+
+            const result = curLayer.id.match(/(.+)\((\w)\)$/);
+            if (result) {
+                curLayer.id = `${result[1]}(${+result[2] + 1})`;
+            } else {
+                curLayer.id += '(1)';
+            }
+            if (layers.find((l) => l.id === curLayer.id)) {
+                this.renameLayerId(layers, curLayer);
+            }
+        }
+    }
+    /**
+	 * @private
+	 * @function mapboxgl.supermap.WebMap.prototype._matchStyleObject
+	 * @description 恢复 style 为标准格式。
+	 * @param {Object} style - mapbox 样式。
+	 */
+	_matchStyleObject(style) {
+		let { sprite, glyphs } = style;
+		if (sprite && typeof sprite === 'object'){
+			style.sprite = Object.values(sprite)[0];
+		}
+		if (glyphs && typeof glyphs === 'object'){
+			style.glyphs = Object.values(glyphs)[0];
+		}
+    }
+
+    /**
+     * @private
+     * @function  ol.supermap.WebMap.prototype.renameLayerId
+     * @description 判断url是否是iportal的代理地址
+     * @param {*} serviceUrl
+     */
+    isIportalProxyServiceUrl(serviceUrl) {
+        if (this.serviceProxy && this.serviceProxy.enable && serviceUrl) {
+            let proxyStr = '';
+            if (this.serviceProxy.proxyServerRootUrl) {
+                proxyStr = `${this.serviceProxy.proxyServerRootUrl}/`;
+            } else if (this.serviceProxy.rootUrlPostfix) {
+                proxyStr = `${this.serviceProxy.port}/${this.serviceProxy.rootUrlPostfix}/`;
+            } else if (!this.serviceProxy.rootUrlPostfix) {
+                proxyStr = `${this.serviceProxy.port}/`;
+            }
+            if (this.serviceProxy.port !== 80) {
+                return serviceUrl.indexOf(proxyStr) >= 0;
+            } else {
+                // 代理端口为80，url中不一定有端口，满足一种情况即可
+                return serviceUrl.indexOf(proxyStr) >= 0 || serviceUrl.indexOf(proxyStr.replace(':80', '')) >= 0;
+            }
+        } else {
+            return false
+        }
     }
 
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createMVTLayer
      * @description 创建矢量瓦片图层
-     * @param {object} mapInfo - 图层信息
+     * @param {object} layerInfo - 图层信息
      */
     createMVTLayer(layerInfo) {
+        let that = this;
         let styles = layerInfo.styles;
         let resolutions = this.getMVTResolutions(layerInfo.bounds);
+        let withCredentials = this.isIportalProxyServiceUrl(styles.sprite);
         // 创建MapBoxStyle样式
         let mapboxStyles = new MapboxStyles_MapboxStyles({
             style: styles,
             source: styles.name,
             resolutions,
-            map: this.map
+            map: this.map,
+            withCredentials
         });
         return new Promise((resolve) => {
             mapboxStyles.on('styleloaded', function () {
-                let key = Object.keys(styles.sources)[0] || mapboxStyles.name;
-                let url = styles.sources[key].tiles[0];
+                let visibleScale = layerInfo.visibleScale;
+                let minResolution = visibleScale && that.resolutions[visibleScale.maxScale];
+                let maxResolution = visibleScale && that.resolutions[visibleScale.minScale];
                 let layer = new external_ol_layer_["VectorTile"]({
                     //设置避让参数
                     declutter: true,
-                    source: new external_ol_source_["VectorTile"]({
-                        url,
+                    source: new external_ol_source_["VectorTileSuperMapRest"]({
+                        style: styles,
+                        withCredentials,
                         projection: layerInfo.projection,
                         format: new external_ol_format_MVT_default.a({
-                            featureClass: external_ol_Feature_default.a
+                            featureClass: external_ol_render_Feature_default.a
                         }),
                         wrapX: false
                     }),
                     style: mapboxStyles.featureStyleFuntion,
-                    visible: layerInfo.visible
+                    visible: layerInfo.visible,
+                    zIndex:layerInfo.zIndex,
+                    opacity:layerInfo.opacity,
+                    minResolution,
+                    // The maximum resolution (exclusive) below which this layer will be visible.
+                    maxResolution: maxResolution > 1 ? Math.ceil(maxResolution) : maxResolution * 1.1
                 });
                 resolve(layer);
             })
@@ -94622,7 +95582,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
     }
     /**
      * 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
-     * @param {*} url 
+     * @param {*} url
      */
     isSameDomain (url) {
         let documentUrlArray = url.split("://"), substring = documentUrlArray[1];
@@ -94641,6 +95601,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
         }
     }
 }
+
 // CONCATENATED MODULE: ./src/openlayers/mapping/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -95051,14 +96012,14 @@ if (window && window.ol) {
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 70 */,
-/* 71 */
+/* 72 */,
+/* 73 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
