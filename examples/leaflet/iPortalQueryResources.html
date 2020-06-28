@@ -200,6 +200,7 @@
     $(document).ready(function () {
         //加载完DOM后，开始资源数据查询并添加
         queryResouces(queryParams);
+        initClickEvent();
     });
 
     // 查询iPortal中的资源
@@ -252,41 +253,43 @@
         $(".glyphicon-chevron-right").parent().removeClass('disable');
         $(".glyphicon-chevron-left").parent().removeClass('disable');
         $("#resourcesListPaging > .pagination > .pagDom").remove();
-            for (var i = 0; i < totalPages; i++) {
-                if (i == (resourceCurrentPage - 1)) {
-                    var resourcesListPaging = $("<li class='pagDom' >" + "<a href='JavaScript:void(0)' class='resourcesListChang active' >" + (i + 1) + "</a>" + "</li>")
-                } else {
-                    var resourcesListPaging = $("<li class='pagDom'>" + "<a href='JavaScript:void(0)' class='resourcesListChang ' >" + (i + 1) + "</a>" + "</li>")
-                }
-                resourcesListPaging.insertBefore($("#resourcesListPaging > .pagination > li:last-child"));
+        for (var i = 0; i < totalPages; i++) {
+            if (i == (resourceCurrentPage - 1)) {
+                var resourcesListPaging = $("<li class='pagDom' >" + "<a href='JavaScript:void(0)' class='resourcesListChang active' >" + (i + 1) + "</a>" + "</li>")
+            } else {
+                var resourcesListPaging = $("<li class='pagDom'>" + "<a href='JavaScript:void(0)' class='resourcesListChang ' >" + (i + 1) + "</a>" + "</li>")
             }
-            //根据初始页面的设置，判断向前/后 翻页按钮是否需要禁止点击
-            if (resourceCurrentPage == 1) {
-                $(".glyphicon-chevron-left").parent().addClass('disable');
-                // 只有一页
-                if(resourceCurrentPage == totalPages){
-                    $(".glyphicon-chevron-right").parent().addClass('disable');
-                }
-            } else if (resourceCurrentPage == totalPages) {
+            resourcesListPaging.insertBefore($("#resourcesListPaging > .pagination > li:last-child"));
+        }
+        //根据初始页面的设置，判断向前/后 翻页按钮是否需要禁止点击
+        if (resourceCurrentPage == 1) {
+            $(".glyphicon-chevron-left").parent().addClass('disable');
+            // 只有一页
+            if(resourceCurrentPage == totalPages){
                 $(".glyphicon-chevron-right").parent().addClass('disable');
             }
-            //为分页列表项绑定事件
-            $('#resourcesListPaging>.pagination').delegate('.resourcesListChang', 'click', function (e) {
-                if (resourceCurrentPage != parseInt(e.currentTarget.text)) {
-                    resourceCurrentPage = parseInt(e.currentTarget.text)
-                    paginationClick(resourceCurrentPage);
-                }
-            });
-            //切换到上一页
-            $(".glyphicon-chevron-left").parent().click(function () {
-                resourceCurrentPage--;
+        } else if (resourceCurrentPage == totalPages) {
+            $(".glyphicon-chevron-right").parent().addClass('disable');
+        }
+    };
+    function initClickEvent() {
+        //为分页列表项绑定事件
+        $('#resourcesListPaging>.pagination').delegate('.resourcesListChang', 'click', function (e) {
+            if (resourceCurrentPage != parseInt(e.currentTarget.text)) {
+                resourceCurrentPage = parseInt(e.currentTarget.text)
                 paginationClick(resourceCurrentPage);
-            });
-            //切换到下一页
-            $(".glyphicon-chevron-right").parent().click(function () {
-                resourceCurrentPage++;
-                paginationClick(resourceCurrentPage);
-            });
+            }
+        });
+        //切换到上一页
+        $(".glyphicon-chevron-left").parent().click(function () {
+            resourceCurrentPage--;
+            paginationClick(resourceCurrentPage);
+        });
+        //切换到下一页
+        $(".glyphicon-chevron-right").parent().click(function () {
+            resourceCurrentPage++;
+            paginationClick(resourceCurrentPage);
+        });
     };
     //页面的点击事件，触发的function
     function paginationClick(resourceCurrentPage) {

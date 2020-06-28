@@ -468,7 +468,7 @@ var exampleConfig = {
                 content: [{
                     name: "添加地图/场景",
                     name_en: "Batch Add Map/Scene",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "ol_iPortalAddResource.png",
                     fileName: "iPortalBatchAddResource"
                 }]
@@ -479,7 +479,7 @@ var exampleConfig = {
                 content: [{
                     name: "上传数据",
                     name_en: "Upload Data",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "ol_iPortalUploadData.png",
                     fileName: "iPortalUploadData"
                 }]
@@ -490,7 +490,7 @@ var exampleConfig = {
                 content: [{
                     name: "注册数据",
                     name_en: "Register Data",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "ol_iPortalRegisterData.png",
                     fileName: "iPortalRegisterData"
                 }]
@@ -501,7 +501,7 @@ var exampleConfig = {
                 content: [{
                     name: "发布数据",
                     name_en: "Publish Data",
-                    version: "10.0.1",
+                    version: "10.1.0",
                     thumbnail: "ol_iPortalPublishData.png",
                     fileName: "iPortalPublishData"
                 }]
@@ -596,10 +596,10 @@ var exampleConfig = {
                     thumbnail: "graphiclayer_canvas.png",
                     fileName: "07_graphiclayer_canvas"
                 }, {
-                    name: "纽约出租车18万点-webgl渲染",
-                    name_en: "webgl rendering",
+                    name: "纽约出租车18万点-canvas渲染",
+                    name_en: "canvas rendering",
                     thumbnail: "graphiclayer_webgl.png",
-                    fileName: "07_graphiclayer_webgl"
+                    fileName: "07_graphiclayer_circle"
                 }, {
                     name: "纽约145万出租车-webgl",
                     name_en: "picture drawing of 1.45 million NY taxis",

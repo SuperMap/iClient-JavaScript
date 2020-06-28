@@ -20,14 +20,14 @@ var exampleConfig = {
                         name_en: "3857 coordinate system",
                         thumbnail: "mb_TileLayer.png",
                         fileName: "01_tiledMapLayer"
-                    }, 
+                    },
                     {
                         name: "地图-栅格分析",
                         name_en: "map rasterFunction",
                         version: "10.0.0",
                         thumbnail: "tiledMapLayerRasterfunction.png",
                         fileName: "01_tiledMapLayer_rasterfunction"
-                    },          
+                    },
                     {
                         name: "地图信息",
                         name_en: "map query service",
@@ -408,6 +408,13 @@ var exampleConfig = {
                 name_en: "Heat map",
                 version: "9.1.0",
                 content: [
+                    {
+                        name: "随机点",
+                        name_en: "random points",
+                        version: "10.1.0",
+                        thumbnail: "mb_heatMapLayer.png",
+                        fileName: "heatmaplayer_mbgl"
+                    },
                     {
                         name: "随机点 (Classic)",
                         name_en: "random points (Classic)",
@@ -1068,7 +1075,7 @@ var exampleConfig = {
                     {
                         name: "地图打印",
                         name_en: "Map Print",
-                        version: "10.0.2",
+                        version: "10.1.0",
                         thumbnail: "print_pdf.png",
                         fileName: "print_pdf"
                     },

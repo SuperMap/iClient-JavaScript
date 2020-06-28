@@ -111,6 +111,7 @@ describe('mapboxgl_RangeTheme3DLayer', () => {
                         expect(themeLayer.heightField).toBe("POP_DENSITY99");
                         expect(themeLayer.heightStops.length).toEqual(3);
                         expect(themeLayer.id).toBe("range3DThemeLayer");
+                        expect(themeLayer._highlightLayerId).toBe("range3DThemeLayer-highlightLayer");
                         expect(themeLayer.highlight.color).toBe("#058e94");
                         expect(themeLayer.legendTitle).toBe("人口密度");
                         var layerStyleOptions = themeLayer.getLayerStyleOptions();

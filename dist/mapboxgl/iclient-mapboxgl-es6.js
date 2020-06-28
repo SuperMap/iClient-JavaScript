@@ -3,7 +3,7 @@
  *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.1
+ *          version: v10.1.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -12936,7 +12936,10 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 
 
-const FetchRequest_fetch = window.fetch;
+let FetchRequest_fetch = window.fetch;
+var setFetch = function (newFetch) {
+    FetchRequest_fetch = newFetch;
+}
 /**
  * @function SuperMap.setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
@@ -12989,12 +12992,13 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        if(Util_Util.isInTheSameDomain(url)){
-          return true;
-        }if(options.crossOrigin != undefined){
-          return options.crossOrigin;
-        }else{
-          return isCORS() || options.proxy
+        if (Util_Util.isInTheSameDomain(url)) {
+            return true;
+        }
+        if (options.crossOrigin != undefined) {
+            return options.crossOrigin;
+        } else {
+            return isCORS() || options.proxy;
         }
     },
     get: function (url, params, options) {
@@ -13015,7 +13019,6 @@ var FetchRequest = SuperMap.FetchRequest = {
         } else {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
-
     },
 
     delete: function (url, params, options) {
@@ -13035,7 +13038,6 @@ var FetchRequest = SuperMap.FetchRequest = {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
         return this._fetch(url, params, options, type);
-
     },
     post: function (url, params, options) {
         options = options || {};
@@ -13048,7 +13050,6 @@ var FetchRequest = SuperMap.FetchRequest = {
             return SuperMap.Util.RequestJSONPPromise.POST(config);
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
-
     },
 
     put: function (url, params, options) {
@@ -13061,10 +13062,8 @@ var FetchRequest = SuperMap.FetchRequest = {
                 data: params
             };
             return SuperMap.Util.RequestJSONPPromise.PUT(config);
-
         }
         return this._fetch(url, params, options, 'PUT');
-
     },
     urlIsLong: function (url) {
         //当前url的字节长度。
@@ -13081,10 +13080,10 @@ var FetchRequest = SuperMap.FetchRequest = {
                 totalLength += 3;
             }
         }
-        return (totalLength < 2000) ? false : true;
+        return totalLength < 2000 ? false : true;
     },
     _postSimulatie: function (type, url, params, options) {
-        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        var separator = url.indexOf('?') > -1 ? '&' : '?';
         url += separator + '_method=' + type;
         if (typeof params !== 'string') {
             params = JSON.stringify(params);
@@ -13098,17 +13097,17 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
 
         if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-            if (url.indexOf("?") < 0) {
-                url += '.json'
+            if (url.indexOf('?') < 0) {
+                url += '.json';
             } else {
-                var urlArrays = url.split("?");
+                var urlArrays = url.split('?');
                 if (urlArrays.length === 2) {
-                    url = urlArrays[0] + ".json?" + urlArrays[1]
+                    url = urlArrays[0] + '.json?' + urlArrays[1];
                 }
             }
         }
         if (options && options.proxy) {
-            if (typeof options.proxy === "function") {
+            if (typeof options.proxy === 'function') {
                 url = options.proxy(url);
             } else {
                 url = decodeURIComponent(url);
@@ -13125,22 +13124,25 @@ var FetchRequest = SuperMap.FetchRequest = {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         }
         if (options.timeout) {
-            return this._timeout(options.timeout, FetchRequest_fetch(url, {
-                method: type,
-                headers: options.headers,
-                body: type === 'PUT' || type === 'POST' ? params : undefined,
-                credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors',
-                timeout: getRequestTimeout()
-            }).then(function (response) {
-                return response;
-            }));
+            return this._timeout(
+                options.timeout,
+                FetchRequest_fetch(url, {
+                    method: type,
+                    headers: options.headers,
+                    body: type === 'PUT' || type === 'POST' ? params : undefined,
+                    credentials: this._getWithCredentials(options),
+                    mode: 'cors',
+                    timeout: getRequestTimeout()
+                }).then(function (response) {
+                    return response;
+                })
+            );
         }
         return FetchRequest_fetch(url, {
             method: type,
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
-            credentials: options.withCredentials ? 'include' : 'omit',
+            credentials: this._getWithCredentials(options),
             mode: 'cors',
             timeout: getRequestTimeout()
         }).then(function (response) {
@@ -13148,47 +13150,56 @@ var FetchRequest = SuperMap.FetchRequest = {
         });
     },
 
+    _getWithCredentials: function (options) {
+        if (options.withCredentials === true) {
+            return 'include';
+        }
+        if (options.withCredentials === false) {
+            return 'omit';
+        }
+        return 'same-origin';
+    },
+
     _fetchJsonp: function (url, options) {
         options = options || {};
         return fetch_jsonp_default()(url, {
-                method: 'GET',
-                timeout: options.timeout
-            })
-            .then(function (response) {
-                return response;
-            });
+            method: 'GET',
+            timeout: options.timeout
+        }).then(function (response) {
+            return response;
+        });
     },
 
     _timeout: function (seconds, promise) {
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
-                reject(new Error("timeout"))
-            }, seconds)
-            promise.then(resolve, reject)
-        })
+                reject(new Error('timeout'));
+            }, seconds);
+            promise.then(resolve, reject);
+        });
     },
 
     _getParameterString: function (params) {
         var paramsArray = [];
         for (var key in params) {
             var value = params[key];
-            if ((value != null) && (typeof value !== 'function')) {
+            if (value != null && typeof value !== 'function') {
                 var encodedValue;
                 if (Array.isArray(value) || value.toString() === '[object Object]') {
                     encodedValue = encodeURIComponent(JSON.stringify(value));
                 } else {
                     encodedValue = encodeURIComponent(value);
                 }
-                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+                paramsArray.push(encodeURIComponent(key) + '=' + encodedValue);
             }
         }
-        return paramsArray.join("&");
+        return paramsArray.join('&');
     },
 
     _isMVTRequest: function (url) {
-        return (url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1);
+        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
     }
-};
+}
 SuperMap.Util.RequestJSONPPromise = {
     limitLength: 1500,
     queryKeys: [],
@@ -13198,7 +13209,7 @@ SuperMap.Util.RequestJSONPPromise = {
         var me = this;
         for (var key in values) {
             me.queryKeys.push(key);
-            if (typeof values[key] !== "string") {
+            if (typeof values[key] !== 'string') {
                 values[key] = SuperMap.Util.toJSON(values[key]);
             }
             var tempValue = encodeURIComponent(values[key]);
@@ -13224,7 +13235,8 @@ SuperMap.Util.RequestJSONPPromise = {
             keysCount = 0; //此次sectionURL中有多少个key
         var length = me.queryKeys ? me.queryKeys.length : 0;
         for (var i = 0; i < length; i++) {
-            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) { //+2 for ("&"or"?")and"="
+            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+                //+2 for ("&"or"?")and"="
                 if (keysCount == 0) {
                     return false;
                 }
@@ -13237,22 +13249,22 @@ SuperMap.Util.RequestJSONPPromise = {
                     var leftValue = me.queryValues[i];
                     while (leftValue.length > 0) {
                         var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
-                        if (sectionURL.indexOf("?") > -1) {
-                            sectionURL += "&";
+                        if (sectionURL.indexOf('?') > -1) {
+                            sectionURL += '&';
                         } else {
-                            sectionURL += "?";
+                            sectionURL += '?';
                         }
                         var tempLeftValue = leftValue.substring(0, leftLength);
                         //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
-                        if (tempLeftValue.substring(leftLength - 1, leftLength) === "%") {
+                        if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
                             leftLength -= 1;
                             tempLeftValue = leftValue.substring(0, leftLength);
-                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === "%") {
+                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
                             leftLength -= 2;
                             tempLeftValue = leftValue.substring(0, leftLength);
                         }
 
-                        sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
+                        sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
                             splitQuestUrl.push(sectionURL);
@@ -13262,20 +13274,23 @@ SuperMap.Util.RequestJSONPPromise = {
                     }
                 } else {
                     keysCount++;
-                    if (sectionURL.indexOf("?") > -1) {
-                        sectionURL += "&";
+                    if (sectionURL.indexOf('?') > -1) {
+                        sectionURL += '&';
                     } else {
-                        sectionURL += "?";
+                        sectionURL += '?';
                     }
-                    sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
+                    sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
                 }
             }
         }
         splitQuestUrl.push(sectionURL);
-        me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
+        me.send(
+            splitQuestUrl,
+            'SuperMap.Util.RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+            config && config.proxy
+        );
         return p;
     },
-
 
     getUid: function () {
         var uid = new Date().getTime(),
@@ -13289,14 +13304,14 @@ SuperMap.Util.RequestJSONPPromise = {
             var jsonpUserID = new Date().getTime();
             for (var i = 0; i < len; i++) {
                 var url = splitQuestUrl[i];
-                if (url.indexOf("?") > -1) {
-                    url += "&";
+                if (url.indexOf('?') > -1) {
+                    url += '&';
                 } else {
-                    url += "?";
+                    url += '?';
                 }
-                url += "sectionCount=" + len;
-                url += "&sectionIndex=" + i;
-                url += "&jsonpUserID=" + jsonpUserID;
+                url += 'sectionCount=' + len;
+                url += '&sectionIndex=' + i;
+                url += '&jsonpUserID=' + jsonpUserID;
                 if (proxy) {
                     url = decodeURIComponent(url);
                     url = proxy + encodeURIComponent(url);
@@ -13304,7 +13319,7 @@ SuperMap.Util.RequestJSONPPromise = {
                 fetch_jsonp_default()(url, {
                     jsonpCallbackFunction: callback,
                     timeout: 30000
-                })
+                });
             }
         }
     },
@@ -14652,7 +14667,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addMap
      * @description 添加地图。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
      * @returns {Promise} 返回包含添加地图结果的 Promise 对象。
      */
@@ -14674,7 +14689,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addScene
      * @description 添加场景。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
      * @returns {Promise} 返回包含添加场景结果的 Promise 对象。
      */
@@ -14696,7 +14711,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.registerService
      * @description 注册服务。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
      * @returns {Promise} 返回包含注册服务结果的 Promise 对象。
      */
@@ -14721,7 +14736,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
-     * @version 10.0.1
+     * @version 10.1.0
      * @param {String} errMsg - 传入的错误信息。
      * @returns {Promise} 返回包含错误信息的 Promise 对象。
      */
@@ -14734,6 +14749,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.uploadDataRequest
      * @description 上传数据。
+     * @version 10.1.0
      * @param {number} id - 上传数据的资源id。
      * @param {Object} formData - 请求体为文本数据流。
      * @returns {Promise} 返回包含上传数据操作的 Promise 对象。
@@ -14746,6 +14762,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.addData
      * @description 上传/注册数据。
+     * @version 10.1.0
      * @param {SuperMap.iPortalAddDataParam} params - 上传/注册数据所需的参数。
      * @param {Object} [formData] - 请求体为文本数据流(上传数据时传入)。
      * @returns {Promise} 返回上传/注册数据的 Promise 对象。
@@ -14826,6 +14843,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.publishOrUnpublish
      * @description 发布/取消发布。
+     * @version 10.1.0
      * @param {object} options - 发布/取消发布数据服务所需的参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -14863,6 +14881,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.getDataPublishedStatus
      * @description 查询服务状态，发起服务状态查询。
+     * @version 10.1.0
      * @param {number} dataId - 查询服务状态的数据项id。
      * @param {string} dataServiceId - 发布的服务id。
      * @returns {Promise} 返回查询服务状态的 Promise 对象。
@@ -14875,6 +14894,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.unPublishedDataService
      * @description 取消发布。
+     * @version 10.1.0
      * @param {object} options - 取消发布服务具体参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -14888,6 +14908,7 @@ class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
     /**
      * @function SuperMap.iPortalUser.prototype.publishedDataService
      * @description 发布数据服务。
+     * @version 10.1.0
      * @param {object} options - 发布数据服务具体参数。
      * @param {object} options.dataId - 数据项id。
      * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
@@ -16974,7 +16995,8 @@ SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters_Dataset
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param {Object} options - 参数。 
- * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。</br>
+ * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。
+ * @param {number} options.sourceGeometrySRID - 缓冲区几何对象投影坐标参数, 如 4326，3857。
  * @param {SuperMap.BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
  * @extends {SuperMap.BufferAnalystParameters}
  */
@@ -18195,7 +18217,7 @@ SuperMap.ChartQueryParameters = ChartQueryParameters_ChartQueryParameters;
  * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
@@ -32031,7 +32053,7 @@ SuperMap.QueryByDistanceService = QueryByDistanceService_QueryByDistanceService;
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {Object} [options.prjCoordSys] -自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
@@ -32192,7 +32214,7 @@ SuperMap.QueryByGeometryService = QueryByGeometryService_QueryByGeometryService;
  * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
@@ -69899,7 +69921,7 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(1);
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
+ 
 
 
 
@@ -69933,17 +69955,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         this.animation = options.animation;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
-        this.map.on('resize', this.resizeEvent.bind(this));
-        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
-        this.map.on('zoomend', this.zoomEndEvent.bind(this));
-        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
-        this.map.on('rotate', this.rotateEvent.bind(this));
-        this.map.on('rotateend', this.rotateEndEvent.bind(this));
-        // this.map.on('dragend', this.dragEndEvent.bind(this));
-        this.map.on('movestart', this.moveStartEvent.bind(this));
-        this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('moveend', this.moveEndEvent.bind(this));
-        this.map.on('remove', this.removeEvent.bind(this));
+        this.bindMapEvent();
         this.bindEvent();
         this._expectShow = true;
     }
@@ -69990,7 +70002,6 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
      */
     unbindEvent() {
         var map = this.map;
-
         if (this.options.methods) {
             if (this.options.methods.click) {
                 map.off('click', this.clickEvent);
@@ -70065,7 +70076,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
             return;
         }
         var newData = this.dataSet.get({
-            filter: function(data) {
+            filter: function (data) {
                 return filter != null && typeof filter === 'function' ? !filter(data) : true;
             }
         });
@@ -70153,7 +70164,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
-            transferCoordinate: function(coordinate) {
+            transferCoordinate: function (coordinate) {
                 if (map.transform.rotationMatrix || self.context === '2d') {
                     var worldPoint = map.project(new external_mapboxgl_default.a.LngLat(coordinate[0], coordinate[1]));
                     return [worldPoint.x, worldPoint.y];
@@ -70164,7 +70175,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         };
 
         if (time !== undefined) {
-            dataGetOptions.filter = function(item) {
+            dataGetOptions.filter = function (item) {
                 var trails = animationOptions.trails || 10;
                 return time && item.time > time - trails && item.time < time;
             };
@@ -70195,6 +70206,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         this.drawContext(context, data, self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);
+
     }
 
     init(options) {
@@ -70205,12 +70217,56 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         this.initDataRange(options);
 
         this.context = self.options.context || '2d';
-
         if (self.options.zIndex) {
             this.canvasLayer && this.canvasLayer.setZIndex(self.options.zIndex);
         }
-
         this.initAnimator();
+    }
+    /**
+     * @function L.supermap.MapVRenderer.prototype.bindMapEvent
+     * @description 绑定鼠标移动事件。
+     */
+    bindMapEvent() {
+        this.mapEvent = {
+            resizeEvent: this.resizeEvent.bind(this),
+            zoomStartEvent: this.zoomStartEvent.bind(this),
+            zoomEndEvent: this.zoomEndEvent.bind(this),
+            rotateStartEvent: this.rotateStartEvent.bind(this),
+            rotateEvent: this.rotateEvent.bind(this),
+            moveStartEvent: this.moveStartEvent.bind(this),
+            rotateEndEvent: this.rotateEndEvent.bind(this),
+            moveEvent: this.moveEvent.bind(this),
+            moveEndEvent: this.moveEndEvent.bind(this),
+            removeEvent: this.removeEvent.bind(this)
+        }
+        this.map.on('resize', this.mapEvent.resizeEvent);
+        this.map.on('zoomstart', this.mapEvent.zoomStartEvent);
+        this.map.on('zoomend', this.mapEvent.zoomEndEvent);
+        this.map.on('rotatestart', this.mapEvent.rotateStartEvent);
+        this.map.on('rotate', this.mapEvent.rotateEvent);
+        this.map.on('rotateend', this.mapEvent.rotateEndEvent);
+        // this.map.on('dragend', this.dragEndEvent.bind(this));
+        this.map.on('movestart', this.mapEvent.moveStartEvent);
+        this.map.on('move', this.mapEvent.moveEvent);
+        this.map.on('moveend', this.mapEvent.moveEndEvent);
+        this.map.on('remove', this.mapEvent.removeEvent);
+    }
+
+    /**
+     * @function L.supermap.MapVRenderer.prototype.unbindMapEvent
+     * @description 解绑鼠标移动事件。
+     */
+    unbindMapEvent() {
+        this.map.off('resize', this.mapEvent.resizeEvent);
+        this.map.off('zoomstart', this.mapEvent.zoomStartEvent);
+        this.map.off('zoomend', this.mapEvent.zoomEndEvent);
+        this.map.off('rotatestart', this.mapEvent.rotateStartEvent);
+        this.map.off('rotate', this.mapEvent.rotateEvent);
+        this.map.off('rotateend', this.mapEvent.rotateEndEvent);
+        this.map.off('movestart', this.mapEvent.moveStartEvent);
+        this.map.off('move', this.mapEvent.moveEvent);
+        this.map.off('moveend', this.mapEvent.moveEndEvent);
+        this.map.off('remove', this.mapEvent.removeEvent);
     }
 
     /**
@@ -70218,12 +70274,14 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
      * @description 释放资源。
      */
     destroy() {
+        this.unbindMapEvent();
         this.unbindEvent();
         this.clearData();
         this.animator && this.animator.stop();
         this.animator = null;
         this.canvasLayer = null;
     }
+
 
     /**
      * @function MapvRenderer.prototype.addAnimatorEvent
@@ -70699,6 +70757,7 @@ class Theme3DLayer {
          * @default 'bottom-right'
          */
         this.legendPosition = 'bottom-right';
+        this._highlightLayerId = `${this.id}-highlightLayer`;
         this._extend(this, layerOptions);
     }
 
@@ -70824,10 +70883,9 @@ class Theme3DLayer {
             this.map.removeLayer(layerId);
         }
         //移除高亮图层
-        var highlightLayerId = "highlightLayer";
-        if (this.map.getLayer(highlightLayerId)) {
+        if (this.map.getLayer(this._highlightLayerId)) {
             this._selectFeatureId = null;
-            this.map.removeLayer(highlightLayerId);
+            this.map.removeLayer(this._highlightLayerId );
         }
 
         //移除图例
@@ -70932,7 +70990,7 @@ class Theme3DLayer {
         }
         var map = this.map;
         map.addLayer({
-            'id': 'highlightLayer',
+            'id': this._highlightLayerId,
             'type': 'fill-extrusion',
             'source': this.sourceId,
             'paint': this.getHighlightStyleOptions(),
@@ -70962,12 +71020,12 @@ class Theme3DLayer {
             return;
         }
         me._selectFeatureId = id;
-        map.setFilter("highlightLayer", ['==', '$id', me._selectFeatureId]);
+        map.setFilter(me._highlightLayerId, ['==', '$id', me._selectFeatureId]);
     }
 
     _clearHighlight() {
         if (this.map) {
-            this.map.setFilter("highlightLayer", ["in", "$id", ""]);
+            this.map.setFilter(this._highlightLayerId, ["in", "$id", ""]);
         }
     }
 

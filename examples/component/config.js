@@ -49,7 +49,7 @@ var exampleConfig = {
           {
             name: '中国疫情',
             name_en: 'China NCP',
-            version: '10.0.2',
+            version: '10.1.0',
             thumbnail: 'components_ncp_china_vue.png',
             fileName: 'components_ncp_china_vue',
             localIgnore: true
@@ -57,7 +57,7 @@ var exampleConfig = {
           {
             name: '全球疫情',
             name_en: 'Global NCP',
-            version: '10.0.2',
+            version: '10.1.0',
             thumbnail: 'components_ncp_world_vue.png',
             fileName: 'components_ncp_world_vue',
             localIgnore: true
@@ -65,9 +65,17 @@ var exampleConfig = {
           {
             name: '疫情国家紧急状态',
             name_en: 'National Emergency',
-            version: '10.0.2',
+            version: '10.1.0',
             thumbnail: 'components_ncp_world.png',
             fileName: 'components_ncp_world',
+            localIgnore: true
+          },
+          {
+            name: '地图卷帘',
+            name_en: 'Map Compare',
+            version: '10.1.0',
+            thumbnail: 'components_compare_vue.png',
+            fileName: 'components_compare_vue',
             localIgnore: true
           }
         ]

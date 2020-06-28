@@ -702,7 +702,7 @@ export class StyleUtils {
    * @param {number} offsetY - Y方向偏移分数
    * @returns {array}
    */
-  static getIconAnchor(offsetX, offsetY) {
+  static getIconAnchor(offsetX=0.5, offsetY=0.5) {
     return [offsetX, offsetY];
   }
   /**
@@ -713,7 +713,7 @@ export class StyleUtils {
    * @param {number} offsetY - Y方向偏移分数
    * @returns {array}
    */
-  static getCircleDisplacement(radius, offsetX, offsetY) {
+  static getCircleDisplacement(radius, offsetX=0, offsetY=0) {
       const dispX = radius*offsetX, dispY = radius*offsetY;
       return [dispX, -dispY];
   }
@@ -725,7 +725,7 @@ export class StyleUtils {
    * @param {number} offsetY - Y方向偏移分数
    * @returns {object}
    */
-  static getTextOffset(fontSize, offsetX, offsetY) {
+  static getTextOffset(fontSize, offsetX=0, offsetY=0) {
     const radius = fontSize.substr(0, fontSize.length - 2) / 2;
     return {
           x: radius*offsetX, 

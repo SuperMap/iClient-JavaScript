@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title data-i18n="resources.title_heatMapLayer"></title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="toolbar" class="panel panel-primary">
+        <div class="panel-heading">
+            <h5 class="panel-title text-center" data-i18n="resources.text_fastHeatMapLayer_mgl"></h5>
+        </div>
+        <div class="panel-body content">
+            <div class="panel">
+                <div class="input-group">
+                    <span class="input-group-addon" data-i18n="resources.text_countsDraw"></span>
+                    <input type="text" class="form-control" id="heatNums" value="200" />
+                </div>
+            </div>
+            <div class="panel">
+                <div class="input-group">
+                    <span class="input-group-addon" data-i18n="resources.text_radius"></span>
+                    <input class="form-control" style="width: 50px;" value="50" id="heatradius" />
+                    <select class="form-control" style="width: auto;" id="radiusUnit">
+                        <option value="px">px</option>
+                        <option data-i18n="[value]resources.text_degree;resources.text_degree"></option>
+                    </select>
+                </div>
+            </div>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_startDraw"
+                onclick="createHeatPoints()" />&nbsp; &nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
+                onclick="clearHeatPoints()" />
+        </div>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var url = host + "/iserver/services/map-world/rest/maps/World";
+        var attribution =
+            "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+        var map = new mapboxgl.Map({
+            container: "map",
+            renderWorldCopies: false,
+            style: {
+                version: 8,
+                sources: {
+                    "raster-tiles": {
+                        attribution: attribution,
+                        type: "raster",
+                        tiles: [url + "/zxyTileImage.png?z={z}&x={x}&y={y}"],
+                        tileSize: 256,
+                    },
+                },
+                layers: [
+                    {
+                        id: "simple-tiles",
+                        type: "raster",
+                        source: "raster-tiles",
+                        minzoom: 0,
+                        maxzoom: 9,
+                    },
+                ],
+            },
+            center: [0, 0],
+            zoom: 1,
+        });
+        map.addControl(new mapboxgl.NavigationControl(), "top-left");
+        map.addControl(new mapboxgl.supermap.LogoControl(), "bottom-right");
+
+
+        function createHeatPoints() {
+            clearHeatPoints();
+            var heatPoints = [];
+            var num = parseInt(document.getElementById("heatNums").value);
+            var radius = parseInt(document.getElementById("heatradius").value);
+            var unit = document.getElementById("radiusUnit").value;
+
+            var features = [];
+            for (var i = 0; i < num; i++) {
+                features[i] = {
+                    type: "feature",
+                    geometry: {
+                        type: "Point",
+                        coordinates: [
+                            Math.random() * 360 - 180,
+                            Math.random() * 160 - 80,
+                        ],
+                    },
+                    properties: {
+                        value: Math.random() * 9,
+                    },
+                };
+            }
+
+            var heatPoints = {
+                type: "FeatureCollection",
+                features: features,
+            };
+
+            map.addSource("heatmap", {
+                type: "geojson",
+                data: heatPoints,
+            });
+
+            map.addLayer({
+                id: "heatmap",
+                type: "heatmap",
+                source: "heatmap",
+                paint: {
+                    "heatmap-weight": 1,
+                    "heatmap-intensity": 2,
+                    "heatmap-color": [
+                        "interpolate",
+                        ["linear"],
+                        ["heatmap-density"],
+                        0,
+                        "rgba(33,102,172,0)",
+                        0.2,
+                        "rgb(103,169,207)",
+                        0.4,
+                        "rgb(209,229,240)",
+                        0.6,
+                        "rgb(253,219,199)",
+                        0.8,
+                        "rgb(239,138,98)",
+                        1,
+                        "rgb(178,24,43)",
+                    ],
+                    "heatmap-radius": radius,
+                },
+            });
+        }
+
+        function clearHeatPoints() {
+            if (map.getLayer("heatmap")) {
+                map.removeLayer("heatmap");
+                map.removeSource("heatmap");
+            }
+        }
+    </script>
+</body>
+
+</html>
