@@ -342,8 +342,8 @@ export class Util {
     static getFeatureBySQL(url, datasetNames, processCompleted, processFaild) {
         let getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
         getFeatureParam = new FilterParameter({
-            name: datasetNames.join().replace(":", "@"),
-            attributeFilter: 'SMID > 0'
+            name: datasetNames.join().replace(":", "@")
+             // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131 
         });
         getFeatureBySQLParams = new GetFeaturesBySQLParameters({
             queryParameter: getFeatureParam,
