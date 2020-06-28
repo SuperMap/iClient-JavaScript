@@ -1488,7 +1488,7 @@ export class WebMap extends Observable {
                         })
                     }
                 } else if(dataSource && dataSource.type === "USER_DATA") {
-                    that.addGeojsonFromUrl(layer, len, layerIndex);
+                    that.addGeojsonFromUrl(layer, len, layerIndex, false);
                 } else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "TILE" ||
                     layer.layerType === "WMS" ||
@@ -1553,11 +1553,13 @@ export class WebMap extends Observable {
      * @param {object} layerInfo - 图层信息
      * @param {Number} len - 总的图层数量
      * @param {Number} layerIndex - 当前图层index
+     * @param {Boolean} withCredentials - 是否携带cookie
      */
-    addGeojsonFromUrl(layerInfo, len, layerIndex) {
+    addGeojsonFromUrl(layerInfo, len, layerIndex, withCredentials = this.withCredentials) {
+        // 通过web添加geojson不需要携带cookie
         let {dataSource} = layerInfo, {url} = dataSource, that = this;
         FetchRequest.get(url, null, {
-            withCredentials: this.withCredentials,
+            withCredentials,
             withoutFormatSuffix: true
         }).then(function (response) {
             return response.json()
