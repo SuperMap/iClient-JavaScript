@@ -1,5 +1,421 @@
 # 10.1.0-alpha #
+
 ## 新特性
+
+### SuperMap iClient Vue MapboxGL组件新增新冠疫情图范例
+
+![1011-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1011-1.png)
+
+### SuperMap iClient Vue MapboxGL组件新增卷帘组件等多处更新
+![1010-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1011-2.png)
+
+### iClient for Leaflet动态标绘：新增支持动态目标图层
+![1010-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1011-3.png)
+
+### iClient for Leaflet可视化：新增PixiJS图层
+![1010-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-4.png)
+
+### 全面支持webp地图瓦片格式
+![1010-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-5.png)
+
+### for Leaflet
+
+- `L.supermap.tiledMapLayer` `L.supermap.imageMapLayer` 的 `options.format` 参数支持设置 webp瓦片格式。
+  
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+- 动态标绘
+
+  - 新增 `L.supermap.plot.picture` 类，支持绘制图片标号
+
+  - 新增 `L.supermap.plot.movingTargetLayer` 类， 支持显示动态目标及其轨迹
+
+  - 新增 `SuperMap.Plot.BloodVolume` 类， 支持设置生命值大小、偏移及风格
+
+  - 新增 `SuperMap.Plot.PictureFrame` 类， 支持设置自定义图片大小、偏移
+
+  - 新增 `SuperMap.Plot.Trajectory` 类， 支持设置动态目标轨迹线显示轨迹点长度及风格等
+
+  - `L.supermap.plot.dotSymbol`
+
+    - 新增 `options.symbolTexts` 支持设置一个或多个标牌
+
+    - 新增 `options.bloodVolumes` 支持设置一个或多个生命值
+
+    - 新增 `options.pictureFrames` 支持设置一个或多个自定义图片
+
+    - 新增 `options.trajectory` 支持设置轨迹线，只支持动态目标图层显示
+
+### for OpenLayers
+
+- `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 的 `options.format` 参数支持设置 webp瓦片格式
+
+- `ol.source.VectorTileSuperMapRest` `ol.supermap.MapboxStyles` 增加 `options.withCredentials` 参数支持携带 cookie
+
+- `ol.supermap.WebMap` 对接最新功能
+
+  - 图层设置可见比例尺范围
+
+  - 图层自动刷新
+
+  - 自定义GeoJSON url地址创建图层
+
+  - 对接ARCGIS的WMTS服务
+
+  - 等级符号专题图支持符号颜色修改
+
+  - 对接Geoserver的WMTS服务
+
+  - 过滤条件增加Name in格式的查询
+
+  - 对接矢量瓦片图层出图
+
+  - 点类型的专题图，支持符号的偏移和旋转
+
+  - 点类型的专题图和线类型专题图，标签支持位置设置
+
+  - 对接标签图层的阴影颜色
+
+  - 线类型专题图，支持道路样式和铁路样式
+
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+### for MapboxGL
+
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+### Classic
+
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图(sm-web-map)组件
+
+    - 新增 `keepBounds` 参数，支持设置当地图容器大小发生变化时，是否保持地图范围不变
+
+    - 新增 `proxy` 参数，支持为WebMap中的HTTP请求设置代理请求地址
+
+    - 修改 `mapId` 参数:，支持传如 number 类型
+
+    - 对接最新功能
+
+        图层设置可见比例尺范围
+
+        图层自动刷新
+
+        自定义GeoJSON url地址创建图层
+
+        等级符号专题图支持符号颜色修改
+
+  - 新增地图卷帘(sm-compare) 组件
+
+  - 指标(sm-indicator)组件  
+
+    - 新增 `textFontSize` 参数，支持设置指标数字字体大小
+
+    - 新增 `thresholdsStyle` 参数，支持设置指标阈值样式
+
+  - 点选查询(sm-identify)组件
+
+    - 修改 `fields` 参数类型，由一维数组改动为二维数组，以支持为每个layer配置显示字段数组
+
+  - 缩放(sm-zoom)组件
+
+    - 新增 `showZoom` 参数，支持设置是否显示当前级别
+
+  - 多行文本(sm-text-list)组件
+
+    - `dataset` 参数新增支持传入GeoJSONParameter类型
+
+    - 新增 `columnWidths` 参数，支持设置列宽度
+
+    - 新增 `rowHeight` 参数，支持设置行高度
+
+    - 新增 `headerHeight` 参数，支持设置头部高度
+
+    - 新增 `rowStyle` 参数，支持设置行样式
+
+    - 新增 `headerStyle` 参数，支持设置头部样式
+
+    - 新增 `thresholdsStyle` 参数，支持设置阈值样式
+
+    - 新增 `columns` 参数，支持统一的设置列参数，包括列的头名称，字段名称，列宽度，列排序，列前后缀
+
+  - 图表(sm-chart)组件
+
+    - `dataset` 参数新增支持传入GeoJSONParameter类型
+
+  - 进度条(sm-progress)组件
+
+    - 新增 `trailColor` 参数，支持设置底色
+
+- vue-iclient-leaflet
+
+  - 地图(sm-web-map)组件
+
+    - 修改 `mapId` 参数，支持传如 number 类型
+
+  - 指标(sm-indicator)组件
+
+    - 新增 `textFontSize` 参数，支持设置指标数字字体大小
+
+    - 新增 `thresholdsStyle` 参数，支持设置指标阈值样式
+
+  - 图表(sm-chart)组件
+
+    - `dataset` 参数新增支持传入GeoJSONParameter类型
+
+  - 进度条(sm-progress)组件
+
+    - 新增 `trailColor` 参数，支持设置底色
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.CRS.NonEarthCRS` 平面坐标系设置分辨率后移动端双指缩放级别错乱的问题
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+### for OpenLayers
+
+- 修复 `ol.source.Graphic` 高效率点图层click事件触发多次的问题
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+- `ol.supermap.WebMap`
+
+  - 修复使用二进制数据或者示例数据，迁徙图不出图问题
+
+  - 修复小范围底图叠加其他范围的地图后无法拖动地图的问题
+
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.DeckglLayer`  `setStyle` 方法不起作用的问题
+
+- 修复 `mapboxgl.supermap.MapvLayer` 在移除后拖动报错的问题
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+### Classic
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+  
+  - 修复图例组件的 `isShowTile` 参数在 `mode` 参数为 `panel` 时不起作用的问题
+
+  - 修复大数据量时chart组件卡顿的问题
+
+- vue-iclient-leaflet
+
+  - 修复大数据量时chart组件卡顿的问题
+
+## Examples
+
+### for Leaflet
+
+- 动态标绘
+
+  - 新增 “动态目标图层” 示例
+
+- iPortal
+
+  - 新增“添加地图/场景”示例
+
+  - 新增“添加场景”示例
+
+  - 新增资源共享设置可分享给部门，群组以及用户的功能
+
+  - 新增“上传数据”示例
+
+  - 新增“注册数据”示例
+
+  - 新增“发布数据”示例
+
+### for OpenLayers
+
+- iPortal
+
+  - 新增“添加地图/场景”示例
+
+  - 新增“添加场景”示例
+
+  - 新增资源共享设置可分享给部门，群组以及用户的功能
+
+  - 新增“上传数据”示例
+
+  - 新增“注册数据”示例
+
+  - 新增“发布数据”示例
+
+### for MapboxGL
+
+- 多坐标系 – 地图
+
+  - 新增“地图打印”示例
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图  
+
+    - 新增“中国疫情”示例
+
+    - 新增“全球疫情”示例
+
+    - 新增“疫情国家紧急状态”示例
 
 # 10.0.1 #
 
