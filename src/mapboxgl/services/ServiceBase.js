@@ -11,7 +11,7 @@ import '../core/Base';
  * @param {string} url - 与客户端交互的服务地址。 
  * @param {Object} options - 可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。

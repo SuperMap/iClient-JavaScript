@@ -17,7 +17,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存，true 表示使用服务端的缓存。
@@ -52,7 +52,7 @@ export class ImageSuperMapRest extends TileImage {
      * @function ol.source.ImageSuperMapRest.prototype.appendCredential
      * @description 添加凭据。
      * @param {string} url - 地址。
-     * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
+     * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
      * @returns {string} 添加生成后的新地址。
      */
     function appendCredential(id, url, serverType) {
