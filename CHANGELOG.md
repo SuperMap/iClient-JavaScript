@@ -4,13 +4,13 @@
 
 ### SuperMap iClient Vue MapboxGL组件新增新冠疫情图范例
 
-![1011-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1011-1.png)
+![1010-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-1.png)
 
 ### SuperMap iClient Vue MapboxGL组件新增卷帘组件等多处更新
-![1010-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1011-2.png)
+![1010-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-2.png)
 
 ### iClient for Leaflet动态标绘：新增支持动态目标图层
-![1010-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1011-3.png)
+![1010-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-3.png)
 
 ### iClient for Leaflet可视化：新增PixiJS图层
 ![1010-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-4.png)
