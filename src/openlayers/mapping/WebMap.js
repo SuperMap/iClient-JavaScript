@@ -111,6 +111,21 @@ export class WebMap extends Observable {
         this.createMap(options.mapSetting);
         this.createWebmap();
     }
+
+    /**
+     * @function ol.supermap.WebMap.prototype.createMap
+     * @description 重新渲染地图
+     */
+    reRender() {
+        // 移除所有图层 没找到清空地图的方法
+        this.layerAdded = 0;
+        const layers = this.map.getLayers().getArray();
+        for (let i = 0, length = layers.length; i < length; i++) {
+            this.map.removeLayer(layers[0]);
+        }
+        this.createWebmap();
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createMap
