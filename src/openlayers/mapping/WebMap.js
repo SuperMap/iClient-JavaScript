@@ -1428,7 +1428,6 @@ export class WebMap extends Observable {
                                 if (data.type === "JSON" || data.type === "GEOJSON") {
                                     data.content = data.content.type ? data.content : JSON.parse(data.content);
                                     features = that.geojsonToFeature(data.content, layer);
-
                                 } else if (data.type === 'EXCEL' || data.type === 'CSV') {
                                     if(layer.dataSource && layer.dataSource.administrativeInfo ) {
                                         //行政规划信息
@@ -1439,6 +1438,10 @@ export class WebMap extends Observable {
                                     } else {
                                         features = await that.excelData2Feature(data.content, layer);
                                     }
+                                } else if(data.type === 'SHP') {
+                                    let content = JSON.parse(data.content); 
+                                    data.content = content.layers[0];  
+                                    features = that.geojsonToFeature(data.content, layer);
                                 }
                                 that.addLayer(layer, features, layerIndex);
                                 that.layerAdded++;
