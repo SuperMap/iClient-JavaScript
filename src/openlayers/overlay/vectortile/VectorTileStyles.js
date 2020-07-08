@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {Unit, JSONFormat, CartoCSS} from '@supermap/iclient-common';
+import {Unit, JSONFormat, CartoCSS, CommonUtil} from '@supermap/iclient-common';
 import {StyleUtils} from '../../core/StyleUtils';
 import {Util} from '../../core/Util';
 import Observable from 'ol/Observable';
@@ -73,7 +73,7 @@ export class VectorTileStyles extends Observable {
                 VectorTileStyles.setLayersInfo(layersInfo);
                 if (!VectorTileStyles.getDonotNeedServerCartoCss()) {
                     var vectorStylesXHR = new XMLHttpRequest();
-                    vectorStylesXHR.open("GET", VectorTileStyles.getUrl() + "/tileFeature/vectorstyles.json", false);
+                    vectorStylesXHR.open("GET", CommonUtil.urlPathAppend(VectorTileStyles.getUrl(), "tileFeature/vectorstyles.json"), false);
                     vectorStylesXHR.onreadystatechange = function () {
                         if (vectorStylesXHR.readyState == 4) {
                             var vectorStyles = new JSONFormat().read(vectorStylesXHR.responseText);
@@ -117,7 +117,7 @@ export class VectorTileStyles extends Observable {
                 }
             }
         };
-        layersXHR.open("GET", VectorTileStyles.getUrl() + '/layers.json', false);
+        layersXHR.open("GET", CommonUtil.urlPathAppend(VectorTileStyles.getUrl(), "layers.json"), false);
         layersXHR.send(null);
         this.on('featureSelected', function (e) {
             VectorTileStyles.setSelectedId(e.selectedId);

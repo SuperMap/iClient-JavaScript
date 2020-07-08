@@ -69,43 +69,38 @@ export class InterpolationAnalystService extends SpatialAnalystBase {
         var parameterObject = {};
         var me = this;
 
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         if (parameter instanceof InterpolationDensityAnalystParameters) {
-            me.mode = "Density";
-            if (parameter.InterpolationAnalystType === "geometry") {
-                me.url += 'geometry/interpolation/density';
+            me.mode = 'Density';
+            if (parameter.InterpolationAnalystType === 'geometry') {
+                me.url = Util.urlPathAppend(me.url, 'geometry/interpolation/density');
             } else {
-                me.url += 'datasets/' + parameter.dataset + '/interpolation/density';
+                me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/density');
             }
         } else if (parameter instanceof InterpolationIDWAnalystParameters) {
-            me.mode = "IDW";
-            if (parameter.InterpolationAnalystType === "geometry") {
-                me.url += 'geometry/interpolation/idw';
+            me.mode = 'IDW';
+            if (parameter.InterpolationAnalystType === 'geometry') {
+                me.url = Util.urlPathAppend(me.url, 'geometry/interpolation/idw');
             } else {
-                me.url += 'datasets/' + parameter.dataset + '/interpolation/idw';
+                me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/idw');
             }
         } else if (parameter instanceof InterpolationRBFAnalystParameters) {
-            me.mode = "RBF";
-            if (parameter.InterpolationAnalystType === "geometry") {
-                me.url += 'geometry/interpolation/rbf';
+            me.mode = 'RBF';
+            if (parameter.InterpolationAnalystType === 'geometry') {
+                me.url = Util.urlPathAppend(me.url, 'geometry/interpolation/rbf');
             } else {
-                me.url += 'datasets/' + parameter.dataset + '/interpolation/rbf';
+                me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/rbf');
             }
         } else if (parameter instanceof InterpolationKrigingAnalystParameters) {
-            me.mode = "Kriging";
-            if (parameter.InterpolationAnalystType === "geometry") {
-                me.url += 'geometry/interpolation/kriging';
+            me.mode = 'Kriging';
+            if (parameter.InterpolationAnalystType === 'geometry') {
+                me.url = Util.urlPathAppend(me.url, 'geometry/interpolation/kriging');
             } else {
-                me.url += 'datasets/' + parameter.dataset + '/interpolation/kriging';
+                me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/kriging');
             }
         }
         InterpolationAnalystParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
 
         me.request({
             method: "POST",

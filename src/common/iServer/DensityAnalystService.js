@@ -60,21 +60,16 @@ export class DensityAnalystService extends SpatialAnalystBase {
      */
     processAsync(parameter) {
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
         var parameterObject = new Object();
 
         if (parameter instanceof DensityKernelAnalystParameters) {
-            me.url += 'datasets/' + parameter.dataset + '/densityanalyst/kernel';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/densityanalyst/kernel');
             me.mode = "kernel";
         }
 
         DensityKernelAnalystParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
 
         me.request({
             method: "POST",

@@ -12,7 +12,8 @@ import {
     GetFeaturesByBoundsService,
     GetFeaturesByBufferService,
     GetFeaturesByGeometryService,
-    EditFeaturesService
+    EditFeaturesService,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -174,7 +175,7 @@ export class FeatureService extends ServiceBase {
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url += '/datasources/' + dataSourceName + '/datasets/' + dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

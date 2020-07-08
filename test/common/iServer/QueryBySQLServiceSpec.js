@@ -42,7 +42,7 @@ describe('testQueryBySQLService_processAsync', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var queryBySQLService = initQueryBySQLService(worldMapURL);
         expect(queryBySQLService).not.toBeNull();
-        expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.json?");
+        expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults");
         queryBySQLService.destroy();
         expect(queryBySQLService.EVENT_TYPES).toBeNull();
         expect(queryBySQLService.events).toBeNull();
@@ -97,7 +97,7 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLParameters.returnCustomResult = false;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
@@ -159,7 +159,7 @@ describe('testQueryBySQLService_processAsync', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
@@ -223,7 +223,7 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLParameters.returnCustomResult = true;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnCustomResult=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
@@ -273,7 +273,7 @@ describe('testQueryBySQLService_processAsync', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
@@ -330,7 +330,7 @@ describe('testQueryBySQLService_processAsync', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
@@ -392,7 +392,7 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLParameters.returnCustomResult = false;
 
         spyOn(FetchRequest, 'post').and.callFake((url, params) => {
-            expect(url).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(url).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(2);
@@ -400,6 +400,57 @@ describe('testQueryBySQLService_processAsync', () => {
             expect(paramsObj.queryParameters.queryParams[0].name).toBe("Countries@World");
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
+        queryBySQLService.processAsync(queryBySQLParameters);
+    });
+    it('processAsync_customQueryParam', (done) => {
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
+            queryFailedEventArgs = serviceFailedEventArgs;
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
+            serviceSuccessEventArgs = queryEventArgs;
+            try {
+                queryBySQLService.destroy();
+                queryBySQLParameters.destroy();
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
+                queryBySQLService.destroy();
+                queryBySQLParameters.destroy();
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
+            }
+        };
+        var queryBySQLService = initQueryBySQLService(worldMapURL+'?key=123',QueryBySQLFailed,QueryBySQLCompleted);
+        var queryBySQLParameters = new QueryBySQLParameters({
+            customParams: null,
+            expectCount: 100,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            queryParams: [
+                new FilterParameter({
+                    attributeFilter: "SmID<3",
+                    name: "Capitals@World"
+                }),
+                new FilterParameter({
+                    attributeFilter: "SmID<3",
+                    name: "Countries@World",
+                    fields: new Array("COLOR_MAP", "CAPITAL")
+                })],
+            returnContent: true,
+            startRecord: 0,
+            holdTime: 10
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(testUrl).toBe(worldMapURL + "/queryResults?key=123&returnContent=true");
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
+        queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
     });
 });

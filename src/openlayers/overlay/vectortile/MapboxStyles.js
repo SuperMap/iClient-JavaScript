@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { FetchRequest } from "@supermap/iclient-common";
+import { FetchRequest, CommonUtil } from "@supermap/iclient-common";
 import { olExtends } from "./olExtends";
 import remove from "lodash.remove";
 import Observable from 'ol/Observable';
@@ -62,7 +62,11 @@ export class MapboxStyles extends Observable {
         this.map = options.map;
         this.source = options.source;
         this.styleTarget =
-            options.style || options.url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true";
+            options.style ||
+            CommonUtil.urlAppend(
+                CommonUtil.urlPathAppend(options.url, 'tileFeature/vectorstyles'),
+                'type=MapBox_GL&styleonly=true'
+            );
         this.resolutions = options.resolutions;
         this.withCredentials = options.withCredentials;
         this.selectedObjects = [];

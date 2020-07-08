@@ -163,13 +163,9 @@ export class ProcessingServiceBase extends CommonServiceBase {
         super.serviceProcessFailed(result);
     }
 
-    //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
     _processUrl(url) {
-        if (url.indexOf('.json') === -1) {
-            url += '.json';
-        }
         if (SecurityManager.getToken(url)) {
-            url += '?token=' + SecurityManager.getToken(url);
+            url = Util.urlAppend(url, 'token=' + SecurityManager.getToken(url));
         }
         return url;
     }

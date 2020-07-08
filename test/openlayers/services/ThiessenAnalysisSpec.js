@@ -33,7 +33,7 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/datasets/Factory@Changchun/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/Factory@Changchun/thiessenpolygon?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.dataset).toBe("Factory@Changchun");
             expect(paramsObj.returnResultRegion).toBeTruthy();
@@ -71,7 +71,7 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/geometry/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/geometry/thiessenpolygon?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.returnResultRegion).toBeTruthy();
             expect(paramsObj.points.length).toBeGreaterThan(9);

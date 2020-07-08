@@ -64,7 +64,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         var queryBySQLService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("SqlQuery");
@@ -122,7 +122,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         var queryBySQLService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
@@ -165,7 +165,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         var queryBySQLService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnCustomResult=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
@@ -207,7 +207,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         var queryBySQLService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
@@ -239,7 +239,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         var queryBySQLService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {

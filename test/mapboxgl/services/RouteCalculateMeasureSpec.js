@@ -57,7 +57,7 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/geometry/calculatemeasure.json?returnContent=true");
+            expect(testUrl).toBe(url + "/geometry/calculatemeasure?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.sourceRoute.type).toBe("LINEM");

@@ -35,7 +35,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         });
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             if (testUrl.indexOf("vectorstyles.json") > 0) {
-                expect(testUrl).toBe(url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true");
+                expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
                 return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
             } else if (testUrl.indexOf("sprite.json") > 0) {
                 return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));

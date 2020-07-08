@@ -112,10 +112,9 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
-        var jsonParameters, jsonStr = "geometry/calculatemeasure", me = this, end;
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
-        me.url += "?returnContent=true";
+        var jsonParameters, jsonStr = "geometry/calculatemeasure", me = this;
+        me.url = Util.urlPathAppend(me.url, jsonStr);
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }

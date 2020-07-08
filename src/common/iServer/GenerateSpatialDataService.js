@@ -105,13 +105,10 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
     getJsonParameters(params) {
         var jsonParameters = "",
             jsonStr = "datasets/" + params.routeTable + "/linearreferencing/generatespatialdata",
-            me = this,
-            end;
+            me = this;
 
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
-
-        me.url += "?returnContent=true";
+        me.url = Util.urlPathAppend(me.url, jsonStr);
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }

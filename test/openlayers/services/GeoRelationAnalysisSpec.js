@@ -36,7 +36,7 @@ describe('openlayers_SpatialAnalystService_geoRelationAnalysis', () => {
         var service = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/Park@Changchun/georelation?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.dataset).toBe("Park@Changchun");
             expect(paramsObj.sourceFilter.attributeFilter).toBe("SMID%26gt;0");

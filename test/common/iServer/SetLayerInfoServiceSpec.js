@@ -78,7 +78,7 @@ describe('SetLayerInfoService', () => {
         expect(setLayersInfoService.url).toEqual(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            expect(testUrl).toBe(url+"/tempLayersSet");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -120,7 +120,7 @@ describe('SetLayerInfoService', () => {
             expect(setLayerInfoService.url).toEqual(url1);
             spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params) => {
                 expect(method).toBe("PUT");
-                expect(testUrl).toBe(url1+".json");
+                expect(testUrl).toBe(url1);
                 var paramsObj = JSON.parse(params.replace(/'/g, "\""));
                 expect(paramsObj.datasetInfo.dataSourceName).toBe("World");
                 expect(paramsObj.datasetInfo.type).toBe("TEXT");

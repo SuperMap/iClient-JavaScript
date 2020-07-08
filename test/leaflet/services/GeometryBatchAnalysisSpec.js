@@ -81,7 +81,7 @@ describe('leaflet_SpatialAnalystService_geometryBatchAnalysis', () => {
         //批量分析
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(serviceUrl + "/geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true");
+            expect(testUrl).toBe(serviceUrl + "/geometry/batchanalyst?returnContent=true&ignoreAnalystParam=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].analystName).toBe("buffer");
             expect(paramsObj[0].param.analystParameter.endType).toBe("ROUND");

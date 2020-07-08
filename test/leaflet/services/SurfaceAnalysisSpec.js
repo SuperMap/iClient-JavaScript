@@ -43,7 +43,7 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', ()=> {
         var surfaceAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline?returnContent=true");
             // expect(params).toContain("extractParameter");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.extractParameter.interval).toBe(2);

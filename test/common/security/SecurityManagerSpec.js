@@ -54,9 +54,9 @@ describe('SecurityManager', () => {
         SecurityManager.registerServers(serverInfo);
         var result = SecurityManager.getServerInfo(url);
         expect(result.CLASS_NAME).toBe("SuperMap.ServerInfo");
-        expect(result.keyServiceUrl).toBe("http://localhost:8093/web/mycontent/keys/register.json");
+        expect(result.keyServiceUrl).toBe("http://localhost:8093/web/mycontent/keys/register");
         expect(result.server).toBe("http://localhost:8093");
-        expect(result.tokenServiceUrl).toBe("http://localhost:8093/services/security/tokens.json");
+        expect(result.tokenServiceUrl).toBe("http://localhost:8093/services/security/tokens");
         expect(result.type).toBe("IPORTAL");
     });
 

@@ -1,12 +1,12 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {CommonServiceBase} from './CommonServiceBase';
-import {MeasureParameters} from './MeasureParameters';
-import {ServerGeometry} from './ServerGeometry';
-import {MeasureMode} from '../REST';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { CommonServiceBase } from './CommonServiceBase';
+import { MeasureParameters } from './MeasureParameters';
+import { ServerGeometry } from './ServerGeometry';
+import { MeasureMode } from '../REST';
 
 /**
  * @class SuperMap.MeasureService
@@ -69,17 +69,11 @@ export class MeasureService extends CommonServiceBase {
         var me = this,
             geometry = params.geometry,
             pointsCount = 0,
-            point2ds = null,
-            end = null;
+            point2ds = null;
         if (!geometry) {
             return;
         }
-        end = me.url.substr(me.url.length - 1, 1);
-        if (me.measureMode === MeasureMode.AREA) {
-            me.url += ((end === "/") ? "area.json?" : "/area.json?");
-        } else {
-            me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
-        }
+        me.url = Util.urlPathAppend(me.url, me.measureMode === MeasureMode.AREA ? 'area' : 'distance');
         var serverGeometry = ServerGeometry.fromGeometry(geometry);
         if (!serverGeometry) {
             return;

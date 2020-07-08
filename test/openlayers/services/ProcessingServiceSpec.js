@@ -129,7 +129,7 @@ describe('openlayers_ProcessingService', () => {
     it('addKernelDensityJob, getKernelDensityJobState', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/density.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/density?token=" + token) {
                 var escapedJson = kernelDensityJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -211,7 +211,7 @@ describe('openlayers_ProcessingService', () => {
     it('addKernelDensityJob, getKernelDensityJobState_queryNull', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/density.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/density?token=" + token) {
                 var escapedJson = kernelDensityJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -292,7 +292,7 @@ describe('openlayers_ProcessingService', () => {
     it('addKernelDensityJob, getKernelDensityJobState_queryExtent', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/density.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/density?token=" + token) {
                 var escapedJson = kernelDensityJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -471,7 +471,7 @@ describe('openlayers_ProcessingService', () => {
     it('addSummaryMeshJob, getSummaryMeshJobState', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/aggregatepoints.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/aggregatepoints?token=" + token) {
                 var escapedJson = summaryMeshJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -545,7 +545,7 @@ describe('openlayers_ProcessingService', () => {
     it('addSummaryMeshJob, getSummaryMeshJobState_queryNull', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/aggregatepoints.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/aggregatepoints?token=" + token) {
                 var escapedJson = summaryMeshJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -620,7 +620,7 @@ describe('openlayers_ProcessingService', () => {
     it('addSummaryMeshJob, getSummaryMeshJobState_queryExtent', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/aggregatepoints.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/aggregatepoints?token=" + token) {
                 var escapedJson = summaryMeshJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -792,7 +792,7 @@ describe('openlayers_ProcessingService', () => {
     it('addQueryJob, getQueryJobState', (done) => {
         var id = id_singleObjectQueryJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/query.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/query?token=" + token) {
                 var escapedJson = singleObjectQueryJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -982,7 +982,7 @@ describe('openlayers_ProcessingService', () => {
     it('addSummaryRegionJob, getSummaryRegionJobState', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/summaryregion.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/summaryregion?token=" + token) {
                 var escapedJson = summaryRegionJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1073,7 +1073,7 @@ describe('openlayers_ProcessingService', () => {
     it('addSummaryRegionJob, getSummaryRegionJobState_queryExtent', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/summaryregion.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/summaryregion?token=" + token) {
                 var escapedJson = summaryRegionJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1164,7 +1164,7 @@ describe('openlayers_ProcessingService', () => {
     it('addSummaryRegionJob, getSummaryRegionJobState_queryNull', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/summaryregion.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/summaryregion?token=" + token) {
                 var escapedJson = summaryRegionJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1353,7 +1353,7 @@ describe('openlayers_ProcessingService', () => {
     it('addVectorClipJob, getVectorClipJobState', (done) => {
         var id = id_vectorClipJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/vectorclip.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/vectorclip?token=" + token) {
                 var escapedJson = vectorClipJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1529,7 +1529,7 @@ describe('openlayers_ProcessingService', () => {
     it('addOverlayGeoJob, getOverlayGeoJobsState', (done) => {
         var id = id_overlayGeoJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/overlay.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/overlay?token=" + token) {
                 var escapedJson = overlayGeoJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1707,7 +1707,7 @@ describe('openlayers_ProcessingService', () => {
     it('addBuffersJob, getBuffersJobState', (done) => {
         var id = id_buffersAnalystJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/buffers.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/buffers?token=" + token) {
                 var escapedJson = buffersAnalystJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1883,7 +1883,7 @@ describe('openlayers_ProcessingService', () => {
     it('addTopologyValidatorJob, getTopologyValidatorJobState', (done) => {
         var id = id_topologyValidatorJob;
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/topologyvalidator.json?token=" + token) {
+            if (testUrl === url + "/spatialanalyst/topologyvalidator?token=" + token) {
                 var escapedJson = topologyValidatorJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }

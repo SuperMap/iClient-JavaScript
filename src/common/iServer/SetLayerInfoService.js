@@ -51,7 +51,6 @@ export class SetLayerInfoService extends CommonServiceBase {
             return;
         }
         var me = this;
-        me.url += ".json";
         var jsonParamsStr = Util.toJSON(params);
         me.request({
             method: "PUT",

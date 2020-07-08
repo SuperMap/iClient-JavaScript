@@ -193,7 +193,7 @@ describe("GeometryBatchAnalystService", () => {
         var geometryBatchAnalystParameters = [bufferBatchAnalystParameter, OverlayBatchAnalystParameters, geometrySurfaceAnalystParams, interpolationIDWAnalystParams];
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true");
+            expect(testUrl).toBe(url + "/geometry/batchanalyst?returnContent=true&ignoreAnalystParam=true");
             // expect(params).toContain("'smoothMethod':\"BSPLINE\"");
 
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));

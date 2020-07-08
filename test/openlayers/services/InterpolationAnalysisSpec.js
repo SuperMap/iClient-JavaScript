@@ -43,7 +43,7 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/density.json?returnContent=true");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/density?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.resolution).toEqual(3000);
             expect(paramsObj.zValueFieldName).toBe("AVG_TMP");
@@ -83,7 +83,7 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/idw.json?returnContent=true");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/idw?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.resolution).toEqual(7923.84989108);
             expect(paramsObj.searchMode).toBe("KDTREE_FIXED_COUNT");
@@ -116,9 +116,9 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
             ]
         });
         spyOn(FetchRequest, 'post').and.callFake((url) => {
-            if (url.indexOf("/queryResults.json?returnContent=true") > -1) {
+            if (url.indexOf("/queryResults?returnContent=true") > -1) {
                 return Promise.resolve(new Response(JSON.stringify(interpolationAnalysis_IDW_geometryResultJson)));
-            } else if (url.indexOf("/geometry/interpolation/idw.json?returnContent=true") > -1) {
+            } else if (url.indexOf("/geometry/interpolation/idw?returnContent=true") > -1) {
                 return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_IDW_geometry_olTest_7@Interpolation"}`));
             }
             return Promise.resolve();

@@ -93,7 +93,7 @@ describe('TransferSolutionService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(trafficTransferURL+"/solutions.json?");
+            expect(testUrl).toBe(trafficTransferURL+"/solutions");
             return Promise.resolve(new Response(JSON.stringify(TransferSolutionServiceResult)));
         });
         service.events.on({"processCompleted": succeed});

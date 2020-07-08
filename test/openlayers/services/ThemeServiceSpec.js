@@ -64,7 +64,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(worldUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(worldUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -119,7 +119,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(chinaUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params,options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(chinaUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(chinaUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("China");
@@ -198,7 +198,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(chinaUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(chinaUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(chinaUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("China");
@@ -258,7 +258,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(jingjinPopulationUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(jingjinPopulationUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(jingjinPopulationUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("Jingjin");
@@ -328,7 +328,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(jingjinAreaUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params,options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(jingjinAreaUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(jingjinAreaUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("Jingjin");
@@ -405,7 +405,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(chinaUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params,options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(chinaUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(chinaUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("China");
@@ -477,7 +477,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(chinaUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params,options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(chinaUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(chinaUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("China");
@@ -550,7 +550,7 @@ describe('openlayers_ThemeService', () => {
         var service = new ThemeService(chinaUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(chinaUrl + "/tempLayersSet.json?");
+            expect(testUrl).toBe(chinaUrl + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("China");

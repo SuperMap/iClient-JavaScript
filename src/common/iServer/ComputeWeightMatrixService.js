@@ -55,9 +55,9 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
         if (!(params instanceof ComputeWeightMatrixParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + ".json?";
+        var me = this,
+            jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'weightmatrix');
         jsonObject = {
             parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)

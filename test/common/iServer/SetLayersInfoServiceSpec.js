@@ -73,7 +73,7 @@ describe('SetLayersInfoService', () => {
         expect(setLayersInfoService).not.toBeNull();
         expect(setLayersInfoService.url).toEqual(url);
         spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
-            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            expect(testUrl).toBe(url+"/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
@@ -111,7 +111,7 @@ describe('SetLayersInfoService', () => {
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         var setLayersInfoService = initSetLayersInfoService(url,setLayersFailed,setLayersInfoCompleted);
         spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
-            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            expect(testUrl).toBe(url+"/tempLayersSet");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect( paramsObj[0].name).toBe("World");
@@ -143,7 +143,7 @@ describe('SetLayersInfoService', () => {
         var setLayersInfoService = initSetLayersInfoService(url,setLayersFailed,setLayersInfoCompleted);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/tempLayersSet.json?");
+            expect(testUrl).toBe(url + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].datasetInfo.dataSourceName).toBe("World");
             expect(paramsObj[0].datasetInfo.name).toBe("continent_T");
@@ -152,5 +152,34 @@ describe('SetLayersInfoService', () => {
         });
         setLayersInfoService.events.on({"processFailed": setLayersFailed});
         setLayersInfoService.processAsync(wrongLayerInfo);
+    });
+    it('setLayersInfo_customQueryParam', (done) => {
+        var setLayersFailedEventArgsSystem = null;
+        var url = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
+        var setLayersInfoCompleted = (setLayersInfoArgs) => {
+            setLayersInfoService.destroy();
+            done();
+        };
+        var setLayersFailed = (serviceFailedEventArgs) => {
+            setLayersFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var setLayersInfoService = new SetLayersInfoService(url, {
+            eventListeners: {
+                "processCompleted": setLayersInfoCompleted,
+                'processFailed': setLayersFailed
+            },
+            isTempLayers: true,
+            resourceID: id
+        });
+        var layers = layersInfo;
+        layers.description = "test";
+        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
+        var setLayersInfoService = initSetLayersInfoService(url+'?key=123',setLayersFailed,setLayersInfoCompleted);
+        spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
+            expect(testUrl).toBe(url+"/tempLayersSet?key=123");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
+        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
+        setLayersInfoService.processAsync(layers);
     });
 });

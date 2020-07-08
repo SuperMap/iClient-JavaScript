@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
-import {Bounds, ChartQueryService, DataFormat, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
+import {Bounds, ChartQueryService, DataFormat, ChartFeatureInfoSpecsService, CommonUtil} from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
 
 /**
@@ -63,8 +63,8 @@ export class ChartService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getChartFeatureInfo(callback) {
-        var me = this, url = me.url.concat();
-        url += "/chartFeatureInfoSpecs";
+        var me = this;
+        var url = CommonUtil.urlPathAppend(me.url, 'chartFeatureInfoSpecs');
         var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

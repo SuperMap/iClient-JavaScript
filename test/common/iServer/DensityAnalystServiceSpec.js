@@ -61,7 +61,7 @@ describe('DensityAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.fieldName).toBe("SmLength");
@@ -126,7 +126,7 @@ describe('DensityAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/xx@Changchun/densityanalyst/kernel.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/xx@Changchun/densityanalyst/kernel?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.fieldName).toBe("SmLength");

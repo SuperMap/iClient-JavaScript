@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
-import {AddressMatchService as CommonMatchAddressService} from '@supermap/iclient-common';
+import {AddressMatchService as CommonMatchAddressService, CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.addressMatchService
@@ -39,7 +39,7 @@ export var AddressMatchService = ServiceBase.extend({
      */
     code: function (params, callback) {
         var me = this;
-        var addressMatchService = new CommonMatchAddressService(me.url, {
+        var addressMatchService = new CommonMatchAddressService(this.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
@@ -51,7 +51,7 @@ export var AddressMatchService = ServiceBase.extend({
                 processFailed: callback
             }
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
     },
 
     /**
@@ -74,7 +74,7 @@ export var AddressMatchService = ServiceBase.extend({
                 processFailed: callback
             }
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
     }
 
 });

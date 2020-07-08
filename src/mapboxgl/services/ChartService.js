@@ -3,9 +3,15 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {ServiceBase} from './ServiceBase';
-import {Util} from '../core/Util';
-import {Bounds, DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
+import { ServiceBase } from './ServiceBase';
+import { Util } from '../core/Util';
+import {
+    Bounds,
+    DataFormat,
+    ChartQueryService,
+    ChartFeatureInfoSpecsService,
+    CommonUtil
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.ChartService
@@ -65,7 +71,7 @@ export class ChartService extends ServiceBase {
      */
     getChartFeatureInfo(callback) {
         var me = this, url = me.url.concat();
-        url += "/chartFeatureInfoSpecs";
+        url = CommonUtil.urlPathAppend(url, 'chartFeatureInfoSpecs');
         var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

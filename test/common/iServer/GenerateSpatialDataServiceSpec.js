@@ -73,7 +73,7 @@ describe('GenerateSpatialDataService', () => {
         var generateSpatialDataService = initGenerateSpatialDataService(generateSpatialDataCompleted, generateSpatialDataFailed);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
             // var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'attributeFilter':\"SMID = 1\",'eventTable':\"PointEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"measure\",'measureStartField':null,'measureEndField':null,'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':1000,'dataset':\"GenerateSpatial_Point_DS_Test\",'dataReturnMode':\"DATASET_ONLY\",'deleteExistResultDataset':true}}";
             // expect(params).toBe(expectParams);
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
@@ -128,7 +128,7 @@ describe('GenerateSpatialDataService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
             // var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'attributeFilter':null,'eventTable':\"LinearEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"\",'measureStartField':\"LineMeasureFrom\",'measureEndField':\"LineMeasureTo\",'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':1000,'dataset':\"GenerateSpatial_Linear_DS_Test\",'dataReturnMode':\"DATASET_ONLY\",'deleteExistResultDataset':true}}";
             // expect(params).toBe(expectParams);
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
@@ -183,7 +183,7 @@ describe('GenerateSpatialDataService', () => {
         var generateSpatialDataService = initGenerateSpatialDataService(generateSpatialDataCompleted, generateSpatialDataFailed);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
             // var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'attributeFilter':null,'eventTable':\"PointEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"measure\",'measureStartField':null,'measureEndField':null,'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':2,'dataset':\"\",'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true}}";
             // expect(params).toBe(expectParams);
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
@@ -233,7 +233,7 @@ describe('GenerateSpatialDataService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
             // var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'attributeFilter':null,'eventTable':\"LinearEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"\",'measureStartField':\"LineMeasureFrom\",'measureEndField':\"LineMeasureTo\",'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':2,'dataset':\"\",'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true}}";
             // expect(params).toBe(expectParams);
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));

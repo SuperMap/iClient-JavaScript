@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ProcessingServiceBase} from './ProcessingServiceBase';
-import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { ProcessingServiceBase } from './ProcessingServiceBase';
+import { SummaryMeshJobParameter } from './SummaryMeshJobParameter';
 
 /**
  * @class SuperMap.SummaryMeshJobsService
@@ -20,11 +21,10 @@ import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
  * @param {Object} [options.headers] - 请求头。
  */
 export class SummaryMeshJobsService extends ProcessingServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/aggregatepoints";
-        this.CLASS_NAME = "SuperMap.SummaryMeshJobsService";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/aggregatepoints');
+        this.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
     }
 
     /**
@@ -48,7 +48,7 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id
      */
     getSummaryMeshJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**
@@ -60,7 +60,6 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
     addSummaryMeshJob(params, seconds) {
         super.addJob(this.url, params, SummaryMeshJobParameter, seconds);
     }
-
 }
 
 SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;

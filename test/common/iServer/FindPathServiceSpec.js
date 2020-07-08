@@ -98,7 +98,7 @@ describe('FindPathService', () => {
         };
         var findPathService = new FindPathService(url, options);;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
         });
         findPathService.processAsync(parameter);
@@ -162,7 +162,7 @@ describe('FindPathService', () => {
 
         var findPathService = new FindPathService(url, options);;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"pathList":[{"pathGuideItems":null,"nodeIDs":[],"route":null,"edgeFeatures":null,"weight":53,"nodeFeatures":null,"stopWeights":[53],"edgeIDs":[]}]}`))
         });
         findPathService.processAsync(parameter);
@@ -222,7 +222,7 @@ describe('FindPathService', () => {
 
         var findPathService = new FindPathService(url, options);;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`))
         });
         findPathService.processAsync(parameter);
@@ -283,7 +283,7 @@ describe('FindPathService', () => {
 
         var findPathService = new FindPathService(url, options);;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：权重字段TurnCost1不存在。 "}}`))
         });
         findPathService.processAsync(parameter);
@@ -358,7 +358,7 @@ describe('FindPathService', () => {
 
         var findPathService = new FindPathService(url, options);;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`))
         });
         findPathService.processAsync(parameter);

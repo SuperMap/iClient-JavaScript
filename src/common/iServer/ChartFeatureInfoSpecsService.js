@@ -48,13 +48,9 @@ export class ChartFeatureInfoSpecsService extends CommonServiceBase {
      *              2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
      */
     processAsync() {
-        var me = this, method = "GET",
-            end = me.url.substr(me.url.length - 1, 1);
+        var me = this, method = "GET";
         if (!me.isTempLayers) {
-            me.url += (end === "/") ? '' : '/';
-            me.url += "chartFeatureInfoSpecs.json?";
-        } else {
-            me.url += ".json?";
+            Util.urlPathAppend(me.url,'chartFeatureInfoSpecs');
         }
         me.request({
             method: method,

@@ -53,7 +53,7 @@ export class TileSuperMapRest extends TileImage {
         options.attributions = options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
 
         options.format = options.format ? options.format : "png";
-        var layerUrl = options.url + "/tileImage." + options.format + "?";
+        var layerUrl = CommonUtil.urlPathAppend(options.url, "tileImage." + options.format);
 
         options.serverType = options.serverType || ServerType.ISERVER;
         super({
@@ -109,8 +109,8 @@ export class TileSuperMapRest extends TileImage {
                     break;
             }
             if (credential) {
-                newUrl += "&" + credential.getUrlParameters();
-            }
+                newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
+              }
             return newUrl;
         }
 
@@ -191,23 +191,11 @@ export class TileSuperMapRest extends TileImage {
          * @description 获取新建图层地址。
          */
         function createLayerUrl() {
-            this._layerUrl = layerUrl + encodeURI(getRequestParamString.call(this));
+            this.requestParams =  this.requestParams || getAllRequestParams.call(this);
+            this._layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(this.requestParams));
             //为url添加安全认证信息片段
             this._layerUrl = appendCredential(this._layerUrl, options.serverType);
             return this._layerUrl;
-        }
-
-        /**
-         * @function  ol.source.TileSuperMapRest.prototype.getRequestParamString
-         * @description 获取请求参数的字符串。
-         */
-        function getRequestParamString() {
-            this.requestParams = this.requestParams || getAllRequestParams.call(this);
-            var params = [];
-            for (var key in this.requestParams) {
-                params.push(key + "=" + this.requestParams[key]);
-            }
-            return params.join('&');
         }
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {

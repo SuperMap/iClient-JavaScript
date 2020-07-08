@@ -1,14 +1,15 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L, { Util as LUtil} from "leaflet";
 import "../core/Base";
 import {
     SecurityManager,
     ServerType,
     Unit,
     Credential,
-    ServerGeometry
+    ServerGeometry,
+    CommonUtil
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
 import Attributions from '../core/Attributions'
@@ -291,21 +292,12 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     _createLayerUrl: function () {
-        var me = this;
-        var layerUrl = me._url + "/tileImage." + this.options.format + "?";
-        layerUrl += encodeURI(me._getRequestParamString());
+        let layerUrl = CommonUtil.urlPathAppend(this._url, `tileImage.${this.options.format}`);
+        this.requestParams = this.requestParams || this._getAllRequestParams();
+        layerUrl = CommonUtil.urlAppend(layerUrl, LUtil.getParamString(this.requestParams));
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
         return layerUrl;
-    },
-
-    _getRequestParamString: function () {
-        this.requestParams = this.requestParams || this._getAllRequestParams();
-        var params = [];
-        for (var key in this.requestParams) {
-            params.push(key + "=" + this.requestParams[key]);
-        }
-        return params.join('&');
     },
 
     _getAllRequestParams: function () {
@@ -397,7 +389,7 @@ export var TiledMapLayer = L.TileLayer.extend({
                 break;
         }
         if (credential) {
-            newUrl += "&" + credential.getUrlParameters();
+            newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
         }
         return newUrl;
     }

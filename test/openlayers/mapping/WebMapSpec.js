@@ -25,7 +25,7 @@ describe('openlayers_WebMap', () => {
     var server = "http://127.0.0.1:8090/iportal/";
     var defaultServer = "https://www.supermapol.com/";
     var defaultServeRequest = 'https://www.supermapol.com/web/maps/1788054202/map';
-    var proxy = `${server}apps/viewer/getUrlResource.json?url=`;
+    var proxy = `${server}apps/viewer/getUrlResource?url=`;
     var id = 1788054202;
     beforeEach(() => {
         testDiv = window.document.createElement("div");
@@ -296,7 +296,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Theme_base;
@@ -333,7 +333,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/374284777/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Theme_base_Line;
@@ -370,7 +370,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Image;
@@ -403,7 +403,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1782454383/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1782454383/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_SVG;
@@ -438,7 +438,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/658963918/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Unique;
@@ -476,7 +476,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1236941499/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Range;
@@ -514,7 +514,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Heat;
@@ -547,7 +547,7 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`)}`;
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/579431262/content?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Marker;
@@ -875,7 +875,7 @@ describe('openlayers_WebMap', () => {
 
     it('getWmtsInfo', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            let requestUrl = `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`;
+            let requestUrl = `https://www.supermapol.com/apps/viewer/getUrlResource?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`;
             if (url === requestUrl) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
@@ -901,7 +901,7 @@ describe('openlayers_WebMap', () => {
 
     it('isValidResponse', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
+            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -916,7 +916,7 @@ describe('openlayers_WebMap', () => {
 
     it('getReslutionsFromScales', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
+            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -935,7 +935,7 @@ describe('openlayers_WebMap', () => {
 
     it('getRangeStyleGroup', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
+            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -960,7 +960,7 @@ describe('openlayers_WebMap', () => {
 
     it('getRangeStyleGroup1', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
+            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }

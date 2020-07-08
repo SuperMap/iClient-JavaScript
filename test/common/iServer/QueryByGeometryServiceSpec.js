@@ -55,9 +55,9 @@ describe('QueryByGeometryService', () => {
         };
         var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
         expect(queryByGeometryService).not.toBeNull();
-        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults.json?");
+        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults");
         expect(queryByGeometryService).not.toBeNull();
-        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults.json?");
+        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults");
         queryByGeometryService.destroy();
         expect(queryByGeometryService.EVENT_TYPES).toBeNull();
         expect(queryByGeometryService.events).toBeNull();
@@ -114,7 +114,7 @@ describe('QueryByGeometryService', () => {
         queryByGeometryParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;20");
@@ -175,7 +175,7 @@ describe('QueryByGeometryService', () => {
         queryByGeometryParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;20");
@@ -224,7 +224,7 @@ describe('QueryByGeometryService', () => {
         queryByGeometryParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toEqual(100);

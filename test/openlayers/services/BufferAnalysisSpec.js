@@ -49,7 +49,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
@@ -85,7 +85,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
@@ -151,7 +151,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/geometry/buffer.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/geometry/buffer?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.analystParameter.endType).toBe("ROUND");

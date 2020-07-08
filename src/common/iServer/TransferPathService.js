@@ -50,13 +50,9 @@ export class TransferPathService extends CommonServiceBase {
         }
         var me = this,
             method = "GET",
-            jsonParameters,
-            end;
+            jsonParameters;
 
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? '' : '/';
-        me.url += "path.json?";
-
+        me.url = Util.urlPathAppend(me.url, 'path');
         jsonParameters = {
             points: Util.toJSON(params.points),
             transferLines: Util.toJSON(params['transferLines'])

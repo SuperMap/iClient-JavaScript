@@ -70,11 +70,8 @@ export class GetFieldsService extends CommonServiceBase {
      * @description 执行服务，查询指定数据集的字段信息。
      */
     processAsync() {
-        var me = this,
-            end = me.url.substr(me.url.length - 1, 1),
-            datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
-        me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
-
+        var me = this;
+        me.url = Util.urlPathAppend(me.url,`datasources/${me.datasource}/datasets/${me.dataset}/fields`);
         me.request({
             method: "GET",
             data: null,

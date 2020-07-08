@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ProcessingServiceBase} from './ProcessingServiceBase';
-import {OverlayGeoJobParameter} from './OverlayGeoJobParameter';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { ProcessingServiceBase } from './ProcessingServiceBase';
+import { OverlayGeoJobParameter } from './OverlayGeoJobParameter';
 
 /**
  * @class SuperMap.OverlayGeoJobsService
@@ -20,11 +21,10 @@ import {OverlayGeoJobParameter} from './OverlayGeoJobParameter';
  * @param {Object} [options.headers] - 请求头。
  */
 export class OverlayGeoJobsService extends ProcessingServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/overlay";
-        this.CLASS_NAME = "SuperMap.OverlayGeoJobsService";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/overlay');
+        this.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
     }
 
     /**
@@ -48,7 +48,7 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id
      */
     getOverlayGeoJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**
@@ -60,6 +60,5 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
     addOverlayGeoJob(params, seconds) {
         super.addJob(this.url, params, OverlayGeoJobParameter, seconds);
     }
-
 }
 SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;

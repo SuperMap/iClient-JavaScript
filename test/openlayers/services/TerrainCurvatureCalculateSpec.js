@@ -28,7 +28,7 @@ describe('openlayers_SpatialAnalystService_terrainCurvatureCalculate', () => {
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(sampleServiceUrl + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.zFactor).toEqual(1.0);
             expect(paramsObj.deleteExistResultDataset).toBeTruthy();

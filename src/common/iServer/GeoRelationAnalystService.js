@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
 
@@ -74,16 +75,10 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
             return;
         }
         var me = this;
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-            me.url += 'datasets/' + parameter.dataset + '/georelation';
-        } else {
-            me.url += '/datasets/' + parameter.dataset + '/georelation';
-        }
-
+        me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/georelation');
         var jsonParameters = SuperMap.Util.toJSON(parameter);
 
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
 
         me.request({
             method: "POST",

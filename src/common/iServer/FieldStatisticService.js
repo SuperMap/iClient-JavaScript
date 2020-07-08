@@ -92,9 +92,8 @@ export class FieldStatisticService extends CommonServiceBase {
      */
     processAsync() {
         var me = this,
-            end = me.url.substr(me.url.length - 1, 1),
             fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-        me.url += (end == "/") ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
+        me.url = Util.urlPathAppend(me.url, fieldStatisticURL);
 
         me.request({
             method: "GET",

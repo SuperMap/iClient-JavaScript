@@ -49,21 +49,15 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
      */
     processAsync(parameter) {
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         var parameterObject = {};
 
         if (parameter instanceof MathExpressionAnalysisParameters) {
-            me.url += 'datasets/' + parameter.dataset + '/mathanalyst';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/mathanalyst');
         }
 
         MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         me.request({
             method: "POST",
             data: jsonParameters,

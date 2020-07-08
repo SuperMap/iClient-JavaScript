@@ -58,14 +58,10 @@ export class GetLayersInfoService extends CommonServiceBase {
      */
     processAsync() {
         var me = this,
-            method = "GET",
-            end = me.url.substr(me.url.length - 1, 1);
+            method = "GET";
         if (!me.isTempLayers) {
-            me.url += (end === "/") ? '' : '/';
-            me.url += "layers.json?";
-        } else {
-            me.url += ".json?";
-        }
+            me.url = Util.urlPathAppend(me.url, 'layers');
+        } 
         me.request({
             method: method,
             params: null,

@@ -42,7 +42,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer?returnContent=true");
             expect(params).toContain("bufferAnalystParameter");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byDatasetResultJson)));
@@ -99,7 +99,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer?returnContent=true");
             expect(params).toContain("bufferAnalystParameter");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
@@ -147,7 +147,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer?returnContent=true");
             expect(params).toContain("bufferAnalystParameter");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
@@ -205,7 +205,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/geometry/buffer.json?returnContent=true");
+            expect(testUrl).toBe(url + "/geometry/buffer?returnContent=true");
             expect(params).toContain("analystParameter");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));

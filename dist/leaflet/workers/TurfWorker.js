@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-importScripts('https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.js')
+importScripts('https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js')
 
 /**
  * 空间分析所需工具类

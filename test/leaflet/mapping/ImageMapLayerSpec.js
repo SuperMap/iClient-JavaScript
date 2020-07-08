@@ -121,7 +121,7 @@ describe('leaflet_ImageMapLayer', () => {
     it('getImageUrl', () => {
         imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
-        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
+        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
     });
 
     it('getImageUrl_tilePoxy', () => {
@@ -176,7 +176,7 @@ describe('leaflet_ImageMapLayer', () => {
     it('getImageUrl_t', () => {
         imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
-        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
+        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
 
         var tempOptions = {
             cacheEnabled: false

@@ -79,7 +79,7 @@ describe('OverlayAnalystService', () => {
         dsOverlayAnalystParameters.operation = OverlayOperationType.UPDATE;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/Landuse_R@Jingjin/overlay.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/Landuse_R@Jingjin/overlay?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.operateDataset).toBe("Lake_R@Jingjin");
             expect(paramsObj.operation).toBe("UPDATE");
@@ -118,7 +118,7 @@ describe('OverlayAnalystService', () => {
         dsOverlayAnalystParameters.operation = OverlayOperationType.UPDATE;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/Landu@Jingjin/overlay.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/Landu@Jingjin/overlay?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.operateDataset).toBe("Lake_R@Jingjin");
             expect(paramsObj.operation).toBe("UPDATE");
@@ -167,7 +167,7 @@ describe('OverlayAnalystService', () => {
         geOverlayAnalystParameters.operation = OverlayOperationType.CLIP;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/overlay.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/overlay?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.operation).toBe("CLIP");
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":170.3545301069,"y":395.31795160385},"parts":[2],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":170.3545301069,"y":408.1485649972},{"x":170.3545301069,"y":382.4873382105}]},"succeed":true,"message":null}`));

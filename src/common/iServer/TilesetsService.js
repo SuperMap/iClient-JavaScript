@@ -1,8 +1,9 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from './CommonServiceBase';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { CommonServiceBase } from './CommonServiceBase';
 
 /**
  * @class SuperMap.TilesetsService
@@ -42,10 +43,7 @@ export class TilesetsService extends CommonServiceBase {
             return;
         }
         var me = this;
-        var end = me.url.substr(me.url.length - 1, 1);
-
-        me.url = me.url + ((end === "/") ? "tilesets" : "/tilesets") + ".json?";
-
+        me.url = Util.urlPathAppend(me.url, 'tilesets');
         me.request({
             method: "GET",
             scope: me,

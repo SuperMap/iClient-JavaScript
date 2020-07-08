@@ -39,7 +39,7 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', () => {
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.routeTable).toBe("RouteDT_road@Changchun");

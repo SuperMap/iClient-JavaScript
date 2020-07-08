@@ -78,7 +78,7 @@ describe('EditFeaturesService', () => {
         var addFeatureService = new EditFeaturesService(editServiceURL, addFeatureOptions);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/features.json?returnContent=true");
+            expect(testUrl).toBe(editServiceURL + "/features?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].geometry.type).toBe("REGION");
@@ -142,7 +142,7 @@ describe('EditFeaturesService', () => {
         var updateFeaturesService = new EditFeaturesService(editServiceURL, updateFeaturesOptions);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("PUT");
-            expect(testUrl).toBe(editServiceURL + "/features.json?");
+            expect(testUrl).toBe(editServiceURL + "/features");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].geometry.type).toBe("REGION");
@@ -195,7 +195,7 @@ describe('EditFeaturesService', () => {
         var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(editServiceURL + "/features.json?ids=[134]");
+            expect(testUrl).toBe(editServiceURL + "/features?ids=[134]");
             expect(params).not.toBeNull();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
@@ -243,7 +243,7 @@ describe('EditFeaturesService', () => {
         var noParamsService = new EditFeaturesService(editServiceURL, noParamsOptions);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/features.json?returnContent=true");
+            expect(testUrl).toBe(editServiceURL + "/features?returnContent=true");
             expect(params).toBe("[]")
             // expect(params).not.toBeNull();
             // var paramsObj = JSON.parse(params.replace(/'/g, "\""));
@@ -253,4 +253,56 @@ describe('EditFeaturesService', () => {
         });
         noParamsService.processAsync(noParams);
     });
+    it('successEvent:addFeature_customQueryParam', (done) => {
+        var addFeatureFailedEventArgsSystem = null, addFeatureSuccessEventArgsSystem = null;
+        var addFeatureFailed = (serviceFailedEventArgs) => {
+            addFeatureFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var addFeatureCompleted = (addFeatureSuccessEventArgsSystem) => {
+            try {
+                addFeatureService.destroy();
+                addFeaturesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("addFeature案例失败" + exception.name + ":" + exception.message);
+                addFeatureService.destroy();
+                addFeaturesParams.destroy();
+                done();
+            }
+        };
+        var addFeatureOptions = {
+            eventListeners: {
+                'processCompleted': addFeatureCompleted,
+                'processFailed': addFeatureFailed
+            }
+        };
+        var pointList = [],
+            p1 = new Point(118.05408801141, 38.837029131724),
+            p2 = new Point(117.80757663534, 38.606951847395),
+            p3 = new Point(118.43207212138, 38.530259419285);
+        pointList.push(p1);
+        pointList.push(p2);
+        pointList.push(p3);
+        pointList.push(p1);
+        var linearRing = new LinearRing(pointList);
+        var polygon = new Polygon([linearRing]);
+        var features = {
+            fieldNames: [],
+            fieldValues: [],
+            geometry: polygon
+        };
+        var addFeaturesParams = new EditFeaturesParameters({
+            features: [features],
+            editType: EditType.ADD,
+            returnContent: true
+        });
+        var addFeatureService = new EditFeaturesService(editServiceURL + '?key=111', addFeatureOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(testUrl).toBe(editServiceURL + "/features?key=111&returnContent=true");
+            return Promise.resolve(new Response(`[134]`));
+        });
+        addFeatureService.processAsync(addFeaturesParams);
+    });
+
 });

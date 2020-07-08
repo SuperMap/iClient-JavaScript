@@ -1,9 +1,9 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {CommonServiceBase} from './CommonServiceBase';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { CommonServiceBase } from './CommonServiceBase';
 
 /**
  * @class SuperMap.MapService
@@ -47,10 +47,10 @@ export class MapService extends CommonServiceBase {
             var arr = me.projection.split(":");
             if (arr instanceof Array) {
                 if (arr.length === 2) {
-                    me.url += "?prjCoordSys={\"epsgCode\":" + arr[1] + "}";
+                    me.url = Util.urlAppend(me.url,`prjCoordSys={\"epsgCode\":"${arr[1]}"}`)
                 }
                 if (arr.length === 1) {
-                    me.url += "?prjCoordSys={\"epsgCode\":" + arr[0] + "}";
+                    me.url = Util.urlAppend(me.url,`prjCoordSys={\"epsgCode\":"${arr[0]}"}`)
                 }
             }
         }

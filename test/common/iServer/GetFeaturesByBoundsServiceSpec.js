@@ -8,8 +8,8 @@ var url = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null,
   serviceSucceedEventArgsSystem = null;
 
-var initGetFeaturesByBoundsService_RegisterListener = (serviceCompleted, serviceFailed) => {
-  return new GetFeaturesByBoundsService(url, {
+var initGetFeaturesByBoundsService_RegisterListener = (serviceCompleted, serviceFailed, newUrl) => {
+  return new GetFeaturesByBoundsService(newUrl || url, {
     eventListeners: {
       processFailed: serviceFailed,
       processCompleted: serviceCompleted
@@ -103,7 +103,7 @@ describe('GetFeaturesByBoundsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(url + '/featureResults.json?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(options).not.toBeNull();
@@ -178,4 +178,36 @@ describe('GetFeaturesByBoundsService', () => {
     });
     getFeaturesByBoundsService.processAsync(boundsParams);
   })
+  it('processAsync_customQueryParam', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      try {
+        getFeaturesByBoundsService.destroy();
+        boundsParams.destroy();
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByBoundsService_' + exception.name + ':' + exception.message);
+        getFeaturesByBoundsService.destroy();
+        boundsParams.destroy();
+        done();
+      }
+    };
+    var serviceFailed = serviceFailedEventArgs => {
+      serviceFailedEventArgsSystem = serviceFailedEventArgs;
+    };
+    var getFeaturesByBoundsService = initGetFeaturesByBoundsService_RegisterListener(
+      serviceCompleted,
+      serviceFailed,
+      url + '?key=123'
+    );
+    var boundsParams = new GetFeaturesByBoundsParameters({
+      datasetNames: ['World:Countries'],
+      bounds: new Bounds(0, 0, 90, 90)
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+      expect(testUrl).toBe(url + '/featureResults?key=123&returnContent=true&fromIndex=0&toIndex=19');
+      return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+    });
+    getFeaturesByBoundsService.processAsync(boundsParams);
+  });
 });

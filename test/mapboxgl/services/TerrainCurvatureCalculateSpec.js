@@ -32,7 +32,7 @@ describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.zFactor).toBe(1);
             expect(options).not.toBeNull();

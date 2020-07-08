@@ -70,7 +70,7 @@ describe('FieldStatisticService', () => {
         fieldStatisticService.field = "SmID";
         fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/Countries/fields/SmID/AVERAGE.json?");
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/Countries/fields/SmID/AVERAGE");
             return Promise.resolve(new Response(`{"result":124,"mode":"AVERAGE"}`));
         });
         fieldStatisticService.events.on({ 'processCompleted': fieldStatisticCompleted });
@@ -109,10 +109,45 @@ describe('FieldStatisticService', () => {
         fieldStatisticService.field = "NotIDThis";
         fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/NoDataset/fields/NotIDThis/AVERAGE.json?");
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/NoDataset/fields/NotIDThis/AVERAGE");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":500,"errorMsg":"抛出未被捕获的异常,错误信息是数据集NoDataset在数据源中不存在"}}`));
         });
         fieldStatisticService.events.on({ 'processFailed': fieldStatisticFailed });
         fieldStatisticService.processAsync();
     })
+    it('processAsync_customQueryParam', (done) => {
+        var fieldStatisticService = new FieldStatisticService(dataServiceURL + '?key=111', options);
+        var fieldStatisticCompleted = (fieldStatisticEventArgsSystem) => {
+            try {
+                fieldStatisticService.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                fieldStatisticService.destroy();
+                done();
+            }
+        };
+        var fieldStatisticFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processCompleted': fieldStatisticCompleted,
+                'processFailed': fieldStatisticFailed
+            }
+        };
+
+        expect(fieldStatisticService.url).toBe(dataServiceURL + '?key=111');
+        fieldStatisticService.dataset = "Countries";
+        fieldStatisticService.datasource = "World";
+        fieldStatisticService.field = "SmID";
+        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/Countries/fields/SmID/AVERAGE?key=111");
+            return Promise.resolve(new Response(`{"result":124,"mode":"AVERAGE"}`));
+        });
+        fieldStatisticService.events.on({ 'processCompleted': fieldStatisticCompleted });
+        fieldStatisticService.processAsync();
+    });
 });

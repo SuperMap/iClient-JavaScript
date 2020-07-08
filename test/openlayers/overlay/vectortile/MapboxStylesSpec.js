@@ -55,7 +55,7 @@ describe("openlayers_MapboxStyles", () => {
         feature3.setId(3);
         spyOn(FetchRequest, "get").and.callFake((testUrl, params, options) => {
             if (testUrl.indexOf("vectorstyles.json") > 0) {
-                expect(testUrl).toBe(url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true");
+                expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
                 return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
             } else if (testUrl.indexOf("sprite.json") > 0) {
                 return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));
@@ -239,7 +239,7 @@ describe("openlayers_MapboxStyles", () => {
     it("init_StyleUrl", done => {
         var style;
         mapboxStyles = new MapboxStyles({
-            style: url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true",
+            style: url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true",
             map: map,
             source: "California"
         });

@@ -28,7 +28,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从图层信息中获取style
     it('getValidStyleFromLayerInfo_point', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -56,7 +56,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从图层信息中获取style
     it('getValidStyleFromLayerInfo_polyLine', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -85,7 +85,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从图层信息中获取style
     it('getValidStyleFromLayerInfo_polygon', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1686&y=775&width=256&height=256&scale=0.00000346145499464224";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=1686&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -118,7 +118,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从图层信息中获取style
     it('getValidStyleFromLayerInfo_text1', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1689&y=775&width=256&height=256&scale=0.00000346145499464224";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=1689&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -147,7 +147,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从图层信息中获取style
     it('getValidStyleFromLayerInfo_text2', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=28&y=13&width=256&height=256&scale=5.408523429128511e-8";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=28&y=13&width=256&height=256&scale=5.408523429128511e-8";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -176,7 +176,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从CartoCSS中获取style
     it('getStyleFromCarto_point1', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -204,7 +204,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从CartoCSS中获取style
     it('getStyleFromCarto_point2', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1687&y=774&width=256&height=256&scale=0.00000346145499464224";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=1687&y=774&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -232,7 +232,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从CartoCSS中获取style
     it('getStyleFromCarto_polyLine', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -261,7 +261,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从CartoCSS中获取style
     it('getStyleFromCarto_polygon', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1686&y=775&width=256&height=256&scale=0.00000346145499464224";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=1686&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
@@ -291,7 +291,7 @@ describe('openlayers_StyleUtils', () => {
 
     //测试从CartoCSS中获取style
     it('getStyleFromCarto_text', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1689&y=775&width=256&height=256&scale=0.00000346145499464224";
+        var tileFeatureUrl = mapUrl + "/tileFeature?returnAttributes=true&x=1689&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {

@@ -7,8 +7,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
-var initFindClosestFacilitiesService = (findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed) => {
-    return new FindClosestFacilitiesService(url, {
+var initFindClosestFacilitiesService = (findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed,newUrl) => {
+    return new FindClosestFacilitiesService(newUrl || url, {
         eventListeners: {
             'processFailed': findClosestFacilitiesServiceFailed,
             'processCompleted': findClosestFacilitiesServiceCompleted
@@ -77,7 +77,7 @@ describe('FindClosestFacilitiesService', () => {
         };
         var closestFacilitiesService = initFindClosestFacilitiesService(findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility");
             return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_False)));
         });
         var closestFacilitiesService = initFindClosestFacilitiesService(findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed);
@@ -124,7 +124,7 @@ describe('FindClosestFacilitiesService', () => {
         };
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility");
             return Promise.resolve(new Response(`{"facilityPathList":null}`));
         });
         var closestFacilitiesService = initFindClosestFacilitiesService(findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed);
@@ -160,6 +160,49 @@ describe('FindClosestFacilitiesService', () => {
         var closestFacilitiesService = initFindClosestFacilitiesService(findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed);
         closestFacilitiesService.processAsync();
         expect(flag).toBeFalsy;
+    });
+
+    it('processAsync_customQueryParam', (done) => {
+        var transReSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeIDs: true
+        });
+        var transAnaParams = new TransportationAnalystParameter();
+        transAnaParams.resultSetting = transReSetting;
+        var facilitiesParams = new FindClosestFacilitiesParameters({
+            event: 4602,
+            facilities: [4529, 4530],
+            isAnalyzeById: true,
+            expectFacilityCount: 2,
+            fromEvent: true,
+            maxWeight: 30,
+            parameter: transAnaParams
+        });
+        var findClosestFacilitiesServiceCompleted = (serviceSucceedEventArgsSystem) => {
+            try {
+                closestFacilitiesService.destroy();
+                facilitiesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("FindClosestFacilitiesService_" + exception.name + ":" + exception.message);
+                closestFacilitiesService.destroy();
+                facilitiesParams.destroy();
+                done();
+            }
+        };
+        var findClosestFacilitiesServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility?key=123");
+            return Promise.resolve(new Response(`{"facilityPathList":null}`));
+        });
+        var closestFacilitiesService = initFindClosestFacilitiesService(findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed, url + '?key=123');
+        closestFacilitiesService.processAsync(facilitiesParams);
     });
 
     it('fail_processAsync', (done) => {
@@ -202,7 +245,7 @@ describe('FindClosestFacilitiesService', () => {
 
         var closestFacilitiesService = initFindClosestFacilitiesService(findClosestFacilitiesServiceCompleted, findClosestFacilitiesServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/closestfacility");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数facilities 不是有效的JSON 字符串对象"}}`));
         });
         closestFacilitiesService.processAsync(facilitiesParams);

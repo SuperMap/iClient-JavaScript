@@ -34,7 +34,7 @@ describe('mapboxgl_SpatialAnalystService_overlayAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/BaseMap_R@Jingjin/overlay.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/BaseMap_R@Jingjin/overlay?returnContent=true");
             // expect(params).toContain("'operateDataset':\"Neighbor_R@Jingjin\"");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.operateDataset).toBe("Neighbor_R@Jingjin");

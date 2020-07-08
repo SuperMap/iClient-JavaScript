@@ -70,7 +70,7 @@ describe('GetFieldsService', () => {
         getFieldsService.events.on({ processCompleted: getFieldsCompleted });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe('GET');
-            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/Countries/fields.json?');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/Countries/fields');
             var resultJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmArea","SmPerimeter","SmGeometrySize","SQKM","SQMI","COLOR_MAP","CAPITAL","COUNTRY","POP_1994","ColorID","CONTINENT"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmArea","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmPerimeter","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmGeometrySize","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SQKM","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SQMI","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/COLOR_MAP","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/CAPITAL","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/COUNTRY","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/POP_1994","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/ColorID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/CONTINENT"]}`;
             return Promise.resolve(new Response(resultJson));
         });
@@ -103,7 +103,7 @@ describe('GetFieldsService', () => {
         getFieldsService.events.on({ processFailed: getFieldsFailed });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe('GET');
-            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/NoDataset/fields.json?');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/NoDataset/fields');
             var resultJson = `{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`;
             return Promise.resolve(new Response(resultJson));
         });

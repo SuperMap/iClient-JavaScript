@@ -29,7 +29,7 @@ describe('openlayers_FieldService', () => {
         var service = new FieldService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url+"/datasources/World/datasets/continent_T/fields.json?");
+            expect(testUrl).toBe(url+"/datasources/World/datasets/continent_T/fields");
             expect(options).not.toBeNull();
             var getFieldsEscapedJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmGeometrySize"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmGeometrySize"]}`;
             return Promise.resolve(new Response(getFieldsEscapedJson));
@@ -64,7 +64,7 @@ describe('openlayers_FieldService', () => {
         var service = new FieldService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url+"/datasources/World1/datasets/continent_T/fields.json?");
+            expect(testUrl).toBe(url+"/datasources/World1/datasets/continent_T/fields");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
@@ -108,17 +108,17 @@ describe('openlayers_FieldService', () => {
         var service = new FieldService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
             expect(method).toBe("GET");
-            if (url.indexOf("/AVERAGE.json?") > -1) {
+            if (url.indexOf("/AVERAGE") > -1) {
                 return Promise.resolve(new Response(`{"result":4,"mode":"AVERAGE"}`));
-            }else if(url.indexOf("/MAX.json?")>-1){
+            }else if(url.indexOf("/MAX")>-1){
                 return Promise.resolve(new Response(`{"result":7,"mode":"MAX"}`));
-            }else if(url.indexOf("/MIN.json?")>-1){
+            }else if(url.indexOf("/MIN")>-1){
                 return Promise.resolve(new Response(`{"result":1,"mode":"MIN"}`));
-            }else if(url.indexOf("/STDDEVIATION.json?")>-1){
+            }else if(url.indexOf("/STDDEVIATION")>-1){
                 return Promise.resolve(new Response(`{"result":2.160246899469287,"mode":"STDDEVIATION"}`));
-            }else if(url.indexOf("/SUM.json?")>-1){
+            }else if(url.indexOf("/SUM")>-1){
                 return Promise.resolve(new Response(`{"result":28,"mode":"SUM"}`));
-            }else if(url.indexOf("/VARIANCE.json?")>-1){
+            }else if(url.indexOf("/VARIANCE")>-1){
                 return Promise.resolve(new Response(`{"result":4.666666666666667,"mode":"VARIANCE"}`));
             }
             return Promise.resolve();
@@ -171,17 +171,17 @@ describe('openlayers_FieldService', () => {
         var service = new FieldService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
             expect(method).toBe("GET");
-            if (url.indexOf("/AVERAGE.json?") > -1) {
+            if (url.indexOf("/AVERAGE") > -1) {
                 return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
-            }else if(url.indexOf("/MAX.json?")>-1){
+            }else if(url.indexOf("/MAX")>-1){
                 return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
-            }else if(url.indexOf("/MIN.json?")>-1){
+            }else if(url.indexOf("/MIN")>-1){
                 return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
-            }else if(url.indexOf("/STDDEVIATION.json?")>-1){
+            }else if(url.indexOf("/STDDEVIATION")>-1){
                 return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
-            }else if(url.indexOf("/SUM.json?")>-1){
+            }else if(url.indexOf("/SUM")>-1){
                 return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
-            }else if(url.indexOf("/VARIANCE.json?")>-1){
+            }else if(url.indexOf("/VARIANCE")>-1){
                 return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
             }
             return Promise.resolve();

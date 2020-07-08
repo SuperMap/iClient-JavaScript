@@ -107,15 +107,14 @@ export class RouteLocatorService extends SpatialAnalystBase {
      * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {
-        var jsonParameters, jsonStr = "geometry/routelocator", me = this, end;
-        end = me.url.substr(me.url.length - 1, 1);
+        var jsonParameters, jsonStr = "geometry/routelocator", me = this;
 
         if (params.dataset) {
             jsonStr = "datasets/" + params.dataset + "/linearreferencing/routelocator";
             params.sourceRoute = null;
         }
-        me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
-        me.url += "?returnContent=true";
+        me.url = Util.urlPathAppend(me.url, jsonStr);
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }

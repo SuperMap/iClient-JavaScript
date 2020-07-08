@@ -41,8 +41,8 @@ export class ImageSuperMapRest extends TileImage {
     options.attributions =
       options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>"
 
-    options.format = options.format ? options.format : 'png';
-    var layerUrl = options.url + '/image.' + options.format + '?';
+    options.format = options.format ? options.format : 'png'
+    var layerUrl = CommonUtil.urlPathAppend(options.url, "image." + options.format);
 
     options.serverType = options.serverType || ServerType.ISERVER;
     //为url添加安全认证信息片段
@@ -79,53 +79,52 @@ export class ImageSuperMapRest extends TileImage {
           break;
       }
       if (credential) {
-        newUrl += '&' + credential.getUrlParameters();
+        newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
       }
       return newUrl;
     }
 
+    const params = {};
     //切片是否透明
     var transparent = options.transparent !== undefined ? options.transparent : true;
-    layerUrl += '&transparent=' + transparent;
+    params['transparent'] = transparent;
 
     //是否使用缓存吗，默认为true
     var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;
-    layerUrl += '&cacheEnabled=' + cacheEnabled;
+    params['cacheEnabled'] = cacheEnabled;
 
     //如果有layersID，则是在使用专题图
     if (options.layersID !== undefined) {
-      layerUrl += '&layersID=' + options.layersID;
+      params['layersID'] = options.layersID;
     }
     //是否重定向,默认为false
     var redirect = false;
     if (options.redirect !== undefined) {
       redirect = options.redirect;
     }
-    layerUrl += '&redirect=' + redirect;
+    params['redirect'] = redirect;
 
     if (options.prjCoordSys) {
-      layerUrl += '&prjCoordSys=' + JSON.stringify(options.prjCoordSys);
+      params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
     }
     if (options.clipRegionEnabled && options.clipRegion instanceof Geometry) {
       options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
       options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
-      layerUrl +=
-        '&clipRegionEnabled=' + options.clipRegionEnabled + '&clipRegion=' + JSON.stringify(options.clipRegion);
+      params['clipRegionEnabled'] = options.clipRegionEnabled;
+      params['clipRegion'] = JSON.stringify(options.clipRegion);
     }
     if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
       // options.overlapDisplayedOptions = options.overlapDisplayedOptions;
-      layerUrl +=
-        '&overlapDisplayed=' +
-        options.overlapDisplayed +
-        '&overlapDisplayedOptions=' +
-        options.overlapDisplayedOptions.toString();
+      params['overlapDisplayed'] = options.overlapDisplayed;
+      params['overlapDisplayedOptions'] = options.overlapDisplayedOptions.toString();
     }
     if (cacheEnabled === true && options.tileversion) {
-      layerUrl += '&tileversion=' + options.tileversion;
+      params['tileversion'] = options.tileversion;
     }
     if (options.rasterfunction) {
-      layerUrl += '&rasterfunction=' + JSON.stringify(options.rasterfunction);
+      params['rasterfunction'] = JSON.stringify(options.rasterfunction);
     }
+    layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(params));
     super({
       attributions: options.attributions,
       cacheSize: options.cacheSize,

@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import { Util } from '../commontypes/Util';
 import {ProcessingServiceBase} from './ProcessingServiceBase';
 import {TopologyValidatorJobsParameter} from './TopologyValidatorJobsParameter';
 
@@ -19,7 +20,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/topologyvalidator";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/topologyvalidator');
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
     }
 
@@ -44,7 +45,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id
      */
     getTopologyValidatorJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs( Util.urlPathAppend(this.url, id));
     }
 
     /**

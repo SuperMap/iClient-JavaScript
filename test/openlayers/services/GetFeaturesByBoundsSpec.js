@@ -33,7 +33,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
     var getFeaturesByBoundsService = new FeatureService(featureServiceURL, options);
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=1&toIndex=3");
+      expect(testUrl).toBe(featureServiceURL + "/featureResults?returnContent=true&fromIndex=1&toIndex=3");
       expect(params).not.toBeNull();
       var paramsObj = JSON.parse(params.replace(/'/g, "\""));
       expect(paramsObj.datasetNames[0]).toBe("World:Capitals");

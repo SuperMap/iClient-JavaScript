@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
+import {AddressMatchService as CommonAddressMatchService, CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.AddressMatchService
@@ -49,7 +49,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
     }
 
     /**
@@ -72,7 +72,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
     }
 
 }

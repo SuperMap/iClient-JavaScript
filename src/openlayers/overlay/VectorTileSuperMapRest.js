@@ -339,9 +339,9 @@ export class VectorTileSuperMapRest extends VectorTile {
         }
     }
     _fillByRestMapOptions(url, options) {
-        this._tileUrl = options.url + '/tileFeature.json?';
+        this._tileUrl = CommonUtil.urlPathAppend(options.url, 'tileFeature.json');
         if (options.format instanceof MVT) {
-            this._tileUrl = options.url + '/tileFeature.mvt?';
+            this._tileUrl = CommonUtil.urlPathAppend(options.url, 'tileFeature.mvt');
         }
         //为url添加安全认证信息片段
         options.serverType = options.serverType || ServerType.ISERVER;
@@ -371,7 +371,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                     break;
             }
             if (credential) {
-                newUrl += '&' + credential.getUrlParameters();
+                newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
             }
             return newUrl;
         }
@@ -380,30 +380,30 @@ export class VectorTileSuperMapRest extends VectorTile {
         if (options.returnAttributes !== undefined) {
             returnAttributes = options.returnAttributes;
         }
-        var params = '';
-        params += '&returnAttributes=' + returnAttributes;
+        var params = {};
+        params['returnAttributes'] = returnAttributes;
         if (options._cache !== undefined) {
-            params += '&_cache=' + options._cache;
+            params['_cache'] = options._cache;
         }
         if (options.layersID !== undefined) {
-            params += '&layersID=' + options.layersID;
+            params['layersID'] = options.layersID;
         }
         if (options.layerNames !== undefined) {
-            params += '&layerNames=' + options.layerNames;
+            params['layerNames'] = options.layerNames;
         }
         if (options.expands !== undefined) {
-            params += '&expands=' + options.expands;
+            params['expands'] = options.expands;
         }
         if (options.compressTolerance !== undefined) {
-            params += '&compressTolerance=' + options.compressTolerance;
+            params['compressTolerance'] = options.compressTolerance;
         }
         if (options.coordinateType !== undefined) {
-            params += '&coordinateType=' + options.coordinateType;
+            params['coordinateType'] = options.coordinateType;
         }
         if (options.returnCutEdges !== undefined) {
-            params += '&returnCutEdges=' + options.returnCutEdges;
+            params['returnCutEdges'] = options.returnCutEdges;
         }
-        this._tileUrl += encodeURI(params);
+        this._tileUrl = CommonUtil.urlAppend(this._tileUrl,CommonUtil.getParameterString(params));
     }
 
     /**

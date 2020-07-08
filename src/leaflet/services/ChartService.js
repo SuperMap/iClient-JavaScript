@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import {DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
+import {DataFormat, ChartQueryService, ChartFeatureInfoSpecsService, CommonUtil} from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
 import {CommontypesConversion} from '../core/CommontypesConversion';
 
@@ -66,7 +66,7 @@ export var ChartService = ServiceBase.extend({
      */
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.url.concat();
-        url += "/chartFeatureInfoSpecs";
+        url = CommonUtil.urlPathAppend(url, 'chartFeatureInfoSpecs');
         var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

@@ -11,7 +11,8 @@ import {
     SetLayerStatusService,
     SetLayerStatusParameters,
     SetLayerInfoParameters,
-    SetLayersInfoParameters
+    SetLayersInfoParameters,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -75,8 +76,7 @@ export var LayerInfoService = ServiceBase.extend({
         if (!resourceID || !tempLayerName) {
             return;
         }
-        var url = me.url.concat();
-        url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
+        var url = CommonUtil.urlPathAppend(me.url,`tempLayersSet/${resourceID}/${tempLayerName}`);
 
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,

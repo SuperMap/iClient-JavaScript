@@ -3,8 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L, { Util, Layer, ImageOverlay } from 'leaflet';
 import '../core/Base';
-import { ServerGeometry, ServerType, SecurityManager, Credential } from '@supermap/iclient-common';
+import { ServerGeometry, ServerType, SecurityManager, Credential, CommonUtil } from '@supermap/iclient-common';
 import Attributions from '../core/Attributions';
+import { toSuperMapGeometry } from "../core/Util";
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。
@@ -176,9 +177,9 @@ export var ImageMapLayer = Layer.extend({
      * @returns {string} 请求瓦片地址。
      */
     getImageUrl: function(params) {
-        var imageUrl = Util.getParamString(params) + this._initLayerUrl();
-        var serviceUrl = this._url;
-        imageUrl = serviceUrl + '/image.' + this.options.format + imageUrl;
+        let serviceUrl = CommonUtil.urlPathAppend(this._url, `image.${this.options.format}`);
+        let imageUrl =
+            serviceUrl + Util.getParamString(Object.assign({}, this._initAllRequestParams(), params), serviceUrl);
         imageUrl = this._appendCredential(imageUrl);
         //支持代理
         if (this.options.tileProxy) {
@@ -200,52 +201,44 @@ export var ImageMapLayer = Layer.extend({
         };
     },
 
-    //拼接请求链接
-    _initLayerUrl: function() {
-        var me = this;
-        var layerUrl = '&';
-        layerUrl += encodeURI(me._initAllRequestParams().join('&'));
-        return layerUrl;
-    },
-
     //初始化服务请求参数
     _initAllRequestParams: function() {
         var me = this,
             options = me.options || {},
-            params = [];
+            params = {};
 
         var redirect = options.redirect === true ? options.redirect : false;
-        params.push('redirect=' + redirect);
+        params['redirect'] = redirect;
 
         var transparent = options.transparent === true ? options.transparent : false;
-        params.push('transparent=' + transparent);
+        params['transparent'] = transparent;
 
         var cacheEnabled = options.cacheEnabled === false ? options.cacheEnabled : true;
-        params.push('cacheEnabled=' + cacheEnabled);
+        params['cacheEnabled'] = cacheEnabled;
 
         if (options.prjCoordSys) {
-            params.push('prjCoordSys=' + JSON.stringify(options.prjCoordSys));
+            params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
         }
 
         if (options.layersID) {
-            params.push('layersID=' + options.layersID);
+            params['layersID'] = options.layersID;
         }
         if (options.rasterfunction) {
-            params.push('rasterfunction=' + JSON.stringify(options.rasterfunction));
+            params['rasterfunction'] = JSON.stringify(options.rasterfunction);
         }
 
         if (options.clipRegionEnabled && options.clipRegion) {
-            params.push('clipRegionEnabled=' + options.clipRegionEnabled);
-            params.push('clipRegion=' + JSON.stringify(ServerGeometry.fromGeometry(Util.toSuperMapGeometry(options.clipRegion))));
+            params['clipRegionEnabled'] = options.clipRegionEnabled;
+            params['clipRegion'] = JSON.stringify(ServerGeometry.fromGeometry(toSuperMapGeometry(options.clipRegion)));
         }
 
         if (options.overlapDisplayed === false) {
-            params.push('overlapDisplayed=false');
+            params['overlapDisplayed'] = false;
             if (options.overlapDisplayedOptions) {
-                params.push('overlapDisplayedOptions=' + me.overlapDisplayedOptions.toString());
+                params['overlapDisplayedOptions'] = me.overlapDisplayedOptions.toString();
             }
         } else {
-            params.push('overlapDisplayed=true');
+            params['overlapDisplayed'] = true;
         }
         return params;
     },
@@ -431,7 +424,7 @@ export var ImageMapLayer = Layer.extend({
                 break;
         }
         if (credential) {
-            newUrl += '&' + credential.getUrlParameters();
+            newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
         }
         return newUrl;
     }

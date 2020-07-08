@@ -41,7 +41,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?returnContent=true");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].fieldNames[1]).toBe("CAPITAL");
@@ -89,7 +89,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?isUseBatch=true");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?isUseBatch=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].fieldNames[1]).toBe("CAPITAL");
@@ -135,7 +135,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?ids=[238,239,240]");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=[238,239,240]");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -171,7 +171,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?ids=[241]");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=[241]");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the specified features does not exist"}}`));
         });
@@ -204,7 +204,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var getFeaturesByIDsService = new FeatureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.datasetNames[0]).toBe("Jingjin:Landuse_R");
@@ -244,7 +244,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
             });
             spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
                 expect(method).toBe("PUT");
-                expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?");
+                expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features");
                 expect(params).not.toBeNull();
                 var paramsObj = JSON.parse(params.replace(/'/g, "\""));
                 expect(paramsObj[0].fieldNames[0]).toBe("SMID");

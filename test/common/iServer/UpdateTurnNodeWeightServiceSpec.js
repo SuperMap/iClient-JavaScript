@@ -72,7 +72,7 @@ describe('UpdateTurnNodeWeightService', () => {
         myUpdateTurnNodeWeightService = initUpdateTurnNodeWeightService_RegisterListener(networkAnalystURL,updateTurnNodeWeightFailed,updateTurnNodeWeightCompleted);
         expect(myUpdateTurnNodeWeightService).not.toBeNull();
         spyOn(FetchRequest, 'put').and.callFake((testUrl,params) => {
-            expect(testUrl).toBe(networkAnalystURL+"/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost.json?");
+            expect(testUrl).toBe(networkAnalystURL+"/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost");
             expect(params).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });

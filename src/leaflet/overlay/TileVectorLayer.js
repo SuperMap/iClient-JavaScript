@@ -14,7 +14,8 @@ import {
     Unit,
     ServerType,
     Credential,
-    SecurityManager
+    SecurityManager,
+    CommonUtil
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
 import Attributions from '../core/Attributions'
@@ -124,7 +125,7 @@ export var TileVectorLayer = VectorGrid.extend({
      */
     initLayersInfo: function () {
         var me = this;
-        var layersUrl = me.url + "/layers.json";
+        var layersUrl = CommonUtil.urlPathAppend(me.url, "layers");
         FetchRequest.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
@@ -209,7 +210,7 @@ export var TileVectorLayer = VectorGrid.extend({
      */
     getVectorStylesFromServer: function () {
         var me = this;
-        var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
+        var vectorStyleUrl = CommonUtil.urlPathAppend(me.url, "tileFeature/vectorstyles");
         FetchRequest.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
@@ -446,8 +447,8 @@ export var TileVectorLayer = VectorGrid.extend({
             return;
         }
         var format = options.format.toString().toLowerCase();
-        this._tileUrl = this.url + "/tileFeature." + format + "?";
-        this._tileUrl += encodeURI(this._createURLParam(options));
+        this._tileUrl = CommonUtil.urlPathAppend(this.url, "tileFeature." + format );
+        this._tileUrl = CommonUtil.urlAppend(this._tileUrl, encodeURI(this._createURLParam(options)));
     },
 
     _createURLParam: function (options) {

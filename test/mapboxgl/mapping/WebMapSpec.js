@@ -309,7 +309,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Theme_base;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(csvData));
 	        }
 	        return Promise.resolve();
@@ -337,7 +337,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Theme_base_Line;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(geojsonData));
 	        }
 	        return Promise.resolve();
@@ -366,7 +366,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Image;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(geojsonData));
 	        }
 	        return Promise.resolve();
@@ -404,7 +404,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Unique;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(xlsData));
 	        }
 	        return Promise.resolve();
@@ -433,7 +433,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Range;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(geojsonData));
 	        }
 	        return Promise.resolve();
@@ -465,7 +465,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Heat;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(csvData));
 	        }
 	        return Promise.resolve();
@@ -494,7 +494,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_Marker;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(markerData));
 	        }
 	        return Promise.resolve();
@@ -588,7 +588,7 @@ describe('mapboxgl_WebMap', () => {
 	        return Promise.resolve();
 	    });
 	    spyOn(FetchRequest, 'post').and.callFake((url) => {
-	        if (url === 'http://192.168.12.27:8091/iserver/services/data-jingjin/rest/data/featureResults.json?returnContent=true&fromIndex=0&toIndex=100000') {
+	        if (url === 'http://192.168.12.27:8091/iserver/services/data-jingjin/rest/data/featureResults?returnContent=true&fromIndex=0&toIndex=100000') {
 	            return Promise.resolve(new Response(supermapData));
 	        }
 	        return Promise.resolve();
@@ -731,7 +731,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_SVG1;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(geojsonData));
 	        }
 	        return Promise.resolve();
@@ -768,7 +768,7 @@ describe('mapboxgl_WebMap', () => {
 	        if (url.indexOf("map.json") > -1) {
 	            var mapJson = datavizWebMap_symbol;
 	            return Promise.resolve(new Response(mapJson));
-	        } else if (url.indexOf('content.json?') > -1) {
+	        } else if (url.indexOf('content?') > -1) {
 	            return Promise.resolve(new Response(geojsonData));
 	        }
 	        return Promise.resolve();

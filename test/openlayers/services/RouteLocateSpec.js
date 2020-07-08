@@ -33,13 +33,13 @@ describe('openlayers_SpatialAnalystService_routeLocate', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method,url,params) => {
             expect(method).toBe("POST");
-            if(url.indexOf("/queryResults.json?returnContent=true")>-1){
+            if(url.indexOf("/queryResults?returnContent=true")>-1){
                 expect(params).not.toBeNull();
                 var paramsObj = JSON.parse(params.replace(/'/g, "\""));
                 expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("RouteID=1690");
                 expect(paramsObj.queryParameters.queryParams[0].name).toBe("RouteDT_road@Changchun");
                 return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasure_queryBySQLServiceResult)));
-            }else if(url.indexOf("/routelocator.json?returnContent=true")>-1){
+            }else if(url.indexOf("/routelocator?returnContent=true")>-1){
                 var param= JSON.parse(params.replace(/'/g, "\""));
                 expect(param.sourceRoute.type).toBe("LINEM");
                 return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
@@ -87,12 +87,12 @@ describe('openlayers_SpatialAnalystService_routeLocate', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method,url,params) => {
             expect(method).toBe("POST");
-            if(url.indexOf("/queryResults.json?returnContent=true")>-1){
+            if(url.indexOf("/queryResults?returnContent=true")>-1){
                 var paramsObj = JSON.parse(params.replace(/'/g, "\""));
                 expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("RouteID=1690");
                 expect(paramsObj.queryParameters.queryParams[0].name).toBe("RouteDT_road@Changchun");
                 return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasure_queryBySQLServiceResult)));
-            }else if(url.indexOf("/routelocator.json?returnContent=true")>-1){
+            }else if(url.indexOf("/routelocator?returnContent=true")>-1){
                 var paramObj = JSON.parse(params.replace(/'/g, "\""));
                 expect(paramObj.sourceRoute.type).toBe("LINEM");
                 return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
