@@ -190,7 +190,7 @@ describe('mapboxgl_LayerInfoService', () => {
         });
         var service = new LayerInfoService(url);
         spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
-            expect(testUrl).toContain("continent_T@World.1@@World.json");
+            expect(testUrl).toContain("continent_T@World.1@@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World"}`));
         });

@@ -124,7 +124,7 @@ export class ImageSuperMapRest extends TileImage {
     if (options.rasterfunction) {
       params['rasterfunction'] = JSON.stringify(options.rasterfunction);
     }
-    layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(params));
+    layerUrl = CommonUtil.urlAppend(encodeURI(layerUrl), CommonUtil.getParameterString(params));
     super({
       attributions: options.attributions,
       cacheSize: options.cacheSize,
@@ -190,27 +190,28 @@ export class ImageSuperMapRest extends TileImage {
       }
       var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
       var tileSize = olSize.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-      var url = encodeURI(
-        layerUrl +
-        '&width=' +
-        tileSize[0] +
-        '&height=' +
-        tileSize[1] +
-        '&viewBounds=' +
-        '{"leftBottom" : {"x":' +
-        tileExtent[0] +
-        ',"y":' +
-        tileExtent[1] +
-        '},"rightTop" : {"x":' +
-        tileExtent[2] +
-        ',"y":' +
-        tileExtent[3] +
-        '}}'
-      );
+      var url =
+          layerUrl +
+          encodeURI(
+              '&width=' +
+                  tileSize[0] +
+                  '&height=' +
+                  tileSize[1] +
+                  '&viewBounds=' +
+                  '{"leftBottom" : {"x":' +
+                  tileExtent[0] +
+                  ',"y":' +
+                  tileExtent[1] +
+                  '},"rightTop" : {"x":' +
+                  tileExtent[2] +
+                  ',"y":' +
+                  tileExtent[3] +
+                  '}}'
+          );
 
       //支持代理
       if (me.tileProxy) {
-        url = me.tileProxy + encodeURIComponent(url);
+          url = me.tileProxy + encodeURIComponent(url);
       }
       //不启用缓存时启用时间戳
       if (!me.cacheEnabled) {

@@ -72,7 +72,7 @@ export class LayerInfoService extends ServiceBase {
         if (!resourceID || !tempLayerName) {
             return;
         }
-        var url = CommonUtil.urlPathAppend(url, "tempLayersSet/" + resourceID + "/" + tempLayerName);
+        var url = CommonUtil.urlPathAppend(me.url, "tempLayersSet/" + resourceID + "/" + tempLayerName);
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

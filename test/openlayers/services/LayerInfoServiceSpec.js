@@ -202,7 +202,7 @@ describe('openlayers_LayerInfoService', () => {
             layerInfo: layers
         });
         spyOn(FetchRequest, 'put').and.callFake((testUrl,params,options) => {
-            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World.json");
+            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.ugcLayerType).toBe("VECTOR");
             expect(paramsObj.caption).toBe("continent_T@World");
