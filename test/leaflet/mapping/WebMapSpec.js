@@ -81,7 +81,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("testH");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 2000)
     });
 
     it('initialize_TIANDITU_VEC', (done) => {
