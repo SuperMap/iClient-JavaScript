@@ -882,7 +882,7 @@ export class WebMap extends Observable {
      */
     createDynamicTiledSource(layerInfo, isBaseLayer) {
         let serverType = "IPORTAL",
-            credential = layerInfo.credential,
+            credential = layerInfo.credential ? layerInfo.credential.token : undefined,
             keyfix = 'Token',
             keyParams = layerInfo.url;
 
@@ -902,7 +902,8 @@ export class WebMap extends Observable {
             serverType: serverType,
             crossOrigin: 'anonymous',
             // extent: this.baseLayerExtent,
-            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] }
+            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
+            format: layerInfo.format
         };
         if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
             let visibleResolutions = [];
@@ -1069,6 +1070,9 @@ export class WebMap extends Observable {
         }
         // bug IE11 不会自动编码
         url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
+        if(layerInfo.credential) {
+            url = `${url}&token=${encodeURI(layerInfo.credential.token)}`;
+        }
 
         }else{
             url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
@@ -1079,10 +1083,13 @@ export class WebMap extends Observable {
         };
         FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return layerInfo.layerType  === "TILE" ? response.json() : response.text();
-        }).then(function (result) {
+        }).then(async function (result) {
             if (layerInfo.layerType === "TILE") {
                 layerInfo.extent = [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top];
                 layerInfo.projection = `EPSG:${result.prjCoordSys.epsgCode}`;
+                let token = layerInfo.credential ? layerInfo.credential.token : undefined;
+                let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+                layerInfo.format = isSupprtWebp ? 'webp' : 'png';
                 callback(layerInfo);
             } else {
                 layerInfo.projection = that.baseProjection;
@@ -1111,7 +1118,7 @@ export class WebMap extends Observable {
         }
         return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
-        }).then(function (result) {
+        }).then(async function (result) {
             // layerInfo.projection = mapInfo.projection;
             // layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
              // 比例尺 单位
@@ -1121,8 +1128,12 @@ export class WebMap extends Observable {
             }
             layerInfo.maxZoom = result.maxZoom;
             layerInfo.maxZoom = result.minZoom;
+            let token = layerInfo.credential ? layerInfo.credential.token : undefined;
+            let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+            layerInfo.format = isSupprtWebp ? 'webp' : 'png';
             // 请求结果完成 继续添加图层
             if(mapInfo){
+                //todo 这个貌似没有用到，下次优化
                 callback && callback(mapInfo, null, true, that);
             }else{
                 callback && callback(layerInfo);
@@ -4170,7 +4181,9 @@ export class WebMap extends Observable {
         return resolutions;
     }
     /**
-     * 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
+     * @private
+     * @function ol.supermap.WebMap.prototype.isSameDomain
+     * @description 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
      * @param {*} url
      */
     isSameDomain (url) {
@@ -4188,5 +4201,93 @@ export class WebMap extends Observable {
             let domainArray = domain.split('.'), docDomainArray = docDomain.split('.');
             return domainArray[1] === docDomainArray[1] && domainArray[2] === docDomainArray[2];
         }
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.isSupportWebp
+     * @description 判断是否支持webP
+     * @param {*} url 服务地址
+     * @param {*} token 服务token
+     * @returns {boolean}
+     */
+    isSupportWebp(url, token) {
+        // 还需要判断浏览器
+        let isIE = this.isIE();
+        if(isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) || 
+            (this.isChrome() && this.getChromeVersion() < 32)) {
+            return false;
+        } 
+        url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
+        url = this.getRequestUrl(url);
+        return FetchRequest.get(url, null, {
+            withCredentials: this.withCredentials
+        }).then(function (response) {
+            if(response.status !== 200) {
+                throw response.status;   
+            }
+            return response;
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        })
+    }
+     /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.isIE
+     * @description 判断当前浏览器是否为IE
+     * @returns {boolean}
+     */
+    isIE() {
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.isFirefox
+     * @description  判断当前浏览器是否为 firefox
+     * @returns {boolean}
+     */
+    isFirefox(){
+        let userAgent = navigator.userAgent;
+        return userAgent.indexOf("Firefox") > -1;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.isChrome
+     * @description  判断当前浏览器是否为谷歌
+     * @returns {boolean}
+     */
+    isChrome() {
+        let userAgent = navigator.userAgent;
+        return userAgent.indexOf("Chrome") > -1;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getFirefoxVersion
+     * @description 获取火狐浏览器的版本号
+     * @returns {Number}
+     */
+    getFirefoxVersion() {
+        let userAgent = navigator.userAgent.toLowerCase(),
+            version = userAgent.match(/firefox\/([\d.]+)/);
+        return +version[1];
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getChromeVersion
+     * @description 获取谷歌浏览器版本号
+     * @returns {Number}
+     */
+    getChromeVersion() {
+        let userAgent = navigator.userAgent.toLowerCase(),
+            version = userAgent.match(/chrome\/([\d.]+)/);
+        return +version[1];
     }
 }
