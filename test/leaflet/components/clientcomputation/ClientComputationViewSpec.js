@@ -41,7 +41,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             // let param = JSON.parse(queryString.replace(/\'/g, "\""));
             console.log(url);
-            if (url.indexOf("/queryResults.json") > -1) {
+            if (url.indexOf("/queryResults") > -1) {
                 var escapedJson = clientComputationViewJson;
                 return Promise.resolve(new Response(JSON.stringify(escapedJson)));
 

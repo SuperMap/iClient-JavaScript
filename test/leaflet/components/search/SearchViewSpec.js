@@ -64,7 +64,7 @@ describe('leaflet_search_SearchView', () => {
                 var paramsObj = JSON.parse(queryString.replace(/'/g, "\""));
                 expect(paramsObj.queryMode).toBe("SqlQuery");
                 expect(paramsObj.queryParameters.queryOption).toBe("ATTRIBUTEANDGEOMETRY");
-                if (url.indexOf("/queryResults.json") > -1) {
+                if (url.indexOf("/queryResults") > -1) {
                     var escapedJson = capitals;
                     return Promise.resolve(new Response(JSON.stringify(escapedJson)));
 

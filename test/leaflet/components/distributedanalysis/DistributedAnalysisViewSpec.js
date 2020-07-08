@@ -29,7 +29,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
                 var resultJson1 = `{"datasetCount":8,"datasetNames":["samples_processing_newyorkZone_R","samples_processing_singleRegion_R","samples_processing_newyorkRoads_L","samples_processing_newyorkPoint_P","samples_processing_newyorkResidential_R", "samples_processing_featurejoin_states_R", "samples_processing_reconstructTracks_P", "samples_newyork_taxi_2013-01_14k"],
                 "childUriList":["http://54.223.164.155:8090/iserver/services/dataca…atalog/sharefile/samples_processing_newyorkZone_R", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_singleRegion_R", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_newyorkRoads_L", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_newyorkPoint_P", "http://54.223.164.155:8090/iserver/services/dataca…sharefile/samples_processing_newyorkResidential_R", "http://54.223.164.155:8090/iserver/services/dataca…sharefile/samples_processing_featurejoin_states_R", "http://54.223.164.155:8090/iserver/services/dataca…/sharefile/samples_processing_reconstructTracks_P", "http://54.223.164.155:8090/iserver/services/dataca…atalog/sharefile/samples_newyork_taxi_2013-01_14k"]}`
                 return Promise.resolve(new Response(resultJson1));
-            } else  if (url.indexOf("/datasets.json") > -1) {
+            } else  if (url.indexOf("/datasets") > -1) {
                 var resultJson2 = `{"datasetCount":0,"datasetNames":[],"childUriList":[]}`;
                 return Promise.resolve(new Response(resultJson2));
             } else if (url.indexOf("/samples_processing_newyorkRoads_L") > -1) {
@@ -72,7 +72,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
     it('analysis', (done) => {
         expect(distributedAnalysis).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url) => {
-            if (url.indexOf("/density.json") > -1) {
+            if (url.indexOf("/density") > -1) {
                 var analysisResult = kernelDensityJob_post;
                 return Promise.resolve(new Response(analysisResult));
             }

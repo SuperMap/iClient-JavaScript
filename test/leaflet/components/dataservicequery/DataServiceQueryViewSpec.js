@@ -47,7 +47,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         expect(dataServiceQuery).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             let param = JSON.parse(queryString.replace(/\'/g, "\""));
-            if (url.indexOf(dataServiceURL + "/featureResults.json") > -1 && param.getFeatureMode === "ID") {
+            if (url.indexOf(dataServiceURL + "/featureResults") > -1 && param.getFeatureMode === "ID") {
                 var escapedJson = `{"features":[{"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","USERID","POP","CAPITAL_LO","CAPITAL_CH","COUNTRY_CH","CAPITAL_EN","COUNTRY_EN","COUNTRY","CAP_POP","CAPITAL"],"geometry":{"center":{"x":-47.8977476573595,"y":-15.792110943058866},"parts":[1],"style":null,"prjCoordSys":null,"id":1,"type":"POINT","partTopo":null,"points":[{"x":-47.8977476573595,"y":-15.792110943058866}]},"fieldValues":["1","-47.8977476573595","-15.792110943058866","1","0","16","0","2207718.0","Brasília","巴西利亚","巴西","Brasilia","Brazil","巴西","2207718.0","巴西利亚"],"ID":1},{"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","USERID","POP","CAPITAL_LO","CAPITAL_CH","COUNTRY_CH","CAPITAL_EN","COUNTRY_EN","COUNTRY","CAP_POP","CAPITAL"],"geometry":{"center":{"x":-171.739493590236,"y":-13.837022952831255},"parts":[1],"style":null,"prjCoordSys":null,"id":2,"type":"POINT","partTopo":null,"points":[{"x":-171.739493590236,"y":-13.837022952831255}]},"fieldValues":["2","-171.739493590236","-13.837022952831255","1","0","16","0","40407.0","Apia","阿皮亚","萨摩亚","Apia","Samoa","萨摩亚","40407.0","阿皮亚"],"ID":2},{"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","USERID","POP","CAPITAL_LO","CAPITAL_CH","COUNTRY_CH","CAPITAL_EN","COUNTRY_EN","COUNTRY","CAP_POP","CAPITAL"],"geometry":{"center":{"x":-175.245650649682,"y":-21.13090205664112},"parts":[1],"style":null,"prjCoordSys":null,"id":3,"type":"POINT","partTopo":null,"points":[{"x":-175.245650649682,"y":-21.13090205664112}]},"fieldValues":["3","-175.245650649682","-21.13090205664112","1","0","16","0","22400.0","Nukuʻalofa","努库阿洛法","汤加","Nuku' alofa","Tonga","汤加","22400.0","努库阿洛法"],"ID":3}],"featureUriList":[],"totalCount":3,"featureCount":3}`;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -81,7 +81,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         expect(dataServiceQuery).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             let param = JSON.parse(queryString.replace(/\'/g, "\""));
-            if (url.indexOf(dataServiceURL + "/featureResults.json") > -1 && param.getFeatureMode === "SQL") {
+            if (url.indexOf(dataServiceURL + "/featureResults") > -1 && param.getFeatureMode === "SQL") {
                 var escapedJson = `{"features":[{"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","USERID","POP","CAPITAL_LO","CAPITAL_CH","COUNTRY_CH","CAPITAL_EN","COUNTRY_EN","COUNTRY","CAP_POP","CAPITAL"],"geometry":{"center":{"x":-47.8977476573595,"y":-15.792110943058866},"parts":[1],"style":null,"prjCoordSys":null,"id":1,"type":"POINT","partTopo":null,"points":[{"x":-47.8977476573595,"y":-15.792110943058866}]},"fieldValues":["1","-47.8977476573595","-15.792110943058866","1","0","16","0","2207718.0","Brasília","巴西利亚","巴西","Brasilia","Brazil","巴西","2207718.0","巴西利亚"],"ID":1}],"featureUriList":[],"totalCount":1,"featureCount":1}`;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -124,7 +124,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         expect(dataServiceQuery).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             let param = JSON.parse(queryString.replace(/\'/g, "\""));
-            if (url.indexOf(dataServiceURL + "/featureResults.json") > -1 && param.getFeatureMode.indexOf("BOUNDS") > -1) {
+            if (url.indexOf(dataServiceURL + "/featureResults") > -1 && param.getFeatureMode.indexOf("BOUNDS") > -1) {
                 var escapedJson = `{"features":[],"featureUriList":[],"totalCount":0,"featureCount":0}`;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -165,7 +165,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         expect(dataServiceQuery).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             let param = JSON.parse(queryString.replace(/\'/g, "\""));
-            if (url.indexOf(dataServiceURL + "/featureResults.json") > -1 && param.getFeatureMode.indexOf("BUFFER") > -1) {
+            if (url.indexOf(dataServiceURL + "/featureResults") > -1 && param.getFeatureMode.indexOf("BUFFER") > -1) {
                 var escapedJson = `{"features":[],"featureUriList":[],"totalCount":0,"featureCount":0}`;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -209,7 +209,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         expect(dataServiceQuery).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             let param = JSON.parse(queryString.replace(/\'/g, "\""));
-            if (url.indexOf(dataServiceURL + "/featureResults.json") > -1 && param.getFeatureMode.indexOf("SPATIAL") > -1) {
+            if (url.indexOf(dataServiceURL + "/featureResults") > -1 && param.getFeatureMode.indexOf("SPATIAL") > -1) {
                 var escapedJson = `{"features":[] ,"featureUriList":[],"totalCount":0,"featureCount":0}`;
                 return Promise.resolve(new Response(escapedJson));
             }

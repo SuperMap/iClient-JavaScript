@@ -54,7 +54,7 @@ describe("openlayers_MapboxStyles", () => {
         });
         feature3.setId(3);
         spyOn(FetchRequest, "get").and.callFake((testUrl, params, options) => {
-            if (testUrl.indexOf("vectorstyles.json") > 0) {
+            if (testUrl.indexOf("vectorstyles") > 0) {
                 expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
                 return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
             } else if (testUrl.indexOf("sprite.json") > 0) {
