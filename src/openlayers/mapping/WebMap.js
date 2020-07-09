@@ -1087,9 +1087,10 @@ export class WebMap extends Observable {
             if (layerInfo.layerType === "TILE") {
                 layerInfo.extent = [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top];
                 layerInfo.projection = `EPSG:${result.prjCoordSys.epsgCode}`;
-                // let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-                // let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
-                // layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+                let token = layerInfo.credential ? layerInfo.credential.token : undefined;
+                let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+                // eslint-disable-next-line require-atomic-updates
+                layerInfo.format = isSupprtWebp ? 'webp' : 'png';
                 callback(layerInfo);
             } else {
                 layerInfo.projection = that.baseProjection;
@@ -1128,9 +1129,10 @@ export class WebMap extends Observable {
             }
             layerInfo.maxZoom = result.maxZoom;
             layerInfo.maxZoom = result.minZoom;
-            // let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-            // let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
-            // layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            let token = layerInfo.credential ? layerInfo.credential.token : undefined;
+            let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+            // eslint-disable-next-line require-atomic-updates
+            layerInfo.format = isSupprtWebp ? 'webp' : 'png';
             // 请求结果完成 继续添加图层
             if(mapInfo){
                 //todo 这个貌似没有用到，下次优化
