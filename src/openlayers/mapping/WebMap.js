@@ -2560,13 +2560,14 @@ export class WebMap extends Observable {
             backgroundFill: new FillStyle({ color: backgroundFill }),
             padding: [3, 3, 3, 3],
             offsetX: layerInfo.featureType === 'POINT' ? offsetX : 0,
-            offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0
+            offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0,
+            maxAngle: 0
         };
         if (outlineWidth > 0) {
-        option.stroke = new StrokeStyle({
-            color: outlineColor,
-            width: outlineWidth
-        });
+            option.stroke = new StrokeStyle({
+                color: outlineColor,
+                width: outlineWidth
+            });
         }
 
         return new Style({
