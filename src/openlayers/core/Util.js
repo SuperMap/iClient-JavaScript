@@ -3,11 +3,11 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Unit, Bounds, GeoJSON as GeoJSONFormat, FilterParameter,
     GetFeaturesBySQLParameters,
-    GetFeaturesBySQLService,
     QueryBySQLParameters,
     QueryOption
 } from '@supermap/iclient-common';
 import { QueryService } from '../services/QueryService';
+import { FeatureService } from '../services/FeatureService';
 import * as olUtil from 'ol/util';
 
 /**
@@ -336,36 +336,29 @@ export class Util {
      * @description 获取feature
      * @param {string} url - 获取feature的请求地址
      * @param {string} datasetNames - 数据集名称
+     * @param {object} serviceOptions - 服务类需要的参数
      * @param {function} processCompleted - 成功请求的回调函数
      * @param {function} processFaild - 失败请求的回调函数
      */
-    static getFeatureBySQL(url, datasetNames, processCompleted, processFaild) {
-        let getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new FilterParameter({
+    static getFeatureBySQL(url, datasetNames, serviceOptions ,processCompleted, processFaild) {
+        let getFeatureParam = new FilterParameter({
             name: datasetNames.join().replace(":", "@")
              // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131 
-        });
-        getFeatureBySQLParams = new GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            datasetNames: datasetNames,
-            fromIndex: 0,
-            toIndex: 100000,
-            maxFeatures: 100000,
-            returnContent: true
-        });
-        let options = {
-            eventListeners: {
-                processCompleted: function (getFeaturesEventArgs) {
-                    processCompleted && processCompleted(getFeaturesEventArgs);
-                },
-                processFailed: function (e) {
-                    processFaild && processFaild(e);
-                }
-            },
-            withCredentials: true
+        }), getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+                queryParameter: getFeatureParam,
+                datasetNames: datasetNames,
+                fromIndex: 0,
+                toIndex: 100000,
+                maxFeatures: 100000,
+                returnContent: true
+        }), callback = (serviceResult) => {
+            if(serviceResult.type === "processCompleted") {
+                processCompleted && processCompleted(serviceResult); 
+            } else {
+                processFaild && processFaild(serviceResult);  
+            }
         };
-        getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        new FeatureService(url, serviceOptions).getFeaturesBySQL(getFeatureBySQLParams, callback);
     }
 
     static queryFeatureBySQL(url, layerName, attributeFilter, fields, epsgCode, processCompleted, processFaild, startRecord, recordLength, onlyAttribute) {

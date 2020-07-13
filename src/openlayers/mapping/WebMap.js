@@ -900,7 +900,7 @@ export class WebMap extends Observable {
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
-            crossOrigin: 'anonymous',
+            // crossOrigin: 'anonymous', //在IE11.0.9600版本，会影响通过注册服务打开的iserver地图，不出图。因为没有携带cookie会报跨域问题
             // extent: this.baseLayerExtent,
             prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
             format: layerInfo.format
@@ -1763,9 +1763,12 @@ export class WebMap extends Observable {
         let that = this,dataSource = layer.dataSource,
             url = layer.dataSource.url,
             dataSourceName= dataSource.dataSourceName || layer.name;
-        let requestUrl = that.getRequestUrl(url);
+        let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
+        if(!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
+            serviceOptions.proxy = this.getProxy();
+        }
         //因为itest上使用的https，iserver是http，所以要加上代理
-        Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
+        Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
             let features = that.parseGeoJsonData2Feature({
                 allDatas: {
                     features: result.result.features.features
@@ -2241,9 +2244,12 @@ export class WebMap extends Observable {
         if(dataSource.type === "USER_DATA" || dataSource.accessType==="DIRECT" ) {
             that.addGeojsonFromUrl(layerInfo, null, layerIndex)
         } else {
-            let requestUrl = that.getRequestUrl(url);
+            let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
+            if(!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
+                serviceOptions.proxy = this.getProxy();
+            }
             //因为itest上使用的https，iserver是http，所以要加上代理
-            Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
+            Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
                 let features = that.parseGeoJsonData2Feature({
                     allDatas: {
                         features: result.result.features.features
@@ -3516,16 +3522,25 @@ export class WebMap extends Observable {
      * @returns {Promise<T | never>} 请求地址
      */
     getRequestUrl(url) {
-        if(this.credentialValue) {
-            //有token之类的配置项
-            url = url.indexOf("?") === -1 ? `${url}?${this.credentialKey}=${this.credentialValue}` :
-            `${url}&${this.credentialKey}=${this.credentialValue}`;
-        }
+        this.formatUrlWithCredential(url);
         //如果传入进来的url带了代理则不需要处理
         if(this.excludePortalProxyUrl) {
             return;
         }
         return CommonUtil.isInTheSameDomain(url) ? url : `${this.getProxy()}${encodeURIComponent(url)}`;
+    }
+
+    /**
+     * 给url带上凭证密钥
+     * @param {*} url 地址
+     */
+    formatUrlWithCredential(url) {
+        if(this.credentialValue) {
+            //有token之类的配置项
+            url = url.indexOf("?") === -1 ? `${url}?${this.credentialKey}=${this.credentialValue}` :
+            `${url}&${this.credentialKey}=${this.credentialValue}`;
+        }  
+        return url;
     }
 
     /**
