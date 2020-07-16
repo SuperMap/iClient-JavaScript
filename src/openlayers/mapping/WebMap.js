@@ -113,16 +113,71 @@ export class WebMap extends Observable {
     }
 
     /**
-     * @function ol.supermap.WebMap.prototype.createMap
+     * @function ol.supermap.WebMap.prototype._removeBaseLayer
+     * @description 移除底图
+     */
+    _removeBaseLayer() {
+        const map = this.map;
+        const { layer, labelLayer } = this.baseLayer;
+        // 移除天地图标签图层
+        labelLayer && map.removeLayer(labelLayer);
+        // 移除图层
+        layer && map.removeLayer(layer);
+        this.baseLayer = null;
+    }
+
+    /**
+     * @function ol.supermap.WebMap.prototype._removeLayers
+     * @description 移除叠加图层
+     */
+    _removeLayers() {
+        const map = this.map;
+        this.layers.forEach(({ layerType, layer, labelLayer, pathLayer, dataflowService }) => {
+            if (!layer) {
+                return;
+            }
+            if (layerType === 'MIGRATION') {
+                layer.remove();
+                return;
+            }
+            if (layerType === 'DATAFLOW_POINT_TRACK' || layerType === 'DATAFLOW_HEAT') {
+                // 移除轨迹图层
+                pathLayer && map.removeLayer(pathLayer);
+                // 取消订阅
+                dataflowService && dataflowService.unSubscribe();
+            }
+            // 移除标签图层
+            labelLayer && map.removeLayer(labelLayer);
+            // 移除图层
+            map.removeLayer(layer)
+        });
+        this.layers = [];
+    }
+
+    /**
+     * @function ol.supermap.WebMap.prototype.clear
+     * @description 清空地图
+     */
+    clear() {
+        // 比例尺
+        this.scales = [];
+        // 分辨率
+        this.resolutionArray = [];
+        // 比例尺-分辨率 {scale: resolution}
+        this.resolutions = {};
+        // 计数叠加图层，处理过的数量（成功和失败都会计数）
+        this.layerAdded = 0;
+
+        this._removeBaseLayer();
+        this._removeLayers();
+    }
+
+    /**
+     * @function ol.supermap.WebMap.prototype.reRender
      * @description 重新渲染地图
      */
     reRender() {
-        // 移除所有图层 没找到清空地图的方法
-        this.layerAdded = 0;
-        const layers = this.map.getLayers().getArray();
-        for (let i = 0, length = layers.length; i < length; i++) {
-            this.map.removeLayer(layers[0]);
-        }
+        this.clear();
         this.createWebmap();
     }
 
@@ -490,7 +545,7 @@ export class WebMap extends Observable {
         let {baseLayer} = mapInfo, layerType = baseLayer.layerType;
         //底图，使用默认的配置，不用存储的
         if(layerType !== 'TILE' && layerType !== 'WMS' && layerType !== 'WMTS'){
-            this.getInternetMapInfo(mapInfo.baseLayer);
+            this.getInternetMapInfo(baseLayer);
         }else if(layerType === 'WMTS'){
             // 通过请求完善信息
             await this.getWmtsInfo(baseLayer);
@@ -513,15 +568,16 @@ export class WebMap extends Observable {
             this.mapParams.extent = baseLayer.extent;
             this.mapParams.projection = mapInfo.projection;
         }
-        if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
-            let layerInfo = mapInfo.baseLayer;
+        if (baseLayer.labelLayerVisible) {
             //存在天地图路网
             let labelLayer = new olLayer.Tile({
-                source: this.createTiandituSource(layerInfo.layerType, mapInfo.projection, true),
-                zIndex: layerInfo.zIndex || 1,
-                visible: layerInfo.visible
+                source: this.createTiandituSource(baseLayer.layerType, mapInfo.projection, true),
+                zIndex: baseLayer.zIndex || 1,
+                visible: baseLayer.visible
             });
             this.map.addLayer(labelLayer);
+            // 挂载带baseLayer上，便于删除
+            baseLayer.labelLayer = labelLayer;
         }
     }
     /**
@@ -3037,6 +3093,8 @@ export class WebMap extends Observable {
             pathLayer.setZIndex(layerIndex);
             this.map.addLayer(pathLayer);
             visibleScale && this.setVisibleScales(pathLayer, visibleScale);
+            // 挂载到layerInfo上，便于删除
+            layerInfo.pathLayer = pathLayer;
         }
         let featureCache = {}, labelFeatureCache={}, pathFeatureCache = {}, that = this;
         this.createDataflowService(layerInfo, function (featureCache, labelFeatureCache, pathFeatureCache) {
@@ -3268,8 +3326,8 @@ export class WebMap extends Observable {
             });
             feature.setProperties({attributes: geojson.properties});
             callback(feature);
-
         });
+        layerInfo.dataflowService = dataflowService;
     }
 
     /**
