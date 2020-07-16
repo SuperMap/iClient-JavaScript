@@ -326,7 +326,7 @@ SuperMap.Util.urlPathAppend = function (url, pathStr) {
         pathStr = pathStr.substring(1);
     }
     const parts = url.split('?');
-    if(!parts[0].indexOf('/', this.length - 1) !== -1){
+    if(parts[0].indexOf('/', parts[0].length - 1) < 0){
         parts[0] += '/'
     }
     newUrl = `${parts[0]}${pathStr}${parts.length > 1 ? `?${parts[1]}` : ''}`;
