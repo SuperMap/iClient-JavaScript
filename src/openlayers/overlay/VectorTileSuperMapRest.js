@@ -48,7 +48,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         options.attributions =
             options.attributions ||
             "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
-        if (!['4', '5'].includes(Util.getOlVersion())) {
+        if (['4', '5'].indexOf(Util.getOlVersion()) < 0) {
             options.tileSize = options.format instanceof MVT && options.style ? 512 : 256;
         }
         super({
@@ -73,7 +73,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             urls: options.urls,
             wrapX: options.wrapX !== undefined ? options.wrapX : false,
             tileSize: options.tileSize || null,
-            zDirection: ['4', '5'].includes(Util.getOlVersion()) ? null : 0
+            zDirection: ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? null : 0
         });
         var me = this;
         me.withCredentials = options.withCredentials;
@@ -102,7 +102,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             var params = '';
             var z = tileCoord[0];
             var x = tileCoord[1];
-            var y = ['4', '5'].includes(Util.getOlVersion()) ? -tileCoord[2] - 1 : tileCoord[2];
+            var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
             if (me.tileType === 'ZXY') {
                 params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&x=' + x + '&y=' + y + '&z=' + z;
             } else if (me.tileType === 'ViewBounds') {
@@ -161,7 +161,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                     .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
                     .replace(yRegEx, function () {
-                        var y = ['4', '5'].includes(Util.getOlVersion()) ? -tileCoord[2] - 1 : tileCoord[2];
+                        var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
                         return y.toString();
                     })
                     .replace(dashYRegEx, function () {
@@ -232,7 +232,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                                 units: 'tile-pixels'
                             });
 
-                            if (['4', '5'].includes(Util.getOlVersion())) {
+                            if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
                                 tile.setExtent([0, 0, width, height]);
                                 tile.setProjection(dataProjection);
                                 features = tile.getFormat().readFeatures(Util.toGeoJSON(features));
@@ -285,7 +285,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                             source = xhr.response;
                         }
                         if (source) {
-                            if (['4', '5'].includes(Util.getOlVersion())) {
+                            if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
                                 success.call(
                                     this,
                                     format.readFeatures(source, { featureProjection: projection }),

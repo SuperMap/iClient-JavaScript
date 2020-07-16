@@ -53,7 +53,7 @@ export class BaiduMap extends TileImage {
       var tempUrl = url.replace("{z}", tileCoord[0].toString())
         .replace("{x}", tileCoord[1].toString())
         .replace("{y}", function () {
-          var y = ['4', '5'].includes(Util.getOlVersion()) ? tileCoord[2] : - tileCoord[2] - 1;
+          var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? tileCoord[2] : - tileCoord[2] - 1;
           return y.toString();
         })
         .replace("{-y}", function () {
