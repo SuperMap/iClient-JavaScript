@@ -3807,6 +3807,7 @@ export class WebMap extends Observable {
                 name: 'line-series',
                 type: 'lines',
                 zlevel: 1,
+                silent: true,
                 effect: {
                     show: animationSetting.show,
                     constantSpeed: animationSetting.constantSpeed,
@@ -3828,8 +3829,8 @@ export class WebMap extends Observable {
         ];
 
         if (lineData.length > MAX_MIGRATION_ANIMATION_COUNT) {
-            linesSeries[0].large = true;
-            linesSeries[0].largeThreshold = 100;
+            // linesSeries[0].large = true;
+            // linesSeries[0].largeThreshold = 100;
             linesSeries[0].blendMode = 'lighter';
         }
 
@@ -3852,6 +3853,7 @@ export class WebMap extends Observable {
             name: 'point-series',
             coordinateSystem: 'geo',
             zlevel: 2,
+            silent: true,
             label: {
                 normal: {
                     show: labelSetting.show,
