@@ -8,19 +8,19 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
     <th width="33.3%">SuperMap 云 GIS</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>
     <td><p>API for SuperMap iServer / iEdge / iPortal / Online</p>
-        [ol.supermap.MapService](ol.supermap.MapService.html)<br>
-        [ol.supermap.FeatureService](ol.supermap.FeatureService.html)<br>
-        [ol.supermap.SpatialAnalystService](ol.supermap.SpatialAnalystService.html)<br>
-        [ol.supermap.NetworkAnalystService](ol.supermap.NetworkAnalystService.html)<br>
-        [ol.supermap.TrafficTransferAnalystService](ol.supermap.TrafficTransferAnalystService.html)<br>
-        [ol.supermap.AddressMatchService](ol.supermap.AddressMatchService.html)</td>
+        <a href="ol.supermap.MapService.html">ol.supermap.MapService</a><br>
+        <a href="ol.supermap.FeatureService.html">ol.supermap.FeatureService</a><br>
+        <a href="ol.supermap.SpatialAnalystService.html">ol.supermap.SpatialAnalystService</a><br>
+        <a href="ol.supermap.NetworkAnalystService.html">ol.supermap.NetworkAnalystService</a><br>
+        <a href="ol.supermap.TrafficTransferAnalystService.html">ol.supermap.TrafficTransferAnalystService</a><br>
+        <a href="ol.supermap.AddressMatchService.html">ol.supermap.AddressMatchService</a></td>
      <td>
         <br>
-        [ol.supermap.ProcessingService](ol.supermap.ProcessingService.html)<br>
-        [ol.supermap.DataFlowService](ol.supermap.DataFlowService.html)<br>
-        [ol.supermap.WebMap](ol.supermap.WebMap.html)<br>
-        [SuperMap.iPortal](SuperMap.iPortal.html)<br>
-        [SuperMap.Online](SuperMap.Online.html)<br>
+        <a href="ol.supermap.ProcessingService.html">ol.supermap.ProcessingService</a><br>
+        <a href="ol.supermap.DataFlowService.html">ol.supermap.DataFlowService</a><br>
+        <a href="ol.supermap.WebMap.html">ol.supermap.WebMap</a><br>
+        <a href="SuperMap.iPortal.html">SuperMap.iPortal</a><br>
+        <a href="SuperMap.Online.html">SuperMap.Online</a><br>
         ......</td>   
          <td><p> </p></td>   
 </tr></table>
@@ -28,18 +28,18 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%"></th>
 </tr><tr>
     <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库[ECharts](https://echarts.baidu.com/)，[MapV](https://mapv.baidu.com/)</p>
-        [ol.source.VectorTileSuperMapRest](ol.source.VectorTileSuperMapRest.html)<br>
-        [ol.source.Graphic](ol.source.Graphic.html)<br>
-        [ol.source.DataFlow](ol.source.DataFlow.html)<br>
-        [ol.source.Range](ol.source.Range.html)<br>
-        [ol.source.Unique](ol.source.Unique.html)<br>
-        [ol.source.Mapv](ol.source.Mapv.html)<br>
+        <a href="ol.source.VectorTileSuperMapRest.html">ol.source.VectorTileSuperMapRest</a><br>
+        <a href="ol.source.Graphic.html">ol.source.Graphic</a><br>
+        <a href="ol.source.DataFlow.html">ol.source.DataFlow</a><br>
+        <a href="ol.source.Range.html">ol.source.Range</a><br>
+        <a href="ol.source.Unique.html">ol.source.Unique</a><br>
+        <a href="ol.source.Mapv.html">ol.source.Mapv</a><br>
         ......</td>
     <td><p>丰富地图，iSevrer REST MAP、互联网地图</p>
-        [ol.source.TileSuperMapRest](ol.source.TileSuperMapRest.html)<br>
-        [ol.source.ImageSuperMapRest](ol.source.ImageSuperMapRest.html)<br>
-        [ol.source.BaiduMap](ol.source.BaiduMap.html)<br>
-        [ol.source.Tianditu](ol.source.Tianditu.html)<br>
+        <a href="ol.source.TileSuperMapRest.html">ol.source.TileSuperMapRest</a><br>
+        <a href="ol.source.ImageSuperMapRest.html">ol.source.ImageSuperMapRest</a><br>
+        <a href="ol.source.BaiduMap.html">ol.source.BaiduMap</a><br>
+        <a href="ol.source.Tianditu.html">ol.source.Tianditu</a><br>
          ......</td>
     <td><p></p>
 </tr></table>

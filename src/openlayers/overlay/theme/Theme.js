@@ -93,8 +93,8 @@ export class Theme extends ImageCanvasSource {
             canvas.height = mapHeight;
             canvas.style.width = mapWidth + "px";
             canvas.style.height = mapHeight + "px";
-            this.context.drawImage(this.themeCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
-            this.context.drawImage(copyHighLightContext.canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            this.context.drawImage(this.themeCanvas, 0, 0);
+            this.context.drawImage(copyHighLightContext.canvas, 0, 0);
             return this.context.canvas;
         }
 
