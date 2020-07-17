@@ -63,4 +63,4 @@ export class Format {
     }
 }
 
-SuperMap.Format = Format;
+SuperMap.Format = SuperMap.Format || Format;

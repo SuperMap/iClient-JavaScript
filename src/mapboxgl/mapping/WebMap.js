@@ -452,7 +452,7 @@ export class WebMap extends mapboxgl.Evented {
 						tileMatrixSet[i]['ows:Identifier'] &&
 						tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet
 					) {
-						if (DEFAULT_WELLKNOWNSCALESET.includes(tileMatrixSet[i]['WellKnownScaleSet']['_text'])) {
+						if (DEFAULT_WELLKNOWNSCALESET.indexOf(tileMatrixSet[i]['WellKnownScaleSet']['_text']) > -1) {
 							isMatched = true;
 						} else if (
 							tileMatrixSet[i]['WellKnownScaleSet'] &&

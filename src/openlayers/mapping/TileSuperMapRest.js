@@ -219,7 +219,7 @@ export class TileSuperMapRest extends TileImage {
             me.origin = me.tileGrid.getOrigin(0);
             var z = tileCoord[0];
             var x = tileCoord[1];
-            var y = ['4', '5'].includes(Util.getOlVersion()) ? - tileCoord[2] - 1 : tileCoord[2];
+            var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? - tileCoord[2] - 1 : tileCoord[2];
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
             var unit = projection.getUnits() || Unit.DEGREE;

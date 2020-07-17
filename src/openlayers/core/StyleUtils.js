@@ -953,6 +953,7 @@ export class StyleUtils {
         index === 3 ? rgb += color : rgb += color + ',';
       });
     }
+    rgb += ")"
     return rgb;
   }
 

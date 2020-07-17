@@ -8,19 +8,19 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
     <th width="33.3%">SuperMap 云 GIS</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>
     <td><p>API for SuperMap iServer / iEdge / iPortal / Online</p>
-        [L.supermap.mapService](L.supermap.mapService.html)<br>
-        [L.supermap.featureService](L.supermap.featureService.html)<br>
-        [L.supermap.spatialAnalystService](L.supermap.spatialAnalystService.html)<br>
-        [L.supermap.networkAnalystService](L.supermap.networkAnalystService.html)<br>
-        [L.supermap.trafficTransferAnalystService](L.supermap.trafficTransferAnalystService.html)<br>
-        [L.supermap.addressMatchService](L.supermap.addressMatchService.html)</td>
+        <a href="L.supermap.mapService.html">L.supermap.mapService</a><br>
+        <a href="L.supermap.featureService.html">L.supermap.featureService</a><br>
+        <a href="L.supermap.spatialAnalystService.html">L.supermap.spatialAnalystService</a><br>
+        <a href="L.supermap.networkAnalystService.html">L.supermap.networkAnalystService</a><br>
+        <a href="L.supermap.trafficTransferAnalystService.html">L.supermap.trafficTransferAnalystService</a><br>
+        <a href="L.supermap.addressMatchService.html">L.supermap.addressMatchService</a></td>
      <td>
         <br>
-        [L.supermap.processingService](L.supermap.processingService.html)<br>
-        [L.supermap.dataFlowService](L.supermap.dataFlowService.html)<br>
-        [L.supermap.webmap](L.supermap.webmap.html)<br>
-        [SuperMap.iPortal](SuperMap.iPortal.html)<br>
-        [SuperMap.Online](SuperMap.Online.html)<br>
+        <a href="L.supermap.processingService.html">L.supermap.processingService</a><br>
+        <a href="L.supermap.dataFlowService.html">L.supermap.dataFlowService</a><br>
+        <a href="L.supermap.webmap.html">L.supermap.webmap</a><br>
+        <a href="SuperMap.iPortal.html">SuperMap.iPortal</a><br>
+        <a href="SuperMap.Online.html">SuperMap.Online</a><br>
         ......</td>   
          <td><p> </p></td>   
 </tr></table>
@@ -28,23 +28,23 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%">投影</th>
 </tr><tr>
     <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库[ECharts](https://echarts.baidu.com/)，[MapV](https://mapv.baidu.com/)</p>
-        [L.supermap.tiledVectorLayer](L.supermap.tiledVectorLayer.html)<br>
-        [L.supermap.graphicLayer](L.supermap.graphicLayer.html)<br>
-        [L.supermap.dataFlowLayer](L.supermap.dataFlowLayer.html)<br>
-        [L.supermap.rangeThemeLayer](L.supermap.rangeThemeLayer.html)<br>
-        [L.supermap.echartsLayer](L.supermap.echartsLayer.html)<br>
-        [L.supermap.mapVLayer](L.supermap.mapVLayer.html)<br>
+        <a href="L.supermap.tiledVectorLayer.html">L.supermap.tiledVectorLayer</a><br>
+        <a href="L.supermap.graphicLayer.html">L.supermap.graphicLayer</a><br>
+        <a href="L.supermap.dataFlowLayer.html">L.supermap.dataFlowLayer</a><br>
+        <a href="L.supermap.rangeThemeLayer.html">L.supermap.rangeThemeLayer</a><br>
+        <a href="L.supermap.echartsLayer.html">L.supermap.echartsLayer</a><br>
+        <a href="L.supermap.mapVLayer.html">L.supermap.mapVLayer</a><br>
         ......</td>
     <td><p>丰富地图，iSevrer REST MAP、互联网地图、OGC服务</p>
-        [L.supermap.tiledMapLayer](L.supermap.tiledMapLayer.html)<br>
-        [L.supermap.imageMapLayer](L.supermap.imageMapLayer.html)<br>
-        [L.supermap.baiduTileLayer](L.supermap.baiduTileLayer.html)<br>
-        [L.supermap.tiandituTileLayer](L.supermap.tiandituTileLayer.html)<br>
-        [L.supermap.wmtsLayer](L.supermap.wmtsLayer.html)<br>
+        <a href="L.supermap.tiledMapLayer.html">L.supermap.tiledMapLayer</a><br>
+        <a href="L.supermap.imageMapLayer.html">L.supermap.imageMapLayer</a><br>
+        <a href="L.supermap.baiduTileLayer.html">L.supermap.baiduTileLayer</a><br>
+        <a href="L.supermap.tiandituTileLayer.html">L.supermap.tiandituTileLayer</a><br>
+        <a href="L.supermap.wmtsLayer.html">L.supermap.wmtsLayer</a><br>
          ......</td>
     <td><p>扩展Leaflet投影，更易用</p>
-        [L.Proj.CRS](L.Proj.CRS.html)<br>
-        [L.CRS.NonEarthCRS](L.CRS.NonEarthCRS.html)<br>
+        <a href="L.Proj.CRS.html">L.Proj.CRS</a><br>
+        <a href="L.CRS.NonEarthCRS.html">L.CRS.NonEarthCRS</a><br>
 </tr></table>
 
 ## 参考API

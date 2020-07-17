@@ -300,7 +300,7 @@ SuperMap.Util.getParameterString = function (params) {
 SuperMap.Util.urlAppend = function (url, paramStr) {
     var newUrl = url;
     if (paramStr) {
-        if(paramStr.startsWith('?')){
+        if(paramStr.indexOf('?') === 0){
             paramStr = paramStr.substring(1);
         }
         var parts = (url + " ").split(/[?&]/);
@@ -322,11 +322,11 @@ SuperMap.Util.urlPathAppend = function (url, pathStr) {
     if (!pathStr) {
         return newUrl;
     }
-    if (pathStr.startsWith('/')) {
+    if (pathStr.indexOf('/') === 0) {
         pathStr = pathStr.substring(1);
     }
     const parts = url.split('?');
-    if(!parts[0].endsWith('/')){
+    if(parts[0].indexOf('/', parts[0].length - 1) < 0){
         parts[0] += '/'
     }
     newUrl = `${parts[0]}${pathStr}${parts.length > 1 ? `?${parts[1]}` : ''}`;

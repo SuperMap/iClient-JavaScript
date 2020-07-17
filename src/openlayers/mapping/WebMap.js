@@ -428,7 +428,7 @@ export class WebMap extends Observable {
             zoom: 0,
             projection: proj
         }
-        if(!['4', '5'].includes(Util.getOlVersion())) { // 兼容 ol 4，5，6
+        if(['4', '5'].indexOf(Util.getOlVersion()) < 0) { // 兼容 ol 4，5，6
           viewOptions.multiWorld = true;
         }
         let view = new View(viewOptions);
@@ -645,7 +645,7 @@ export class WebMap extends Observable {
         if((baseLayer.visibleScales && baseLayer.visibleScales.length > 0) || (baseLayer.scales && baseLayer.scales.length >0)) {
             //底图有固定比例尺，就直接获取。不用view计算
             this.getScales(baseLayer);
-        } else if(options.baseLayer && ['TILE', 'VECTOR_TILE'].includes(options.baseLayer.layerType) && extent && extent.length === 4){
+        } else if(options.baseLayer && ['TILE', 'VECTOR_TILE'].indexOf(options.baseLayer.layerType) > -1 && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width / 512;
@@ -673,7 +673,7 @@ export class WebMap extends Observable {
                 this.getScales(baseLayer);
             }
         }
-        if(!['4', '5'].includes(Util.getOlVersion())){ // 兼容 ol 4，5，6
+        if(['4', '5'].indexOf(Util.getOlVersion()) < 0){ // 兼容 ol 4，5，6
             viewOptions.multiWorld = true;
             viewOptions.showFullExtent = true;
             viewOptions.enableRotation = false;
@@ -1272,7 +1272,7 @@ export class WebMap extends Observable {
                         }
                         //bug wmts出图需要加上origin，否则会出现出图不正确的情况。偏移或者瓦片出不了
                         let origin = tileMatrixSet[i].TileMatrix[0].TopLeftCorner;
-                        layerInfo.origin = ["EPSG:4326", "EPSG:4490"].includes(wmtsLayerEpsg) ? [origin[1], origin[0]] : origin;
+                        layerInfo.origin = ["EPSG:4326", "EPSG:4490"].indexOf(wmtsLayerEpsg) > -1 ? [origin[1], origin[0]] : origin;
                         break;
                     }
                 }
@@ -1961,7 +1961,7 @@ export class WebMap extends Observable {
                     let field = colTitles[j];
                     if (field === undefined || field === null) {continue;}
                     field = field.trim();
-                    if(Object.keys(attributes).includes(field)) {
+                    if(Object.keys(attributes).indexOf(field) > -1) {
                         //说明前面有个一模一样的字段
                         const newField = field + '_1';
                         attributes[newField] = rowDatas[j];
@@ -2402,10 +2402,10 @@ export class WebMap extends Observable {
             lineDash: 'solid',
             type: "BASIC_POINT"
         };
-        if(["LINE", "LINESTRING", "MULTILINESTRING"].includes(featureType)){
+        if(["LINE", "LINESTRING", "MULTILINESTRING"].indexOf(featureType) > -1){
             styleParameters.strokeColor = '#4CC8A3';
             styleParameters.strokeWidth = 2;
-        }else if(["REGION", "POLYGON", "MULTIPOLYGON"].includes(featureType)){
+        }else if(["REGION", "POLYGON", "MULTIPOLYGON"].indexOf(featureType) > -1){
             styleParameters.fillColor = '#826DBA';
         }
         return styleParameters;
