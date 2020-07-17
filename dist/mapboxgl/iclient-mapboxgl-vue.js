@@ -3,7 +3,7 @@
  *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v10.1.0-alpha
+ *     version: v10.1.0-beta
  *    
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -123,6 +123,23 @@ var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/common/table-popup/TablePopup.vue?vue&type=template&id=38bfab64&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
+/***/ "022b":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/Indicator.vue?vue&type=template&id=39b17318&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-indicator",style:(_vm.getBackgroundStyle)},[_c('div',{class:("sm-component-indicator__content sm-component-indicator__content-" + _vm.mode)},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__title",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.titleData))]),_vm._v(" "),_c('div',[_c('span',{staticClass:"sm-component-indicator__num",style:(_vm.indicatorStyle)},[(_vm.isNumber(_vm.indicatorNum))?_c('countTo',{attrs:{"decimals":_vm.calDecimals,"startVal":_vm.startData,"endVal":_vm.numData,"duration":Number(_vm.duration) || 1000,"separator":_vm.separator,"numBackground":_vm.numBackground,"numSpacing":_vm.numSpacing,"separatorBackground":_vm.separatorBackground,"fontSize":parseFloat(_vm.fontSize) + _vm.fontUnit}}):_vm._e(),_vm._v("\n        "+_vm._s(_vm.isNumber(_vm.indicatorNum) ? '' : _vm.indicatorNum)+"\n      ")],1),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__unit",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.unitData))])])])])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/indicator/Indicator.vue?vue&type=template&id=39b17318&
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
@@ -1058,23 +1075,6 @@ exports.default = HaloRingMarker;
 
 /***/ }),
 
-/***/ "04f1":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/text/Text.vue?vue&type=template&id=b259ab88&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-text",style:([_vm.customStyle, _vm.getBackgroundStyle, _vm.getTextColorStyle])},[(_vm.href)?_c('span',[_c('a',{staticClass:"sm-component-text__href",style:([_vm.getTextColorStyle]),attrs:{"target":_vm.target,"href":_vm.href}},[_vm._v(_vm._s(_vm.finalValue))])]):_c('span',[_vm._v(_vm._s(_vm.finalValue))])])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/text/Text.vue?vue&type=template&id=b259ab88&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "05d2":
 /***/ (function(module, exports) {
 
@@ -1488,7 +1488,7 @@ module.exports = objectToString;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Indicator_vue_vue_type_template_id_4af37182___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1c6a");
+/* harmony import */ var _Indicator_vue_vue_type_template_id_39b17318___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("022b");
 /* harmony import */ var _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("13f5");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -1501,8 +1501,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Indicator_vue_vue_type_template_id_4af37182___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Indicator_vue_vue_type_template_id_4af37182___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Indicator_vue_vue_type_template_id_39b17318___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Indicator_vue_vue_type_template_id_39b17318___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -5496,6 +5496,12 @@ var _default2 = {
     associatedMap: {
       type: Boolean,
       default: false
+    },
+    highlightOptions: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
     }
   },
   data: function data() {
@@ -5625,6 +5631,14 @@ var _default2 = {
       if (!this.associatedMap) {
         this.clearPopup && this.clearPopup();
       }
+    },
+    highlightOptions: {
+      handler: function handler(newVal, oldVal) {
+        this._offHighlight(oldVal);
+
+        this._initHighlight();
+      },
+      deep: true
     }
   },
   created: function created() {
@@ -5658,6 +5672,8 @@ var _default2 = {
     !this._isRequestData && this.autoPlay && this._handlePieAutoPlay(); // 请求数据, 合并echartopiton, 设置echartOptions
 
     this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+
+    this._initHighlight();
   },
   updated: function updated() {
     this._handlePieAutoPlay(); // 更新自动播放
@@ -5693,6 +5709,26 @@ var _default2 = {
       }, 500, {
         leading: true
       });
+    },
+    _initHighlight: function _initHighlight() {
+      var echartsNode = this.smChart && this.smChart.chart;
+      this.highlightOptions.forEach(function (option) {
+        option = Object.assign({}, option, {
+          type: 'highlight'
+        });
+        echartsNode.dispatchAction(option);
+      });
+    },
+    _offHighlight: function _offHighlight(options) {
+      if (options && options.length) {
+        var echartsNode = this.smChart && this.smChart.chart;
+        options.forEach(function (option) {
+          option = Object.assign({}, option, {
+            type: 'downplay'
+          });
+          echartsNode.dispatchAction(option);
+        });
+      }
     },
     _handlePieAutoPlay: function _handlePieAutoPlay() {
       var seriesType = this._chartOptions.series && this._chartOptions.series[0] && this._chartOptions.series[0].type;
@@ -5781,7 +5817,7 @@ var _default2 = {
         _this5.echartOptions = _this5._optionsHandler(echartOptions, options);
       });
     },
-    _optionsHandler: function _optionsHandler(options, dataOptions) {
+    _optionsHandler: function _optionsHandler(options, dataOptions, dataZoomChanged) {
       var _this6 = this;
 
       dataOptions = dataOptions && (0, _lodash4.default)(dataOptions); // clone 避免引起重复刷新
@@ -5845,29 +5881,30 @@ var _default2 = {
                   dataZoom.end = oldStart;
                 }
 
-                var _ref = _this6.smChart.chart.getOption().dataZoom[0] || {},
-                    startValue = _ref.startValue,
-                    endValue = _ref.endValue;
+                if (dataZoomChanged) {
+                  var _ref = _this6.smChart.chart.getOption().dataZoom[0] || {},
+                      startValue = _ref.startValue,
+                      endValue = _ref.endValue;
 
-                if (startValue >= 0) {
                   startDataIndex = startValue;
+                  endDataIndex = endValue;
+                  options.dataZoom = options.dataZoom.map(function (val) {
+                    if (startValue >= 0 && endValue >= 0) {
+                      val.startValue = startValue;
+                      val.endValue = endValue;
+                      delete val.start;
+                      delete val.end;
+                      return val;
+                    }
+
+                    return val;
+                  });
                 } else {
                   startDataIndex = Math.floor(dataZoom.start / 100 * data.length);
+                  endDataIndex = Math.ceil(dataZoom.end / 100 * data.length);
                 }
 
-                endDataIndex = endValue || Math.ceil(dataZoom.end / 100 * data.length);
                 data = serie.data.slice(startDataIndex, endDataIndex + 1);
-                options.dataZoom = options.dataZoom.map(function (val) {
-                  if (startValue >= 0 && endValue >= 0) {
-                    val.startValue = startValue;
-                    val.endValue = endValue;
-                    delete val.start;
-                    delete val.end;
-                    return val;
-                  }
-
-                  return val;
-                });
               }
 
               label.formatter = function (_ref2) {
@@ -6197,7 +6234,7 @@ var _default2 = {
       });
 
       if (flag) {
-        this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache);
+        this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache, true);
       }
     }
   },
@@ -7974,23 +8011,6 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
-/***/ "167c":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=66497faf&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=66497faf&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "16ed":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8629,23 +8649,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Zoom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Zoom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Zoom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Zoom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Zoom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "1c6a":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/Indicator.vue?vue&type=template&id=4af37182&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-indicator",style:(_vm.getBackgroundStyle)},[_c('div',{class:("sm-component-indicator__content sm-component-indicator__content-" + _vm.mode)},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__title",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v("\n      "+_vm._s(_vm.titleData)+"\n    ")]),_vm._v(" "),_c('div',[_c('span',{staticClass:"sm-component-indicator__num",style:(_vm.indicatorStyle)},[(_vm.isNumber(_vm.indicatorNum))?_c('countTo',{attrs:{"decimals":_vm.calDecimals,"startVal":_vm.startData,"endVal":_vm.numData,"duration":Number(_vm.duration) || 1000,"separator":_vm.separator,"numBackground":_vm.numBackground,"numSpacing":_vm.numSpacing,"separatorBackground":_vm.separatorBackground,"fontSize":parseFloat(_vm.fontSize) + _vm.fontUnit}}):_vm._e(),_vm._v("\n        "+_vm._s(_vm.isNumber(_vm.indicatorNum) ? '' : _vm.indicatorNum)+"\n      ")],1),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__unit",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v("\n        "+_vm._s(_vm.unitData)+"\n      ")])])])])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/indicator/Indicator.vue?vue&type=template&id=4af37182&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -16420,7 +16423,7 @@ exports.default = WebSceneViewModel;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChartMixin_vue_vue_type_template_id_66497faf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("167c");
+/* harmony import */ var _ChartMixin_vue_vue_type_template_id_0bb3b3ba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("8d58");
 /* harmony import */ var _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("d83d");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -16433,8 +16436,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ChartMixin_vue_vue_type_template_id_66497faf___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _ChartMixin_vue_vue_type_template_id_66497faf___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _ChartMixin_vue_vue_type_template_id_0bb3b3ba___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _ChartMixin_vue_vue_type_template_id_0bb3b3ba___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -22413,7 +22416,7 @@ module.exports = _toConsumableArray;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CountTo_vue_vue_type_template_id_53dff5c7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("6322");
+/* harmony import */ var _CountTo_vue_vue_type_template_id_c61b74f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("77c4");
 /* harmony import */ var _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("f14a");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -22426,8 +22429,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CountTo_vue_vue_type_template_id_53dff5c7___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _CountTo_vue_vue_type_template_id_53dff5c7___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _CountTo_vue_vue_type_template_id_c61b74f4___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _CountTo_vue_vue_type_template_id_c61b74f4___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -27132,7 +27135,12 @@ function () {
       var serieData = {
         type: chartType,
         name: datasetOption.yField,
-        data: []
+        data: [],
+        emphasis: {
+          itemStyle: {
+            color: '#409eff'
+          }
+        }
       };
 
       if (chartType === 'pie') {
@@ -29951,7 +29959,7 @@ exports.default = _default2;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Text_vue_vue_type_template_id_b259ab88___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("04f1");
+/* harmony import */ var _Text_vue_vue_type_template_id_5e2ac717___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9243");
 /* harmony import */ var _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("e736");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -29964,8 +29972,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Text_vue_vue_type_template_id_b259ab88___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Text_vue_vue_type_template_id_b259ab88___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Text_vue_vue_type_template_id_5e2ac717___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Text_vue_vue_type_template_id_5e2ac717___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -32730,23 +32738,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "6322":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/CountTo.vue?vue&type=template&id=53dff5c7&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',_vm._l((_vm.numDataList),function(numVale,index){return _c('div',{key:index,staticClass:"sm-component-count-to__numItem",style:([_vm.calNumBackground(numVale),_vm.numInterval,_vm.numStyle])},[_c('span',[_vm._v(_vm._s(numVale))])])}),0)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/indicator/CountTo.vue?vue&type=template&id=53dff5c7&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "6375":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -34315,6 +34306,8 @@ var _lang = __webpack_require__("4e21");
 
 var _WebMapBase2 = _interopRequireDefault(__webpack_require__("d6e6"));
 
+var _util = __webpack_require__("1448");
+
 var _epsgDefine = __webpack_require__("1a91");
 
 var _proj = _interopRequireDefault(__webpack_require__("7319"));
@@ -34639,6 +34632,11 @@ function (_WebMapBase) {
     key: "_createMVTBaseLayer",
     value: function _createMVTBaseLayer(layerInfo) {
       var url = layerInfo.dataSource.url;
+
+      if (url.indexOf('/restjsr/') > -1) {
+        url += '/style.json';
+      }
+
       this.map.addStyle(url);
     }
   }, {
@@ -34792,7 +34790,7 @@ function (_WebMapBase) {
         features = this.transformFeatures(features);
       }
 
-      this.handleLayerFeatures(features, layerInfo);
+      features = this.handleLayerFeatures(features, layerInfo);
 
       if (layerType === 'VECTOR') {
         if (featureType === 'POINT') {
@@ -34937,18 +34935,14 @@ function (_WebMapBase) {
   }, {
     key: "_createVectorLayer",
     value: function _createVectorLayer(layerInfo, features) {
+      var _this7 = this;
+
       var type = layerInfo.featureType;
       var layerID = layerInfo.layerID,
           minzoom = layerInfo.minzoom,
           maxzoom = layerInfo.maxzoom,
           style = layerInfo.style,
           visible = layerInfo.visible;
-      var layerStyle = {
-        style: this._transformStyleToMapBoxGl(style, type),
-        layout: {
-          visibility: visible
-        }
-      };
       var source = {
         type: 'geojson',
         data: {
@@ -34956,9 +34950,33 @@ function (_WebMapBase) {
           features: features
         }
       };
+      this.map.addSource(layerID, source);
+      var styleArr = Array.isArray(style) ? style : [style];
 
-      this._addOverlayToMap(type, source, layerID, layerStyle, minzoom, maxzoom);
+      if (styleArr.length === 2) {
+        if (styleArr[0].lineDash === 'solid' && styleArr[1].lineDash === 'solid') {
+          styleArr[0].strokeWidth = styleArr[1].strokeWidth;
+          styleArr[1].strokeWidth = styleArr[1].strokeWidth - 2;
+        }
 
+        if (styleArr[0].lineDash === 'solid' && styleArr[1].lineDash === 'dash') {
+          styleArr[0].strokeWidth = styleArr[1].strokeWidth;
+          styleArr[1].strokeWidth = styleArr[1].strokeWidth * 0.5;
+          styleArr[1].lineDash = 'dashrailway';
+        }
+      }
+
+      styleArr.forEach(function (element, index) {
+        var layerStyle = {
+          style: _this7._transformStyleToMapBoxGl(element, type),
+          layout: {
+            visibility: visible
+          }
+        };
+        var newLayerID = index === 0 ? layerID : "".concat(layerID, "-additional-").concat(index);
+
+        _this7._addOverlayToMap(type, layerID, newLayerID, layerStyle, minzoom, maxzoom);
+      });
       type === 'POLYGON' && style.strokeColor && this._addStrokeLineForPoly(style, layerID, layerID + '-strokeLine', visible, minzoom, maxzoom);
     }
   }, {
@@ -34984,7 +35002,7 @@ function (_WebMapBase) {
   }, {
     key: "_setLayerID",
     value: function _setLayerID(mapInfo) {
-      var _this7 = this;
+      var _this8 = this;
 
       var sumInfo = {};
       var baseLayer = mapInfo.baseLayer,
@@ -35012,9 +35030,9 @@ function (_WebMapBase) {
 
         var layerID = !!sumInfo[layer.name] ? "".concat(layer.name, "-").concat(sumInfo[layer.name]) : layer.name;
 
-        var _this7$_generateUniqu = _this7._generateUniqueLayerId(layerID, sumInfo[layer.name]),
-            newId = _this7$_generateUniqu.newId,
-            newIndex = _this7$_generateUniqu.newIndex;
+        var _this8$_generateUniqu = _this8._generateUniqueLayerId(layerID, sumInfo[layer.name]),
+            newId = _this8$_generateUniqu.newId,
+            newIndex = _this8$_generateUniqu.newIndex;
 
         sumInfo[layer.name] = newIndex;
         layerID = newId;
@@ -35073,12 +35091,12 @@ function (_WebMapBase) {
   }, {
     key: "_createRestMapLayer",
     value: function _createRestMapLayer(restMaps, layer) {
-      var _this8 = this;
+      var _this9 = this;
 
       restMaps.forEach(function (restMapInfo) {
-        layer = _this8.getRestMapLayerInfo(restMapInfo, layer);
+        layer = _this9.getRestMapLayerInfo(restMapInfo, layer);
 
-        _this8._initBaseLayer(layer);
+        _this9._initBaseLayer(layer);
       });
 
       this._addLayerSucceeded();
@@ -35301,7 +35319,7 @@ function (_WebMapBase) {
               var radius = style.type === 'SYMBOL_POINT' || style.type === 'IMAGE_POINT' ? style.type === 'SYMBOL_POINT' ? styleGroups[i].radius * 2 : Number.parseFloat((styleGroups[i].radius / style.imageInfo.size.h).toFixed(2)) * 2 : styleGroups[i].radius;
               expression.push(row.properties['index'], radius);
               colorExpression.push(row.properties['index'], styleGroups[i].color);
-              continue;
+              break;
             }
           }
         }
@@ -35350,7 +35368,29 @@ function (_WebMapBase) {
           fontFamily = labelStyle.fontFamily;
       var minzoom = layerInfo.minzoom,
           maxzoom = layerInfo.maxzoom;
+      var textSize = parseFloat(labelStyle.fontSize || 14);
       backgroundFill = "rgba(".concat(backgroundFill.join(','), ")");
+      var textHaloColor = 'rgba(255,255,255,0)';
+
+      if (labelStyle.outlineColor && labelStyle.outlineWidth > 0) {
+        textHaloColor = labelStyle.outlineColor;
+      } else if (labelStyle.placement !== 'line') {
+        textHaloColor = backgroundFill || 'rgba(255,255,255,1)';
+      }
+
+      var textHaloWidth = (labelStyle.outlineWidth || 0) / 2;
+
+      if (textHaloWidth === 0 && labelStyle.placement !== 'line' && backgroundFill) {
+        textHaloWidth = 4;
+      }
+
+      var textAnchor = labelStyle.textAlign || 'center';
+
+      if (labelStyle.textBaseline && labelStyle.textBaseline !== 'middle') {
+        textAnchor = "".concat(labelStyle.textBaseline).concat(textAnchor === 'center' ? '' : "-".concat(textAnchor));
+      }
+
+      var textOffset = layerInfo.featureType === 'POINT' ? [labelStyle.offsetX / textSize || 0, labelStyle.offsetY / textSize || 0] : [0, 0];
 
       this._addLayer({
         id: "".concat(layerInfo.layerID, "-label"),
@@ -35364,14 +35404,19 @@ function (_WebMapBase) {
         },
         paint: {
           'text-color': labelStyle.fill,
-          'text-halo-color': backgroundFill || 'rgba(255,255,255,0.8)',
-          'text-halo-width': 4
+          'text-halo-color': textHaloColor,
+          'text-halo-width': textHaloWidth
         },
         layout: {
           'text-field': "{".concat(labelStyle.labelField, "}"),
-          'text-size': parseFloat(labelStyle.fontSize || 14),
-          'text-offset': labelStyle.offsetX ? [labelStyle.offsetX / 10 || 0, labelStyle.offsetY / 10 || 0] : layerInfo.featureType === 'POINT' ? [0, -1.5] : [0, 0],
+          'text-size': textSize,
+          'text-offset': textOffset,
           'text-font': fontFamily ? [fontFamily] : ['DIN Offc Pro Italic', 'Arial Unicode MS Regular'],
+          'symbol-placement': labelStyle.placement === 'line' ? layerInfo.featureType === 'POLYGON' ? 'line' : 'line-center' : 'point',
+          'text-max-angle': layerInfo.featureType === 'POLYGON' ? 40 : 30,
+          'symbol-spacing': layerInfo.featureType === 'POLYGON' ? 200 : 50,
+          'text-anchor': textAnchor,
+          'text-line-height': 1.2,
           visibility: layerInfo.visible
         },
         minzoom: minzoom || 0,
@@ -35380,7 +35425,7 @@ function (_WebMapBase) {
     }
   }, {
     key: "_createSymbolLayer",
-    value: function _createSymbolLayer(layerInfo, features, textSize, textRotateExpresion) {
+    value: function _createSymbolLayer(layerInfo, features, textSizeExpresion, textRotateExpresion) {
       var target = document.getElementById("".concat(this.target));
       target.classList.add('supermapol-icons-map');
       var layerID = layerInfo.layerID,
@@ -35389,6 +35434,8 @@ function (_WebMapBase) {
           style = layerInfo.style;
       var unicode = style.unicode;
       var text = String.fromCharCode(parseInt(unicode.replace(/^&#x/, ''), 16));
+      var textSize = textSizeExpresion || style.fontSize && parseFloat(style.fontSize) || 12;
+      var rotate = (layerInfo.style['rotation'] || 0) * 180 / Math.PI;
 
       this._addLayer({
         id: layerID,
@@ -35401,13 +35448,17 @@ function (_WebMapBase) {
           }
         },
         paint: {
-          'text-color': style.fillColor
+          'text-color': (0, _util.getColorWithOpacity)(style.fillColor, style.fillOpacity),
+          'text-halo-color': (0, _util.getColorWithOpacity)(style.strokeColor || 'rgba(0,0,0,0)', style.strokeOpacity),
+          'text-halo-width': style.strokeWidth || 0
         },
         layout: {
           'text-field': text,
-          'text-size': textSize || style.fontSize && parseFloat(style.fontSize) || 12,
+          'text-size': textSize,
           'text-font': ['DIN Offc Pro Italic', 'Arial Unicode MS Regular'],
-          'text-rotate': textRotateExpresion || 0,
+          'text-rotate': textRotateExpresion || rotate || 0,
+          'text-offset': [style.offsetX / 2 || 0, style.offsetY / 2 || 0],
+          'text-allow-overlap': true,
           visibility: layerInfo.visible
         },
         minzoom: minzoom || 0,
@@ -35424,7 +35475,7 @@ function (_WebMapBase) {
   }, {
     key: "_createGraphicLayer",
     value: function _createGraphicLayer(layerInfo, features, iconSizeExpression, iconRotateExpression) {
-      var _this9 = this;
+      var _this10 = this;
 
       var layerID = layerInfo.layerID,
           minzoom = layerInfo.minzoom,
@@ -35437,6 +35488,7 @@ function (_WebMapBase) {
           features: features
         }
       };
+      var iconID = "imageIcon-".concat(layerID);
 
       if (style.type === 'IMAGE_POINT') {
         var imageInfo = style.imageInfo;
@@ -35446,24 +35498,27 @@ function (_WebMapBase) {
             return;
           }
 
-          var iconSize = Number.parseFloat((style.radius / image.height).toFixed(2)) * 2;
-          !_this9.map.hasImage('imageIcon') && _this9.map.addImage('imageIcon', image);
+          var iconSize = Number.parseFloat((style.radius / image.width).toFixed(2)) * 2;
+          !_this10.map.hasImage(iconID) && _this10.map.addImage(iconID, image);
 
-          _this9._addLayer({
+          _this10._addLayer({
             id: layerID,
             type: 'symbol',
             source: source,
             layout: {
-              'icon-image': 'imageIcon',
+              'icon-image': iconID,
+              'icon-anchor': 'bottom-right',
               'icon-size': iconSizeExpression || iconSize,
+              'icon-allow-overlap': true,
               visibility: layerInfo.visible,
-              'icon-rotate': iconRotateExpression || 0
+              'icon-offset': [style.offsetX * image.width || 0, style.offsetY * image.height || 0],
+              'icon-rotate': iconRotateExpression || (layerInfo.style['rotation'] || 0) * 180 / Math.PI
             },
             minzoom: minzoom || 0,
             maxzoom: maxzoom || 22
           });
 
-          _this9._addLayerSucceeded();
+          _this10._addLayerSucceeded();
         });
       } else if (style.type === 'SVG_POINT') {
         var svgUrl = style.url;
@@ -35474,32 +35529,35 @@ function (_WebMapBase) {
         }
 
         this.getCanvasFromSVG(svgUrl, this._svgDiv, function (canvas) {
-          _this9.handleSvgColor(style, canvas);
+          _this10.handleSvgColor(style, canvas);
 
           var imgUrl = canvas.toDataURL('img/png');
-          imgUrl && _this9.map.loadImage(imgUrl, function (error, image) {
+          imgUrl && _this10.map.loadImage(imgUrl, function (error, image) {
             if (error) {
               console.log(error);
             }
 
-            var iconSize = Number.parseFloat((style.radius / canvas.width).toFixed(2));
-            !_this9.map.hasImage('imageIcon') && _this9.map.addImage('imageIcon', image);
+            var iconSize = Number.parseFloat((style.radius / canvas.width).toFixed(2)) * 2;
+            !_this10.map.hasImage(iconID) && _this10.map.addImage(iconID, image);
 
-            _this9._addLayer({
+            _this10._addLayer({
               id: layerID,
               type: 'symbol',
               source: source,
               layout: {
-                'icon-image': 'imageIcon',
+                'icon-image': iconID,
                 'icon-size': iconSizeExpression || iconSize,
+                'icon-anchor': 'bottom-right',
                 visibility: layerInfo.visible,
-                'icon-rotate': iconRotateExpression || 0
+                'icon-offset': [style.offsetX * canvas.width || 0, style.offsetY * canvas.height || 0],
+                'icon-allow-overlap': true,
+                'icon-rotate': iconRotateExpression || (layerInfo.style['rotation'] || 0) * 180 / Math.PI
               },
               minzoom: minzoom || 0,
               maxzoom: maxzoom || 22
             });
 
-            _this9._addLayerSucceeded();
+            _this10._addLayerSucceeded();
           });
         });
       } else {
@@ -35586,7 +35644,7 @@ function (_WebMapBase) {
   }, {
     key: "_createMarkerLayer",
     value: function _createMarkerLayer(layerInfo, features) {
-      var _this10 = this;
+      var _this11 = this;
 
       var minzoom = layerInfo.minzoom,
           maxzoom = layerInfo.maxzoom;
@@ -35601,7 +35659,7 @@ function (_WebMapBase) {
         }
 
         if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
-          defaultStyle.src = _this10.serverUrl + defaultStyle.src;
+          defaultStyle.src = _this11.serverUrl + defaultStyle.src;
         }
 
         if (!marker_src[defaultStyle.src]) {
@@ -35612,33 +35670,33 @@ function (_WebMapBase) {
       var loadImagePromise = function loadImagePromise(src, defaultStyle) {
         return new Promise(function (resolve, reject) {
           if (src.indexOf('svg') < 0) {
-            _this10.map.loadImage(src, function (error, image) {
+            _this11.map.loadImage(src, function (error, image) {
               if (error) {
                 console.log(error);
                 resolve();
                 return;
               }
 
-              !_this10.map.hasImage(src) && _this10.map.addImage(src, image);
+              !_this11.map.hasImage(src) && _this11.map.addImage(src, image);
               resolve(src);
             });
           } else {
-            if (!_this10._svgDiv) {
-              _this10._svgDiv = document.createElement('div');
-              document.body.appendChild(_this10._svgDiv);
+            if (!_this11._svgDiv) {
+              _this11._svgDiv = document.createElement('div');
+              document.body.appendChild(_this11._svgDiv);
             }
 
-            _this10.getCanvasFromSVG(src, _this10._svgDiv, function (canvas) {
-              _this10.handleSvgColor(defaultStyle, canvas);
+            _this11.getCanvasFromSVG(src, _this11._svgDiv, function (canvas) {
+              _this11.handleSvgColor(defaultStyle, canvas);
 
-              _this10.map.loadImage(canvas.toDataURL('img/png'), function (error, image) {
+              _this11.map.loadImage(canvas.toDataURL('img/png'), function (error, image) {
                 if (error) {
                   console.log(error);
                   resolve();
                   return;
                 }
 
-                !_this10.map.hasImage(src) && _this10.map.addImage(src, image);
+                !_this11.map.hasImage(src) && _this11.map.addImage(src, image);
                 resolve(src);
               });
             });
@@ -35662,7 +35720,7 @@ function (_WebMapBase) {
             geomType = 'TEXT';
           }
 
-          var featureInfo = _this10.setFeatureInfo(feature);
+          var featureInfo = _this11.setFeatureInfo(feature);
 
           feature.properties['useStyle'] = defaultStyle;
           feature.properties['featureInfo'] = featureInfo;
@@ -35678,7 +35736,7 @@ function (_WebMapBase) {
               continue;
             }
 
-            _this10._addLayer({
+            _this11._addLayer({
               id: layerID,
               type: 'symbol',
               source: source,
@@ -35706,15 +35764,15 @@ function (_WebMapBase) {
 
             var visible = layerInfo.visible;
             layeStyle.layout.visibility = visible;
-            layeStyle.style = _this10._transformStyleToMapBoxGl(defaultStyle, geomType);
+            layeStyle.style = _this11._transformStyleToMapBoxGl(defaultStyle, geomType);
 
-            _this10._addOverlayToMap(geomType, source, layerID, layeStyle, minzoom, maxzoom);
+            _this11._addOverlayToMap(geomType, source, layerID, layeStyle, minzoom, maxzoom);
 
-            geomType === 'POLYGON' && defaultStyle.strokeColor && _this10._addStrokeLineForPoly(defaultStyle, layerID, layerID + '-strokeLine', visible, minzoom, maxzoom);
+            geomType === 'POLYGON' && defaultStyle.strokeColor && _this11._addStrokeLineForPoly(defaultStyle, layerID, layerID + '-strokeLine', visible, minzoom, maxzoom);
           }
         }
 
-        _this10._addLayerSucceeded();
+        _this11._addLayerSucceeded();
       });
     }
   }, {
@@ -35886,7 +35944,7 @@ function (_WebMapBase) {
   }, {
     key: "_sendMapToUser",
     value: function _sendMapToUser(count, layersLen) {
-      var _this11 = this;
+      var _this12 = this;
 
       if (count === layersLen) {
         this._sourceListModel = new _SourceListModel.default({
@@ -35898,7 +35956,7 @@ function (_WebMapBase) {
         }
 
         var exsitLayers = this._layers.filter(function (layer) {
-          return !!_this11.map.getLayer(layer.layerID);
+          return !!_this12.map.getLayer(layer.layerID);
         });
 
         for (var index = exsitLayers.length - 2; index > -1; index--) {
@@ -35908,6 +35966,14 @@ function (_WebMapBase) {
 
           if (this.map.getLayer("".concat(targetlayerId, "-strokeLine"))) {
             this.map.moveLayer("".concat(targetlayerId, "-strokeLine"), beforLayerId);
+          }
+
+          for (var _index = 1; _index < this.expectLayerLen + 1; _index++) {
+            if (this.map.getLayer("".concat(targetlayerId, "-additional-").concat(_index))) {
+              this.map.moveLayer("".concat(targetlayerId, "-additional-").concat(_index), beforLayerId);
+            } else {
+              break;
+            }
           }
 
           if (this.map.getLayer("".concat(targetlayerId, "-label"))) {
@@ -35983,6 +36049,12 @@ function (_WebMapBase) {
 
       if (style.lineDash && style.lineDash !== 'solid' && type === 'LINE') {
         newObj['line-dasharray'] = this.getDashStyle(style.lineDash);
+      }
+
+      if (style.type === 'POINT' || style.type === 'BASIC_POINT' || type === 'POINT') {
+        var offsetX = style.offsetX || 0;
+        var offsetY = style.offsetY || 0;
+        newObj['circle-translate'] = [offsetX * style['radius'], offsetY * style['radius']];
       }
 
       return newObj;
@@ -36333,7 +36405,7 @@ function (_WebMapBase) {
   }, {
     key: "_updateLayer",
     value: function _updateLayer(layerInfo) {
-      var _this12 = this;
+      var _this13 = this;
 
       var id = layerInfo.id,
           paint = layerInfo.paint,
@@ -36346,7 +36418,7 @@ function (_WebMapBase) {
 
       if (type === 'geojson') {
         Object.keys(paint).forEach(function (name) {
-          _this12.map.setPaintProperty(id, name, paint[name]);
+          _this13.map.setPaintProperty(id, name, paint[name]);
         });
         source && source.setData(data);
       } else if (type === 'raster') {
@@ -46226,6 +46298,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "77c4":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/CountTo.vue?vue&type=template&id=c61b74f4&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',_vm._l((_vm.numDataList),function(numVale,index){return _c('div',{key:index,staticClass:"sm-component-count-to__numItem",style:([_vm.calNumBackground(numVale),_vm.numInterval,_vm.numStyle])},[_c('span',[_vm._v(_vm._s(numVale))])])}),0)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/indicator/CountTo.vue?vue&type=template&id=c61b74f4&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "78f6":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -49838,7 +49927,8 @@ var _default2 = {
       default: function _default() {
         return {
           color: 'rgba(0, 0, 0, 0)',
-          image: ''
+          image: '',
+          padding: 0
         };
       }
     },
@@ -49867,7 +49957,8 @@ var _default2 = {
         var reg = /\d+(\.\d+)?([a-z]+)/gi;
         var fontUnit = _this.fontSize ? _this.fontSize.replace(reg, '$2') : '';
         var styleObj = {
-          backgroundColor: _this.numBackground.color
+          backgroundColor: _this.numBackground.color,
+          padding: _this.numBackground.padding
         };
 
         if (_this.numBackground.image) {
@@ -50361,6 +50452,23 @@ function config (name) {
 }
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("698d")))
+
+/***/ }),
+
+/***/ "8d58":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=0bb3b3ba&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=0bb3b3ba&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -51431,6 +51539,23 @@ var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-scene/WebScene.vue?vue&type=template&id=182a6b26&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
+/***/ "9243":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/text/Text.vue?vue&type=template&id=5e2ac717&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-text",style:([_vm.customStyle, _vm.getBackgroundStyle, _vm.getTextColorStyle])},[(_vm.href)?_c('span',[_c('a',{staticClass:"sm-component-text__href",style:([_vm.getTextColorStyle]),attrs:{"target":_vm.target,"href":_vm.href}},[_vm._v(_vm._s(_vm.finalValue))])]):_c('span',{staticClass:"sm-component-text__span"},[_vm._v(_vm._s(_vm.finalValue))])])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/text/Text.vue?vue&type=template&id=5e2ac717&
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
@@ -56466,6 +56591,10 @@ var _CountTo = _interopRequireDefault(__webpack_require__("4156"));
 //
 //
 //
+//
+//
+//
+//
 var _default2 = {
   name: 'SmIndicator',
   components: {
@@ -56541,7 +56670,8 @@ var _default2 = {
       default: function _default() {
         return {
           color: 'rgba(0, 0, 0, 0)',
-          image: ''
+          image: '',
+          padding: 0
         };
       }
     },
@@ -64036,6 +64166,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.handleMultyPolygon = void 0;
 
+// mbgl isssue https://github.com/mapbox/mapbox-gl-js/issues/7023
+// https://github.com/mapbox/vector-tile-js/blob/a9a9102/lib/vectortilefeature.js#L195-L233
 var handleMultyPolygon = function handleMultyPolygon(features) {
   features.forEach(function (feature) {
     if (feature.geometry.type !== 'Polygon') {
@@ -64045,10 +64177,23 @@ var handleMultyPolygon = function handleMultyPolygon(features) {
     var coords = feature.geometry.coordinates;
 
     if (coords.length > 1) {
-      var coordinates = [];
-      coords.forEach(function (coord) {
-        coordinates.push([coord]);
-      });
+      var coordinates = [[coords[0]]];
+
+      for (var index = 1; index < coords.length; index++) {
+        var element = coords[index];
+        var area = signedArea(element);
+
+        if (area === 0) {
+          continue;
+        }
+
+        if (area > 0) {
+          coordinates[coordinates.length - 1].push(coords[index]);
+        } else {
+          coordinates.push([coords[index]]);
+        }
+      }
+
       feature.geometry.coordinates = coordinates;
       feature.geometry.type = 'MultiPolygon';
     }
@@ -64057,6 +64202,18 @@ var handleMultyPolygon = function handleMultyPolygon(features) {
 };
 
 exports.handleMultyPolygon = handleMultyPolygon;
+
+function signedArea(ring) {
+  var sum = 0;
+
+  for (var i = 0, len = ring.length, j = len - 1, p1, p2; i < len; j = i++) {
+    p1 = ring[i];
+    p2 = ring[j];
+    sum += (p2[0] - p1[0]) * (p1[1] + p2[1]);
+  }
+
+  return sum;
+}
 
 /***/ }),
 
@@ -67317,7 +67474,8 @@ function (_Events) {
           customSettings = themeSetting.customSettings,
           minR = parameters.themeSetting.minRadius,
           maxR = parameters.themeSetting.maxRadius,
-          colors = themeSetting.colors;
+          colors = themeSetting.colors,
+          fillColor = style.fillColor;
       features.forEach(function (feature) {
         var properties = feature.properties,
             value = properties[themeField];
@@ -67353,6 +67511,7 @@ function (_Events) {
             end,
             radius = Number(((maxR + minR) / 2).toFixed(2)),
             color = '';
+        var rangeColors = colors ? SuperMap.ColorsPickerUtil.getGradientColors(colors, len, 'RANGE') : [];
 
         for (var _i = 0; _i < len - 1; _i++) {
           start = Number(segements[_i].toFixed(2));
@@ -67363,7 +67522,8 @@ function (_Events) {
           style.radius = radius;
 
           if (colors && colors.length > 0) {
-            color = customSettings[_i] && customSettings[_i].color ? customSettings[_i].color : colors[_i];
+            color = customSettings[_i] && customSettings[_i].color ? customSettings[_i].color : rangeColors[_i] || fillColor;
+            ;
             style.fillColor = color;
           }
 
@@ -67556,6 +67716,10 @@ function (_Events) {
           dashArr = [4 * w, 4 * w];
           break;
 
+        case 'dashrailway':
+          dashArr = [8 * w, 12 * w];
+          break;
+
         case 'dashdot':
           dashArr = [4 * w, 4 * w, 1 * w, 4 * w];
           break;
@@ -67585,7 +67749,7 @@ function (_Events) {
     key: "getCanvasFromSVG",
     value: function getCanvasFromSVG(svgUrl, divDom, callBack) {
       var canvas = document.createElement('canvas');
-      canvas.id = "dataviz-canvas-".concat(new Date());
+      canvas.id = "dataviz-canvas-".concat(new Date().getTime());
       canvas.style.display = 'none';
       divDom.appendChild(canvas);
       var canvgs = window.canvg ? window.canvg : _canvg.default;
@@ -83694,7 +83858,7 @@ function (_Events) {
 
       var type;
       var isHosted = dataSource && dataSource.serverId || layerType === 'MARKER' || layerType === 'HOSTED_TILE';
-      var isTile = layerType === 'SUPERMAP_REST' || layerType === 'TILE' || layerType === 'WMS' || layerType === 'WMTS';
+      var isTile = layerType === 'SUPERMAP_REST' || layerType === 'TILE' || layerType === 'WMS' || layerType === 'WMTS' || layerType === 'MAPBOXSTYLE';
 
       if (isHosted) {
         type = 'hosted';
@@ -84159,7 +84323,7 @@ function (_Events) {
       var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
       getFeatureParam = new SuperMap.FilterParameter({
         name: datasetNames.join().replace(':', '@'),
-        attributeFilter: 'SMID > 0'
+        attributeFilter: null
       });
       getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
         queryParameter: getFeatureParam,

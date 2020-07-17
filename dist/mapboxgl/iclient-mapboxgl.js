@@ -3,7 +3,7 @@
  *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.0-alpha
+ *          version: v10.1.0-beta
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5125,9 +5125,9 @@ SuperMap.Util.getParameterString = function (params) {
   return paramsArray.join("&");
 };
 /**
- * @description 给 URL 追加参数。
+ * @description 给 URL 追加查询参数。
  * @param {string} url - 待追加参数的 URL 字符串。
- * @param {string} paramStr - 待追加的参数。
+ * @param {string} paramStr - 待追加的查询参数。
  * @returns {string} 新的 URL。
  */
 
@@ -5136,10 +5136,42 @@ SuperMap.Util.urlAppend = function (url, paramStr) {
   var newUrl = url;
 
   if (paramStr) {
+    if (paramStr.indexOf('?') === 0) {
+      paramStr = paramStr.substring(1);
+    }
+
     var parts = (url + " ").split(/[?&]/);
     newUrl += parts.pop() === " " ? paramStr : parts.length ? "&" + paramStr : "?" + paramStr;
   }
 
+  return newUrl;
+};
+/**
+ * @description 给 URL 追加 path 参数。
+ * @param {string} url - 待追加参数的 URL 字符串。
+ * @param {string} paramStr - 待追加的path参数。
+ * @returns {string} 新的 URL。
+ */
+
+
+SuperMap.Util.urlPathAppend = function (url, pathStr) {
+  var newUrl = url;
+
+  if (!pathStr) {
+    return newUrl;
+  }
+
+  if (pathStr.indexOf('/') === 0) {
+    pathStr = pathStr.substring(1);
+  }
+
+  var parts = url.split('?');
+
+  if (parts[0].indexOf('/', parts[0].length - 1) < 0) {
+    parts[0] += '/';
+  }
+
+  newUrl = "".concat(parts[0]).concat(pathStr).concat(parts.length > 1 ? "?".concat(parts[1]) : '');
   return newUrl;
 };
 /**
@@ -10810,7 +10842,7 @@ function () {
 
   return Format;
 }();
-SuperMap.Format = Format_Format;
+SuperMap.Format = SuperMap.Format || Format_Format;
 // CONCATENATED MODULE: ./src/common/format/JSON.js
 function JSON_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { JSON_typeof = function _typeof(obj) { return typeof obj; }; } else { JSON_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return JSON_typeof(obj); }
 
@@ -15284,8 +15316,7 @@ function () {
   }, {
     key: "loginiServer",
     value: function loginiServer(url, username, password, rememberme) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
+      url = Util_Util.urlPathAppend(url, 'services/security/login');
       var loginInfo = {
         username: username && username.toString(),
         password: password && password.toString(),
@@ -15311,8 +15342,7 @@ function () {
   }, {
     key: "logoutiServer",
     value: function logoutiServer(url) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "services/security/logout" : "/services/security/logout";
+      url = Util_Util.urlPathAppend(url, 'services/security/logout');
       var requestOptions = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -15351,8 +15381,7 @@ function () {
   }, {
     key: "loginiPortal",
     value: function loginiPortal(url, username, password) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "web/login.json" : "/web/login.json";
+      url = Util_Util.urlPathAppend(url, 'web/login');
       var loginInfo = {
         username: username && username.toString(),
         password: password && password.toString()
@@ -15378,8 +15407,7 @@ function () {
   }, {
     key: "logoutiPortal",
     value: function logoutiPortal(url) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "services/security/logout" : "/services/security/logout";
+      url = Util_Util.urlPathAppend(url, 'services/security/logout');
       var requestOptions = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -15416,8 +15444,7 @@ function () {
         return;
       }
 
-      var end = url.substr(url.length - 1, 1);
-      var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
+      var requestUrl = Util_Util.urlPathAppend(url, 'icloud/security/tokens');
       var params = loginInfoParams || {};
       var loginInfo = {
         username: params.userName && params.userName.toString(),
@@ -17028,7 +17055,7 @@ function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { i
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -17158,18 +17185,7 @@ function () {
       var credential = this.getCredential(options.url);
 
       if (credential) {
-        //当url中含有?，并且?在url末尾的时候直接添加token *网络分析等服务请求url会出现末尾是?的情况*
-        //当url中含有?，并且?不在url末尾的时候添加&token
-        //当url中不含有?，在url末尾添加?token
-        var endStr = options.url.substring(options.url.length - 1, options.url.length);
-
-        if (options.url.indexOf("?") > -1 && endStr === "?") {
-          options.url += credential.getUrlParameters();
-        } else if (options.url.indexOf("?") > -1 && endStr !== "?") {
-          options.url += "&" + credential.getUrlParameters();
-        } else {
-          options.url += "?" + credential.getUrlParameters();
-        }
+        options.url = Util_Util.urlAppend(options.url, credential.getUrlParameters());
       }
 
       me.calculatePollingTimes();
@@ -18334,23 +18350,17 @@ function (_SpatialAnalystBase) {
       }
 
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
-
       var parameterObject = {};
 
       if (parameter instanceof AreaSolarRadiationParameters_AreaSolarRadiationParameters) {
-        me.url += 'datasets/' + parameter.dataset + '/solarradiation';
+        me.url = Util_Util.urlPathAppend(me.url, "datasets/".concat(parameter.dataset, "/solarradiation"));
       }
 
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       AreaSolarRadiationParameters_AreaSolarRadiationParameters.toObject(parameter, parameterObject);
       var jsonParameters = Util_Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
       me.request({
-        method: "POST",
+        method: 'POST',
         data: jsonParameters,
         scope: me,
         success: me.serviceProcessCompleted,
@@ -19636,24 +19646,19 @@ function (_SpatialAnalystBase) {
     value: function processAsync(parameter) {
       var parameterObject = {};
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
 
       if (parameter instanceof DatasetBufferAnalystParameters_DatasetBufferAnalystParameters) {
-        me.mode = "datasets";
-        me.url += 'datasets/' + parameter.dataset + '/buffer';
+        me.mode = 'datasets';
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/buffer');
         DatasetBufferAnalystParameters_DatasetBufferAnalystParameters.toObject(parameter, parameterObject);
       } else if (parameter instanceof GeometryBufferAnalystParameters_GeometryBufferAnalystParameters) {
-        me.mode = "geometry";
-        me.url += 'geometry/buffer';
+        me.mode = 'geometry';
+        me.url = Util_Util.urlPathAppend(me.url, 'geometry/buffer');
         GeometryBufferAnalystParameters_GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
       }
 
       var jsonParameters = Util_Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -20042,7 +20047,7 @@ function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setP
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -20198,17 +20203,12 @@ function (_CommonServiceBase) {
     key: "serviceProcessFailed",
     value: function serviceProcessFailed(result) {
       ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase.prototype), "serviceProcessFailed", this).call(this, result);
-    } //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
-
+    }
   }, {
     key: "_processUrl",
     value: function _processUrl(url) {
-      if (url.indexOf('.json') === -1) {
-        url += '.json';
-      }
-
       if (SecurityManager_SecurityManager.getToken(url)) {
-        url += '?token=' + SecurityManager_SecurityManager.getToken(url);
+        url = Util_Util.urlAppend(url, 'token=' + SecurityManager_SecurityManager.getToken(url));
       }
 
       return url;
@@ -20247,6 +20247,7 @@ function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsServ
 
 
 
+
 /**
  * @class SuperMap.BuffersAnalystJobsService
  * @category iServer ProcessingService BufferAnalyst
@@ -20269,8 +20270,8 @@ function (_ProcessingServiceBas) {
     BuffersAnalystJobsService_classCallCheck(this, BuffersAnalystJobsService);
 
     _this = BuffersAnalystJobsService_possibleConstructorReturn(this, BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/buffers";
-    _this.CLASS_NAME = "SuperMap.BuffersAnalystJobsService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/buffers');
+    _this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
     return _this;
   }
   /**
@@ -20302,7 +20303,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getBuffersJob",
     value: function getBuffersJob(id) {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.BuffersAnalystJobsService.prototype.addBufferJob
@@ -20547,6 +20548,7 @@ function BurstPipelineAnalystService_setPrototypeOf(o, p) { BurstPipelineAnalyst
 
 
 
+
 /**
  * @class SuperMap.BurstPipelineAnalystService
  * @category iServer NetworkAnalyst BurstAnalyse
@@ -20601,8 +20603,7 @@ function (_NetworkAnalystServic) {
 
       var me = this,
           jsonObject;
-      var end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "burstAnalyse" : "/burstAnalyse") + ".json?";
+      me.url = Util_Util.urlPathAppend(me.url, 'burstAnalyse');
       jsonObject = {
         sourceNodeIDs: params.sourceNodeIDs,
         isUncertainDirectionValid: params.isUncertainDirectionValid
@@ -20677,7 +20678,7 @@ function ChartFeatureInfoSpecsService_setPrototypeOf(o, p) { ChartFeatureInfoSpe
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -20723,14 +20724,10 @@ function (_CommonServiceBase) {
     key: "processAsync",
     value: function processAsync() {
       var me = this,
-          method = "GET",
-          end = me.url.substr(me.url.length - 1, 1);
+          method = "GET";
 
       if (!me.isTempLayers) {
-        me.url += end === "/" ? '' : '/';
-        me.url += "chartFeatureInfoSpecs.json?";
-      } else {
-        me.url += ".json?";
+        Util_Util.urlPathAppend(me.url, 'chartFeatureInfoSpecs');
       }
 
       me.request({
@@ -21185,7 +21182,7 @@ function ChartQueryService_setPrototypeOf(o, p) { ChartQueryService_setPrototype
  * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -21243,8 +21240,7 @@ function (_CommonServiceBase) {
     _this.format = DataFormat.GEOJSON;
     Util_Util.extend(ChartQueryService_assertThisInitialized(_this), options);
 
-    var me = ChartQueryService_assertThisInitialized(_this),
-        end;
+    var me = ChartQueryService_assertThisInitialized(_this);
 
     if (options.format) {
       me.format = options.format.toUpperCase();
@@ -21254,14 +21250,7 @@ function (_CommonServiceBase) {
       return ChartQueryService_possibleConstructorReturn(_this);
     }
 
-    end = me.url.substr(me.url.length - 1, 1); // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-    // if (me.format==="geojson") {
-    //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-    // } else {
-    //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-    // }
-
-    me.url += end === "/" ? "queryResults.json?" : "/queryResults.json?";
+    me.url = Util_Util.urlPathAppend(me.url, 'queryResults');
     _this.CLASS_NAME = "SuperMap.ChartQueryService";
     return _this;
   }
@@ -21299,7 +21288,7 @@ function (_CommonServiceBase) {
       jsonParameters = params.getVariablesJson();
 
       if (me.returnContent) {
-        me.url += "returnContent=" + me.returnContent;
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       }
 
       me.request({
@@ -21938,9 +21927,8 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "weightmatrix" : "/weightmatrix") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'weightmatrix');
       jsonObject = {
         parameter: Util_Util.toJSON(params.parameter),
         nodes: me.getJson(params.isAnalyzeById, params.nodes)
@@ -22071,16 +22059,7 @@ function (_CommonServiceBase) {
      */
 
     _this.excludeField = null;
-
-    var me = DataFlowService_assertThisInitialized(_this);
-
-    var end = me.url.substr(me.url.length - 1, 1);
-
-    if (end !== '/') {
-      me.url += "/";
-    }
-
-    Util_Util.extend(me, options);
+    Util_Util.extend(DataFlowService_assertThisInitialized(_this), options);
     _this.CLASS_NAME = "SuperMap.DataFlowService";
     return _this;
   }
@@ -22095,7 +22074,7 @@ function (_CommonServiceBase) {
     key: "initBroadcast",
     value: function initBroadcast() {
       var me = this;
-      this.broadcastWebSocket = this._connect(me.url + 'broadcast');
+      this.broadcastWebSocket = this._connect(Util_Util.urlPathAppend(me.url, 'broadcast'));
 
       this.broadcastWebSocket.onopen = function (e) {
         me.broadcastWebSocket.isOpen = true;
@@ -22143,7 +22122,7 @@ function (_CommonServiceBase) {
     key: "initSubscribe",
     value: function initSubscribe() {
       var me = this;
-      this.subscribeWebSocket = this._connect(this.url + 'subscribe');
+      this.subscribeWebSocket = this._connect(Util_Util.urlPathAppend(me.url, 'subscribe'));
 
       this.subscribeWebSocket.onopen = function (e) {
         me.subscribeWebSocket.send(me._getFilterParams());
@@ -22285,7 +22264,7 @@ function (_CommonServiceBase) {
       var token = SecurityManager_SecurityManager.getToken(url);
 
       if (token) {
-        url += "?token=" + token;
+        url = Util_Util.urlAppend(url, "token=" + token);
       }
 
       return url;
@@ -23514,22 +23493,16 @@ function (_SpatialAnalystBase) {
     key: "processAsync",
     value: function processAsync(parameter) {
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
-
       var parameterObject = new Object();
 
       if (parameter instanceof DensityKernelAnalystParameters_DensityKernelAnalystParameters) {
-        me.url += 'datasets/' + parameter.dataset + '/densityanalyst/kernel';
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/densityanalyst/kernel');
         me.mode = "kernel";
       }
 
       DensityKernelAnalystParameters_DensityKernelAnalystParameters.toObject(parameter, parameterObject);
       var jsonParameters = Util_Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -23722,7 +23695,7 @@ function EditFeaturesService_setPrototypeOf(o, p) { EditFeaturesService_setProto
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {SuperMap.DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -23765,11 +23738,7 @@ function (_CommonServiceBase) {
       Util_Util.extend(EditFeaturesService_assertThisInitialized(_this), options);
     }
 
-    var me = EditFeaturesService_assertThisInitialized(_this),
-        end;
-
-    end = me.url.substr(me.url.length - 1, 1);
-    me.url += end == "/" ? "features.json?" : "/features.json?";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'features');
     _this.CLASS_NAME = "SuperMap.EditFeaturesService";
     return _this;
   }
@@ -23814,19 +23783,19 @@ function (_CommonServiceBase) {
 
       if (editType === EditType.DELETE) {
         ids = Util_Util.toJSON(params.IDs);
-        me.url += "ids=" + ids;
+        me.url = Util_Util.urlAppend(me.url, "ids=" + ids);
         method = "DELETE";
         jsonParameters = ids;
       } else if (editType === EditType.UPDATE) {
         method = "PUT";
       } else {
         if (me.isUseBatch) {
-          me.url += "isUseBatch=" + me.isUseBatch;
+          me.url = Util_Util.urlAppend(me.url, "isUseBatch=".concat(me.isUseBatch));
           me.returnContent = false;
         }
 
         if (me.returnContent) {
-          me.url += "returnContent=" + me.returnContent;
+          me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
           method = "POST";
         }
       }
@@ -24023,6 +23992,7 @@ function FacilityAnalystSinks3DService_setPrototypeOf(o, p) { FacilityAnalystSin
 
 
 
+
 /**
  * @class SuperMap.FacilityAnalystSinks3DService
  * @category iServer FacilityAnalyst3D Sinks
@@ -24087,9 +24057,8 @@ function (_CommonServiceBase) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "sinks" : "/sinks") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'sinks');
       jsonObject = {
         edgeID: params.edgeID,
         nodeID: params.nodeID,
@@ -24212,6 +24181,7 @@ function FacilityAnalystSources3DService_setPrototypeOf(o, p) { FacilityAnalystS
 
 
 
+
 /**
  * @class SuperMap.FacilityAnalystSources3DService
  * @category  iServer FacilityAnalyst3D Sources
@@ -24269,9 +24239,8 @@ function (_CommonServiceBase) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "sources" : "/sources") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'sources');
       jsonObject = {
         edgeID: params.edgeID,
         nodeID: params.nodeID,
@@ -24404,6 +24373,7 @@ function FacilityAnalystStreamService_setPrototypeOf(o, p) { FacilityAnalystStre
 
 
 
+
 /**
  * @class SuperMap.FacilityAnalystStreamService
  * @category iServer NetworkAnalyst UpstreamCriticalFacilities
@@ -24457,13 +24427,12 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject;
-      var end = me.url.substr(me.url.length - 1, 1); //URL 通过参数类型来判断是 上游 还是下游 查询
+          jsonObject; //URL 通过参数类型来判断是 上游 还是下游 查询
 
       if (params.queryType === 0) {
-        me.url = me.url + (end === "/" ? "upstreamcirticalfaclilities" : "/upstreamcirticalfaclilities") + ".json?";
+        me.url = Util_Util.urlPathAppend(me.url, 'upstreamcirticalfaclilities');
       } else if (params.queryType === 1) {
-        me.url = me.url + (end === "/" ? "downstreamcirticalfaclilities" : "/downstreamcirticalfaclilities") + ".json?";
+        me.url = Util_Util.urlPathAppend(me.url, 'downstreamcirticalfaclilities');
       } else {
         return;
       }
@@ -24601,6 +24570,7 @@ function FacilityAnalystTracedown3DService_setPrototypeOf(o, p) { FacilityAnalys
 
 
 
+
 /**
  * @class SuperMap.FacilityAnalystTracedown3DService
  * @category iServer FacilityAnalyst3D TraceDownResult
@@ -24654,9 +24624,8 @@ function (_CommonServiceBase) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "tracedownresult" : "/tracedownresult") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'tracedownresult');
       jsonObject = {
         edgeID: params.edgeID,
         nodeID: params.nodeID,
@@ -24776,6 +24745,7 @@ function FacilityAnalystTraceup3DService_setPrototypeOf(o, p) { FacilityAnalystT
 
 
 
+
 /**
  * @class SuperMap.FacilityAnalystTraceup3DService
  * @category iServer FacilityAnalyst3D TraceUpResult
@@ -24838,9 +24808,8 @@ function (_CommonServiceBase) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "traceupresult" : "/traceupresult") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'traceupresult');
       jsonObject = {
         edgeID: params.edgeID,
         nodeID: params.nodeID,
@@ -24966,6 +24935,7 @@ function FacilityAnalystUpstream3DService_setPrototypeOf(o, p) { FacilityAnalyst
 
 
 
+
 /**
  * @class SuperMap.FacilityAnalystUpstream3DService
  * @category  iServer FacilityAnalyst3D UpstreamCriticalFacilities
@@ -25019,9 +24989,8 @@ function (_CommonServiceBase) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "upstreamcirticalfaclilities" : "/upstreamcirticalfaclilities") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'upstreamcirticalfaclilities');
       jsonObject = {
         sourceNodeIDs: params.sourceNodeIDs,
         edgeID: params.edgeID,
@@ -25312,7 +25281,7 @@ function FieldStatisticService_setPrototypeOf(o, p) { FieldStatisticService_setP
  * @param {string} url - 服务的访问地址。如访问 World Map 服务，只需将 url 设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和GeoJSON 两种格式。参数格式为 "ISERVER","GEOJSON"。
  * @param {string} options.datasource - 数据集所在的数据源名称。
  * @param {string} options.dataset - 数据集名称。
@@ -25401,9 +25370,8 @@ function (_CommonServiceBase) {
     key: "processAsync",
     value: function processAsync() {
       var me = this,
-          end = me.url.substr(me.url.length - 1, 1),
           fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-      me.url += end == "/" ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
+      me.url = Util_Util.urlPathAppend(me.url, fieldStatisticURL);
       me.request({
         method: "GET",
         data: null,
@@ -25634,9 +25602,8 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "closestfacility" : "/closestfacility") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'closestfacility');
       jsonObject = {
         expectFacilityCount: params.expectFacilityCount,
         fromEvent: params.fromEvent,
@@ -25918,9 +25885,8 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "location" : "/location") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'location');
       jsonObject = {
         isFromCenter: params.isFromCenter,
         expectedSupplyCenterCount: params.expectedSupplyCenterCount,
@@ -26191,7 +26157,7 @@ function (_NetworkAnalystServic) {
           //end = me.url.substr(me.url.length - 1, 1),
       centers = me.getJson(params.isAnalyzeById, params.centers),
           nodes = me.getJson(params.isAnalyzeById, params.nodes);
-      me.url = me.url + "/mtsppath" + ".json?";
+      me.url = Util_Util.urlPathAppend(me.url, 'mtsppath');
       jsonObject = {
         centers: centers,
         nodes: nodes,
@@ -26470,9 +26436,8 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "path" : "/path") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'path');
       jsonObject = {
         hasLeastEdgeCount: params.hasLeastEdgeCount,
         parameter: Util_Util.toJSON(params.parameter),
@@ -26762,9 +26727,8 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "servicearea" : "/servicearea") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'servicearea');
       jsonObject = {
         isFromCenter: params.isFromCenter,
         isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
@@ -26974,6 +26938,7 @@ function FindTSPPathsService_setPrototypeOf(o, p) { FindTSPPathsService_setProto
 
 
 
+
 /**
  * @class SuperMap.FindTSPPathsService
  * @category  iServer NetworkAnalyst TSPPath
@@ -27040,9 +27005,8 @@ function (_NetworkAnalystServic) {
       }
 
       var me = this,
-          jsonObject,
-          end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "tsppath" : "/tsppath") + ".json?";
+          jsonObject;
+      me.url = Util_Util.urlPathAppend(me.url, 'tsppath');
       jsonObject = {
         parameter: SuperMap.Util.toJSON(params.parameter),
         endNodeAssigned: params.endNodeAssigned,
@@ -27435,11 +27399,9 @@ function (_SpatialAnalystBase) {
     value: function getJsonParameters(params) {
       var jsonParameters = "",
           jsonStr = "datasets/" + params.routeTable + "/linearreferencing/generatespatialdata",
-          me = this,
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
-      me.url += "?returnContent=true";
+          me = this;
+      me.url = Util_Util.urlPathAppend(me.url, jsonStr);
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       jsonParameters = Util_Util.toJSON(params);
       return jsonParameters;
     }
@@ -28159,6 +28121,7 @@ function GeoRelationAnalystService_setPrototypeOf(o, p) { GeoRelationAnalystServ
 
 
 
+
 /**
  * @class SuperMap.GeoRelationAnalystService
  * @category iServer SpatialAnalyst GeoRelationAnalyst
@@ -28243,16 +28206,9 @@ function (_SpatialAnalystBase) {
       }
 
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end === '/') {
-        me.url += 'datasets/' + parameter.dataset + '/georelation';
-      } else {
-        me.url += '/datasets/' + parameter.dataset + '/georelation';
-      }
-
+      me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/georelation');
       var jsonParameters = SuperMap.Util.toJSON(parameter);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -28613,7 +28569,7 @@ function GetFeaturesServiceBase_setPrototypeOf(o, p) { GetFeaturesServiceBase_se
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。 
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。 
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -28673,22 +28629,7 @@ function (_CommonServiceBase) {
 
     _this.format = DataFormat.GEOJSON;
     Util_Util.extend(GetFeaturesServiceBase_assertThisInitialized(_this), options);
-
-    var me = GetFeaturesServiceBase_assertThisInitialized(_this),
-        end;
-
-    if (options.format) {
-      me.format = options.format.toUpperCase();
-    }
-
-    end = me.url.substr(me.url.length - 1, 1); // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-    // if (me.format==="geojson" ) {
-    //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-    // } else {
-    //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-    // }
-
-    me.url += end == "/" ? "featureResults.json?" : "/featureResults.json?";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'featureResults');
     _this.CLASS_NAME = "SuperMap.GetFeaturesServiceBase";
     return _this;
   }
@@ -28732,18 +28673,18 @@ function (_CommonServiceBase) {
       me.maxFeatures = params.maxFeatures;
 
       if (me.returnContent) {
-        me.url += "returnContent=" + me.returnContent;
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
         firstPara = false;
       }
 
       var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
 
       if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
-        me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
+        me.url = Util_Util.urlAppend(me.url, "fromIndex=".concat(me.fromIndex, "&toIndex=").concat(me.toIndex));
       }
 
       if (params.returnCountOnly) {
-        me.url += "&returnCountOnly=" + params.returnContent;
+        me.url = Util_Util.urlAppend(me.url, "&returnCountOnly=" + params.returnContent);
       }
 
       jsonParameters = me.getJsonParameters(params);
@@ -28820,7 +28761,7 @@ function GetFeaturesByBoundsService_setPrototypeOf(o, p) { GetFeaturesByBoundsSe
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -29085,7 +29026,7 @@ function GetFeaturesByBufferService_setPrototypeOf(o, p) { GetFeaturesByBufferSe
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -29363,7 +29304,7 @@ function GetFeaturesByGeometryService_setPrototypeOf(o, p) { GetFeaturesByGeomet
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -29601,7 +29542,7 @@ function GetFeaturesByIDsService_setPrototypeOf(o, p) { GetFeaturesByIDsService_
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -29829,7 +29770,7 @@ function GetFeaturesBySQLService_setPrototypeOf(o, p) { GetFeaturesBySQLService_
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -29925,7 +29866,7 @@ function GetFieldsService_setPrototypeOf(o, p) { GetFieldsService_setPrototypeOf
  * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
  * @param {string}options.dataset - 要查询的数据集名称。</br>
@@ -29997,10 +29938,8 @@ function (_CommonServiceBase) {
   }, {
     key: "processAsync",
     value: function processAsync() {
-      var me = this,
-          end = me.url.substr(me.url.length - 1, 1),
-          datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
-      me.url += end == "/" ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
+      var me = this;
+      me.url = Util_Util.urlPathAppend(me.url, "datasources/".concat(me.datasource, "/datasets/").concat(me.dataset, "/fields"));
       me.request({
         method: "GET",
         data: null,
@@ -30126,7 +30065,7 @@ function GetGridCellInfosService_setPrototypeOf(o, p) { GetGridCellInfosService_
  * @param {string} url - 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -30222,8 +30161,7 @@ function (_CommonServiceBase) {
 
       Util_Util.extend(this, params);
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-      me.url += end == "/" ? "datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json" : "/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json";
+      me.url = Util_Util.urlPathAppend(me.url, "datasources/".concat(me.dataSourceName, "/datasets/").concat(me.datasetName));
       me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
     }
     /**
@@ -30267,20 +30205,11 @@ function (_CommonServiceBase) {
   }, {
     key: "queryGridInfos",
     value: function queryGridInfos() {
-      var me = this,
-          re = /\.json/,
-          index = re.exec(me.url).index,
-          urlBack = me.url.substring(index),
-          urlFront = me.url.substring(0, me.url.length - urlBack.length);
-
-      if (me.datasetType == "GRID") {
-        me.url = urlFront + "/gridValue" + urlBack;
-      } else {
-        me.url = urlFront + "/imageValue" + urlBack;
-      }
+      var me = this;
+      me.url = Util_Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
 
       if (me.X != null && me.Y != null) {
-        me.url += '?x=' + me.X + '&y=' + me.Y;
+        me.url = Util_Util.urlAppend(me.url, "x=".concat(me.X, "&y=").concat(me.Y));
       }
 
       me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed);
@@ -35129,7 +35058,7 @@ function GetLayersInfoService_setPrototypeOf(o, p) { GetLayersInfoService_setPro
  *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -35183,14 +35112,10 @@ function (_CommonServiceBase) {
     key: "processAsync",
     value: function processAsync() {
       var me = this,
-          method = "GET",
-          end = me.url.substr(me.url.length - 1, 1);
+          method = "GET";
 
       if (!me.isTempLayers) {
-        me.url += end === "/" ? '' : '/';
-        me.url += "layers.json?";
-      } else {
-        me.url += ".json?";
+        me.url = Util_Util.urlPathAppend(me.url, 'layers');
       }
 
       me.request({
@@ -36233,49 +36158,44 @@ function (_SpatialAnalystBase) {
     value: function processAsync(parameter) {
       var parameterObject = {};
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
 
       if (parameter instanceof InterpolationDensityAnalystParameters_InterpolationDensityAnalystParameters) {
-        me.mode = "Density";
+        me.mode = 'Density';
 
-        if (parameter.InterpolationAnalystType === "geometry") {
-          me.url += 'geometry/interpolation/density';
+        if (parameter.InterpolationAnalystType === 'geometry') {
+          me.url = Util_Util.urlPathAppend(me.url, 'geometry/interpolation/density');
         } else {
-          me.url += 'datasets/' + parameter.dataset + '/interpolation/density';
+          me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/density');
         }
       } else if (parameter instanceof InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters) {
-        me.mode = "IDW";
+        me.mode = 'IDW';
 
-        if (parameter.InterpolationAnalystType === "geometry") {
-          me.url += 'geometry/interpolation/idw';
+        if (parameter.InterpolationAnalystType === 'geometry') {
+          me.url = Util_Util.urlPathAppend(me.url, 'geometry/interpolation/idw');
         } else {
-          me.url += 'datasets/' + parameter.dataset + '/interpolation/idw';
+          me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/idw');
         }
       } else if (parameter instanceof InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters) {
-        me.mode = "RBF";
+        me.mode = 'RBF';
 
-        if (parameter.InterpolationAnalystType === "geometry") {
-          me.url += 'geometry/interpolation/rbf';
+        if (parameter.InterpolationAnalystType === 'geometry') {
+          me.url = Util_Util.urlPathAppend(me.url, 'geometry/interpolation/rbf');
         } else {
-          me.url += 'datasets/' + parameter.dataset + '/interpolation/rbf';
+          me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/rbf');
         }
       } else if (parameter instanceof InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters) {
-        me.mode = "Kriging";
+        me.mode = 'Kriging';
 
-        if (parameter.InterpolationAnalystType === "geometry") {
-          me.url += 'geometry/interpolation/kriging';
+        if (parameter.InterpolationAnalystType === 'geometry') {
+          me.url = Util_Util.urlPathAppend(me.url, 'geometry/interpolation/kriging');
         } else {
-          me.url += 'datasets/' + parameter.dataset + '/interpolation/kriging';
+          me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/interpolation/kriging');
         }
       }
 
       InterpolationAnalystParameters_InterpolationAnalystParameters.toObject(parameter, parameterObject);
       var jsonParameters = Util_Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -36507,6 +36427,7 @@ function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsServic
 
 
 
+
 /**
  * @class SuperMap.KernelDensityJobsService
  * @category  iServer ProcessingService DensityAnalyst
@@ -36529,7 +36450,7 @@ function (_ProcessingServiceBas) {
     KernelDensityJobsService_classCallCheck(this, KernelDensityJobsService);
 
     _this = KernelDensityJobsService_possibleConstructorReturn(this, KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/density";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/density');
     _this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
     return _this;
   }
@@ -36563,7 +36484,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getKernelDensityJob",
     value: function getKernelDensityJob(id) {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
@@ -37082,7 +37003,7 @@ function MapService_setPrototypeOf(o, p) { MapService_setPrototypeOf = Object.se
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -37118,11 +37039,11 @@ function (_CommonServiceBase) {
 
       if (arr instanceof Array) {
         if (arr.length === 2) {
-          me.url += "?prjCoordSys={\"epsgCode\":" + arr[1] + "}";
+          me.url = Util_Util.urlAppend(me.url, "prjCoordSys={\"epsgCode\":\"".concat(arr[1], "\"}"));
         }
 
         if (arr.length === 1) {
-          me.url += "?prjCoordSys={\"epsgCode\":" + arr[0] + "}";
+          me.url = Util_Util.urlAppend(me.url, "prjCoordSys={\"epsgCode\":\"".concat(arr[0], "\"}"));
         }
       }
     }
@@ -37437,21 +37358,15 @@ function (_SpatialAnalystBase) {
     key: "processAsync",
     value: function processAsync(parameter) {
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
-
       var parameterObject = {};
 
       if (parameter instanceof MathExpressionAnalysisParameters_MathExpressionAnalysisParameters) {
-        me.url += 'datasets/' + parameter.dataset + '/mathanalyst';
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/mathanalyst');
       }
 
       MathExpressionAnalysisParameters_MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
       var jsonParameters = Util_Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -37602,7 +37517,7 @@ function MeasureService_setPrototypeOf(o, p) { MeasureService_setPrototypeOf = O
  * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -37663,21 +37578,13 @@ function (_CommonServiceBase) {
       var me = this,
           geometry = params.geometry,
           pointsCount = 0,
-          point2ds = null,
-          end = null;
+          point2ds = null;
 
       if (!geometry) {
         return;
       }
 
-      end = me.url.substr(me.url.length - 1, 1);
-
-      if (me.measureMode === MeasureMode.AREA) {
-        me.url += end === "/" ? "area.json?" : "/area.json?";
-      } else {
-        me.url += end === "/" ? "distance.json?" : "/distance.json?";
-      }
-
+      me.url = Util_Util.urlPathAppend(me.url, me.measureMode === MeasureMode.AREA ? 'area' : 'distance');
       var serverGeometry = ServerGeometry_ServerGeometry.fromGeometry(geometry);
 
       if (!serverGeometry) {
@@ -37823,28 +37730,25 @@ function (_SpatialAnalystBase) {
     value: function processAsync(parameter) {
       var parameterObject = {};
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
 
       if (parameter instanceof DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters) {
         me.mode = "datasets";
-        me.url += 'datasets/' + parameter.sourceDataset + '/overlay.json?returnContent=true';
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.sourceDataset + '/overlay');
         DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
       } else if (parameter instanceof GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters) {
         me.mode = "geometry"; //支持传入多个几何要素进行叠加分析
 
         if (parameter.operateGeometries && parameter.sourceGeometries) {
-          me.url += 'geometry/overlay/batch.json?returnContent=true&ignoreAnalystParam=true';
+          me.url = Util_Util.urlPathAppend(me.url, 'geometry/overlay/batch');
+          me.url = Util_Util.urlAppend(me.url, 'ignoreAnalystParam=true');
         } else {
-          me.url += 'geometry/overlay.json?returnContent=true';
+          me.url = Util_Util.urlPathAppend(me.url, 'geometry/overlay');
         }
 
         GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
       }
 
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       var jsonParameters = Util_Util.toJSON(parameterObject);
       me.request({
         method: "POST",
@@ -38033,6 +37937,7 @@ function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setP
 
 
 
+
 /**
  * @class SuperMap.OverlayGeoJobsService
  * @category iServer ProcessingService OverlayAnalyst
@@ -38040,7 +37945,7 @@ function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setP
  * @param {string} url - 叠加分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
@@ -38059,8 +37964,8 @@ function (_ProcessingServiceBas) {
     OverlayGeoJobsService_classCallCheck(this, OverlayGeoJobsService);
 
     _this = OverlayGeoJobsService_possibleConstructorReturn(this, OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/overlay";
-    _this.CLASS_NAME = "SuperMap.OverlayGeoJobsService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/overlay');
+    _this.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
     return _this;
   }
   /**
@@ -38092,7 +37997,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getOverlayGeoJob",
     value: function getOverlayGeoJob(id) {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.OverlayGeoJobsService.prototype.addOverlayGeoJob
@@ -38256,7 +38161,7 @@ function QueryService_setPrototypeOf(o, p) { QueryService_setPrototypeOf = Objec
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -38307,25 +38212,15 @@ function (_CommonServiceBase) {
 
     _this.CLASS_NAME = "SuperMap.QueryService";
 
-    var me = QueryService_assertThisInitialized(_this),
-        end;
-
-    if (!me.url) {
+    if (!_this.url) {
       return QueryService_possibleConstructorReturn(_this);
     }
 
     if (options && options.format) {
-      me.format = options.format.toUpperCase();
+      _this.format = options.format.toUpperCase();
     }
 
-    end = me.url.substr(me.url.length - 1, 1); // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-    // if (this.format==="geojson") {
-    //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-    // } else {
-    //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-    // }
-
-    me.url += end === "/" ? "queryResults.json?" : "/queryResults.json?";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'queryResults');
     return _this;
   }
   /**
@@ -38363,13 +38258,13 @@ function (_CommonServiceBase) {
       jsonParameters = me.getJsonParameters(params);
 
       if (me.returnContent) {
-        me.url += "returnContent=" + me.returnContent;
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
       } else {
         //仅供三维使用 获取高亮图片的bounds
         returnCustomResult = params.returnCustomResult;
 
         if (returnCustomResult) {
-          me.url += "returnCustomResult=" + returnCustomResult;
+          me.url = Util_Util.urlAppend(me.url, 'returnCustomResult=' + returnCustomResult);
         }
       }
 
@@ -38491,7 +38386,7 @@ function QueryByBoundsService_setPrototypeOf(o, p) { QueryByBoundsService_setPro
  * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。<br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -38733,7 +38628,7 @@ function QueryByDistanceService_setPrototypeOf(o, p) { QueryByDistanceService_se
  * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -38956,7 +38851,7 @@ function QueryByGeometryService_setPrototypeOf(o, p) { QueryByGeometryService_se
  * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -39173,7 +39068,7 @@ function QueryBySQLService_setPrototypeOf(o, p) { QueryBySQLService_setPrototype
  * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -39480,11 +39375,9 @@ function (_SpatialAnalystBase) {
     value: function getJsonParameters(params) {
       var jsonParameters,
           jsonStr = "geometry/calculatemeasure",
-          me = this,
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
-      me.url += "?returnContent=true";
+          me = this;
+      me.url = Util_Util.urlPathAppend(me.url, jsonStr);
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       jsonParameters = Util_Util.toJSON(params);
       return jsonParameters;
     }
@@ -39792,17 +39685,15 @@ function (_SpatialAnalystBase) {
     value: function getJsonParameters(params) {
       var jsonParameters,
           jsonStr = "geometry/routelocator",
-          me = this,
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
+          me = this;
 
       if (params.dataset) {
         jsonStr = "datasets/" + params.dataset + "/linearreferencing/routelocator";
         params.sourceRoute = null;
       }
 
-      me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
-      me.url += "?returnContent=true";
+      me.url = Util_Util.urlPathAppend(me.url, jsonStr);
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       jsonParameters = Util_Util.toJSON(params);
       return jsonParameters;
     }
@@ -40059,7 +39950,7 @@ function SetLayerInfoService_setPrototypeOf(o, p) { SetLayerInfoService_setProto
  *                 http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -40111,7 +40002,6 @@ function (_CommonServiceBase) {
       }
 
       var me = this;
-      me.url += ".json";
       var jsonParamsStr = Util_Util.toJSON(params);
       me.request({
         method: "PUT",
@@ -40238,7 +40128,7 @@ function SetLayersInfoService_setPrototypeOf(o, p) { SetLayersInfoService_setPro
  * @param {string} options.resourceID - 图层资源ID，临时图层的资源ID标记。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -40303,20 +40193,15 @@ function (_CommonServiceBase) {
       var jsonParams,
           subLayers = [],
           me = this,
-          method = "",
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? '' : '/'; //创建临时图层和设置修改临时图层信息对应不同的资源URL
+          method = ""; //创建临时图层和设置修改临时图层信息对应不同的资源URL
 
       if (me.isTempLayers) {
-        me.url += "tempLayersSet/" + me.resourceID;
+        me.url = Util_Util.urlPathAppend(me.url, "tempLayersSet/" + me.resourceID);
         method = "PUT";
       } else {
-        me.url += "tempLayersSet";
+        me.url = Util_Util.urlPathAppend(me.url, "tempLayersSet");
         method = "POST";
       }
-
-      me.url += ".json?";
 
       if (!params.subLayers) {
         params.subLayers = {
@@ -40511,7 +40396,7 @@ function SetLayerStatusService_setPrototypeOf(o, p) { SetLayerStatusService_setP
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -40567,12 +40452,9 @@ function (_CommonServiceBase) {
       var me = this,
           method = "POST";
       me.url = me.mapUrl;
-      var end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? '' : '/';
 
       if (params.resourceID == null) {
-        me.url += "tempLayersSet";
-        me.url += ".json?";
+        me.url = Util_Util.urlPathAppend(me.url, 'tempLayersSet');
         me.lastparams = params;
         me.request({
           method: method,
@@ -40581,9 +40463,8 @@ function (_CommonServiceBase) {
           failure: me.serviceProcessFailed
         });
       } else {
-        me.url += "tempLayersSet/" + params.resourceID;
-        me.url += ".json?";
-        me.url += "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString();
+        me.url = Util_Util.urlPathAppend(me.url, "tempLayersSet/" + params.resourceID);
+        me.url = Util_Util.urlAppend(me.url, "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString());
         var jsonParameters = '[{';
         jsonParameters += '"type":"UGC",';
 
@@ -40831,6 +40712,7 @@ function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJo
 
 
 
+
 /**
  * @class SuperMap.SingleObjectQueryJobsService
  * @category  iServer ProcessingService Query
@@ -40853,8 +40735,8 @@ function (_ProcessingServiceBas) {
     SingleObjectQueryJobsService_classCallCheck(this, SingleObjectQueryJobsService);
 
     _this = SingleObjectQueryJobsService_possibleConstructorReturn(this, SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/query";
-    _this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/query');
+    _this.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
     return _this;
   }
   /**
@@ -40886,7 +40768,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getQueryJob",
     value: function getQueryJob(id) {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
@@ -41059,12 +40941,8 @@ function (_CommonServiceBase) {
         return;
       }
 
-      var me = this,
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? '' : '/';
-      me.url += "stops/keyword/" + params.keyWord;
-      me.url += ".json?";
+      var me = this;
+      me.url = Util_Util.urlPathAppend(me.url, 'stops/keyword/' + params.keyWord);
       me.request({
         method: "GET",
         params: {
@@ -41246,6 +41124,7 @@ function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJo
 
 
 
+
 /**
  * @class SuperMap.SummaryAttributesJobsService
  * @category  iServer ProcessingService SummaryAttributes
@@ -41268,7 +41147,7 @@ function (_ProcessingServiceBas) {
     SummaryAttributesJobsService_classCallCheck(this, SummaryAttributesJobsService);
 
     _this = SummaryAttributesJobsService_possibleConstructorReturn(this, SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/summaryattributes";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/summaryattributes');
     _this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
     return _this;
   }
@@ -41301,7 +41180,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryAttributesJob",
     value: function getSummaryAttributesJob(id) {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SummaryAttributesJobsService.protitype.addSummaryAttributesJob
@@ -41542,6 +41421,7 @@ function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_se
 
 
 
+
 /**
  * @class SuperMap.SummaryMeshJobsService
  * @category  iServer ProcessingService AggregatePoints
@@ -41549,7 +41429,7 @@ function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_se
  * @param {string} url -点聚合分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
@@ -41568,8 +41448,8 @@ function (_ProcessingServiceBas) {
     SummaryMeshJobsService_classCallCheck(this, SummaryMeshJobsService);
 
     _this = SummaryMeshJobsService_possibleConstructorReturn(this, SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/aggregatepoints";
-    _this.CLASS_NAME = "SuperMap.SummaryMeshJobsService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/aggregatepoints');
+    _this.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
     return _this;
   }
   /**
@@ -41601,7 +41481,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryMeshJob",
     value: function getSummaryMeshJob(id) {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
@@ -41883,6 +41763,7 @@ function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsServic
 
 
 
+
 /**
  * @class SuperMap.SummaryRegionJobsService
  * @category  iServer ProcessingService SummaryRegion
@@ -41905,8 +41786,8 @@ function (_ProcessingServiceBas) {
     SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
 
     _this = SummaryRegionJobsService_possibleConstructorReturn(this, SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/summaryregion";
-    _this.CLASS_NAME = "SuperMap.SummaryRegionJobsService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/summaryregion');
+    _this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
     return _this;
   }
   /**
@@ -41938,7 +41819,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryRegionJob",
     value: function getSummaryRegionJob(id) {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
@@ -42175,24 +42056,22 @@ function (_SpatialAnalystBase) {
   }, {
     key: "getJsonParameters",
     value: function getJsonParameters(params) {
-      var jsonParameters = "";
+      var jsonParameters = '';
       var parameterObject = {};
-      var me = this,
-          end;
+      var me = this;
 
       if (params instanceof DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters) {
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += end === "/" ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true" : "/datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + params.dataset + '/' + params.surfaceAnalystMethod.toLowerCase());
         DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
         jsonParameters = Util_Util.toJSON(parameterObject);
       } else if (params instanceof GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters) {
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += end === "/" ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
+        me.url = Util_Util.urlPathAppend(me.url, 'geometry/' + params.surfaceAnalystMethod.toLowerCase());
         jsonParameters = Util_Util.toJSON(params);
       } else {
         return;
       }
 
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       return jsonParameters;
     }
   }]);
@@ -42346,6 +42225,7 @@ function TerrainCurvatureCalculationService_setPrototypeOf(o, p) { TerrainCurvat
 
 
 
+
 /**
  * @class SuperMap.TerrainCurvatureCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
@@ -42402,21 +42282,15 @@ function (_SpatialAnalystBase) {
     key: "processAsync",
     value: function processAsync(parameter) {
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
-
       var parameterObject = {};
 
       if (parameter instanceof TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters) {
-        me.url += 'datasets/' + parameter.dataset + '/terraincalculation/curvature';
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/terraincalculation/curvature');
       }
 
       TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
       var jsonParameters = SuperMap.Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -43332,12 +43206,8 @@ function (_CommonServiceBase) {
       SuperMap.Util.extend(ThemeService_assertThisInitialized(_this), options);
     }
 
-    var end,
-        me = ThemeService_assertThisInitialized(_this);
-
-    end = me.url.substr(me.url.length - 1, 1);
-    me.url += end === "/" ? "tempLayersSet.json?" : "/tempLayersSet.json?";
-    _this.CLASS_NAME = "SuperMap.ThemeService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'tempLayersSet');
+    _this.CLASS_NAME = 'SuperMap.ThemeService';
     return _this;
   }
   /**
@@ -43559,24 +43429,19 @@ function (_SpatialAnalystBase) {
     value: function processAsync(parameter) {
       var parameterObject = {};
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
 
       if (parameter instanceof DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters) {
         me.mode = "datasets";
-        me.url += 'datasets/' + parameter.dataset + '/thiessenpolygon';
+        me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/thiessenpolygon');
         DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters.toObject(parameter, parameterObject);
       } else if (parameter instanceof GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters) {
         me.mode = "geometry";
-        me.url += 'geometry/thiessenpolygon';
+        me.url = Util_Util.urlPathAppend(me.url, 'geometry/thiessenpolygon');
         GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters.toObject(parameter, parameterObject);
       }
 
       var jsonParameters = Util_Util.toJSON(parameterObject);
-      me.url += '.json?returnContent=true';
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
       me.request({
         method: "POST",
         data: jsonParameters,
@@ -43676,13 +43541,8 @@ function (_SpatialAnalystBase) {
     key: "processAsync",
     value: function processAsync(parameters) {
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-
-      if (end !== '/') {
-        me.url += "/";
-      }
-
-      me.url += 'geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true';
+      me.url = Util_Util.urlPathAppend(me.url, 'geometry/batchanalyst');
+      me.url = Util_Util.urlAppend(me.url, 'returnContent=true&ignoreAnalystParam=true');
 
       var parameterObjects = me._processParams(parameters);
 
@@ -43794,6 +43654,7 @@ function TilesetsService_setPrototypeOf(o, p) { TilesetsService_setPrototypeOf =
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
+
 /**
  * @class SuperMap.TilesetsService
  * @category  iServer Map Tilesets
@@ -43804,13 +43665,13 @@ function TilesetsService_setPrototypeOf(o, p) { TilesetsService_setPrototypeOf =
  *                       例如: "http://localhost:8090/iserver/services/test/rest/maps/tianlocal"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
 
-var TilesetsService =
+var TilesetsService_TilesetsService =
 /*#__PURE__*/
 function (_CommonServiceBase) {
   TilesetsService_inherits(TilesetsService, _CommonServiceBase);
@@ -43847,8 +43708,7 @@ function (_CommonServiceBase) {
       }
 
       var me = this;
-      var end = me.url.substr(me.url.length - 1, 1);
-      me.url = me.url + (end === "/" ? "tilesets" : "/tilesets") + ".json?";
+      me.url = Util_Util.urlPathAppend(me.url, 'tilesets');
       me.request({
         method: "GET",
         scope: me,
@@ -43860,7 +43720,7 @@ function (_CommonServiceBase) {
 
   return TilesetsService;
 }(CommonServiceBase_CommonServiceBase);
-SuperMap.TilesetsService = TilesetsService;
+SuperMap.TilesetsService = TilesetsService_TilesetsService;
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 function TopologyValidatorJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44028,6 +43888,7 @@ function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJo
 
 
 
+
 /**
  * @class SuperMap.TopologyValidatorJobsService
  * @category  iServer ProcessingService TopologyValidator
@@ -44050,7 +43911,7 @@ function (_ProcessingServiceBas) {
     TopologyValidatorJobsService_classCallCheck(this, TopologyValidatorJobsService);
 
     _this = TopologyValidatorJobsService_possibleConstructorReturn(this, TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/topologyvalidator";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/topologyvalidator');
     _this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
     return _this;
   }
@@ -44083,7 +43944,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getTopologyValidatorJob",
     value: function getTopologyValidatorJob(id) {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.TopologyValidatorJobsService.protitype.addTopologyValidatorJob
@@ -44402,11 +44263,8 @@ function (_CommonServiceBase) {
 
       var me = this,
           method = "GET",
-          jsonParameters,
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? '' : '/';
-      me.url += "path.json?";
+          jsonParameters;
+      me.url = Util_Util.urlPathAppend(me.url, 'path');
       jsonParameters = {
         points: Util_Util.toJSON(params.points),
         transferLines: Util_Util.toJSON(params['transferLines'])
@@ -44659,11 +44517,8 @@ function (_CommonServiceBase) {
 
       var me = this,
           method = "GET",
-          jsonParameters,
-          end;
-      end = me.url.substr(me.url.length - 1, 1);
-      me.url += end === "/" ? '' : '/';
-      me.url += "solutions.json?";
+          jsonParameters;
+      me.url = Util_Util.urlPathAppend(me.url, 'solutions');
       jsonParameters = {
         points: Util_Util.toJSON(params.points),
         walkingRatio: params['walkingRatio'],
@@ -44821,6 +44676,7 @@ function UpdateEdgeWeightService_setPrototypeOf(o, p) { UpdateEdgeWeightService_
 
 
 
+
 /**
  * @class SuperMap.UpdateEdgeWeightService
  * @category  iServer NetworkAnalyst EdgeWeight
@@ -44890,15 +44746,9 @@ function (_NetworkAnalystServic) {
         return;
       }
 
-      var me = this,
-          end = me.url.substr(me.url.length - 1, 1);
+      var me = this;
       var paramStr = me.parse(params);
-
-      if (end === "/") {
-        me.url.splice(me.url.length - 1, 1);
-      }
-
-      me.url = me.url + paramStr + ".json?";
+      me.url = Util_Util.urlPathAppend(me.url, paramStr);
       var data = params.edgeWeight ? params.edgeWeight : null;
       me.request({
         method: "PUT",
@@ -45072,6 +44922,7 @@ function UpdateTurnNodeWeightService_setPrototypeOf(o, p) { UpdateTurnNodeWeight
 
 
 
+
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
  * @category  iServer NetworkAnalyst TurnNodeWeight
@@ -45140,15 +44991,9 @@ function (_NetworkAnalystServic) {
         return;
       }
 
-      var me = this,
-          end = me.url.substr(me.url.length - 1, 1);
+      var me = this;
       var paramStr = me.parse(params);
-
-      if (end === "/") {
-        me.url.splice(me.url.length - 1, 1);
-      }
-
-      me.url = me.url + paramStr + ".json?";
+      me.url = Util_Util.urlPathAppend(me.url, paramStr);
       var data = params.turnNodeWeight ? params.turnNodeWeight : null;
       me.request({
         method: "PUT",
@@ -45369,6 +45214,7 @@ function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setP
 
 
 
+
 /**
  * @class SuperMap.VectorClipJobsService
  * @category  iServer ProcessingService VectorClip
@@ -45391,8 +45237,8 @@ function (_ProcessingServiceBas) {
     VectorClipJobsService_classCallCheck(this, VectorClipJobsService);
 
     _this = VectorClipJobsService_possibleConstructorReturn(this, VectorClipJobsService_getPrototypeOf(VectorClipJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/vectorclip";
-    _this.CLASS_NAME = "SuperMap.VectorClipJobsService";
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/vectorclip');
+    _this.CLASS_NAME = 'SuperMap.VectorClipJobsService';
     return _this;
   }
   /**
@@ -45424,7 +45270,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getVectorClipJob",
     value: function getVectorClipJob(id) {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
@@ -46971,21 +46817,21 @@ var ServerInfo_ServerInfo = function ServerInfo(type, options) {
   //this.server = this.server.match(patten)[0];
 
 
-  var tokenServiceSuffix = "/services/security/tokens.json";
+  var tokenServiceSuffix = "/services/security/tokens";
 
   if (this.type === ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
     tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
   }
 
   if (!this.tokenServiceUrl) {
-    this.tokenServiceUrl = this.server + tokenServiceSuffix;
+    this.tokenServiceUrl = Util_Util.urlPathAppend(this.server, tokenServiceSuffix);
   }
 
   if (!this.keyServiceUrl) {
     if (this.type === ServerType.IPORTAL) {
-      this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
+      this.keyServiceUrl = Util_Util.urlPathAppend(this.server, "/web/mycontent/keys/register");
     } else if (this.type === ServerType.ONLINE) {
-      this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
+      this.keyServiceUrl = Util_Util.urlPathAppend(this.server, "/web/mycontent/keys");
     }
   }
 };
@@ -87509,7 +87355,7 @@ function ServiceBase_setPrototypeOf(o, p) { ServiceBase_setPrototypeOf = Object.
  * @param {string} url - 与客户端交互的服务地址。 
  * @param {Object} options - 可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -87583,7 +87429,7 @@ function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMat
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.headers] - 请求头。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
@@ -87622,7 +87468,7 @@ function (_ServiceBase) {
           processFailed: callback
         }
       });
-      addressMatchService.code(me.url + '/geocoding', params);
+      addressMatchService.code(Util_Util.urlPathAppend(me.url, 'geocoding'), params);
     }
     /**
      * @function mapboxgl.supermap.AddressMatchService.prototype.decode
@@ -87647,7 +87493,7 @@ function (_ServiceBase) {
           processFailed: callback
         }
       });
-      addressMatchService.decode(me.url + '/geodecoding', params);
+      addressMatchService.decode(Util_Util.urlPathAppend(me.url, 'geodecoding'), params);
     }
   }]);
 
@@ -87697,7 +87543,7 @@ function ChartService_setPrototypeOf(o, p) { ChartService_setPrototypeOf = Objec
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var ChartService_ChartService =
@@ -87752,7 +87598,7 @@ function (_ServiceBase) {
     value: function getChartFeatureInfo(callback) {
       var me = this,
           url = me.url.concat();
-      url += "/chartFeatureInfoSpecs";
+      url = Util_Util.urlPathAppend(url, 'chartFeatureInfoSpecs');
       var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService(url, {
         proxy: me.options.proxy,
         withCredentials: me.options.withCredentials,
@@ -88067,7 +87913,7 @@ function FeatureService_setPrototypeOf(o, p) { FeatureService_setPrototypeOf = O
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var FeatureService_FeatureService =
@@ -88229,7 +88075,7 @@ function (_ServiceBase) {
           url = me.url,
           dataSourceName = params.dataSourceName,
           dataSetName = params.dataSetName;
-      url += '/datasources/' + dataSourceName + '/datasets/' + dataSetName;
+      url = Util_Util.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
       var editFeatureService = new EditFeaturesService_EditFeaturesService(url, {
         proxy: me.options.proxy,
         withCredentials: me.options.withCredentials,
@@ -88372,7 +88218,7 @@ function FieldService_setPrototypeOf(o, p) { FieldService_setPrototypeOf = Objec
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
 
@@ -88536,7 +88382,7 @@ function GridCellInfosService_setPrototypeOf(o, p) { GridCellInfosService_setPro
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var GridCellInfosService_GridCellInfosService =
@@ -88625,7 +88471,7 @@ function LayerInfoService_setPrototypeOf(o, p) { LayerInfoService_setPrototypeOf
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var LayerInfoService_LayerInfoService =
@@ -88686,8 +88532,7 @@ function (_ServiceBase) {
         return;
       }
 
-      var url = me.url.concat();
-      url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
+      var url = Util_Util.urlPathAppend(me.url, "tempLayersSet/" + resourceID + "/" + tempLayerName);
       var setLayerInfoService = new SetLayerInfoService_SetLayerInfoService(url, {
         proxy: me.options.proxy,
         withCredentials: me.options.withCredentials,
@@ -88809,7 +88654,7 @@ function services_MapService_setPrototypeOf(o, p) { services_MapService_setProto
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @example
  * new mapboxgl.supermap.MapService(url)
  *  .getMapInfo(function(result){
@@ -88865,7 +88710,7 @@ function (_ServiceBase) {
     key: "getTilesets",
     value: function getTilesets(callback) {
       var me = this;
-      var tilesetsService = new TilesetsService(me.url, {
+      var tilesetsService = new TilesetsService_TilesetsService(me.url, {
         proxy: me.options.proxy,
         withCredentials: me.options.withCredentials,
         crossOrigin: me.options.crossOrigin,
@@ -88922,7 +88767,7 @@ function services_MeasureService_setPrototypeOf(o, p) { services_MeasureService_
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {SuperMap.MeasureMode} [options.measureMode=SuperMap.MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
  */
 
@@ -89048,7 +88893,7 @@ function NetworkAnalystService_setPrototypeOf(o, p) { NetworkAnalystService_setP
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var NetworkAnalystService_NetworkAnalystService =
@@ -89486,7 +89331,7 @@ function NetworkAnalyst3DService_setPrototypeOf(o, p) { NetworkAnalyst3DService_
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var NetworkAnalyst3DService_NetworkAnalyst3DService =
@@ -89678,7 +89523,7 @@ function ProcessingService_setPrototypeOf(o, p) { ProcessingService_setPrototype
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var ProcessingService_ProcessingService =
@@ -90702,7 +90547,7 @@ function services_QueryService_setPrototypeOf(o, p) { services_QueryService_setP
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @example
  * new mapboxgl.supermap.QueryService(url)
  * .queryByBounds(param,function(result){
@@ -90925,7 +90770,7 @@ function SpatialAnalystService_setPrototypeOf(o, p) { SpatialAnalystService_setP
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var SpatialAnalystService_SpatialAnalystService =
@@ -91521,7 +91366,7 @@ function services_ThemeService_setPrototypeOf(o, p) { services_ThemeService_setP
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var services_ThemeService_ThemeService =
@@ -91608,7 +91453,7 @@ function TrafficTransferAnalystService_setPrototypeOf(o, p) { TrafficTransferAna
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 
 var TrafficTransferAnalystService_TrafficTransferAnalystService =
@@ -92261,7 +92106,7 @@ function (_mapboxgl$Evented) {
 
         for (var i = 0; i < tileMatrixSet.length; i++) {
           if (tileMatrixSet[i]['ows:Identifier'] && tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet) {
-            if (DEFAULT_WELLKNOWNSCALESET.includes(tileMatrixSet[i]['WellKnownScaleSet']['_text'])) {
+            if (DEFAULT_WELLKNOWNSCALESET.indexOf(tileMatrixSet[i]['WellKnownScaleSet']['_text']) > -1) {
               isMatched = true;
             } else if (tileMatrixSet[i]['WellKnownScaleSet'] && tileMatrixSet[i]['WellKnownScaleSet']['_text'] === 'Custom') {
               var matchedScaleDenominator = []; //坐标系判断
