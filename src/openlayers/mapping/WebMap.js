@@ -107,12 +107,14 @@ export class WebMap extends Observable {
         this.tiandituKey = options.tiandituKey;
         //计数叠加图层，处理过的数量（成功和失败都会计数）
         this.layerAdded = 0;
+        this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.createMap(options.mapSetting);
         this.createWebmap();
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype._removeBaseLayer
      * @description 移除底图
      */
@@ -127,6 +129,7 @@ export class WebMap extends Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype._removeLayers
      * @description 移除叠加图层
      */
@@ -155,10 +158,11 @@ export class WebMap extends Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.clear
      * @description 清空地图
      */
-    clear() {
+    _clear() {
         // 比例尺
         this.scales = [];
         // 分辨率
@@ -173,11 +177,12 @@ export class WebMap extends Observable {
     }
 
     /**
-     * @function ol.supermap.WebMap.prototype.reRender
+     * @function ol.supermap.WebMap.prototype.refresh
+     * @version 10.1.0
      * @description 重新渲染地图
      */
-    reRender() {
-        this.clear();
+    refresh() {
+        this._clear();
         this.createWebmap();
     }
 

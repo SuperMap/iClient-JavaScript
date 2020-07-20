@@ -981,4 +981,28 @@ describe('openlayers_WebMap', () => {
         }, 1000)
     });
 
+    it('refresh', (done) => {
+        let refresh = false;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = refresh ? datavizWebMap_BAIDU : datavizWebMap_TIANDITU_VEC;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {
+            server: server
+        });
+
+        setTimeout(() => {
+            expect(datavizWebmap.baseLayer.name).toEqual('天地图');
+            refresh = true;
+            datavizWebmap.refresh();
+            setTimeout(() => {
+                expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
+                done();
+            }, 1000);            
+        }, 1000)
+    })
+
 });
