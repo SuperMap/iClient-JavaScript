@@ -133,11 +133,11 @@ module.exports = function (config) {
             dir: 'testcoverage/',
             reporters: [{ type: 'lcov', subdir: '.' }]
         },
-        sonarQubeUnitReporter: {
-            sonarQubeVersion: 'LATEST',
-            outputFile: 'testcoverage/ut_report.xml',
-            useBrowserName: false
-        },
+//         sonarQubeUnitReporter: {
+//             sonarQubeVersion: 'LATEST',
+//             outputFile: 'testcoverage/ut_report.xml',
+//             useBrowserName: false
+//         },
 
         // web server port
         port: 9876,
