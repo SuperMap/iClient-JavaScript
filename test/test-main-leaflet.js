@@ -7,7 +7,7 @@ import './leaflet/core/TransformUtilSpec.js';
 import './leaflet/core/Proj4LeafletSpec.js';
 
 /*leaflet -- mapping*/
-import './leaflet/mapping/ImageMapLayerSpec.js';
+// import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
 import './leaflet/mapping/WebMapSpec.js';
