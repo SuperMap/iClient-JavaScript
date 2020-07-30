@@ -1,5 +1,5 @@
 /*leaflet -- control*/
-import './leaflet/control/ChangeTileVersionSpec.js';
+// import './leaflet/control/ChangeTileVersionSpec.js';
 
 /*leaflet -- core*/
 import './leaflet/core/NonEarthCRSSpec.js';
