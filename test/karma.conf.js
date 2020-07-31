@@ -112,7 +112,7 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage', 'teamcity'],
+        reporters: ['progress', 'sonarqubeUnit', 'coverage', 'teamcity'],
 
         //最大超时时间
         captureTimeout: 120000,
@@ -124,9 +124,12 @@ module.exports = function (config) {
             reporters: [
                 {type: 'lcov', subdir: '.'}
             ]
-        }
-        ,
-
+        },
+        sonarQubeUnitReporter: {
+            sonarQubeVersion: 'LATEST',
+            outputFile: 'testcoverage/ut_report.xml',
+            useBrowserName: false
+        },
         // web server port
         port: 9876,
 
