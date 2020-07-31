@@ -281,10 +281,6 @@ export class WebMap extends Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
 
-            // 多坐标系支持
-            if(proj4){
-              (olProj4 && olProj4.register) ? olProj4.register(proj4) : window.ol.proj.setProj4(proj4) ;
-            }
             // 目前iServer服务中可能出现的EPSG 0，-1，-1000
             if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
                 //对于这两种地图，只能view，不能叠加其他图层
@@ -3669,6 +3665,12 @@ export class WebMap extends Observable {
                 let epsgCode = this.getEpsgInfoFromWKT(wkt);
                 if(epsgCode){
                     proj4.defs(epsgCode, wkt);
+                    // 重新注册proj4到ol.proj，不然不会生效
+                    if (olProj4 && olProj4.register) {
+                        olProj4.register(proj4);
+                    } else if (window.ol.proj && window.ol.proj.setProj4) {
+                        window.ol.proj.setProj4(proj4)
+                    }
                     return true;
                 }else{
                     // 参数类型非wkt标准
