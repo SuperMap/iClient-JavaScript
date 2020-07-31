@@ -157,19 +157,19 @@ import './common/online/OnlineQueryDatasParameterSpec';
 import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
-import './common/iPortal/iPortalQueryParamSpec.js';
-import './common/iPortal/iPortalUserSpec.js';
-import './common/iPortal/iPortalShareEntitySpec.js';
-import './common/iPortal/iPortalShareParamSpec.js';
-import './common/iPortal/iPortalResourceSpec.js';
-import './common/iPortal/iPortalQueryResultSpec.js';
-import './common/iPortal/iPortalSpec.js';
-import './common/iPortal/iPortalAddResourceParamSpec';
-import './common/iPortal/iPortalRegisterServiceParamSpec';
-import './common/iPortal/iPortalAddDataParamSpec.js';
-import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
-import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
-import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
+// import './common/iPortal/iPortalQueryParamSpec.js';
+// import './common/iPortal/iPortalUserSpec.js';
+// import './common/iPortal/iPortalShareEntitySpec.js';
+// import './common/iPortal/iPortalShareParamSpec.js';
+// import './common/iPortal/iPortalResourceSpec.js';
+// import './common/iPortal/iPortalQueryResultSpec.js';
+// import './common/iPortal/iPortalSpec.js';
+// import './common/iPortal/iPortalAddResourceParamSpec';
+// import './common/iPortal/iPortalRegisterServiceParamSpec';
+// import './common/iPortal/iPortalAddDataParamSpec.js';
+// import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
+// import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
+// import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
@@ -177,7 +177,7 @@ import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
 /**common -- component**/
 import './common/components/templates/IndexTabsPageContainerSpec.js';
 import './common/components/templates/NavTabsPageSpec.js';
-import './common/components/templates/CommonContainerSpec.js';
+// import './common/components/templates/CommonContainerSpec.js';
 import './common/components/chart/ChartModelSpec.js';
 import './common/components/chart/ChartViewModelSpec';
 import './common/components/chart/ChartViewSpec';

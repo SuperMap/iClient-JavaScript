@@ -1,3 +1,106 @@
+# 10.1.0-beta #
+
+## API changes
+
+### for OpenLayers
+
+- `ol.supermap.WebMap` 新增 `refresh` 接口，支持刷新地图
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图(sm-web-map)组件
+
+    - 新增 `useLoading` 参数，支持控制地图加载时是否显示loading效果
+
+    - 对接最新功能
+
+      - 对接矢量瓦片图层出图
+
+      - 点类型的专题图，支持符号的偏移和旋转
+
+      - 点类型的专题图和线类型专题图，标签支持位置设置
+
+      - 线类型专题图，支持道路样式和铁路样式
+
+  - 指标(sm-indicator)组件  
+
+    - `numBackground` 参数，支持设置 `padding`
+
+  - 图表(sm-chart)组件
+
+    - 新增 `highlightOptions` 参数，支持设置高亮数据
+
+## Fixed
+
+### for Leaflet
+
+- iServer
+
+  - 优化各 `Service` 类拼装url的逻辑，支持 `url` 参数传入时携带自定义查询参数
+  
+- 动态标绘
+
+  - 修改动目标图层的动目标注记、注记位置、注记风格、动目标角度、动目标风格不生效 问题
+
+  - 修改高性能图层的标号注记、注记位置、注记风格、标号角度、标号风格不生效 问题
+
+### for OpenLayers
+
+- iServer
+
+  - 优化各 `Service` 类拼装url的逻辑，支持 `url` 参数传入时携带自定义查询参数
+
+- 修复 Internet Explorer 11/10 浏览器不能使用问题
+
+- 修复 Internet Explorer 11/10 浏览器客户端专题图报错的问题
+
+- `ol.supermap.WebMap` 优化沿线标签显示效果
+
+### for MapboxGL
+
+- iServer
+
+  - 优化各 `Service` 类拼装url的逻辑，支持 `url` 参数传入时携带自定义查询参数
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复文本(sm-text)组件不能根据换行符换行问题
+
+  - 地图(sm-web-map)组件
+
+    - 修复webmap使用两个svg图标会丢失其中一个的问题  
+
+    - 修复分段转图图分段数大于9时报错的问题
+
+    - 数据来源不包含smid字段查询失败的问题
+
+    - 修复岛洞显示问题
+
+    - 优化对象标签显示过多问题
+
+    - 修复过滤条件不起作用问题
+
+  - 修复图表(sm-chart)组件y轴数据颜色分段与渐变冲突的问题
+
+  - 修复数据查询(sm-query)组件查询结果后结果可能被置空的问题
+
+## Examples
+
+### for Leaflet
+  
+- 动态标绘
+
+  - 修改 “动目标图层” 示例，浏览地图时动目标不显示问题
+
+
+## Web Site &amp;&amp; Docs
+
+- 修复api首页链接不可用问题
+
 # 10.1.0-alpha #
 
 ## 新特性
@@ -17,6 +120,8 @@
 
 ### 全面支持webp地图瓦片格式
 ![1010-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-5.png)
+
+## API changes
 
 ### for Leaflet
 
