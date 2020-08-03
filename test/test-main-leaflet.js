@@ -7,14 +7,14 @@ import './leaflet/core/TransformUtilSpec.js';
 import './leaflet/core/Proj4LeafletSpec.js';
 
 /*leaflet -- mapping*/
-// import './leaflet/mapping/ImageMapLayerSpec.js';
+import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
-// import './leaflet/mapping/WebMapSpec.js';
+import './leaflet/mapping/WebMapSpec.js';
 
 /*leaflet -- overlay*/
 
-// import './leaflet/overlay/EchartsLayerSpec.js';
+import './leaflet/overlay/EchartsLayerSpec.js';
 /*deck相关测试未通过，待解决后打开注释*/
 import './leaflet/overlay/graphic/GraphicSpec.js';
 import './leaflet/overlay/GraphicLayerSpec.js';
