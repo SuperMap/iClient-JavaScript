@@ -125,9 +125,14 @@ module.exports = function (config) {
                 {type: 'lcov', subdir: '.'}
             ]
         },
+        plugins: [
+            'karma-sonarqube-unit-reporter'
+        ],
         sonarQubeUnitReporter: {
             sonarQubeVersion: 'LATEST',
             outputFile: 'testcoverage/ut_report.xml',
+            testPaths: ['./test'],
+            testFilePattern: '.spec.js',
             useBrowserName: false
         },
         // web server port
