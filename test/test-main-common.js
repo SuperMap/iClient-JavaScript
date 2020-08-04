@@ -158,7 +158,7 @@ import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
 import './common/iPortal/iPortalQueryParamSpec.js';
-import './common/iPortal/iPortalUserSpec.js';
+// import './common/iPortal/iPortalUserSpec.js';
 // import './common/iPortal/iPortalShareEntitySpec.js';
 // import './common/iPortal/iPortalShareParamSpec.js';
 // import './common/iPortal/iPortalResourceSpec.js';
@@ -168,8 +168,8 @@ import './common/iPortal/iPortalUserSpec.js';
 // import './common/iPortal/iPortalRegisterServiceParamSpec';
 // import './common/iPortal/iPortalAddDataParamSpec.js';
 // import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
-import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
-import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
+// import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
+// import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
