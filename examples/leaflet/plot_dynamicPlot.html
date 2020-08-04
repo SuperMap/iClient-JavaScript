@@ -294,6 +294,7 @@
     function loadSimulationMap() {
         plotting.getSitDataManager().openSmlFileOnServer("situationMap", function(evt){
             drawControl.setDrawingLayer(evt.sitDataLayers[0]);
+            plottingLayer = evt.sitDataLayers[0];
         });
     }
 

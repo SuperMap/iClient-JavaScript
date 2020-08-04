@@ -46,20 +46,19 @@
 	window.setInterval(updateInterval, 1000);
 
 	function updateInterval() {
-		var bounds = map.get
 		var features = movingTargetLayer.features;
 		for(var i =  0; i < features.length; i++) {
 			if(features[i].symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL){
-				// var latlng = features[i].getLatLngs()[0];
+				var latlng = features[i].getLatLngs()[0];
 
-				// var x = latlng.lat;
-				// var y = latlng.lng;
-				// if(x >= e || x <= ((-1)*e)){
-				// 	trackingDirs[features[i].uuid][0] *= (-1);
-				// }
-				// if(y >= e || y <= ((-1)*e)){
-				// 	trackingDirs[features[i].uuid][1] *= (-1);
-				// }
+				var x = latlng.lat;
+				var y = latlng.lng;
+				if(x >= e || x <= ((-1)*e)){
+					trackingDirs[features[i].uuid][0] *= (-1);
+				}
+				if(y >= e || y <= ((-1)*e)){
+					trackingDirs[features[i].uuid][1] *= (-1);
+				}
 
 				var trackingDir = trackingDirs[features[i].uuid];
 

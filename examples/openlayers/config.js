@@ -502,7 +502,7 @@ var exampleConfig = {
                     name: "发布数据",
                     name_en: "Publish Data",
                     version: "10.1.0",
-                    thumbnail: "ol_iPortalPublishData.png",
+                    thumbnail: "ol_iportalPublishData.png",
                     fileName: "iPortalPublishData"
                 }]
             }

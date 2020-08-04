@@ -3,7 +3,7 @@
  *       @supermap/react-iclient.(https://iclient.supermap.io)
  *       Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v10.1.0-alpha
+ *       version: v10.1.0-beta
  *      
  */
 (function webpackUniversalModuleDefinition(root, factory) {

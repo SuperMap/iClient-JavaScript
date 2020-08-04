@@ -3,7 +3,7 @@
  *          iclient-classic.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.0-alpha
+ *          version: v10.1.0-beta
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2547,9 +2547,9 @@ SuperMap.Util.getParameterString = function (params) {
   return paramsArray.join("&");
 };
 /**
- * @description 给 URL 追加参数。
+ * @description 给 URL 追加查询参数。
  * @param {string} url - 待追加参数的 URL 字符串。
- * @param {string} paramStr - 待追加的参数。
+ * @param {string} paramStr - 待追加的查询参数。
  * @returns {string} 新的 URL。
  */
 
@@ -2558,10 +2558,42 @@ SuperMap.Util.urlAppend = function (url, paramStr) {
   var newUrl = url;
 
   if (paramStr) {
+    if (paramStr.indexOf('?') === 0) {
+      paramStr = paramStr.substring(1);
+    }
+
     var parts = (url + " ").split(/[?&]/);
     newUrl += parts.pop() === " " ? paramStr : parts.length ? "&" + paramStr : "?" + paramStr;
   }
 
+  return newUrl;
+};
+/**
+ * @description 给 URL 追加 path 参数。
+ * @param {string} url - 待追加参数的 URL 字符串。
+ * @param {string} paramStr - 待追加的path参数。
+ * @returns {string} 新的 URL。
+ */
+
+
+SuperMap.Util.urlPathAppend = function (url, pathStr) {
+  var newUrl = url;
+
+  if (!pathStr) {
+    return newUrl;
+  }
+
+  if (pathStr.indexOf('/') === 0) {
+    pathStr = pathStr.substring(1);
+  }
+
+  var parts = url.split('?');
+
+  if (parts[0].indexOf('/', parts[0].length - 1) < 0) {
+    parts[0] += '/';
+  }
+
+  newUrl = "".concat(parts[0]).concat(pathStr).concat(parts.length > 1 ? "?".concat(parts[1]) : '');
   return newUrl;
 };
 /**
@@ -5737,8 +5769,7 @@ function () {
   }, {
     key: "loginiServer",
     value: function loginiServer(url, username, password, rememberme) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
+      url = Util.urlPathAppend(url, 'services/security/login');
       var loginInfo = {
         username: username && username.toString(),
         password: password && password.toString(),
@@ -5764,8 +5795,7 @@ function () {
   }, {
     key: "logoutiServer",
     value: function logoutiServer(url) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "services/security/logout" : "/services/security/logout";
+      url = Util.urlPathAppend(url, 'services/security/logout');
       var requestOptions = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -5804,8 +5834,7 @@ function () {
   }, {
     key: "loginiPortal",
     value: function loginiPortal(url, username, password) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "web/login.json" : "/web/login.json";
+      url = Util.urlPathAppend(url, 'web/login');
       var loginInfo = {
         username: username && username.toString(),
         password: password && password.toString()
@@ -5831,8 +5860,7 @@ function () {
   }, {
     key: "logoutiPortal",
     value: function logoutiPortal(url) {
-      var end = url.substr(url.length - 1, 1);
-      url += end === "/" ? "services/security/logout" : "/services/security/logout";
+      url = Util.urlPathAppend(url, 'services/security/logout');
       var requestOptions = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -5869,8 +5897,7 @@ function () {
         return;
       }
 
-      var end = url.substr(url.length - 1, 1);
-      var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
+      var requestUrl = Util.urlPathAppend(url, 'icloud/security/tokens');
       var params = loginInfoParams || {};
       var loginInfo = {
         username: params.userName && params.userName.toString(),
@@ -10489,7 +10516,7 @@ function () {
 
   return Format;
 }();
-SuperMap.Format = Format_Format;
+SuperMap.Format = SuperMap.Format || Format_Format;
 // CONCATENATED MODULE: ./src/common/format/JSON.js
 function JSON_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { JSON_typeof = function _typeof(obj) { return typeof obj; }; } else { JSON_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return JSON_typeof(obj); }
 
@@ -10865,7 +10892,7 @@ function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { i
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -10995,18 +11022,7 @@ function () {
       var credential = this.getCredential(options.url);
 
       if (credential) {
-        //当url中含有?，并且?在url末尾的时候直接添加token *网络分析等服务请求url会出现末尾是?的情况*
-        //当url中含有?，并且?不在url末尾的时候添加&token
-        //当url中不含有?，在url末尾添加?token
-        var endStr = options.url.substring(options.url.length - 1, options.url.length);
-
-        if (options.url.indexOf("?") > -1 && endStr === "?") {
-          options.url += credential.getUrlParameters();
-        } else if (options.url.indexOf("?") > -1 && endStr !== "?") {
-          options.url += "&" + credential.getUrlParameters();
-        } else {
-          options.url += "?" + credential.getUrlParameters();
-        }
+        options.url = Util.urlAppend(options.url, credential.getUrlParameters());
       }
 
       me.calculatePollingTimes();
@@ -11551,7 +11567,7 @@ function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setP
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -11707,17 +11723,12 @@ function (_CommonServiceBase) {
     key: "serviceProcessFailed",
     value: function serviceProcessFailed(result) {
       ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase.prototype), "serviceProcessFailed", this).call(this, result);
-    } //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
-
+    }
   }, {
     key: "_processUrl",
     value: function _processUrl(url) {
-      if (url.indexOf('.json') === -1) {
-        url += '.json';
-      }
-
       if (SecurityManager_SecurityManager.getToken(url)) {
-        url += '?token=' + SecurityManager_SecurityManager.getToken(url);
+        url = Util.urlAppend(url, 'token=' + SecurityManager_SecurityManager.getToken(url));
       }
 
       return url;
@@ -11756,6 +11767,7 @@ function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsServic
 
 
 
+
 /**
  * @class SuperMap.KernelDensityJobsService
  * @category  iServer ProcessingService DensityAnalyst
@@ -11778,7 +11790,7 @@ function (_ProcessingServiceBas) {
     KernelDensityJobsService_classCallCheck(this, KernelDensityJobsService);
 
     _this = KernelDensityJobsService_possibleConstructorReturn(this, KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/density";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/density');
     _this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
     return _this;
   }
@@ -11812,7 +11824,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getKernelDensityJob",
     value: function getKernelDensityJob(id) {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
@@ -11860,6 +11872,7 @@ function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJo
 
 
 
+
 /**
  * @class SuperMap.SingleObjectQueryJobsService
  * @category  iServer ProcessingService Query
@@ -11882,8 +11895,8 @@ function (_ProcessingServiceBas) {
     SingleObjectQueryJobsService_classCallCheck(this, SingleObjectQueryJobsService);
 
     _this = SingleObjectQueryJobsService_possibleConstructorReturn(this, SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/query";
-    _this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsService";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/query');
+    _this.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
     return _this;
   }
   /**
@@ -11915,7 +11928,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getQueryJob",
     value: function getQueryJob(id) {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
@@ -11963,6 +11976,7 @@ function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_se
 
 
 
+
 /**
  * @class SuperMap.SummaryMeshJobsService
  * @category  iServer ProcessingService AggregatePoints
@@ -11970,7 +11984,7 @@ function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_se
  * @param {string} url -点聚合分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
@@ -11989,8 +12003,8 @@ function (_ProcessingServiceBas) {
     SummaryMeshJobsService_classCallCheck(this, SummaryMeshJobsService);
 
     _this = SummaryMeshJobsService_possibleConstructorReturn(this, SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/aggregatepoints";
-    _this.CLASS_NAME = "SuperMap.SummaryMeshJobsService";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/aggregatepoints');
+    _this.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
     return _this;
   }
   /**
@@ -12022,7 +12036,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryMeshJob",
     value: function getSummaryMeshJob(id) {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
@@ -12070,6 +12084,7 @@ function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsServic
 
 
 
+
 /**
  * @class SuperMap.SummaryRegionJobsService
  * @category  iServer ProcessingService SummaryRegion
@@ -12092,8 +12107,8 @@ function (_ProcessingServiceBas) {
     SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
 
     _this = SummaryRegionJobsService_possibleConstructorReturn(this, SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/summaryregion";
-    _this.CLASS_NAME = "SuperMap.SummaryRegionJobsService";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/summaryregion');
+    _this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
     return _this;
   }
   /**
@@ -12125,7 +12140,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryRegionJob",
     value: function getSummaryRegionJob(id) {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
@@ -12307,6 +12322,7 @@ function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setP
 
 
 
+
 /**
  * @class SuperMap.VectorClipJobsService
  * @category  iServer ProcessingService VectorClip
@@ -12329,8 +12345,8 @@ function (_ProcessingServiceBas) {
     VectorClipJobsService_classCallCheck(this, VectorClipJobsService);
 
     _this = VectorClipJobsService_possibleConstructorReturn(this, VectorClipJobsService_getPrototypeOf(VectorClipJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/vectorclip";
-    _this.CLASS_NAME = "SuperMap.VectorClipJobsService";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/vectorclip');
+    _this.CLASS_NAME = 'SuperMap.VectorClipJobsService';
     return _this;
   }
   /**
@@ -12362,7 +12378,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getVectorClipJob",
     value: function getVectorClipJob(id) {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
@@ -12410,6 +12426,7 @@ function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setP
 
 
 
+
 /**
  * @class SuperMap.OverlayGeoJobsService
  * @category iServer ProcessingService OverlayAnalyst
@@ -12417,7 +12434,7 @@ function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setP
  * @param {string} url - 叠加分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
@@ -12436,8 +12453,8 @@ function (_ProcessingServiceBas) {
     OverlayGeoJobsService_classCallCheck(this, OverlayGeoJobsService);
 
     _this = OverlayGeoJobsService_possibleConstructorReturn(this, OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/overlay";
-    _this.CLASS_NAME = "SuperMap.OverlayGeoJobsService";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/overlay');
+    _this.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
     return _this;
   }
   /**
@@ -12469,7 +12486,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getOverlayGeoJob",
     value: function getOverlayGeoJob(id) {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.OverlayGeoJobsService.prototype.addOverlayGeoJob
@@ -12517,6 +12534,7 @@ function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsServ
 
 
 
+
 /**
  * @class SuperMap.BuffersAnalystJobsService
  * @category iServer ProcessingService BufferAnalyst
@@ -12539,8 +12557,8 @@ function (_ProcessingServiceBas) {
     BuffersAnalystJobsService_classCallCheck(this, BuffersAnalystJobsService);
 
     _this = BuffersAnalystJobsService_possibleConstructorReturn(this, BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/buffers";
-    _this.CLASS_NAME = "SuperMap.BuffersAnalystJobsService";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/buffers');
+    _this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
     return _this;
   }
   /**
@@ -12572,7 +12590,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getBuffersJob",
     value: function getBuffersJob(id) {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.BuffersAnalystJobsService.prototype.addBufferJob
@@ -12620,6 +12638,7 @@ function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJo
 
 
 
+
 /**
  * @class SuperMap.TopologyValidatorJobsService
  * @category  iServer ProcessingService TopologyValidator
@@ -12642,7 +12661,7 @@ function (_ProcessingServiceBas) {
     TopologyValidatorJobsService_classCallCheck(this, TopologyValidatorJobsService);
 
     _this = TopologyValidatorJobsService_possibleConstructorReturn(this, TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/topologyvalidator";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/topologyvalidator');
     _this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
     return _this;
   }
@@ -12675,7 +12694,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getTopologyValidatorJob",
     value: function getTopologyValidatorJob(id) {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.TopologyValidatorJobsService.protitype.addTopologyValidatorJob
@@ -12723,6 +12742,7 @@ function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJo
 
 
 
+
 /**
  * @class SuperMap.SummaryAttributesJobsService
  * @category  iServer ProcessingService SummaryAttributes
@@ -12745,7 +12765,7 @@ function (_ProcessingServiceBas) {
     SummaryAttributesJobsService_classCallCheck(this, SummaryAttributesJobsService);
 
     _this = SummaryAttributesJobsService_possibleConstructorReturn(this, SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService).call(this, url, options));
-    _this.url += "/spatialanalyst/summaryattributes";
+    _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/summaryattributes');
     _this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
     return _this;
   }
@@ -12778,7 +12798,7 @@ function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryAttributesJob",
     value: function getSummaryAttributesJob(id) {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, this.url + '/' + id);
+      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, Util.urlPathAppend(this.url, id));
     }
     /**
      * @function SuperMap.SummaryAttributesJobsService.protitype.addSummaryAttributesJob

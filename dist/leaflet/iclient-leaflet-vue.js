@@ -3,7 +3,7 @@
  *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v10.1.0-alpha
+ *     version: v10.1.0-beta
  *    
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -129,6 +129,23 @@ var staticRenderFns = []
 
 /***/ }),
 
+/***/ "022b":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/Indicator.vue?vue&type=template&id=39b17318&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-indicator",style:(_vm.getBackgroundStyle)},[_c('div',{class:("sm-component-indicator__content sm-component-indicator__content-" + _vm.mode)},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__title",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.titleData))]),_vm._v(" "),_c('div',[_c('span',{staticClass:"sm-component-indicator__num",style:(_vm.indicatorStyle)},[(_vm.isNumber(_vm.indicatorNum))?_c('countTo',{attrs:{"decimals":_vm.calDecimals,"startVal":_vm.startData,"endVal":_vm.numData,"duration":Number(_vm.duration) || 1000,"separator":_vm.separator,"numBackground":_vm.numBackground,"numSpacing":_vm.numSpacing,"separatorBackground":_vm.separatorBackground,"fontSize":parseFloat(_vm.fontSize) + _vm.fontUnit}}):_vm._e(),_vm._v("\n        "+_vm._s(_vm.isNumber(_vm.indicatorNum) ? '' : _vm.indicatorNum)+"\n      ")],1),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__unit",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.unitData))])])])])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/indicator/Indicator.vue?vue&type=template&id=39b17318&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "0318":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -198,23 +215,6 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 
 /***/ }),
 
-/***/ "04f1":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/text/Text.vue?vue&type=template&id=b259ab88&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-text",style:([_vm.customStyle, _vm.getBackgroundStyle, _vm.getTextColorStyle])},[(_vm.href)?_c('span',[_c('a',{staticClass:"sm-component-text__href",style:([_vm.getTextColorStyle]),attrs:{"target":_vm.target,"href":_vm.href}},[_vm._v(_vm._s(_vm.finalValue))])]):_c('span',[_vm._v(_vm._s(_vm.finalValue))])])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/text/Text.vue?vue&type=template&id=b259ab88&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "05d2":
 /***/ (function(module, exports) {
 
@@ -264,7 +264,7 @@ module.exports = objectToString;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Indicator_vue_vue_type_template_id_4af37182___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1c6a");
+/* harmony import */ var _Indicator_vue_vue_type_template_id_39b17318___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("022b");
 /* harmony import */ var _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("13f5");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -277,8 +277,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Indicator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Indicator_vue_vue_type_template_id_4af37182___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Indicator_vue_vue_type_template_id_4af37182___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Indicator_vue_vue_type_template_id_39b17318___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Indicator_vue_vue_type_template_id_39b17318___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -836,6 +836,8 @@ exports.default = void 0;
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
+var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
+
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("4066"));
 
 __webpack_require__("f840");
@@ -983,6 +985,12 @@ var _default2 = {
     associatedMap: {
       type: Boolean,
       default: false
+    },
+    highlightOptions: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
     }
   },
   data: function data() {
@@ -1112,6 +1120,14 @@ var _default2 = {
       if (!this.associatedMap) {
         this.clearPopup && this.clearPopup();
       }
+    },
+    highlightOptions: {
+      handler: function handler(newVal, oldVal) {
+        this._offHighlight(oldVal);
+
+        this._initHighlight();
+      },
+      deep: true
     }
   },
   created: function created() {
@@ -1122,6 +1138,8 @@ var _default2 = {
 
   },
   mounted: function mounted() {
+    var _this = this;
+
     // 设置echarts实例
     this.smChart = this.$refs[this.chartId]; // 派发echart所有事件
 
@@ -1145,6 +1163,11 @@ var _default2 = {
     !this._isRequestData && this.autoPlay && this._handlePieAutoPlay(); // 请求数据, 合并echartopiton, 设置echartOptions
 
     this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+    this.smChart.$on('mouseout', function (params) {
+      _this._initHighlight();
+    });
+
+    this._initHighlight();
   },
   updated: function updated() {
     this._handlePieAutoPlay(); // 更新自动播放
@@ -1156,13 +1179,15 @@ var _default2 = {
     if (this.autoresize) {
       (0, _resizeDetector.removeListener)(this.$el, this.__resizeHandler);
     }
+
+    this.smChart.$off('mouseout');
   },
   methods: {
     _initAutoResize: function _initAutoResize() {
-      var _this = this;
+      var _this2 = this;
 
       this.__resizeHandler = (0, _debounce.default)(function () {
-        _this.resize();
+        _this2.resize();
       }, 100, {
         leading: true
       });
@@ -1173,13 +1198,33 @@ var _default2 = {
       }
     },
     _initDataZoom: function _initDataZoom() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.dataZoomHandler = (0, _debounce.default)(function () {
-        _this2._dataZoomChanged();
+        _this3._dataZoomChanged();
       }, 500, {
         leading: true
       });
+    },
+    _initHighlight: function _initHighlight() {
+      var echartsNode = this.smChart && this.smChart.chart;
+      this.highlightOptions.forEach(function (option) {
+        option = Object.assign({}, option, {
+          type: 'highlight'
+        });
+        echartsNode.dispatchAction(option);
+      });
+    },
+    _offHighlight: function _offHighlight(options) {
+      if (options && options.length) {
+        var echartsNode = this.smChart && this.smChart.chart;
+        options.forEach(function (option) {
+          option = Object.assign({}, option, {
+            type: 'downplay'
+          });
+          echartsNode.dispatchAction(option);
+        });
+      }
     },
     _handlePieAutoPlay: function _handlePieAutoPlay() {
       var seriesType = this._chartOptions.series && this._chartOptions.series[0] && this._chartOptions.series[0].type;
@@ -1194,7 +1239,7 @@ var _default2 = {
       }
     },
     setPieAutoPlay: function setPieAutoPlay(echartsNode) {
-      var _this3 = this;
+      var _this4 = this;
 
       var i = -1;
       this.pieAutoPlay = setInterval(function () {
@@ -1205,7 +1250,7 @@ var _default2 = {
         });
         i++;
 
-        if (i >= _this3._chartOptions.legend.data.length) {
+        if (i >= _this4._chartOptions.legend.data.length) {
           i = 0;
         }
 
@@ -1228,21 +1273,21 @@ var _default2 = {
       }
     },
     timing: function timing() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.echartsDataService && this.echartsDataService.getDataOption(this.dataset, this.xBar).then(function (options) {
-        _this4.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
+        _this5.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
 
 
-        _this4.dataSeriesCache = Object.assign({}, options);
-        _this4.datasetChange = false; // 设置echartOptions
+        _this5.dataSeriesCache = Object.assign({}, options);
+        _this5.datasetChange = false; // 设置echartOptions
 
-        _this4.echartOptions = _this4._optionsHandler(_this4.options, options);
+        _this5.echartOptions = _this5._optionsHandler(_this5.options, options);
       });
     },
     // 请求数据,设置echartOptions
     _setEchartOptions: function _setEchartOptions(dataset, datasetOptions, echartOptions) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.echartsDataService = null;
       this.dataSeriesCache = null;
@@ -1259,17 +1304,17 @@ var _default2 = {
 
       this.echartsDataService = new _EchartsDataService.default(dataset, datasetOptions);
       this.echartsDataService.getDataOption(dataset, this.xBar).then(function (options) {
-        _this5.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
+        _this6.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
 
 
-        _this5.dataSeriesCache = Object.assign({}, options);
-        _this5.datasetChange = false; // 设置echartOptions
+        _this6.dataSeriesCache = Object.assign({}, options);
+        _this6.datasetChange = false; // 设置echartOptions
 
-        _this5.echartOptions = _this5._optionsHandler(echartOptions, options);
+        _this6.echartOptions = _this6._optionsHandler(echartOptions, options);
       });
     },
-    _optionsHandler: function _optionsHandler(options, dataOptions) {
-      var _this6 = this;
+    _optionsHandler: function _optionsHandler(options, dataOptions, dataZoomChanged) {
+      var _this7 = this;
 
       dataOptions = dataOptions && (0, _lodash4.default)(dataOptions); // clone 避免引起重复刷新
 
@@ -1332,29 +1377,30 @@ var _default2 = {
                   dataZoom.end = oldStart;
                 }
 
-                var _ref = _this6.smChart.chart.getOption().dataZoom[0] || {},
-                    startValue = _ref.startValue,
-                    endValue = _ref.endValue;
+                if (dataZoomChanged) {
+                  var _ref = _this7.smChart.chart.getOption().dataZoom[0] || {},
+                      startValue = _ref.startValue,
+                      endValue = _ref.endValue;
 
-                if (startValue >= 0) {
                   startDataIndex = startValue;
+                  endDataIndex = endValue;
+                  options.dataZoom = options.dataZoom.map(function (val) {
+                    if (startValue >= 0 && endValue >= 0) {
+                      val.startValue = startValue;
+                      val.endValue = endValue;
+                      delete val.start;
+                      delete val.end;
+                      return val;
+                    }
+
+                    return val;
+                  });
                 } else {
                   startDataIndex = Math.floor(dataZoom.start / 100 * data.length);
+                  endDataIndex = Math.ceil(dataZoom.end / 100 * data.length);
                 }
 
-                endDataIndex = endValue || Math.ceil(dataZoom.end / 100 * data.length);
                 data = serie.data.slice(startDataIndex, endDataIndex + 1);
-                options.dataZoom = options.dataZoom.map(function (val) {
-                  if (startValue >= 0 && endValue >= 0) {
-                    val.startValue = startValue;
-                    val.endValue = endValue;
-                    delete val.start;
-                    delete val.end;
-                    return val;
-                  }
-
-                  return val;
-                });
               }
 
               label.formatter = function (_ref2) {
@@ -1438,8 +1484,14 @@ var _default2 = {
         series.forEach(function (serie) {
           // 对pie处理数据颜色分段
           if (serie.type === 'pie') {
-            if (serie.data && serie.data.length > _this6.colorGroupsData.length) {
-              var colorGroup = SuperMap.ColorsPickerUtil.getGradientColors(_this6.colorGroupsData, serie.data.length, 'RANGE');
+            if (serie.data && serie.data.length > _this7.colorGroupsData.length) {
+              var colorGroup;
+
+              if ((0, _typeof2.default)(_this7.colorGroupsData[0]) === 'object') {
+                colorGroup = (0, _chart.handleMultiGradient)(_this7.colorGroupsData, serie.data.length);
+              } else {
+                colorGroup = SuperMap.ColorsPickerUtil.getGradientColors(_this7.colorGroupsData, serie.data.length, 'RANGE');
+              }
 
               if (serie.itemStyle) {
                 serie.itemStyle.color = function (_ref4) {
@@ -1472,7 +1524,7 @@ var _default2 = {
     },
     _setChartTheme: function _setChartTheme() {
       if (!this.theme) {
-        var length = this.datasetOptions.length || this.echartOptions.series && this.echartOptions.series.length;
+        var length = this.datasetOptions && this.datasetOptions.length || this.echartOptions.series && this.echartOptions.series.length;
         var colorNumber = this.colorGroupsData.length;
 
         if (length && length > colorNumber) {
@@ -1622,7 +1674,7 @@ var _default2 = {
       }
     },
     showDetailInfo: function showDetailInfo(feature) {
-      var _this7 = this;
+      var _this8 = this;
 
       var coordinates = ((feature || {}).geometry || {}).coordinates;
       var hasCoordinates = coordinates && !!coordinates.length;
@@ -1635,7 +1687,7 @@ var _default2 = {
         var propsData = this.generateTableData(properties);
         this.tablePopupProps = _objectSpread({}, propsData);
         this.$nextTick(function () {
-          _this7.viewModel.setPopupContent(_coordinates, _this7.$refs.chartTablePopup.$el, _this7.changePopupArrowStyle);
+          _this8.viewModel.setPopupContent(_coordinates, _this8.$refs.chartTablePopup.$el, _this8.changePopupArrowStyle);
         });
       } else {
         var mapNotLoaded = this.mapNotLoadedTip();
@@ -1684,7 +1736,7 @@ var _default2 = {
       });
 
       if (flag) {
-        this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache);
+        this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache, true);
       }
     }
   },
@@ -3462,23 +3514,6 @@ Util.createUniqueID = function (prefix) {
   Util.lastSeqID += 1;
   return prefix + Util.lastSeqID;
 };
-
-/***/ }),
-
-/***/ "1c6a":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/Indicator.vue?vue&type=template&id=4af37182&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-indicator",style:(_vm.getBackgroundStyle)},[_c('div',{class:("sm-component-indicator__content sm-component-indicator__content-" + _vm.mode)},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__title",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v("\n      "+_vm._s(_vm.titleData)+"\n    ")]),_vm._v(" "),_c('div',[_c('span',{staticClass:"sm-component-indicator__num",style:(_vm.indicatorStyle)},[(_vm.isNumber(_vm.indicatorNum))?_c('countTo',{attrs:{"decimals":_vm.calDecimals,"startVal":_vm.startData,"endVal":_vm.numData,"duration":Number(_vm.duration) || 1000,"separator":_vm.separator,"numBackground":_vm.numBackground,"numSpacing":_vm.numSpacing,"separatorBackground":_vm.separatorBackground,"fontSize":parseFloat(_vm.fontSize) + _vm.fontUnit}}):_vm._e(),_vm._v("\n        "+_vm._s(_vm.isNumber(_vm.indicatorNum) ? '' : _vm.indicatorNum)+"\n      ")],1),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTitleUnit),expression:"showTitleUnit"}],staticClass:"sm-component-indicator__unit",style:([_vm.unit_titleStyle, _vm.getTextColorStyle])},[_vm._v("\n        "+_vm._s(_vm.unitData)+"\n      ")])])])])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/indicator/Indicator.vue?vue&type=template&id=4af37182&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -8579,12 +8614,48 @@ exports.default = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("8e6d");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.chartThemeUtil = void 0;
+exports.chartThemeUtil = exports.handleMultiGradient = void 0;
+
+var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
 
 var _util = __webpack_require__("1448");
+
+var _lodash = _interopRequireDefault(__webpack_require__("25a2"));
+
+var handleMultiGradient = function handleMultiGradient(colorGroupsData, dataLength) {
+  var startColors = [];
+  var endColors = [];
+  var startColorGroups = [];
+  var endColorGroups = [];
+  var results = [];
+  colorGroupsData.forEach(function (colorInfo) {
+    startColors.push(colorInfo.colorStops[0].color);
+    endColors.push(colorInfo.colorStops[1].color);
+  });
+  startColorGroups = SuperMap.ColorsPickerUtil.getGradientColors(startColors, dataLength, 'RANGE');
+  endColorGroups = SuperMap.ColorsPickerUtil.getGradientColors(endColors, dataLength, 'RANGE');
+
+  for (var i = 0; i < dataLength; i++) {
+    var colorGroupDataCopy = (0, _lodash.default)(colorGroupsData[0]);
+    colorGroupDataCopy.colorStops = [{
+      offset: 0,
+      color: startColorGroups[i]
+    }, {
+      offset: 1,
+      color: endColorGroups[i]
+    }];
+    results.push(colorGroupDataCopy);
+  }
+
+  return results;
+};
+
+exports.handleMultiGradient = handleMultiGradient;
 
 var chartThemeUtil = function chartThemeUtil() {
   var background = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'rgba(255, 255, 255, 0.6)';
@@ -8593,7 +8664,9 @@ var chartThemeUtil = function chartThemeUtil() {
   var dataNumber = arguments.length > 3 ? arguments[3] : undefined;
 
   // 是否需要产生分段颜色值
-  if (dataNumber >= 5) {
+  if (colorGroup && dataNumber > colorGroup.length && (0, _typeof2.default)(colorGroup[0]) === 'object') {
+    colorGroup = handleMultiGradient(colorGroup, dataNumber);
+  } else {
     colorGroup = SuperMap.ColorsPickerUtil.getGradientColors(colorGroup, dataNumber, 'RANGE');
   }
 
@@ -9134,7 +9207,7 @@ module.exports = _iterableToArrayLimit;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChartMixin_vue_vue_type_template_id_1334ddae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("fe22");
+/* harmony import */ var _ChartMixin_vue_vue_type_template_id_f0db6a9c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("bc57");
 /* harmony import */ var _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("d83d");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -9147,8 +9220,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ChartMixin_vue_vue_type_template_id_1334ddae___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _ChartMixin_vue_vue_type_template_id_1334ddae___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _ChartMixin_vue_vue_type_template_id_f0db6a9c___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _ChartMixin_vue_vue_type_template_id_f0db6a9c___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -13413,7 +13486,7 @@ module.exports = _toConsumableArray;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CountTo_vue_vue_type_template_id_53dff5c7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("6322");
+/* harmony import */ var _CountTo_vue_vue_type_template_id_c61b74f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("77c4");
 /* harmony import */ var _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("f14a");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -13426,8 +13499,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CountTo_vue_vue_type_template_id_53dff5c7___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _CountTo_vue_vue_type_template_id_53dff5c7___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _CountTo_vue_vue_type_template_id_c61b74f4___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _CountTo_vue_vue_type_template_id_c61b74f4___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -15687,7 +15760,12 @@ function () {
       var serieData = {
         type: chartType,
         name: datasetOption.yField,
-        data: []
+        data: [],
+        emphasis: {
+          itemStyle: {
+            color: '#409eff'
+          }
+        }
       };
 
       if (chartType === 'pie') {
@@ -16974,7 +17052,7 @@ exports.default = RestService;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Icon_vue_vue_type_template_id_3522372a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("7953");
+/* harmony import */ var _Icon_vue_vue_type_template_id_076da86b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("c794");
 /* harmony import */ var _Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("383e");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -16987,8 +17065,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Icon_vue_vue_type_template_id_3522372a___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Icon_vue_vue_type_template_id_3522372a___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Icon_vue_vue_type_template_id_076da86b___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Icon_vue_vue_type_template_id_076da86b___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -17092,7 +17170,7 @@ module.exports = __webpack_require__("0956").EventEmitter;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Text_vue_vue_type_template_id_b259ab88___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("04f1");
+/* harmony import */ var _Text_vue_vue_type_template_id_5e2ac717___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9243");
 /* harmony import */ var _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("e736");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -17105,8 +17183,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Text_vue_vue_type_template_id_b259ab88___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Text_vue_vue_type_template_id_b259ab88___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Text_vue_vue_type_template_id_5e2ac717___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Text_vue_vue_type_template_id_5e2ac717___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -19092,23 +19170,6 @@ function stubFalse() {
 module.exports = isEqual;
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("698d"), __webpack_require__("f586")(module)))
-
-/***/ }),
-
-/***/ "6322":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/CountTo.vue?vue&type=template&id=53dff5c7&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',_vm._l((_vm.numDataList),function(numVale,index){return _c('div',{key:index,staticClass:"sm-component-count-to__numItem",style:([_vm.calNumBackground(numVale),_vm.numInterval,_vm.numStyle])},[_c('span',[_vm._v(_vm._s(numVale))])])}),0)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/indicator/CountTo.vue?vue&type=template&id=53dff5c7&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -29490,17 +29551,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ "7953":
+/***/ "77c4":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/icon/Icon.vue?vue&type=template&id=3522372a&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-icon",style:([_vm.background && _vm.getBackgroundStyle])},[(!!_vm.iconClass)?_c('i',{class:_vm.customIconClass,style:([_vm.iconStyle, _vm.colorStyle]),attrs:{"theme":_vm.theme,"twoToneColor":_vm.twoToneColor,"component":_vm.component}}):_c('a-icon',{style:([_vm.iconStyle, _vm.colorStyle]),attrs:{"type":_vm.type,"theme":_vm.theme,"twoToneColor":_vm.twoToneColor,"component":_vm.component}})],1)}
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/indicator/CountTo.vue?vue&type=template&id=c61b74f4&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',_vm._l((_vm.numDataList),function(numVale,index){return _c('div',{key:index,staticClass:"sm-component-count-to__numItem",style:([_vm.calNumBackground(numVale),_vm.numInterval,_vm.numStyle])},[_c('span',[_vm._v(_vm._s(numVale))])])}),0)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/common/icon/Icon.vue?vue&type=template&id=3522372a&
+// CONCATENATED MODULE: ./src/common/indicator/CountTo.vue?vue&type=template&id=c61b74f4&
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
@@ -31403,7 +31464,8 @@ var _default2 = {
       default: function _default() {
         return {
           color: 'rgba(0, 0, 0, 0)',
-          image: ''
+          image: '',
+          padding: 0
         };
       }
     },
@@ -31432,7 +31494,8 @@ var _default2 = {
         var reg = /\d+(\.\d+)?([a-z]+)/gi;
         var fontUnit = _this.fontSize ? _this.fontSize.replace(reg, '$2') : '';
         var styleObj = {
-          backgroundColor: _this.numBackground.color
+          backgroundColor: _this.numBackground.color,
+          padding: _this.numBackground.padding
         };
 
         if (_this.numBackground.image) {
@@ -32507,6 +32570,23 @@ function (_L$Evented) {
 }(_leafletWrapper.default.Evented);
 
 exports.default = IdentifyViewModel;
+
+/***/ }),
+
+/***/ "9243":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/text/Text.vue?vue&type=template&id=5e2ac717&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-text",style:([_vm.customStyle, _vm.getBackgroundStyle, _vm.getTextColorStyle])},[(_vm.href)?_c('span',[_c('a',{staticClass:"sm-component-text__href",style:([_vm.getTextColorStyle]),attrs:{"target":_vm.target,"href":_vm.href}},[_vm._v(_vm._s(_vm.finalValue))])]):_c('span',{staticClass:"sm-component-text__span"},[_vm._v(_vm._s(_vm.finalValue))])])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/text/Text.vue?vue&type=template&id=5e2ac717&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -33635,18 +33715,6 @@ Object.defineProperty(exports, "TablePopup", {
     return _TablePopup.default;
   }
 });
-Object.defineProperty(exports, "WebMap", {
-  enumerable: true,
-  get: function get() {
-    return _WebMap.default;
-  }
-});
-Object.defineProperty(exports, "SmTileLayer", {
-  enumerable: true,
-  get: function get() {
-    return _SmTileLayer.default;
-  }
-});
 Object.defineProperty(exports, "Identify", {
   enumerable: true,
   get: function get() {
@@ -33663,6 +33731,18 @@ Object.defineProperty(exports, "Chart", {
   enumerable: true,
   get: function get() {
     return _Chart.default;
+  }
+});
+Object.defineProperty(exports, "WebMap", {
+  enumerable: true,
+  get: function get() {
+    return _WebMap.default;
+  }
+});
+Object.defineProperty(exports, "SmTileLayer", {
+  enumerable: true,
+  get: function get() {
+    return _SmTileLayer.default;
   }
 });
 
@@ -33688,15 +33768,15 @@ var _Iframe = _interopRequireDefault(__webpack_require__("e7f3"));
 
 var _TablePopup = _interopRequireDefault(__webpack_require__("b397"));
 
-var _WebMap = _interopRequireDefault(__webpack_require__("49f9"));
-
-var _SmTileLayer = _interopRequireDefault(__webpack_require__("88e1"));
-
 var _Identify = _interopRequireDefault(__webpack_require__("d1f6"));
 
 var _Popup = _interopRequireDefault(__webpack_require__("9a20"));
 
 var _Chart = _interopRequireDefault(__webpack_require__("c7a6"));
+
+var _WebMap = _interopRequireDefault(__webpack_require__("49f9"));
+
+var _SmTileLayer = _interopRequireDefault(__webpack_require__("88e1"));
 
 /***/ }),
 
@@ -34984,7 +35064,7 @@ function (_Events) {
         var datasetName; // 请求获取数据源名
 
         SuperMap.FetchRequest.get(url, null, {
-          withCredentials: (0, _util.handleWithCredentials)(url, this.iportalServiceProxyUrl, false)
+          withCredentials: (0, _util.handleWithCredentials)(url, this.iportalServiceProxyUrl, this.withCredentials)
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -34992,7 +35072,7 @@ function (_Events) {
           url = "".concat(address, "/data/datasources/").concat(dataSourceName, "/datasets"); // 请求获取数据集名
 
           SuperMap.FetchRequest.get(url, null, {
-            withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, false)
+            withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -35003,7 +35083,7 @@ function (_Events) {
               dataSourceName: dataSourceName,
               dataUrl: url.split('/datasources')[0]
             }, Object.assign({}, queryInfo, {
-              withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, false)
+              withCredentials: (0, _util.handleWithCredentials)(url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
             }));
           }).catch(function (error) {
             console.log(error);
@@ -35022,7 +35102,7 @@ function (_Events) {
         var path; // 请求获取地图名
 
         SuperMap.FetchRequest.get(_url, null, {
-          withCredentials: (0, _util.handleWithCredentials)(_url, this.iportalServiceProxyUrl, false)
+          withCredentials: (0, _util.handleWithCredentials)(_url, this.iportalServiceProxyUrl, this.withCredentials)
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -35031,7 +35111,7 @@ function (_Events) {
           _url = _url = "".concat(address, "/maps/").concat(mapName, "/layers"); // 请求获取图层名
 
           SuperMap.FetchRequest.get(_url, null, {
-            withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, false)
+            withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -35041,7 +35121,7 @@ function (_Events) {
               mapName: layerName,
               dataUrl: path
             }, Object.assign({}, queryInfo, {
-              withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, false)
+              withCredentials: (0, _util.handleWithCredentials)(_url, _this4.iportalServiceProxyUrl, _this4.withCredentials)
             }));
 
             return layerName;
@@ -35347,6 +35427,10 @@ var _CountTo = _interopRequireDefault(__webpack_require__("4156"));
 //
 //
 //
+//
+//
+//
+//
 var _default2 = {
   name: 'SmIndicator',
   components: {
@@ -35422,7 +35506,8 @@ var _default2 = {
       default: function _default() {
         return {
           color: 'rgba(0, 0, 0, 0)',
-          image: ''
+          image: '',
+          padding: 0
         };
       }
     },
@@ -39242,6 +39327,23 @@ exports.PassThrough = __webpack_require__("e525");
 
 /***/ }),
 
+/***/ "bc57":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=f0db6a9c&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=f0db6a9c&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "be3f":
 /***/ (function(module, exports) {
 
@@ -40793,6 +40895,23 @@ function indexOf(xs, x) {
 
 /***/ }),
 
+/***/ "c794":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/icon/Icon.vue?vue&type=template&id=076da86b&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-icon"},[(!!_vm.iconClass)?_c('i',{class:_vm.customIconClass,style:([_vm.iconStyle, _vm.colorStyle]),attrs:{"theme":_vm.theme,"twoToneColor":_vm.twoToneColor,"component":_vm.component}}):_c('a-icon',{style:([_vm.iconStyle, _vm.colorStyle]),attrs:{"type":_vm.type,"theme":_vm.theme,"twoToneColor":_vm.twoToneColor,"component":_vm.component}})],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/icon/Icon.vue?vue&type=template&id=076da86b&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "c7a6":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -41748,7 +41867,8 @@ function (_Events) {
           customSettings = themeSetting.customSettings,
           minR = parameters.themeSetting.minRadius,
           maxR = parameters.themeSetting.maxRadius,
-          colors = themeSetting.colors;
+          colors = themeSetting.colors,
+          fillColor = style.fillColor;
       features.forEach(function (feature) {
         var properties = feature.properties,
             value = properties[themeField];
@@ -41784,6 +41904,7 @@ function (_Events) {
             end,
             radius = Number(((maxR + minR) / 2).toFixed(2)),
             color = '';
+        var rangeColors = colors ? SuperMap.ColorsPickerUtil.getGradientColors(colors, len, 'RANGE') : [];
 
         for (var _i = 0; _i < len - 1; _i++) {
           start = Number(segements[_i].toFixed(2));
@@ -41794,7 +41915,8 @@ function (_Events) {
           style.radius = radius;
 
           if (colors && colors.length > 0) {
-            color = customSettings[_i] && customSettings[_i].color ? customSettings[_i].color : colors[_i];
+            color = customSettings[_i] && customSettings[_i].color ? customSettings[_i].color : rangeColors[_i] || fillColor;
+            ;
             style.fillColor = color;
           }
 
@@ -41987,6 +42109,10 @@ function (_Events) {
           dashArr = [4 * w, 4 * w];
           break;
 
+        case 'dashrailway':
+          dashArr = [8 * w, 12 * w];
+          break;
+
         case 'dashdot':
           dashArr = [4 * w, 4 * w, 1 * w, 4 * w];
           break;
@@ -42016,7 +42142,7 @@ function (_Events) {
     key: "getCanvasFromSVG",
     value: function getCanvasFromSVG(svgUrl, divDom, callBack) {
       var canvas = document.createElement('canvas');
-      canvas.id = "dataviz-canvas-".concat(new Date());
+      canvas.id = "dataviz-canvas-".concat(new Date().getTime());
       canvas.style.display = 'none';
       divDom.appendChild(canvas);
       var canvgs = window.canvg ? window.canvg : _canvg.default;
@@ -43945,7 +44071,7 @@ function (_Events) {
           queryInfo.attributeFilter = _this2._getAttributeFilterByKeywords(fields, queryInfo.keyWord);
 
           _this2._getMapFeatureBySql(dataUrl, queryInfo);
-        });
+        }, queryInfo.withCredentials);
       } else {
         this._getMapFeatureBySql(dataUrl, queryInfo);
       }
@@ -44184,6 +44310,7 @@ function (_Events) {
     value: function _getRestMapFields(url, layerName, callBack) {
       var _this6 = this;
 
+      var withCredentials = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       var param = new SuperMap.QueryBySQLParameters({
         queryParams: [new SuperMap.FilterParameter({
           name: layerName,
@@ -44192,6 +44319,7 @@ function (_Events) {
       });
       var queryBySQLSerice = new SuperMap.QueryBySQLService(url, {
         proxy: this.options.proxy,
+        withCredentials: withCredentials,
         eventListeners: {
           processCompleted: function processCompleted(serviceResult) {
             var fields;
@@ -47910,7 +48038,7 @@ function (_Events) {
 
       var type;
       var isHosted = dataSource && dataSource.serverId || layerType === 'MARKER' || layerType === 'HOSTED_TILE';
-      var isTile = layerType === 'SUPERMAP_REST' || layerType === 'TILE' || layerType === 'WMS' || layerType === 'WMTS';
+      var isTile = layerType === 'SUPERMAP_REST' || layerType === 'TILE' || layerType === 'WMS' || layerType === 'WMTS' || layerType === 'MAPBOXSTYLE';
 
       if (isHosted) {
         type = 'hosted';
@@ -48375,7 +48503,7 @@ function (_Events) {
       var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
       getFeatureParam = new SuperMap.FilterParameter({
         name: datasetNames.join().replace(':', '@'),
-        attributeFilter: 'SMID > 0'
+        attributeFilter: null
       });
       getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
         queryParameter: getFeatureParam,
@@ -48910,7 +49038,7 @@ function (_WebMapBase) {
                 features = this.transformFeatures(features);
 
               case 14:
-                this.handleLayerFeatures(features, layerInfo);
+                features = this.handleLayerFeatures(features, layerInfo);
                 _context.t0 = layerType;
                 _context.next = _context.t0 === 'VECTOR' ? 18 : _context.t0 === 'UNIQUE' ? 34 : _context.t0 === 'RANGE' ? 38 : _context.t0 === 'HEAT' ? 42 : _context.t0 === 'MARKER' ? 46 : _context.t0 === 'RANK_SYMBOL' ? 50 : _context.t0 === 'MIGRATION' ? 54 : _context.t0 === 'DATAFLOW_POINT_TRACK' ? 58 : _context.t0 === 'DATAFLOW_HEAT' ? 58 : 62;
                 break;
@@ -49985,23 +50113,6 @@ if (typeof Object.create === 'function') {
     }
   }
 }
-
-
-/***/ }),
-
-/***/ "fe22":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=1334ddae&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=1334ddae&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
 
 /***/ }),

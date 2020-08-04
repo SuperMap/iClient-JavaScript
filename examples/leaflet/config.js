@@ -534,7 +534,7 @@ var exampleConfig = {
                     name: "发布数据",
                     name_en: "Publish Data",
                     version: "10.1.0",
-                    thumbnail: "l_iPortalPublishData.png",
+                    thumbnail: "l_iportalPublishData.png",
                     fileName: "iPortalPublishData"
                 }]
             }

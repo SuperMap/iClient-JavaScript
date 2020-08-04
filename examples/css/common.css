@@ -100,6 +100,15 @@ a {
     margin: 0 16px;
 }
 
+@media screen and (min-width: 1221px) and (max-width: 1366px) {
+    .navbar-header, .main-header .navbar-custom-menu {
+        margin: 0 4px;
+    }
+    .skin-blue .main-header .navbar .nav>li>a {
+        padding: 12.5px 6px;
+    }
+}
+
 *,
 *:after,
 *::before {
