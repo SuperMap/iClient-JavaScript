@@ -1,5 +1,5 @@
 /*leaflet -- control*/
-// import './leaflet/control/ChangeTileVersionSpec.js';
+import './leaflet/control/ChangeTileVersionSpec.js';
 
 /*leaflet -- core*/
 import './leaflet/core/NonEarthCRSSpec.js';
@@ -70,7 +70,7 @@ import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
 
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
-// import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
+import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
 import './leaflet/components/distributedanalysis/DistributedAnalysisViewSpec.js';
 import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/components/search/SearchViewSpec.js';
