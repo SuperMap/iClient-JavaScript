@@ -2618,14 +2618,18 @@ export class WebMap extends Observable {
             font: `${fontSize} ${fontFamily}`,
             placement,
             textBaseline,
-            textAlign,
             fill: new FillStyle({ color: fill }),
             backgroundFill: new FillStyle({ color: backgroundFill }),
             padding: [3, 3, 3, 3],
             offsetX: layerInfo.featureType === 'POINT' ? offsetX : 0,
             offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0,
+            overflow: true,
             maxAngle: 0
         };
+        if(layerInfo.featureType === 'POINT') {
+            //线面不需要此参数，否则超出线面overflow:true，也不会显示标签
+            option.textAlign = textAlign;
+        }
         if (outlineWidth > 0) {
             option.stroke = new StrokeStyle({
                 color: outlineColor,
