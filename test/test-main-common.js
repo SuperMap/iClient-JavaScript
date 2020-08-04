@@ -167,7 +167,7 @@ import './common/iPortal/iPortalSpec.js';
 import './common/iPortal/iPortalAddResourceParamSpec';
 // import './common/iPortal/iPortalRegisterServiceParamSpec';
 // import './common/iPortal/iPortalAddDataParamSpec.js';
-import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
+// import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
 import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
 import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
 
