@@ -162,7 +162,7 @@ import './common/iPortal/iPortalUserSpec.js';
 // import './common/iPortal/iPortalShareEntitySpec.js';
 import './common/iPortal/iPortalShareParamSpec.js';
 import './common/iPortal/iPortalResourceSpec.js';
-import './common/iPortal/iPortalQueryResultSpec.js';
+// import './common/iPortal/iPortalQueryResultSpec.js';
 import './common/iPortal/iPortalSpec.js';
 import './common/iPortal/iPortalAddResourceParamSpec';
 // import './common/iPortal/iPortalRegisterServiceParamSpec';
