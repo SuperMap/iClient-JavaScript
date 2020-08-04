@@ -159,7 +159,7 @@ import './common/iManager/iManagerCreateNodeParamSpec.js';
 /**common -- iPortal**/
 import './common/iPortal/iPortalQueryParamSpec.js';
 import './common/iPortal/iPortalUserSpec.js';
-import './common/iPortal/iPortalShareEntitySpec.js';
+// import './common/iPortal/iPortalShareEntitySpec.js';
 import './common/iPortal/iPortalShareParamSpec.js';
 import './common/iPortal/iPortalResourceSpec.js';
 import './common/iPortal/iPortalQueryResultSpec.js';
