@@ -832,7 +832,7 @@ export class WebMap extends Observable {
                 // thumbnail: this.getImagePath('bmap.png') 暂时不用到缩略图
                 break;
             case ('CLOUD'):
-                baseLayerInfo.url= 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
+                baseLayerInfo.url= 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 18;
@@ -840,7 +840,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.extent= baiduBounds;
                 break;
             case ('CLOUD_BLACK'):
-                baseLayerInfo.url= 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}';
+                baseLayerInfo.url= 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 18;
