@@ -140,7 +140,7 @@ module.exports = function (config) {
             sonarQubeVersion: 'LATEST',
             outputFile: 'testcoverage/ut_report.xml',
             filenameFormatter: (nextPath, result) => {
-                return filesForDescriptions[nextPath];
+                return filesForDescriptions[nextPath] || '';
             },
             useBrowserName: false
         },
