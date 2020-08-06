@@ -1,6 +1,9 @@
 // Karma configuration
 // Generated on Fri Feb 17 2017 15:57:25 GMT+0800 (中国标准时间)
 var fileUtil = require('karma-sonarqube-unit-reporter/src/file-util.js');
+const testPath = ['./test'];
+const testFilePattern = 'Spec.js';
+const filesForDescriptions = fileUtil.getFilesForDescriptions(testPath, testFilePattern);
 module.exports = function (config) {
     // 设置测试的超时时间
 
@@ -137,9 +140,6 @@ module.exports = function (config) {
             sonarQubeVersion: 'LATEST',
             outputFile: 'testcoverage/ut_report.xml',
             filenameFormatter: (nextPath, result) => {
-                const testPath = ['./test'];
-                const testFilePattern = 'Spec.js';
-                const filesForDescriptions = fileUtil.getFilesForDescriptions(testPath, testFilePattern);
                 return filesForDescriptions[nextPath];
             },
             useBrowserName: false
