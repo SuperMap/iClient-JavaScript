@@ -266,6 +266,7 @@
     </form>
     <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
     <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var webMap = new mapboxgl.supermap.WebMap(1887887232, {
             target: 'map',
             server: 'https://www.supermapol.com'
@@ -278,7 +279,7 @@
             $('#scale').val(scale * 2);
             $('#exportScale').val(scale);
         });
-        var webPrintingJobService = new mapboxgl.supermap.WebPrintingJobService('http://localhost:8090/iserver/services/webprinting/rest/v1/webprinting', {
+        var webPrintingJobService = new mapboxgl.supermap.WebPrintingJobService(host + '/iserver/services/webprinting/rest/v1/webprinting', {
             withCredentials: window.isLocal
         });
         webPrintingJobService.getLayoutTemplates(function ({ result }) {

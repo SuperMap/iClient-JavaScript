@@ -32,5 +32,5 @@
     ChinaProvincesURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces",
     californiaURL: "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California",
     distributedAnalysisURL:"http://localhost:8090/iserver/services/distributedanalyst/rest/v1/jobs",
-    webPrintingURL: "http://localhost:8091/iserver/services/webprinting/rest/v1/webprinting"
+    webPrintingURL: "http://localhost:8090/iserver/services/webprinting/rest/v1/webprinting"
     }
