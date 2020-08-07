@@ -1722,6 +1722,26 @@ window.examplesResources = {
         "style_width420px": 'width: 500px',
         "style_width350px": 'width: 400px',
         "style_heatMapWidth": "width: 340px",
-        "style_plotAnimation": "width: 170px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;"
+        "style_plotAnimation": "width: 170px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;",
+
+        "text_baseInfo": "Base Info",
+        "text_layoutTemplates": "Layout Templates",
+        "text_title": "Title",
+        "text_subTitle": "Sub Title",
+        "text_copyRightInfo": "CopyRight Information",
+        "text_author": "Author",
+        "text_littleMap": "Little Map",
+        "text_scale": "Scale",
+        "text_scaleText": "Scale Text",
+        "text_style": "Style",
+        "text_intervals": "Intervals",
+        "text_unit": "Unit",
+        "text_exportOptions": "Export Options",
+        "text_format": "Format",
+        "text_centerTip": "Separated by commas",
+        "option_meterUnit": "Meter",
+        "option_mileUnit": "Foot",
+        "option_degreeUnit": "Degree",
+        "text_print": "Print"
     }
 };

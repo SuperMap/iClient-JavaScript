@@ -2,7 +2,7 @@
 import './openlayers/control/ChangeTileVersionSpec.js';
 
 /*openlayers -- core*/
-import './openlayers/core/StyleUtilsSpec.js'; 
+import './openlayers/core/StyleUtilsSpec.js';
 import './openlayers/core/UtilSpec.js';
 import './openlayers/core/MapExtendSpec.js';
 
@@ -62,3 +62,4 @@ import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 import './openlayers/services/AddressMatchServiceSpec.js';
 import './openlayers/services/GridCellInfosServiceSpec.js';
+import './openlayers/services/WebPrintingJobServiceSpec.js';

@@ -52,7 +52,8 @@ import {
     ServiceBase,
     SpatialAnalystService,
     ThemeService,
-    TrafficTransferAnalystService
+    TrafficTransferAnalystService,
+    WebPrintingJobService
 } from './services';
 
 if (window && window.ol) {
@@ -111,6 +112,7 @@ if (window && window.ol) {
     ol.supermap.SpatialAnalystService = SpatialAnalystService;
     ol.supermap.ThemeService = ThemeService;
     ol.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
+    ol.supermap.WebPrintingJobService = WebPrintingJobService;
 }
 
 export * from './control';

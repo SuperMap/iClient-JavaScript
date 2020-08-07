@@ -224,6 +224,18 @@ import { VectorClipJobsService } from './VectorClipJobsService';
 import { RasterFunctionParameter } from './RasterFunctionParameter';
 import { NDVIParameter } from './NDVIParameter';
 import { HillshadeParameter } from './HillshadeParameter';
+import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
+import { WebPrintingJobImage } from './WebPrintingJobImage';
+import { WebPrintingJobLayers } from './WebPrintingJobLayers';
+import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
+import { WebPrintingJobLittleMapOptions } from './WebPrintingJobLittleMapOptions';
+import { WebPrintingJobNorthArrowOptions } from './WebPrintingJobNorthArrowOptions';
+import { WebPrintingJobScaleBarOptions } from './WebPrintingJobScaleBarOptions';
+import { WebPrintingJobContent } from './WebPrintingJobContent';
+import { WebPrintingJobLayoutOptions } from './WebPrintingJobLayoutOptions';
+import { WebPrintingJobExportOptions } from './WebPrintingJobExportOptions';
+import { WebPrintingJobParameters } from './WebPrintingJobParameters';
+import { WebPrintingService } from './WebPrintingService';
 
 export { AddressMatchService };
 export { AggQueryBuilderParameter };
@@ -448,3 +460,15 @@ export { VectorClipJobsService };
 export { RasterFunctionParameter };
 export { NDVIParameter };
 export { HillshadeParameter };
+export { WebPrintingJobCustomItems };
+export { WebPrintingJobImage };
+export { WebPrintingJobLayers };
+export { WebPrintingJobLegendOptions };
+export { WebPrintingJobLittleMapOptions };
+export { WebPrintingJobNorthArrowOptions };
+export { WebPrintingJobScaleBarOptions };
+export { WebPrintingJobContent };
+export { WebPrintingJobLayoutOptions };
+export { WebPrintingJobExportOptions };
+export { WebPrintingJobParameters }
+export { WebPrintingService }

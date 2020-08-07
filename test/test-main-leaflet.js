@@ -67,6 +67,7 @@ import './leaflet/services/TerrainCurvatureCalculateSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
+import './leaflet/services/WebPrintingJobServiceSpec.js';
 
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
