@@ -1479,9 +1479,10 @@ export class WebMap extends Observable {
                     dataSource = layer.dataSource,
                     isSampleData = dataSource && dataSource.type === "SAMPLE_DATA" && !!dataSource.name; //SAMPLE_DATA是本地示例数据
                 if(layer.layerType === "MAPBOXSTYLE"){
-                    that.addMVTMapLayer(mapInfo, layer, layerIndex);
-                    that.layerAdded++;
-                    that.sendMapToUser(len);
+                    that.addMVTMapLayer(mapInfo, layer, layerIndex).then(result => {
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
+                    });
                 } else if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
                     //数据存储到iportal上了
                     let dataSource = layer.dataSource,
@@ -1523,8 +1524,8 @@ export class WebMap extends Observable {
                                         features = await that.excelData2Feature(data.content, layer);
                                     }
                                 } else if(data.type === 'SHP') {
-                                    let content = JSON.parse(data.content); 
-                                    data.content = content.layers[0];  
+                                    let content = JSON.parse(data.content);
+                                    data.content = content.layers[0];
                                     features = that.geojsonToFeature(data.content, layer);
                                 }
                                 that.addLayer(layer, features, layerIndex);
@@ -1585,14 +1586,16 @@ export class WebMap extends Observable {
                     if (layer.layerType === "WMTS") {
                         that.getWmtsInfo(layer, function (layerInfo) {
                             that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
+                            that.layerAdded++;
+                            that.sendMapToUser(len);
                         })
                     } else {
                         that.getLayerExtent(layer, function(layerInfo){
                             that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
+                            that.layerAdded++;
+                            that.sendMapToUser(len);
                         });
                     }
-                    that.layerAdded++;
-                    that.sendMapToUser(len);
                 } else if (dataSource && dataSource.type === "REST_DATA") {
                     //从restData获取数据
                     that.getFeaturesFromRestData(layer, layerIndex, len);
@@ -1928,7 +1931,7 @@ export class WebMap extends Observable {
                     } else {
                         xIdx = dataMetaInfo.xIndex;
                         yIdx = dataMetaInfo.yIndex;
-                    } 
+                    }
                 } else if (dataSource.type === 'SAMPLE_DATA') {
                     // 示例数据从本地拿xyField
                     const sampleData = SampleDataInfo.find(item => item.id === dataSource.name) || {};
@@ -1968,7 +1971,7 @@ export class WebMap extends Observable {
                     } else {
                         attributes[field] = rowDatas[j];
                     }
-                    
+
                 }
                 let feature = new Feature({
                     geometry: olGeom,
@@ -2650,7 +2653,7 @@ export class WebMap extends Observable {
         let newStyle;
         if(featureType === 'LINE' && Util.isArray(style)) {
             const [outlineStyle, strokeStyle] = style;
-            newStyle = strokeStyle.lineDash === 'solid' ? StyleUtils.getRoadPath(strokeStyle, outlineStyle) 
+            newStyle = strokeStyle.lineDash === 'solid' ? StyleUtils.getRoadPath(strokeStyle, outlineStyle)
             : StyleUtils.getPathway(strokeStyle, outlineStyle);
         } else {
             newStyle = StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
@@ -3597,7 +3600,7 @@ export class WebMap extends Observable {
             //有token之类的配置项
             url = url.indexOf("?") === -1 ? `${url}?${this.credentialKey}=${this.credentialValue}` :
             `${url}&${this.credentialKey}=${this.credentialValue}`;
-        }  
+        }
         return url;
     }
 
@@ -4291,17 +4294,17 @@ export class WebMap extends Observable {
     isSupportWebp(url, token) {
         // 还需要判断浏览器
         let isIE = this.isIE();
-        if(isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) || 
+        if(isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
             (this.isChrome() && this.getChromeVersion() < 32)) {
             return false;
-        } 
+        }
         url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
         url = this.getRequestUrl(url);
         return FetchRequest.get(url, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             if(response.status !== 200) {
-                throw response.status;   
+                throw response.status;
             }
             return response;
         }).then(() => {
