@@ -1669,8 +1669,26 @@ window.examplesResources = {
         "style_width420px": 'width: 420px',
         "style_width350px": 'width: 350px',
         "style_heatMapWidth": "width: 280px",
-        "style_plotAnimation": "width: 120px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;"
+        "style_plotAnimation": "width: 120px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;",
 
-
+        "text_baseInfo": "基本信息",
+        "text_layoutTemplates": "布局模板",
+        "text_title": "标题",
+        "text_subTitle": "副标题",
+        "text_copyRightInfo": "版权信息",
+        "text_author": "作者",
+        "text_littleMap": "附图",
+        "text_scale": "比例尺",
+        "text_scaleText": "比例尺文本",
+        "text_style": "样式",
+        "text_intervals": "段数",
+        "text_unit": "单位",
+        "text_exportOptions": "导出选项",
+        "text_format": "格式",
+        "text_centerTip": "用英文逗号分隔",
+        "option_meterUnit": "米",
+        "option_mileUnit": "英里",
+        "option_degreeUnit": "度",
+        "text_print": "打印"
     }
 };

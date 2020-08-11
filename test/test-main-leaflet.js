@@ -10,7 +10,7 @@ import './leaflet/core/Proj4LeafletSpec.js';
 import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
-import './leaflet/mapping/WebMapSpec.js';
+// import './leaflet/mapping/WebMapSpec.js';
 
 /*leaflet -- overlay*/
 
@@ -67,10 +67,11 @@ import './leaflet/services/TerrainCurvatureCalculateSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
+import './leaflet/services/WebPrintingJobServiceSpec.js';
 
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
-import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
+// import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
 import './leaflet/components/distributedanalysis/DistributedAnalysisViewSpec.js';
 import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/components/search/SearchViewSpec.js';

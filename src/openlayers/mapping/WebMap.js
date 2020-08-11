@@ -81,8 +81,9 @@ const dpiConfig = {
  * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey和credentialValue必须一起使用
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
- * @param {Object} [options.serviceProxy] - iportal服务代理信息
+ * @param {Object} [options.serviceProxy] - iportal内置代理信息, 仅矢量瓦片图层上图才会使用
  * @param {string} [options.tiandituKey] - 天地图的key
+ * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @param {function} [options.mapSetting.overlays] - 地图的overlayer
  * @param {function} [options.mapSetting.controls] - 地图的控件
@@ -105,14 +106,17 @@ export class WebMap extends Observable {
         this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         this.serviceProxy = options.serviceProxy || null;
         this.tiandituKey = options.tiandituKey;
+        this.proxy = options.proxy;
         //计数叠加图层，处理过的数量（成功和失败都会计数）
         this.layerAdded = 0;
+        this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.createMap(options.mapSetting);
         this.createWebmap();
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype._removeBaseLayer
      * @description 移除底图
      */
@@ -127,6 +131,7 @@ export class WebMap extends Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype._removeLayers
      * @description 移除叠加图层
      */
@@ -155,10 +160,11 @@ export class WebMap extends Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.clear
      * @description 清空地图
      */
-    clear() {
+    _clear() {
         // 比例尺
         this.scales = [];
         // 分辨率
@@ -173,11 +179,12 @@ export class WebMap extends Observable {
     }
 
     /**
-     * @function ol.supermap.WebMap.prototype.reRender
+     * @function ol.supermap.WebMap.prototype.refresh
+     * @version 10.1.0
      * @description 重新渲染地图
      */
-    reRender() {
-        this.clear();
+    refresh() {
+        this._clear();
         this.createWebmap();
     }
 
@@ -276,10 +283,6 @@ export class WebMap extends Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
 
-            // 多坐标系支持
-            if(proj4){
-              (olProj4 && olProj4.register) ? olProj4.register(proj4) : window.ol.proj.setProj4(proj4) ;
-            }
             // 目前iServer服务中可能出现的EPSG 0，-1，-1000
             if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
                 //对于这两种地图，只能view，不能叠加其他图层
@@ -478,7 +481,7 @@ export class WebMap extends Observable {
             source = me.createWMSSource(baseLayerInfo);
             me.addSpecToMap(source);
         } else if(baseLayerType === "WMTS"){
-            FetchRequest.get(me.getRequestUrl(url), null, {
+            FetchRequest.get(me.getRequestUrl(url, true), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.text();
@@ -590,9 +593,9 @@ export class WebMap extends Observable {
     addMVTMapLayer(mapInfo, layerInfo, zIndex) {
         layerInfo.zIndex = zIndex;
         // 获取地图详细信息
-        return this.getMBStyle(mapInfo, layerInfo).then(() => {
+        return this.getMapboxStyleLayerInfo(mapInfo, layerInfo).then((msLayerInfo) => {
             // 创建图层
-            return this.createMVTLayer(layerInfo).then(layer => {
+            return this.createMVTLayer(msLayerInfo).then(layer => {
                 let layerID = Util.newGuid(8);
                 if (layerInfo.name) {
                     layer.setProperties({
@@ -829,7 +832,7 @@ export class WebMap extends Observable {
                 // thumbnail: this.getImagePath('bmap.png') 暂时不用到缩略图
                 break;
             case ('CLOUD'):
-                baseLayerInfo.url= 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
+                baseLayerInfo.url= 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 18;
@@ -837,7 +840,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.extent= baiduBounds;
                 break;
             case ('CLOUD_BLACK'):
-                baseLayerInfo.url= 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}';
+                baseLayerInfo.url= 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 18;
@@ -1218,7 +1221,7 @@ export class WebMap extends Observable {
         } else {
             url += splitStr + '/1.0.0/WMTSCapabilities.xml';
         }
-        return this.getRequestUrl(url);
+        return this.getRequestUrl(url, true);
     }
 
     /**
@@ -1228,10 +1231,10 @@ export class WebMap extends Observable {
      * @param {Object} layerInfo - 图层信息。
      * @param {function} callback - 获得wmts图层参数执行的回调函数
      */
-    getWmtsInfo(layerInfo, callback, mapInfo) {
+    getWmtsInfo(layerInfo, callback) {
         let that = this;
         let options = {
-            withCredentials: true,
+            withCredentials: that.withCredentials,
             withoutFormatSuffix: true
         };
         const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
@@ -1296,11 +1299,7 @@ export class WebMap extends Observable {
                 layerInfo.unit = "m";
                 layerInfo.layerFormat = layerFormat;
                 layerInfo.matrixIds = matrixIds;
-                if(mapInfo){
-                    callback && callback(mapInfo, null, true, that);
-                }else{
-                    callback && callback(layerInfo);
-                }
+                callback && callback(layerInfo);
             }
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
@@ -1789,7 +1788,7 @@ export class WebMap extends Observable {
     getDataflowInfo(layerInfo, success, faild) {
         let that = this;
         let url = layerInfo.url, token;
-        let requestUrl = that.getRequestUrl(`${url}.json`)
+        let requestUrl = that.getRequestUrl(`${url}.json`, false);
         if(layerInfo.credential && layerInfo.credential.token) {
             token = layerInfo.credential.token;
             requestUrl+= `?token=${token}`;
@@ -2620,14 +2619,18 @@ export class WebMap extends Observable {
             font: `${fontSize} ${fontFamily}`,
             placement,
             textBaseline,
-            textAlign,
             fill: new FillStyle({ color: fill }),
             backgroundFill: new FillStyle({ color: backgroundFill }),
             padding: [3, 3, 3, 3],
             offsetX: layerInfo.featureType === 'POINT' ? offsetX : 0,
             offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0,
+            overflow: true,
             maxAngle: 0
         };
+        if(layerInfo.featureType === 'POINT') {
+            //线面不需要此参数，否则超出线面overflow:true，也不会显示标签
+            option.textAlign = textAlign;
+        }
         if (outlineWidth > 0) {
             option.stroke = new StrokeStyle({
                 color: outlineColor,
@@ -3580,10 +3583,12 @@ export class WebMap extends Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.getRootUrl
      * @description 获取请求地址
+     * @param {string} url 请求的地址
+     * @param {boolean} 请求是否带上Credential.
      * @returns {Promise<T | never>} 请求地址
      */
-    getRequestUrl(url) {
-        this.formatUrlWithCredential(url);
+    getRequestUrl(url, excludeCreditial) {
+        url =  excludeCreditial ? url : this.formatUrlWithCredential(url);
         //如果传入进来的url带了代理则不需要处理
         if(this.excludePortalProxyUrl) {
             return;
@@ -3610,8 +3615,11 @@ export class WebMap extends Observable {
      * @description 获取代理地址
      * @returns {Promise<T | never>} 代理地址
      */
-    getProxy() {
-        return this.server + 'apps/viewer/getUrlResource.json?url=';
+    getProxy(type) {
+        if(!type) {
+            type = 'json';
+        }
+        return this.proxy || this.server + `apps/viewer/getUrlResource.${type}?url=`;
     }
 
     /**
@@ -3667,6 +3675,12 @@ export class WebMap extends Observable {
                 let epsgCode = this.getEpsgInfoFromWKT(wkt);
                 if(epsgCode){
                     proj4.defs(epsgCode, wkt);
+                    // 重新注册proj4到ol.proj，不然不会生效
+                    if (olProj4 && olProj4.register) {
+                        olProj4.register(proj4);
+                    } else if (window.ol.proj && window.ol.proj.setProj4) {
+                        window.ol.proj.setProj4(proj4)
+                    }
                     return true;
                 }else{
                     // 参数类型非wkt标准
@@ -4056,20 +4070,94 @@ export class WebMap extends Observable {
     }
 
     /**
+    * @private
+    * @function ol.supermap.WebMap.prototype.isRestMapMapboxStyle
+    * @description 仅判断是否为restmap mvt地图服务 rest-map服务的Mapbox Style资源地址是这样的： .../iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true
+    * @param {Object} layerInfo webmap中的MapStylerLayer
+    * @returns {Boolean} 是否为restmap mvt地图服务
+    */
+    isRestMapMapboxStyle(layerInfo) {
+        const restMapMVTStr = '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
+        let dataSource = layerInfo.dataSource;
+        let layerType = layerInfo.layerType;
+        if (dataSource && dataSource.type === "EXTERNAL"
+            && dataSource.url.indexOf(restMapMVTStr) > -1
+            && (layerType === "MAPBOXSTYLE" || layerType === "VECTOR_TILE")) {
+            return true
+        }
+        return false
+    }
+    /**
      * @private
-     * @function ol.supermap.WebMap.prototype.getMBStyle
-     * @description 生成图层信息
-     * @param {object} mapInfo - 地图信息
-     * @param {object} layerInfo - 图层信息
+     * @function ol.supermap.WebMap.prototype.getMapboxStyleLayerInfo
+     * @description 获取mapboxstyle图层信息
+     * @param {layerInfo} layerInfo 图层信息
+     * @returns {Object}  图层信息
      */
-    getMBStyle(mapInfo, layerInfo) {
-        let _this = this,
-            dataSource = layerInfo.dataSource || {},
-            { url, serverId } = dataSource,
-            styleUrl;
-        styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
-        if (layerInfo.layerType === "MAPBOXSTYLE" && url && url.indexOf('/restjsr/') > -1) {
-            styleUrl = styleUrl + '/style.json'
+    getMapboxStyleLayerInfo(mapInfo, layerInfo) {
+        let _this = this;
+        return new Promise((resolve, reject) => {
+            return _this.getMapLayerExtent(layerInfo).then(layer => {
+                return _this.getMapboxStyle(mapInfo, layer).then(styleLayer => {
+                    Object.assign(layer, styleLayer);
+                    resolve(layer)
+                }).catch(error => {
+                    reject(error);
+                })
+            }).catch(error => {
+                reject(error);
+            })
+        })
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getMapLayerExtent
+     * @description 获取mapboxstyle图层信息
+     * @param {Object} layerInfo 图层信息
+     * @returns {Object}  图层信息
+     */
+    getMapLayerExtent(layerInfo) {
+        const restMapMVTStr = '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
+        let dataSource = layerInfo.dataSource;
+        let url = dataSource.url;
+        if (this.isRestMapMapboxStyle(layerInfo)) {
+            url = url.replace(restMapMVTStr, '')
+        }
+        return FetchRequest.get(this.getRequestUrl(url+'.json'), null, {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true,
+			headers: {
+				'Content-Type': 'application/json;chartset=uft-8'
+			}
+        }).then(function (response) {
+            return response.json();
+        }).then((result) => {
+            layerInfo.visibleScales = result.visibleScales;
+            layerInfo.coordUnit = result.coordUnit;
+            layerInfo.scale = result.scale;
+            layerInfo.epsgCode = result.prjCoordSys.epsgCode;
+            layerInfo.bounds = result.bounds;
+            return layerInfo;
+        }).catch(error => {
+            return error;
+        })
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getMapboxStyle
+     * @description 获取mapboxstyle --- ipt中自定义底图请求mapboxstyle目前有两种url格式
+     * rest-map服务的Mapbox Style资源地址是这样的： .../iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true
+     * restjsr片服务的Mapbox Style资源地址是这样的：.../iserver/services/map-china400/restjsr/v1/vectortile/maps/China/style.json
+     * @param {Object} mapboxstyle图层信息
+     * @returns {Object} 图层信息
+     */
+    getMapboxStyle(mapInfo, layerInfo) {
+        let _this = this;
+        let url = layerInfo.url || layerInfo.dataSource.url;
+        let styleUrl = url;
+        if (styleUrl.indexOf('/restjsr/') > -1) {
+            styleUrl = `${styleUrl}/style.json`;
         }
         return FetchRequest.get(this.getRequestUrl(styleUrl), null, {
             withCredentials: this.withCredentials,
@@ -4077,34 +4165,33 @@ export class WebMap extends Observable {
 			headers: {
 				'Content-Type': 'application/json;chartset=uft-8'
 			}
-        }).then(result => {
-            return result.json();
+        }).then(function (response) {
+            return response.json();
         }).then(styles => {
             _this._matchStyleObject(styles);
-            let extent = styles.metadata.mapbounds;
-            layerInfo.extent = extent; // 这里把extent保存一下
-
-            layerInfo.projection = mapInfo.projection;
-            layerInfo.epsgCode = mapInfo.projection;
-            layerInfo.url = url;
-            layerInfo.sourceType = 'VECTOR_TILE';
-            layerInfo.layerType = 'VECTOR_TILE';
-            layerInfo.styles = styles;
-            layerInfo.extent = extent;
-            layerInfo.bounds = {
-                bottom: extent[1],
-                left: extent[0],
-                leftBottom: { x: extent[0], y: extent[1] },
-                right: extent[2],
-                rightTop: { x: extent[2], y: extent[3] },
-                top: extent[3]
+            let bounds = layerInfo.bounds;
+            let newLayerInfo = {
+                url: url,
+                sourceType: 'VECTOR_TILE',
+                layerType: 'VECTOR_TILE',
+                styles: styles,
+                extent: bounds && [bounds.left, bounds.bottom, bounds.right, bounds.top],
+                bounds: layerInfo.bounds,
+                projection: "EPSG:" + layerInfo.epsgCode,
+                epsgCode: layerInfo.epsgCode,
+                name: layerInfo.name
             }
+            Object.assign(layerInfo, newLayerInfo)
             if (layerInfo.zIndex > 0) {
                 // 过滤styles  非底图mapboxstyle图层才需此处理
                 _this.modifyMapboxstyleLayer(mapInfo, layerInfo);
             }
+            return layerInfo;
+        }).catch(error => {
+            return error;
         })
     }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.modifyMapboxstyleLayer
@@ -4193,7 +4280,76 @@ export class WebMap extends Observable {
             return false
         }
     }
+    /**
+     * @private
+     * @function  ol.supermap.WebMap.prototype.getStyleResolutions
+     * @description 创建图层分辨率
+     * @param {Object} bounds  图层上下左右范围
+     * @returns {Array} styleResolutions 样式分辨率
+     */
+    getStyleResolutions(bounds, minZoom = 0, maxZoom = 22) {
+        let styleResolutions = [];
+        const TILE_SIZE = 512
+        let temp = Math.abs(bounds.left - bounds.right) / TILE_SIZE;
+        for (let i = minZoom; i <= maxZoom; i++) {
+            if (i === 0) {
+                styleResolutions[i] = temp;
+                continue;
+            }
+            temp = temp / 2;
+            styleResolutions[i] = temp;
+        }
+        return styleResolutions;
+    }
 
+
+    /**
+     * @private
+     * @function  ol.supermap.WebMap.prototype.createVisibleResolution
+     * @description 创建图层可视分辨率
+     * @param {Array} visibleScales 可视比例尺范围
+     * @param {Array} indexbounds
+     * @param {Object} bounds  图层上下左右范围
+     * @param {String} coordUnit
+     * @returns {Array} visibleResolution
+     */
+    createVisibleResolution(visibleScales, indexbounds, bounds, coordUnit) {
+        let visibleResolution = [];
+        // 1 设置了地图visibleScales的情况
+        if (visibleScales && visibleScales.length > 0) {
+            visibleResolution = visibleScales.map(scale => {
+                let value = 1 / scale;
+                let res = this.getResFromScale(value, coordUnit);
+                return res;
+            })
+        } else {
+            // 2 地图的bounds
+            let envelope = this.getEnvelope(indexbounds, bounds);
+            visibleResolution = this.getStyleResolutions(envelope);
+        }
+        return visibleResolution
+    }
+
+    /**
+     * @private
+     * @function  ol.supermap.WebMap.prototype.createVisibleResolution
+     * @description 图层边界范围
+     * @param {Array} indexbounds
+     * @param {Object} bounds  图层上下左右范围
+     * @returns {Object} envelope
+     */
+    getEnvelope(indexbounds, bounds) {
+        let envelope = {};
+        if (indexbounds && indexbounds.length === 4) {
+            envelope.left = indexbounds[0];
+            envelope.bottom = indexbounds[1];
+            envelope.right = indexbounds[2];
+            envelope.top = indexbounds[3];
+        } else {
+            envelope = bounds;
+        }
+        return envelope
+    }
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createMVTLayer
@@ -4201,23 +4357,26 @@ export class WebMap extends Observable {
      * @param {object} layerInfo - 图层信息
      */
     createMVTLayer(layerInfo) {
-        let that = this;
+        // let that = this;
         let styles = layerInfo.styles;
-        let resolutions = this.getMVTResolutions(layerInfo.bounds);
+        const indexbounds = styles && styles.metadata && styles.metadata.indexbounds;
+        const visibleResolution = this.createVisibleResolution(layerInfo.visibleScales, indexbounds, layerInfo.bounds, layerInfo.coordUnit);
+        const envelope = this.getEnvelope(indexbounds, layerInfo.bounds);
+        const styleResolutions = this.getStyleResolutions(envelope);
+        // const origin = [envelope.left, envelope.top];
         let withCredentials = this.isIportalProxyServiceUrl(styles.sprite);
         // 创建MapBoxStyle样式
         let mapboxStyles = new MapboxStyles({
             style: styles,
             source: styles.name,
-            resolutions,
+            resolutions:styleResolutions,
             map: this.map,
             withCredentials
         });
         return new Promise((resolve) => {
             mapboxStyles.on('styleloaded', function () {
-                let visibleScale = layerInfo.visibleScale;
-                let minResolution = visibleScale && that.resolutions[visibleScale.maxScale];
-                let maxResolution = visibleScale && that.resolutions[visibleScale.minScale];
+                let minResolution = visibleResolution[visibleResolution.length - 1];
+                let maxResolution = visibleResolution[0];
                 let layer = new olLayer.VectorTile({
                     //设置避让参数
                     declutter: true,
@@ -4243,24 +4402,6 @@ export class WebMap extends Observable {
         })
     }
 
-    /**
-     * @private
-     * @function ol.supermap.WebMap.prototype.getMVTResolutions
-     * @description 创建矢量瓦片图层
-     * @param {array} extent - 瓦片范围
-     * @param {number} numbers - 缩放层级数
-     */
-    getMVTResolutions(extent, numbers = 22) {
-        let { left, right, top, bottom } = extent;
-        let dx = right - left;
-        let dy = top - bottom;
-        let calcArgs = dx - dy > 0 ? dx : dy;
-        let resolutions = [calcArgs / 512];
-        for (let i = 1; i < numbers; i++) {
-            resolutions.push(resolutions[i - 1] / 2)
-        }
-        return resolutions;
-    }
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.isSameDomain
@@ -4299,9 +4440,17 @@ export class WebMap extends Observable {
             return false;
         }
         url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
-        url = this.getRequestUrl(url);
+        let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
+        if(isSameDomain && !token) {
+            // online上服务域名一直，要用token值
+            excledeCreditial = false;  
+        } else {
+            excledeCreditial = true; 
+        }
+        url = this.getRequestUrl(url, excledeCreditial);
         return FetchRequest.get(url, null, {
-            withCredentials: this.withCredentials
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true
         }).then(function (response) {
             if(response.status !== 200) {
                 throw response.status;

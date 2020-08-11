@@ -131,6 +131,10 @@
                         ['has', 'confirmed'],
                         [
                             'case',
+                            ['>=', ['get', 'confirmed'], 1000000],
+                            '#580000',
+                            ['>=', ['get', 'confirmed'], 100000],
+                            '#900000',
                             ['>=', ['get', 'confirmed'], 10000],
                             '#ef6548',
                             ['>=', ['get', 'confirmed'], 1000],

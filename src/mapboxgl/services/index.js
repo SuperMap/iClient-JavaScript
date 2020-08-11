@@ -18,3 +18,4 @@ export {ServiceBase} from './ServiceBase';
 export {SpatialAnalystService} from './SpatialAnalystService';
 export {ThemeService} from './ThemeService';
 export {TrafficTransferAnalystService} from './TrafficTransferAnalystService';
+export {WebPrintingJobService} from './WebPrintingJobService';

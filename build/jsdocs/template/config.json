@@ -270,6 +270,10 @@
             "DataFlow": {
                 "name": "数据流",
                 "name_en": "DataFlow"
+            },
+            "WebPrintingJob": {
+                "name": "地图打印",
+                "name_en": "WebPrintingJob"
             }
         }
     },

@@ -76,6 +76,7 @@ import './common/iServer/TransferPathServiceSpec.js';
 import './common/iServer/TransferSolutionServiceSpec.js';
 import './common/iServer/UpdateEdgeWeightServiceSpec.js';
 import './common/iServer/UpdateTurnNodeWeightServiceSpec.js';
+import './common/iServer/WebPrintingServiceSpec.js';
 // import './common/iServer/AreaSolarRadiationServiceSpec.js';       //iclient8注释掉
 // import './common/iServer/ChartFeatureInfoSpecsServiceSpec.js';    //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
 // import './common/iServer/ChartQueryServiceSpec.js';
@@ -158,18 +159,18 @@ import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
 import './common/iPortal/iPortalQueryParamSpec.js';
-import './common/iPortal/iPortalUserSpec.js';
-import './common/iPortal/iPortalShareEntitySpec.js';
-import './common/iPortal/iPortalShareParamSpec.js';
-import './common/iPortal/iPortalResourceSpec.js';
-import './common/iPortal/iPortalQueryResultSpec.js';
-import './common/iPortal/iPortalSpec.js';
-import './common/iPortal/iPortalAddResourceParamSpec';
-import './common/iPortal/iPortalRegisterServiceParamSpec';
-import './common/iPortal/iPortalAddDataParamSpec.js';
-import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
-import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
-import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
+// import './common/iPortal/iPortalUserSpec.js';
+// import './common/iPortal/iPortalShareEntitySpec.js';
+// import './common/iPortal/iPortalShareParamSpec.js';
+// import './common/iPortal/iPortalResourceSpec.js';
+// import './common/iPortal/iPortalQueryResultSpec.js';
+// import './common/iPortal/iPortalSpec.js';
+// import './common/iPortal/iPortalAddResourceParamSpec';
+// import './common/iPortal/iPortalRegisterServiceParamSpec';
+// import './common/iPortal/iPortalAddDataParamSpec.js';
+// import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
+// import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
+// import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';

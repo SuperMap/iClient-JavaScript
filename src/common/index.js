@@ -333,7 +333,19 @@ import {
     VectorClipJobsService,
     RasterFunctionParameter,
     NDVIParameter,
-    HillshadeParameter
+    HillshadeParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService
 } from './iServer';
 import {
     Online,
@@ -564,7 +576,7 @@ export {
     getMeterPerMapUnit
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
-export { 
+export {
     IPortal,
     IPortalQueryParam,
     IPortalResource,
@@ -802,7 +814,19 @@ export {
     VectorClipJobsService,
     RasterFunctionParameter,
     NDVIParameter,
-    HillshadeParameter
+    HillshadeParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService
 };
 export {
     Online,

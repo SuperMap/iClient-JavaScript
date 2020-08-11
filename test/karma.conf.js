@@ -1,11 +1,13 @@
 // Karma configuration
 // Generated on Fri Feb 17 2017 15:57:25 GMT+0800 (中国标准时间)
-
+var fileUtil = require('karma-sonarqube-unit-reporter/src/file-util.js');
+const testPath = ['./test'];
+const testFilePattern = 'Spec.js';
+const filesForDescriptions = fileUtil.getFilesForDescriptions(testPath, testFilePattern);
 module.exports = function (config) {
     // 设置测试的超时时间
 
     config.set({
-
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
 
@@ -22,12 +24,23 @@ module.exports = function (config) {
         browserify: {
             debug: true,
             transform: [
-                [require('babelify'), {
-                    global: true,
-                    presets: ["@babel/preset-env"],
-                    ignore: ["../src/classic/libs/**", "../test/libs/**", "../node_modules/mapbox-gl/**","../node_modules/three/**","../node_modules/xlsx/**","../node_modules/@turf/**","../node_modules/lodash/**"],
-                    plugins: ['istanbul']
-                }],
+                [
+                    require('babelify'),
+                    {
+                        global: true,
+                        presets: ['@babel/preset-env'],
+                        ignore: [
+                            '../src/classic/libs/**',
+                            '../test/libs/**',
+                            '../node_modules/mapbox-gl/**',
+                            '../node_modules/three/**',
+                            '../node_modules/xlsx/**',
+                            '../node_modules/@turf/**',
+                            '../node_modules/lodash/**'
+                        ],
+                        plugins: ['istanbul']
+                    }
+                ],
                 [require('browserify-css'), { global: true }],
                 require('browserify-imgify')
             ]
@@ -41,9 +54,9 @@ module.exports = function (config) {
             './resources/img/**.png',
             /***classic的源码***/
             /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
-            {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', include: false},
-            {pattern: '../src/classic/libs/Lang/*.js', include: false},
-            {pattern: '../src/classic/theme/default/*.css', include: false},
+            { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', include: false },
+            { pattern: '../src/classic/libs/Lang/*.js', include: false },
+            { pattern: '../src/classic/theme/default/*.css', include: false },
             /**测试文件**/
             './test-main-classic.js',
 
@@ -53,22 +66,22 @@ module.exports = function (config) {
             './test-main-common.js',
 
             /***leaflet的源码***/
-            {pattern: './libs/workers/TurfWorkerForTest.js', include: false},
-            {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
-            {pattern: '../src/leaflet/**/**/*.css', include: false},
+            { pattern: './libs/workers/TurfWorkerForTest.js', include: false },
+            { pattern: '../node_modules/leaflet/dist/leaflet.css', include: false },
+            { pattern: '../src/leaflet/**/**/*.css', include: false },
             '../src/leaflet/**/!(index).js',
             /**测试文件**/
             './test-main-leaflet.js',
 
             /***openlayers的源码***/
-            {pattern: '../node_modules/ol/ol.css', include: false},
-            {pattern: '../src/openlayers/**/**/*.css', include: false},
+            { pattern: '../node_modules/ol/ol.css', include: false },
+            { pattern: '../src/openlayers/**/**/*.css', include: false },
             '../src/openlayers/**/!(index).js',
             /**测试文件**/
             './test-main-openlayers.js',
 
             /***mapboxgl***/
-            {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
+            { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false },
             '../src/mapboxgl/**/!(index).js',
             /**测试文件**/
             './test-main-mapboxgl.js'
@@ -112,7 +125,7 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage', 'teamcity'],
+        reporters: ['progress', 'sonarqubeUnit', 'coverage', 'teamcity'],
 
         //最大超时时间
         captureTimeout: 120000,
@@ -121,33 +134,32 @@ module.exports = function (config) {
 
         coverageReporter: {
             dir: 'testcoverage/',
-            reporters: [
-                {type: 'lcov', subdir: '.'}
-            ]
-        }
-        ,
-
+            reporters: [{ type: 'lcov', subdir: '.' }]
+        },
+        sonarQubeUnitReporter: {
+            sonarQubeVersion: 'LATEST',
+            outputFile: 'testcoverage/ut_report.xml',
+            filenameFormatter: (nextPath, result) => {
+                return filesForDescriptions[nextPath] || '';
+            },
+            useBrowserName: false
+        },
         // web server port
         port: 9876,
 
-
         // enable / disable colors in the output (reporters and logs)
         colors: true,
-
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_INFO,
 
-
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
-
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['Chrome'],
-
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
@@ -156,6 +168,5 @@ module.exports = function (config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity
-
-    })
+    });
 };
