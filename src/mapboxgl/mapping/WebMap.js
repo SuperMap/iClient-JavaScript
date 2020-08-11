@@ -205,10 +205,10 @@ export class WebMap extends mapboxgl.Evented {
             zoomBase = 0;
         // zoom = zoom === 0 ? 0 : zoom - 1;
         if (mapInfo.minScale && mapInfo.maxScale) {
-            zoomBase = this._transformScaleToZoom(mapInfo.minScale, mapboxgl.CRS.get(this.baseProjection));
+            zoomBase = this._transformScaleToZoom(mapInfo.minScale, mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection):'EPSG:3857');
         } else {
             zoomBase = +Math.log2(
-                this._getResolution(mapboxgl.CRS.get(this.baseProjection).getExtent()) / this._getResolution(mapInfo.extent)
+                this._getResolution(mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection).getExtent():[-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]) / this._getResolution(mapInfo.extent)
             ).toFixed(2);
         }
         zoom += zoomBase;
