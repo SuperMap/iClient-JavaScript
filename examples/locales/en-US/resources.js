@@ -660,6 +660,7 @@ window.examplesResources = {
         "title_componentsRankSymbolTheme_React": 'RankSymbolTheme Layer component(React)',
         "title_componentsAnimateMarkerLayer_React": 'Animate Marker Layer(React)',
         "title_componentsAnimateTextLayer_React": 'Animate Text Layer(React)',
+        "title_webPrinting_landUse": 'Web Printing(LandUse)',
 
         "text_service_name":"Name",
         "text_service_type":"Type",
