@@ -611,6 +611,7 @@ window.examplesResources = {
         "title_componentsRankSymbolTheme_React": '等级符号专题图图层组件',
         "title_componentsAnimateMarkerLayer_React": '动效标记图层',
         "title_componentsAnimateTextLayer_React": '动效文本标记图层',
+        "title_webPrinting_landUse": '土地利用 Web 打印',
 
         "text_service_name":"名称",
         "text_service_type":"类型",
