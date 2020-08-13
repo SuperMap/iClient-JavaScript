@@ -1,15 +1,17 @@
 import {
     ChartViewModel
 } from '../../../../src/common/components/chart/ChartViewModel';
+import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import '../../../resources/FeatureService';
+import '../../../resources/LayersInfo';
 
 describe('ChartViewModel', () => {
     var options = {
         type: 'line',
         datasets: {
             type: 'iServer', //iServer iPortal 
-            url: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World",
-            // url: "http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
+            url: "http://test.iserver.com/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World",
+            // url: "http://test.iserver.com/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
             withCredentials: false,
             queryInfo: {
                 attributeFilter: "SmID > 0"
@@ -27,7 +29,20 @@ describe('ChartViewModel', () => {
         }]
     }
     var chartViewModel = new ChartViewModel(options);
-
+    beforeAll(() => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if(url.indexOf('Rivers@World@@World') > -1){
+                return Promise.resolve(new Response(JSON.stringify(layerInfo)));
+            }
+            return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, url, params) => {
+            if(method === 'POST'){
+                return Promise.resolve(new Response(JSON.stringify({features:[]})));
+            }
+            return Promise.resolve();
+        });
+    })
     it('constructor', () => {
         expect(chartViewModel.datasets).toBe(options.datasets);
         expect(chartViewModel.chartType).toBe(options.type);
@@ -59,14 +74,14 @@ describe('ChartViewModel', () => {
                 dataSourceName: "World",
                 datasetName: "Rivers",
                 mapName: "Rivers@World",
-                dataUrl: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World"
+                dataUrl: "http://test.iserver.com/iserver/services/map-world/rest/maps/World"
             }
         }
         chartViewModel._getDatasetInfoSuccess(datasetInf);
     });
     it('_getDatasetInfoSuccess, _getDataFeatures', () => {
         chartViewModel.datasets = {
-            url: "http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/BaseMap_P",
+            url: "http://test.iserver.com/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/BaseMap_P",
             queryInfo: {
                 attributeFilter: "SmID > 0"
             }
@@ -75,7 +90,7 @@ describe('ChartViewModel', () => {
             result: {
                 dataSourceName: "Jingjin",
                 datasetName: "BaseMap_P",
-                dataUrl: "http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data"
+                dataUrl: "http://test.iserver.com/iserver/services/data-jingjin/rest/data"
             }
         }
         chartViewModel._getDatasetInfoSuccess(datasetInf);
@@ -113,7 +128,7 @@ describe('ChartViewModel', () => {
         expect(chartViewModel.chartType).toBe("bar");
     });
     it('updateData', () => {
-        var url = "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World";
+        var url = "http://test.iserver.com/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World";
         var datasets = {
             type: 'iServer', //iServer iPortal 
             url,

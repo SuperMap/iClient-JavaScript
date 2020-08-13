@@ -1,8 +1,11 @@
 import { ChartView } from '../../../../src/common/components/chart/ChartView';
 import '../../../resources/FeatureService';
+import { FetchRequest } from '../../../../src/common/util/FetchRequest';
+import '../../../resources/LayersInfo';
 
 describe('ChartView', () => {
     var chartDiv = window.document.createElement("div");
+    var chartView;
     chartDiv.setAttribute("id", "chart");
     chartDiv.style.styleFloat = "left";
     chartDiv.style.marginLeft = "8px";
@@ -14,7 +17,7 @@ describe('ChartView', () => {
         type: 'line',
         datasets: {
             type: 'iServer', //iServer iPortal 
-            url: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World",
+            url: "http://test.iserver.com/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World",
             withCredentials: false,
             queryInfo: {
                 attributeFilter: "SmID > 0"
@@ -31,8 +34,23 @@ describe('ChartView', () => {
             }
         }]
     }
-    var chartView = new ChartView("chart", options);
-
+    beforeAll(() => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if(url.indexOf('Rivers@World@@World') > -1){
+                return Promise.resolve(new Response(JSON.stringify(layerInfo)));
+            }
+            return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, url, params) => {
+            if(method === 'POST'){
+                return Promise.resolve(new Response(JSON.stringify({features:[]})));
+            }
+            return Promise.resolve();
+        });
+        chartView = new ChartView("chart", options);
+    })
+     
+   
     afterAll(() => {
         if (chartView.echart) {
             chartView.echart.clear();
@@ -62,7 +80,7 @@ describe('ChartView', () => {
         expect(chartView.chartType).toBe("bar");
     });
     it('updateData', () => {
-        var url = "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World";
+        var url = "http://test.iserver.com/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World";
         var datasets = {
             type: 'iServer', //iServer iPortal 
             url,
