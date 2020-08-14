@@ -1,6 +1,12 @@
 import {IPortalUser} from '../../../src/common/iPortal/iPortalUser';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 describe('IPortalUser', () => {
+    beforeAll(() => {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            return Promise.resolve(new Response("{}"));
+        });
+    })
     it('constructor_default', () => {
         var iportalUrl = 'https://iptl.supermap.io/iportal';
         var iPortalUser = new IPortalUser(iportalUrl);
@@ -13,7 +19,7 @@ describe('IPortalUser', () => {
         expect(iPortalUser.deleteResources({ids: [], resourceType: "MAP"}) instanceof Promise).toBeTruthy();
     });
 
-    it('addMap', () => {
+    it('addMap', (done) => {
         let iportalUrl = 'https://iptl.supermap.io/iportal';
         let iPortalUser = new IPortalUser(iportalUrl);
         // 传入错误的参数
@@ -30,11 +36,12 @@ describe('IPortalUser', () => {
             ]
         };
         iPortalUser.addMap(addMapParams).then(res => {
-            expect(res).toBe("addMapParams is not instanceof IPortalAddMapParam !");
+            expect(res).toBe("addMapParams is not instanceof IPortalAddResourceParam !");
+            done();
         })
     });
 
-    it('addScene', () => {
+    it('addScene', (done) => {
         let iportalUrl = 'https://iptl.supermap.io/iportal';
         let iPortalUser = new IPortalUser(iportalUrl);
         // 传入错误的参数
@@ -51,11 +58,12 @@ describe('IPortalUser', () => {
             ]
         };
         iPortalUser.addScene(addSceneParams).then(res => {
-            expect(res).toBe("addSceneParams is not instanceof IPortalAddSceneParam !");
+            expect(res).toBe("addSceneParams is not instanceof IPortalAddResourceParam !");
+            done();
         })
     });
 
-    it('registerService', () => {
+    it('registerService', (done) => {
         let iportalUrl = 'https://iptl.supermap.io/iportal';
         let iPortalUser = new IPortalUser(iportalUrl);
         // 传入错误的参数
@@ -75,7 +83,8 @@ describe('IPortalUser', () => {
             addedSceneNames: []
         }
         iPortalUser.registerService(registerServiceParams).then(res => {
-            expect(res).toBe("registerParams is not instanceof iPortalRegisterServiceParam !");
+            expect(res).toBe("registerParams is not instanceof IPortalRegisterServiceParam !");
+            done();
         })
     })
 
@@ -102,7 +111,7 @@ describe('IPortalUser', () => {
         expect(iPortalUser.addData(addDataParam,formData) instanceof Promise).toBeTruthy();
     });
 
-    it('publishOrUnpublish', ()=> {
+    it('publishOrUnpublish', (done)=> {
         var options = {
             dataId:null,
             serviceType:'RESTDATA',
@@ -113,6 +122,7 @@ describe('IPortalUser', () => {
         var iPortalUser = new IPortalUser(iportalUrl);
         iPortalUser.publishOrUnpublish(options,forPublish).then(res => {
             expect(res).toBe("option.dataID and option.serviceType are Required!");
+            done();
         })
     });
 
@@ -124,7 +134,7 @@ describe('IPortalUser', () => {
         expect(iPortalUser.getDataPublishedStatus(dataId,dataServiceId) instanceof Promise).toBeTruthy();
     });
 
-    it('unPublishDataService', ()=> {
+    it('unPublishDataService', (done)=> {
         var options = {
             dataId:1,
             serviceType:null,
@@ -134,10 +144,11 @@ describe('IPortalUser', () => {
         var iPortalUser = new IPortalUser(iportalUrl);
         iPortalUser.unPublishDataService(options).then(res => {
             expect(res).toBe("option.dataID and option.serviceType are Required!");
+            done();
         })
     });
 
-    it('publishDataService', ()=> {
+    it('publishDataService', (done)=> {
         var options = {
             dataId:1,
             serviceType:null,
@@ -147,6 +158,7 @@ describe('IPortalUser', () => {
         var iPortalUser = new IPortalUser(iportalUrl);
         iPortalUser.publishDataService(options).then(res => {
             expect(res).toBe("option.dataID and option.serviceType are Required!");
+            done();
         })
     });
 });

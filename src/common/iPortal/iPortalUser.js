@@ -49,7 +49,7 @@ export class IPortalUser extends IPortalServiceBase {
      */
     addMap(addMapParams) {
         if (!(addMapParams instanceof IPortalAddResourceParam)) {
-            this.getErrMsgPromise("addMapParams is not instanceof IPortalAddResourceParam !");
+            return this.getErrMsgPromise("addMapParams is not instanceof IPortalAddResourceParam !");
         }
         let cloneAddMapParams = {
             rootUrl: addMapParams.rootUrl,
@@ -71,7 +71,7 @@ export class IPortalUser extends IPortalServiceBase {
      */
     addScene(addSceneParams) {
         if (!(addSceneParams instanceof IPortalAddResourceParam)) {
-            this.getErrMsgPromise("addSceneParams is not instanceof IPortalAddResourceParam !");
+            return this.getErrMsgPromise("addSceneParams is not instanceof IPortalAddResourceParam !");
         }
         let cloneAddSceneParams = {
             rootUrl: addSceneParams.rootUrl,
@@ -93,7 +93,7 @@ export class IPortalUser extends IPortalServiceBase {
      */
     registerService(registerParams) {
         if(!(registerParams instanceof IPortalRegisterServiceParam)) {
-            this.getErrMsgPromise("registerParams is not instanceof IPortalRegisterServiceParam !");
+            return this.getErrMsgPromise("registerParams is not instanceof IPortalRegisterServiceParam !");
         }
         let cloneRegisterParams = {
             type: registerParams.type,
@@ -145,7 +145,7 @@ export class IPortalUser extends IPortalServiceBase {
      */
     addData(params,formData) {
         if(!(params instanceof IPortalAddDataParam)){
-            this.getErrMsgPromise("params is not instanceof iPortalAddDataParam !");
+            return this.getErrMsgPromise("params is not instanceof iPortalAddDataParam !");
         }
         var datasUrl = this.iportalUrl + "/web/mycontent/datas.json";
         var entity = {
@@ -157,7 +157,7 @@ export class IPortalUser extends IPortalServiceBase {
         var dataMetaInfo;
         if(type === "excel" || type === "csv"){
             if(!(params.dataMetaInfo instanceof IPortalDataMetaInfoParam)){
-                this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
+                return  this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
             }
             dataMetaInfo = {
                 xField:params.dataMetaInfo.xField,
@@ -170,10 +170,10 @@ export class IPortalUser extends IPortalServiceBase {
             entity.dataMetaInfo = dataMetaInfo;
         }else if(type === "hdfs" || type === "hbase") {
             if(!(params.dataMetaInfo instanceof IPortalDataMetaInfoParam)){
-                this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
+                return this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
             }
             if(!(params.dataMetaInfo.dataStoreInfo instanceof IPortalDataStoreInfoParam)){
-                this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo is not instanceof iPortalDataStoreInfoParam !");
+                return this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo is not instanceof iPortalDataStoreInfoParam !");
             }
             var dataStoreInfo = {
                 type:params.dataMetaInfo.dataStoreInfo.type
@@ -188,7 +188,7 @@ export class IPortalUser extends IPortalServiceBase {
                     break;
                 case "hbase":
                     if(!(params.dataMetaInfo.dataStoreInfo.connectionInfo instanceof IPortalDataConnectionInfoParam)){
-                        this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo.connectionInfo is not instanceof iPortalDataConnectionInfoParam !");
+                        return this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo.connectionInfo is not instanceof iPortalDataConnectionInfoParam !");
                     }
                     dataStoreInfo.connectionInfo = {
                         dataBase:params.dataMetaInfo.dataStoreInfo.connectionInfo.dataBase,
@@ -229,7 +229,7 @@ export class IPortalUser extends IPortalServiceBase {
      */
     publishOrUnpublish(option,forPublish){
         if(!option.dataId || !option.serviceType) {
-            this.getErrMsgPromise("option.dataID and option.serviceType are Required!");
+            return this.getErrMsgPromise("option.dataID and option.serviceType are Required!");
         }
         var dataId = option.dataId;
         var dataServiceId = option.dataServiceId;
