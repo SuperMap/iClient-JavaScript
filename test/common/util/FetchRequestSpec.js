@@ -33,7 +33,7 @@ describe('FetchRequest', () => {
         spyOn(FetchRequest, '_fetchJsonp').and.callFake(() => {});
         FetchRequest.put(deleteUri, paramsde, options);
         expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(4);
-        setCORS(defaltCors);
+        setCORS(true);
     });
 
     it('Get_arrayObject', () => {
@@ -91,7 +91,7 @@ describe('FetchRequest', () => {
     });
     afterAll(() => {
         SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
-        setCORS(defaltCors);
+        setCORS(true);
         setFetch(window.fetch);
     });
 });
