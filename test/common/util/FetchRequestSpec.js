@@ -8,7 +8,7 @@ describe('FetchRequest', () => {
         fetch = jasmine.createSpy('fetch').and.resolveTo({ success: 'ok' });
         setFetch(fetch);
     });
-    xit('RequestJSONPPromise', () => {
+    it('RequestJSONPPromise', () => {
         var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
         var params;
         var options;
@@ -33,6 +33,7 @@ describe('FetchRequest', () => {
         spyOn(FetchRequest, '_fetchJsonp').and.callFake(() => {});
         FetchRequest.put(deleteUri, paramsde, options);
         expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(4);
+        setCORS(defaltCors);
     });
 
     it('Get_arrayObject', () => {
