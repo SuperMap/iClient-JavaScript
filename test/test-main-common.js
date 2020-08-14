@@ -130,7 +130,7 @@ import './common/overlay/levelRenderer/LevelRendererSpec.js';
 import './common/overlay/levelRenderer/MatrixSpec.js';
 import './common/overlay/levelRenderer/PainterSpec.js';
 import './common/overlay/levelRenderer/RenderSpec.js';
-import './common/overlay/levelRenderer/ShapeSepc.js';
+import './common/overlay/levelRenderer/ShapeSpec.js';
 import './common/overlay/levelRenderer/SmicBrokenLineSpec.js';
 import './common/overlay/levelRenderer/SmicCircleSpec.js';
 import './common/overlay/levelRenderer/SmicEllipseSpec';
