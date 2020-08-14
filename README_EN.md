@@ -6,7 +6,7 @@
 
 ## Introduction | [中文](https://github.com/SuperMap/iClient-JavaScript/blob/master/README.md)
 
-SuperMap iClient JavaScript 10i is a set of open source WebGIS client application development kit. It’s a new construction based on modern Web technology. It’s a common JavaScript client for SuperMap Cloud GIS and Online GIS platform’s series products. It integrates leading open source map libraries and visualization libraries, supports multi-source data services and map services, supports multiple terminals and crossing browser. It provides new functions such as large data visualization and real-time flow data visualization in GIS. Through this product, we can quickly present maps beautifully and smoothly on browsers.
+SuperMap iClient JavaScript 10i(2020) is a set of open source WebGIS client application development kit. It’s a new construction based on modern Web technology. It’s a common JavaScript client for SuperMap Cloud GIS and Online GIS platform’s series products. It integrates leading open source map libraries and visualization libraries, supports multi-source data services and map services, supports multiple terminals and crossing browser. It provides new functions such as large data visualization and real-time flow data visualization in GIS. Through this product, we can quickly present maps beautifully and smoothly on browsers.
 
 ![Overview](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/product_overview_en.png)
 
