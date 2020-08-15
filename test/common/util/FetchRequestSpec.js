@@ -12,8 +12,8 @@ describe('FetchRequest', () => {
         var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
         var params;
         var options;
-        spyOn(SuperMap.Util.RequestJSONPPromise, 'issue').and.callThrough();
-        setCORS(defaltCors);
+        spyOn(SuperMap.Util.RequestJSONPPromise, 'issue').and.callFake(() => {});
+        setCORS(false);
         FetchRequest.get(url, params, options);
         expect(SuperMap.Util.RequestJSONPPromise.issue).toHaveBeenCalled();
         var paramsde = {
@@ -30,10 +30,10 @@ describe('FetchRequest', () => {
         expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(3);
 
         SuperMap.Util.RequestJSONPPromise.limitLength = 180;
-        spyOn(FetchRequest, '_fetchJsonp').and.callFake(() => {});
+        
         FetchRequest.put(deleteUri, paramsde, options);
         expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(4);
-        setCORS(true);
+        setCORS(defaltCors);
     });
 
     it('Get_arrayObject', () => {

@@ -1,5 +1,6 @@
 import {webMap} from '../../../src/leaflet/mapping/WebMap';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import {mockCreateTile} from '../../tool/mock_leaflet';
 
 describe('leaflet_WebMap', () => {
     var originalTimeout;
@@ -15,6 +16,7 @@ describe('leaflet_WebMap', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
+        mockCreateTile();
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });

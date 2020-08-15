@@ -2,6 +2,7 @@ import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
 import {getQueryValue} from '../../tool/utils';
+import {mockCreateTile} from '../../tool/mock_leaflet';
 
 var url = GlobeParameter.ChinaURL;
 describe('leaflet_TiledMapLayer', () => {
@@ -15,6 +16,7 @@ describe('leaflet_TiledMapLayer', () => {
         testDiv.style.marginTop = "50px";
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
+        mockCreateTile();
         document.body.appendChild(testDiv);
         map = L.map('map', {
             center: [0, 0],
