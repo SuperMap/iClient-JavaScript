@@ -10,12 +10,11 @@ import './leaflet/core/Proj4LeafletSpec.js';
 import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
-// import './leaflet/mapping/WebMapSpec.js';
+import './leaflet/mapping/WebMapSpec.js';
 
 /*leaflet -- overlay*/
 
 import './leaflet/overlay/EchartsLayerSpec.js';
-/*deck相关测试未通过，待解决后打开注释*/
 import './leaflet/overlay/graphic/GraphicSpec.js';
 import './leaflet/overlay/GraphicLayerSpec.js';
 import './leaflet/overlay/graphic/CloverStyleSpec';
@@ -70,8 +69,8 @@ import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
 import './leaflet/services/WebPrintingJobServiceSpec.js';
 
 /* component */
-// import './leaflet/components/openfile/OpenFileViewSpec.js';
-// import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
+import './leaflet/components/openfile/OpenFileViewSpec.js';
+import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
 import './leaflet/components/distributedanalysis/DistributedAnalysisViewSpec.js';
 import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/components/search/SearchViewSpec.js';
