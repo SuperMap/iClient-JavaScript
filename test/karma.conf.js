@@ -142,6 +142,13 @@ module.exports = function (config) {
             filenameFormatter: (nextPath, result) => {
                 return filesForDescriptions[nextPath] || '';
             },
+            testnameFormatter:(testname, result) =>{
+                if(result.time < 1){
+                    result.time = 1;
+                }
+                return testname;
+
+            },
             useBrowserName: false
         },
         // web server port

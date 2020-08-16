@@ -10,7 +10,7 @@ import './leaflet/core/Proj4LeafletSpec.js';
 import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
-// import './leaflet/mapping/WebMapSpec.js';
+import './leaflet/mapping/WebMapSpec.js';
 
 /*leaflet -- overlay*/
 

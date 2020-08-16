@@ -29,7 +29,7 @@ import './openlayers/overlay/theme/GeoFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeSpec.js';
 import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
-// import './openlayers/overlay/vectortile/MapboxStylesSpec.js';  // OLMS ol is not defined
+import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
 
 // /**openlayers --services**/

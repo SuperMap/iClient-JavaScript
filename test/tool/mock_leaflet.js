@@ -23,3 +23,19 @@ export function mockInitImage() {
         }, 1000);
     });
 }
+export function mockHeatLayer() {
+    L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
+        initialize: function (latlngs, options) {
+            this._latlngs = latlngs;
+            L.setOptions(this, options);
+        },
+        onAdd: function (map) {
+            this._map = map;
+        },
+        onRemove: function (map) {
+        },
+    });
+    L.heatLayer = function () {
+        return new L.HeatLayer();
+    };
+}
