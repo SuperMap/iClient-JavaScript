@@ -277,7 +277,7 @@
                 $('#exportScale').val(scale);
             }
         });
-        var webPrintingJobService = new ol.supermap.WebPrintingJobService(host + '/iserver/services/webprinting/rest/v1/webprinting', {
+        var webPrintingJobService = new ol.supermap.WebPrintingJobService(host + '/iserver/services/webprinting/rest/webprinting/v1', {
             withCredentials: window.isLocal
         });
         webPrintingJobService.getLayoutTemplates(function ({ result }) {
