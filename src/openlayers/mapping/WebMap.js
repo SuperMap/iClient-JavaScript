@@ -1478,7 +1478,7 @@ export class WebMap extends Observable {
                     dataSource = layer.dataSource,
                     isSampleData = dataSource && dataSource.type === "SAMPLE_DATA" && !!dataSource.name; //SAMPLE_DATA是本地示例数据
                 if(layer.layerType === "MAPBOXSTYLE"){
-                    that.addMVTMapLayer(mapInfo, layer, layerIndex).then(result => {
+                    that.addMVTMapLayer(mapInfo, layer, layerIndex).then(() => {
                         that.layerAdded++;
                         that.sendMapToUser(len);
                     });

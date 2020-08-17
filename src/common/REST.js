@@ -69,7 +69,9 @@ var GeometryType = SuperMap.GeometryType = {
     /** RECTANGLE */
     RECTANGLE: "RECTANGLE",
     /** UNKNOWN */
-    UNKNOWN: "UNKNOWN"
+    UNKNOWN: "UNKNOWN",
+    /** GEOCOMPOUND */
+    GEOCOMPOUND:"GEOCOMPOUND"
 };
 export {
     GeometryType
