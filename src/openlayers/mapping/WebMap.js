@@ -4380,7 +4380,7 @@ export class WebMap extends Observable {
                 let layer = new olLayer.VectorTile({
                     //设置避让参数
                     declutter: true,
-                    source: new olSource.VectorTileSuperMapRest({
+                    source: new VectorTileSuperMapRest({
                         style: styles,
                         withCredentials,
                         projection: layerInfo.projection,
@@ -4443,9 +4443,9 @@ export class WebMap extends Observable {
         let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
         if(isSameDomain && !token) {
             // online上服务域名一直，要用token值
-            excledeCreditial = false;  
+            excledeCreditial = false;
         } else {
-            excledeCreditial = true; 
+            excledeCreditial = true;
         }
         url = this.getRequestUrl(url, excledeCreditial);
         return FetchRequest.get(url, null, {
