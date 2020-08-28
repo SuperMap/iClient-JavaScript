@@ -81,8 +81,9 @@ const dpiConfig = {
  * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey和credentialValue必须一起使用
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
- * @param {Object} [options.serviceProxy] - iportal服务代理信息
+ * @param {Object} [options.serviceProxy] - iportal内置代理信息, 仅矢量瓦片图层上图才会使用
  * @param {string} [options.tiandituKey] - 天地图的key
+ * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @param {function} [options.mapSetting.overlays] - 地图的overlayer
  * @param {function} [options.mapSetting.controls] - 地图的控件
@@ -105,6 +106,7 @@ export class WebMap extends Observable {
         this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         this.serviceProxy = options.serviceProxy || null;
         this.tiandituKey = options.tiandituKey;
+        this.proxy = options.proxy;
         //计数叠加图层，处理过的数量（成功和失败都会计数）
         this.layerAdded = 0;
         this.layers = [];
@@ -281,10 +283,6 @@ export class WebMap extends Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
 
-            // 多坐标系支持
-            if(proj4){
-              (olProj4 && olProj4.register) ? olProj4.register(proj4) : window.ol.proj.setProj4(proj4) ;
-            }
             // 目前iServer服务中可能出现的EPSG 0，-1，-1000
             if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
                 //对于这两种地图，只能view，不能叠加其他图层
@@ -483,7 +481,7 @@ export class WebMap extends Observable {
             source = me.createWMSSource(baseLayerInfo);
             me.addSpecToMap(source);
         } else if(baseLayerType === "WMTS"){
-            FetchRequest.get(me.getRequestUrl(url), null, {
+            FetchRequest.get(me.getRequestUrl(url, true), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.text();
@@ -834,7 +832,7 @@ export class WebMap extends Observable {
                 // thumbnail: this.getImagePath('bmap.png') 暂时不用到缩略图
                 break;
             case ('CLOUD'):
-                baseLayerInfo.url= 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
+                baseLayerInfo.url= 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 18;
@@ -842,7 +840,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.extent= baiduBounds;
                 break;
             case ('CLOUD_BLACK'):
-                baseLayerInfo.url= 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}';
+                baseLayerInfo.url= 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
                 baseLayerInfo.maxZoom= 18;
@@ -1223,7 +1221,7 @@ export class WebMap extends Observable {
         } else {
             url += splitStr + '/1.0.0/WMTSCapabilities.xml';
         }
-        return this.getRequestUrl(url);
+        return this.getRequestUrl(url, true);
     }
 
     /**
@@ -1233,10 +1231,10 @@ export class WebMap extends Observable {
      * @param {Object} layerInfo - 图层信息。
      * @param {function} callback - 获得wmts图层参数执行的回调函数
      */
-    getWmtsInfo(layerInfo, callback, mapInfo) {
+    getWmtsInfo(layerInfo, callback) {
         let that = this;
         let options = {
-            withCredentials: true,
+            withCredentials: that.withCredentials,
             withoutFormatSuffix: true
         };
         const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
@@ -1301,11 +1299,7 @@ export class WebMap extends Observable {
                 layerInfo.unit = "m";
                 layerInfo.layerFormat = layerFormat;
                 layerInfo.matrixIds = matrixIds;
-                if(mapInfo){
-                    callback && callback(mapInfo, null, true, that);
-                }else{
-                    callback && callback(layerInfo);
-                }
+                callback && callback(layerInfo);
             }
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
@@ -1484,9 +1478,10 @@ export class WebMap extends Observable {
                     dataSource = layer.dataSource,
                     isSampleData = dataSource && dataSource.type === "SAMPLE_DATA" && !!dataSource.name; //SAMPLE_DATA是本地示例数据
                 if(layer.layerType === "MAPBOXSTYLE"){
-                    that.addMVTMapLayer(mapInfo, layer, layerIndex);
-                    that.layerAdded++;
-                    that.sendMapToUser(len);
+                    that.addMVTMapLayer(mapInfo, layer, layerIndex).then(() => {
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
+                    });
                 } else if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
                     //数据存储到iportal上了
                     let dataSource = layer.dataSource,
@@ -1590,14 +1585,16 @@ export class WebMap extends Observable {
                     if (layer.layerType === "WMTS") {
                         that.getWmtsInfo(layer, function (layerInfo) {
                             that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
+                            that.layerAdded++;
+                            that.sendMapToUser(len);
                         })
                     } else {
                         that.getLayerExtent(layer, function(layerInfo){
                             that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
+                            that.layerAdded++;
+                            that.sendMapToUser(len);
                         });
                     }
-                    that.layerAdded++;
-                    that.sendMapToUser(len);
                 } else if (dataSource && dataSource.type === "REST_DATA") {
                     //从restData获取数据
                     that.getFeaturesFromRestData(layer, layerIndex, len);
@@ -1791,7 +1788,7 @@ export class WebMap extends Observable {
     getDataflowInfo(layerInfo, success, faild) {
         let that = this;
         let url = layerInfo.url, token;
-        let requestUrl = that.getRequestUrl(`${url}.json`)
+        let requestUrl = that.getRequestUrl(`${url}.json`, false);
         if(layerInfo.credential && layerInfo.credential.token) {
             token = layerInfo.credential.token;
             requestUrl+= `?token=${token}`;
@@ -2622,14 +2619,18 @@ export class WebMap extends Observable {
             font: `${fontSize} ${fontFamily}`,
             placement,
             textBaseline,
-            textAlign,
             fill: new FillStyle({ color: fill }),
             backgroundFill: new FillStyle({ color: backgroundFill }),
             padding: [3, 3, 3, 3],
             offsetX: layerInfo.featureType === 'POINT' ? offsetX : 0,
             offsetY: layerInfo.featureType === 'POINT' ? offsetY : 0,
+            overflow: true,
             maxAngle: 0
         };
+        if(layerInfo.featureType === 'POINT') {
+            //线面不需要此参数，否则超出线面overflow:true，也不会显示标签
+            option.textAlign = textAlign;
+        }
         if (outlineWidth > 0) {
             option.stroke = new StrokeStyle({
                 color: outlineColor,
@@ -3582,10 +3583,12 @@ export class WebMap extends Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.getRootUrl
      * @description 获取请求地址
+     * @param {string} url 请求的地址
+     * @param {boolean} 请求是否带上Credential.
      * @returns {Promise<T | never>} 请求地址
      */
-    getRequestUrl(url) {
-        this.formatUrlWithCredential(url);
+    getRequestUrl(url, excludeCreditial) {
+        url =  excludeCreditial ? url : this.formatUrlWithCredential(url);
         //如果传入进来的url带了代理则不需要处理
         if(this.excludePortalProxyUrl) {
             return;
@@ -3612,8 +3615,11 @@ export class WebMap extends Observable {
      * @description 获取代理地址
      * @returns {Promise<T | never>} 代理地址
      */
-    getProxy() {
-        return this.server + 'apps/viewer/getUrlResource.json?url=';
+    getProxy(type) {
+        if(!type) {
+            type = 'json';
+        }
+        return this.proxy || this.server + `apps/viewer/getUrlResource.${type}?url=`;
     }
 
     /**
@@ -3669,6 +3675,12 @@ export class WebMap extends Observable {
                 let epsgCode = this.getEpsgInfoFromWKT(wkt);
                 if(epsgCode){
                     proj4.defs(epsgCode, wkt);
+                    // 重新注册proj4到ol.proj，不然不会生效
+                    if (olProj4 && olProj4.register) {
+                        olProj4.register(proj4);
+                    } else if (window.ol.proj && window.ol.proj.setProj4) {
+                        window.ol.proj.setProj4(proj4)
+                    }
                     return true;
                 }else{
                     // 参数类型非wkt标准
@@ -4368,7 +4380,7 @@ export class WebMap extends Observable {
                 let layer = new olLayer.VectorTile({
                     //设置避让参数
                     declutter: true,
-                    source: new olSource.VectorTileSuperMapRest({
+                    source: new VectorTileSuperMapRest({
                         style: styles,
                         withCredentials,
                         projection: layerInfo.projection,
@@ -4428,9 +4440,17 @@ export class WebMap extends Observable {
             return false;
         }
         url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
-        url = this.getRequestUrl(url);
+        let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
+        if(isSameDomain && !token) {
+            // online上服务域名一直，要用token值
+            excledeCreditial = false;
+        } else {
+            excledeCreditial = true;
+        }
+        url = this.getRequestUrl(url, excledeCreditial);
         return FetchRequest.get(url, null, {
-            withCredentials: this.withCredentials
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true
         }).then(function (response) {
             if(response.status !== 200) {
                 throw response.status;

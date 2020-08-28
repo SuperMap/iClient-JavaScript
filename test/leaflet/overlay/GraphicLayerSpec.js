@@ -81,7 +81,7 @@ describe('leaflet_GraphicLayer', () => {
     }, 1000)
   });
 
-  describe("GraphicLayer_graphic 相关", () => {
+  describe("GraphicLayer_graphic", () => {
     let graphics = [];
     const coors = [
       [-35.16, 38.05],

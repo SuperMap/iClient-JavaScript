@@ -1,6 +1,12 @@
 import {IPortalResource} from '../../../src/common/iPortal/iPortalResource';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 describe('iPortalResource', () => {
+    beforeAll(() => {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            return Promise.resolve(new Response("{}"));
+        });
+    })
     it('constructor_default', () => {
         var iPortalResource = new IPortalResource("https://iportal.supermap.io/iportal",{resourceType:'MAP'});
         expect(iPortalResource).not.toBeNull();

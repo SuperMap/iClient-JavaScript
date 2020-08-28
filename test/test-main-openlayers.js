@@ -2,7 +2,7 @@
 import './openlayers/control/ChangeTileVersionSpec.js';
 
 /*openlayers -- core*/
-import './openlayers/core/StyleUtilsSpec.js'; 
+import './openlayers/core/StyleUtilsSpec.js';
 import './openlayers/core/UtilSpec.js';
 import './openlayers/core/MapExtendSpec.js';
 
@@ -29,7 +29,7 @@ import './openlayers/overlay/theme/GeoFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeSpec.js';
 import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
-// import './openlayers/overlay/vectortile/MapboxStylesSpec.js';  // OLMS ol is not defined
+import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
 
 // /**openlayers --services**/
@@ -62,3 +62,4 @@ import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 import './openlayers/services/AddressMatchServiceSpec.js';
 import './openlayers/services/GridCellInfosServiceSpec.js';
+import './openlayers/services/WebPrintingJobServiceSpec.js';

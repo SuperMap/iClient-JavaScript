@@ -259,7 +259,9 @@ export class GeoJSON extends JSONFormat {
                 if (!geometry.parts && geometry.points) {
                     geometry.parts = [geometry.points.length];
                 }
-                var geo = new ServerGeometry(geometry).toGeometry() || geometry;
+                var geo = geometry.hasOwnProperty('geometryType')
+                    ? geometry
+                    : new ServerGeometry(geometry).toGeometry() || geometry;
                 var geometryType = geo.geometryType || geo.type;
                 var data;
                 if (geometryType === "LinearRing") {
@@ -544,7 +546,7 @@ export class GeoJSON extends JSONFormat {
         }
 
         function isGeometry(input) {
-            return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
+            return (input.hasOwnProperty("parts") && input.hasOwnProperty("points")) || input.hasOwnProperty("geoParts");
         }
 
         return geojson;

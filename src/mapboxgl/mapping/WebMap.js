@@ -114,7 +114,7 @@ export class WebMap extends mapboxgl.Evented {
 	resize() {
 		this.map.resize();
   }
-  
+
 	/**
 	 * @function mapboxgl.supermap.WebMap.prototype.setMapId
 	 * @param {string} mapId - webMap 地图 ID。
@@ -125,7 +125,7 @@ export class WebMap extends mapboxgl.Evented {
 		this.mapId = mapId;
 		this._createWebMap();
   }
-  
+
   /**
 	 * @function mapboxgl.supermap.WebMap.prototype.setWebMapOptions
 	 * @param {Object} webMapOptions - webMap 参数。
@@ -201,8 +201,17 @@ export class WebMap extends mapboxgl.Evented {
 		// zoom center
 		let oldcenter = mapInfo.center,
 			zoom = mapInfo.level || 0,
-			center;
-		zoom = zoom === 0 ? 0 : zoom - 1;
+            center,
+            zoomBase = 0;
+        // zoom = zoom === 0 ? 0 : zoom - 1;
+        if (mapInfo.minScale && mapInfo.maxScale) {
+            zoomBase = this._transformScaleToZoom(mapInfo.minScale, mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection):'EPSG:3857');
+        } else {
+            zoomBase = +Math.log2(
+                this._getResolution(mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection).getExtent():[-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]) / this._getResolution(mapInfo.extent)
+            ).toFixed(2);
+        }
+        zoom += zoomBase;
 		center = oldcenter ? this._unproject([oldcenter.x, oldcenter.y]) : new mapboxgl.LngLat(0, 0);
 		// 初始化 map
 		this.map = new mapboxgl.Map({
@@ -301,8 +310,8 @@ export class WebMap extends mapboxgl.Evented {
 			layerType = layerType.substr(0, 12);
 		}
 		let mapUrls = {
-				CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-				CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+				CLOUD: 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+				CLOUD_BLACK: 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}',
 				OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 				GOOGLE:
 					'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
@@ -364,7 +373,7 @@ export class WebMap extends mapboxgl.Evented {
 			{ serverId, url } = dataSource,
 			styleUrl;
 		styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
-		FetchRequest.get(styleUrl, null, { 
+		FetchRequest.get(styleUrl, null, {
 			withCredentials: this.withCredentials,
 			withoutFormatSuffix: true,
 			headers: {
@@ -559,8 +568,10 @@ export class WebMap extends mapboxgl.Evented {
 	 * @param {Object} layerInfo - 图层信息。
 	 */
 	_createDynamicTiledLayer(layerInfo) {
-		let url = layerInfo.url + '/zxyTileImage.png?z={z}&x={x}&y={y}';
-		this._addBaselayer([url], 'tile-layers-' + layerInfo.name);
+        let url = layerInfo.url;
+        const layerId = layerInfo.layerID || layerInfo.name;
+        const { minzoom, maxzoom } = layerInfo;
+        this._addBaselayer([url], layerId, minzoom, maxzoom, true);
 	}
 
 	/**
@@ -1933,14 +1944,16 @@ export class WebMap extends mapboxgl.Evented {
 		}
 	}
 
-	_addBaselayer(url, layerID, minzoom = 0, maxzoom = 22) {
+	_addBaselayer(url, layerID, minzoom = 0, maxzoom = 22, isIserver) {
 		this.map.addLayer({
 			id: layerID,
 			type: 'raster',
 			source: {
 				type: 'raster',
 				tiles: url,
-				tileSize: 256
+                tileSize: 256,
+                rasterSource: isIserver ? 'iserver' : '',
+                prjCoordSys: isIserver ? { epsgCode: this.baseProjection.split(':')[1] } : ''
 			},
 			minzoom: minzoom,
 			maxzoom: maxzoom
@@ -2083,7 +2096,23 @@ export class WebMap extends mapboxgl.Evented {
 			}
 		});
 		return features;
-	}
+    }
+
+    _transformScaleToZoom(scale, crs) {
+        let scale_0 = 295829515.2024169;
+        if ((crs || this.map.getCRS()).epsgCode !== 'EPSG:3857') {
+          scale_0 = 295295895;
+        }
+        const scaleDenominator = scale.split(':')[1];
+        return Math.min(24, +Math.log2(scale_0 / +scaleDenominator).toFixed(2));
+    }
+
+    _getResolution(bounds, tileSize = 512.0) {
+        if (bounds.leftBottom && bounds.rightTop) {
+            return Math.max(bounds.rightTop.x - bounds.leftBottom.x, bounds.rightTop.y - bounds.leftBottom.y) / tileSize;
+        }
+        return Math.max(bounds[2] - bounds[0], bounds[3] - bounds[1]) / tileSize;
+    }
 }
 
 mapboxgl.supermap.WebMap = WebMap;

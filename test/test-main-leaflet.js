@@ -15,7 +15,6 @@ import './leaflet/mapping/WebMapSpec.js';
 /*leaflet -- overlay*/
 
 import './leaflet/overlay/EchartsLayerSpec.js';
-/*deck相关测试未通过，待解决后打开注释*/
 import './leaflet/overlay/graphic/GraphicSpec.js';
 import './leaflet/overlay/GraphicLayerSpec.js';
 import './leaflet/overlay/graphic/CloverStyleSpec';
@@ -67,6 +66,7 @@ import './leaflet/services/TerrainCurvatureCalculateSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
+import './leaflet/services/WebPrintingJobServiceSpec.js';
 
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';

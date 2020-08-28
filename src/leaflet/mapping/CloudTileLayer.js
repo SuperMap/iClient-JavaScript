@@ -10,7 +10,7 @@ import Attributions from '../core/Attributions'
  * @classdesc 超图云服务图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
- * @param {string} [url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
+ * @param {string} [url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {Object} options - 图层可选参数。
  * @param {string} [options.type='web'] - type。
  * @param {number} [options.minZoom=3] - 最小缩放级别。
@@ -20,7 +20,7 @@ import Attributions from '../core/Attributions'
  */
 export var CloudTileLayer = L.TileLayer.extend({
 
-    defaultURL: 'http://t2.supermapcloud.com/FileService/image',
+    defaultURL: 'http://t2.dituhui.com/FileService/image',
 
     options: {
         /**

@@ -388,7 +388,57 @@ describe('GeoJSON', () => {
         expect(geoRegion.geometry.coordinates[1][0][1][0]).toEqual(4057.0600591960642);
         expect(geoRegion.geometry.coordinates[1][0][1][1]).toEqual(-4381.569363260499);
     });
-
+    it('toCollection', () => {
+        var obj = {
+            id: 'test',
+            geoParts: [
+                {
+                    parts: [2],
+                    id: 0,
+                    type: 'LINE',
+                    partTopo: null,
+                    points: [
+                        {
+                            x: 121.73122268650864,
+                            y: 39.124988937731445
+                        },
+                        {
+                            x: 121.73128378834258,
+                            y: 39.12501148059393
+                        }
+                    ]
+                },
+                {
+                    parts: [2],
+                    id: 0,
+                    type: 'LINE',
+                    partTopo: null,
+                    points: [
+                        {
+                            x: 121.73128378834258,
+                            y: 39.12501148059393
+                        },
+                        {
+                            x: 121.73152152346479,
+                            y: 39.12505350003296
+                        }
+                    ]
+                }
+            ],
+            parts: null,
+            id: 1,
+            type: GeometryType.GEOCOMPOUND
+        };
+        var geoCollection = new GeoJSON().toGeoJSON(obj);
+        expect(geoCollection).not.toBeNull();
+        expect(geoCollection.type).toEqual("Feature");
+        expect(geoCollection.geometry).not.toBeNull();
+        expect(geoCollection.geometry.type).toEqual("GeometryCollection");
+        expect(geoCollection.geometry.geometries).not.toBeNull();
+        expect(geoCollection.geometry.geometries.length).toEqual(2);
+        expect(geoCollection.geometry.geometries[0].coordinates[0][0]).toEqual(121.73122268650864);
+        expect(geoCollection.geometry.geometries[0].coordinates[0][1]).toEqual(39.124988937731445);
+    });
 
     it('toGeoRegionEPS_parts =[1]', () => {
         var obj = {

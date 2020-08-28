@@ -1,5 +1,4 @@
-import * as ol from 'ol';
-window.ol = ol;
+import "../../../tool/mock_ol";
 import "../../../libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms";
 import { MapboxStyles } from "../../../../src/openlayers/overlay/vectortile/MapboxStyles";
 import { FetchRequest } from "../../../../src/common/util/FetchRequest";

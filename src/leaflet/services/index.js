@@ -18,6 +18,7 @@ import {ServiceBase} from './ServiceBase';
 import {SpatialAnalystService, spatialAnalystService} from './SpatialAnalystService';
 import {ThemeService, themeService} from './ThemeService';
 import {TrafficTransferAnalystService, trafficTransferAnalystService} from './TrafficTransferAnalystService';
+import {WebPrintingJobService, webPrintingJobService} from './WebPrintingJobService';
 
 
 export {AddressMatchService, addressMatchService};
@@ -37,3 +38,4 @@ export {ServiceBase};
 export {SpatialAnalystService, spatialAnalystService};
 export {ThemeService, themeService};
 export {TrafficTransferAnalystService, trafficTransferAnalystService};
+export {WebPrintingJobService, webPrintingJobService};

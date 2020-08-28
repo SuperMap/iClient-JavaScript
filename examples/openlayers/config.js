@@ -404,6 +404,19 @@ var exampleConfig = {
                     fileName: "dataFlowService"
                 }]
             },
+            "webPrinting": {
+                name: "Web 打印",
+                name_en: "Web Printing",
+                content: [
+                    {
+                        name: "Web 地图打印",
+                        name_en: "Web Map Print",
+                        version: "10.1.0",
+                        thumbnail: "webPrintingJob.png",
+                        fileName: "webPrintingJob"
+                    }
+                ]
+            },
             "security": {
                 name: "安全",
                 name_en: "Security",

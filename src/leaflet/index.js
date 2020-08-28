@@ -247,6 +247,18 @@ import {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService,
     //components
     FileTypes,
     FileConfig,
@@ -405,7 +417,9 @@ import {
     ThemeService,
     themeService,
     TrafficTransferAnalystService,
-    trafficTransferAnalystService
+    trafficTransferAnalystService,
+    WebPrintingJobService,
+    webPrintingJobService
 } from './services';
 
 import {
@@ -708,6 +722,18 @@ export {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService,
     //components
     FileTypes,
     FileConfig,
@@ -863,5 +889,7 @@ export {
     ThemeService,
     themeService,
     TrafficTransferAnalystService,
-    trafficTransferAnalystService
+    trafficTransferAnalystService,
+    WebPrintingJobService,
+    webPrintingJobService
 };

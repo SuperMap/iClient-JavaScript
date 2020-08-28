@@ -76,6 +76,7 @@ import './common/iServer/TransferPathServiceSpec.js';
 import './common/iServer/TransferSolutionServiceSpec.js';
 import './common/iServer/UpdateEdgeWeightServiceSpec.js';
 import './common/iServer/UpdateTurnNodeWeightServiceSpec.js';
+import './common/iServer/WebPrintingServiceSpec.js';
 // import './common/iServer/AreaSolarRadiationServiceSpec.js';       //iclient8注释掉
 // import './common/iServer/ChartFeatureInfoSpecsServiceSpec.js';    //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
 // import './common/iServer/ChartQueryServiceSpec.js';
@@ -129,7 +130,7 @@ import './common/overlay/levelRenderer/LevelRendererSpec.js';
 import './common/overlay/levelRenderer/MatrixSpec.js';
 import './common/overlay/levelRenderer/PainterSpec.js';
 import './common/overlay/levelRenderer/RenderSpec.js';
-import './common/overlay/levelRenderer/ShapeSepc.js';
+import './common/overlay/levelRenderer/ShapeSpec.js';
 import './common/overlay/levelRenderer/SmicBrokenLineSpec.js';
 import './common/overlay/levelRenderer/SmicCircleSpec.js';
 import './common/overlay/levelRenderer/SmicEllipseSpec';

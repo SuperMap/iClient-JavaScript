@@ -288,6 +288,19 @@ var exampleConfig = {
                     }
                 ]
             },
+            webPrinting: {
+                name: "Web 打印",
+                name_en: "Web Printing",
+                content: [
+                    {
+                        name: "Web 地图打印",
+                        name_en: "Web Map Print",
+                        version: "10.1.0",
+                        thumbnail: "webPrintingJob.png",
+                        fileName: "webPrintingJob"
+                    }
+                ]
+            },
             processingService: {
                 name: "分布式分析",
                 name_en: "Distributed analysis services",
@@ -1078,7 +1091,7 @@ var exampleConfig = {
                         version: "10.1.0",
                         thumbnail: "print_pdf.png",
                         fileName: "print_pdf"
-                    },
+                    }
                 ]
             },
             Multi_coordinate_cluster: {

@@ -2,6 +2,7 @@ import {imageMapLayer} from '../../../src/leaflet/mapping/ImageMapLayer';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
 import {getQueryValue} from '../../tool/utils';
+import {mockInitImage} from '../../tool/mock_leaflet';
 
 var url = GlobeParameter.WorldURL;
 describe('leaflet_ImageMapLayer', () => {
@@ -16,6 +17,7 @@ describe('leaflet_ImageMapLayer', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
+        mockInitImage();
         map = L.map('map', {
             center: [0, 0],
             maxZoom: 18,

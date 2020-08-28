@@ -1,5 +1,6 @@
 import {webMap} from '../../../src/leaflet/mapping/WebMap';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import {mockCreateTile,mockHeatLayer} from '../../tool/mock_leaflet';
 
 describe('leaflet_WebMap', () => {
     var originalTimeout;
@@ -15,6 +16,10 @@ describe('leaflet_WebMap', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
+        mockCreateTile();
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
+            return Promise.resolve(new Response(JSON.stringify({ "features": [{ "stringID": null, "fieldNames": ["SMID", "SMKEY", "SMSDRIW", "SMSDRIN", "SMSDRIE", "SMSDRIS", "SMGRANULE", "SMGEOMETRY", "SMUSERID", "SMLIBTILEID", "SMAREA", "SMPERIMETER", "PAC", "PINYIN", "POP_2014", "POP_2014_RURAL", "POP_2014_URBAN", "PER_CAPITA_GDP_2014", "GDP_2014", "NAME"], "geometry": { "center": { "x": 102.81566459814152, "y": 30.17315438920073 }, "parts": [3], "style": null, "prjCoordSys": null, "id": 1, "type": "REGION", "partTopo": [1], "points": [{ "x": 101.8400496800001, "y": 26.08599686926592 }, { "x": 101.6459944450001, "y": 26.33104981926121 }, { "x": 101.8400496800001, "y": 26.08599686926592 }] }, "fieldValues": ["1", "-2", "97.3801311200001", "34.26031190913554", "108.5099491700001", "26.08599686926592", "11.129818049999997", "[B@7f27b960", "0", "1", "4.848540935613763E11", "4543554.477096281", "510402.0", "Sichuan Sheng", "8140", "4371", "3769", "3.505732186732187", "28536.660", "四川省"], "ID": 1 }], "featureUriList": [], "totalCount": 1, "featureCount": 1 })))
+        });
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
@@ -493,6 +498,7 @@ describe('leaflet_WebMap', () => {
 
     it('createThemeLayer_HeatLayer', (done) => {
         var id = 2489;
+        mockHeatLayer();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_HeatThemeLayer;
@@ -575,7 +581,7 @@ describe('leaflet_WebMap', () => {
         }, 5000)
     });
 
-    it('createThemeLayer_RangeLayer', (done) => {
+    xit('createThemeLayer_RangeLayer', (done) => {
         var id = 1959;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -625,6 +631,7 @@ describe('leaflet_WebMap', () => {
             }
             return Promise.resolve();
         });
+       
         map = webMap(id, {server: server});
         setTimeout(() => {
             expect(map.id).toBe(id);
