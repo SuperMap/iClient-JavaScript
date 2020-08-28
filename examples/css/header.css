@@ -492,7 +492,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 
     #title {
-        font-size: 14px;
+        font-size: 18px;
     }
 
     .pre-release {
@@ -507,6 +507,25 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
     .skin-blue .main-header .navbar .nav > li > a {
         font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .navbar-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-brand {
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .navbar-header #suffix-title {
+        line-height: 14px;
+        height: auto;
+        font-size: 12px;
+        margin-left: 43px;
     }
 }
 
@@ -551,6 +570,13 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 }
 
+@media screen and (max-width: 370px) {
+    #logo {
+        width: 32px;
+        width: 32px;
+    }
+}
+
 /*尺寸小于376px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone5等移动端的浏览器*/
 @media screen and (max-width: 356px) {
     .navbar-toggle {
@@ -561,6 +587,17 @@ ul.icl-nav-menu-sub:nth-child(1) {
     .menu-box {
         top: 240px;
     }
+
+        #logo {
+            width: 22px;
+            height: 28px;
+            margin: 15px 0 0 0;
+        }
+
+        .navbar-toggle>img {
+            width: 22px;
+            height: 30px;
+        }
 }
 
 @media screen and (max-height: 640px) {
