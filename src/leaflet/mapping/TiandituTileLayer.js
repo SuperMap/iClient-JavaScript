@@ -55,12 +55,12 @@ export var TiandituTileLayer = WMTSLayer.extend({
         this.options.maxZoom = this.layerZoomMap[this.options.layerType] - 1;
         WMTSLayer.prototype.initialize.call(this, this.options.url, this.options);
         L.stamp(this);
-    },
-    onAdd: function (map) {
-        this.options.tilematrixSet = map.options.crs.code === "EPSG:4326" ? "c" : "w";
         if (this.options.key) {
             this._url = `${this._url}tk=${this.options.key}`;
         }
+    },
+    onAdd: function (map) {
+        this.options.tilematrixSet = map.options.crs.code === "EPSG:4326" ? "c" : "w";
         this._url = this._url.replace("{layer}", this.options.layer).replace("{proj}", this.options.tilematrixSet);
         WMTSLayer.prototype.onAdd.call(this, map);
     }

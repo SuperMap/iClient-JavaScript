@@ -340,7 +340,7 @@ export var ImageMapLayer = Layer.extend({
 
         var zoom = this._map.getZoom();
         var bounds = this._map.getBounds();
-        if (zoom > this._map.options.maxZoom || zoom < this._map.options.zoom) {
+        if (zoom > (this._map.options.maxZoom|| 18) || zoom < (this._map.options.minZoom || 0)) {
             if (this._currentImage) {
                 this._currentImage._map.removeLayer(this._currentImage);
                 this._currentImage = null;
