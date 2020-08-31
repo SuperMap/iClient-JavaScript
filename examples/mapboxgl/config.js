@@ -360,7 +360,35 @@ var exampleConfig = {
                         fileName: "topologyValidatorJobService"
                     }
                 ]
-            }
+            },
+            machinelearning: {
+                name: "机器学习",
+                name_en: "Machine Learning",
+                content: [
+                    {
+                        name: "二元分类",
+                        name_en: "Binary Classification",
+                        version: "10.1.0",
+                        thumbnail: "machinelearning_binaryclassification.png",
+                        fileName: "machinelearning_binaryclassification"
+                    },
+                    {
+                        name: "目标检测",
+                        name_en: "Object Detection",
+                        version: "10.1.0",
+                        thumbnail: "machinelearning_objectdetection.png",
+                        fileName: "machinelearning_objectdetection"
+                    }
+                    // ,
+                    // {
+                    //     name: "地物分类",
+                    //     name_en: "Landcover Classification",
+                    //     version: "10.1.0",
+                    //     thumbnail: "machinelearning_landcoverclassification.png",
+                    //     fileName: "machinelearning_landcoverclassification"
+                    // }
+                ]
+            },
         }
     },
     iPortal: {

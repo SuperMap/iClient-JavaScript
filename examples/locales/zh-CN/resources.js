@@ -1534,6 +1534,8 @@ window.examplesResources = {
         "btn_customTheme":"自定义主题",
         "btn_switchTheme":"切换主题",
         "btn_OK":"确定",
+        "btn_objectdetection":"叠加目标检测结果",
+        "btn_binaryclassification":"叠加二元分类结果",
 
         "msg_published":"已发布了该服务",
         "msg_unpublish_success":"取消发布成功",

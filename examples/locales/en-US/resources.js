@@ -1587,6 +1587,8 @@ window.examplesResources = {
         "btn_customTheme":"Custom theme",
         "btn_switchTheme":"Switch theme",
         "btn_OK":"OK",
+        "btn_objectdetection":"Add objectdetection result",
+        "btn_binaryclassification":"Add binaryclassification result",
 
         "msg_published":"This service has already been published",
         "msg_unpublish_success":"unPublish successfully",
