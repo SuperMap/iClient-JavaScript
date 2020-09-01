@@ -24,7 +24,7 @@
   font-size: 20px;
   color: #FFFFFF;
   font-family: "Microsoft Yahei";
-}
+  }
 
 
 .pre-release {
@@ -90,6 +90,10 @@
     padding: 0;
 }
 
+.nav-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+}
+
 .navbar-nav > li {
     height: 60px;
     display: table;
@@ -100,11 +104,11 @@
     vertical-align: middle;
 }
 
-.navbar-menu .menu-sub-warp {
+.menu-sub-warp {
     max-height: 0;
 }
 
-.navbar-menu:hover .menu-sub-warp {
+.show_menu-sub-warp {
     max-height: 660px;
     transform-origin: 50% 0;
     -webkit-transform-origin: 50% 0;
@@ -325,9 +329,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
         float: none;
     }
 
-    .menu-box {
-        top: 120px;
-    }
 }
 
 @media screen and (max-width: 1030px) {
@@ -348,9 +349,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
         float: none;
     }
 
-    .menu-box {
-        top: 120px;
-    }
 }
 
 @media screen and (max-width: 992px) {
@@ -457,11 +455,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 }
 
-@media screen and (max-width: 659px) {
-    .menu-box {
-        top: 180px;
-    }
-}
 
 @media screen and (max-width: 540px) {
     .navbar-custom-menu > .navbar-nav > li {
@@ -525,7 +518,11 @@ ul.icl-nav-menu-sub:nth-child(1) {
         line-height: 14px;
         height: auto;
         font-size: 12px;
-        margin-left: 43px;
+        margin-left: 32px;
+    }
+
+    #logo {
+        margin-top: 20px;
     }
 }
 
@@ -548,17 +545,13 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
 /*尺寸小于410px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone6等移动端的浏览器*/
 @media screen and (max-width: 410px) {
-    #logo {
-        width: 20px;
-        height: 20px;
-    }
 
     #suffix-title {
         font-size: 8px;
     }
 
     #title {
-        font-size: 11px;
+        font-size: 12px;
     }
 
     .pre-release {
@@ -570,12 +563,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 }
 
-@media screen and (max-width: 370px) {
-    #logo {
-        width: 32px;
-        width: 32px;
-    }
-}
 
 /*尺寸小于376px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone5等移动端的浏览器*/
 @media screen and (max-width: 356px) {
@@ -584,8 +571,8 @@ ul.icl-nav-menu-sub:nth-child(1) {
         padding-right: 6px;
     }
 
-    .menu-box {
-        top: 240px;
+    .navbar-header #suffix-title {
+        margin-left: 22px;
     }
 
         #logo {
@@ -600,8 +587,3 @@ ul.icl-nav-menu-sub:nth-child(1) {
         }
 }
 
-@media screen and (max-height: 640px) {
-    .navbar-menu:hover .menu-sub-warp {
-        max-height: 400px;
-    }
-}
