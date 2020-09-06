@@ -111,10 +111,10 @@ export class WebPrintingJobLayoutOptions {
     toJSON() {
         var params = {
             templateName: this.templateName,
-            title: this.title || '',
-            subTitle: this.subTitle || '',
-            author: this.author || '',
-            copyright: this.copyright || ''
+            title: this.title,
+            subTitle: this.subTitle,
+            author: this.author,
+            copyright: this.copyright
         };
         if (this.scaleBarOptions) {
             params.scaleBarOptions = this.scaleBarOptions;

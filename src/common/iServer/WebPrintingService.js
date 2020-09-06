@@ -55,10 +55,6 @@ export class WebPrintingService extends CommonServiceBase {
             return;
         }
         if (params.layoutOptions) {
-            !params.layoutOptions.title && (params.layoutOptions.title = '');
-            !params.layoutOptions.subTitle && (params.layoutOptions.subTitle = '');
-            !params.layoutOptions.author && (params.layoutOptions.author = '');
-            !params.layoutOptions.copyright && (params.layoutOptions.copyright = '');
             if (params.layoutOptions.legendOptions) {
                 !params.layoutOptions.legendOptions.title && (params.layoutOptions.legendOptions.title = '');
                 params.layoutOptions.legendOptions.picAsBase64 =

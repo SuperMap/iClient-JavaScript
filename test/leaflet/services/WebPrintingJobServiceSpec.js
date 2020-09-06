@@ -54,6 +54,8 @@ describe('leaflet_WebPrintingJobService', () => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + '/jobs');
             expect(params).not.toBeNull();
+            expect(params.layoutOptions.subTitle).toBeNull();
+            expect(params.layoutOptions.copyright).toBeNull();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(createWebPringintJobResultJson)));
         });
