@@ -71,10 +71,11 @@ const dpiConfig = {
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
  * @classdesc 对接 iPortal/Online 地图类
- * @param {number} id - 地图的id
  * @param {Object} options - 参数
  * @param {string} [options.target='map'] - 地图容器id
- * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址
+ * @param {Object | string} [options.webMap] - webMap对象，或者是获取webMap的url地址。存在webMap，优先使用webMap, id的选项则会被忽略
+ * @param {number} [options.id] - 地图的id
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址,如果使用传入id，server则会和id拼接成webMap请求地址
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数
  * @param {string} [options.credentialKey] - 凭证密钥。例如为"key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填
@@ -94,9 +95,14 @@ export class WebMap extends Observable {
 
     constructor(id, options) {
         super();
-        this.mapId = id;
+        if(Util.isObject(id)) {
+            options = id;
+            this.mapId = options.id;
+        } else {
+            this.mapId = id;
+        }
         options = options || {};
-        this.server = options.server || 'https://www.supermapol.com';
+        this.server = options.server;
         this.successCallback = options.successCallback;
         this.errorCallback = options.errorCallback;
         this.credentialKey = options.credentialKey;
@@ -111,8 +117,17 @@ export class WebMap extends Observable {
         this.layerAdded = 0;
         this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
+        this.webMap = options.webMap;
         this.createMap(options.mapSetting);
-        this.createWebmap();
+        if(this.webMap) {
+            // webmap有可能是url地址，有可能是webmap对象
+            Util.isString(this.webMap) ? this.createWebmap(this.webMap) : this.getMapInfoSuccess(options.webMap);
+        } else {
+            if(!this.server) {
+                this.server = 'https://www.supermapol.com';
+            }
+            this.createWebmap();
+        }
     }
 
     /**
@@ -227,20 +242,25 @@ export class WebMap extends Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.createWebmap
      * @description 创建webmap
+     * @param {string} webMapUrl - 请求webMap的地址
      */
-    createWebmap() {
-        let urlArr = this.server.split('');
-        if (urlArr[urlArr.length - 1] !== '/') {
-            this.server += '/';
-        }
-
-        let mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
-        let filter = 'getUrlResource.json?url=';
-        if (this.excludePortalProxyUrl && this.server.indexOf(filter) > -1) {
-            //大屏需求,或者有加上代理的
-            let urlArray = this.server.split(filter);
-            if (urlArray.length > 1) {
-                mapUrl = urlArray[0] + filter + this.server + 'web/maps/' + this.mapId + '/map.json';
+    createWebmap(webMapUrl) {
+        let mapUrl;
+        if(webMapUrl) {
+            mapUrl = webMapUrl;
+        } else {
+            let urlArr = this.server.split('');
+            if (urlArr[urlArr.length - 1] !== '/') {
+                this.server += '/';
+            }
+            mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
+            let filter = 'getUrlResource.json?url=';
+            if (this.excludePortalProxyUrl && this.server.indexOf(filter) > -1) {
+                //大屏需求,或者有加上代理的
+                let urlArray = this.server.split(filter);
+                if (urlArray.length > 1) {
+                    mapUrl = urlArray[0] + filter + this.server + 'web/maps/' + this.mapId + '/map.json';
+                }
             }
         }
         this.getMapInfo(mapUrl);
@@ -263,60 +283,75 @@ export class WebMap extends Observable {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json();
-        }).then(async function (mapInfo) {
-            if (mapInfo.succeed === false) {
-                that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
-                return;
-            }
-            if(mapInfo.projection === 'EPSG:910111' || mapInfo.projection === 'EPSG:910112'){
-                // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
-                mapInfo.projection = "EPSG:3857";
-            }else if(mapInfo.projection === 'EPSG:910101' || mapInfo.projection === 'EPSG:910102'){
-                 // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
-                mapInfo.projection = "EPSG:4326";
-            }
-            that.baseProjection = mapInfo.projection;
-            that.webMapVersion = mapInfo.version;
-            that.baseLayer = mapInfo.baseLayer;
-            that.mapParams = {
-                title: mapInfo.title,
-                description: mapInfo.description
-            }; //存储地图的名称以及描述等信息，返回给用户
+        }).then(function (mapInfo) {
+            that.getMapInfoSuccess(mapInfo);
+        }).catch(function (error) {
+            that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
+        });
+    }
 
-            // 目前iServer服务中可能出现的EPSG 0，-1，-1000
-            if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
-                //对于这两种地图，只能view，不能叠加其他图层
-                that.createSpecLayer(mapInfo);
-                return;
-            } else if(that.addProjctionFromWKT(mapInfo.projection)){
-                mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
-            }else{
-                // 不支持的坐标系
-                that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
-                return;
-            }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getMapInfoSuccess
+     * @description 获取地图的json信息
+     * @param {Object} mapInfo - webMap对象
+     */
+    async getMapInfoSuccess(mapInfo) {
+        let that = this;
+        if (mapInfo.succeed === false) {
+            that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
+            return;
+        }
+        if(mapInfo.projection === 'EPSG:910111' || mapInfo.projection === 'EPSG:910112'){
+            // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
+            mapInfo.projection = "EPSG:3857";
+        }else if(mapInfo.projection === 'EPSG:910101' || mapInfo.projection === 'EPSG:910102'){
+             // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
+            mapInfo.projection = "EPSG:4326";
+        }
+        // 传入webMap的就使用rootUrl.没有传入就用默认值
+        if(that.webMap) {
+            that.server = mapInfo.rootUrl;
+        }
+        that.baseProjection = mapInfo.projection;
+        that.webMapVersion = mapInfo.version;
+        that.baseLayer = mapInfo.baseLayer;
+        that.mapParams = {
+            title: mapInfo.title,
+            description: mapInfo.description
+        }; //存储地图的名称以及描述等信息，返回给用户
 
-            if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
-                // 添加矢量瓦片服务作为底图
-                that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
-                    that.createView(mapInfo);
-                    if (!mapInfo.layers || mapInfo.layers.length === 0) {
-                        that.sendMapToUser(0);
-                    } else {
-                        that.addLayers(mapInfo);
-                    }
-                });
-            } else {
-                await that.addBaseMap(mapInfo);
+        // 目前iServer服务中可能出现的EPSG 0，-1，-1000
+        if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
+            //对于这两种地图，只能view，不能叠加其他图层
+            that.createSpecLayer(mapInfo);
+            return;
+        } else if(that.addProjctionFromWKT(mapInfo.projection)){
+            mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
+        }else{
+            // 不支持的坐标系
+            that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
+            return;
+        }
+
+        if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
+            // 添加矢量瓦片服务作为底图
+            that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
+                that.createView(mapInfo);
                 if (!mapInfo.layers || mapInfo.layers.length === 0) {
                     that.sendMapToUser(0);
                 } else {
                     that.addLayers(mapInfo);
                 }
+            });
+        } else {
+            await that.addBaseMap(mapInfo);
+            if (!mapInfo.layers || mapInfo.layers.length === 0) {
+                that.sendMapToUser(0);
+            } else {
+                that.addLayers(mapInfo);
             }
-        }).catch(function (error) {
-            that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
-        });
+        }
     }
     /**
      * @private
@@ -1675,7 +1710,7 @@ export class WebMap extends Observable {
                     let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
                     features = that._parseGeoJsonData2Feature({ allDatas: { features: geojson.features }, fileCode: layerInfo.projection });
                 } else {
-                    features = that.excelData2Feature(data.content, layerInfo);
+                    features = await that.excelData2Feature(data.content, layerInfo);
                 }
             } else {
                 var geoJson = data.content ? JSON.parse(data.content) : data;

@@ -1004,5 +1004,52 @@ describe('openlayers_WebMap', () => {
             }, 1000);            
         }, 1000)
     })
+    it('webMapUrl', (done) => {
+        let options = {
+            server: server,
+            webMap: defaultServeRequest,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_BAIDU;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(options);
 
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            expect(datavizWebmap.mapParams.title).toBe('百度');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            done();
+        }, 1000)
+    })
+    it('webMapObject', (done) => {
+        let options = {
+            server: server,
+            webMap: JSON.parse(datavizWebMap_BAIDU),
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(options.successCallback).toHaveBeenCalled();
+            done();
+        }, 1000)
+    })
 });
