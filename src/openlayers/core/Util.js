@@ -290,6 +290,15 @@ export class Util {
     static isString(str) {
         return (typeof str === 'string') && str.constructor === String;
     }
+    /**
+     * @function ol.supermap.Util.isObject
+     * @description 是否为对象
+     * @param {any} obj - 需要判断的内容
+     * @returns {boolean}
+     */
+    static isObject(obj) {
+        return Object.prototype.toString.call(obj) === '[object Object]';
+    }
     
     /**
      * @function ol.supermap.Util.trim
