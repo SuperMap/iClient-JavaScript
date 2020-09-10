@@ -5,7 +5,7 @@ import L from 'leaflet';
 
 const emptyFunc = L.Util.falseFn;
 export var GraphicCanvasRenderer = L.Class.extend({
-    initialize: function(layer, options) {
+    initialize: function (layer, options) {
         this.layer = layer;
         options = options || {};
         L.Util.setOptions(this, options);
@@ -17,7 +17,7 @@ export var GraphicCanvasRenderer = L.Class.extend({
      * @description 返回渲染器给图层，提供图层后续的数据增删改。
      * @returns {L.Canvas}
      */
-    getRenderer: function() {
+    getRenderer: function () {
         return this.options.renderer;
     },
 
@@ -26,18 +26,15 @@ export var GraphicCanvasRenderer = L.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function() {
-        this.getRenderer()._clear();
+    update: function () {
+        this.getRenderer()._clear(); 
         this.getRenderer()._draw();
     },
-
-    _handleClick: function(evt) {
-        let me = this,
-            layer = me.layer,
-            map = layer._map;
+    _getGraphicAtPoint: function (p) {
+        const layer = this.layer;
+        const map = layer._map;
 
         let graphics = layer._getGraphicsInBounds();
-        evt.target = null;
         for (let i = graphics.length - 1; i >= 0; i--) {
             let p1, p2, bounds;
             const center = map.latLngToLayerPoint(graphics[i].getLatLng());
@@ -60,16 +57,29 @@ export var GraphicCanvasRenderer = L.Class.extend({
                 p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = L.bounds(p1, p2);
-            if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
-                evt.target = graphics[i];
-                if (evt.type === 'click' && layer.options.onClick) {
-                    layer.options.onClick.call(layer, graphics[i], evt);
-                }
-                return;
+            if (bounds.contains(p)) {
+                return graphics[i];
             }
-            this.layer._renderer._ctx.canvas.style.cursor = 'auto';
         }
+        return null;
+    },
+    containsPoint: function (p) {
+        return !!this._getGraphicAtPoint(p);
+    },
+    _handleClick: function (evt) {
+        evt.target = null;
+        const layer = this.layer;
+        const map = layer._map;
+        const graphic = this._getGraphicAtPoint(map.latLngToLayerPoint(evt.latlng));
+        if (graphic) {
+            this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
+            evt.target = graphic;
+            if (evt.type === 'click' && layer.options.onClick) {
+                layer.options.onClick.call(layer, graphic, evt);
+            }
+            return;
+        }
+        this.layer._renderer._ctx.canvas.style.cursor = 'auto';
     },
 
     //跟GraphicWebGLRenderer保持一致
@@ -77,13 +87,13 @@ export var GraphicCanvasRenderer = L.Class.extend({
 });
 
 L.Canvas.include({
-    drawGraphics: function(graphics, defaultStyle) {
+    drawGraphics: function (graphics, defaultStyle) {
         var me = this;
         if (!me._drawing) {
             return;
         }
         //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.forEach(function(graphic) {
+        graphics.forEach(function (graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {
                 style = defaultStyle;
@@ -98,7 +108,7 @@ L.Canvas.include({
         });
     },
 
-    _drawCanvas: function(ctx, style, latLng) {
+    _drawCanvas: function (ctx, style, latLng) {
         var canvas = style;
         var pt = this._map.latLngToLayerPoint(latLng);
         var p0 = pt.x - canvas.width / 2;
@@ -109,7 +119,7 @@ L.Canvas.include({
         ctx.drawImage(canvas, p0, p1, width, height);
     },
 
-    _drawImage: function(ctx, style, latLng) {
+    _drawImage: function (ctx, style, latLng) {
         //设置图片的大小
         var width, height;
         if (style.size) {
@@ -132,7 +142,7 @@ L.Canvas.include({
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
-    _coordinateToPoint: function(coordinate) {
+    _coordinateToPoint: function (coordinate) {
         if (!this._map) {
             return coordinate;
         }
