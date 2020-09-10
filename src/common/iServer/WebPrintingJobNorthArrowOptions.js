@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class SuperMap.WebPrintingJobNorthArrowOptions
  * @classdesc 地图指北针参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {string} option.picAsUrl - 指北针的图片 url 地址。

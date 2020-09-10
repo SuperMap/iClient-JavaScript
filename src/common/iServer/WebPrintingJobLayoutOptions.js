@@ -11,6 +11,7 @@ import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
 /**
  * @class SuperMap.WebPrintingJobLayoutOptions
  * @classdesc Web 打印的布局参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {string} option.templateName - 布局模板的名称。

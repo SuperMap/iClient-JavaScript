@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class SuperMap.WebPrintingJobImage
  * @classdesc 表达小地图的静态图片参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {string} [option.picAsUrl] - 小地图的图片 url 地址。

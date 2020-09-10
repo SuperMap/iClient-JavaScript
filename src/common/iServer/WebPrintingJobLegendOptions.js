@@ -9,6 +9,7 @@ import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
 /**
  * @class SuperMap.WebPrintingJobLegendOptions
  * @classdesc 图例参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {string} [option.title] - 图例名称。

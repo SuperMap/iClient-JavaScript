@@ -17,6 +17,7 @@ import { WebPrintingService, SuperMap } from '@supermap/iclient-common';
  *          //doSomething
  *      })
  * @extends {L.supermap.ServiceBase}
+ * @version 10.1.0
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 服务交互时所需的可选参数。
  * @param {string} [options.proxy] - 服务代理地址。

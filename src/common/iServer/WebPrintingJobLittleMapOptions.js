@@ -9,6 +9,7 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
 /**
  * @class SuperMap.WebPrintingJobLittleMapOptions
  * @classdesc Web 打印内容参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} option.center - 小地图的中心点。

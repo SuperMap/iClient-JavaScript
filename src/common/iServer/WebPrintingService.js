@@ -8,6 +8,7 @@ import { CommonServiceBase } from './CommonServiceBase';
 /**
  * @class SuperMap.WebPrintingService
  * @category iServer WebPrintingJob
+ * @version 10.1.0
  * @classdesc 打印地图服务基类。
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。

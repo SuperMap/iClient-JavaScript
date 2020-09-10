@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class SuperMap.WebPrintingJobContent
  * @classdesc Web 打印内容参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP

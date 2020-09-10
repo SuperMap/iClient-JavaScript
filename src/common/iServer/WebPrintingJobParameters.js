@@ -10,6 +10,7 @@ import { WebPrintingJobExportOptions } from './WebPrintingJobExportOptions';
 /**
  * @class SuperMap.WebPrintingJobParameters
  * @category iServer WebPrintingJob
+ * @version 10.1.0
  * @classdesc Web 打印参数类
  * @param {Object} options - 初始化参数。
  * @param {SuperMap.WebPrintingJobContent} options.content - Web 打印的内容类。

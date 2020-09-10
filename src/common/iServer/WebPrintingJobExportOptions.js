@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class SuperMap.WebPrintingJobExportOptions
  * @classdesc Web 打印的输出参数类。
+ * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
  * @param {SuperMap.WebExportFormatType} option.format - Web 打印输出的格式，目前支持：PNG、PDF。

@@ -8,6 +8,7 @@ import { Util } from '../commontypes/Util';
  * @class SuperMap.WebPrintingJobScaleBarOptions
  * @classdesc 地图比例尺参数类。
  * @category iServer WebPrintingJob
+ * @version 10.1.0
  * @param {Object} option - 初始化参数。
  * @param {string} [option.scaleText] - 比例尺文本信息。例如：1:1000000
  * @param {SuperMap.WebScaleOrientationType} [option.orientation] - 比例尺的方位样式。
