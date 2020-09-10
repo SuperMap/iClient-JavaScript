@@ -303,6 +303,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
         return this;
     },
     _initPath: emptyFunc,
-    _addPath: emptyFunc
+    _addPath: emptyFunc,
+    containsPoint: emptyFunc
 
 });
