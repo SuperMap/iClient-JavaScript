@@ -591,7 +591,6 @@ describe('openlayers_WebMap', () => {
             } else {
                 return Promise.resolve(new Response(jinJingMap))
             }
-            return Promise.resolve();
         });
         spyOn(options, 'successCallback');
         var datavizWebmap = new WebMap(id, options);
@@ -900,13 +899,7 @@ describe('openlayers_WebMap', () => {
     });
 
     it('isValidResponse', (done) => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
-                var mapJson = datavizWebMap_WMTS;
-                return Promise.resolve(new Response(mapJson));
-            }
-        });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, {webMap: JSON.parse(datavizWebMap_BAIDU)});
         setTimeout(() => {
             var response = {};
             expect(datavizWebmap.isValidResponse(response)).toBe(false);
@@ -915,13 +908,7 @@ describe('openlayers_WebMap', () => {
     });
 
     it('getReslutionsFromScales', (done) => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
-                var mapJson = datavizWebMap_WMTS;
-                return Promise.resolve(new Response(mapJson));
-            }
-        });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap({webMap: JSON.parse(datavizWebMap_BAIDU)});
         setTimeout(() => {
             var scales = {
                 TileMatrix: [{
@@ -934,13 +921,8 @@ describe('openlayers_WebMap', () => {
     });
 
     it('getRangeStyleGroup', (done) => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
-                var mapJson = datavizWebMap_WMTS;
-                return Promise.resolve(new Response(mapJson));
-            }
-        });
-        var datavizWebmap = new WebMap(id, {});
+        let webMapObj = JSON.parse(datavizWebMap_BAIDU);
+        var datavizWebmap = new WebMap({webMap: webMapObj});
         setTimeout(() => {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
@@ -959,16 +941,11 @@ describe('openlayers_WebMap', () => {
     });
 
     it('getRangeStyleGroup1', (done) => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`) {
-                var mapJson = datavizWebMap_WMTS;
-                return Promise.resolve(new Response(mapJson));
-            }
-        });
         spyOn(ArrayStatistic, "getArraySegments").and.callFake(() => {
             return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
         });
-        var datavizWebmap = new WebMap(id, {});
+        let webMapObj = JSON.parse(datavizWebMap_BAIDU);
+        var datavizWebmap = new WebMap({webMap: webMapObj});
         setTimeout(() => {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
