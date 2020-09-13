@@ -141,6 +141,7 @@ export var olExtends = function(targetMap) {
             maxAngle
         ) {
             var result = [];
+            const originStartM = startM;
 
             // Keep text upright
             var anglereverse = Math.atan2(
@@ -264,7 +265,7 @@ export var olExtends = function(targetMap) {
                 } else {
                     chunk = char;
                     chunkLength = charLength;
-                    data = [x, y, charLength / 2, angle, chunk];
+                    data = [x, y, charLength * originStartM, angle, chunk];
                     if (reverse) {
                         result.unshift(data);
                     } else {
