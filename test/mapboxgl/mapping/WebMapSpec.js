@@ -304,7 +304,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Theme_base;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(csvData));
             }
             return Promise.resolve();
@@ -331,7 +331,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Theme_base_Line;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -359,7 +359,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Image;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -370,7 +370,7 @@ describe('mapboxgl_WebMap', () => {
                 let img = new Image();
                 img.onload = () => {
                     isLoaded = true;
-                    load.emit(url);
+                    load.emxit(url);
                 };
                 img.src = url;
                 cb(img);
@@ -397,7 +397,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Unique;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(xlsData));
             }
             return Promise.resolve();
@@ -425,7 +425,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Range;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -434,7 +434,7 @@ describe('mapboxgl_WebMap', () => {
             return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
         });
         var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', function () {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -444,7 +444,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('RANGE_LABEL');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        });
     });
 
     it('createThemeLayer_Heat', (done) => {
@@ -456,7 +456,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Heat;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(csvData));
             }
             return Promise.resolve();
@@ -484,7 +484,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Marker;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(markerData));
             }
             return Promise.resolve();
@@ -504,7 +504,7 @@ describe('mapboxgl_WebMap', () => {
         }, 1000);
     });
 
-    xit('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
+    it('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
         let options = {
             server: server
         };
@@ -549,8 +549,7 @@ describe('mapboxgl_WebMap', () => {
         });
 
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', function () {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -560,7 +559,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('restMap from jingjin');
             done();
-        }, 1000);
+        });
     });
 
     it('createThemeLayer_SUPERMAPREST_DATA', (done) => {
@@ -585,7 +584,7 @@ describe('mapboxgl_WebMap', () => {
         });
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', function () {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -595,7 +594,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('RestData');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        });
     });
 
     it('WMS', (done) => {
@@ -728,7 +727,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_SVG1;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -736,16 +735,16 @@ describe('mapboxgl_WebMap', () => {
 
         var datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('mapinitialized', () => {
-            spyOn(datavizWebmap, '_getCanvasFromSVG').and.callFake((svg_url, svgDiv, cb) => {
-                let canvas = document.createElement('canvas');
-                canvas.width = '150px';
-                cb(canvas);
-            });
+            // spyOn(datavizWebmap, '_getCanvasFromSVG').and.callFake((svg_url, svgDiv, cb) => {
+            //     let canvas = document.createElement('canvas');
+            //     canvas.width = '150px';
+            //     cb(canvas);
+            // });
             spyOn(datavizWebmap.map, 'loadImage').and.callFake((url, cb) => {
                 let img = new Image();
                 img.onload = () => {
                     isLoaded = true;
-                    load.emit(url);
+                    load.emxit(url);
                 };
                 img.src = url;
                 cb(img);
@@ -765,7 +764,7 @@ describe('mapboxgl_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_symbol;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content?') > -1) {
+            } else if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -800,7 +799,7 @@ describe('mapboxgl_WebMap', () => {
             done();
         }, 1000);
     });
-    xit('datavizWebMap_WMTS', (done) => {
+    it('datavizWebMap_WMTS', (done) => {
         let options = {
             server: server
         };
@@ -820,5 +819,27 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
         }, 1000);
+    });
+    it('datavizWebMap_WMTS_Custom', (done) => {
+        let options = {
+            server: server
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS2;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('wmts') > -1) {
+                return Promise.resolve(new Response(wmtsInfoCustom));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+
+        datavizWebmap.on('addlayerssucceeded', function () {
+            setTimeout(function () {
+                expect(datavizWebmap.map.getStyle().layers.length).toBe(2);
+                done();
+            }, 2000);
+        });
     });
 });

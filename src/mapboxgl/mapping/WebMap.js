@@ -454,8 +454,11 @@ export class WebMap extends mapboxgl.Evented {
 			})
 			.then(capabilitiesText => {
 				let converts = convert ? convert : window.convert;
-				let tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, { compact: true, spaces: 4 }))
-					.Capabilities.Contents.TileMatrixSet;
+                let tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, { compact: true, spaces: 4 }))
+                    .Capabilities.Contents.TileMatrixSet;
+                if (!Array.isArray(tileMatrixSet)) {
+                    tileMatrixSet = [tileMatrixSet];
+                }
 				for (let i = 0; i < tileMatrixSet.length; i++) {
 					if (
 						tileMatrixSet[i]['ows:Identifier'] &&
