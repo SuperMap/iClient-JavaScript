@@ -10,7 +10,7 @@ describe('leaflet_TiandituTileLayer', () => {
         testDiv.style.styleFloat = 'left';
         testDiv.style.marginLeft = '8px';
         testDiv.style.marginTop = '50px';
-        testDiv.style.width = '500px';
+        testDiv.style.width = '1500px';
         testDiv.style.height = '500px';
         mockCreateTile();
         document.body.appendChild(testDiv);
@@ -146,5 +146,18 @@ describe('leaflet_TiandituTileLayer', () => {
         expect(layer.getTileUrl(coords)).toBe(
             'https://t0.tianditu.gov.cn/cia_w/wmts?tk=123456&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0'
         );
+    });
+    it('initialize_noWrap_false', () => {
+        var coords = { x: 0, y: 0, z: 0 };
+        layer = tiandituTileLayer({
+            layerType: 'img',
+            isLabel: true,
+            noWrap:false,
+            key: '123456'
+        }).addTo(map);
+        expect(layer.getTileUrl(coords)).toBe(
+            'https://t0.tianditu.gov.cn/cia_w/wmts?tk=123456&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0'
+        );
+        expect( document.querySelectorAll('.leaflet-tile').length).toBeGreaterThan(4);
     });
 });

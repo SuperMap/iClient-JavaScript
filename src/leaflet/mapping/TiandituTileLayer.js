@@ -1,12 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import "../core/Base";
-import {
-    WMTSLayer
-} from "./TileLayer.WMTS";
-import Attributions from '../core/Attributions'
+import L from 'leaflet';
+import '../core/Base';
+import { WMTSLayer } from './TileLayer.WMTS';
+import Attributions from '../core/Attributions';
 
 /**
  * @class L.supermap.tiandituTileLayer
@@ -22,30 +20,35 @@ import Attributions from '../core/Attributions'
  * @param {boolean} [options.isLabel=false] - 是否是标注图层。
  * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
  * @param {string} [options.attribution='Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权信息
+ * @param {string} [options.noWrap=true] - 图层是否X方向平铺。
  */
 export var TiandituTileLayer = WMTSLayer.extend({
-
     layerLabelMap: {
-        "vec": "cva",
-        "ter": "cta",
-        "img": "cia"
+        vec: 'cva',
+        ter: 'cta',
+        img: 'cia'
     },
     layerZoomMap: {
-        "vec": 18,
-        "ter": 14,
-        "img": 18
+        vec: 18,
+        ter: 14,
+        img: 18
     },
     options: {
-        layerType: "vec", //(vec:矢量图层，vec:矢量标签图层，img:影像图层,cia:影像标签图层，ter:地形,cta:地形标签图层)
+        layerType: 'vec', //(vec:矢量图层，vec:矢量标签图层，img:影像图层,cia:影像标签图层，ter:地形,cta:地形标签图层)
         isLabel: false,
         attribution: Attributions.Tianditu.attribution,
-        url: "https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?",
+        url: 'https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?',
         zoomOffset: 1,
-        key: "",
+        key: '',
         dpi: 96,
-        style: "default",
-        format: "tiles",
-        subdomains: [0, 1, 2, 3, 4, 5, 6, 7]
+        style: 'default',
+        format: 'tiles',
+        subdomains: [0, 1, 2, 3, 4, 5, 6, 7],
+        bounds: [
+            [-90, -180],
+            [90, 180]
+        ],
+        noWrap: true
     },
 
     initialize: function (options) {
@@ -63,6 +66,23 @@ export var TiandituTileLayer = WMTSLayer.extend({
         this.options.tilematrixSet = map.options.crs.code === "EPSG:4326" ? "c" : "w";
         this._url = this._url.replace("{layer}", this.options.layer).replace("{proj}", this.options.tilematrixSet);
         WMTSLayer.prototype.onAdd.call(this, map);
+    },
+    _isValidTile: function (coords) {
+        const crs = this._map.options.crs;
+        if (!crs.infinite) {
+            const bounds = this._globalTileRange;
+            if (
+                ((!crs.wrapLng || this.options.noWrap) && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
+                (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))
+            ) {
+                return false;
+            }
+        }
+        if (!this.options.bounds) {
+            return true;
+        }
+        const tileBounds = this._tileCoordsToBounds(coords);
+        return L.latLngBounds(this.options.bounds).overlaps(tileBounds);
     }
 });
 export var tiandituTileLayer = function (options) {

@@ -26,7 +26,7 @@ L.Proj._isProj4Obj = function(a) {
  * @param {L.bounds} bounds -  投影范围参数
  */
 L.Proj.Projection = L.Class.extend({
-    initialize: function(code, def, bounds) {
+    initialize: function(code, def, bounds, wrapLng) {
         var isP4 = L.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
         var boundsOption = bounds;
@@ -34,6 +34,7 @@ L.Proj.Projection = L.Class.extend({
             boundsOption = L.bounds(bounds);
         }
         this.bounds = isP4 ? def : boundsOption;
+        this.wrapLng = wrapLng;
     },
 
     /**
@@ -54,8 +55,8 @@ L.Proj.Projection = L.Class.extend({
      * @param {number} unbounded -  坐标点高程值等。
      * @returns {L.LatLng} 返回经纬度坐标
      */
-    unproject: function(point, unbounded) {
-        if (this.bounds) {
+    unproject: function(point, zoom) {
+        if (this.bounds && !this.wrapLng) {
             point.x =
                 point.x < this.bounds.min.x
                     ? this.bounds.min.x
@@ -70,7 +71,7 @@ L.Proj.Projection = L.Class.extend({
                     : point.y;
         }
         var point2 = this._proj.inverse([point.x, point.y]);
-        return new L.LatLng(point2[1], point2[0], unbounded);
+        return new L.LatLng(point2[1], point2[0], zoom);
     },
 
     _projFromCodeDef: function(code, def) {
@@ -111,6 +112,7 @@ L.Proj.Projection = L.Class.extend({
  * @param {Array.<number>} [options.resolutions] - 分辨率数组。
  * @param {(Array.<number>|L.Bounds)} [options.bounds] - 范围。
  * @param {number} [options.dpi=96] - dpi。
+ * @param {number} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
  * @example
  *    var crs =L.Proj.CRS("EPSG:4326",{
  *          origin: [-180,90],
@@ -136,15 +138,18 @@ export var CRS = L.Class.extend({
             code = proj.srsCode;
             options = options || {};
 
-            this.projection = new L.Proj.Projection(proj, options.bounds);
+            this.projection = new L.Proj.Projection(proj, options.bounds,options.wrapLng);
         } else {
             code = srsCode;
             options = options || {};
             def = options.def || '';
-            this.projection = new L.Proj.Projection(code, def, options.bounds);
+            this.projection = new L.Proj.Projection(code, def, options.bounds,options.wrapLng);
         }
 
         L.Util.setOptions(this, options);
+        if (this.options.wrapLng) {
+            this.wrapLng = this.options.wrapLng;
+        }
         this.code = code;
         this.transformation = this.options.transformation;
         this.options.dpi = this.options.dpi || 96;

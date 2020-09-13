@@ -21,6 +21,7 @@ import "../core/Base";
  * @param {Array.<L.supermap.wmtsLayer.matrix>} [options.matrixIds] - 瓦片矩阵对象。不设置时，默认为获取当前级别为tilematrix参数。
  * @param {string} [options.version='1.0.0'] - 版本。
  * @param {string} [options.attribution] - 版权信息。
+ * @param {string} [options.noWrap=true] - 图层是否X方向平铺。
  */
 /**
  * @typedef {Object} L.supermap.wmtsLayer.matrix
@@ -38,7 +39,8 @@ export var WMTSLayer = L.TileLayer.extend({
         matrixIds: null,
         layer: '',
         requestEncoding: 'KVP',
-        attribution: ''
+        attribution: '',
+        noWrap: true
     },
 
     //todo 自动获取Capabilities
@@ -65,6 +67,7 @@ export var WMTSLayer = L.TileLayer.extend({
 
             opt.requestEncoding = "KVP";
         }
+        
     },
 
     /**
