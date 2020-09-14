@@ -61,18 +61,15 @@ export class WebPrintingService extends CommonServiceBase {
                 params.layoutOptions.legendOptions.picAsBase64 =
                     params.layoutOptions.legendOptions.picAsBase64 &&
                     params.layoutOptions.legendOptions.picAsBase64.replace(/^data:.+;base64,/, '');
-
-                params.layoutOptions.legendOptions.customItems =
+                if (
                     params.layoutOptions.legendOptions.customItems &&
-                    params.layoutOptions.legendOptions.customItems.map((item) => {
-                        if (item.hasOwnProperty('picAsBase64')) {
-                            return {
-                                ...item,
-                                picAsBase64: item.picAsBase64.replace(/^data:.+;base64,/, '')
-                            };
-                        }
-                        return item;
-                    });
+                    params.layoutOptions.legendOptions.customItems.hasOwnProperty('picAsBase64')
+                ) {
+                    params.layoutOptions.legendOptions.customItems.picAsBase64 = params.layoutOptions.legendOptions.customItems.picAsBase64.replace(
+                        /^data:.+;base64,/,
+                        ''
+                    );
+                }
             }
         }
         var me = this;
@@ -176,10 +173,6 @@ export class WebPrintingService extends CommonServiceBase {
             return Util.urlPathAppend(this.url, appendContent);
         }
         return this.url;
-    }
-
-    toJSON() {
-
     }
 }
 

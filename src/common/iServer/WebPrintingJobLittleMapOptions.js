@@ -84,6 +84,9 @@ export class WebPrintingJobLittleMapOptions {
         } else if (this.layers) {
             params.layers = this.layers;
         }
+        if (this.image) {
+            params.image = this.image;
+        }
         return Util.toJSON(params);
     }
 }

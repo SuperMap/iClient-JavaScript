@@ -41,14 +41,15 @@ export class WebPrintingJobImage {
 
     /**
      * @function SuperMap.WebPrintingJobImage.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobExportOptions 对象转化为 JSON 字符串。
+     * @description 将 SuperMap.WebPrintingJobImage 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {};
         if (this.picAsUrl) {
             params.picAsUrl = this.picAsUrl;
-        } else if (this.picAsBase64) {
+        }
+        if (this.picAsBase64) {
             params.picAsBase64 = this.picAsBase64.replace(/^data:.+;base64,/, '');
         }
         return Util.toJSON(params);

@@ -35,10 +35,9 @@
      }
 
      /**
-      * @function SuperMap.WebPrintingJobLayers.prototype.toJSON
-      * @description 将 SuperMap.WebPrintingJobLayers 对象转化为 JSON 字符串。
-      * @returns {string} 返回转换后的 JSON 字符串。
-      */
+     * @function SuperMap.WebPrintingJobLayers.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
      destroy() {
          this.name = null;
          this.layerType = null;
