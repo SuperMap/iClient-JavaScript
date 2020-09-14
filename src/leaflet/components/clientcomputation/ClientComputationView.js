@@ -137,7 +137,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
      */
     _initView: function () {
         //初始化 ViewModel
-        this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel(this.workerUrl));
+        this.workerUrl && (this.viewModel = new ClientComputationViewModel(this.workerUrl));
         //初始化 view
         // Container
         let container = (new CommonContainer({ title: Lang.i18n('title_clientComputing') })).getElement();

@@ -98,11 +98,11 @@ export class VectorTileSuperMapRest extends VectorTile {
             if (!me.tileGrid) {
                 me.tileGrid = me.getTileGridForProjection(projection);
             }
-            var tileSize = olSize.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
-            var params = '';
             var z = tileCoord[0];
             var x = tileCoord[1];
             var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
+            var tileSize = olSize.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
+            var params = '';
             if (me.tileType === 'ZXY') {
                 params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&x=' + x + '&y=' + y + '&z=' + z;
             } else if (me.tileType === 'ViewBounds') {

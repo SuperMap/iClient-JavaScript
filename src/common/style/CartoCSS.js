@@ -108,7 +108,7 @@ export class CartoCSS {
         //
         // Parse from a token, regexp or string, and move forward if match
         //
-        function $(tok) {
+        function _match(tok) {
             var match, length, c, endIndex;
 
             // Non-terminal
@@ -162,7 +162,7 @@ export class CartoCSS {
             }
         }
 
-        // Same as $(), but don't change the state of the parser,
+        // Same as _match(), but don't change the state of the parser,
         // just return the match.
         function peek(tok) {
             if (typeof(tok) === 'string') {
@@ -339,7 +339,7 @@ export class CartoCSS {
                 // The whole syntax tree is held under a Ruleset node,
                 // with the `root` property set to true, so no `{}` are
                 // output.
-                root = new SuperMap.CartoCSS.Tree.Ruleset([], $(this.parsers.primary));
+                root = new SuperMap.CartoCSS.Tree.Ruleset([], _match(this.parsers.primary));
                 root.root = true;
 
                 // Get an array of Ruleset objects, flattened
@@ -373,7 +373,7 @@ export class CartoCSS {
             //
             //   Ruleset ->  Rule -> Value -> Expression -> Entity
             //
-            //  In general, most rules will try to parse a token with the `$()` function, and if the return
+            //  In general, most rules will try to parse a token with the `_match()` function, and if the return
             //  value is truly, will return a new node, of the relevant type. Sometimes, we need to check
             //  first, before parsing, that's when we use `peek()`.
             parsers: {
@@ -393,16 +393,16 @@ export class CartoCSS {
                 primary: function () {
                     var node, root = [];
 
-                    while ((node = $(this.rule) || $(this.ruleset) ||
-                        $(this.comment)) ||
-                    $(/^[\s\n]+/) || (node = $(this.invalid))) {
+                    while ((node = _match(this.rule) || _match(this.ruleset) ||
+                        _match(this.comment)) ||
+                    _match(/^[\s\n]+/) || (node = _match(this.invalid))) {
                         if (node) {root.push(node);}
                     }
                     return root;
                 },
 
                 invalid: function () {
-                    var chunk = $(/^[^;\n]*[;\n]/);
+                    var chunk = _match(/^[^;\n]*[;\n]/);
 
                     // To fail gracefully, match everything until a semicolon or linebreak.
                     if (chunk) {
@@ -419,8 +419,8 @@ export class CartoCSS {
                     if (input.charAt(i) !== '/') {return;}
 
                     if (input.charAt(i + 1) === '/') {
-                        return new SuperMap.CartoCSS.Tree.Comment($(/^\/\/.*/), true);
-                    } else if (comment = $(/^\/\*(?:[^*]|\*+[^\/*])*\*+\/\n?/)) {
+                        return new SuperMap.CartoCSS.Tree.Comment(_match(/^\/\/.*/), true);
+                    } else if (comment = _match(/^\/\*(?:[^*]|\*+[^\/*])*\*+\/\n?/)) {
                         return new SuperMap.CartoCSS.Tree.Comment(comment);
                     }
                 },
@@ -431,7 +431,7 @@ export class CartoCSS {
                     // A string, which supports escaping " and ' "milky way" 'he\'s the one!'
                     quoted: function () {
                         if (input.charAt(i) !== '"' && input.charAt(i) !== "'") {return;}
-                        var str = $(/^"((?:[^"\\\r\n]|\\.)*)"|'((?:[^'\\\r\n]|\\.)*)'/);
+                        var str = _match(/^"((?:[^"\\\r\n]|\\.)*)"|'((?:[^'\\\r\n]|\\.)*)'/);
                         if (str) {
                             return new SuperMap.CartoCSS.Tree.Quoted(str[1] || str[2]);
                         }
@@ -442,15 +442,15 @@ export class CartoCSS {
                     // needs to be careful to warn when unsupported operations are used.
                     field: function () {
                         var l = '[', r = ']';
-                        if (!$(l)) {return;}
-                        var field_name = $(/(^[^\]]+)/);
-                        if (!$(r)) {return;}
+                        if (!_match(l)) {return;}
+                        var field_name = _match(/(^[^\]]+)/);
+                        if (!_match(r)) {return;}
                         if (field_name) {return new SuperMap.CartoCSS.Tree.Field(field_name[1]);}
                     },
 
                     // This is a comparison operator
                     comparison: function () {
-                        var str = $(/^=~|=|!=|<=|>=|<|>/);
+                        var str = _match(/^=~|=|!=|<=|>=|<|>/);
                         if (str) {
                             return str;
                         }
@@ -460,7 +460,7 @@ export class CartoCSS {
                     // These can start with either a letter or a dash (-),
                     // and then contain numbers, underscores, and letters.
                     keyword: function () {
-                        var k = $(/^[A-Za-z\u4e00-\u9fa5-]+[A-Za-z-0-9\u4e00-\u9fa5_]*/);
+                        var k = _match(/^[A-Za-z\u4e00-\u9fa5-]+[A-Za-z-0-9\u4e00-\u9fa5_]*/);
                         if (k) {
                             return new SuperMap.CartoCSS.Tree.Keyword(k);
                         }
@@ -483,11 +483,11 @@ export class CartoCSS {
                         }
 
                         var l = '(', r = ')';
-                        $(l); // Parse the '(' and consume whitespace.
+                        _match(l); // Parse the '(' and consume whitespace.
 
-                        args = $(this.entities['arguments']);
+                        args = _match(this.entities['arguments']);
 
-                        if (!$(r)) {return;}
+                        if (!_match(r)) {return;}
 
                         if (name) {
                             return new SuperMap.CartoCSS.Tree.Call(name, args, i);
@@ -497,10 +497,10 @@ export class CartoCSS {
                     'arguments': function () {
                         var args = [], arg;
 
-                        while (arg = $(this.expression)) {
+                        while (arg = _match(this.expression)) {
                             args.push(arg);
                             var q = ',';
-                            if (!$(q)) {
+                            if (!_match(q)) {
                                 break;
                             }
                         }
@@ -508,10 +508,10 @@ export class CartoCSS {
                         return args;
                     },
                     literal: function () {
-                        return $(this.entities.dimension) ||
-                            $(this.entities.keywordcolor) ||
-                            $(this.entities.hexcolor) ||
-                            $(this.entities.quoted);
+                        return _match(this.entities.dimension) ||
+                            _match(this.entities.keywordcolor) ||
+                            _match(this.entities.hexcolor) ||
+                            _match(this.entities.quoted);
                     },
 
                     // Parse url() tokens
@@ -522,11 +522,11 @@ export class CartoCSS {
                     url: function () {
                         var value;
 
-                        if (input.charAt(i) !== 'u' || !$(/^url\(/)) {return;}
-                        value = $(this.entities.quoted) || $(this.entities.variable) ||
-                            $(/^[\-\w%@$\/.&=:;#+?~]+/) || '';
+                        if (input.charAt(i) !== 'u' || !_match(/^url\(/)) {return;}
+                        value = _match(this.entities.quoted) || _match(this.entities.variable) ||
+                            _match(/^[\-\w%@_match\/.&=:;#+?~]+/) || '';
                         var r = ')';
-                        if (!$(r)) {
+                        if (!_match(r)) {
                             return new SuperMap.CartoCSS.Tree.Invalid(value, memo, 'Missing closing ) in URL.');
                         } else {
                             return new SuperMap.CartoCSS.Tree.URL((typeof value.value !== 'undefined' ||
@@ -544,14 +544,14 @@ export class CartoCSS {
                     variable: function () {
                         var name, index = i;
 
-                        if (input.charAt(i) === '@' && (name = $(/^@[\w-]+/))) {
+                        if (input.charAt(i) === '@' && (name = _match(/^@[\w-]+/))) {
                             return new SuperMap.CartoCSS.Tree.Variable(name, index, env.filename);
                         }
                     },
 
                     hexcolor: function () {
                         var rgb;
-                        if (input.charAt(i) === '#' && (rgb = $(/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/))) {
+                        if (input.charAt(i) === '#' && (rgb = _match(/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/))) {
                             return new SuperMap.CartoCSS.Tree.Color(rgb[1]);
                         }
                     },
@@ -559,7 +559,7 @@ export class CartoCSS {
                     keywordcolor: function () {
                         var rgb = chunks[j].match(/^[a-z]+/);
                         if (rgb && rgb[0] in SuperMap.CartoCSS.Tree.Reference.data.colors) {
-                            return new SuperMap.CartoCSS.Tree.Color(SuperMap.CartoCSS.Tree.Reference.data.colors[$(/^[a-z]+/)]);
+                            return new SuperMap.CartoCSS.Tree.Color(SuperMap.CartoCSS.Tree.Reference.data.colors[_match(/^[a-z]+/)]);
                         }
                     },
 
@@ -568,7 +568,7 @@ export class CartoCSS {
                     dimension: function () {
                         var c = input.charCodeAt(i);
                         if ((c > 57 || c < 45) || c === 47) {return;}
-                        var value = $(/^(-?\d*\.?\d+(?:[eE][-+]?\d+)?)(\%|\w+)?/);
+                        var value = _match(/^(-?\d*\.?\d+(?:[eE][-+]?\d+)?)(\%|\w+)?/);
                         if (value) {
                             return new SuperMap.CartoCSS.Tree.Dimension(value[1], value[2], memo);
                         }
@@ -580,7 +580,7 @@ export class CartoCSS {
                 variable: function () {
                     var name;
 
-                    if (input.charAt(i) === '@' && (name = $(/^(@[\w-]+)\s*:/))) {
+                    if (input.charAt(i) === '@' && (name = _match(/^(@[\w-]+)\s*:/))) {
                         return name[1];
                     }
                 },
@@ -588,9 +588,9 @@ export class CartoCSS {
                 // Entities are the smallest recognized token,
                 // and can be found inside a rule's value.
                 entity: function () {
-                    var property1 = $(this.entities.call) || $(this.entities.literal);
-                    var property2 = $(this.entities.field) || $(this.entities.variable);
-                    var property3 = $(this.entities.url) || $(this.entities.keyword);
+                    var property1 = _match(this.entities.call) || _match(this.entities.literal);
+                    var property2 = _match(this.entities.field) || _match(this.entities.variable);
+                    var property3 = _match(this.entities.url) || _match(this.entities.keyword);
                     return property1 || property2 || property3;
                 },
 
@@ -599,21 +599,21 @@ export class CartoCSS {
                 // it's there, if ';' was ommitted.
                 end: function () {
                     var q = ';';
-                    return $(q) || peek('}');
+                    return _match(q) || peek('}');
                 },
 
                 // Elements are the building blocks for Selectors. They consist of
                 // an element name, such as a tag a class, or `*`.
                 //增加对中文的支持，[\u4e00-\u9fa5]
                 element: function () {
-                    var e = $(/^(?:[.#][\w\u4e00-\u9fa5\-]+|\*|Map)/);
+                    var e = _match(/^(?:[.#][\w\u4e00-\u9fa5\-]+|\*|Map)/);
                     if (e) {return new SuperMap.CartoCSS.Tree.Element(e);}
                 },
 
                 // Attachments allow adding multiple lines, polygons etc. to an
                 // object. There can only be one attachment per selector.
                 attachment: function () {
-                    var s = $(/^::([\w\-]+(?:\/[\w\-]+)*)/);
+                    var s = _match(/^::([\w\-]+(?:\/[\w\-]+)*)/);
                     if (s) {return s[1];}
                 },
 
@@ -626,10 +626,10 @@ export class CartoCSS {
                         segments = 0, conditions = 0;
 
                     while (
-                        (e = $(this.element)) ||
-                        (z = $(this.zoom)) ||
-                        (f = $(this.filter)) ||
-                        (a = $(this.attachment))
+                        (e = _match(this.element)) ||
+                        (z = _match(this.zoom)) ||
+                        (f = _match(this.filter)) ||
+                        (a = _match(this.attachment))
                         ) {
                         segments++;
                         if (e) {
@@ -669,22 +669,22 @@ export class CartoCSS {
                 filter: function () {
                     save();
                     var key, op, val, l = '[', r = ']';
-                    if (!$(l)) {return;}
-                    if (key = $(/^[a-zA-Z0-9\-_]+/) ||
-                            $(this.entities.quoted) ||
-                            $(this.entities.variable) ||
-                            $(this.entities.keyword) ||
-                            $(this.entities.field)) {
+                    if (!_match(l)) {return;}
+                    if (key = _match(/^[a-zA-Z0-9\-_]+/) ||
+                            _match(this.entities.quoted) ||
+                            _match(this.entities.variable) ||
+                            _match(this.entities.keyword) ||
+                            _match(this.entities.field)) {
                         if (key instanceof SuperMap.CartoCSS.Tree.Quoted) {
                             key = new SuperMap.CartoCSS.Tree.Field(key.toString());
                         }
-                        if ((op = $(this.entities.comparison)) &&
-                            (val = $(this.entities.quoted) ||
-                                $(this.entities.variable) ||
-                                $(this.entities.dimension) ||
-                                $(this.entities.keyword) ||
-                                $(this.entities.field))) {
-                            if (!$(r)) {
+                        if ((op = _match(this.entities.comparison)) &&
+                            (val = _match(this.entities.quoted) ||
+                                _match(this.entities.variable) ||
+                                _match(this.entities.dimension) ||
+                                _match(this.entities.keyword) ||
+                                _match(this.entities.field))) {
+                            if (!_match(r)) {
                                 throw makeError({
                                     message: 'Missing closing ] of filter.',
                                     index: memo - 1
@@ -699,9 +699,9 @@ export class CartoCSS {
                 zoom: function () {
                     save();
                     var op, val, r = ']';
-                    if ($(/^\[\s*zoom/g) &&
-                        (op = $(this.entities.comparison)) &&
-                        (val = $(this.entities.variable) || $(this.entities.dimension)) && $(r)) {
+                    if (_match(/^\[\s*zoom/g) &&
+                        (op = _match(this.entities.comparison)) &&
+                        (val = _match(this.entities.variable) || _match(this.entities.dimension)) && _match(r)) {
                         return new SuperMap.CartoCSS.Tree.Zoom(op, val, memo);
                     } else {
                         // backtrack
@@ -714,7 +714,7 @@ export class CartoCSS {
                 block: function () {
                     var content, l = '{', r = '}';
 
-                    if ($(l) && (content = $(this.primary)) && $(r)) {
+                    if (_match(l) && (content = _match(this.primary)) && _match(r)) {
                         return content;
                     }
                 },
@@ -724,22 +724,22 @@ export class CartoCSS {
                     var selectors = [], s, rules, q = ',';
                     save();
 
-                    while (s = $(this.selector)) {
+                    while (s = _match(this.selector)) {
                         selectors.push(s);
-                        while ($(this.comment)) {//NOSONAR
+                        while (_match(this.comment)) {//NOSONAR
                         }
-                        if (!$(q)) {
+                        if (!_match(q)) {
                             break;
                         }
-                        while ($(this.comment)) {//NOSONAR
+                        while (_match(this.comment)) {//NOSONAR
                         }
                     }
                     if (s) {
-                        while ($(this.comment)) {//NOSONAR
+                        while (_match(this.comment)) {//NOSONAR
                         }
                     }
 
-                    if (selectors.length > 0 && (rules = $(this.block))) {
+                    if (selectors.length > 0 && (rules = _match(this.block))) {
                         if (selectors.length === 1 &&
                             selectors[0].elements.length &&
                             selectors[0].elements[0].value === 'Map') {
@@ -762,10 +762,10 @@ export class CartoCSS {
                         return;
                     }
 
-                    if (name = $(this.variable) || $(this.property)) {
-                        value = $(this.value);
+                    if (name = _match(this.variable) || _match(this.property)) {
+                        value = _match(this.value);
 
-                        if (value && $(this.end)) {
+                        if (value && _match(this.end)) {
                             return new SuperMap.CartoCSS.Tree.Rule(name, value, memo, env.filename);
                         } else {
                             furthest = i;
@@ -777,16 +777,16 @@ export class CartoCSS {
                 font: function () {
                     var value = [], expression = [], e, q = ',';
 
-                    while (e = $(this.entity)) {
+                    while (e = _match(this.entity)) {
                         expression.push(e);
                     }
 
                     value.push(new SuperMap.CartoCSS.Tree.Expression(expression));
 
-                    if ($(q)) {
-                        while (e = $(this.expression)) {
+                    if (_match(q)) {
+                        while (e = _match(this.expression)) {
                             value.push(e);
-                            if (!$(q)) {
+                            if (!_match(q)) {
                                 break;
                             }
                         }
@@ -800,9 +800,9 @@ export class CartoCSS {
                 value: function () {
                     var e, expressions = [], q = ',';
 
-                    while (e = $(this.expression)) {
+                    while (e = _match(this.expression)) {
                         expressions.push(e);
-                        if (!$(q)) {
+                        if (!_match(q)) {
                             break;
                         }
                     }
@@ -818,7 +818,7 @@ export class CartoCSS {
                 // A sub-expression, contained by parenthensis
                 sub: function () {
                     var e, l = '(', r = ")";
-                    if ($(l) && (e = $(this.expression)) && $(r)) {
+                    if (_match(l) && (e = _match(this.expression)) && _match(r)) {
                         return e;
                     }
                 },
@@ -826,8 +826,8 @@ export class CartoCSS {
                 // and division.
                 multiplication: function () {
                     var m, a, op, operation, q = '/';
-                    if (m = $(this.operand)) {
-                        while ((op = ($(q) || $('*') || $('%'))) && (a = $(this.operand))) {
+                    if (m = _match(this.operand)) {
+                        while ((op = (_match(q) || _match('*') || _match('%'))) && (a = _match(this.operand))) {
                             operation = new SuperMap.CartoCSS.Tree.Operation(op, [operation || m, a], memo);
                         }
                         return operation || m;
@@ -835,9 +835,9 @@ export class CartoCSS {
                 },
                 addition: function () {
                     var m, a, op, operation, plus = '+';
-                    if (m = $(this.multiplication)) {
-                        while ((op = $(/^[-+]\s+/) || (input.charAt(i - 1) != ' ' && ($(plus) || $('-')))) &&
-                        (a = $(this.multiplication))) {
+                    if (m = _match(this.multiplication)) {
+                        while ((op = _match(/^[-+]\s+/) || (input.charAt(i - 1) != ' ' && (_match(plus) || _match('-')))) &&
+                        (a = _match(this.multiplication))) {
                             operation = new SuperMap.CartoCSS.Tree.Operation(op, [operation || m, a], memo);
                         }
                         return operation || m;
@@ -847,7 +847,7 @@ export class CartoCSS {
                 // An operand is anything that can be part of an operation,
                 // such as a Color, or a Variable
                 operand: function () {
-                    return $(this.sub) || $(this.entity);
+                    return _match(this.sub) || _match(this.entity);
                 },
 
                 // Expressions either represent mathematical operations,
@@ -855,7 +855,7 @@ export class CartoCSS {
                 expression: function () {
                     var e, entities = [];
 
-                    while (e = $(this.addition) || $(this.entity)) {
+                    while (e = _match(this.addition) || _match(this.entity)) {
                         entities.push(e);
                     }
 
@@ -864,7 +864,7 @@ export class CartoCSS {
                     }
                 },
                 property: function () {
-                    var name = $(/^(([a-z][-a-z_0-9]*\/)?\*?-?[-a-z_0-9]+)\s*:/);
+                    var name = _match(/^(([a-z][-a-z_0-9]*\/)?\*?-?[-a-z_0-9]+)\s*:/);
                     if (name) {return name[1];}
                 }
             }
@@ -3689,7 +3689,7 @@ SuperMap.CartoCSS.Tree.Filterset = class Filterset {
         var key = filter.key.toString(),
             value = filter.val.toString();
 
-        if (value.match(/^[0-9]+(\.[0-9]*)?$/)) {value = parseFloat(value);}
+        if (value.match(/^[0-9]+(\.[0-9]*)?_match/)) {value = parseFloat(value);}
 
         switch (filter.op) {
             case '=':
@@ -4517,7 +4517,7 @@ SuperMap.CartoCSS.Tree.Value = class Value {
             v = "'" + v + "'";
         } else if (val.is === 'field') {
             // replace [varuable] by ctx['variable']
-            v = v.replace(/\[(.*)\]/g, "attributes['\$1']")
+            v = v.replace(/\[(.*)\]/g, "attributes['\_match1']")
         } else if (val.value && typeof val.value === "object") {
             v = "[" + v + "]";
         }

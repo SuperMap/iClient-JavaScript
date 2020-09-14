@@ -23,7 +23,7 @@ import {
     ServerType
 } from '../REST';
 import {
-    JSONFormat as JSON
+    JSONFormat
 } from '../format/JSON';
 import {
     FunctionExt
@@ -351,7 +351,7 @@ export class CommonServiceBase {
         }).then(function (text) {
             var result = text;
             if (typeof text === "string") {
-                result = new JSON().read(text);
+                result = new JSONFormat().read(text);
             }
             if (!result || result.error || result.code >= 300 && result.code !== 304) {
                 if (result && result.error) {

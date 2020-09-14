@@ -101,7 +101,7 @@ export class Select extends TemplateBase {
      */
     _createElement(tagName, className, parentEle) {
         let ele = document.createElement(tagName || 'div');
-        className && ~~(ele.className = className);
+        className && (ele.className = className);
         parentEle && parentEle.appendChild(ele);
         return ele;
     }

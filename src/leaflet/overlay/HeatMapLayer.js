@@ -12,8 +12,55 @@ import {
     GeometryPoint as Point,
     GeoText
 } from '@supermap/iclient-common';
-import Attributions from '../core/Attributions'
+import Attributions from '../core/Attributions';
 
+/**
+ * @class L.supermap.heatMapFeature
+ * @category Visualization HeatMap
+ * @classdesc 客户端专题图要素类。
+ *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
+ * @extends {L.Class}
+ * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形。
+ * @param {Object} attributes - 要素属性。
+ */
+export var HeatMapFeature = L.Class.extend({
+    initialize: function (geometry, attributes) {
+        this.geometry = geometry;
+        this.attributes = attributes;
+    },
+
+    /**
+     * @function L.supermap.themeFeature.prototype.toFeature
+     * @description 转为内部矢量要素。
+     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
+     */
+    toFeature: function () {
+        var geometry = this.geometry;
+        var points = [];
+        if (geometry instanceof L.LatLng) {
+            points = [geometry.lng, geometry.lat];
+        } else if (geometry instanceof L.Point) {
+            points = [geometry.x, geometry.y];
+        } else if (geometry instanceof L.CircleMarker) {
+            var latLng = geometry.getLatLng();
+            points = [latLng.lng, latLng.lat];
+        } else {
+            points = geometry;
+        }
+        if (points.length === 2) {
+            geometry = new GeometryPoint(points[0], points[1]);
+        }
+
+        return new Vector(geometry, this.attributes);
+    }
+
+});
+
+export var heatMapFeature = function (geometry, attributes) {
+    return new HeatMapFeature(geometry, attributes);
+};
+
+L.supermap.heatMapFeature = heatMapFeature;
 /**
  * @class L.supermap.heatMapLayer
  * @classdesc 热力图层类。
@@ -580,51 +627,3 @@ export var heatMapLayer = function (name, options) {
     return new HeatMapLayer(name, options);
 };
 L.supermap.heatMapLayer = heatMapLayer;
-
-/**
- * @class L.supermap.heatMapFeature
- * @category Visualization HeatMap
- * @classdesc 客户端专题图要素类。
- *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
- * @extends {L.Class}
- * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形。
- * @param {Object} attributes - 要素属性。
- */
-export var HeatMapFeature = L.Class.extend({
-    initialize: function (geometry, attributes) {
-        this.geometry = geometry;
-        this.attributes = attributes;
-    },
-
-    /**
-     * @function L.supermap.themeFeature.prototype.toFeature
-     * @description 转为内部矢量要素。
-     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
-     */
-    toFeature: function () {
-        var geometry = this.geometry;
-        var points = [];
-        if (geometry instanceof L.LatLng) {
-            points = [geometry.lng, geometry.lat];
-        } else if (geometry instanceof L.Point) {
-            points = [geometry.x, geometry.y];
-        } else if (geometry instanceof L.CircleMarker) {
-            var latLng = geometry.getLatLng();
-            points = [latLng.lng, latLng.lat];
-        } else {
-            points = geometry;
-        }
-        if (points.length === 2) {
-            geometry = new GeometryPoint(points[0], points[1]);
-        }
-
-        return new Vector(geometry, this.attributes);
-    }
-
-});
-
-export var heatMapFeature = function (geometry, attributes) {
-    return new HeatMapFeature(geometry, attributes);
-};
-
-L.supermap.heatMapFeature = heatMapFeature;
