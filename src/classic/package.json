@@ -13,8 +13,8 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "mapv": "2.0.43",
-    "xlsx": "0.15.4",
+    "mapv": "2.0.56",
+    "xlsx": "0.16.7",
     "@supermap/iclient-common": "10.1.0-beta"
   }
 }

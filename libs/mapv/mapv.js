@@ -4,7 +4,7 @@
 	(factory((global.mapv = global.mapv || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "2.0.43";
+var version = "2.0.56";
 
 /**
  * @author kyle / http://nikai.us/
@@ -303,11 +303,13 @@ DataSet.prototype.add = function (data, senderId) {
     if (Array.isArray(data)) {
         // Array
         for (var i = 0, len = data.length; i < len; i++) {
-            if (data[i].time && data[i].time.length == 14 && data[i].time.substr(0, 2) == '20') {
-                var time = data[i].time;
-                data[i].time = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2) + ' ' + time.substr(8, 2) + ':' + time.substr(10, 2) + ':' + time.substr(12, 2)).getTime();
+            if (data[i]) {
+                if (data[i].time && data[i].time.length == 14 && data[i].time.substr(0, 2) == '20') {
+                    var time = data[i].time;
+                    data[i].time = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2) + ' ' + time.substr(8, 2) + ':' + time.substr(10, 2) + ':' + time.substr(12, 2)).getTime();
+                }
+                this._data.push(data[i]);
             }
-            this._data.push(data[i]);
         }
     } else if (data instanceof Object) {
         // Single item
@@ -1021,6 +1023,7 @@ function colorize(pixels, gradient, options) {
     }
 
     var maxOpacity = options.maxOpacity || 0.8;
+    var minOpacity = options.minOpacity || 0;
     var range = options.range;
 
     for (var i = 3, len = pixels.length, j; i < len; i += 4) {
@@ -1028,6 +1031,9 @@ function colorize(pixels, gradient, options) {
 
         if (pixels[i] / 256 > maxOpacity) {
             pixels[i] = 256 * maxOpacity;
+        }
+        if (pixels[i] / 256 < minOpacity) {
+            pixels[i] = 256 * minOpacity;
         }
 
         if (j && j >= jMin && j <= jMax) {
@@ -1174,19 +1180,13 @@ var drawGrid = {
 
         var size = options._size || options.size || 50;
 
+        // 后端传入数据为网格数据时，传入enableCluster为false，前端不进行删格化操作，直接画方格	
+        var enableCluster = 'enableCluster' in options ? options.enableCluster : true;
+
         var offset = options.offset || {
             x: 0,
             y: 0
         };
-
-        for (var i = 0; i < data.length; i++) {
-            var coordinates = data[i].geometry._coordinates || data[i].geometry.coordinates;
-            var gridKey = Math.floor((coordinates[0] - offset.x) / size) + "," + Math.floor((coordinates[1] - offset.y) / size);
-            if (!grids[gridKey]) {
-                grids[gridKey] = 0;
-            }
-            grids[gridKey] += ~~(data[i].count || 1);
-        }
 
         var intensity = new Intensity({
             min: options.min || 0,
@@ -1194,15 +1194,44 @@ var drawGrid = {
             gradient: options.gradient
         });
 
-        for (var gridKey in grids) {
-            gridKey = gridKey.split(",");
+        if (!enableCluster) {
+            for (var i = 0; i < data.length; i++) {
+                var coordinates = data[i].geometry._coordinates || data[i].geometry.coordinates;
+                var gridKey = coordinates.join(',');
+                grids[gridKey] = data[i].count || 1;
+            }
+            for (var _gridKey in grids) {
+                _gridKey = _gridKey.split(',');
 
-            context.beginPath();
-            context.rect(gridKey[0] * size + .5 + offset.x, gridKey[1] * size + .5 + offset.y, size, size);
-            context.fillStyle = intensity.getColor(grids[gridKey]);
-            context.fill();
-            if (options.strokeStyle && options.lineWidth) {
-                context.stroke();
+                context.beginPath();
+                context.rect(+_gridKey[0] - size / 2, +_gridKey[1] - size / 2, size, size);
+                context.fillStyle = intensity.getColor(grids[_gridKey]);
+                context.fill();
+                if (options.strokeStyle && options.lineWidth) {
+                    context.stroke();
+                }
+            }
+        } else {
+            for (var _i = 0; _i < data.length; _i++) {
+                var coordinates = data[_i].geometry._coordinates || data[_i].geometry.coordinates;
+                var gridKey = Math.floor((coordinates[0] - offset.x) / size) + ',' + Math.floor((coordinates[1] - offset.y) / size);
+                if (!grids[gridKey]) {
+                    grids[gridKey] = 0;
+                }
+
+                grids[gridKey] += ~~(data[_i].count || 1);
+            }
+
+            for (var _gridKey2 in grids) {
+                _gridKey2 = _gridKey2.split(',');
+
+                context.beginPath();
+                context.rect(_gridKey2[0] * size + .5 + offset.x, _gridKey2[1] * size + .5 + offset.y, size, size);
+                context.fillStyle = intensity.getColor(grids[_gridKey2]);
+                context.fill();
+                if (options.strokeStyle && options.lineWidth) {
+                    context.stroke();
+                }
             }
         }
 
@@ -1223,10 +1252,14 @@ var drawGrid = {
             }
 
             for (var gridKey in grids) {
-                gridKey = gridKey.split(",");
+                gridKey = gridKey.split(',');
                 var text = grids[gridKey];
                 var textWidth = context.measureText(text).width;
-                context.fillText(text, gridKey[0] * size + .5 + offset.x + size / 2 - textWidth / 2, gridKey[1] * size + .5 + offset.y + size / 2 + 5);
+                if (!enableCluster) {
+                    context.fillText(text, +gridKey[0] - textWidth / 2, +gridKey[1] + 5);
+                } else {
+                    context.fillText(text, gridKey[0] * size + .5 + offset.x + size / 2 - textWidth / 2, gridKey[1] * size + .5 + offset.y + size / 2 + 5);
+                }
             }
         }
 
@@ -3020,10 +3053,10 @@ function CanvasLayer(options) {
 }
 
 var global$3 = typeof window === 'undefined' ? {} : window;
+var BMap$1 = global$3.BMap || global$3.BMapGL;
+if (BMap$1) {
 
-if (global$3.BMap) {
-
-    CanvasLayer.prototype = new BMap.Overlay();
+    CanvasLayer.prototype = new BMap$1.Overlay();
 
     CanvasLayer.prototype.initialize = function (map) {
         this._map = map;
@@ -3031,10 +3064,17 @@ if (global$3.BMap) {
         canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + this.zIndex + ";user-select:none;";
         canvas.style.mixBlendMode = this.mixBlendMode;
         this.adjustSize();
-        map.getPanes()[this.paneName].appendChild(canvas);
+        var pane = map.getPanes()[this.paneName];
+        if (!pane) {
+            pane = map.getPanes().floatShadow;
+        }
+        pane.appendChild(canvas);
         var that = this;
         map.addEventListener('resize', function () {
             that.adjustSize();
+            that._draw();
+        });
+        map.addEventListener('update', function () {
             that._draw();
         });
         /*
@@ -3042,6 +3082,11 @@ if (global$3.BMap) {
             that._draw();
         });
         */
+        if (this.options.updateImmediate) {
+            setTimeout(function () {
+                that._draw();
+            }, 100);
+        }
         return this.canvas;
     };
 
@@ -3063,10 +3108,14 @@ if (global$3.BMap) {
 
     CanvasLayer.prototype.draw = function () {
         var self = this;
-        clearTimeout(self.timeoutID);
-        self.timeoutID = setTimeout(function () {
+        if (this.options.updateImmediate) {
             self._draw();
-        }, 15);
+        } else {
+            clearTimeout(self.timeoutID);
+            self.timeoutID = setTimeout(function () {
+                self._draw();
+            }, 15);
+        }
     };
 
     CanvasLayer.prototype._draw = function () {
@@ -5235,6 +5284,9 @@ var BaseLayer = function () {
     return BaseLayer;
 }();
 
+var global$4 = typeof window === 'undefined' ? {} : window;
+var BMap$2 = global$4.BMap || global$4.BMapGL;
+
 var AnimationLayer = function (_BaseLayer) {
     inherits(AnimationLayer, _BaseLayer);
 
@@ -5302,7 +5354,22 @@ var AnimationLayer = function (_BaseLayer) {
     }, {
         key: "transferToMercator",
         value: function transferToMercator() {
-            var projection = this.map.getMapType().getProjection();
+            var map = this.map;
+            var mapType = map.getMapType();
+            var projection;
+            if (mapType.getProjection) {
+                projection = mapType.getProjection();
+            } else {
+                projection = {
+                    lngLatToPoint: function lngLatToPoint(point) {
+                        var mc = map.lnglatToMercator(point.lng, point.lat);
+                        return {
+                            x: mc[0],
+                            y: mc[1]
+                        };
+                    }
+                };
+            }
 
             if (this.options.coordType !== 'bd09mc') {
                 var data = this.dataSet.get();
@@ -5325,11 +5392,37 @@ var AnimationLayer = function (_BaseLayer) {
             }
             //clear(ctx);
             var map = this.map;
-            var zoomUnit = Math.pow(2, 18 - map.getZoom());
-            var projection = map.getMapType().getProjection();
-
-            var mcCenter = projection.lngLatToPoint(map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - map.getSize().width / 2 * zoomUnit, mcCenter.y + map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
+            var projection;
+            var mcCenter;
+            if (map.getMapType().getProjection) {
+                projection = map.getMapType().getProjection();
+                mcCenter = projection.lngLatToPoint(map.getCenter());
+            } else {
+                mcCenter = {
+                    x: map.getCenter().lng,
+                    y: map.getCenter().lat
+                };
+                if (mcCenter.x > -180 && mcCenter.x < 180) {
+                    mcCenter = map.lnglatToMercator(mcCenter.x, mcCenter.y);
+                    mcCenter = { x: mcCenter[0], y: mcCenter[1] };
+                }
+                projection = {
+                    lngLatToPoint: function lngLatToPoint(point) {
+                        var mc = map.lnglatToMercator(point.lng, point.lat);
+                        return {
+                            x: mc[0],
+                            y: mc[1]
+                        };
+                    }
+                };
+            }
+            var zoomUnit;
+            if (projection.getZoomUnits) {
+                zoomUnit = projection.getZoomUnits(map.getZoom());
+            } else {
+                zoomUnit = Math.pow(2, 18 - map.getZoom());
+            }
+            var nwMc = new BMap$2.Pixel(mcCenter.x - map.getSize().width / 2 * zoomUnit, mcCenter.y + map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
 
             clear(ctx);
 
@@ -5495,6 +5588,9 @@ var AnimationLayer = function (_BaseLayer) {
  * @author kyle / http://nikai.us/
  */
 
+var global$5 = typeof window === 'undefined' ? {} : window;
+var BMap$3 = global$5.BMap || global$5.BMapGL;
+
 var Layer = function (_BaseLayer) {
     inherits(Layer, _BaseLayer);
 
@@ -5518,6 +5614,7 @@ var Layer = function (_BaseLayer) {
         var canvasLayer = _this.canvasLayer = new CanvasLayer({
             map: map,
             context: _this.context,
+            updateImmediate: options.updateImmediate,
             paneName: options.paneName,
             mixBlendMode: options.mixBlendMode,
             enableMassClear: options.enableMassClear,
@@ -5605,7 +5702,24 @@ var Layer = function (_BaseLayer) {
             if (!dataSet) {
                 dataSet = this.dataSet;
             }
-            var projection = this.map.getMapType().getProjection();
+
+            var map = this.map;
+
+            var mapType = map.getMapType();
+            var projection;
+            if (mapType.getProjection) {
+                projection = mapType.getProjection();
+            } else {
+                projection = {
+                    lngLatToPoint: function lngLatToPoint(point) {
+                        var mc = map.lnglatToMercator(point.lng, point.lat);
+                        return {
+                            x: mc[0],
+                            y: mc[1]
+                        };
+                    }
+                };
+            }
 
             if (this.options.coordType !== 'bd09mc') {
                 var data = dataSet.get();
@@ -5641,11 +5755,38 @@ var Layer = function (_BaseLayer) {
 
             var map = this.canvasLayer._map;
 
-            var zoomUnit = Math.pow(2, 18 - map.getZoom());
-            var projection = map.getMapType().getProjection();
+            var projection;
+            var mcCenter;
+            if (map.getMapType().getProjection) {
+                projection = map.getMapType().getProjection();
+                mcCenter = projection.lngLatToPoint(map.getCenter());
+            } else {
+                mcCenter = {
+                    x: map.getCenter().lng,
+                    y: map.getCenter().lat
+                };
+                if (mcCenter.x > -180 && mcCenter.x < 180) {
+                    mcCenter = map.lnglatToMercator(mcCenter.x, mcCenter.y);
+                    mcCenter = { x: mcCenter[0], y: mcCenter[1] };
+                }
+                projection = {
+                    lngLatToPoint: function lngLatToPoint(point) {
+                        var mc = map.lnglatToMercator(point.lng, point.lat);
+                        return {
+                            x: mc[0],
+                            y: mc[1]
+                        };
+                    }
+                };
+            }
+            var zoomUnit;
+            if (projection.getZoomUnits) {
+                zoomUnit = projection.getZoomUnits(map.getZoom());
+            } else {
+                zoomUnit = Math.pow(2, 18 - map.getZoom());
+            }
 
-            var mcCenter = projection.lngLatToPoint(map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - map.getSize().width / 2 * zoomUnit, mcCenter.y + map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
+            var nwMc = new BMap$3.Pixel(mcCenter.x - map.getSize().width / 2 * zoomUnit, mcCenter.y + map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
 
             var context = this.getContext();
 
@@ -5719,7 +5860,7 @@ var Layer = function (_BaseLayer) {
 
             this.processData(data);
 
-            var nwPixel = map.pointToPixel(new BMap.Point(0, 0));
+            var nwPixel = map.pointToPixel(new BMap$3.Point(0, 0));
 
             if (self.options.unit == 'm') {
                 if (self.options.size) {
@@ -5792,7 +5933,7 @@ var Layer = function (_BaseLayer) {
     }, {
         key: "draw",
         value: function draw() {
-            this.canvasLayer.draw();
+            this.canvasLayer && this.canvasLayer.draw();
         }
     }, {
         key: "clearData",
@@ -5993,9 +6134,9 @@ function CanvasLayer$2(opt_options) {
   }
 }
 
-var global$4 = typeof window === 'undefined' ? {} : window;
+var global$6 = typeof window === 'undefined' ? {} : window;
 
-if (global$4.google && global$4.google.maps) {
+if (global$6.google && global$6.google.maps) {
 
   CanvasLayer$2.prototype = new google.maps.OverlayView();
 
@@ -6036,8 +6177,8 @@ if (global$4.google && global$4.google.maps) {
    * @return {number} The browser-defined id for the requested callback.
    * @private
    */
-  CanvasLayer$2.prototype.requestAnimFrame_ = global$4.requestAnimationFrame || global$4.webkitRequestAnimationFrame || global$4.mozRequestAnimationFrame || global$4.oRequestAnimationFrame || global$4.msRequestAnimationFrame || function (callback) {
-    return global$4.setTimeout(callback, 1000 / 60);
+  CanvasLayer$2.prototype.requestAnimFrame_ = global$6.requestAnimationFrame || global$6.webkitRequestAnimationFrame || global$6.mozRequestAnimationFrame || global$6.oRequestAnimationFrame || global$6.msRequestAnimationFrame || function (callback) {
+    return global$6.setTimeout(callback, 1000 / 60);
   };
 
   /**
@@ -6049,7 +6190,7 @@ if (global$4.google && global$4.google.maps) {
    * @param {number=} requestId The id of the frame request to cancel.
    * @private
    */
-  CanvasLayer$2.prototype.cancelAnimFrame_ = global$4.cancelAnimationFrame || global$4.webkitCancelAnimationFrame || global$4.mozCancelAnimationFrame || global$4.oCancelAnimationFrame || global$4.msCancelAnimationFrame || function (requestId) {};
+  CanvasLayer$2.prototype.cancelAnimFrame_ = global$6.cancelAnimationFrame || global$6.webkitCancelAnimationFrame || global$6.mozCancelAnimationFrame || global$6.oCancelAnimationFrame || global$6.msCancelAnimationFrame || function (requestId) {};
 
   /**
    * Sets any options provided. See CanvasLayerOptions for more information.
@@ -6216,7 +6357,7 @@ if (global$4.google && global$4.google.maps) {
 
     // cease canvas update callbacks
     if (this.requestAnimationFrameId_) {
-      this.cancelAnimFrame_.call(global$4, this.requestAnimationFrameId_);
+      this.cancelAnimFrame_.call(global$6, this.requestAnimationFrameId_);
       this.requestAnimationFrameId_ = null;
     }
   };
@@ -6341,7 +6482,7 @@ if (global$4.google && global$4.google.maps) {
    */
   CanvasLayer$2.prototype.scheduleUpdate = function () {
     if (this.isAdded_ && !this.requestAnimationFrameId_) {
-      this.requestAnimationFrameId_ = this.requestAnimFrame_.call(global$4, this.requestUpdateFunction_);
+      this.requestAnimationFrameId_ = this.requestAnimFrame_.call(global$6, this.requestUpdateFunction_);
     }
   };
 }
