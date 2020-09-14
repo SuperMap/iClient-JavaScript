@@ -130,9 +130,6 @@ export var WebPrintingJobService = ServiceBase.extend({
     },
 
     _processParams(params) {
-        if (!params) {
-            return {};
-        }
         if (params.layoutOptions && params.layoutOptions.littleMapOptions) {
             params.layoutOptions.littleMapOptions.center = this._toPointObject(
                 params.layoutOptions.littleMapOptions.center
