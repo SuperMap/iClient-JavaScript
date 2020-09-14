@@ -259,7 +259,7 @@ describe('mapboxgl_HeatMapLayer', () => {
         testDiv.style.width = '1000px'
         map.resize();
         setTimeout(() => {
-            expect(heatLayer.rootCanvas.width).toBeGreaterThan(1000);
+            expect(heatLayer.rootCanvas.width).toBe(1000 * window.devicePixelRatio);
             done();
         }, 2000);
     });
