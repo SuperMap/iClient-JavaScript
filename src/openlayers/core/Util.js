@@ -1,7 +1,11 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {Unit, Bounds, GeoJSON as GeoJSONFormat, FilterParameter,
+import {
+    Unit,
+    Bounds,
+    GeoJSON as GeoJSONFormat,
+    FilterParameter,
     GetFeaturesBySQLParameters,
     QueryBySQLParameters,
     QueryOption
@@ -9,6 +13,12 @@ import {Unit, Bounds, GeoJSON as GeoJSONFormat, FilterParameter,
 import { QueryService } from '../services/QueryService';
 import { FeatureService } from '../services/FeatureService';
 import * as olUtil from 'ol/util';
+import Geometry from 'ol/geom/Geometry';
+import { getVectorContext } from 'ol/render';
+import VectorSource from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import { Fill, Style } from 'ol/style';
+import Feature from 'ol/Feature';
 
 /**
  * @class ol.supermap.Util
@@ -16,24 +26,21 @@ import * as olUtil from 'ol/util';
  * @classdesc 工具类。
  */
 export class Util {
+    constructor() {}
 
-    constructor() {
-
-    }
-
-    static getOlVersion(){
-      if(olUtil && olUtil.VERSION) {
-        return olUtil.VERSION.split('.')[0]
-      }
-      if(window && window.ol){
-        if(window.ol.util){
-          return '6'
+    static getOlVersion() {
+        if (olUtil && olUtil.VERSION) {
+            return olUtil.VERSION.split('.')[0];
         }
-        if(window.ol.WebGLMap){
-          return '5'
+        if (window && window.ol) {
+            if (window.ol.util) {
+                return '6';
+            }
+            if (window.ol.WebGLMap) {
+                return '5';
+            }
         }
-      }
-      return '4'
+        return '4';
     }
 
     /**
@@ -56,7 +63,7 @@ export class Util {
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
             var format = new GeoJSONFormat();
-            var result = format.read(geoJSON, "FeatureCollection");
+            var result = format.read(geoJSON, 'FeatureCollection');
             return result[0].geometry;
         }
     }
@@ -85,12 +92,7 @@ export class Util {
      * @returns {SuperMap.Bounds} 返回 SuperMap 的 Bounds 对象。
      */
     static toSuperMapBounds(bounds) {
-        return new Bounds(
-            bounds[0],
-            bounds[1],
-            bounds[2],
-            bounds[3]
-        );
+        return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
     }
 
     /**
@@ -102,7 +104,7 @@ export class Util {
     static toProcessingParam(points) {
         var geometryParam = {};
         if (points.length < 1) {
-            geometryParam = "";
+            geometryParam = '';
         } else {
             var results = [];
             for (var i = 0; i < points.length; i++) {
@@ -112,7 +114,7 @@ export class Util {
                 results.push(point);
             }
             results.push(results[0]);
-            geometryParam.type = "REGION";
+            geometryParam.type = 'REGION';
             geometryParam.points = results;
         }
         return geometryParam;
@@ -148,11 +150,11 @@ export class Util {
             meterPerMapUnit = 1;
         } else if (mapUnit === Unit.DEGREE) {
             // 每度表示多少米。
-            meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+            meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
         } else if (mapUnit === Unit.KILOMETER) {
-            meterPerMapUnit = 1.0E-3;
+            meterPerMapUnit = 1.0e-3;
         } else if (mapUnit === Unit.INCH) {
-            meterPerMapUnit = 1 / 2.5399999918E-2;
+            meterPerMapUnit = 1 / 2.5399999918e-2;
         } else if (mapUnit === Unit.FOOT) {
             meterPerMapUnit = 0.3048;
         } else {
@@ -168,7 +170,7 @@ export class Util {
      * @returns {boolean} 是否是数组。
      */
     static isArray(obj) {
-        return Object.prototype.toString.call(obj) == '[object Array]'
+        return Object.prototype.toString.call(obj) == '[object Array]';
     }
 
     /**
@@ -188,7 +190,7 @@ export class Util {
             firstLineTitles: false
         };
         options = options || defaultOptions;
-        var _propertiesNames = []
+        var _propertiesNames = [];
         if (typeof csv === 'string') {
             var titulos = options.titles;
             if (options.firstLineTitles) {
@@ -206,7 +208,10 @@ export class Util {
                 options.titles = titulos;
             }
             for (let i = 0; i < titulos.length; i++) {
-                var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
+                var prop = titulos[i]
+                    .toLowerCase()
+                    .replace(/[^\w ]+/g, '')
+                    .replace(/ +/g, '_');
                 if (prop == '' || prop == '_') {
                     prop = 'prop-' + i;
                 }
@@ -218,21 +223,21 @@ export class Util {
 
         function _deleteDoubleQuotes(cadena) {
             if (options.deleteDoubleQuotes) {
-                cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+                cadena = cadena.trim().replace(/^"/, '').replace(/"$/, '');
             }
             return cadena;
         }
 
         function _csv2json(csv) {
             var json = {};
-            json["type"] = "FeatureCollection";
-            json["features"] = [];
+            json['type'] = 'FeatureCollection';
+            json['features'] = [];
             var titulos = options.titles;
             csv = csv.split(options.lineSeparator);
             for (var num_linea = 0; num_linea < csv.length; num_linea++) {
-                var campos = csv[num_linea].trim().split(options.fieldSeparator)
-                    , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
-                    , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
+                var campos = csv[num_linea].trim().split(options.fieldSeparator),
+                    lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)]),
+                    lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
 
                 var isInRange = lng < 180 && lng > -180 && lat < 90 && lat > -90;
                 if (!(campos.length == titulos.length && isInRange)) {
@@ -240,17 +245,17 @@ export class Util {
                 }
 
                 var feature = {};
-                feature["type"] = "Feature";
-                feature["geometry"] = {};
-                feature["properties"] = {};
-                feature["geometry"]["type"] = "Point";
-                feature["geometry"]["coordinates"] = [lng, lat];
+                feature['type'] = 'Feature';
+                feature['geometry'] = {};
+                feature['properties'] = {};
+                feature['geometry']['type'] = 'Point';
+                feature['geometry']['coordinates'] = [lng, lat];
                 for (var i = 0; i < titulos.length; i++) {
                     if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+                        feature['properties'][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
                     }
                 }
-                json["features"].push(feature);
+                json['features'].push(feature);
             }
             return json;
         }
@@ -278,7 +283,7 @@ export class Util {
      */
     static supportWebGL2() {
         var canvas = document.createElement('canvas');
-        return Boolean(canvas && canvas.getContext("webgl2"));
+        return Boolean(canvas && canvas.getContext('webgl2'));
     }
 
     /**
@@ -288,7 +293,7 @@ export class Util {
      * @returns {boolean}
      */
     static isString(str) {
-        return (typeof str === 'string') && str.constructor === String;
+        return typeof str === 'string' && str.constructor === String;
     }
     /**
      * @function ol.supermap.Util.isObject
@@ -299,7 +304,7 @@ export class Util {
     static isObject(obj) {
         return Object.prototype.toString.call(obj) === '[object Object]';
     }
-    
+
     /**
      * @function ol.supermap.Util.trim
      * @description 字符串裁剪两边的空格
@@ -307,7 +312,7 @@ export class Util {
      * @returns {boolean}
      */
     static trim(str = '') {
-        return str.replace(/(^\s*)|(\s*$)/g, "");
+        return str.replace(/(^\s*)|(\s*$)/g, '');
     }
     /**
      * @function ol.supermap.Util.newGuid
@@ -317,7 +322,7 @@ export class Util {
      */
     static newGuid(attr) {
         let len = attr || 32;
-        let guid = "";
+        let guid = '';
         for (let i = 1; i < len; i++) {
             let n = Math.floor(Math.random() * 16.0).toString(16);
             guid += n;
@@ -349,28 +354,41 @@ export class Util {
      * @param {function} processCompleted - 成功请求的回调函数
      * @param {function} processFaild - 失败请求的回调函数
      */
-    static getFeatureBySQL(url, datasetNames, serviceOptions ,processCompleted, processFaild) {
+    static getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild) {
         let getFeatureParam = new FilterParameter({
-            name: datasetNames.join().replace(":", "@")
-             // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131 
-        }), getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+                name: datasetNames.join().replace(':', '@')
+                // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131
+            }),
+            getFeatureBySQLParams = new GetFeaturesBySQLParameters({
                 queryParameter: getFeatureParam,
                 datasetNames: datasetNames,
                 fromIndex: 0,
                 toIndex: 100000,
                 maxFeatures: 100000,
                 returnContent: true
-        }), callback = (serviceResult) => {
-            if(serviceResult.type === "processCompleted") {
-                processCompleted && processCompleted(serviceResult); 
-            } else {
-                processFaild && processFaild(serviceResult);  
-            }
-        };
+            }),
+            callback = (serviceResult) => {
+                if (serviceResult.type === 'processCompleted') {
+                    processCompleted && processCompleted(serviceResult);
+                } else {
+                    processFaild && processFaild(serviceResult);
+                }
+            };
         new FeatureService(url, serviceOptions).getFeaturesBySQL(getFeatureBySQLParams, callback);
     }
 
-    static queryFeatureBySQL(url, layerName, attributeFilter, fields, epsgCode, processCompleted, processFaild, startRecord, recordLength, onlyAttribute) {
+    static queryFeatureBySQL(
+        url,
+        layerName,
+        attributeFilter,
+        fields,
+        epsgCode,
+        processCompleted,
+        processFaild,
+        startRecord,
+        recordLength,
+        onlyAttribute
+    ) {
         var queryParam, queryBySQLParams, queryBySQLService;
         queryParam = new FilterParameter({
             name: layerName,
@@ -390,12 +408,12 @@ export class Util {
         if (epsgCode) {
             params.prjCoordSys = {
                 epsgCode: epsgCode
-            }
+            };
         }
         queryBySQLParams = new QueryBySQLParameters(params);
         queryBySQLService = new QueryService(url);
         queryBySQLService.queryBySQL(queryBySQLParams, function (data) {
-            data.type === 'processCompleted' ? processCompleted(data) : processFaild(data)
+            data.type === 'processCompleted' ? processCompleted(data) : processFaild(data);
         });
     }
 
@@ -408,7 +426,7 @@ export class Util {
     static getFeatureProperties(features) {
         let properties = [];
         if (Util.isArray(features) && features.length) {
-            features.forEach(feature => {
+            features.forEach((feature) => {
                 let property = feature.get('attributes');
                 property && properties.push(property);
             });
@@ -432,5 +450,76 @@ export class Util {
             return !!fieldName.match(new RegExp(shortName));
         }
         return false;
+    }
+    /**
+     * @function ol.supermap.Util.setMask
+     * @description 为图层设置掩膜。
+     * @version 10.1.0
+     * @param {ol/layer/Layer | Array.<ol/layer/Layer} layers 图层
+     * @param {ol/geom/Geometry | ol/feature} polygon 掩膜矢量要素，支持面类型的要素。
+     */
+    static setMask(layers, polygon) {
+        if (!polygon) {
+            return;
+        }
+        const geo = polygon instanceof Feature ? polygon.getGeometry() : polygon;
+        if (!(geo instanceof Geometry) && ['MultiPolygon', 'Polygon'].indexOf(polygon.getType()) < 0) {
+            return;
+        }
+        const feature =  polygon instanceof Feature ? polygon : new Feature(polygon);
+        const style = new Style({
+            fill: new Fill({
+                color: 'black'
+            })
+        });
+
+        const clipLayer = new VectorLayer({
+            source: new VectorSource({
+                features: [feature],
+                wrapX: false
+            })
+        });
+
+        const clipRender = function (e) {
+            var vectorContext = getVectorContext(e);
+            e.context.globalCompositeOperation = 'destination-in';
+            clipLayer.getSource().forEachFeature(function (feature) {
+                vectorContext.drawFeature(feature, style);
+                e.context.globalCompositeOperation = 'source-over';
+            });
+        };
+        const todoLayers = Array.isArray(layers) ? layers : [layers];
+        Util.unsetMask(todoLayers);
+        todoLayers.forEach((layer) => {
+            layer.classNameBak_ = layer.className_;
+            layer.className_ = 'ol_mask_layer';
+            layer.clipRender = clipRender;
+            layer.extentBak_ = layer.getExtent();
+            layer.setExtent(clipLayer.getSource().getExtent());
+            layer.on('postrender', clipRender);
+            layer.changed();
+        });
+    }
+    /**
+     * @function ol.supermap.Util.setMask
+     * @description 取消图层掩膜。
+     * @version 10.1.0
+     * @param {ol/layer/Layer | Array.<ol/layer/Layer} layers 图层
+     */
+    static unsetMask(layers) {
+        const todoLayers = Array.isArray(layers) ? layers : [layers];
+        for (let index = 0; index < todoLayers.length; index++) {
+            const layer = todoLayers[index];
+            if (!layer.clipRender) {
+                continue;
+            }
+            layer.un('postrender', layer.clipRender);
+            layer.className_ = layer.classNameBak_;
+            layer.setExtent(layer.extentBak);
+            delete layer.classNameBak_;
+            delete layer.clipRender;
+            delete layer.extentBak_;
+            layer.changed();
+        }
     }
 }

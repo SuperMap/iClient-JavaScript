@@ -664,6 +664,9 @@ window.examplesResources = {
         "title_webPrinting_landUse": 'Web Printing(LandUse)',
         "title_natureResourcePlatform_Vue": 'Nature Resource Platform(Vue)',
         "title_ecologicalBigDataPlatform_Vue": 'Ecological Big Data Platform(Vue)',
+        "title_mask":'Layer Mask',
+        "title_objectdetection":"Machinelearning(Objectdetection)",
+        "title_binaryclassification":"Machinelearning(Binaryclassification)",
 
         "text_service_name":"Name",
         "text_service_type":"Type",
@@ -1403,6 +1406,9 @@ window.examplesResources = {
         'text_ncpworld_incidence_title':"Reported incidence by World (per 100,000)",
         'text_ncp_world':"Global NCP",
         'text_ncp_china':"China NCP",
+        "text_input_value_addMask": "Add mask",
+        "text_input_value_removeMask": "Remove mask",
+        "text_add_sicahun_plygon":"Loading Sichuan Province Regional Data...",
 
 
         "btn_previous":"Previous",

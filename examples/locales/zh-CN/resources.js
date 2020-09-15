@@ -615,6 +615,9 @@ window.examplesResources = {
         "title_webPrinting_landUse": '土地利用 Web 打印',
         "title_natureResourcePlatform_Vue": '自然资源平台大屏',
         "title_ecologicalBigDataPlatform_Vue": '生态大数据平台大屏',
+        "title_mask":'图层掩膜',
+        "title_objectdetection":"机器学习（目标检测）",
+        "title_binaryclassification":"机器学习（二元分类）",
 
         "text_service_name":"名称",
         "text_service_type":"类型",
@@ -1349,6 +1352,9 @@ window.examplesResources = {
         'text_ncpworld_incidence_title':"全球报告发病率（每10万人）",
         'text_ncp_world':"世界疫情",
         'text_ncp_china':"中国疫情",
+        "text_input_value_addMask": "添加掩膜",
+        "text_input_value_removeMask": "移除掩膜",
+        "text_add_sicahun_plygon":"正在加载四川省区划数据...",
 
 
         "btn_previous":"上一步",

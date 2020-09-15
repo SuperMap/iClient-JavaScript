@@ -970,7 +970,19 @@ var exampleConfig = {
                     thumbnail: "ol_graphThemeLayer.png",
                     fileName: "graphThemeLayer"
                 }]
-            }
+            },
+            "mask": {
+                name: "掩膜",
+                name_en: "Mask",
+                version: "10.1.0",
+                content: [{
+                    name: "图层掩膜",
+                    name_en: "Layer Mask",
+                    version: "10.1.0",
+                    thumbnail: "mask.png",
+                    fileName: "mask"
+                }]
+            },
         }
     },
     "plot": {
