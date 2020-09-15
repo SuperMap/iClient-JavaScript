@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import Map from 'ol/Map';
+import olMap from 'ol/Map';
 import LayerGroup from 'ol/layer/Group';
 
 /**
@@ -24,9 +24,9 @@ export var MapExtend = function () {
             }
         }
     }
-    Map.prototype.forEachFeatureAtPixelDefault = Map.prototype.forEachFeatureAtPixel;
+    olMap.prototype.forEachFeatureAtPixelDefault = olMap.prototype.forEachFeatureAtPixel;
 
-    Map.prototype.forEachFeatureAtPixel = Map.prototype.Tc = function (pixel, callback, opt_options, e) {
+    olMap.prototype.forEachFeatureAtPixel = olMap.prototype.Tc = function (pixel, callback, opt_options, e) {
 
         //如果满足高效率图层选取要求优先返回高效率图层选中结果
         const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {

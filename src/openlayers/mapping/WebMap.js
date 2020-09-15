@@ -27,7 +27,7 @@ import SampleDataInfo from './webmap/config/SampleDataInfo.json';// eslint-disab
 import GeoJSON from 'ol/format/GeoJSON';
 import MVT from 'ol/format/MVT';
 import Observable from 'ol/Observable';
-import Map from 'ol/Map';
+import olMap from 'ol/Map';
 import View from 'ol/View';
 import * as olProj from 'ol/proj';
 import * as olProj4 from 'ol/proj/proj4';
@@ -216,7 +216,7 @@ export class WebMap extends Observable {
             overlays = mapSetting.overlays;
             controls = mapSetting.controls;
         }
-        this.map = new Map({
+        this.map = new olMap({
             interactions: interactions,
             overlays: overlays,
             controls: controls,
