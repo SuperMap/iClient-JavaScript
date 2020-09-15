@@ -55,7 +55,8 @@ window.examplesResources = {
             "vuecomponents_mbgl": "Vue - MapboxGL",
             "vuecomponents_leaflet": "Vue - Leaflet",
             "reactcomponents_mbgl": 'React - MapboxGL',
-            "h5components": "H5"
+            "h5components": "H5",
+            "template": '行业模板'
         }
     },
     "footer": {
@@ -612,6 +613,8 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_React": '动效标记图层',
         "title_componentsAnimateTextLayer_React": '动效文本标记图层',
         "title_webPrinting_landUse": '土地利用 Web 打印',
+        "title_natureResourcePlatform_Vue": '自然资源平台大屏',
+        "title_ecologicalBigDataPlatform_Vue": '生态大数据平台大屏',
 
         "text_service_name":"名称",
         "text_service_type":"类型",

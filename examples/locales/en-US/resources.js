@@ -86,7 +86,8 @@ window.examplesResources = {
             "vuecomponents_mbgl": "Vue - MapboxGL",
             "vuecomponents_leaflet": "Vue - Leaflet",
             "reactcomponents_mbgl": 'React - MapboxGL',
-            "h5components": "H5"
+            "h5components": "H5",
+            "template": 'Industry Template'
         },
         "more": {
             "_name": "More>>",
@@ -661,6 +662,8 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_React": 'Animate Marker Layer(React)',
         "title_componentsAnimateTextLayer_React": 'Animate Text Layer(React)',
         "title_webPrinting_landUse": 'Web Printing(LandUse)',
+        "title_natureResourcePlatform_Vue": 'Nature Resource Platform(Vue)',
+        "title_ecologicalBigDataPlatform_Vue": 'Ecological Big Data Platform(Vue)',
 
         "text_service_name":"Name",
         "text_service_type":"Type",

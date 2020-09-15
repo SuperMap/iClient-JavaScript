@@ -47,30 +47,6 @@ var exampleConfig = {
             localIgnore: true
           },
           {
-            name: '中国疫情',
-            name_en: 'China NCP',
-            version: '10.1.0',
-            thumbnail: 'components_ncp_china_vue.png',
-            fileName: 'components_ncp_china_vue',
-            localIgnore: true
-          },
-          {
-            name: '全球疫情',
-            name_en: 'Global NCP',
-            version: '10.1.0',
-            thumbnail: 'components_ncp_world_vue.png',
-            fileName: 'components_ncp_world_vue',
-            localIgnore: true
-          },
-          {
-            name: '疫情国家紧急状态',
-            name_en: 'National Emergency',
-            version: '10.1.0',
-            thumbnail: 'components_ncp_world.png',
-            fileName: 'components_ncp_world',
-            localIgnore: true
-          },
-          {
             name: '地图卷帘',
             name_en: 'Map Compare',
             version: '10.1.0',
@@ -412,21 +388,6 @@ var exampleConfig = {
             thumbnail: 'components_theme_vue.png',
             fileName: 'components_theme_vue',
             localIgnore: true
-          },
-          {
-            name: '土地利用示例',
-            name_en: 'Land use example',
-            version: '10.0.0',
-            thumbnail: 'components_demo_vue.png',
-            fileName: 'components_demo_vue',
-            localIgnore: true
-          },
-          {
-            name: '房产项目可视化监控平台示例',
-            name_en: 'Estate project visual monitoring platform example',
-            version: '10.0.0',
-            thumbnail: 'components_estateMonitoringPlatform_vue.png',
-            fileName: 'components_estateMonitoringPlatform_vue'
           }
         ]
       }
