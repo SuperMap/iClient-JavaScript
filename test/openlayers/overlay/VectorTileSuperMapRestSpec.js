@@ -50,7 +50,6 @@ describe('openlayers_VectorTileSuperMapRest', () => {
                 expect(vectorTileOptions.serverType).toBe("ISERVER");
                 expect(vectorTileOptions.crossOrigin).toBe("anonymous");
                 expect(vectorTileSource).not.toBeNull();
-                expect(vectorTileSource.urls.length).toBe(1);
                 done();
             } catch (exception) {
                 console.log("'initialize'案例失败：" + exception.name + ":" + exception.message);

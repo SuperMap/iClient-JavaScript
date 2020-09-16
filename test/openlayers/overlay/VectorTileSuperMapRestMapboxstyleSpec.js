@@ -3,14 +3,14 @@ import {
 } from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
 import {
     FetchRequest
-} from '../../../src/common/util/FetchRequest';
+} from '@supermap/iclient-common/util/FetchRequest';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import MVT from 'ol/format/MVT';
 import Feature from 'ol/Feature';
 import VectorTileLayer from 'ol/layer/VectorTile';
 
-describe('openlayers_VectorTileSuperMapRest', () => {
+describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
     var url = GlobeParameter.californiaURL
     var originalTimeout;
     var testDiv, map, vectorLayer;
@@ -71,9 +71,9 @@ describe('openlayers_VectorTileSuperMapRest', () => {
                 format: format
             })
         });
-        spyOn(vectorLayer.getSource(), 'tileUrlFunction').and.callThrough();
+        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callThrough();
         setTimeout(() => {
-            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(8)
+            expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4)
             done();
         }, 2000);
         map.addLayer(vectorLayer);
@@ -92,10 +92,10 @@ describe('openlayers_VectorTileSuperMapRest', () => {
                 format: format
             })
         });
-        spyOn(vectorLayer.getSource(), 'tileUrlFunction').and.callThrough();
+        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callThrough();
         setTimeout(() => {
             expect(vectorLayer.getSource()._tileUrl).toContain("California");
-            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(8)
+            expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4)
             done();
         }, 2000);
         map.addLayer(vectorLayer);
