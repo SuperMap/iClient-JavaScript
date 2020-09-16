@@ -455,8 +455,8 @@ export class Util {
      * @function ol.supermap.Util.setMask
      * @description 为图层设置掩膜。
      * @version 10.1.0
-     * @param {ol/layer/Layer | Array.<ol/layer/Layer} layers 图层
-     * @param {ol/geom/Geometry | ol/feature} polygon 掩膜矢量要素，支持面类型的要素。
+     * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层
+     * @param {ol/geom/Geometry|ol/feature} polygon 掩膜矢量要素，支持面类型的要素。
      */
     static setMask(layers, polygon) {
         if (!polygon) {
@@ -504,7 +504,7 @@ export class Util {
      * @function ol.supermap.Util.setMask
      * @description 取消图层掩膜。
      * @version 10.1.0
-     * @param {ol/layer/Layer | Array.<ol/layer/Layer} layers 图层
+     * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层
      */
     static unsetMask(layers) {
         const todoLayers = Array.isArray(layers) ? layers : [layers];
