@@ -6,7 +6,7 @@ import { Util } from '../commontypes/Util';
 
 /**
  * @class SuperMap.WebPrintingJobCustomItems
- * @classdesc 自定义一组图例元素参数类。
+ * @classdesc Web 打印图例元素参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。

@@ -8,7 +8,7 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
 
 /**
  * @class SuperMap.WebPrintingJobLittleMapOptions
- * @classdesc Web 打印内容参数类。
+ * @classdesc Web 打印小地图参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 初始化参数。
