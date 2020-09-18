@@ -114,17 +114,13 @@
         });
     </script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js"></script>
-    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
-    <script type="text/javascript" src="../../dist/ol/iclient-ol-es6.min.js"></script>
-    <link rel="stylesheet" href="../../dist/ol/iclient-ol.min.css">
+    <script type="text/javascript" include='ol-mapbox-style' src="../../dist/ol/include-ol.js"></script>
     <script type="text/javascript">
         var url = (window.isLocal ? window.server : "https://iserver.supermap.io") +
             "/iserver/services/map-beijing/rest/maps/beijingMap";
         /**
          * Elements that make up the popup.
-         */
+        */
         var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
         var closer = document.getElementById('popup-closer');
