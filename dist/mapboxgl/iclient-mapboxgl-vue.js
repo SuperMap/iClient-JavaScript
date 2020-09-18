@@ -3,19 +3,19 @@
  *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v10.1.0-beta
+ *     version: v10.1.0
  *    
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("xlsx"), require("../static/libs/mapboxgl/mapbox-gl-enhance.js"), require("vue"), require("vue-echarts"), require("three"), require("ant-design-vue"), require("echarts-liquidfill"), require("vue-cesium"), require("video.js"), require("../static/libs/deckgl/deck.gl.min.js"), require("../static/libs/echarts-layer/EchartsLayer.js"), require("../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("echarts"), require("../static/libs/mapbox-gl-draw/mapbox-gl-draw.js"), require("shapefile"));
+		module.exports = factory(require("xlsx"), require("../static/libs/mapboxgl/mapbox-gl-enhance.js"), require("vue"), require("three/examples/jsm/loaders/GLTFLoader"), require("vue-echarts"), require("three"), require("ant-design-vue"), require("echarts-liquidfill"), require("three/examples/jsm/loaders/OBJLoader2"), require("vue-cesium"), require("video.js"), require("../static/libs/deckgl/deck.gl.min.js"), require("../static/libs/echarts-layer/EchartsLayer.js"), require("../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("echarts"), require("../static/libs/mapbox-gl-draw/mapbox-gl-draw.js"), require("shapefile"));
 	else if(typeof define === 'function' && define.amd)
-		define(["xlsx", "../static/libs/mapboxgl/mapbox-gl-enhance.js", "vue", "vue-echarts", "three", "ant-design-vue", "echarts-liquidfill", "vue-cesium", "video.js", "../static/libs/deckgl/deck.gl.min.js", "../static/libs/echarts-layer/EchartsLayer.js", "../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js", "echarts", "../static/libs/mapbox-gl-draw/mapbox-gl-draw.js", "shapefile"], factory);
+		define(["xlsx", "../static/libs/mapboxgl/mapbox-gl-enhance.js", "vue", "three/examples/jsm/loaders/GLTFLoader", "vue-echarts", "three", "ant-design-vue", "echarts-liquidfill", "three/examples/jsm/loaders/OBJLoader2", "vue-cesium", "video.js", "../static/libs/deckgl/deck.gl.min.js", "../static/libs/echarts-layer/EchartsLayer.js", "../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js", "echarts", "../static/libs/mapbox-gl-draw/mapbox-gl-draw.js", "shapefile"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("xlsx"), require("../static/libs/mapboxgl/mapbox-gl-enhance.js"), require("vue"), require("vue-echarts"), require("three"), require("ant-design-vue"), require("echarts-liquidfill"), require("vue-cesium"), require("video.js"), require("../static/libs/deckgl/deck.gl.min.js"), require("../static/libs/echarts-layer/EchartsLayer.js"), require("../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("echarts"), require("../static/libs/mapbox-gl-draw/mapbox-gl-draw.js"), require("shapefile"));
+		exports["Components"] = factory(require("xlsx"), require("../static/libs/mapboxgl/mapbox-gl-enhance.js"), require("vue"), require("three/examples/jsm/loaders/GLTFLoader"), require("vue-echarts"), require("three"), require("ant-design-vue"), require("echarts-liquidfill"), require("three/examples/jsm/loaders/OBJLoader2"), require("vue-cesium"), require("video.js"), require("../static/libs/deckgl/deck.gl.min.js"), require("../static/libs/echarts-layer/EchartsLayer.js"), require("../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("echarts"), require("../static/libs/mapbox-gl-draw/mapbox-gl-draw.js"), require("shapefile"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["XLSX"], root["mapboxgl"], root["Vue"], root["VueECharts"], root["THREE"], root["antd"], root["echarts-liquidfill"], root["VueCesium"], root["_videojs"], root["DeckGL"], root["EchartsLayer"], root["SuperMap"], root["echarts"], root["MapboxDraw"], root["shapefile"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__1c98__, __WEBPACK_EXTERNAL_MODULE__3d57__, __WEBPACK_EXTERNAL_MODULE__5643__, __WEBPACK_EXTERNAL_MODULE__8275__, __WEBPACK_EXTERNAL_MODULE__8b5b__, __WEBPACK_EXTERNAL_MODULE_a587__, __WEBPACK_EXTERNAL_MODULE_acbb__, __WEBPACK_EXTERNAL_MODULE_be1f__, __WEBPACK_EXTERNAL_MODULE_be3f__, __WEBPACK_EXTERNAL_MODULE_ca40__, __WEBPACK_EXTERNAL_MODULE_e76e__, __WEBPACK_EXTERNAL_MODULE_f240__, __WEBPACK_EXTERNAL_MODULE_f840__, __WEBPACK_EXTERNAL_MODULE_fc22__, __WEBPACK_EXTERNAL_MODULE_ffd5__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["XLSX"], root["mapboxgl"], root["Vue"], root["THREE.GLTFLoader"], root["VueECharts"], root["THREE"], root["antd"], root["echarts-liquidfill"], root["THREE.OBJLoader2"], root["VueCesium"], root["_videojs"], root["DeckGL"], root["EchartsLayer"], root["SuperMap"], root["echarts"], root["MapboxDraw"], root["shapefile"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__1c98__, __WEBPACK_EXTERNAL_MODULE__3d57__, __WEBPACK_EXTERNAL_MODULE__5643__, __WEBPACK_EXTERNAL_MODULE__6d09__, __WEBPACK_EXTERNAL_MODULE__8275__, __WEBPACK_EXTERNAL_MODULE__8b5b__, __WEBPACK_EXTERNAL_MODULE_a587__, __WEBPACK_EXTERNAL_MODULE_acbb__, __WEBPACK_EXTERNAL_MODULE_b9f8__, __WEBPACK_EXTERNAL_MODULE_be1f__, __WEBPACK_EXTERNAL_MODULE_be3f__, __WEBPACK_EXTERNAL_MODULE_ca40__, __WEBPACK_EXTERNAL_MODULE_e76e__, __WEBPACK_EXTERNAL_MODULE_f240__, __WEBPACK_EXTERNAL_MODULE_f840__, __WEBPACK_EXTERNAL_MODULE_fc22__, __WEBPACK_EXTERNAL_MODULE_ffd5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -507,6 +507,110 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 )
 
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "0318":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint-disable node/no-deprecated-api */
+var buffer = __webpack_require__("3be6")
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
+
+
+/***/ }),
+
+/***/ "035a":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/text-list/TextList.vue?vue&type=template&id=73b23a1f&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-text-list",style:(_vm.getBackgroundStyle),on:{"mouseleave":function($event){return _vm.handleMouseLeaveFn({}, null, $event)}}},[(_vm.headerStyleData.show)?_c('div',{staticClass:"sm-component-text-list__header",style:([_vm.listStyle.headerHeight, { background: _vm.headerStyleData.background, color: _vm.headerStyleData.color }])},[_c('div',{staticClass:"sm-component-text-list__header-content"},[(_vm.animateContent && _vm.animateContent.length > 0)?[_vm._l(((_vm.getColumns && _vm.getColumns.length > 0 && _vm.getColumns) ||
+            Object.keys(_vm.animateContent[0])),function(item,index){return [_c('div',{key:index,staticClass:"sm-component-text-list__header-title",style:([_vm.fontSizeStyle, { flex: _vm.getColumnWidth(index) }]),attrs:{"title":item.header}},[_c('div',{on:{"click":function($event){_vm.sortByField(
+                  _vm.getColumns[index].field + '-' + index,
+                  index,
+                  !Number.isNaN(+_vm.listData[0][_vm.getColumns[index].field + '-' + index]) && _vm.getColumns[index].sort
+                )}}},[_vm._v("\n              "+_vm._s(_vm.getColumns[index].header)+"\n              "),(!Number.isNaN(+_vm.listData[0][_vm.getColumns[index].field + '-' + index]) && _vm.getColumns[index].sort)?_c('div',{staticClass:"arrow-wrap",style:({ borderColor: _vm.headerStyleData.sortBtnColor })},[_c('i',{class:['up-triangle'],style:([
+                    { borderBottomColor: _vm.headerStyleData.sortBtnColor },
+                    _vm.sortType === 'ascend' &&
+                      _vm.sortIndex === index && { borderBottomColor: _vm.headerStyleData.sortBtnSelectColor }
+                  ])}),_vm._v(" "),_c('i',{class:['down-triangle'],style:([
+                    { borderTopColor: _vm.headerStyleData.sortBtnColor },
+                    _vm.sortType === 'descend' &&
+                      _vm.sortIndex === index && { borderTopColor: _vm.headerStyleData.sortBtnSelectColor }
+                  ])})]):_vm._e()])])]})]:_vm._e()],2)]):_vm._e(),_vm._v(" "),_c('div',{ref:"animate",staticClass:"sm-component-text-list__animate",style:([
+      _vm.listStyle.contentHeight,
+      _vm.getTextColorStyle,
+      _vm.fontSizeStyle,
+      { 'overflow-y': _vm.autoRolling ? 'hidden' : 'auto' }
+    ])},[_c('div',{ref:"listContent",class:['sm-component-text-list__body-content', _vm.animate && 'sm-component-text-list__body-content--anim']},[(_vm.animateContent && _vm.animateContent.length > 0)?_vm._l((_vm.animateContent),function(rowData,index){return _c('div',{key:index,staticClass:"sm-component-text-list__list",style:(_vm.getRowStyle(rowData['idx'], index)),attrs:{"data-index":rowData['idx']},on:{"click":function($event){return _vm.handleClick(rowData, rowData['idx'], $event)},"mouseenter":function($event){return _vm.handleMouseEnterFn(rowData, rowData['idx'], $event)},"mouseleave":function($event){return _vm.handleMouseLeaveFn(rowData, rowData['idx'], $event)}}},_vm._l((_vm.filterProperty(rowData, 'idx')),function(items,key,itemIndex){return _c('div',{key:key,style:([_vm.listStyle.rowStyle, { flex: _vm.getColumnWidth(itemIndex) }, _vm.getCellStyle(items, itemIndex)]),attrs:{"title":items}},[(_vm.getColumns[itemIndex])?_c('span',[_vm._v(_vm._s(_vm.getColumns[itemIndex].fixInfo.prefix))]):_vm._e(),_vm._v("\n            "+_vm._s(items)+"\n            "),(_vm.getColumns[itemIndex])?_c('span',[_vm._v(_vm._s(_vm.getColumns[itemIndex].fixInfo.suffix))]):_vm._e()])}),0)}):_vm._e()],2)]),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('info.loading'),"spinning":_vm.spinning}}):_vm._e()],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/mapboxgl/text-list/TextList.vue?vue&type=template&id=73b23a1f&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -1887,6 +1991,85 @@ function unwrapListeners(arr) {
   }
   return ret;
 }
+
+
+/***/ }),
+
+/***/ "0a75":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// https://en.wikipedia.org/wiki/Rhumb_line
+var helpers_1 = __webpack_require__("38ce");
+var invariant_1 = __webpack_require__("144a");
+/**
+ * Takes two {@link Point|points} and finds the bearing angle between them along a Rhumb line
+ * i.e. the angle measured in degrees start the north line (0 degrees)
+ *
+ * @name rhumbBearing
+ * @param {Coord} start starting Point
+ * @param {Coord} end ending Point
+ * @param {Object} [options] Optional parameters
+ * @param {boolean} [options.final=false] calculates the final bearing if true
+ * @returns {number} bearing from north in decimal degrees, between -180 and 180 degrees (positive clockwise)
+ * @example
+ * var point1 = turf.point([-75.343, 39.984], {"marker-color": "#F00"});
+ * var point2 = turf.point([-75.534, 39.123], {"marker-color": "#00F"});
+ *
+ * var bearing = turf.rhumbBearing(point1, point2);
+ *
+ * //addToMap
+ * var addToMap = [point1, point2];
+ * point1.properties.bearing = bearing;
+ * point2.properties.bearing = bearing;
+ */
+function rhumbBearing(start, end, options) {
+    if (options === void 0) { options = {}; }
+    var bear360;
+    if (options.final) {
+        bear360 = calculateRhumbBearing(invariant_1.getCoord(end), invariant_1.getCoord(start));
+    }
+    else {
+        bear360 = calculateRhumbBearing(invariant_1.getCoord(start), invariant_1.getCoord(end));
+    }
+    var bear180 = (bear360 > 180) ? -(360 - bear360) : bear360;
+    return bear180;
+}
+/**
+ * Returns the bearing from ‘this’ point to destination point along a rhumb line.
+ * Adapted from Geodesy: https://github.com/chrisveness/geodesy/blob/master/latlon-spherical.js
+ *
+ * @private
+ * @param   {Array<number>} from - origin point.
+ * @param   {Array<number>} to - destination point.
+ * @returns {number} Bearing in degrees from north.
+ * @example
+ * var p1 = new LatLon(51.127, 1.338);
+ * var p2 = new LatLon(50.964, 1.853);
+ * var d = p1.rhumbBearingTo(p2); // 116.7 m
+ */
+function calculateRhumbBearing(from, to) {
+    // φ => phi
+    // Δλ => deltaLambda
+    // Δψ => deltaPsi
+    // θ => theta
+    var phi1 = helpers_1.degreesToRadians(from[1]);
+    var phi2 = helpers_1.degreesToRadians(to[1]);
+    var deltaLambda = helpers_1.degreesToRadians((to[0] - from[0]));
+    // if deltaLambdaon over 180° take shorter rhumb line across the anti-meridian:
+    if (deltaLambda > Math.PI) {
+        deltaLambda -= 2 * Math.PI;
+    }
+    if (deltaLambda < -Math.PI) {
+        deltaLambda += 2 * Math.PI;
+    }
+    var deltaPsi = Math.log(Math.tan(phi2 / 2 + Math.PI / 4) / Math.tan(phi1 / 2 + Math.PI / 4));
+    var theta = Math.atan2(deltaLambda, deltaPsi);
+    return (helpers_1.radiansToDegrees(theta) + 360) % 360;
+}
+exports.default = rhumbBearing;
 
 
 /***/ }),
@@ -5265,7 +5448,7 @@ var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("4066"));
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 __webpack_require__("f840");
 
@@ -5297,90 +5480,10 @@ var _util = __webpack_require__("1448");
 
 var _resizeDetector = __webpack_require__("e0f2");
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-/**
- * @module Chart
- * @category Components
- * @desc Chart 组件。除了prop: dataset和datasetOptions，其他的所有prop,event,computed, methods都是ECharts的配置，参考https://echarts.baidu.com/api.html#echartsInstance.dispose
- * @vue-prop {String} [iconClass='sm-components-icons-attribute']  - 设置组件图标的类名。
- * @vue-prop {Object} [dataset=null] - 数据来源,支持的参数类型为iPortalDataParameter/RestDataParameter/RestMapParameter。
- * @vue-prop {Array} datasetOptions - 数据来源的配置。
- * @vue-prop {Array} [colorGroup] - 图表颜色数组。
- * @vue-prop {Object} theme - 当前 ECharts 实例使用的主题。
- * @vue-prop {Object} initOptions - 用来初始化 ECharts 实例。
- * @vue-prop {Object} options - ECharts 实例的数据。修改这个 prop 会触发 ECharts 实例的 setOption 方法。如果直接修改 options 绑定的数据而对象引用保持不变，setOption 方法调用时将带有参数 notMerge: false。否则，如果为 options 绑定一个新的对象，setOption 方法调用时则将带有参数 notMerge: true。
- * @vue-prop {Boolean} [autoresize = true] - 用来指定 ECharts 实例在组件根元素尺寸变化时是否需要自动进行重绘。
- * @vue-prop {String} group - 实例的分组，会自动绑定到 ECharts 组件的同名属性上。
- * @vue-prop {Boolean} [manualUpdate = false] - 在性能敏感（数据量很大）的场景下，我们最好对于 options prop 绕过 Vue 的响应式系统。当将 manual-update prop 指定为 true 且不传入 options prop 时，数据将不会被监听。然后，你需要用 ref 获取组件实例以后手动调用 mergeOptions 方法来更新图表。
- * @vue-prop {Boolean} [autoPlay = false] - 是否自动播放，图表类型为 pie 时生效。
- * @vue-computed {String} computedOptions - 用来读取 ECharts 更新内部 options 后的实际数据。
- * @vue-event {Object} legendselectchanged - 切换图例选中状态后的事件。
- * @vue-event {Object} legendselected - 图例选中后的事件。
- * @vue-event {Object} legendunselected - 图例取消选中后的事件。
- * @vue-event {Object} legendscroll - 图例滚动事件。
- * @vue-event {Object} datazoom - 数据区域缩放后的事件。
- * @vue-event {Object} datarangeselected - 视觉映射组件中，range 值改变后触发的事件。
- * @vue-event {Object} timelinechanged - 时间轴中的时间点改变后的事件。
- * @vue-event {Object} timelineplaychanged - 时间轴中播放状态的切换事件。
- * @vue-event {Object} restore - 重置 option 事件。
- * @vue-event {Object} dataviewchanged - 工具栏中数据视图的修改事件。
- * @vue-event {Object} magictypechanged - 工具栏中动态类型切换的切换事件。
- * @vue-event {Object} geoselectchanged - geo 中地图区域切换选中状态的事件。
- * @vue-event {Object} geoselected - geo 中地图区域选中后的事件。
- * @vue-event {Object} geounselected - geo 中地图区域取消选中后的事件。
- * @vue-event {Object} pieselectchanged - series-pie 中饼图扇形切换选中状态的事件。
- * @vue-event {Object} pieselected - series-pie 中饼图扇形选中后的事件。
- * @vue-event {Object} pieunselected - series-pie 中饼图扇形取消选中后的事件。
- * @vue-event {Object} mapselectchanged - series-map 中地图区域切换选中状态的事件。
- * @vue-event {Object} mapselected - series-map 中地图区域选中后的事件。
- * @vue-event {Object} mapunselected - series-map 中地图区域取消选中后的事件。
- * @vue-event {Object} axisareaselected - 平行坐标轴 (Parallel)范围选取事件。
- * @vue-event {Object} focusnodeadjacency - graph的邻接节点高亮事件。
- * @vue-event {Object} unfocusnodeadjacency - graph的邻接节点取消高亮事件。
- * @vue-event {Object} brush - 选框添加事件。即发出 brush action 得到的事件。
- * @vue-event {Object} brushselected - 对外通知当前选中了什么。
- * @vue-event {Object} rendered - 渲染结束事件
- * @vue-event {Object} finished - 渲染完成事件。当渲染动画
- * @vue-event {Object} click - 鼠标事件.click
- * @vue-event {Object} dblclick - 鼠标事件.dblclick
- * @vue-event {Object} mouseover - 鼠标事件.mouseover
- * @vue-event {Object} mouseout - 鼠标事件.mouseout
- * @vue-event {Object} mousemove - 鼠标事件.mousemove
- * @vue-event {Object} mousedown - 鼠标事件.mousedown
- * @vue-event {Object} mouseup - 鼠标事件.mouseup
- * @vue-event {Object} globalout - 鼠标事件.globalout
- * @vue-event {Object} contextmenu - 鼠标事件.contextmenu
- */
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 // 枚举事件类型
 var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'legendscroll', 'datazoom', 'datarangeselected', 'timelinechanged', 'timelineplaychanged', 'restore', 'dataviewchanged', 'magictypechanged', 'geoselectchanged', 'geoselected', 'geounselected', 'pieselectchanged', 'pieselected', 'pieunselected', 'mapselectchanged', 'mapselected', 'mapunselected', 'axisareaselected', 'focusnodeadjacency', 'unfocusnodeadjacency', 'brush', 'brushselected', 'rendered', 'finished', 'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove', 'mousedown', 'mouseup', 'globalout', 'contextmenu'];
 var _default2 = {
@@ -5412,7 +5515,9 @@ var _default2 = {
     options: {
       type: Object,
       default: function _default() {
-        return {};
+        return {
+          series: []
+        };
       }
     },
     autoresize: {
@@ -5489,13 +5594,13 @@ var _default2 = {
       if (this.options.series.find(function (item) {
         return item.type === '2.5Bar';
       })) {
-        return (0, _objectSpread2.default)({}, this.options, {
+        return _objectSpread({}, this.options, {
           series: []
         });
       }
 
       if (this.options.series[0] && this.options.series[0].customType === 'customRingsSeries') {
-        return (0, _objectSpread2.default)({}, this.options, {
+        return _objectSpread({}, this.options, {
           series: [].concat((0, _toConsumableArray2.default)(this.options.series), (0, _toConsumableArray2.default)(this.customSeries))
         });
       }
@@ -5509,7 +5614,7 @@ var _default2 = {
 
         return serie;
       });
-      return (0, _objectSpread2.default)({}, this.options, {
+      return _objectSpread({}, this.options, {
         series: series
       });
     },
@@ -5567,7 +5672,7 @@ var _default2 = {
     },
     datasetOptions: {
       handler: function handler(newVal, oldVal) {
-        if (newVal) {
+        if (!(0, _lodash3.default)(newVal, oldVal)) {
           this._setChartTheme();
 
           this.registerShape();
@@ -5654,7 +5759,7 @@ var _default2 = {
 
     this._initDataZoom();
 
-    if (this.options.series[0] && this.options.series[0].customType === 'customRingsSeries') {
+    if (this.options.series && this.options.series[0] && this.options.series[0].customType === 'customRingsSeries') {
       this.startEffect();
     }
 
@@ -5956,7 +6061,10 @@ var _default2 = {
           var dataZoom = options.dataZoom && options.dataZoom[0];
           options.series = options.series.map(function (serie, index) {
             var label = serie.label && serie.label.normal;
-            serie.label.normal = _this9._controlLabel(label, serie.maxLabels);
+
+            if (serie.label) {
+              serie.label.normal = _this9._controlLabel(label, serie.maxLabels);
+            }
 
             if (label && label.show && label.smart) {
               label.position = label.position || 'top';
@@ -6487,7 +6595,7 @@ var _default2 = {
         var _coordinates = (0, _util.getFeatureCenter)(feature);
 
         var propsData = this.generateTableData(properties);
-        this.tablePopupProps = (0, _objectSpread2.default)({}, propsData);
+        this.tablePopupProps = _objectSpread({}, propsData);
         this.$nextTick(function () {
           _this11.viewModel.setPopupContent(_coordinates, _this11.$refs.chartTablePopup.$el, _this11.changePopupArrowStyle);
         });
@@ -7395,6 +7503,18 @@ function bbox(geojson) {
 }
 exports.default = bbox;
 
+
+/***/ }),
+
+/***/ "1171":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ab53");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -8540,7 +8660,7 @@ exports.default = _default;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TextList_vue_vue_type_template_id_7ff0be28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("cdbb");
+/* harmony import */ var _TextList_vue_vue_type_template_id_73b23a1f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("035a");
 /* harmony import */ var _TextList_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("1a6b");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TextList_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TextList_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -8553,8 +8673,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _TextList_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TextList_vue_vue_type_template_id_7ff0be28___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _TextList_vue_vue_type_template_id_7ff0be28___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _TextList_vue_vue_type_template_id_73b23a1f___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _TextList_vue_vue_type_template_id_73b23a1f___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -8566,32 +8686,78 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "1659":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=6f80feba&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",style:([{'background': _vm.background}]),attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),_vm._l((_vm.controlComponents),function(controlProps,controlName){return [_c(controlName,_vm._b({key:controlName,tag:"component"},'component',controlProps,false))]}),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=6f80feba&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "16ed":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+var _typeof = __webpack_require__("7ae5");
+
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== "function") return null;
+  var cache = new WeakMap();
+
+  _getRequireWildcardCache = function _getRequireWildcardCache() {
+    return cache;
+  };
+
+  return cache;
+}
 
 function _interopRequireWildcard(obj) {
   if (obj && obj.__esModule) {
     return obj;
-  } else {
-    var newObj = {};
+  }
 
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
+  if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+    return {
+      "default": obj
+    };
+  }
 
-          if (desc.get || desc.set) {
-            Object.defineProperty(newObj, key, desc);
-          } else {
-            newObj[key] = obj[key];
-          }
-        }
+  var cache = _getRequireWildcardCache();
+
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+
+  var newObj = {};
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+
+      if (desc && (desc.get || desc.set)) {
+        Object.defineProperty(newObj, key, desc);
+      } else {
+        newObj[key] = obj[key];
       }
     }
-
-    newObj["default"] = obj;
-    return newObj;
   }
+
+  newObj["default"] = obj;
+
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+
+  return newObj;
 }
 
 module.exports = _interopRequireWildcard;
@@ -9154,6 +9320,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "1b3a":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=7b86e414&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:(_vm.getTextColorStyle),attrs:{"id":"sm-component-search"}},[(_vm.showIcon && _vm.mode === 'control')?_c('div',{staticClass:"sm-component-search__toggle-icon",style:([{'--icon-color--hover': _vm.colorGroupsData[0]}, _vm.getBackgroundStyle]),on:{"click":function($event){_vm.showSearch = !_vm.showSearch; _vm.showIcon = !_vm.showIcon}}},[_c('a-icon',{attrs:{"type":"search"}})],1):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"sm-component-zoom-in"},on:{"after-leave":function($event){_vm.showIcon = !_vm.showIcon}}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showSearch || _vm.mode === 'toolBar'),expression:"showSearch || mode === 'toolBar'"}],staticClass:"sm-component-search__content",style:([{'transform-origin': _vm.position.includes('left') ? 'top left' : 'top right'}, _vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-component-search__input"},[(_vm.mode === 'control')?_c('div',{staticClass:"sm-component-search__arrow-icon",style:({ float: _vm.position.includes('left') ? 'right' : 'left'}),on:{"click":function($event){_vm.showSearch = !_vm.showSearch}}},[_c('a-icon',{attrs:{"type":_vm.position.includes('left') ? 'double-left' : 'double-right'}})],1):_vm._e(),_vm._v(" "),_c('div',{class:['sm-component-search__search-icon', { 'right': _vm.position.includes('right') }],style:([_vm.getBackgroundStyle, _vm.getColorStyle(0)]),on:{"click":_vm.searchButtonClicked}},[_c('a-icon',{attrs:{"type":_vm.prefixType}})],1),_vm._v(" "),_c('a-input',{class:['sm-component-search__a-input', { 'toolBar-input': _vm.mode === 'toolBar' }],style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"input":_vm.searchInput,"compositionstart":function($event){_vm.isInputing = true},"compositionend":function($event){_vm.isInputing = false},"pressEnter":_vm.searchButtonClicked,"focus":function($event){_vm.isActive = !_vm.isActive},"blur":function($event){_vm.isActive = !_vm.isActive},"keyup":_vm.changeResultHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isActive),expression:"isActive"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"mousedown":_vm.inputValueCleared},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.resultSuggestions),expression:"resultSuggestions"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source && _vm.showTitle && result.result.length)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',{class:{'noMarginBottom': !_vm.showTitle}},_vm._l((result.result),function(item,i){return _c('li',{key:i,class:{'active': _vm.keyupHoverInfo.groupIndex === index && _vm.keyupHoverInfo.hoverIndex === i },attrs:{"title":item.filterVal || item.name || item.address},on:{"click":function($event){return _vm.searchResultListClicked(item, $event)},"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.name || item.address))])}),0)]):_vm._e()])}),0)])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=7b86e414&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "1c98":
 /***/ (function(module, exports) {
 
@@ -9227,7 +9410,7 @@ module.exports = _nonIterableSpread;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WebMap_vue_vue_type_template_id_3d30905a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("435f");
+/* harmony import */ var _WebMap_vue_vue_type_template_id_6f80feba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1659");
 /* harmony import */ var _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("7b98");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -9240,8 +9423,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _WebMap_vue_vue_type_template_id_3d30905a___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _WebMap_vue_vue_type_template_id_3d30905a___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _WebMap_vue_vue_type_template_id_6f80feba___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _WebMap_vue_vue_type_template_id_6f80feba___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -11389,197 +11572,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "26d5":
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-
 /***/ "279f":
 /***/ (function(module, exports) {
 
@@ -11614,6 +11606,23 @@ function _assertThisInitialized(self) {
 }
 
 module.exports = _assertThisInitialized;
+
+/***/ }),
+
+/***/ "282c":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/tdt/route/TdtRoute.vue?vue&type=template&id=fb60b3aa&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-tdtRoute",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"background":_vm.background,"textColor":_vm.textColor}},[_c('div',{staticClass:"sm-component-tdtRoute__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-tdtRoute__header"},[_c('div',{staticClass:"route-navbar"},[_c('div',[_c('div',{class:['car-icon', { active: _vm.routeActive === 'car' }],on:{"click":function($event){_vm.routeActive = 'car'}}},[_c('i')]),_vm._v(" "),_c('div',{class:['bus-icon', { active: _vm.routeActive === 'bus' }],on:{"click":function($event){_vm.routeActive = 'bus'}}},[_c('i')])]),_vm._v(" "),_c('div',{staticClass:"clear-route",style:([_vm.getTextColorStyle]),on:{"click":_vm.clearRoute}},[_vm._v(_vm._s(_vm.$t('tdtRoute.clearRoute')))])]),_vm._v(" "),_c('div',{staticClass:"route-panel"},[_c('div',{staticClass:"start-route"},[_c('div',{staticClass:"icon-wrapper"},[_c('div',{staticClass:"icon"})]),_vm._v(" "),_c('div',{staticClass:"content"},[_c('a-input',{style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),attrs:{"placeholder":_vm.$t('tdtRoute.pleaseEnterStartPoint'),"title":_vm.$t('tdtRoute.pleaseEnterStartPoint')},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&$event.keyCode!==13){ return null; }return _vm.searchClicked($event)}},model:{value:(_vm.start),callback:function ($$v) {_vm.start=$$v},expression:"start"}},[_c('a-icon',{style:([_vm.getTextColorStyle]),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.clearStart},slot:"suffix"})],1)],1)]),_vm._v(" "),_c('div',{staticClass:"end-route"},[_c('div',{staticClass:"icon-wrapper"},[_c('div',{staticClass:"icon"})]),_vm._v(" "),_c('div',{staticClass:"content"},[_c('a-input',{style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),attrs:{"placeholder":_vm.$t('tdtRoute.pleaseEnterEndPoint'),"title":_vm.$t('tdtRoute.pleaseEnterEndPoint')},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&$event.keyCode!==13){ return null; }return _vm.searchClicked($event)}},model:{value:(_vm.end),callback:function ($$v) {_vm.end=$$v},expression:"end"}},[_c('a-icon',{style:([_vm.getTextColorStyle]),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.clearEnd},slot:"suffix"})],1)],1)]),_vm._v(" "),_c('div',{staticClass:"switch-route",on:{"click":_vm.switchRoute}},[_c('a-icon',{attrs:{"type":"swap"}})],1)]),_vm._v(" "),_c('div',{staticClass:"search-btn"},[_c('a-button',{style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),attrs:{"type":"primary"},on:{"click":_vm.searchClicked}},[_vm._v("\n          "+_vm._s(_vm.$t('tdtRoute.search'))+"\n        ")])],1)]),_vm._v(" "),_c('div',{staticClass:"sm-component-tdtRoute__content",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[(!_vm.showRoutePlan && _vm.status)?_c('div',{staticClass:"route-result"},[_c('div',{staticClass:"start-point"},[_c('div',{staticClass:"title"},[_c('a-icon',{attrs:{"type":"question-circle","theme":"filled"}}),_vm._v(" "),_c('span',{on:{"click":function($event){return _vm.resetStatus('toSetStart')}}},[_vm._v(_vm._s(_vm.$t('tdtRoute.startPoint'))+"："+_vm._s(_vm.start))])],1),_vm._v(" "),(_vm.status === 'toSetStart' && _vm.componentId)?_c('div',{staticClass:"content"},[_c(_vm.componentId,_vm._g(_vm._b({tag:"component"},'component',_vm.componentProps,false),_vm.componentListeners))],1):_vm._e()]),_vm._v(" "),_c('div',{staticClass:"end-point"},[_c('div',{staticClass:"title"},[_c('a-icon',{attrs:{"type":"question-circle","theme":"filled"}}),_vm._v(" "),_c('span',{on:{"click":function($event){return _vm.resetStatus('toSetEnd')}}},[_vm._v(_vm._s(_vm.$t('tdtRoute.endPoint'))+"："+_vm._s(_vm.end))])],1),_vm._v(" "),(_vm.status === 'toSetEnd' && _vm.componentId)?_c('div',{staticClass:"content"},[_c(_vm.componentId,_vm._g(_vm._b({tag:"component"},'component',_vm.componentProps,false),_vm.componentListeners))],1):_vm._e()])]):_vm._e(),_vm._v(" "),(_vm.showRoutePlan)?_c('RoutePlan',{attrs:{"route-plan":_vm.routePlan,"start":{ name: _vm.start },"dest":{ name: _vm.end },"spinning":_vm.spinning,"search-type":_vm.routeActive,"isError":_vm.isError,"themeStyle":[_vm.getBackgroundStyle, _vm.getTextColorStyle]},on:{"style-changed":_vm.styleChanged,"route-plan-clicked":_vm.routePlanClicked,"bus-info-clicked":_vm.busInfoClicked}}):_vm._e()],1)])])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/mapboxgl/tdt/route/TdtRoute.vue?vue&type=template&id=fb60b3aa&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -11915,23 +11924,6 @@ var _default2 = {
   }
 };
 exports.default = _default2;
-
-/***/ }),
-
-/***/ "2961":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=600552da&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=600552da&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -12813,8 +12805,8 @@ module.exports = max;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.11.2 
- * (c) 2019 kazuya kawaguchi
+ * vue-i18n v8.16.0 
+ * (c) 2020 kazuya kawaguchi
  * Released under the MIT License.
  */
 /*  */
@@ -12834,7 +12826,8 @@ var numberFormatKeys = [
   'minimumSignificantDigits',
   'maximumSignificantDigits',
   'localeMatcher',
-  'formatMatcher'
+  'formatMatcher',
+  'unit'
 ];
 
 /**
@@ -13052,6 +13045,7 @@ var mixin = {
           options.i18n.root = this.$root;
           options.i18n.formatter = this.$root.$i18n.formatter;
           options.i18n.fallbackLocale = this.$root.$i18n.fallbackLocale;
+          options.i18n.formatFallbackMessages = this.$root.$i18n.formatFallbackMessages;
           options.i18n.silentTranslationWarn = this.$root.$i18n.silentTranslationWarn;
           options.i18n.silentFallbackWarn = this.$root.$i18n.silentFallbackWarn;
           options.i18n.pluralizationRules = this.$root.$i18n.pluralizationRules;
@@ -13069,6 +13063,12 @@ var mixin = {
           } catch (e) {
             if (false) {}
           }
+        }
+
+        var ref = options.i18n;
+        var sharedMessages = ref.sharedMessages;
+        if (sharedMessages && isPlainObject(sharedMessages)) {
+          options.i18n.messages = merge(options.i18n.messages, sharedMessages);
         }
 
         this._i18n = new VueI18n(options.i18n);
@@ -13146,8 +13146,7 @@ var interpolationComponent = {
   functional: true,
   props: {
     tag: {
-      type: String,
-      default: 'span'
+      type: String
     },
     path: {
       type: String,
@@ -13161,61 +13160,84 @@ var interpolationComponent = {
     }
   },
   render: function render (h, ref) {
-    var props = ref.props;
     var data = ref.data;
-    var children = ref.children;
     var parent = ref.parent;
+    var props = ref.props;
+    var slots = ref.slots;
 
-    var i18n = parent.$i18n;
-
-    children = (children || []).filter(function (child) {
-      return child.tag || (child.text = child.text.trim())
-    });
-
-    if (!i18n) {
+    var $i18n = parent.$i18n;
+    if (!$i18n) {
       if (false) {}
-      return children
+      return
     }
 
     var path = props.path;
     var locale = props.locale;
+    var places = props.places;
+    var params = slots();
+    var children = $i18n.i(
+      path,
+      locale,
+      onlyHasDefaultPlace(params) || places
+        ? useLegacyPlaces(params.default, places)
+        : params
+    );
 
-    var params = {};
-    var places = props.places || {};
-
-    var hasPlaces = Array.isArray(places)
-      ? places.length > 0
-      : Object.keys(places).length > 0;
-
-    var everyPlace = children.every(function (child) {
-      if (child.data && child.data.attrs) {
-        var place = child.data.attrs.place;
-        return (typeof place !== 'undefined') && place !== ''
-      }
-    });
-
-    if (false) {}
-
-    if (Array.isArray(places)) {
-      places.forEach(function (el, i) {
-        params[i] = el;
-      });
-    } else {
-      Object.keys(places).forEach(function (key) {
-        params[key] = places[key];
-      });
-    }
-
-    children.forEach(function (child, i) {
-      var key = everyPlace
-        ? ("" + (child.data.attrs.place))
-        : ("" + i);
-      params[key] = child;
-    });
-
-    return h(props.tag, data, i18n.i(path, locale, params))
+    var tag = props.tag || 'span';
+    return tag ? h(tag, data, children) : children
   }
 };
+
+function onlyHasDefaultPlace (params) {
+  var prop;
+  for (prop in params) {
+    if (prop !== 'default') { return false }
+  }
+  return Boolean(prop)
+}
+
+function useLegacyPlaces (children, places) {
+  var params = places ? createParamsFromPlaces(places) : {};
+
+  if (!children) { return params }
+
+  // Filter empty text nodes
+  children = children.filter(function (child) {
+    return child.tag || child.text.trim() !== ''
+  });
+
+  var everyPlace = children.every(vnodeHasPlaceAttribute);
+  if (false) {}
+
+  return children.reduce(
+    everyPlace ? assignChildPlace : assignChildIndex,
+    params
+  )
+}
+
+function createParamsFromPlaces (places) {
+  if (false) {}
+
+  return Array.isArray(places)
+    ? places.reduce(assignChildIndex, {})
+    : Object.assign({}, places)
+}
+
+function assignChildPlace (params, child) {
+  if (child.data && child.data.attrs && child.data.attrs.place) {
+    params[child.data.attrs.place] = child;
+  }
+  return params
+}
+
+function assignChildIndex (params, child, index) {
+  params[index] = child;
+  return params
+}
+
+function vnodeHasPlaceAttribute (vnode) {
+  return Boolean(vnode.data && vnode.data.attrs && vnode.data.attrs.place)
+}
 
 /*  */
 
@@ -13730,6 +13752,7 @@ function parse$1 (path) {
       actions[APPEND]();
     } else {
       subPathDepth = 0;
+      if (key === undefined) { return false }
       key = formatSubPath(key);
       if (key === false) {
         return false
@@ -13840,9 +13863,10 @@ var htmlTagMatcher = /<\/?[\w\s="/.':;#-\/]+>/;
 var linkKeyMatcher = /(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))/g;
 var linkKeyPrefixMatcher = /^@(?:\.([a-z]+))?:/;
 var bracketsMatcher = /[()]/g;
-var formatters = {
+var defaultModifiers = {
   'upper': function (str) { return str.toLocaleUpperCase(); },
-  'lower': function (str) { return str.toLocaleLowerCase(); }
+  'lower': function (str) { return str.toLocaleLowerCase(); },
+  'capitalize': function (str) { return ("" + (str.charAt(0).toLocaleUpperCase()) + (str.substr(1))); }
 };
 
 var defaultFormatter = new BaseFormatter();
@@ -13867,15 +13891,19 @@ var VueI18n = function VueI18n (options) {
 
   this._vm = null;
   this._formatter = options.formatter || defaultFormatter;
+  this._modifiers = options.modifiers || {};
   this._missing = options.missing || null;
   this._root = options.root || null;
   this._sync = options.sync === undefined ? true : !!options.sync;
   this._fallbackRoot = options.fallbackRoot === undefined
     ? true
     : !!options.fallbackRoot;
+  this._formatFallbackMessages = options.formatFallbackMessages === undefined
+    ? false
+    : !!options.formatFallbackMessages;
   this._silentTranslationWarn = options.silentTranslationWarn === undefined
     ? false
-    : !!options.silentTranslationWarn;
+    : options.silentTranslationWarn;
   this._silentFallbackWarn = options.silentFallbackWarn === undefined
     ? false
     : !!options.silentFallbackWarn;
@@ -13888,6 +13916,7 @@ var VueI18n = function VueI18n (options) {
     : !!options.preserveDirectiveContent;
   this.pluralizationRules = options.pluralizationRules || {};
   this._warnHtmlInMessage = options.warnHtmlInMessage || 'off';
+  this._postTranslation = options.postTranslation || null;
 
   this._exist = function (message, key) {
     if (!message || !key) { return false }
@@ -13912,7 +13941,7 @@ var VueI18n = function VueI18n (options) {
   });
 };
 
-var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true },warnHtmlInMessage: { configurable: true } };
+var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },formatFallbackMessages: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true },warnHtmlInMessage: { configurable: true },postTranslation: { configurable: true } };
 
 VueI18n.prototype._checkLocaleMessage = function _checkLocaleMessage (locale, level, message) {
   var paths = [];
@@ -14021,6 +14050,9 @@ prototypeAccessors.fallbackLocale.set = function (locale) {
   this._vm.$set(this._vm, 'fallbackLocale', locale);
 };
 
+prototypeAccessors.formatFallbackMessages.get = function () { return this._formatFallbackMessages };
+prototypeAccessors.formatFallbackMessages.set = function (fallback) { this._formatFallbackMessages = fallback; };
+
 prototypeAccessors.missing.get = function () { return this._missing };
 prototypeAccessors.missing.set = function (handler) { this._missing = handler; };
 
@@ -14050,11 +14082,14 @@ prototypeAccessors.warnHtmlInMessage.set = function (level) {
   }
 };
 
+prototypeAccessors.postTranslation.get = function () { return this._postTranslation };
+prototypeAccessors.postTranslation.set = function (handler) { this._postTranslation = handler; };
+
 VueI18n.prototype._getMessages = function _getMessages () { return this._vm.messages };
 VueI18n.prototype._getDateTimeFormats = function _getDateTimeFormats () { return this._vm.dateTimeFormats };
 VueI18n.prototype._getNumberFormats = function _getNumberFormats () { return this._vm.numberFormats };
 
-VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm, values) {
+VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm, values, interpolateMode) {
   if (!isNull(result)) { return result }
   if (this._missing) {
     var missingRet = this._missing.apply(null, [locale, key, vm, values]);
@@ -14064,15 +14099,33 @@ VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm,
   } else {
     if (false) {}
   }
-  return key
+
+  if (this._formatFallbackMessages) {
+    var parsedArgs = parseArgs.apply(void 0, values);
+    return this._render(key, interpolateMode, parsedArgs.params, key)
+  } else {
+    return key
+  }
 };
 
 VueI18n.prototype._isFallbackRoot = function _isFallbackRoot (val) {
   return !val && !isNull(this._root) && this._fallbackRoot
 };
 
-VueI18n.prototype._isSilentFallback = function _isSilentFallback (locale) {
-  return this._silentFallbackWarn && (this._isFallbackRoot() || locale !== this.fallbackLocale)
+VueI18n.prototype._isSilentFallbackWarn = function _isSilentFallbackWarn (key) {
+  return this._silentFallbackWarn instanceof RegExp
+    ? this._silentFallbackWarn.test(key)
+    : this._silentFallbackWarn
+};
+
+VueI18n.prototype._isSilentFallback = function _isSilentFallback (locale, key) {
+  return this._isSilentFallbackWarn(key) && (this._isFallbackRoot() || locale !== this.fallbackLocale)
+};
+
+VueI18n.prototype._isSilentTranslationWarn = function _isSilentTranslationWarn (key) {
+  return this._silentTranslationWarn instanceof RegExp
+    ? this._silentTranslationWarn.test(key)
+    : this._silentTranslationWarn
 };
 
 VueI18n.prototype._interpolate = function _interpolate (
@@ -14174,10 +14227,14 @@ VueI18n.prototype._link = function _link (
     }
     translated = this._warnDefault(
       locale, linkPlaceholder, translated, host,
-      Array.isArray(values) ? values : [values]
+      Array.isArray(values) ? values : [values],
+      interpolateMode
     );
-    if (formatters.hasOwnProperty(formatterName)) {
-      translated = formatters[formatterName](translated);
+
+    if (this._modifiers.hasOwnProperty(formatterName)) {
+      translated = this._modifiers[formatterName](translated);
+    } else if (defaultModifiers.hasOwnProperty(formatterName)) {
+      translated = defaultModifiers[formatterName](translated);
     }
 
     visitedLinkStack.pop();
@@ -14199,7 +14256,7 @@ VueI18n.prototype._render = function _render (message, interpolateMode, values, 
 
   // if interpolateMode is **not** 'string' ('row'),
   // return the compiled data (e.g. ['foo', VNode, 'bar']) with formatter
-  return interpolateMode === 'string' ? ret.join('') : ret
+  return interpolateMode === 'string' && typeof ret !== 'string' ? ret.join('') : ret
 };
 
 VueI18n.prototype._translate = function _translate (
@@ -14244,7 +14301,11 @@ VueI18n.prototype._t = function _t (key, _locale, messages, host) {
     if (!this._root) { throw Error('unexpected error') }
     return (ref = this._root).$t.apply(ref, [ key ].concat( values ))
   } else {
-    return this._warnDefault(locale, key, ret, host, values)
+    ret = this._warnDefault(locale, key, ret, host, values, 'string');
+    if (this._postTranslation) {
+      ret = this._postTranslation(ret);
+    }
+    return ret
   }
 };
 
@@ -14264,7 +14325,7 @@ VueI18n.prototype._i = function _i (key, locale, messages, host, values) {
     if (!this._root) { throw Error('unexpected error') }
     return this._root.$i18n.i(key, locale, values)
   } else {
-    return this._warnDefault(locale, key, ret, host, [values])
+    return this._warnDefault(locale, key, ret, host, [values], 'raw')
   }
 };
 
@@ -14367,7 +14428,6 @@ VueI18n.prototype.getLocaleMessage = function getLocaleMessage (locale) {
 VueI18n.prototype.setLocaleMessage = function setLocaleMessage (locale, message) {
   if (this._warnHtmlInMessage === 'warn' || this._warnHtmlInMessage === 'error') {
     this._checkLocaleMessage(locale, this._warnHtmlInMessage, message);
-    if (this._warnHtmlInMessage === 'error') { return }
   }
   this._vm.$set(this._vm.messages, locale, message);
 };
@@ -14375,9 +14435,8 @@ VueI18n.prototype.setLocaleMessage = function setLocaleMessage (locale, message)
 VueI18n.prototype.mergeLocaleMessage = function mergeLocaleMessage (locale, message) {
   if (this._warnHtmlInMessage === 'warn' || this._warnHtmlInMessage === 'error') {
     this._checkLocaleMessage(locale, this._warnHtmlInMessage, message);
-    if (this._warnHtmlInMessage === 'error') { return }
   }
-  this._vm.$set(this._vm.messages, locale, merge(this._vm.messages[locale] || {}, message));
+  this._vm.$set(this._vm.messages, locale, merge({}, this._vm.messages[locale] || {}, message));
 };
 
 VueI18n.prototype.getDateTimeFormat = function getDateTimeFormat (locale) {
@@ -14478,10 +14537,24 @@ VueI18n.prototype.getNumberFormat = function getNumberFormat (locale) {
 
 VueI18n.prototype.setNumberFormat = function setNumberFormat (locale, format) {
   this._vm.$set(this._vm.numberFormats, locale, format);
+  this._clearNumberFormat(locale, format);
 };
 
 VueI18n.prototype.mergeNumberFormat = function mergeNumberFormat (locale, format) {
   this._vm.$set(this._vm.numberFormats, locale, merge(this._vm.numberFormats[locale] || {}, format));
+  this._clearNumberFormat(locale, format);
+};
+
+VueI18n.prototype._clearNumberFormat = function _clearNumberFormat (locale, format) {
+  for (var key in format) {
+    var id = locale + "__" + key;
+
+    if (!this._numberFormatters.hasOwnProperty(id)) {
+      continue
+    }
+
+    delete this._numberFormatters[id];
+  }
 };
 
 VueI18n.prototype._getNumberFormatter = function _getNumberFormatter (
@@ -14630,7 +14703,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.11.2';
+VueI18n.version = '8.16.0';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 
@@ -15815,6 +15888,7 @@ function debounce(func, wait, options) {
       }
       if (maxing) {
         // Handle invocations in a tight loop.
+        clearTimeout(timerId);
         timerId = setTimeout(timerExpired, wait);
         return invokeFunc(lastCallTime);
       }
@@ -16693,6 +16767,10 @@ exports.default = TdtMapSwitcherViewModel;
 /***/ (function(module, exports) {
 
 function _iterableToArrayLimit(arr, i) {
+  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
+    return;
+  }
+
   var _arr = [];
   var _n = true;
   var _d = false;
@@ -17087,29 +17165,12 @@ exports.default = WebSceneViewModel;
 
 /***/ }),
 
-/***/ "35cc":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/tdt/route/TdtRoute.vue?vue&type=template&id=bad3f3fa&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-tdtRoute",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"background":_vm.background,"textColor":_vm.textColor}},[_c('div',{staticClass:"sm-component-tdtRoute__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-tdtRoute__header"},[_c('div',{staticClass:"route-navbar"},[_c('div',[_c('div',{class:['car-icon', { active: _vm.routeActive === 'car' }],on:{"click":function($event){_vm.routeActive = 'car'}}},[_c('i')]),_vm._v(" "),_c('div',{class:['bus-icon', { active: _vm.routeActive === 'bus' }],on:{"click":function($event){_vm.routeActive = 'bus'}}},[_c('i')])]),_vm._v(" "),_c('div',{staticClass:"clear-route",style:([_vm.getTextColorStyle]),on:{"click":_vm.clearRoute}},[_vm._v(_vm._s(_vm.$t('tdtRoute.clearRoute')))])]),_vm._v(" "),_c('div',{staticClass:"route-panel"},[_c('div',{staticClass:"start-route"},[_c('div',{staticClass:"icon-wrapper"},[_c('div',{staticClass:"icon"})]),_vm._v(" "),_c('div',{staticClass:"content"},[_c('a-input',{style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),attrs:{"placeholder":_vm.$t('tdtRoute.pleaseEnterStartPoint'),"title":_vm.$t('tdtRoute.pleaseEnterStartPoint')},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&$event.keyCode!==13){ return null; }return _vm.searchClicked($event)}},model:{value:(_vm.start),callback:function ($$v) {_vm.start=$$v},expression:"start"}},[_c('a-icon',{style:([_vm.getTextColorStyle]),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.clearStart},slot:"suffix"})],1)],1)]),_vm._v(" "),_c('div',{staticClass:"end-route"},[_c('div',{staticClass:"icon-wrapper"},[_c('div',{staticClass:"icon"})]),_vm._v(" "),_c('div',{staticClass:"content"},[_c('a-input',{style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),attrs:{"placeholder":_vm.$t('tdtRoute.pleaseEnterEndPoint'),"title":_vm.$t('tdtRoute.pleaseEnterEndPoint')},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&$event.keyCode!==13){ return null; }return _vm.searchClicked($event)}},model:{value:(_vm.end),callback:function ($$v) {_vm.end=$$v},expression:"end"}},[_c('a-icon',{style:([_vm.getTextColorStyle]),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.clearEnd},slot:"suffix"})],1)],1)]),_vm._v(" "),_c('div',{staticClass:"switch-route",on:{"click":_vm.switchRoute}},[_c('a-icon',{attrs:{"type":"swap"}})],1)]),_vm._v(" "),_c('div',{staticClass:"search-btn"},[_c('a-button',{style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),attrs:{"type":"primary"},on:{"click":_vm.searchClicked}},[_vm._v("\n          "+_vm._s(_vm.$t('tdtRoute.search'))+"\n        ")])],1)]),_vm._v(" "),_c('div',{staticClass:"sm-component-tdtRoute__content",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[(!_vm.showRoutePlan && _vm.status)?_c('div',{staticClass:"route-result"},[_c('div',{staticClass:"start-point"},[_c('div',{staticClass:"title"},[_c('a-icon',{attrs:{"type":"question-circle","theme":"filled"}}),_vm._v(" "),_c('span',{on:{"click":function($event){return _vm.resetStatus('toSetStart')}}},[_vm._v(_vm._s(_vm.$t('tdtRoute.startPoint'))+"："+_vm._s(_vm.start))])],1),_vm._v(" "),(_vm.status === 'toSetStart' && _vm.componentId)?_c('div',{staticClass:"content"},[_c(_vm.componentId,_vm._g(_vm._b({tag:"component"},'component',_vm.componentProps,false),_vm.componentListeners))],1):_vm._e()]),_vm._v(" "),_c('div',{staticClass:"end-point"},[_c('div',{staticClass:"title"},[_c('a-icon',{attrs:{"type":"question-circle","theme":"filled"}}),_vm._v(" "),_c('span',{on:{"click":function($event){return _vm.resetStatus('toSetEnd')}}},[_vm._v(_vm._s(_vm.$t('tdtRoute.endPoint'))+"："+_vm._s(_vm.end))])],1),_vm._v(" "),(_vm.status === 'toSetEnd' && _vm.componentId)?_c('div',{staticClass:"content"},[_c(_vm.componentId,_vm._g(_vm._b({tag:"component"},'component',_vm.componentProps,false),_vm.componentListeners))],1):_vm._e()])]):_vm._e(),_vm._v(" "),(_vm.showRoutePlan)?_c('RoutePlan',{attrs:{"route-plan":_vm.routePlan,"start":{ name: _vm.start },"dest":{ name: _vm.end },"spinning":_vm.spinning,"search-type":_vm.routeActive,"isError":_vm.isError,"themeStyle":[_vm.getBackgroundStyle, _vm.getTextColorStyle]},on:{"style-changed":_vm.styleChanged,"route-plan-clicked":_vm.routePlanClicked,"bus-info-clicked":_vm.busInfoClicked}}):_vm._e()],1)])])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/mapboxgl/tdt/route/TdtRoute.vue?vue&type=template&id=bad3f3fa&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "3605":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChartMixin_vue_vue_type_template_id_600552da___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("2961");
+/* harmony import */ var _ChartMixin_vue_vue_type_template_id_69d61d68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("4762");
 /* harmony import */ var _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("d83d");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -17122,8 +17183,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ChartMixin_vue_vue_type_template_id_600552da___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _ChartMixin_vue_vue_type_template_id_600552da___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _ChartMixin_vue_vue_type_template_id_69d61d68___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _ChartMixin_vue_vue_type_template_id_69d61d68___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -19581,7 +19642,7 @@ exports.default = LabelThemeLayerViewModel;
 /* WEBPACK VAR INJECTION */(function(global) {/*!
  * The buffer module from node.js, for the browser.
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @author   Feross Aboukhadijeh <http://feross.org>
  * @license  MIT
  */
 /* eslint-disable no-proto */
@@ -21724,7 +21785,8 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-if (!process.version ||
+if (typeof process === 'undefined' ||
+    !process.version ||
     process.version.indexOf('v0.') === 0 ||
     process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
   module.exports = { nextTick: nextTick };
@@ -21767,7 +21829,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("26d5")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f2ac")))
 
 /***/ }),
 
@@ -23167,23 +23229,6 @@ var staticRenderFns = []
 
 /***/ }),
 
-/***/ "435f":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=3d30905a&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",style:([{'background': _vm.background}]),attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),_vm._l((_vm.controlComponents),function(controlProps,controlName){return [_c(controlName,_vm._b({key:controlName,tag:"component"},'component',controlProps,false))]}),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=3d30905a&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "4361":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24351,6 +24396,23 @@ var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-map/control/scale/Scale.vue?vue&type=template&id=348a4c78&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
+/***/ "4762":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=69d61d68&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=69d61d68&
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
@@ -25723,7 +25785,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Search_vue_vue_type_template_id_a51d9af0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("7c94");
+/* harmony import */ var _Search_vue_vue_type_template_id_7b86e414___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1b3a");
 /* harmony import */ var _Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("b39e");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -25736,8 +25798,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Search_vue_vue_type_template_id_a51d9af0___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Search_vue_vue_type_template_id_a51d9af0___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Search_vue_vue_type_template_id_7b86e414___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Search_vue_vue_type_template_id_7b86e414___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -26471,7 +26533,7 @@ exports.setLocale = setLocale;
 exports.initi18n = initi18n;
 exports.default = exports.lang = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _jsCookie = _interopRequireDefault(__webpack_require__("f53a"));
 
@@ -26483,7 +26545,10 @@ var _lodash = _interopRequireDefault(__webpack_require__("25a2"));
 
 var _vueI18n = _interopRequireDefault(__webpack_require__("2efc"));
 
-// import Vue from 'vue';
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var dateTimeFormats = {
   en: _en.default.dateTimeFormat,
   zh: _zh.default.dateTimeFormat
@@ -26491,8 +26556,8 @@ var dateTimeFormats = {
 var i18n = {};
 var rooti18n;
 var messages = {
-  en: (0, _objectSpread2.default)({}, _en.default),
-  zh: (0, _objectSpread2.default)({}, _zh.default)
+  en: _objectSpread({}, _en.default),
+  zh: _objectSpread({}, _zh.default)
 };
 
 function getLanguage() {
@@ -27565,7 +27630,7 @@ exports.default = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("4066"));
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__("19e1"));
 
@@ -27584,6 +27649,10 @@ var _lodash3 = _interopRequireDefault(__webpack_require__("ae5c"));
 var _util = __webpack_require__("1448");
 
 var _statistics = __webpack_require__("9dde");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 // 三方服务请求的结果为单对象的时候，是否要转成多个features
 function tranformSingleToMulti(data) {
@@ -27701,7 +27770,7 @@ function () {
         });
 
         var maxFeatures = matchItem ? '' : dataset.maxFeatures;
-        (0, _getFeatures.default)((0, _objectSpread2.default)({}, dataset, {
+        (0, _getFeatures.default)(_objectSpread({}, dataset, {
           maxFeatures: maxFeatures
         })).then(function (data) {
           // 兼容三方服务接口返回的一个普通的对象
@@ -27766,7 +27835,7 @@ function () {
       var gridAxis = (this.gridAxis.xAxis.length > 0 || JSON.stringify(this.gridAxis.yAxis) !== '{}') && this.gridAxis;
       var radarAxis = this.radarAxis;
       var series = this.serieDatas;
-      return (0, _objectSpread2.default)({}, gridAxis, radarAxis, {
+      return _objectSpread({}, gridAxis, {}, radarAxis, {
         series: series
       });
     }
@@ -28422,7 +28491,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /*<replacement>*/
 
-var Buffer = __webpack_require__("963e").Buffer;
+var Buffer = __webpack_require__("0318").Buffer;
 /*</replacement>*/
 
 var isEncoding = Buffer.isEncoding || function (encoding) {
@@ -28696,6 +28765,75 @@ function simpleEnd(buf) {
 
 /***/ }),
 
+/***/ "54da":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint-disable node/no-deprecated-api */
+var buffer = __webpack_require__("3be6")
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
+
+
+/***/ }),
+
 /***/ "5595":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -28862,6 +29000,919 @@ exports.default = GraphThemeLayerViewModel;
 
 /***/ }),
 
+/***/ "5966":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("16ed");
+
+var _interopRequireDefault = __webpack_require__("8e6d");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("19e1"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("66f6"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("8377"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("c031"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("27f6"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("6b51"));
+
+var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("3d57"));
+
+var THREE = _interopRequireWildcard(__webpack_require__("8b5b"));
+
+var _GLTFLoader = __webpack_require__("6d09");
+
+var _OBJLoader = __webpack_require__("b9f8");
+
+var _pointGeometry = _interopRequireDefault(__webpack_require__("fd21"));
+
+var _rhumbBearing = _interopRequireDefault(__webpack_require__("0a75"));
+
+var TrackLayerViewModel =
+/*#__PURE__*/
+function (_mapboxgl$Evented) {
+  (0, _inherits2.default)(TrackLayerViewModel, _mapboxgl$Evented);
+
+  function TrackLayerViewModel(options) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, TrackLayerViewModel);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TrackLayerViewModel).call(this));
+    _this.lineData = [];
+    _this.layerStyle = {};
+    _this.imageName = 'custom-image';
+    _this.animateTime = 0;
+    _this.animateRemaining = 0;
+    _this.rotateFactor = 0;
+    _this.layerId = options.layerId || "tracklayer_".concat(+new Date());
+    _this.lineLayerId = "".concat(_this.layerId, "-line");
+    _this.layerStyle = options.layerStyle || {};
+    _this.trackPoints = options.trackPoints;
+    _this.position = options.position;
+    _this.options = {
+      loaderType: options.loaderType,
+      url: options.url,
+      displayLine: options.displayLine,
+      direction: options.direction,
+      unit: options.unit,
+      scale: options.scale,
+      fitBounds: options.fitBounds,
+      followCamera: options.followCamera
+    };
+
+    _this._initPosition();
+
+    _this._animateLayerFn = _this._animateLayer.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(TrackLayerViewModel, [{
+    key: "setMap",
+    value: function setMap(mapInfo) {
+      var map = mapInfo.map;
+
+      if (!map) {
+        throw new Error('map is requierd');
+      }
+
+      this.map = map;
+
+      this._init();
+    }
+  }, {
+    key: "setLoaderType",
+    value: function setLoaderType(loaderType) {
+      var _this2 = this;
+
+      this.options.loaderType = loaderType;
+
+      if (!loaderType) {
+        this.removed();
+        return;
+      }
+
+      if (!this.map) {
+        return;
+      }
+
+      setTimeout(function () {
+        _this2._init(true);
+      }, 0);
+    }
+  }, {
+    key: "setUrl",
+    value: function setUrl(url) {
+      var _this3 = this;
+
+      this.options.url = url;
+
+      if (!url) {
+        this.removed();
+        return;
+      }
+
+      if (!this.map || !this.options.loaderType) {
+        return;
+      }
+
+      if (this.options.loaderType === 'IMAGE') {
+        this.map.loadImage(url, function (error, image) {
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          if (_this3.map.hasImage(_this3.imageName)) {
+            _this3.map.removeImage(_this3.imageName);
+
+            _this3.imageName = 'custom-image-' + new Date().getTime();
+
+            _this3.map.addImage(_this3.imageName, image);
+
+            _this3.map.setLayoutProperty(_this3.layerId, 'icon-image', _this3.imageName);
+          } else {
+            _this3._init();
+          }
+        });
+      } else {
+        this._init(true);
+      }
+    }
+  }, {
+    key: "setDisplayLine",
+    value: function setDisplayLine(displayLine) {
+      this.options.displayLine = displayLine;
+      var lineSource = this.map && this.map.getSource(this.lineLayerId);
+
+      if (!lineSource) {
+        return;
+      }
+
+      this._addTrackLineLayer();
+    }
+  }, {
+    key: "setTrackPoints",
+    value: function setTrackPoints(trackPoints) {
+      this.trackPoints = trackPoints;
+
+      if (!this.map) {
+        return;
+      }
+
+      if (!trackPoints) {
+        this.removed();
+      }
+
+      this.lineData = [];
+    }
+  }, {
+    key: "setPosition",
+    value: function setPosition(timestampInfo) {
+      if (!this.trackPoints) {
+        return;
+      }
+
+      this.animationFrameId && cancelAnimationFrame(this.animationFrameId);
+      this.originStartTimestamp = this.position && this.position.prevTimestamp;
+      this.originNextTimestamp = this.position && this.position.nextTimestamp;
+      this.position = timestampInfo;
+      var destCoordinates, matchNextPosition, matchStartPosition, animateStep;
+      var matchNextPositionIndex = this.trackPoints.findIndex(function (item) {
+        return item.properties.timestamp > timestampInfo.currentTimestamp;
+      });
+
+      if (matchNextPositionIndex > -1) {
+        matchNextPosition = this.trackPoints[matchNextPositionIndex];
+        matchStartPosition = this.trackPoints[matchNextPositionIndex - 1];
+        destCoordinates = matchNextPosition.geometry.coordinates;
+        this.destPosition = destCoordinates;
+        this.destTimestamp = matchNextPosition.properties.timestamp;
+        this.startTimestamp = matchStartPosition.properties.timestamp;
+      }
+
+      if (this.originStartTimestamp !== timestampInfo.prevTimestamp) {
+        this.animateRemaining = 0;
+        var matchCurrentPosition = this.trackPoints.find(function (item) {
+          return item.properties.timestamp === timestampInfo.currentTimestamp;
+        });
+
+        if (matchCurrentPosition) {
+          this.startPosition = matchCurrentPosition.geometry.coordinates;
+        } else if (destCoordinates) {
+          var totalTime = matchNextPosition.properties.timestamp - this.startTimestamp;
+          var diff = timestampInfo.currentTimestamp - this.startTimestamp;
+          var percent = diff / totalTime;
+          this.startPosition = this._getWayPoint(percent, matchStartPosition.geometry.coordinates, destCoordinates);
+        }
+
+        this.lineData = this.trackPoints.slice(0, matchNextPositionIndex).map(function (item) {
+          return item.geometry.coordinates;
+        });
+
+        this._setRotateFactor();
+
+        this._initLayer(this.startPosition);
+      } else if (!timestampInfo.nextTimestamp && this.animateRemaining > 0) {
+        animateStep = this.animateRemaining;
+      }
+
+      if (timestampInfo.nextTimestamp && destCoordinates) {
+        if (timestampInfo.currentTimestamp === timestampInfo.prevTimestamp) {
+          var stepBetweenNearPoints = timestampInfo.nextTimestamp - timestampInfo.currentTimestamp;
+
+          var _totalTime = this.destTimestamp - timestampInfo.currentTimestamp;
+
+          var intervals = _totalTime / stepBetweenNearPoints;
+          animateStep = animateStep || intervals * timestampInfo.step;
+        } else {
+          animateStep = animateStep || this.destTimestamp - this.startTimestamp;
+        }
+
+        this.animateStep = animateStep;
+        this.animateTime = performance.now() + animateStep;
+
+        this._setRotateFactor();
+
+        this._animateLayer();
+      } else if (this.destPosition && this.originNextTimestamp) {
+        this.destPosition = null;
+      }
+    }
+  }, {
+    key: "setLayerStyle",
+    value: function setLayerStyle(layerStyle) {
+      this.layerStyle = layerStyle;
+
+      if (!layerStyle || !this.map.getSource(this.lineLayerId)) {
+        return;
+      }
+
+      var _layerStyle$line = layerStyle.line,
+          paint = _layerStyle$line.paint,
+          layout = _layerStyle$line.layout;
+
+      if (paint) {
+        for (var _i = 0, _Object$keys = Object.keys(paint); _i < _Object$keys.length; _i++) {
+          var prop = _Object$keys[_i];
+          this.map.setPaintProperty(this.lineLayerId, prop, paint[prop]);
+        }
+      }
+
+      if (layout) {
+        for (var _i2 = 0, _Object$keys2 = Object.keys(layout); _i2 < _Object$keys2.length; _i2++) {
+          var _prop = _Object$keys2[_i2];
+          this.map.setLayoutProperty(this.lineLayerId, _prop, layout[_prop]);
+        }
+      }
+    }
+  }, {
+    key: "setDirection",
+    value: function setDirection(direction) {
+      this.options.direction = direction;
+
+      this._init();
+    }
+  }, {
+    key: "setUnit",
+    value: function setUnit(unit) {
+      this.options.unit = unit;
+
+      this._init(true);
+    }
+  }, {
+    key: "setScale",
+    value: function setScale(scale) {
+      this.options.scale = isNaN(+scale) ? 0 : +scale;
+
+      this._init(true);
+    }
+  }, {
+    key: "setFitBounds",
+    value: function setFitBounds(fitBounds) {
+      this.options.fitBounds = fitBounds;
+
+      this._init(true);
+    }
+  }, {
+    key: "setFollowCamera",
+    value: function setFollowCamera(followCamera) {
+      this.options.followCamera = followCamera;
+    }
+  }, {
+    key: "_initPosition",
+    value: function _initPosition() {
+      var _this4 = this;
+
+      if (this.position && this.trackPoints) {
+        var matchStartPositionIndex = this.trackPoints.findIndex(function (item) {
+          return item.properties.timestamp === _this4.position.currentTimestamp;
+        });
+
+        if (matchStartPositionIndex > -1) {
+          var matchStartPosition = this.trackPoints[matchStartPositionIndex];
+          this.startPosition = matchStartPosition.geometry.coordinates;
+          var nextPosition;
+
+          if (this.position.nextTimestamp) {
+            var matchNextPosition = this.trackPoints.find(function (item) {
+              return item.properties.timestamp > _this4.position.nextTimestamp;
+            });
+            matchNextPosition && (nextPosition = matchNextPosition.geometry.coordinates);
+          }
+
+          if (!nextPosition && this.trackPoints[matchStartPositionIndex + 1]) {
+            this.destPosition = this.trackPoints[matchStartPositionIndex + 1].geometry.coordinates;
+          }
+        }
+      }
+    }
+  }, {
+    key: "_setRotateFactor",
+    value: function _setRotateFactor() {
+      var pointInfo = this._getPointInfo();
+
+      this.rotateFactor = 0;
+
+      if (pointInfo) {
+        var startPoint = pointInfo.startPoint;
+        var endPoint = pointInfo.endPoint;
+        var rad = Math.atan((endPoint.y - startPoint.y) / (endPoint.x - startPoint.x));
+
+        if (endPoint.x - startPoint.x < 0) {
+          rad = Math.PI + rad;
+        }
+
+        this.rotateFactor = isNaN(rad) ? 0 : -rad;
+      }
+
+      if (this.map) {
+        var bearing = this.map.getBearing() * Math.PI / 180;
+        this.rotateFactor -= bearing;
+      }
+    }
+  }, {
+    key: "_init",
+    value: function _init(removedLayer) {
+      if (removedLayer) {
+        this.removed();
+      }
+
+      this._setRotateFactor();
+
+      this._initLayer();
+    }
+  }, {
+    key: "_getWayPoint",
+    value: function _getWayPoint(percent, startPosition, destPosition) {
+      var pointInfo = this._getPointInfo(startPosition, destPosition);
+
+      if (pointInfo) {
+        var startPoint = pointInfo.startPoint;
+        var endPoint = pointInfo.endPoint;
+        var nextPoint = endPoint.sub(startPoint).mult(percent).add(startPoint);
+        var nextPosition = this.map.unproject(nextPoint).toArray();
+        return nextPosition;
+      }
+    }
+  }, {
+    key: "_animateLayer",
+    value: function _animateLayer() {
+      var remaining, gone, percent;
+
+      if (this.position.currentTimestamp === this.position.prevTimestamp) {
+        var now = performance.now();
+        remaining = this.animateTime - now;
+        gone = this.animateStep - remaining;
+        percent = gone / this.animateStep;
+      } else {
+        remaining = this.destTimestamp - this.position.currentTimestamp;
+        gone = this.position.currentTimestamp - this.position.prevTimestamp;
+        percent = gone / this.animateStep;
+      }
+
+      if (remaining > 0) {
+        this.animateRemaining = remaining;
+
+        var nextPosition = this._getWayPoint(percent);
+
+        if (nextPosition) {
+          this.lineData.push(nextPosition);
+
+          this._initLayer(nextPosition);
+        }
+
+        this.animationFrameId = requestAnimationFrame(this._animateLayerFn);
+      } else {
+        cancelAnimationFrame(this.animationFrameId);
+      }
+    }
+  }, {
+    key: "_initLayer",
+    value: function _initLayer() {
+      var positionCoordinate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.currentPosition;
+      var position = positionCoordinate || this.startPosition;
+
+      if (!position || !this.map || !this.options.url || !this.options.loaderType) {
+        return;
+      }
+
+      if (this.options.followCamera) {
+        var options = {
+          center: position,
+          pitch: 60
+        };
+
+        if (this.startPosition && this.destPosition) {
+          options.bearing = (0, _rhumbBearing.default)(this.startPosition, this.destPosition);
+        }
+
+        this.map.easeTo(options);
+      }
+
+      switch (this.options.loaderType) {
+        case 'GLTF':
+        case 'OBJ2':
+          this._addCustomLayer(position);
+
+          break;
+
+        case 'IMAGE':
+          this._addImageLayer(position);
+
+      }
+
+      this._addTrackLineLayer();
+    }
+  }, {
+    key: "_addCustomLayer",
+    value: function _addCustomLayer(positionCoordinate) {
+      var _this5 = this;
+
+      this.currentPosition = positionCoordinate;
+      this.modelTransform = this._getModelTransform(positionCoordinate);
+
+      if (!this.map.getLayer(this.layerId)) {
+        var customLayer = {
+          id: this.layerId,
+          type: 'custom',
+          renderingMode: '3d',
+          onAdd: function onAdd(map, gl) {
+            _this5.camera = new THREE.Camera();
+            _this5.scene = new THREE.Scene();
+            var directionalLight = new THREE.DirectionalLight(0xffffff);
+            directionalLight.position.set(0, -70, 100).normalize();
+
+            _this5.scene.add(directionalLight);
+
+            var directionalLight2 = new THREE.DirectionalLight(0xfffffff);
+            directionalLight2.position.set(0, 70, 100).normalize();
+
+            _this5.scene.add(directionalLight2);
+
+            _this5._dealWithLoader();
+
+            _this5.map = map;
+            _this5.renderer = new THREE.WebGLRenderer({
+              canvas: map.getCanvas(),
+              context: gl,
+              antialias: true
+            });
+            _this5.renderer.autoClear = false;
+          },
+          render: function render(gl, matrix) {
+            var modelTransform = _this5.modelTransform;
+            var rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), modelTransform.rotateX);
+            var rotationY = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 1, 0), modelTransform.rotateY);
+            var rotationZ = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 0, 1), modelTransform.rotateZ);
+            var m = new THREE.Matrix4().fromArray(matrix);
+            var l = new THREE.Matrix4().makeTranslation(modelTransform.translateX, modelTransform.translateY, modelTransform.translateZ).scale(new THREE.Vector3(modelTransform.scale, -modelTransform.scale, modelTransform.scale)).multiply(rotationX).multiply(rotationY).multiply(rotationZ);
+            _this5.camera.projectionMatrix = m.multiply(l);
+
+            _this5.renderer.state.reset();
+
+            _this5.renderer.render(_this5.scene, _this5.camera);
+
+            _this5.map.triggerRepaint();
+          }
+        };
+        this.map.addLayer(customLayer);
+      }
+    }
+  }, {
+    key: "_addImageLayer",
+    value: function _addImageLayer(positionCoordinate) {
+      var _this6 = this;
+
+      var url = this.options.url;
+      var imageSource = this.map.getSource(this.layerId);
+      var sourceData = {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: positionCoordinate
+          },
+          properties: {}
+        }]
+      };
+
+      if (imageSource) {
+        imageSource.setData(sourceData);
+      } else {
+        if (!this.map.hasImage(this.imageName)) {
+          this.map.loadImage(url, function (error, image) {
+            if (error) {
+              console.error(error);
+              return;
+            }
+
+            _this6.map.addImage(_this6.imageName, image);
+
+            _this6.map.addSource(_this6.layerId, {
+              type: 'geojson',
+              data: sourceData
+            });
+
+            _this6.map.addLayer({
+              type: 'symbol',
+              id: _this6.layerId,
+              source: _this6.layerId,
+              layout: {
+                'icon-image': _this6.imageName,
+                'icon-size': _this6.options.scale || 1,
+                'icon-allow-overlap': true,
+                'icon-ignore-placement': true
+              }
+            });
+          });
+        } else {
+          this.map.addSource(this.layerId, {
+            type: 'geojson',
+            data: sourceData
+          });
+          this.map.addLayer({
+            type: 'symbol',
+            id: this.layerId,
+            source: this.layerId,
+            layout: {
+              'icon-image': this.imageName,
+              'icon-size': this.options.scale || 1
+            }
+          });
+        }
+      }
+    }
+  }, {
+    key: "_addTrackLineLayer",
+    value: function _addTrackLineLayer() {
+      var imageSource = this.map.getSource(this.lineLayerId);
+      var features;
+
+      if (!this.options.displayLine) {
+        features = [];
+      } else {
+        var coordinates = this.lineData;
+
+        if (this.options.displayLine === 'All') {
+          coordinates = this.trackPoints.map(function (item) {
+            return item.geometry.coordinates;
+          });
+        }
+
+        features = [{
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: coordinates
+          },
+          properties: {}
+        }];
+      }
+
+      var sourceData = {
+        type: 'FeatureCollection',
+        features: features
+      };
+
+      if (imageSource) {
+        imageSource.setData(sourceData);
+      } else {
+        var lineStyle = this.layerStyle && this.layerStyle.line || {};
+        this.map.addSource(this.lineLayerId, {
+          type: 'geojson',
+          data: sourceData
+        });
+        this.map.addLayer({
+          type: 'line',
+          id: this.lineLayerId,
+          source: this.lineLayerId,
+          layout: lineStyle.layout || {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          paint: lineStyle.paint || {
+            'line-color': '#065726',
+            'line-width': 5,
+            'line-opacity': 0.8
+          }
+        }, this.map.getLayer(this.layerId) ? this.layerId : null);
+      }
+    }
+  }, {
+    key: "_getFontRotate",
+    value: function _getFontRotate(front) {
+      var rotateInfo = {
+        rotateAxisIndex: void 0,
+        rotate: void 0
+      };
+
+      switch (front) {
+        case '-x':
+          rotateInfo.rotateAxisIndex = 2;
+          rotateInfo.rotate = 180;
+          break;
+
+        case 'y':
+          rotateInfo.rotateAxisIndex = 2;
+          rotateInfo.rotate = -90;
+          break;
+
+        case '-y':
+          rotateInfo.rotateAxisIndex = 2;
+          rotateInfo.rotate = 90;
+          break;
+
+        case 'z':
+          rotateInfo.rotateAxisIndex = 1;
+          rotateInfo.rotate = 90;
+          break;
+
+        case '-z':
+          rotateInfo.rotateAxisIndex = 1;
+          rotateInfo.rotate = -90;
+          break;
+      }
+
+      return rotateInfo;
+    }
+  }, {
+    key: "_getBottomRotate",
+    value: function _getBottomRotate(bottom) {
+      var rotateInfo = {
+        originAxisIndex: void 0,
+        rotateAxisIndex: void 0,
+        rotate: void 0
+      };
+
+      switch (bottom) {
+        case 'x':
+          rotateInfo.originAxisIndex = 0;
+          rotateInfo.rotateAxisIndex = 1;
+          rotateInfo.rotate = 90;
+          break;
+
+        case '-x':
+          rotateInfo.originAxisIndex = 0;
+          rotateInfo.rotateAxisIndex = 1;
+          rotateInfo.rotate = -90;
+          break;
+
+        case 'y':
+          rotateInfo.originAxisIndex = 1;
+          rotateInfo.rotateAxisIndex = 0;
+          rotateInfo.rotate = -90;
+          break;
+
+        case '-y':
+          rotateInfo.originAxisIndex = 1;
+          rotateInfo.rotateAxisIndex = 0;
+          rotateInfo.rotate = 90;
+          break;
+
+        case 'z':
+          rotateInfo.originAxisIndex = 2;
+          rotateInfo.rotateAxisIndex = 1;
+          rotateInfo.rotate = 180;
+          break;
+      }
+
+      return rotateInfo;
+    }
+  }, {
+    key: "_getModelTransform",
+    value: function _getModelTransform(positionCoordinate) {
+      var modelOrigin = positionCoordinate;
+      var modelAltitude = 0;
+      var modelRotate = [0, 0, 0];
+
+      var _ref = this.options.direction || {
+        front: null,
+        bottom: null
+      },
+          front = _ref.front,
+          bottom = _ref.bottom;
+
+      var bottomAxisIndex = 2;
+
+      if (front) {
+        var rotateInfo = this._getFontRotate(front);
+
+        if (rotateInfo.rotateAxisIndex !== void 0) {
+          modelRotate[rotateInfo.rotateAxisIndex] += rotateInfo.rotate * Math.PI / 180;
+        }
+      }
+
+      if (bottom) {
+        var _rotateInfo = this._getBottomRotate(bottom);
+
+        if (_rotateInfo.rotateAxisIndex !== void 0) {
+          modelRotate[_rotateInfo.rotateAxisIndex] += _rotateInfo.rotate * Math.PI / 180;
+          bottomAxisIndex = _rotateInfo.originAxisIndex;
+        }
+      }
+
+      modelRotate[bottomAxisIndex] += this.rotateFactor;
+
+      var modelAsMercatorCoordinate = _mapboxGlEnhance.default.MercatorCoordinate.fromLngLat(modelOrigin, modelAltitude);
+
+      var modelTransform = {
+        translateX: modelAsMercatorCoordinate.x,
+        translateY: modelAsMercatorCoordinate.y,
+        translateZ: modelAsMercatorCoordinate.z,
+        rotateX: modelRotate[0],
+        rotateY: modelRotate[1],
+        rotateZ: modelRotate[2],
+        scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
+      };
+      return modelTransform;
+    }
+  }, {
+    key: "_getUnitFactor",
+    value: function _getUnitFactor() {
+      switch (this.options.unit) {
+        case 'millimeter':
+          return 1000;
+
+        case 'centimeter':
+          return 100;
+
+        default:
+          return 1;
+      }
+    }
+  }, {
+    key: "_getMeterFactor",
+    value: function _getMeterFactor() {
+      var modelScale = this.options.scale;
+      var scaleFactor;
+
+      if (this.options.fitBounds) {
+        scaleFactor = 1;
+      } else {
+        scaleFactor = modelScale || 1;
+      }
+
+      var unitFactor = this._getUnitFactor();
+
+      var result = scaleFactor / unitFactor;
+      return result;
+    }
+  }, {
+    key: "_getFitBoundsFactor",
+    value: function _getFitBoundsFactor(scene, scaleFactor) {
+      var bbox = new THREE.Box3().setFromObject(scene);
+      var size = bbox.getSize(new THREE.Vector3());
+      var maxSize = Math.max(size.x, size.y, size.z);
+      var extent = this.map.getCRS().extent;
+      var resolution = Math.max(extent[2] - extent[0], extent[3] - extent[2]) / 512 / Math.pow(2, this.map.getZoom());
+      var canvasWidthDistance = resolution * this.map.getCanvas().width;
+
+      var unitFactor = this._getUnitFactor();
+
+      var result = scaleFactor * canvasWidthDistance / (maxSize / unitFactor) * 0.5;
+      return result;
+    }
+  }, {
+    key: "_getScaleFactor",
+    value: function _getScaleFactor(scene) {
+      var meterFactor = this._getMeterFactor();
+
+      if (this.options.fitBounds) {
+        return this._getFitBoundsFactor(scene, meterFactor);
+      }
+
+      return meterFactor;
+    }
+  }, {
+    key: "_dealWithLoader",
+    value: function _dealWithLoader() {
+      var _this7 = this;
+
+      var loader;
+
+      switch (this.options.loaderType) {
+        case 'GLTF':
+          loader = new _GLTFLoader.GLTFLoader();
+          loader.load(this.options.url, function (gltf) {
+            var scaleFactor = _this7._getScaleFactor(gltf.scene);
+
+            gltf.scene.scale.multiplyScalar(scaleFactor);
+
+            _this7.scene.add(gltf.scene);
+          }, function (xhr) {
+            console.log("".concat(xhr.loaded / xhr.total * 100, "% loaded"));
+          }, function (error) {
+            console.error('An error happened', error);
+          });
+          break;
+
+        case 'OBJ2':
+          loader = new _OBJLoader.OBJLoader2();
+          var material = new THREE.MeshBasicMaterial({
+            color: 'red',
+            wireframe: true
+          });
+          loader.load(this.options.url, function (object3d) {
+            var scaleFactor = _this7._getScaleFactor(object3d);
+
+            object3d.scale.multiplyScalar(scaleFactor);
+            loader.addMaterials({
+              tester: material
+            }, true);
+
+            _this7.scene.add(object3d);
+          }, function (xhr) {
+            console.log("".concat(xhr.loaded / xhr.total * 100, "% loaded"));
+          }, null, function (error) {
+            console.error('An error happened', error);
+          });
+          break;
+      }
+    }
+  }, {
+    key: "_getPointInfo",
+    value: function _getPointInfo() {
+      var startPosition = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.startPosition;
+      var destPosition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.destPosition;
+
+      if (!startPosition || !destPosition || !this.map) {
+        return;
+      }
+
+      var startPixelPoint = this.map.project(startPosition);
+      var endPixelPoint = this.map.project(destPosition);
+      var startPoint = new _pointGeometry.default(startPixelPoint.x, startPixelPoint.y);
+      var endPoint = new _pointGeometry.default(endPixelPoint.x, endPixelPoint.y);
+      return {
+        startPoint: startPoint,
+        endPoint: endPoint
+      };
+    }
+  }, {
+    key: "removed",
+    value: function removed() {
+      var map = this.map,
+          layerId = this.layerId,
+          lineLayerId = this.lineLayerId;
+
+      if (map) {
+        if (layerId) {
+          map.getLayer(layerId) && map.removeLayer(layerId);
+          map.getSource(layerId) && map.removeSource(layerId);
+        }
+
+        if (lineLayerId) {
+          map.getLayer(lineLayerId) && map.removeLayer(lineLayerId);
+          map.getSource(lineLayerId) && map.removeSource(lineLayerId);
+          this.lineData = [];
+        }
+      }
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.lineData = [];
+    }
+  }]);
+  return TrackLayerViewModel;
+}(_mapboxGlEnhance.default.Evented);
+
+exports.default = TrackLayerViewModel;
+
+/***/ }),
+
 /***/ "5993":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -28878,6 +29929,36 @@ var staticRenderFns = []
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
+
+/***/ }),
+
+/***/ "5a96":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1171");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("b429");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(
+  _TrackLayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
@@ -28906,7 +29987,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
 
@@ -28925,6 +30006,10 @@ var _Events2 = __webpack_require__("e3e2");
 var _util = __webpack_require__("1448");
 
 var _statistics = __webpack_require__("9dde");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var RestService =
 /*#__PURE__*/
@@ -28962,7 +30047,7 @@ function (_Events) {
 
 
       if ((0, _typeof2.default)(data) === 'object') {
-        this.transfromGeoJSON((0, _objectSpread2.default)({}, data), queryInfo);
+        this.transfromGeoJSON(_objectSpread({}, data), queryInfo);
         return;
       } // 如果是url， 就发送请求
 
@@ -30236,7 +31321,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _theme = _interopRequireDefault(__webpack_require__("9259"));
 
@@ -30260,132 +31345,10 @@ var _util = __webpack_require__("1448");
 
 var _lodash = _interopRequireDefault(__webpack_require__("5f9f"));
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// import iPortalDataParameter from '../../common/_types/iPortalDataParameter';
-// import RestDataParameter from '../../common/_types/RestDataParameter';
-// import RestMapParameter from '../../common/_types/RestMapParameter';
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 // let validators = (value, propType) => {
 //   let valid = true;
 //   value.forEach(item => {
@@ -30395,23 +31358,6 @@ var _lodash = _interopRequireDefault(__webpack_require__("5f9f"));
 //   });
 //   return valid;
 // };
-
-/**
- * @module Query
- * @category Components
- * @desc 查询组件。
- * @vue-prop {String} [iconClass='sm-components-icons-search'] - 设置组件图标的类名。
- * @vue-prop {String} [headerName='查询'] - 组件标题名。
- * @vue-prop {Number} [maxFeatures=200] - 最大返回要素个数。
- * @vue-prop {Array} [restMap] - iServer 地图服务查询配置。
- * @vue-prop {Array} [restData] - iServer 数据服务查询配置。
- * @vue-prop {Array} [iportalData] - iPortal 数据查询配置。
- * @vue-prop {Object} [layerStyle] - 图层样式配置。
- * @vue-prop {SuperMap.Components.commontypes.LineStyle} [layerStyle.line] - 线图层样式配置。
- * @vue-prop {SuperMap.Components.commontypes.CircleStyle} [layerStyle.circle] - 点图层样式配置。
- * @vue-prop {SuperMap.Components.commontypes.FillStyle} [layerStyle.fill] - 面图层样式配置。
- * @vue-prop {SuperMap.Components.commontypes.LineStyle} [layerStyle.stokeLine] - 面图层边框样式配置。
- */
 var _default2 = {
   name: 'SmQuery',
   components: {
@@ -30882,7 +31828,7 @@ var _default2 = {
           }],
           data: featuerInfo.info
         };
-        this.tablePopupProps = (0, _objectSpread2.default)({}, state);
+        this.tablePopupProps = _objectSpread({}, state);
         this.$nextTick(function () {
           _this5.popup = _this5.viewModel.addPopup(featuerInfo.coordinates, _this5.$refs.queryTablePopup.$el);
 
@@ -35104,6 +36050,13 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "6d09":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__6d09__;
+
+/***/ }),
+
 /***/ "6e0d":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35508,7 +36461,15 @@ function (_WebMapBase) {
         }
 
         setTimeout(function () {
-          _this5.map = new _mapboxGlEnhance.default.Map(_this5.mapOptions);
+          var fadeDuration = 0;
+
+          if (_this5.mapOptions.hasOwnProperty('fadeDuration')) {
+            fadeDuration = _this5.mapOptions.fadeDuration;
+          }
+
+          _this5.map = new _mapboxGlEnhance.default.Map(Object.assign(Object.assign({}, _this5.mapOptions), {
+            fadeDuration: fadeDuration
+          }));
 
           _this5.map.on('load', function () {
             _this5.triggerEvent('addlayerssucceeded', {
@@ -35591,7 +36552,8 @@ function (_WebMapBase) {
           return {
             url: url
           };
-        }
+        },
+        fadeDuration: 0
       });
       this.triggerEvent('mapinitialized', {
         map: this.map
@@ -35914,14 +36876,22 @@ function (_WebMapBase) {
           maxzoom = layerInfo.maxzoom,
           style = layerInfo.style,
           visible = layerInfo.visible;
-      var source = {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: features
-        }
+      var layerSource = this.map.getSource(layerID);
+      var sourceData = {
+        type: 'FeatureCollection',
+        features: features
       };
-      this.map.addSource(layerID, source);
+
+      if (!layerSource) {
+        var source = {
+          type: 'geojson',
+          data: sourceData
+        };
+        this.map.addSource(layerID, source);
+      } else {
+        layerSource.setData(sourceData);
+      }
+
       var styleArr = Array.isArray(style) ? style : [style];
 
       if (styleArr.length === 2) {
@@ -37485,7 +38455,7 @@ exports.default = WebMapViewModel;
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
  * Lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
- * Copyright JS Foundation and other contributors <https://js.foundation/>
+ * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -37588,6 +38558,14 @@ var freeProcess = moduleExports && freeGlobal.process;
 /** Used to access faster Node.js helpers. */
 var nodeUtil = (function() {
   try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
   } catch (e) {}
 }());
@@ -37671,20 +38649,6 @@ function overArg(func, transform) {
   return function(arg) {
     return func(transform(arg));
   };
-}
-
-/**
- * Gets the value at `key`, unless `key` is "__proto__".
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the property to get.
- * @returns {*} Returns the property value.
- */
-function safeGet(object, key) {
-  return key == '__proto__'
-    ? undefined
-    : object[key];
 }
 
 /** Used for built-in method references. */
@@ -38408,8 +39372,8 @@ function baseMerge(object, source, srcIndex, customizer, stack) {
     return;
   }
   baseFor(source, function(srcValue, key) {
+    stack || (stack = new Stack);
     if (isObject(srcValue)) {
-      stack || (stack = new Stack);
       baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
     }
     else {
@@ -38485,7 +39449,7 @@ function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, sta
       if (isArguments(objValue)) {
         newValue = toPlainObject(objValue);
       }
-      else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
+      else if (!isObject(objValue) || isFunction(objValue)) {
         newValue = initCloneObject(srcValue);
       }
     }
@@ -38895,6 +39859,26 @@ function overRest(func, start, transform) {
     otherArgs[start] = transform(array);
     return apply(func, this, otherArgs);
   };
+}
+
+/**
+ * Gets the value at `key`, unless `key` is "__proto__" or "constructor".
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function safeGet(object, key) {
+  if (key === 'constructor' && typeof object[key] === 'function') {
+    return;
+  }
+
+  if (key == '__proto__') {
+    return;
+  }
+
+  return object[key];
 }
 
 /**
@@ -46806,7 +47790,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("26d5")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f2ac")))
 
 /***/ }),
 
@@ -46934,6 +47918,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
             return globalWindow.setTimeout(fn, 20);
         };
 
+    var cancelAnimationFrame = globalWindow.cancelAnimationFrame ||
+        globalWindow.mozCancelAnimationFrame ||
+        globalWindow.webkitCancelAnimationFrame ||
+        function (timer) {
+            globalWindow.clearTimeout(timer);
+        };
+
     /**
      * Iterate over each of the provided element(s).
      *
@@ -47000,6 +47991,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
      * @constructor
      */
     var ResizeSensor = function(element, callback) {
+        //Is used when checking in reset() only for invisible elements
+        var lastAnimationFrameForInvisibleCheck = 0;
+
         /**
          *
          * @constructor
@@ -47093,16 +48087,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
             var computedStyle = window.getComputedStyle(element);
             var position = computedStyle ? computedStyle.getPropertyValue('position') : null;
-            if ('absolute' !== position && 'relative' !== position && 'fixed' !== position) {
+            if ('absolute' !== position && 'relative' !== position && 'fixed' !== position && 'sticky' !== position) {
                 element.style.position = 'relative';
             }
 
-            var dirty, rafId;
+            var dirty = false;
+
+            //last request animation frame id used in onscroll event
+            var rafId = 0;
             var size = getElementSize(element);
             var lastWidth = 0;
             var lastHeight = 0;
             var initialHiddenCheck = true;
-            var lastAnimationFrame = 0;
+            lastAnimationFrameForInvisibleCheck = 0;
 
             var resetExpandShrink = function () {
                 var width = element.offsetWidth;
@@ -47124,10 +48121,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
                     var invisible = element.offsetWidth === 0 && element.offsetHeight === 0;
                     if (invisible) {
                         // Check in next frame
-                        if (!lastAnimationFrame){
-                            lastAnimationFrame = requestAnimationFrame(function(){
-                                lastAnimationFrame = 0;
-
+                        if (!lastAnimationFrameForInvisibleCheck){
+                            lastAnimationFrameForInvisibleCheck = requestAnimationFrame(function(){
+                                lastAnimationFrameForInvisibleCheck = 0;
                                 reset();
                             });
                         }
@@ -47178,8 +48174,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
             addEvent(expand, 'scroll', onScroll);
             addEvent(shrink, 'scroll', onScroll);
 
-            // Fix for custom Elements
-            requestAnimationFrame(reset);
+            // Fix for custom Elements and invisible elements
+            lastAnimationFrameForInvisibleCheck = requestAnimationFrame(function(){
+                lastAnimationFrameForInvisibleCheck = 0;
+                reset();
+            });
         }
 
         forEachElement(element, function(elem){
@@ -47187,6 +48186,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
         });
 
         this.detach = function(ev) {
+            // clean up the unfinished animation frame to prevent a potential endless requestAnimationFrame of reset
+            if (!lastAnimationFrameForInvisibleCheck) {
+                cancelAnimationFrame(lastAnimationFrameForInvisibleCheck);
+                lastAnimationFrameForInvisibleCheck = 0;
+            }
             ResizeSensor.detach(element, ev);
         };
 
@@ -47994,16 +48998,14 @@ exports.default = DataFlowLayerViewModel;
 /***/ "7ae5":
 /***/ (function(module, exports) {
 
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
 function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
+      return typeof obj;
     };
   } else {
     module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
   }
 
@@ -48023,23 +49025,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_1_1_node_modules_vue_loader_lib_index_js_vue_loader_options_WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "7c94":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=a51d9af0&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:(_vm.getTextColorStyle),attrs:{"id":"sm-component-search"}},[(_vm.showIcon && _vm.mode === 'control')?_c('div',{staticClass:"sm-component-search__toggle-icon",style:([{'--icon-color--hover': _vm.colorGroupsData[0]}, _vm.getBackgroundStyle]),on:{"click":function($event){_vm.showSearch = !_vm.showSearch; _vm.showIcon = !_vm.showIcon}}},[_c('a-icon',{attrs:{"type":"search"}})],1):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"sm-component-zoom-in"},on:{"after-leave":function($event){_vm.showIcon = !_vm.showIcon}}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showSearch || _vm.mode === 'toolBar'),expression:"showSearch || mode === 'toolBar'"}],staticClass:"sm-component-search__content",style:([{'transform-origin': _vm.position.includes('left') ? 'top left' : 'top right'}, _vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-component-search__input"},[(_vm.mode === 'control')?_c('div',{staticClass:"sm-component-search__arrow-icon",style:({ float: _vm.position.includes('left') ? 'right' : 'left'}),on:{"click":function($event){_vm.showSearch = !_vm.showSearch}}},[_c('a-icon',{attrs:{"type":_vm.position.includes('left') ? 'double-left' : 'double-right'}})],1):_vm._e(),_vm._v(" "),_c('div',{class:['sm-component-search__search-icon', { 'right': _vm.position.includes('right') }],style:([_vm.getBackgroundStyle, _vm.getColorStyle(0)]),on:{"click":_vm.searchButtonClicked}},[_c('a-icon',{attrs:{"type":_vm.prefixType}})],1),_vm._v(" "),_c('a-input',{class:['sm-component-search__a-input', { 'toolBar-input': _vm.mode === 'toolBar' }],style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"input":_vm.searchInput,"compositionstart":function($event){_vm.isInputing = true},"compositionend":function($event){_vm.isInputing = false},"pressEnter":_vm.searchButtonClicked,"focus":function($event){_vm.isActive = !_vm.isActive},"blur":function($event){_vm.isActive = !_vm.isActive},"keyup":_vm.changeResultHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isActive),expression:"isActive"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"mousedown":_vm.inputValueCleared},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.resultSuggestions),expression:"resultSuggestions"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source && _vm.showTitle && result.result.length)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',{class:{'noMarginBottom': !_vm.showTitle}},_vm._l((result.result),function(item,i){return _c('li',{key:i,class:{'active': _vm.keyupHoverInfo.groupIndex === index && _vm.keyupHoverInfo.hoverIndex === i },attrs:{"title":item.filterVal || item.name || item.address},on:{"click":function($event){return _vm.searchResultListClicked(item, $event)},"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.name || item.address))])}),0)]):_vm._e()])}),0)])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=a51d9af0&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -49574,7 +50559,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__("19e1"));
 
@@ -49601,6 +50586,10 @@ var _iServerRestService = _interopRequireDefault(__webpack_require__("e340"));
 var _lang = __webpack_require__("4e21");
 
 var _util = __webpack_require__("1448");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 /**
  * @class SearchViewModel
@@ -49685,7 +50674,7 @@ function (_mapboxgl$Evented) {
         }
       }, this);
 
-      var _this$options = (0, _objectSpread2.default)({}, this.options),
+      var _this$options = _objectSpread({}, this.options),
           layerNames = _this$options.layerNames,
           onlineLocalSearch = _this$options.onlineLocalSearch,
           restMap = _this$options.restMap,
@@ -51462,7 +52451,7 @@ module.exports = _interopRequireDefault;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Query_vue_vue_type_template_id_d0eda454___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("cabc");
+/* harmony import */ var _Query_vue_vue_type_template_id_3cfc42a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("f582");
 /* harmony import */ var _Query_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("a006");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Query_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Query_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -51475,8 +52464,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Query_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Query_vue_vue_type_template_id_d0eda454___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Query_vue_vue_type_template_id_d0eda454___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Query_vue_vue_type_template_id_3cfc42a0___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Query_vue_vue_type_template_id_3cfc42a0___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -51544,7 +52533,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _vue = _interopRequireDefault(__webpack_require__("5643"));
 
@@ -51555,6 +52544,10 @@ var _mapEvent = _interopRequireDefault(__webpack_require__("d3e9"));
 var _lodash = _interopRequireDefault(__webpack_require__("2fc1"));
 
 var _lodash2 = _interopRequireDefault(__webpack_require__("5f9f"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 /**
  * drawList 结构为 { [mapTarget1]: [draw1], [mapTarget2]: [draw2] }
@@ -51573,7 +52566,7 @@ var _default = new _vue.default({
       displayControlsDefault: false,
       touchEnabled: false,
       boxSelect: false,
-      modes: (0, _objectSpread2.default)({}, _mapboxGlDraw.default.modes, {
+      modes: _objectSpread({}, _mapboxGlDraw.default.modes, {
         simple_select: (0, _lodash.default)(_mapboxGlDraw.default.modes.simple_select, {
           dragMove: function dragMove() {},
           clickOnVertex: function clickOnVertex() {},
@@ -53096,75 +54089,6 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
-/***/ "963e":
-/***/ (function(module, exports, __webpack_require__) {
-
-/* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__("3be6")
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
-
-/***/ }),
-
 /***/ "9711":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53236,7 +54160,8 @@ function toByteArray (b64) {
     ? validLen - 4
     : validLen
 
-  for (var i = 0; i < len; i += 4) {
+  var i
+  for (i = 0; i < len; i += 4) {
     tmp =
       (revLookup[b64.charCodeAt(i)] << 18) |
       (revLookup[b64.charCodeAt(i + 1)] << 12) |
@@ -54847,7 +55772,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _mapGetter = _interopRequireDefault(__webpack_require__("b761"));
 
@@ -54856,6 +55781,10 @@ var _ClusterLayerViewModel = _interopRequireDefault(__webpack_require__("f83e"))
 var _layer = _interopRequireDefault(__webpack_require__("f6f9"));
 
 var _CircleStyle = _interopRequireDefault(__webpack_require__("b27b"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _default2 = {
   name: 'SmClusterLayer',
@@ -54912,7 +55841,7 @@ var _default2 = {
   created: function created() {
     var options = JSON.parse(JSON.stringify(this.$props));
     delete options.data;
-    this.viewModel = new _ClusterLayerViewModel.default(this.data, (0, _objectSpread2.default)({}, options));
+    this.viewModel = new _ClusterLayerViewModel.default(this.data, _objectSpread({}, options));
   },
   render: function render() {}
 };
@@ -54928,7 +55857,7 @@ exports.default = _default2;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Buffer = __webpack_require__("963e").Buffer;
+var Buffer = __webpack_require__("54da").Buffer;
 var util = __webpack_require__(2);
 
 function copyBuffer(src, target, offset) {
@@ -55203,7 +56132,7 @@ var Stream = __webpack_require__("5e89");
 
 /*<replacement>*/
 
-var Buffer = __webpack_require__("963e").Buffer;
+var Buffer = __webpack_require__("54da").Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -55808,7 +56737,7 @@ Writable.prototype._destroy = function (err, cb) {
   this.end();
   cb(err);
 };
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("26d5"), __webpack_require__("698d")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f2ac"), __webpack_require__("698d")))
 
 /***/ }),
 
@@ -58202,34 +59131,6 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ }),
 
-/***/ "a80b":
-/***/ (function(module, exports, __webpack_require__) {
-
-var defineProperty = __webpack_require__("279f");
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
-
-    if (typeof Object.getOwnPropertySymbols === 'function') {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
-    }
-
-    ownKeys.forEach(function (key) {
-      defineProperty(target, key, source[key]);
-    });
-  }
-
-  return target;
-}
-
-module.exports = _objectSpread;
-
-/***/ }),
-
 /***/ "a890":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58476,20 +59377,106 @@ exports.default = RanksymbolThemeLayerViewModel;
 
 /***/ }),
 
-/***/ "ab98":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "ab53":
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/video-player/VideoPlayer.vue?vue&type=template&id=6a6899a8&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-video-player"},[_c('video-player',{ref:"videoPlayer",staticClass:"sm-component-video-player__player sm-component-video-player__player--main",attrs:{"options":_vm.playerOptions,"playsinline":true},on:{"play":function($event){return _vm.onPlayerPlay($event)},"ended":function($event){return _vm.onPlayerEnded($event)},"loadeddata":function($event){return _vm.onPlayerLoadeddata($event)}}},[_vm._v(">")]),_vm._v(" "),(_vm.url)?_c('a-modal',{attrs:{"wrapClassName":"sm-component-video-player-modal","footer":null,"width":"60%","maskClosable":false},model:{value:(_vm.modalVisible),callback:function ($$v) {_vm.modalVisible=$$v},expression:"modalVisible"}},[_c('video-player',{ref:"modalVideoPlayer",staticClass:"sm-component-video-player__player",attrs:{"options":_vm.modalPlayerOptions,"playsinline":true},on:{"play":function($event){return _vm.onModalPlayerPlay($event)},"loadeddata":function($event){return _vm.onModalPlayerLoadeddata($event)}}})],1):_vm._e()],1)}
-var staticRenderFns = []
 
+var _interopRequireDefault = __webpack_require__("8e6d");
 
-// CONCATENATED MODULE: ./src/common/video-player/VideoPlayer.vue?vue&type=template&id=6a6899a8&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("19e1"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("66f6"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("8377"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("c031"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("6b51"));
+
+var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
+
+var _vuePropertyDecorator = __webpack_require__("e22c");
+
+var _mapGetter = _interopRequireDefault(__webpack_require__("b761"));
+
+var _vmUpdater = _interopRequireDefault(__webpack_require__("3a49"));
+
+var _TrackLayerViewModel = _interopRequireDefault(__webpack_require__("5966"));
+
+var __decorate = void 0 && (void 0).__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,
+      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+      d;
+  if ((typeof Reflect === "undefined" ? "undefined" : (0, _typeof2.default)(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+    if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  }
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var TrackLayer =
+/*#__PURE__*/
+function (_Mixins) {
+  (0, _inherits2.default)(TrackLayer, _Mixins);
+
+  function TrackLayer() {
+    (0, _classCallCheck2.default)(this, TrackLayer);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TrackLayer).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(TrackLayer, [{
+    key: "created",
+    value: function created() {
+      this.viewModel = new _TrackLayerViewModel.default(this.$props);
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.viewModel && this.viewModel.reset();
+    }
+  }, {
+    key: "render",
+    value: function render() {}
+  }]);
+  return TrackLayer;
+}((0, _vuePropertyDecorator.Mixins)(_mapGetter.default, _vmUpdater.default));
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "layerId", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "loaderType", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "url", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "displayLine", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "layerStyle", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "trackPoints", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "position", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "direction", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "unit", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "scale", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "fitBounds", void 0);
+
+__decorate([(0, _vuePropertyDecorator.Prop)()], TrackLayer.prototype, "followCamera", void 0);
+
+TrackLayer = __decorate([(0, _vuePropertyDecorator.Component)({
+  name: 'SmTrackLayer',
+  viewModelProps: ['loaderType', 'url', 'displayLine', 'trackPoints', 'position', 'layerStyle', 'direction', 'unit', 'scale', 'fitBounds', 'followCamera']
+})], TrackLayer);
+var _default = TrackLayer;
+exports.default = _default;
 
 /***/ }),
 
@@ -61464,7 +62451,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TdtRoute_vue_vue_type_template_id_bad3f3fa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("35cc");
+/* harmony import */ var _TdtRoute_vue_vue_type_template_id_fb60b3aa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("282c");
 /* harmony import */ var _TdtRoute_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("d317");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TdtRoute_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TdtRoute_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -61477,8 +62464,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _TdtRoute_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TdtRoute_vue_vue_type_template_id_bad3f3fa___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _TdtRoute_vue_vue_type_template_id_bad3f3fa___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _TdtRoute_vue_vue_type_template_id_fb60b3aa___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _TdtRoute_vue_vue_type_template_id_fb60b3aa___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -61532,7 +62519,7 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADX
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _VideoPlayer_vue_vue_type_template_id_6a6899a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ab98");
+/* harmony import */ var _VideoPlayer_vue_vue_type_template_id_4df6cab8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("c363");
 /* harmony import */ var _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("14f6");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -61545,8 +62532,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _VideoPlayer_vue_vue_type_template_id_6a6899a8___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _VideoPlayer_vue_vue_type_template_id_6a6899a8___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _VideoPlayer_vue_vue_type_template_id_4df6cab8___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _VideoPlayer_vue_vue_type_template_id_4df6cab8___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -63017,6 +64004,13 @@ module.exports = toNumber;
 
 /***/ }),
 
+/***/ "b9f8":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_b9f8__;
+
+/***/ }),
+
 /***/ "ba6e":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -63448,6 +64442,12 @@ Object.defineProperty(exports, "AnimateMarkerLayer", {
     return _AnimateMarkerLayer.default;
   }
 });
+Object.defineProperty(exports, "TrackLayer", {
+  enumerable: true,
+  get: function get() {
+    return _TrackLayer.default;
+  }
+});
 Object.defineProperty(exports, "Legend", {
   enumerable: true,
   get: function get() {
@@ -63632,6 +64632,8 @@ var _VectorTileLayer = _interopRequireDefault(__webpack_require__("d3d0"));
 var _FireLayer = _interopRequireDefault(__webpack_require__("b0c3"));
 
 var _AnimateMarkerLayer = _interopRequireDefault(__webpack_require__("95d0"));
+
+var _TrackLayer = _interopRequireDefault(__webpack_require__("5a96"));
 
 var _Legend = _interopRequireDefault(__webpack_require__("3057"));
 
@@ -64719,6 +65721,23 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "c363":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/video-player/VideoPlayer.vue?vue&type=template&id=4df6cab8&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-video-player"},[_c('video-player',{ref:"videoPlayer",staticClass:"sm-component-video-player__player sm-component-video-player__player--main",attrs:{"options":_vm.playerOptions,"playsinline":true},on:{"play":function($event){return _vm.onPlayerPlay($event)},"ended":function($event){return _vm.onPlayerEnded($event)},"loadeddata":function($event){return _vm.onPlayerLoadeddata($event)}}}),_vm._v(" "),(_vm.url)?_c('a-modal',{attrs:{"wrapClassName":"sm-component-video-player-modal","footer":null,"width":"60%","maskClosable":false},model:{value:(_vm.modalVisible),callback:function ($$v) {_vm.modalVisible=$$v},expression:"modalVisible"}},[_c('video-player',{ref:"modalVideoPlayer",staticClass:"sm-component-video-player__player",attrs:{"options":_vm.modalPlayerOptions,"playsinline":true},on:{"play":function($event){return _vm.onModalPlayerPlay($event)},"loadeddata":function($event){return _vm.onModalPlayerLoadeddata($event)}}})],1):_vm._e()],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/video-player/VideoPlayer.vue?vue&type=template&id=4df6cab8&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "c365":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -65382,7 +66401,7 @@ var Stream = __webpack_require__("5e89");
 
 /*<replacement>*/
 
-var Buffer = __webpack_require__("963e").Buffer;
+var Buffer = __webpack_require__("54da").Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -66347,7 +67366,7 @@ function indexOf(xs, x) {
   }
   return -1;
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("698d"), __webpack_require__("26d5")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("698d"), __webpack_require__("f2ac")))
 
 /***/ }),
 
@@ -66960,23 +67979,6 @@ exports.default = _default2;
 
 /***/ }),
 
-/***/ "cabc":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=d0eda454&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"background":_vm.background,"textColor":_vm.textColor}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v("\n        "+_vm._s(_vm.$t('query.queryJob'))+"\n      ")]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryResult')},on:{"click":_vm.resultButtonClicked}},[_vm._v("\n        "+_vm._s(_vm.$t('query.queryResult'))+"\n      ")])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name",attrs:{"title":jobInfo.queryParameter.name}},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v("\n              "+_vm._s(jobInfo.queryParameter.attributeFilter)+"\n            ")])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}),1)],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({ backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor }),attrs:{"type":"primary","size":"small"},on:{"click":function($event){return _vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v("\n              "+_vm._s(_vm.$t('query.applicate'))+"\n            ")])],1)]):_vm._e()])}),0),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v("\n        "+_vm._s(_vm.$t('query.noResult'))+"\n      ")]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',{staticClass:"sm-component-query__header-name",attrs:{"title":_vm.queryResult.name}},[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":_vm.getInfoOfSmid(item.properties)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v("\n            "+_vm._s(_vm.getInfoOfSmid(item.properties))+"\n          ")])}),0)]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup",attrs:{"background":_vm.background,"textColor":_vm.textColor}},'TablePopup',_vm.tablePopupProps,false))],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=d0eda454&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "cabd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -67050,45 +68052,6 @@ var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/mapboxgl/tdt/results/PointsResult.vue?vue&type=template&id=3ae049af&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
-/***/ "cdbb":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/text-list/TextList.vue?vue&type=template&id=7ff0be28&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-text-list",style:(_vm.getBackgroundStyle),on:{"mouseleave":function($event){return _vm.handleMouseLeaveFn({}, null, $event)}}},[(_vm.headerStyleData.show)?_c('div',{staticClass:"sm-component-text-list__header",style:([_vm.listStyle.headerHeight, { background: _vm.headerStyleData.background, color: _vm.headerStyleData.color }])},[_c('div',{staticClass:"sm-component-text-list__header-content"},[(_vm.animateContent && _vm.animateContent.length > 0)?[_vm._l(((_vm.getColumns && _vm.getColumns.length > 0 && _vm.getColumns) ||
-            Object.keys(_vm.animateContent[0])),function(item,index){return [_c('div',{key:index,staticClass:"sm-component-text-list__header-title",style:([_vm.fontSizeStyle, { flex: _vm.getColumnWidth(index) }]),attrs:{"title":item.header}},[_c('div',{on:{"click":function($event){_vm.sortByField(
-                  _vm.getColumns[index].field + '-' + index,
-                  index,
-                  !Number.isNaN(+_vm.listData[0][_vm.getColumns[index].field + '-' + index]) && _vm.getColumns[index].sort
-                )}}},[_vm._v("\n              "+_vm._s(_vm.getColumns[index].header)+"\n              "),(!Number.isNaN(+_vm.listData[0][_vm.getColumns[index].field + '-' + index]) && _vm.getColumns[index].sort)?_c('div',{staticClass:"arrow-wrap",style:({ borderColor: _vm.headerStyleData.sortBtnColor })},[_c('i',{class:['up-triangle'],style:([
-                    { borderBottomColor: _vm.headerStyleData.sortBtnColor },
-                    _vm.sortType === 'ascend' &&
-                      _vm.sortIndex === index && { borderBottomColor: _vm.headerStyleData.sortBtnSelectColor }
-                  ])}),_vm._v(" "),_c('i',{class:['down-triangle'],style:([
-                    { borderTopColor: _vm.headerStyleData.sortBtnColor },
-                    _vm.sortType === 'descend' &&
-                      _vm.sortIndex === index && { borderTopColor: _vm.headerStyleData.sortBtnSelectColor }
-                  ])})]):_vm._e()])])]})]:_vm._e()],2)]):_vm._e(),_vm._v(" "),_c('div',{ref:"animate",staticClass:"sm-component-text-list__animate",style:([
-      _vm.listStyle.contentHeight,
-      _vm.getTextColorStyle,
-      _vm.fontSizeStyle,
-      { 'overflow-y': _vm.autoRolling ? 'hidden' : 'auto' }
-    ])},[_c('div',{ref:"listContent",class:['sm-component-text-list__body-content', _vm.animate && 'sm-component-text-list__body-content--anim']},[(_vm.animateContent && _vm.animateContent.length > 0)?_vm._l((_vm.animateContent),function(rowData,index){return _c('div',{key:index,staticClass:"sm-component-text-list__list",style:(_vm.getRowStyle(rowData['idx'], index)),attrs:{"data-index":rowData['idx']},on:{"click":function($event){return _vm.handleClick(rowData, rowData['idx'], $event)},"mouseenter":function($event){return _vm.handleMouseEnterFn(rowData, rowData['idx'], $event)},"mouseleave":function($event){return _vm.handleMouseLeaveFn(rowData, rowData['idx'], $event)}}},_vm._l((_vm.filterProperty(rowData, 'idx')),function(items,key,itemIndex){return _c('div',{key:key,style:([
-              _vm.listStyle.rowStyle,
-              { flex: _vm.getColumnWidth(itemIndex) },
-              _vm.getCellStyle(items, itemIndex)
-            ]),attrs:{"title":items}},[(_vm.getColumns[itemIndex])?_c('span',[_vm._v(_vm._s(_vm.getColumns[itemIndex].fixInfo.prefix))]):_vm._e(),_vm._v("\n            "+_vm._s(items)+"\n            "),(_vm.getColumns[itemIndex])?_c('span',[_vm._v(_vm._s(_vm.getColumns[itemIndex].fixInfo.suffix))]):_vm._e()])}),0)}):_vm._e()],2)]),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('info.loading'),"spinning":_vm.spinning}}):_vm._e()],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/mapboxgl/text-list/TextList.vue?vue&type=template&id=7ff0be28&
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
@@ -67213,7 +68176,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _mapGetter = _interopRequireDefault(__webpack_require__("b761"));
 
@@ -67226,6 +68189,10 @@ var _CircleStyle = _interopRequireDefault(__webpack_require__("b27b"));
 var _FillStyle = _interopRequireDefault(__webpack_require__("d040"));
 
 var _LineStyle = _interopRequireDefault(__webpack_require__("264a"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 /**
  * @module DataFlowLayer
@@ -67273,7 +68240,7 @@ var _default2 = {
   created: function created() {
     var options = JSON.parse(JSON.stringify(this.$props));
     delete options.serviceUrl;
-    this.viewModel = new _DataFlowLayerViewModel.default(this.serviceUrl, (0, _objectSpread2.default)({}, options));
+    this.viewModel = new _DataFlowLayerViewModel.default(this.serviceUrl, _objectSpread({}, options));
     this.registerEvents();
   },
   beforeDestroy: function beforeDestroy() {
@@ -70541,7 +71508,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__("19e1"));
 
@@ -70557,6 +71524,10 @@ var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("3d57"));
 
 __webpack_require__("f240");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var MapvLayerViewModel =
 /*#__PURE__*/
 function (_mapboxgl$Evented) {
@@ -70571,7 +71542,7 @@ function (_mapboxgl$Evented) {
         options = mapvLayerProps.options,
         layerId = mapvLayerProps.layerId;
     _this.data = data;
-    _this.options = options.layerID ? options : (0, _objectSpread2.default)({}, options, {
+    _this.options = options.layerID ? options : _objectSpread({}, options, {
       layerID: layerId
     });
     return _this;
@@ -71364,7 +72335,7 @@ vue_class_component_esm_Component.registerHooks = function registerHooks(keys) {
 /* concated harmony reexport Component */__webpack_require__.d(__webpack_exports__, "Component", function() { return vue_class_component_esm; });
 /* concated harmony reexport Vue */__webpack_require__.d(__webpack_exports__, "Vue", function() { return external_root_Vue_commonjs_vue_commonjs2_vue_amd_vue_default.a; });
 /* concated harmony reexport Mixins */__webpack_require__.d(__webpack_exports__, "Mixins", function() { return mixins; });
-/** vue-property-decorator verson 8.2.1 MIT LICENSE copyright 2019 kaorun343 */
+/** vue-property-decorator verson 8.2.2 MIT LICENSE copyright 2019 kaorun343 */
 /// <reference types='reflect-metadata'/>
 
 
@@ -71440,29 +72411,37 @@ function Provide(key) {
 function ProvideReactive(key) {
     return createDecorator(function (componentOptions, k) {
         var provide = componentOptions.provide;
-        if (typeof provide !== 'function' || !provide.managed) {
+        // inject parent reactive services (if any)
+        if (!Array.isArray(componentOptions.inject)) {
+            componentOptions.inject = componentOptions.inject || {};
+            componentOptions.inject[reactiveInjectKey] = { from: reactiveInjectKey, default: {} };
+        }
+        if (typeof provide !== 'function' || !provide.managedReactive) {
             var original_2 = componentOptions.provide;
             provide = componentOptions.provide = function () {
                 var _this = this;
-                var rv = Object.create((typeof original_2 === 'function' ? original_2.call(this) : original_2) ||
-                    null);
-                rv[reactiveInjectKey] = {};
+                var rv = typeof original_2 === 'function'
+                    ? original_2.call(this)
+                    : original_2;
+                rv = Object.create(rv || null);
+                // set reactive services (propagates previous services if necessary)
+                rv[reactiveInjectKey] = this[reactiveInjectKey] || {};
                 var _loop_1 = function (i) {
-                    rv[provide.managed[i]] = this_1[i]; // Duplicates the behavior of `@Provide`
-                    Object.defineProperty(rv[reactiveInjectKey], provide.managed[i], {
+                    rv[provide.managedReactive[i]] = this_1[i]; // Duplicates the behavior of `@Provide`
+                    Object.defineProperty(rv[reactiveInjectKey], provide.managedReactive[i], {
                         enumerable: true,
                         get: function () { return _this[i]; },
                     });
                 };
                 var this_1 = this;
-                for (var i in provide.managed) {
+                for (var i in provide.managedReactive) {
                     _loop_1(i);
                 }
                 return rv;
             };
-            provide.managed = {};
+            provide.managedReactive = {};
         }
-        provide.managed[k] = key || k;
+        provide.managedReactive[k] = key || k;
     });
 }
 /** @see {@link https://github.com/vuejs/vue-class-component/blob/master/src/reflect.ts} */
@@ -72628,7 +73607,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _theme = _interopRequireDefault(__webpack_require__("9259"));
 
@@ -72648,139 +73627,10 @@ var _StatisticsResult = _interopRequireDefault(__webpack_require__("86b3"));
 
 var _NothingResult = _interopRequireDefault(__webpack_require__("b45e"));
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var _default2 = {
   name: 'SmTdtRoute',
   components: {
@@ -72924,7 +73774,8 @@ var _default2 = {
         if (!res) return;
         var type = res.type,
             result = res.result;
-        var componentProps = (0, _objectSpread2.default)({}, _this3.$props, {
+
+        var componentProps = _objectSpread({}, _this3.$props, {
           data: result.data,
           prompt: result.prompt,
           keyWord: keyWord,
@@ -72933,6 +73784,7 @@ var _default2 = {
           pageSize: 4,
           mapBound: mapBound
         });
+
         var componentListeners = {};
 
         switch (type) {
@@ -79649,7 +80501,284 @@ function centroid(geojson, properties) {
 
 /* harmony default export */ var centroid_main_es = (centroid);
 
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-bearing/node_modules/@turf/helpers/main.es.js
+// CONCATENATED MODULE: ./node_modules/@turf/transform-scale/node_modules/@turf/invariant/main.es.js
+
+
+/**
+ * Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
+ *
+ * @name getCoord
+ * @param {Array<number>|Geometry<Point>|Feature<Point>} coord GeoJSON Point or an Array of numbers
+ * @returns {Array<number>} coordinates
+ * @example
+ * var pt = turf.point([10, 10]);
+ *
+ * var coord = turf.getCoord(pt);
+ * //= [10, 10]
+ */
+function getCoord(coord) {
+    if (!coord) throw new Error('coord is required');
+    if (coord.type === 'Feature' && coord.geometry !== null && coord.geometry.type === 'Point') return coord.geometry.coordinates;
+    if (coord.type === 'Point') return coord.coordinates;
+    if (Array.isArray(coord) && coord.length >= 2 && coord[0].length === undefined && coord[1].length === undefined) return coord;
+
+    throw new Error('coord must be GeoJSON Point or an Array of numbers');
+}
+
+/**
+ * Unwrap coordinates from a Feature, Geometry Object or an Array
+ *
+ * @name getCoords
+ * @param {Array<any>|Geometry|Feature} coords Feature, Geometry Object or an Array
+ * @returns {Array<any>} coordinates
+ * @example
+ * var poly = turf.polygon([[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]);
+ *
+ * var coords = turf.getCoords(poly);
+ * //= [[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]
+ */
+function getCoords(coords) {
+    if (!coords) throw new Error('coords is required');
+
+    // Feature
+    if (coords.type === 'Feature' && coords.geometry !== null) return coords.geometry.coordinates;
+
+    // Geometry
+    if (coords.coordinates) return coords.coordinates;
+
+    // Array of numbers
+    if (Array.isArray(coords)) return coords;
+
+    throw new Error('coords must be GeoJSON Feature, Geometry Object or an Array');
+}
+
+/**
+ * Checks if coordinates contains a number
+ *
+ * @name containsNumber
+ * @param {Array<any>} coordinates GeoJSON Coordinates
+ * @returns {boolean} true if Array contains a number
+ */
+function containsNumber(coordinates) {
+    if (coordinates.length > 1 && isNumber(coordinates[0]) && isNumber(coordinates[1])) {
+        return true;
+    }
+
+    if (Array.isArray(coordinates[0]) && coordinates[0].length) {
+        return containsNumber(coordinates[0]);
+    }
+    throw new Error('coordinates must only contain numbers');
+}
+
+/**
+ * Enforce expectations about types of GeoJSON objects for Turf.
+ *
+ * @name geojsonType
+ * @param {GeoJSON} value any GeoJSON object
+ * @param {string} type expected GeoJSON type
+ * @param {string} name name of calling function
+ * @throws {Error} if value is not the expected type.
+ */
+function geojsonType(value, type, name) {
+    if (!type || !name) throw new Error('type and name required');
+
+    if (!value || value.type !== type) {
+        throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + value.type);
+    }
+}
+
+/**
+ * Enforce expectations about types of {@link Feature} inputs for Turf.
+ * Internally this uses {@link geojsonType} to judge geometry types.
+ *
+ * @name featureOf
+ * @param {Feature} feature a feature with an expected geometry type
+ * @param {string} type expected GeoJSON type
+ * @param {string} name name of calling function
+ * @throws {Error} error if value is not the expected type.
+ */
+function featureOf(feature, type, name) {
+    if (!feature) throw new Error('No feature passed');
+    if (!name) throw new Error('.featureOf() requires a name');
+    if (!feature || feature.type !== 'Feature' || !feature.geometry) {
+        throw new Error('Invalid input to ' + name + ', Feature with geometry required');
+    }
+    if (!feature.geometry || feature.geometry.type !== type) {
+        throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + feature.geometry.type);
+    }
+}
+
+/**
+ * Enforce expectations about types of {@link FeatureCollection} inputs for Turf.
+ * Internally this uses {@link geojsonType} to judge geometry types.
+ *
+ * @name collectionOf
+ * @param {FeatureCollection} featureCollection a FeatureCollection for which features will be judged
+ * @param {string} type expected GeoJSON type
+ * @param {string} name name of calling function
+ * @throws {Error} if value is not the expected type.
+ */
+function collectionOf(featureCollection, type, name) {
+    if (!featureCollection) throw new Error('No featureCollection passed');
+    if (!name) throw new Error('.collectionOf() requires a name');
+    if (!featureCollection || featureCollection.type !== 'FeatureCollection') {
+        throw new Error('Invalid input to ' + name + ', FeatureCollection required');
+    }
+    for (var i = 0; i < featureCollection.features.length; i++) {
+        var feature = featureCollection.features[i];
+        if (!feature || feature.type !== 'Feature' || !feature.geometry) {
+            throw new Error('Invalid input to ' + name + ', Feature with geometry required');
+        }
+        if (!feature.geometry || feature.geometry.type !== type) {
+            throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + feature.geometry.type);
+        }
+    }
+}
+
+/**
+ * Get Geometry from Feature or Geometry Object
+ *
+ * @param {Feature|Geometry} geojson GeoJSON Feature or Geometry Object
+ * @returns {Geometry|null} GeoJSON Geometry Object
+ * @throws {Error} if geojson is not a Feature or Geometry Object
+ * @example
+ * var point = {
+ *   "type": "Feature",
+ *   "properties": {},
+ *   "geometry": {
+ *     "type": "Point",
+ *     "coordinates": [110, 40]
+ *   }
+ * }
+ * var geom = turf.getGeom(point)
+ * //={"type": "Point", "coordinates": [110, 40]}
+ */
+function getGeom(geojson) {
+    if (!geojson) throw new Error('geojson is required');
+    if (geojson.geometry !== undefined) return geojson.geometry;
+    if (geojson.coordinates || geojson.geometries) return geojson;
+    throw new Error('geojson must be a valid Feature or Geometry Object');
+}
+
+/**
+ * Get Geometry Type from Feature or Geometry Object
+ *
+ * @throws {Error} **DEPRECATED** in v5.0.0 in favor of getType
+ */
+function getGeomType() {
+    throw new Error('invariant.getGeomType has been deprecated in v5.0 in favor of invariant.getType');
+}
+
+/**
+ * Get GeoJSON object's type, Geometry type is prioritize.
+ *
+ * @param {GeoJSON} geojson GeoJSON object
+ * @param {string} [name="geojson"] name of the variable to display in error message
+ * @returns {string} GeoJSON type
+ * @example
+ * var point = {
+ *   "type": "Feature",
+ *   "properties": {},
+ *   "geometry": {
+ *     "type": "Point",
+ *     "coordinates": [110, 40]
+ *   }
+ * }
+ * var geom = turf.getType(point)
+ * //="Point"
+ */
+function getType(geojson, name) {
+    if (!geojson) throw new Error((name || 'geojson') + ' is required');
+    // GeoJSON Feature & GeometryCollection
+    if (geojson.geometry && geojson.geometry.type) return geojson.geometry.type;
+    // GeoJSON Geometry & FeatureCollection
+    if (geojson.type) return geojson.type;
+    throw new Error((name || 'geojson') + ' is invalid');
+}
+
+
+
+// CONCATENATED MODULE: ./node_modules/@turf/transform-scale/node_modules/@turf/rhumb-bearing/main.es.js
+
+
+
+// https://en.wikipedia.org/wiki/Rhumb_line
+/**
+ * Takes two {@link Point|points} and finds the bearing angle between them along a Rhumb line
+ * i.e. the angle measured in degrees start the north line (0 degrees)
+ *
+ * @name rhumbBearing
+ * @param {Coord} start starting Point
+ * @param {Coord} end ending Point
+ * @param {Object} [options] Optional parameters
+ * @param {boolean} [options.final=false] calculates the final bearing if true
+ * @returns {number} bearing from north in decimal degrees, between -180 and 180 degrees (positive clockwise)
+ * @example
+ * var point1 = turf.point([-75.343, 39.984], {"marker-color": "#F00"});
+ * var point2 = turf.point([-75.534, 39.123], {"marker-color": "#00F"});
+ *
+ * var bearing = turf.rhumbBearing(point1, point2);
+ *
+ * //addToMap
+ * var addToMap = [point1, point2];
+ * point1.properties.bearing = bearing;
+ * point2.properties.bearing = bearing;
+ */
+function rhumbBearing(start, end, options) {
+    // Optional parameters
+    options = options || {};
+    if (!isObject(options)) throw new Error('options is invalid');
+    var final = options.final;
+
+    // validation
+    if (!start) throw new Error('start point is required');
+    if (!end) throw new Error('end point is required');
+
+    var bear360;
+
+    if (final) bear360 = calculateRhumbBearing(getCoord(end), getCoord(start));
+    else bear360 = calculateRhumbBearing(getCoord(start), getCoord(end));
+
+    var bear180 = (bear360 > 180) ? -(360 - bear360) : bear360;
+
+    return bear180;
+}
+
+/**
+ * Returns the bearing from ‘this’ point to destination point along a rhumb line.
+ * Adapted from Geodesy: https://github.com/chrisveness/geodesy/blob/master/latlon-spherical.js
+ *
+ * @private
+ * @param   {Array<number>} from - origin point.
+ * @param   {Array<number>} to - destination point.
+ * @returns {number} Bearing in degrees from north.
+ * @example
+ * var p1 = new LatLon(51.127, 1.338);
+ * var p2 = new LatLon(50.964, 1.853);
+ * var d = p1.rhumbBearingTo(p2); // 116.7 m
+ */
+function calculateRhumbBearing(from, to) {
+    // φ => phi
+    // Δλ => deltaLambda
+    // Δψ => deltaPsi
+    // θ => theta
+    var phi1 = degreesToRadians(from[1]);
+    var phi2 = degreesToRadians(to[1]);
+    var deltaLambda = degreesToRadians((to[0] - from[0]));
+    // if deltaLambdaon over 180° take shorter rhumb line across the anti-meridian:
+    if (deltaLambda > Math.PI) deltaLambda -= 2 * Math.PI;
+    if (deltaLambda < -Math.PI) deltaLambda += 2 * Math.PI;
+
+    var deltaPsi = Math.log(Math.tan(phi2 / 2 + Math.PI / 4) / Math.tan(phi1 / 2 + Math.PI / 4));
+
+    var theta = Math.atan2(deltaLambda, deltaPsi);
+
+    return (radiansToDegrees(theta) + 360) % 360;
+}
+
+/* harmony default export */ var rhumb_bearing_main_es = (rhumbBearing);
+
+// CONCATENATED MODULE: ./node_modules/@turf/rhumb-distance/node_modules/@turf/helpers/main.es.js
 /**
  * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
  */
@@ -80402,7 +81531,7 @@ function helpers_main_es_convertDistance() {
 
 
 
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-bearing/node_modules/@turf/invariant/main.es.js
+// CONCATENATED MODULE: ./node_modules/@turf/rhumb-distance/node_modules/@turf/invariant/main.es.js
 
 
 /**
@@ -80417,7 +81546,7 @@ function helpers_main_es_convertDistance() {
  * var coord = turf.getCoord(pt);
  * //= [10, 10]
  */
-function getCoord(coord) {
+function main_es_getCoord(coord) {
     if (!coord) throw new Error('coord is required');
     if (coord.type === 'Feature' && coord.geometry !== null && coord.geometry.type === 'Point') return coord.geometry.coordinates;
     if (coord.type === 'Point') return coord.coordinates;
@@ -80438,7 +81567,7 @@ function getCoord(coord) {
  * var coords = turf.getCoords(poly);
  * //= [[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]
  */
-function getCoords(coords) {
+function main_es_getCoords(coords) {
     if (!coords) throw new Error('coords is required');
 
     // Feature
@@ -80460,13 +81589,13 @@ function getCoords(coords) {
  * @param {Array<any>} coordinates GeoJSON Coordinates
  * @returns {boolean} true if Array contains a number
  */
-function containsNumber(coordinates) {
+function main_es_containsNumber(coordinates) {
     if (coordinates.length > 1 && helpers_main_es_isNumber(coordinates[0]) && helpers_main_es_isNumber(coordinates[1])) {
         return true;
     }
 
     if (Array.isArray(coordinates[0]) && coordinates[0].length) {
-        return containsNumber(coordinates[0]);
+        return main_es_containsNumber(coordinates[0]);
     }
     throw new Error('coordinates must only contain numbers');
 }
@@ -80480,7 +81609,7 @@ function containsNumber(coordinates) {
  * @param {string} name name of calling function
  * @throws {Error} if value is not the expected type.
  */
-function geojsonType(value, type, name) {
+function main_es_geojsonType(value, type, name) {
     if (!type || !name) throw new Error('type and name required');
 
     if (!value || value.type !== type) {
@@ -80498,7 +81627,7 @@ function geojsonType(value, type, name) {
  * @param {string} name name of calling function
  * @throws {Error} error if value is not the expected type.
  */
-function featureOf(feature, type, name) {
+function main_es_featureOf(feature, type, name) {
     if (!feature) throw new Error('No feature passed');
     if (!name) throw new Error('.featureOf() requires a name');
     if (!feature || feature.type !== 'Feature' || !feature.geometry) {
@@ -80519,7 +81648,7 @@ function featureOf(feature, type, name) {
  * @param {string} name name of calling function
  * @throws {Error} if value is not the expected type.
  */
-function collectionOf(featureCollection, type, name) {
+function main_es_collectionOf(featureCollection, type, name) {
     if (!featureCollection) throw new Error('No featureCollection passed');
     if (!name) throw new Error('.collectionOf() requires a name');
     if (!featureCollection || featureCollection.type !== 'FeatureCollection') {
@@ -80554,7 +81683,7 @@ function collectionOf(featureCollection, type, name) {
  * var geom = turf.getGeom(point)
  * //={"type": "Point", "coordinates": [110, 40]}
  */
-function getGeom(geojson) {
+function main_es_getGeom(geojson) {
     if (!geojson) throw new Error('geojson is required');
     if (geojson.geometry !== undefined) return geojson.geometry;
     if (geojson.coordinates || geojson.geometries) return geojson;
@@ -80566,7 +81695,7 @@ function getGeom(geojson) {
  *
  * @throws {Error} **DEPRECATED** in v5.0.0 in favor of getType
  */
-function getGeomType() {
+function main_es_getGeomType() {
     throw new Error('invariant.getGeomType has been deprecated in v5.0 in favor of invariant.getType');
 }
 
@@ -80588,7 +81717,7 @@ function getGeomType() {
  * var geom = turf.getType(point)
  * //="Point"
  */
-function getType(geojson, name) {
+function main_es_getType(geojson, name) {
     if (!geojson) throw new Error((name || 'geojson') + ' is required');
     // GeoJSON Feature & GeometryCollection
     if (geojson.geometry && geojson.geometry.type) return geojson.geometry.type;
@@ -80599,87 +81728,103 @@ function getType(geojson, name) {
 
 
 
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-bearing/main.es.js
+// CONCATENATED MODULE: ./node_modules/@turf/rhumb-distance/main.es.js
 
 
 
 // https://en.wikipedia.org/wiki/Rhumb_line
 /**
- * Takes two {@link Point|points} and finds the bearing angle between them along a Rhumb line
- * i.e. the angle measured in degrees start the north line (0 degrees)
+ * Calculates the distance along a rhumb line between two {@link Point|points} in degrees, radians,
+ * miles, or kilometers.
  *
- * @name rhumbBearing
- * @param {Coord} start starting Point
- * @param {Coord} end ending Point
+ * @name rhumbDistance
+ * @param {Coord} from origin point
+ * @param {Coord} to destination point
  * @param {Object} [options] Optional parameters
- * @param {boolean} [options.final=false] calculates the final bearing if true
- * @returns {number} bearing from north in decimal degrees, between -180 and 180 degrees (positive clockwise)
+ * @param {string} [options.units="kilometers"] can be degrees, radians, miles, or kilometers
+ * @returns {number} distance between the two points
  * @example
- * var point1 = turf.point([-75.343, 39.984], {"marker-color": "#F00"});
- * var point2 = turf.point([-75.534, 39.123], {"marker-color": "#00F"});
+ * var from = turf.point([-75.343, 39.984]);
+ * var to = turf.point([-75.534, 39.123]);
+ * var options = {units: 'miles'};
  *
- * var bearing = turf.rhumbBearing(point1, point2);
+ * var distance = turf.rhumbDistance(from, to, options);
  *
  * //addToMap
- * var addToMap = [point1, point2];
- * point1.properties.bearing = bearing;
- * point2.properties.bearing = bearing;
+ * var addToMap = [from, to];
+ * from.properties.distance = distance;
+ * to.properties.distance = distance;
  */
-function rhumbBearing(start, end, options) {
+function rhumbDistance(from, to, options) {
     // Optional parameters
     options = options || {};
     if (!helpers_main_es_isObject(options)) throw new Error('options is invalid');
-    var final = options.final;
+    var units = options.units;
 
     // validation
-    if (!start) throw new Error('start point is required');
-    if (!end) throw new Error('end point is required');
+    if (!from) throw new Error('from point is required');
+    if (!to) throw new Error('to point is required');
 
-    var bear360;
+    var origin = main_es_getCoord(from);
+    var destination = main_es_getCoord(to);
 
-    if (final) bear360 = calculateRhumbBearing(getCoord(end), getCoord(start));
-    else bear360 = calculateRhumbBearing(getCoord(start), getCoord(end));
-
-    var bear180 = (bear360 > 180) ? -(360 - bear360) : bear360;
-
-    return bear180;
+    // compensate the crossing of the 180th meridian (https://macwright.org/2016/09/26/the-180th-meridian.html)
+    // solution from https://github.com/mapbox/mapbox-gl-js/issues/3250#issuecomment-294887678
+    destination[0] += (destination[0] - origin[0] > 180) ? -360 : (origin[0] - destination[0] > 180) ? 360 : 0;
+    var distanceInMeters = calculateRhumbDistance(origin, destination);
+    var distance = helpers_main_es_convertLength(distanceInMeters, 'meters', units);
+    return distance;
 }
 
 /**
- * Returns the bearing from ‘this’ point to destination point along a rhumb line.
+ * Returns the distance travelling from ‘this’ point to destination point along a rhumb line.
  * Adapted from Geodesy: https://github.com/chrisveness/geodesy/blob/master/latlon-spherical.js
  *
  * @private
- * @param   {Array<number>} from - origin point.
- * @param   {Array<number>} to - destination point.
- * @returns {number} Bearing in degrees from north.
+ * @param   {Array<number>} origin point.
+ * @param   {Array<number>} destination point.
+ * @param   {number} [radius=6371e3] - (Mean) radius of earth (defaults to radius in metres).
+ * @returns {number} Distance in km between this point and destination point (same units as radius).
+ *
  * @example
- * var p1 = new LatLon(51.127, 1.338);
- * var p2 = new LatLon(50.964, 1.853);
- * var d = p1.rhumbBearingTo(p2); // 116.7 m
+ *     var p1 = new LatLon(51.127, 1.338);
+ *     var p2 = new LatLon(50.964, 1.853);
+ *     var d = p1.distanceTo(p2); // 40.31 km
  */
-function calculateRhumbBearing(from, to) {
+function calculateRhumbDistance(origin, destination, radius) {
     // φ => phi
-    // Δλ => deltaLambda
-    // Δψ => deltaPsi
+    // λ => lambda
+    // ψ => psi
+    // Δ => Delta
+    // δ => delta
     // θ => theta
-    var phi1 = helpers_main_es_degreesToRadians(from[1]);
-    var phi2 = helpers_main_es_degreesToRadians(to[1]);
-    var deltaLambda = helpers_main_es_degreesToRadians((to[0] - from[0]));
-    // if deltaLambdaon over 180° take shorter rhumb line across the anti-meridian:
-    if (deltaLambda > Math.PI) deltaLambda -= 2 * Math.PI;
-    if (deltaLambda < -Math.PI) deltaLambda += 2 * Math.PI;
 
-    var deltaPsi = Math.log(Math.tan(phi2 / 2 + Math.PI / 4) / Math.tan(phi1 / 2 + Math.PI / 4));
+    radius = (radius === undefined) ? helpers_main_es_earthRadius : Number(radius);
+    // see www.edwilliams.org/avform.htm#Rhumb
 
-    var theta = Math.atan2(deltaLambda, deltaPsi);
+    var R = radius;
+    var phi1 = origin[1] * Math.PI / 180;
+    var phi2 = destination[1] * Math.PI / 180;
+    var DeltaPhi = phi2 - phi1;
+    var DeltaLambda = Math.abs(destination[0] - origin[0]) * Math.PI / 180;
+    // if dLon over 180° take shorter rhumb line across the anti-meridian:
+    if (DeltaLambda > Math.PI) DeltaLambda -= 2 * Math.PI;
 
-    return (helpers_main_es_radiansToDegrees(theta) + 360) % 360;
+    // on Mercator projection, longitude distances shrink by latitude; q is the 'stretch factor'
+    // q becomes ill-conditioned along E-W line (0/0); use empirical tolerance to avoid it
+    var DeltaPsi = Math.log(Math.tan(phi2 / 2 + Math.PI / 4) / Math.tan(phi1 / 2 + Math.PI / 4));
+    var q = Math.abs(DeltaPsi) > 10e-12 ? DeltaPhi / DeltaPsi : Math.cos(phi1);
+
+    // distance is pythagoras on 'stretched' Mercator projection
+    var delta = Math.sqrt(DeltaPhi * DeltaPhi + q * q * DeltaLambda * DeltaLambda); // angular distance in radians
+    var dist = delta * R;
+
+    return dist;
 }
 
-/* harmony default export */ var rhumb_bearing_main_es = (rhumbBearing);
+/* harmony default export */ var rhumb_distance_main_es = (rhumbDistance);
 
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-distance/node_modules/@turf/helpers/main.es.js
+// CONCATENATED MODULE: ./node_modules/@turf/rhumb-destination/node_modules/@turf/helpers/main.es.js
 /**
  * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
  */
@@ -81432,1052 +82577,6 @@ function _turf_helpers_main_es_convertDistance() {
 
 
 
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-distance/node_modules/@turf/invariant/main.es.js
-
-
-/**
- * Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
- *
- * @name getCoord
- * @param {Array<number>|Geometry<Point>|Feature<Point>} coord GeoJSON Point or an Array of numbers
- * @returns {Array<number>} coordinates
- * @example
- * var pt = turf.point([10, 10]);
- *
- * var coord = turf.getCoord(pt);
- * //= [10, 10]
- */
-function main_es_getCoord(coord) {
-    if (!coord) throw new Error('coord is required');
-    if (coord.type === 'Feature' && coord.geometry !== null && coord.geometry.type === 'Point') return coord.geometry.coordinates;
-    if (coord.type === 'Point') return coord.coordinates;
-    if (Array.isArray(coord) && coord.length >= 2 && coord[0].length === undefined && coord[1].length === undefined) return coord;
-
-    throw new Error('coord must be GeoJSON Point or an Array of numbers');
-}
-
-/**
- * Unwrap coordinates from a Feature, Geometry Object or an Array
- *
- * @name getCoords
- * @param {Array<any>|Geometry|Feature} coords Feature, Geometry Object or an Array
- * @returns {Array<any>} coordinates
- * @example
- * var poly = turf.polygon([[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]);
- *
- * var coords = turf.getCoords(poly);
- * //= [[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]
- */
-function main_es_getCoords(coords) {
-    if (!coords) throw new Error('coords is required');
-
-    // Feature
-    if (coords.type === 'Feature' && coords.geometry !== null) return coords.geometry.coordinates;
-
-    // Geometry
-    if (coords.coordinates) return coords.coordinates;
-
-    // Array of numbers
-    if (Array.isArray(coords)) return coords;
-
-    throw new Error('coords must be GeoJSON Feature, Geometry Object or an Array');
-}
-
-/**
- * Checks if coordinates contains a number
- *
- * @name containsNumber
- * @param {Array<any>} coordinates GeoJSON Coordinates
- * @returns {boolean} true if Array contains a number
- */
-function main_es_containsNumber(coordinates) {
-    if (coordinates.length > 1 && _turf_helpers_main_es_isNumber(coordinates[0]) && _turf_helpers_main_es_isNumber(coordinates[1])) {
-        return true;
-    }
-
-    if (Array.isArray(coordinates[0]) && coordinates[0].length) {
-        return main_es_containsNumber(coordinates[0]);
-    }
-    throw new Error('coordinates must only contain numbers');
-}
-
-/**
- * Enforce expectations about types of GeoJSON objects for Turf.
- *
- * @name geojsonType
- * @param {GeoJSON} value any GeoJSON object
- * @param {string} type expected GeoJSON type
- * @param {string} name name of calling function
- * @throws {Error} if value is not the expected type.
- */
-function main_es_geojsonType(value, type, name) {
-    if (!type || !name) throw new Error('type and name required');
-
-    if (!value || value.type !== type) {
-        throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + value.type);
-    }
-}
-
-/**
- * Enforce expectations about types of {@link Feature} inputs for Turf.
- * Internally this uses {@link geojsonType} to judge geometry types.
- *
- * @name featureOf
- * @param {Feature} feature a feature with an expected geometry type
- * @param {string} type expected GeoJSON type
- * @param {string} name name of calling function
- * @throws {Error} error if value is not the expected type.
- */
-function main_es_featureOf(feature, type, name) {
-    if (!feature) throw new Error('No feature passed');
-    if (!name) throw new Error('.featureOf() requires a name');
-    if (!feature || feature.type !== 'Feature' || !feature.geometry) {
-        throw new Error('Invalid input to ' + name + ', Feature with geometry required');
-    }
-    if (!feature.geometry || feature.geometry.type !== type) {
-        throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + feature.geometry.type);
-    }
-}
-
-/**
- * Enforce expectations about types of {@link FeatureCollection} inputs for Turf.
- * Internally this uses {@link geojsonType} to judge geometry types.
- *
- * @name collectionOf
- * @param {FeatureCollection} featureCollection a FeatureCollection for which features will be judged
- * @param {string} type expected GeoJSON type
- * @param {string} name name of calling function
- * @throws {Error} if value is not the expected type.
- */
-function main_es_collectionOf(featureCollection, type, name) {
-    if (!featureCollection) throw new Error('No featureCollection passed');
-    if (!name) throw new Error('.collectionOf() requires a name');
-    if (!featureCollection || featureCollection.type !== 'FeatureCollection') {
-        throw new Error('Invalid input to ' + name + ', FeatureCollection required');
-    }
-    for (var i = 0; i < featureCollection.features.length; i++) {
-        var feature = featureCollection.features[i];
-        if (!feature || feature.type !== 'Feature' || !feature.geometry) {
-            throw new Error('Invalid input to ' + name + ', Feature with geometry required');
-        }
-        if (!feature.geometry || feature.geometry.type !== type) {
-            throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + feature.geometry.type);
-        }
-    }
-}
-
-/**
- * Get Geometry from Feature or Geometry Object
- *
- * @param {Feature|Geometry} geojson GeoJSON Feature or Geometry Object
- * @returns {Geometry|null} GeoJSON Geometry Object
- * @throws {Error} if geojson is not a Feature or Geometry Object
- * @example
- * var point = {
- *   "type": "Feature",
- *   "properties": {},
- *   "geometry": {
- *     "type": "Point",
- *     "coordinates": [110, 40]
- *   }
- * }
- * var geom = turf.getGeom(point)
- * //={"type": "Point", "coordinates": [110, 40]}
- */
-function main_es_getGeom(geojson) {
-    if (!geojson) throw new Error('geojson is required');
-    if (geojson.geometry !== undefined) return geojson.geometry;
-    if (geojson.coordinates || geojson.geometries) return geojson;
-    throw new Error('geojson must be a valid Feature or Geometry Object');
-}
-
-/**
- * Get Geometry Type from Feature or Geometry Object
- *
- * @throws {Error} **DEPRECATED** in v5.0.0 in favor of getType
- */
-function main_es_getGeomType() {
-    throw new Error('invariant.getGeomType has been deprecated in v5.0 in favor of invariant.getType');
-}
-
-/**
- * Get GeoJSON object's type, Geometry type is prioritize.
- *
- * @param {GeoJSON} geojson GeoJSON object
- * @param {string} [name="geojson"] name of the variable to display in error message
- * @returns {string} GeoJSON type
- * @example
- * var point = {
- *   "type": "Feature",
- *   "properties": {},
- *   "geometry": {
- *     "type": "Point",
- *     "coordinates": [110, 40]
- *   }
- * }
- * var geom = turf.getType(point)
- * //="Point"
- */
-function main_es_getType(geojson, name) {
-    if (!geojson) throw new Error((name || 'geojson') + ' is required');
-    // GeoJSON Feature & GeometryCollection
-    if (geojson.geometry && geojson.geometry.type) return geojson.geometry.type;
-    // GeoJSON Geometry & FeatureCollection
-    if (geojson.type) return geojson.type;
-    throw new Error((name || 'geojson') + ' is invalid');
-}
-
-
-
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-distance/main.es.js
-
-
-
-// https://en.wikipedia.org/wiki/Rhumb_line
-/**
- * Calculates the distance along a rhumb line between two {@link Point|points} in degrees, radians,
- * miles, or kilometers.
- *
- * @name rhumbDistance
- * @param {Coord} from origin point
- * @param {Coord} to destination point
- * @param {Object} [options] Optional parameters
- * @param {string} [options.units="kilometers"] can be degrees, radians, miles, or kilometers
- * @returns {number} distance between the two points
- * @example
- * var from = turf.point([-75.343, 39.984]);
- * var to = turf.point([-75.534, 39.123]);
- * var options = {units: 'miles'};
- *
- * var distance = turf.rhumbDistance(from, to, options);
- *
- * //addToMap
- * var addToMap = [from, to];
- * from.properties.distance = distance;
- * to.properties.distance = distance;
- */
-function rhumbDistance(from, to, options) {
-    // Optional parameters
-    options = options || {};
-    if (!_turf_helpers_main_es_isObject(options)) throw new Error('options is invalid');
-    var units = options.units;
-
-    // validation
-    if (!from) throw new Error('from point is required');
-    if (!to) throw new Error('to point is required');
-
-    var origin = main_es_getCoord(from);
-    var destination = main_es_getCoord(to);
-
-    // compensate the crossing of the 180th meridian (https://macwright.org/2016/09/26/the-180th-meridian.html)
-    // solution from https://github.com/mapbox/mapbox-gl-js/issues/3250#issuecomment-294887678
-    destination[0] += (destination[0] - origin[0] > 180) ? -360 : (origin[0] - destination[0] > 180) ? 360 : 0;
-    var distanceInMeters = calculateRhumbDistance(origin, destination);
-    var distance = _turf_helpers_main_es_convertLength(distanceInMeters, 'meters', units);
-    return distance;
-}
-
-/**
- * Returns the distance travelling from ‘this’ point to destination point along a rhumb line.
- * Adapted from Geodesy: https://github.com/chrisveness/geodesy/blob/master/latlon-spherical.js
- *
- * @private
- * @param   {Array<number>} origin point.
- * @param   {Array<number>} destination point.
- * @param   {number} [radius=6371e3] - (Mean) radius of earth (defaults to radius in metres).
- * @returns {number} Distance in km between this point and destination point (same units as radius).
- *
- * @example
- *     var p1 = new LatLon(51.127, 1.338);
- *     var p2 = new LatLon(50.964, 1.853);
- *     var d = p1.distanceTo(p2); // 40.31 km
- */
-function calculateRhumbDistance(origin, destination, radius) {
-    // φ => phi
-    // λ => lambda
-    // ψ => psi
-    // Δ => Delta
-    // δ => delta
-    // θ => theta
-
-    radius = (radius === undefined) ? _turf_helpers_main_es_earthRadius : Number(radius);
-    // see www.edwilliams.org/avform.htm#Rhumb
-
-    var R = radius;
-    var phi1 = origin[1] * Math.PI / 180;
-    var phi2 = destination[1] * Math.PI / 180;
-    var DeltaPhi = phi2 - phi1;
-    var DeltaLambda = Math.abs(destination[0] - origin[0]) * Math.PI / 180;
-    // if dLon over 180° take shorter rhumb line across the anti-meridian:
-    if (DeltaLambda > Math.PI) DeltaLambda -= 2 * Math.PI;
-
-    // on Mercator projection, longitude distances shrink by latitude; q is the 'stretch factor'
-    // q becomes ill-conditioned along E-W line (0/0); use empirical tolerance to avoid it
-    var DeltaPsi = Math.log(Math.tan(phi2 / 2 + Math.PI / 4) / Math.tan(phi1 / 2 + Math.PI / 4));
-    var q = Math.abs(DeltaPsi) > 10e-12 ? DeltaPhi / DeltaPsi : Math.cos(phi1);
-
-    // distance is pythagoras on 'stretched' Mercator projection
-    var delta = Math.sqrt(DeltaPhi * DeltaPhi + q * q * DeltaLambda * DeltaLambda); // angular distance in radians
-    var dist = delta * R;
-
-    return dist;
-}
-
-/* harmony default export */ var rhumb_distance_main_es = (rhumbDistance);
-
-// CONCATENATED MODULE: ./node_modules/@turf/rhumb-destination/node_modules/@turf/helpers/main.es.js
-/**
- * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
- */
-var node_modules_turf_helpers_main_es_earthRadius = 6371008.8;
-
-/**
- * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
- */
-var node_modules_turf_helpers_main_es_factors = {
-    meters: node_modules_turf_helpers_main_es_earthRadius,
-    metres: node_modules_turf_helpers_main_es_earthRadius,
-    millimeters: node_modules_turf_helpers_main_es_earthRadius * 1000,
-    millimetres: node_modules_turf_helpers_main_es_earthRadius * 1000,
-    centimeters: node_modules_turf_helpers_main_es_earthRadius * 100,
-    centimetres: node_modules_turf_helpers_main_es_earthRadius * 100,
-    kilometers: node_modules_turf_helpers_main_es_earthRadius / 1000,
-    kilometres: node_modules_turf_helpers_main_es_earthRadius / 1000,
-    miles: node_modules_turf_helpers_main_es_earthRadius / 1609.344,
-    nauticalmiles: node_modules_turf_helpers_main_es_earthRadius / 1852,
-    inches: node_modules_turf_helpers_main_es_earthRadius * 39.370,
-    yards: node_modules_turf_helpers_main_es_earthRadius / 1.0936,
-    feet: node_modules_turf_helpers_main_es_earthRadius * 3.28084,
-    radians: 1,
-    degrees: node_modules_turf_helpers_main_es_earthRadius / 111325,
-};
-
-/**
- * Units of measurement factors based on 1 meter.
- */
-var node_modules_turf_helpers_main_es_unitsFactors = {
-    meters: 1,
-    metres: 1,
-    millimeters: 1000,
-    millimetres: 1000,
-    centimeters: 100,
-    centimetres: 100,
-    kilometers: 1 / 1000,
-    kilometres: 1 / 1000,
-    miles: 1 / 1609.344,
-    nauticalmiles: 1 / 1852,
-    inches: 39.370,
-    yards: 1 / 1.0936,
-    feet: 3.28084,
-    radians: 1 / node_modules_turf_helpers_main_es_earthRadius,
-    degrees: 1 / 111325,
-};
-
-/**
- * Area of measurement factors based on 1 square meter.
- */
-var node_modules_turf_helpers_main_es_areaFactors = {
-    meters: 1,
-    metres: 1,
-    millimeters: 1000000,
-    millimetres: 1000000,
-    centimeters: 10000,
-    centimetres: 10000,
-    kilometers: 0.000001,
-    kilometres: 0.000001,
-    acres: 0.000247105,
-    miles: 3.86e-7,
-    yards: 1.195990046,
-    feet: 10.763910417,
-    inches: 1550.003100006
-};
-
-/**
- * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
- *
- * @name feature
- * @param {Geometry} geometry input geometry
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature} a GeoJSON Feature
- * @example
- * var geometry = {
- *   "type": "Point",
- *   "coordinates": [110, 50]
- * };
- *
- * var feature = turf.feature(geometry);
- *
- * //=feature
- */
-function rhumb_destination_node_modules_turf_helpers_main_es_feature(geometry, properties, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!node_modules_turf_helpers_main_es_isObject(options)) throw new Error('options is invalid');
-    var bbox = options.bbox;
-    var id = options.id;
-
-    // Validation
-    if (geometry === undefined) throw new Error('geometry is required');
-    if (properties && properties.constructor !== Object) throw new Error('properties must be an Object');
-    if (bbox) node_modules_turf_helpers_main_es_validateBBox(bbox);
-    if (id) node_modules_turf_helpers_main_es_validateId(id);
-
-    // Main
-    var feat = {type: 'Feature'};
-    if (id) feat.id = id;
-    if (bbox) feat.bbox = bbox;
-    feat.properties = properties || {};
-    feat.geometry = geometry;
-    return feat;
-}
-
-/**
- * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
- * For GeometryCollection type use `helpers.geometryCollection`
- *
- * @name geometry
- * @param {string} type Geometry Type
- * @param {Array<number>} coordinates Coordinates
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Geometry
- * @returns {Geometry} a GeoJSON Geometry
- * @example
- * var type = 'Point';
- * var coordinates = [110, 50];
- *
- * var geometry = turf.geometry(type, coordinates);
- *
- * //=geometry
- */
-function rhumb_destination_node_modules_turf_helpers_main_es_geometry(type, coordinates, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!node_modules_turf_helpers_main_es_isObject(options)) throw new Error('options is invalid');
-    var bbox = options.bbox;
-
-    // Validation
-    if (!type) throw new Error('type is required');
-    if (!coordinates) throw new Error('coordinates is required');
-    if (!Array.isArray(coordinates)) throw new Error('coordinates must be an Array');
-    if (bbox) node_modules_turf_helpers_main_es_validateBBox(bbox);
-
-    // Main
-    var geom;
-    switch (type) {
-    case 'Point': geom = node_modules_turf_helpers_main_es_point(coordinates).geometry; break;
-    case 'LineString': geom = node_modules_turf_helpers_main_es_lineString(coordinates).geometry; break;
-    case 'Polygon': geom = node_modules_turf_helpers_main_es_polygon(coordinates).geometry; break;
-    case 'MultiPoint': geom = node_modules_turf_helpers_main_es_multiPoint(coordinates).geometry; break;
-    case 'MultiLineString': geom = node_modules_turf_helpers_main_es_multiLineString(coordinates).geometry; break;
-    case 'MultiPolygon': geom = node_modules_turf_helpers_main_es_multiPolygon(coordinates).geometry; break;
-    default: throw new Error(type + ' is invalid');
-    }
-    if (bbox) geom.bbox = bbox;
-    return geom;
-}
-
-/**
- * Creates a {@link Point} {@link Feature} from a Position.
- *
- * @name point
- * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Point>} a Point feature
- * @example
- * var point = turf.point([-75.343, 39.984]);
- *
- * //=point
- */
-function node_modules_turf_helpers_main_es_point(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-    if (!Array.isArray(coordinates)) throw new Error('coordinates must be an Array');
-    if (coordinates.length < 2) throw new Error('coordinates must be at least 2 numbers long');
-    if (!node_modules_turf_helpers_main_es_isNumber(coordinates[0]) || !node_modules_turf_helpers_main_es_isNumber(coordinates[1])) throw new Error('coordinates must contain numbers');
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'Point',
-        coordinates: coordinates
-    }, properties, options);
-}
-
-/**
- * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
- *
- * @name points
- * @param {Array<Array<number>>} coordinates an array of Points
- * @param {Object} [properties={}] Translate these properties to each Feature
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Point>} Point Feature
- * @example
- * var points = turf.points([
- *   [-75, 39],
- *   [-80, 45],
- *   [-78, 50]
- * ]);
- *
- * //=points
- */
-function node_modules_turf_helpers_main_es_points(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-    if (!Array.isArray(coordinates)) throw new Error('coordinates must be an Array');
-
-    return node_modules_turf_helpers_main_es_featureCollection(coordinates.map(function (coords) {
-        return node_modules_turf_helpers_main_es_point(coords, properties);
-    }), options);
-}
-
-/**
- * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
- *
- * @name polygon
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Polygon>} Polygon Feature
- * @example
- * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
- *
- * //=polygon
- */
-function node_modules_turf_helpers_main_es_polygon(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-
-    for (var i = 0; i < coordinates.length; i++) {
-        var ring = coordinates[i];
-        if (ring.length < 4) {
-            throw new Error('Each LinearRing of a Polygon must have 4 or more Positions.');
-        }
-        for (var j = 0; j < ring[ring.length - 1].length; j++) {
-            // Check if first point of Polygon contains two numbers
-            if (i === 0 && j === 0 && !node_modules_turf_helpers_main_es_isNumber(ring[0][0]) || !node_modules_turf_helpers_main_es_isNumber(ring[0][1])) throw new Error('coordinates must contain numbers');
-            if (ring[ring.length - 1][j] !== ring[0][j]) {
-                throw new Error('First and last Position are not equivalent.');
-            }
-        }
-    }
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'Polygon',
-        coordinates: coordinates
-    }, properties, options);
-}
-
-/**
- * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
- *
- * @name polygons
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
- * @example
- * var polygons = turf.polygons([
- *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
- *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
- * ]);
- *
- * //=polygons
- */
-function node_modules_turf_helpers_main_es_polygons(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-    if (!Array.isArray(coordinates)) throw new Error('coordinates must be an Array');
-
-    return node_modules_turf_helpers_main_es_featureCollection(coordinates.map(function (coords) {
-        return node_modules_turf_helpers_main_es_polygon(coords, properties);
-    }), options);
-}
-
-/**
- * Creates a {@link LineString} {@link Feature} from an Array of Positions.
- *
- * @name lineString
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<LineString>} LineString Feature
- * @example
- * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
- * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
- *
- * //=linestring1
- * //=linestring2
- */
-function node_modules_turf_helpers_main_es_lineString(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-    if (coordinates.length < 2) throw new Error('coordinates must be an array of two or more positions');
-    // Check if first point of LineString contains two numbers
-    if (!node_modules_turf_helpers_main_es_isNumber(coordinates[0][1]) || !node_modules_turf_helpers_main_es_isNumber(coordinates[0][1])) throw new Error('coordinates must contain numbers');
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'LineString',
-        coordinates: coordinates
-    }, properties, options);
-}
-
-/**
- * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
- *
- * @name lineStrings
- * @param {Array<Array<number>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<LineString>} LineString FeatureCollection
- * @example
- * var linestrings = turf.lineStrings([
- *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
- *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
- * ]);
- *
- * //=linestrings
- */
-function node_modules_turf_helpers_main_es_lineStrings(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-    if (!Array.isArray(coordinates)) throw new Error('coordinates must be an Array');
-
-    return node_modules_turf_helpers_main_es_featureCollection(coordinates.map(function (coords) {
-        return node_modules_turf_helpers_main_es_lineString(coords, properties);
-    }), options);
-}
-
-/**
- * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
- *
- * @name featureCollection
- * @param {Feature[]} features input features
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {FeatureCollection} FeatureCollection of Features
- * @example
- * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
- * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
- * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
- *
- * var collection = turf.featureCollection([
- *   locationA,
- *   locationB,
- *   locationC
- * ]);
- *
- * //=collection
- */
-function node_modules_turf_helpers_main_es_featureCollection(features, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!node_modules_turf_helpers_main_es_isObject(options)) throw new Error('options is invalid');
-    var bbox = options.bbox;
-    var id = options.id;
-
-    // Validation
-    if (!features) throw new Error('No features passed');
-    if (!Array.isArray(features)) throw new Error('features must be an Array');
-    if (bbox) node_modules_turf_helpers_main_es_validateBBox(bbox);
-    if (id) node_modules_turf_helpers_main_es_validateId(id);
-
-    // Main
-    var fc = {type: 'FeatureCollection'};
-    if (id) fc.id = id;
-    if (bbox) fc.bbox = bbox;
-    fc.features = features;
-    return fc;
-}
-
-/**
- * Creates a {@link Feature<MultiLineString>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiLineString
- * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiLineString>} a MultiLineString feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
- *
- * //=multiLine
- */
-function node_modules_turf_helpers_main_es_multiLineString(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'MultiLineString',
-        coordinates: coordinates
-    }, properties, options);
-}
-
-/**
- * Creates a {@link Feature<MultiPoint>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPoint
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPoint>} a MultiPoint feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPt = turf.multiPoint([[0,0],[10,10]]);
- *
- * //=multiPt
- */
-function node_modules_turf_helpers_main_es_multiPoint(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'MultiPoint',
-        coordinates: coordinates
-    }, properties, options);
-}
-
-/**
- * Creates a {@link Feature<MultiPolygon>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPolygon
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPolygon>} a multipolygon feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
- *
- * //=multiPoly
- *
- */
-function node_modules_turf_helpers_main_es_multiPolygon(coordinates, properties, options) {
-    if (!coordinates) throw new Error('coordinates is required');
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'MultiPolygon',
-        coordinates: coordinates
-    }, properties, options);
-}
-
-/**
- * Creates a {@link Feature<GeometryCollection>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name geometryCollection
- * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
- * @example
- * var pt = {
- *     "type": "Point",
- *       "coordinates": [100, 0]
- *     };
- * var line = {
- *     "type": "LineString",
- *     "coordinates": [ [101, 0], [102, 1] ]
- *   };
- * var collection = turf.geometryCollection([pt, line]);
- *
- * //=collection
- */
-function node_modules_turf_helpers_main_es_geometryCollection(geometries, properties, options) {
-    if (!geometries) throw new Error('geometries is required');
-    if (!Array.isArray(geometries)) throw new Error('geometries must be an Array');
-
-    return rhumb_destination_node_modules_turf_helpers_main_es_feature({
-        type: 'GeometryCollection',
-        geometries: geometries
-    }, properties, options);
-}
-
-/**
- * Round number to precision
- *
- * @param {number} num Number
- * @param {number} [precision=0] Precision
- * @returns {number} rounded number
- * @example
- * turf.round(120.4321)
- * //=120
- *
- * turf.round(120.4321, 2)
- * //=120.43
- */
-function node_modules_turf_helpers_main_es_round(num, precision) {
-    if (num === undefined || num === null || isNaN(num)) throw new Error('num is required');
-    if (precision && !(precision >= 0)) throw new Error('precision must be a positive number');
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(num * multiplier) / multiplier;
-}
-
-/**
- * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name radiansToLength
- * @param {number} radians in radians across the sphere
- * @param {string} [units='kilometers'] can be degrees, radians, miles, or kilometers inches, yards, metres, meters, kilometres, kilometers.
- * @returns {number} distance
- */
-function node_modules_turf_helpers_main_es_radiansToLength(radians, units) {
-    if (radians === undefined || radians === null) throw new Error('radians is required');
-
-    if (units && typeof units !== 'string') throw new Error('units must be a string');
-    var factor = node_modules_turf_helpers_main_es_factors[units || 'kilometers'];
-    if (!factor) throw new Error(units + ' units is invalid');
-    return radians * factor;
-}
-
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name lengthToRadians
- * @param {number} distance in real units
- * @param {string} [units='kilometers'] can be degrees, radians, miles, or kilometers inches, yards, metres, meters, kilometres, kilometers.
- * @returns {number} radians
- */
-function node_modules_turf_helpers_main_es_lengthToRadians(distance, units) {
-    if (distance === undefined || distance === null) throw new Error('distance is required');
-
-    if (units && typeof units !== 'string') throw new Error('units must be a string');
-    var factor = node_modules_turf_helpers_main_es_factors[units || 'kilometers'];
-    if (!factor) throw new Error(units + ' units is invalid');
-    return distance / factor;
-}
-
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
- *
- * @name lengthToDegrees
- * @param {number} distance in real units
- * @param {string} [units='kilometers'] can be degrees, radians, miles, or kilometers inches, yards, metres, meters, kilometres, kilometers.
- * @returns {number} degrees
- */
-function node_modules_turf_helpers_main_es_lengthToDegrees(distance, units) {
-    return node_modules_turf_helpers_main_es_radiansToDegrees(node_modules_turf_helpers_main_es_lengthToRadians(distance, units));
-}
-
-/**
- * Converts any bearing angle from the north line direction (positive clockwise)
- * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
- *
- * @name bearingToAzimuth
- * @param {number} bearing angle, between -180 and +180 degrees
- * @returns {number} angle between 0 and 360 degrees
- */
-function node_modules_turf_helpers_main_es_bearingToAzimuth(bearing) {
-    if (bearing === null || bearing === undefined) throw new Error('bearing is required');
-
-    var angle = bearing % 360;
-    if (angle < 0) angle += 360;
-    return angle;
-}
-
-/**
- * Converts an angle in radians to degrees
- *
- * @name radiansToDegrees
- * @param {number} radians angle in radians
- * @returns {number} degrees between 0 and 360 degrees
- */
-function node_modules_turf_helpers_main_es_radiansToDegrees(radians) {
-    if (radians === null || radians === undefined) throw new Error('radians is required');
-
-    var degrees = radians % (2 * Math.PI);
-    return degrees * 180 / Math.PI;
-}
-
-/**
- * Converts an angle in degrees to radians
- *
- * @name degreesToRadians
- * @param {number} degrees angle between 0 and 360 degrees
- * @returns {number} angle in radians
- */
-function node_modules_turf_helpers_main_es_degreesToRadians(degrees) {
-    if (degrees === null || degrees === undefined) throw new Error('degrees is required');
-
-    var radians = degrees % 360;
-    return radians * Math.PI / 180;
-}
-
-/**
- * Converts a length to the requested unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @param {number} length to be converted
- * @param {string} originalUnit of the length
- * @param {string} [finalUnit='kilometers'] returned unit
- * @returns {number} the converted length
- */
-function node_modules_turf_helpers_main_es_convertLength(length, originalUnit, finalUnit) {
-    if (length === null || length === undefined) throw new Error('length is required');
-    if (!(length >= 0)) throw new Error('length must be a positive number');
-
-    return node_modules_turf_helpers_main_es_radiansToLength(node_modules_turf_helpers_main_es_lengthToRadians(length, originalUnit), finalUnit || 'kilometers');
-}
-
-/**
- * Converts a area to the requested unit.
- * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
- * @param {number} area to be converted
- * @param {string} [originalUnit='meters'] of the distance
- * @param {string} [finalUnit='kilometers'] returned unit
- * @returns {number} the converted distance
- */
-function node_modules_turf_helpers_main_es_convertArea(area, originalUnit, finalUnit) {
-    if (area === null || area === undefined) throw new Error('area is required');
-    if (!(area >= 0)) throw new Error('area must be a positive number');
-
-    var startFactor = node_modules_turf_helpers_main_es_areaFactors[originalUnit || 'meters'];
-    if (!startFactor) throw new Error('invalid original units');
-
-    var finalFactor = node_modules_turf_helpers_main_es_areaFactors[finalUnit || 'kilometers'];
-    if (!finalFactor) throw new Error('invalid final units');
-
-    return (area / startFactor) * finalFactor;
-}
-
-/**
- * isNumber
- *
- * @param {*} num Number to validate
- * @returns {boolean} true/false
- * @example
- * turf.isNumber(123)
- * //=true
- * turf.isNumber('foo')
- * //=false
- */
-function node_modules_turf_helpers_main_es_isNumber(num) {
-    return !isNaN(num) && num !== null && !Array.isArray(num);
-}
-
-/**
- * isObject
- *
- * @param {*} input variable to validate
- * @returns {boolean} true/false
- * @example
- * turf.isObject({elevation: 10})
- * //=true
- * turf.isObject('foo')
- * //=false
- */
-function node_modules_turf_helpers_main_es_isObject(input) {
-    return (!!input) && (input.constructor === Object);
-}
-
-/**
- * Validate BBox
- *
- * @private
- * @param {Array<number>} bbox BBox to validate
- * @returns {void}
- * @throws Error if BBox is not valid
- * @example
- * validateBBox([-180, -40, 110, 50])
- * //=OK
- * validateBBox([-180, -40])
- * //=Error
- * validateBBox('Foo')
- * //=Error
- * validateBBox(5)
- * //=Error
- * validateBBox(null)
- * //=Error
- * validateBBox(undefined)
- * //=Error
- */
-function node_modules_turf_helpers_main_es_validateBBox(bbox) {
-    if (!bbox) throw new Error('bbox is required');
-    if (!Array.isArray(bbox)) throw new Error('bbox must be an Array');
-    if (bbox.length !== 4 && bbox.length !== 6) throw new Error('bbox must be an Array of 4 or 6 numbers');
-    bbox.forEach(function (num) {
-        if (!node_modules_turf_helpers_main_es_isNumber(num)) throw new Error('bbox must only contain numbers');
-    });
-}
-
-/**
- * Validate Id
- *
- * @private
- * @param {string|number} id Id to validate
- * @returns {void}
- * @throws Error if Id is not valid
- * @example
- * validateId([-180, -40, 110, 50])
- * //=Error
- * validateId([-180, -40])
- * //=Error
- * validateId('Foo')
- * //=OK
- * validateId(5)
- * //=OK
- * validateId(null)
- * //=Error
- * validateId(undefined)
- * //=Error
- */
-function node_modules_turf_helpers_main_es_validateId(id) {
-    if (!id) throw new Error('id is required');
-    if (['string', 'number'].indexOf(typeof id) === -1) throw new Error('id must be a number or a string');
-}
-
-// Deprecated methods
-function node_modules_turf_helpers_main_es_radians2degrees() {
-    throw new Error('method has been renamed to `radiansToDegrees`');
-}
-
-function node_modules_turf_helpers_main_es_degrees2radians() {
-    throw new Error('method has been renamed to `degreesToRadians`');
-}
-
-function node_modules_turf_helpers_main_es_distanceToDegrees() {
-    throw new Error('method has been renamed to `lengthToDegrees`');
-}
-
-function node_modules_turf_helpers_main_es_distanceToRadians() {
-    throw new Error('method has been renamed to `lengthToRadians`');
-}
-
-function node_modules_turf_helpers_main_es_radiansToDistance() {
-    throw new Error('method has been renamed to `radiansToLength`');
-}
-
-function node_modules_turf_helpers_main_es_bearingToAngle() {
-    throw new Error('method has been renamed to `bearingToAzimuth`');
-}
-
-function node_modules_turf_helpers_main_es_convertDistance() {
-    throw new Error('method has been renamed to `convertLength`');
-}
-
-
-
 // CONCATENATED MODULE: ./node_modules/@turf/rhumb-destination/node_modules/@turf/invariant/main.es.js
 
 
@@ -82537,7 +82636,7 @@ function invariant_main_es_getCoords(coords) {
  * @returns {boolean} true if Array contains a number
  */
 function invariant_main_es_containsNumber(coordinates) {
-    if (coordinates.length > 1 && node_modules_turf_helpers_main_es_isNumber(coordinates[0]) && node_modules_turf_helpers_main_es_isNumber(coordinates[1])) {
+    if (coordinates.length > 1 && _turf_helpers_main_es_isNumber(coordinates[0]) && _turf_helpers_main_es_isNumber(coordinates[1])) {
         return true;
     }
 
@@ -82707,7 +82806,7 @@ function invariant_main_es_getType(geojson, name) {
 function rhumbDestination(origin, distance, bearing, options) {
     // Optional parameters
     options = options || {};
-    if (!node_modules_turf_helpers_main_es_isObject(options)) throw new Error('options is invalid');
+    if (!_turf_helpers_main_es_isObject(options)) throw new Error('options is invalid');
     var units = options.units;
     var properties = options.properties;
 
@@ -82717,14 +82816,14 @@ function rhumbDestination(origin, distance, bearing, options) {
     if (bearing === undefined || bearing === null) throw new Error('bearing is required');
     if (!(distance >= 0)) throw new Error('distance must be greater than 0');
 
-    var distanceInMeters = node_modules_turf_helpers_main_es_convertLength(distance, units, 'meters');
+    var distanceInMeters = _turf_helpers_main_es_convertLength(distance, units, 'meters');
     var coords = invariant_main_es_getCoord(origin);
     var destination = calculateRhumbDestination(coords, distanceInMeters, bearing);
 
     // compensate the crossing of the 180th meridian (https://macwright.org/2016/09/26/the-180th-meridian.html)
     // solution from https://github.com/mapbox/mapbox-gl-js/issues/3250#issuecomment-294887678
     destination[0] += (destination[0] - coords[0] > 180) ? -360 : (coords[0] - destination[0] > 180) ? 360 : 0;
-    return node_modules_turf_helpers_main_es_point(destination, properties);
+    return _turf_helpers_main_es_point(destination, properties);
 }
 
 /**
@@ -82747,12 +82846,12 @@ function calculateRhumbDestination(origin, distance, bearing, radius) {
     // δ => delta
     // θ => theta
 
-    radius = (radius === undefined) ? node_modules_turf_helpers_main_es_earthRadius : Number(radius);
+    radius = (radius === undefined) ? _turf_helpers_main_es_earthRadius : Number(radius);
 
     var delta = distance / radius; // angular distance in radians
     var lambda1 = origin[0] * Math.PI / 180; // to radians, but without normalize to 𝜋
-    var phi1 = node_modules_turf_helpers_main_es_degreesToRadians(origin[1]);
-    var theta = node_modules_turf_helpers_main_es_degreesToRadians(bearing);
+    var phi1 = _turf_helpers_main_es_degreesToRadians(origin[1]);
+    var theta = _turf_helpers_main_es_degreesToRadians(bearing);
 
     var DeltaPhi = delta * Math.cos(theta);
     var phi2 = phi1 + DeltaPhi;
@@ -82770,203 +82869,6 @@ function calculateRhumbDestination(origin, distance, bearing, radius) {
 }
 
 /* harmony default export */ var rhumb_destination_main_es = (rhumbDestination);
-
-// CONCATENATED MODULE: ./node_modules/@turf/transform-scale/node_modules/@turf/invariant/main.es.js
-
-
-/**
- * Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
- *
- * @name getCoord
- * @param {Array<number>|Geometry<Point>|Feature<Point>} coord GeoJSON Point or an Array of numbers
- * @returns {Array<number>} coordinates
- * @example
- * var pt = turf.point([10, 10]);
- *
- * var coord = turf.getCoord(pt);
- * //= [10, 10]
- */
-function _turf_invariant_main_es_getCoord(coord) {
-    if (!coord) throw new Error('coord is required');
-    if (coord.type === 'Feature' && coord.geometry !== null && coord.geometry.type === 'Point') return coord.geometry.coordinates;
-    if (coord.type === 'Point') return coord.coordinates;
-    if (Array.isArray(coord) && coord.length >= 2 && coord[0].length === undefined && coord[1].length === undefined) return coord;
-
-    throw new Error('coord must be GeoJSON Point or an Array of numbers');
-}
-
-/**
- * Unwrap coordinates from a Feature, Geometry Object or an Array
- *
- * @name getCoords
- * @param {Array<any>|Geometry|Feature} coords Feature, Geometry Object or an Array
- * @returns {Array<any>} coordinates
- * @example
- * var poly = turf.polygon([[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]);
- *
- * var coords = turf.getCoords(poly);
- * //= [[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]
- */
-function _turf_invariant_main_es_getCoords(coords) {
-    if (!coords) throw new Error('coords is required');
-
-    // Feature
-    if (coords.type === 'Feature' && coords.geometry !== null) return coords.geometry.coordinates;
-
-    // Geometry
-    if (coords.coordinates) return coords.coordinates;
-
-    // Array of numbers
-    if (Array.isArray(coords)) return coords;
-
-    throw new Error('coords must be GeoJSON Feature, Geometry Object or an Array');
-}
-
-/**
- * Checks if coordinates contains a number
- *
- * @name containsNumber
- * @param {Array<any>} coordinates GeoJSON Coordinates
- * @returns {boolean} true if Array contains a number
- */
-function _turf_invariant_main_es_containsNumber(coordinates) {
-    if (coordinates.length > 1 && isNumber(coordinates[0]) && isNumber(coordinates[1])) {
-        return true;
-    }
-
-    if (Array.isArray(coordinates[0]) && coordinates[0].length) {
-        return _turf_invariant_main_es_containsNumber(coordinates[0]);
-    }
-    throw new Error('coordinates must only contain numbers');
-}
-
-/**
- * Enforce expectations about types of GeoJSON objects for Turf.
- *
- * @name geojsonType
- * @param {GeoJSON} value any GeoJSON object
- * @param {string} type expected GeoJSON type
- * @param {string} name name of calling function
- * @throws {Error} if value is not the expected type.
- */
-function _turf_invariant_main_es_geojsonType(value, type, name) {
-    if (!type || !name) throw new Error('type and name required');
-
-    if (!value || value.type !== type) {
-        throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + value.type);
-    }
-}
-
-/**
- * Enforce expectations about types of {@link Feature} inputs for Turf.
- * Internally this uses {@link geojsonType} to judge geometry types.
- *
- * @name featureOf
- * @param {Feature} feature a feature with an expected geometry type
- * @param {string} type expected GeoJSON type
- * @param {string} name name of calling function
- * @throws {Error} error if value is not the expected type.
- */
-function _turf_invariant_main_es_featureOf(feature, type, name) {
-    if (!feature) throw new Error('No feature passed');
-    if (!name) throw new Error('.featureOf() requires a name');
-    if (!feature || feature.type !== 'Feature' || !feature.geometry) {
-        throw new Error('Invalid input to ' + name + ', Feature with geometry required');
-    }
-    if (!feature.geometry || feature.geometry.type !== type) {
-        throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + feature.geometry.type);
-    }
-}
-
-/**
- * Enforce expectations about types of {@link FeatureCollection} inputs for Turf.
- * Internally this uses {@link geojsonType} to judge geometry types.
- *
- * @name collectionOf
- * @param {FeatureCollection} featureCollection a FeatureCollection for which features will be judged
- * @param {string} type expected GeoJSON type
- * @param {string} name name of calling function
- * @throws {Error} if value is not the expected type.
- */
-function _turf_invariant_main_es_collectionOf(featureCollection, type, name) {
-    if (!featureCollection) throw new Error('No featureCollection passed');
-    if (!name) throw new Error('.collectionOf() requires a name');
-    if (!featureCollection || featureCollection.type !== 'FeatureCollection') {
-        throw new Error('Invalid input to ' + name + ', FeatureCollection required');
-    }
-    for (var i = 0; i < featureCollection.features.length; i++) {
-        var feature = featureCollection.features[i];
-        if (!feature || feature.type !== 'Feature' || !feature.geometry) {
-            throw new Error('Invalid input to ' + name + ', Feature with geometry required');
-        }
-        if (!feature.geometry || feature.geometry.type !== type) {
-            throw new Error('Invalid input to ' + name + ': must be a ' + type + ', given ' + feature.geometry.type);
-        }
-    }
-}
-
-/**
- * Get Geometry from Feature or Geometry Object
- *
- * @param {Feature|Geometry} geojson GeoJSON Feature or Geometry Object
- * @returns {Geometry|null} GeoJSON Geometry Object
- * @throws {Error} if geojson is not a Feature or Geometry Object
- * @example
- * var point = {
- *   "type": "Feature",
- *   "properties": {},
- *   "geometry": {
- *     "type": "Point",
- *     "coordinates": [110, 40]
- *   }
- * }
- * var geom = turf.getGeom(point)
- * //={"type": "Point", "coordinates": [110, 40]}
- */
-function _turf_invariant_main_es_getGeom(geojson) {
-    if (!geojson) throw new Error('geojson is required');
-    if (geojson.geometry !== undefined) return geojson.geometry;
-    if (geojson.coordinates || geojson.geometries) return geojson;
-    throw new Error('geojson must be a valid Feature or Geometry Object');
-}
-
-/**
- * Get Geometry Type from Feature or Geometry Object
- *
- * @throws {Error} **DEPRECATED** in v5.0.0 in favor of getType
- */
-function _turf_invariant_main_es_getGeomType() {
-    throw new Error('invariant.getGeomType has been deprecated in v5.0 in favor of invariant.getType');
-}
-
-/**
- * Get GeoJSON object's type, Geometry type is prioritize.
- *
- * @param {GeoJSON} geojson GeoJSON object
- * @param {string} [name="geojson"] name of the variable to display in error message
- * @returns {string} GeoJSON type
- * @example
- * var point = {
- *   "type": "Feature",
- *   "properties": {},
- *   "geometry": {
- *     "type": "Point",
- *     "coordinates": [110, 40]
- *   }
- * }
- * var geom = turf.getType(point)
- * //="Point"
- */
-function _turf_invariant_main_es_getType(geojson, name) {
-    if (!geojson) throw new Error((name || 'geojson') + ' is required');
-    // GeoJSON Feature & GeometryCollection
-    if (geojson.geometry && geojson.geometry.type) return geojson.geometry.type;
-    // GeoJSON Geometry & FeatureCollection
-    if (geojson.type) return geojson.type;
-    throw new Error((name || 'geojson') + ' is invalid');
-}
-
-
 
 // CONCATENATED MODULE: ./node_modules/@turf/transform-scale/main.es.js
 
@@ -83036,7 +82938,7 @@ function transformScale(geojson, factor, options) {
  */
 function scale(feature, factor, origin) {
     // Default params
-    var isPoint = _turf_invariant_main_es_getType(feature) === 'Point';
+    var isPoint = getType(feature) === 'Point';
     origin = defineOrigin(feature, origin);
 
     // Shortcut no-scaling
@@ -83047,7 +82949,7 @@ function scale(feature, factor, origin) {
         var originalDistance = rhumb_distance_main_es(origin, coord);
         var bearing = rhumb_bearing_main_es(origin, coord);
         var newDistance = originalDistance * factor;
-        var newCoord = _turf_invariant_main_es_getCoords(rhumb_destination_main_es(origin, newDistance, bearing));
+        var newCoord = getCoords(rhumb_destination_main_es(origin, newDistance, bearing));
         coord[0] = newCoord[0];
         coord[1] = newCoord[1];
         if (coord.length === 3) coord[2] *= factor;
@@ -83069,7 +82971,7 @@ function defineOrigin(geojson, origin) {
     if (origin === undefined || origin === null) origin = 'centroid';
 
     // Input Coord
-    if (Array.isArray(origin) || typeof origin === 'object') return _turf_invariant_main_es_getCoord(origin);
+    if (Array.isArray(origin) || typeof origin === 'object') return getCoord(origin);
 
     // Define BBox
     var bbox = (geojson.bbox) ? geojson.bbox : bbox_main_es(geojson);
@@ -83248,6 +83150,197 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_f240__;
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("9c77");
+
+
+/***/ }),
+
+/***/ "f2ac":
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
 /***/ }),
@@ -83504,14 +83597,14 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * JavaScript Cookie v2.2.0
+ * JavaScript Cookie v2.2.1
  * https://github.com/js-cookie/js-cookie
  *
  * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
  * Released under the MIT license
  */
 ;(function (factory) {
-	var registeredInModuleLoader = false;
+	var registeredInModuleLoader;
 	if (true) {
 		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
@@ -83545,125 +83638,123 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		return result;
 	}
 
+	function decode (s) {
+		return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+	}
+
 	function init (converter) {
-		function api (key, value, attributes) {
-			var result;
+		function api() {}
+
+		function set (key, value, attributes) {
 			if (typeof document === 'undefined') {
 				return;
 			}
 
-			// Write
+			attributes = extend({
+				path: '/'
+			}, api.defaults, attributes);
 
-			if (arguments.length > 1) {
-				attributes = extend({
-					path: '/'
-				}, api.defaults, attributes);
-
-				if (typeof attributes.expires === 'number') {
-					var expires = new Date();
-					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
-					attributes.expires = expires;
-				}
-
-				// We're using "expires" because "max-age" is not supported by IE
-				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
-
-				try {
-					result = JSON.stringify(value);
-					if (/^[\{\[]/.test(result)) {
-						value = result;
-					}
-				} catch (e) {}
-
-				if (!converter.write) {
-					value = encodeURIComponent(String(value))
-						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
-				} else {
-					value = converter.write(value, key);
-				}
-
-				key = encodeURIComponent(String(key));
-				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
-				key = key.replace(/[\(\)]/g, escape);
-
-				var stringifiedAttributes = '';
-
-				for (var attributeName in attributes) {
-					if (!attributes[attributeName]) {
-						continue;
-					}
-					stringifiedAttributes += '; ' + attributeName;
-					if (attributes[attributeName] === true) {
-						continue;
-					}
-					stringifiedAttributes += '=' + attributes[attributeName];
-				}
-				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			if (typeof attributes.expires === 'number') {
+				attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
 			}
 
-			// Read
+			// We're using "expires" because "max-age" is not supported by IE
+			attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
 
-			if (!key) {
-				result = {};
+			try {
+				var result = JSON.stringify(value);
+				if (/^[\{\[]/.test(result)) {
+					value = result;
+				}
+			} catch (e) {}
+
+			value = converter.write ?
+				converter.write(value, key) :
+				encodeURIComponent(String(value))
+					.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+
+			key = encodeURIComponent(String(key))
+				.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
+				.replace(/[\(\)]/g, escape);
+
+			var stringifiedAttributes = '';
+			for (var attributeName in attributes) {
+				if (!attributes[attributeName]) {
+					continue;
+				}
+				stringifiedAttributes += '; ' + attributeName;
+				if (attributes[attributeName] === true) {
+					continue;
+				}
+
+				// Considers RFC 6265 section 5.2:
+				// ...
+				// 3.  If the remaining unparsed-attributes contains a %x3B (";")
+				//     character:
+				// Consume the characters of the unparsed-attributes up to,
+				// not including, the first %x3B (";") character.
+				// ...
+				stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
 			}
 
+			return (document.cookie = key + '=' + value + stringifiedAttributes);
+		}
+
+		function get (key, json) {
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			var jar = {};
 			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling "get()"
+			// in case there are no cookies at all.
 			var cookies = document.cookie ? document.cookie.split('; ') : [];
-			var rdecode = /(%[0-9A-Z]{2})+/g;
 			var i = 0;
 
 			for (; i < cookies.length; i++) {
 				var parts = cookies[i].split('=');
 				var cookie = parts.slice(1).join('=');
 
-				if (!this.json && cookie.charAt(0) === '"') {
+				if (!json && cookie.charAt(0) === '"') {
 					cookie = cookie.slice(1, -1);
 				}
 
 				try {
-					var name = parts[0].replace(rdecode, decodeURIComponent);
-					cookie = converter.read ?
-						converter.read(cookie, name) : converter(cookie, name) ||
-						cookie.replace(rdecode, decodeURIComponent);
+					var name = decode(parts[0]);
+					cookie = (converter.read || converter)(cookie, name) ||
+						decode(cookie);
 
-					if (this.json) {
+					if (json) {
 						try {
 							cookie = JSON.parse(cookie);
 						} catch (e) {}
 					}
 
-					if (key === name) {
-						result = cookie;
-						break;
-					}
+					jar[name] = cookie;
 
-					if (!key) {
-						result[name] = cookie;
+					if (key === name) {
+						break;
 					}
 				} catch (e) {}
 			}
 
-			return result;
+			return key ? jar[key] : jar;
 		}
 
-		api.set = api;
+		api.set = set;
 		api.get = function (key) {
-			return api.call(api, key);
+			return get(key, false /* read as raw */);
 		};
-		api.getJSON = function () {
-			return api.apply({
-				json: true
-			}, [].slice.call(arguments));
+		api.getJSON = function (key) {
+			return get(key, true /* read as json */);
 		};
-		api.defaults = {};
-
 		api.remove = function (key, attributes) {
-			api(key, '', extend(attributes, {
+			set(key, '', extend(attributes, {
 				expires: -1
 			}));
 		};
+
+		api.defaults = {};
 
 		api.withConverter = init;
 
@@ -83672,6 +83763,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 	return init(function () {});
 }));
+
+
+/***/ }),
+
+/***/ "f582":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=3cfc42a0&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"background":_vm.background,"textColor":_vm.textColor}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v("\n        "+_vm._s(_vm.$t('query.queryJob'))+"\n      ")]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryResult')},on:{"click":_vm.resultButtonClicked}},[_vm._v("\n        "+_vm._s(_vm.$t('query.queryResult'))+"\n      ")])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name",attrs:{"title":jobInfo.queryParameter.name}},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v("\n              "+_vm._s(jobInfo.queryParameter.attributeFilter)+"\n            ")])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}),1)],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({ backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor }),attrs:{"type":"primary","size":"small"},on:{"click":function($event){return _vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v("\n              "+_vm._s(_vm.$t('query.applicate'))+"\n            ")])],1)]):_vm._e()])}),0),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v("\n        "+_vm._s(_vm.$t('query.noResult'))+"\n      ")]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',{staticClass:"sm-component-query__header-name",attrs:{"title":_vm.queryResult.name}},[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":_vm.getInfoOfSmid(item.properties)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v("\n            "+_vm._s(_vm.getInfoOfSmid(item.properties))+"\n          ")])}),0)]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup",attrs:{"background":_vm.background,"textColor":_vm.textColor}},'TablePopup',_vm.tablePopupProps,false))],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=3cfc42a0&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
 
 /***/ }),
@@ -83870,9 +83978,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _lodash = _interopRequireDefault(__webpack_require__("f344"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _default2 = {
   name: 'LayerMixin',
@@ -83972,7 +84084,7 @@ var _default2 = {
   methods: {
     $_emitEvent: function $_emitEvent(name) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      this.$emit(name, (0, _objectSpread2.default)({
+      this.$emit(name, _objectSpread({
         map: this.map,
         layerId: this.layerId
       }, data));
@@ -85660,7 +85772,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("a80b"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 var _theme = _interopRequireDefault(__webpack_require__("9259"));
 
@@ -85674,101 +85786,10 @@ var _TablePopup = _interopRequireDefault(__webpack_require__("b397"));
 
 var _util = __webpack_require__("1448");
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 // import iPortalDataParameter from "../commontypes/iPortalDataParameter";
 // import RestDataParameter from "../commontypes/RestDataParameter";
 // import RestMapParameter from "../commontypes/RestMapParameter";
@@ -85782,22 +85803,6 @@ var _util = __webpack_require__("1448");
 //   });
 //   return valid;
 // };
-
-/**
- * @module Search
- * @category Components
- * @desc 搜索组件。
- * @vue-prop {(Number|String)} [maxFeatures=8] - 最多可返回的要素数量，最大值为 100。
- * @vue-prop {Array} [layerNames] - 地图图层搜索配置，如：'['UNIQUE-民航数']'。
- * @vue-prop {Array} [restMap] - SuperMap iServer 地图服务搜索配置。
- * @vue-prop {Array} [restData] - SuperMap iServer 数据服务搜索配置。
- * @vue-prop {Array} [iportalData] - SuperMap iPortal 数据搜索配置。
- * @vue-prop {Array} [addressMatch] - SuperMap iServer 地址匹配服务搜索配置。
- * @vue-prop {Object} [onlineLocalSearch] - online 本地搜索配置。
- * @vue-prop {Boolean} [onlineLocalSearch.enable=true] - 是否开启 online 本地搜索。
- * @vue-prop {String} [onlineLocalSearch.city='北京市'] - 搜索的城市。
- * @vue-computed {Number} resultSuggestions - 获取结果数据长度。
- */
 var _default2 = {
   name: 'SmSearch',
   components: {
@@ -86126,7 +86131,7 @@ var _default2 = {
           }],
           data: popupData.info
         };
-        this.tablePopupProps = (0, _objectSpread2.default)({}, state);
+        this.tablePopupProps = _objectSpread({}, state);
       }
 
       this.$nextTick(function () {
@@ -86287,6 +86292,326 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "fd21":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = Point;
+
+/**
+ * A standalone point geometry with useful accessor, comparison, and
+ * modification methods.
+ *
+ * @class Point
+ * @param {Number} x the x-coordinate. this could be longitude or screen
+ * pixels, or any other sort of unit.
+ * @param {Number} y the y-coordinate. this could be latitude or screen
+ * pixels, or any other sort of unit.
+ * @example
+ * var point = new Point(-77, 38);
+ */
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+
+    /**
+     * Clone this point, returning a new point that can be modified
+     * without affecting the old one.
+     * @return {Point} the clone
+     */
+    clone: function() { return new Point(this.x, this.y); },
+
+    /**
+     * Add this point's x & y coordinates to another point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    add:     function(p) { return this.clone()._add(p); },
+
+    /**
+     * Subtract this point's x & y coordinates to from point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    sub:     function(p) { return this.clone()._sub(p); },
+
+    /**
+     * Multiply this point's x & y coordinates by point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    multByPoint:    function(p) { return this.clone()._multByPoint(p); },
+
+    /**
+     * Divide this point's x & y coordinates by point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    divByPoint:     function(p) { return this.clone()._divByPoint(p); },
+
+    /**
+     * Multiply this point's x & y coordinates by a factor,
+     * yielding a new point.
+     * @param {Point} k factor
+     * @return {Point} output point
+     */
+    mult:    function(k) { return this.clone()._mult(k); },
+
+    /**
+     * Divide this point's x & y coordinates by a factor,
+     * yielding a new point.
+     * @param {Point} k factor
+     * @return {Point} output point
+     */
+    div:     function(k) { return this.clone()._div(k); },
+
+    /**
+     * Rotate this point around the 0, 0 origin by an angle a,
+     * given in radians
+     * @param {Number} a angle to rotate around, in radians
+     * @return {Point} output point
+     */
+    rotate:  function(a) { return this.clone()._rotate(a); },
+
+    /**
+     * Rotate this point around p point by an angle a,
+     * given in radians
+     * @param {Number} a angle to rotate around, in radians
+     * @param {Point} p Point to rotate around
+     * @return {Point} output point
+     */
+    rotateAround:  function(a,p) { return this.clone()._rotateAround(a,p); },
+
+    /**
+     * Multiply this point by a 4x1 transformation matrix
+     * @param {Array<Number>} m transformation matrix
+     * @return {Point} output point
+     */
+    matMult: function(m) { return this.clone()._matMult(m); },
+
+    /**
+     * Calculate this point but as a unit vector from 0, 0, meaning
+     * that the distance from the resulting point to the 0, 0
+     * coordinate will be equal to 1 and the angle from the resulting
+     * point to the 0, 0 coordinate will be the same as before.
+     * @return {Point} unit vector point
+     */
+    unit:    function() { return this.clone()._unit(); },
+
+    /**
+     * Compute a perpendicular point, where the new y coordinate
+     * is the old x coordinate and the new x coordinate is the old y
+     * coordinate multiplied by -1
+     * @return {Point} perpendicular point
+     */
+    perp:    function() { return this.clone()._perp(); },
+
+    /**
+     * Return a version of this point with the x & y coordinates
+     * rounded to integers.
+     * @return {Point} rounded point
+     */
+    round:   function() { return this.clone()._round(); },
+
+    /**
+     * Return the magitude of this point: this is the Euclidean
+     * distance from the 0, 0 coordinate to this point's x and y
+     * coordinates.
+     * @return {Number} magnitude
+     */
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    /**
+     * Judge whether this point is equal to another point, returning
+     * true or false.
+     * @param {Point} other the other point
+     * @return {boolean} whether the points are equal
+     */
+    equals: function(other) {
+        return this.x === other.x &&
+               this.y === other.y;
+    },
+
+    /**
+     * Calculate the distance from this point to another point
+     * @param {Point} p the other point
+     * @return {Number} distance
+     */
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    /**
+     * Calculate the distance from this point to another point,
+     * without the square root step. Useful if you're comparing
+     * relative distances.
+     * @param {Point} p the other point
+     * @return {Number} distance
+     */
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    /**
+     * Get the angle from the 0, 0 coordinate to this point, in radians
+     * coordinates.
+     * @return {Number} angle
+     */
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    /**
+     * Get the angle from this point to another point, in radians
+     * @param {Point} b the other point
+     * @return {Number} angle
+     */
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    /**
+     * Get the angle between this point and another point, in radians
+     * @param {Point} b the other point
+     * @return {Number} angle
+     */
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    /*
+     * Find the angle of the two vectors, solving the formula for
+     * the cross product a x b = |a||b|sin(θ) for θ.
+     * @param {Number} x the x-coordinate
+     * @param {Number} y the y-coordinate
+     * @return {Number} the angle in radians
+     */
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _multByPoint: function(p) {
+        this.x *= p.x;
+        this.y *= p.y;
+        return this;
+    },
+
+    _divByPoint: function(p) {
+        this.x /= p.x;
+        this.y /= p.y;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _rotateAround: function(angle, p) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = p.x + cos * (this.x - p.x) - sin * (this.y - p.y),
+            y = p.y + sin * (this.x - p.x) + cos * (this.y - p.y);
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+/**
+ * Construct a point from an array if necessary, otherwise if the input
+ * is already a Point, or an unknown type, return it unchanged
+ * @param {Array<Number>|Point|*} a any kind of input value
+ * @return {Point} constructed point, or passed-through value.
+ * @example
+ * // this
+ * var point = Point.convert([0, 1]);
+ * // is equivalent to
+ * var point = new Point(0, 1);
+ */
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+
+/***/ }),
+
 /***/ "fde6":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -86354,24 +86679,28 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
+    if (superCtor) {
+      ctor.super_ = superCtor
+      ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+          value: ctor,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      })
+    }
   };
 } else {
   // old school shim for old browsers
   module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
+    if (superCtor) {
+      ctor.super_ = superCtor
+      var TempCtor = function () {}
+      TempCtor.prototype = superCtor.prototype
+      ctor.prototype = new TempCtor()
+      ctor.prototype.constructor = ctor
+    }
   }
 }
 

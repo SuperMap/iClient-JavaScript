@@ -52,8 +52,8 @@ export class BaiduMap extends TileImage {
         }
         var me = this;
 
+        // eslint-disable-next-line no-unused-vars
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
-            // eslint-disable-line no-unused-vars
             var tempUrl = url
                 .replace('{z}', tileCoord[0].toString())
                 .replace('{x}', tileCoord[1].toString())
