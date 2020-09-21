@@ -1232,10 +1232,11 @@ export class WebMap extends Observable {
                 layerInfo.visibleScales = result.visibleScales;
                 layerInfo.extent = [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top];
                 layerInfo.projection = `EPSG:${result.prjCoordSys.epsgCode}`;
-                let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-                let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+                // let token = layerInfo.credential ? layerInfo.credential.token : undefined;
+                // let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
                 // eslint-disable-next-line require-atomic-updates
-                layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+                // layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+                layerInfo.format = 'png';
                 callback(layerInfo);
             } else {
                 layerInfo.projection = that.baseProjection;
@@ -1276,10 +1277,11 @@ export class WebMap extends Observable {
             }
             layerInfo.maxZoom = result.maxZoom;
             layerInfo.maxZoom = result.minZoom;
-            let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-            let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+            // let token = layerInfo.credential ? layerInfo.credential.token : undefined;
+            // let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
             // eslint-disable-next-line require-atomic-updates
-            layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            // layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            layerInfo.format = 'png';
             // 请求结果完成 继续添加图层
             if (mapInfo) {
                 //todo 这个貌似没有用到，下次优化
@@ -4520,36 +4522,36 @@ export class WebMap extends Observable {
      * @param {*} token 服务token
      * @returns {boolean}
      */
-    isSupportWebp(url, token) {
-        // 还需要判断浏览器
-        let isIE = this.isIE();
-        if (isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
-            (this.isChrome() && this.getChromeVersion() < 32)) {
-            return false;
-        }
-        url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
-        let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
-        if (isSameDomain && !token) {
-            // online上服务域名一直，要用token值
-            excledeCreditial = false;
-        } else {
-            excledeCreditial = true;
-        }
-        url = this.getRequestUrl(url, excledeCreditial);
-        return FetchRequest.get(url, null, {
-            withCredentials: this.withCredentials,
-            withoutFormatSuffix: true
-        }).then(function (response) {
-            if (response.status !== 200) {
-                throw response.status;
-            }
-            return response;
-        }).then(() => {
-            return true;
-        }).catch(() => {
-            return false;
-        })
-    }
+    // isSupportWebp(url, token) {
+    //     // 还需要判断浏览器
+    //     let isIE = this.isIE();
+    //     if (isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
+    //         (this.isChrome() && this.getChromeVersion() < 32)) {
+    //         return false;
+    //     }
+    //     url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
+    //     let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
+    //     if (isSameDomain && !token) {
+    //         // online上服务域名一直，要用token值
+    //         excledeCreditial = false;
+    //     } else {
+    //         excledeCreditial = true;
+    //     }
+    //     url = this.getRequestUrl(url, excledeCreditial);
+    //     return FetchRequest.get(url, null, {
+    //         withCredentials: this.withCredentials,
+    //         withoutFormatSuffix: true
+    //     }).then(function (response) {
+    //         if (response.status !== 200) {
+    //             throw response.status;
+    //         }
+    //         return response;
+    //     }).then(() => {
+    //         return true;
+    //     }).catch(() => {
+    //         return false;
+    //     })
+    // }
     /**
     * @private
     * @function ol.supermap.WebMap.prototype.isIE
