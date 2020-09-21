@@ -452,16 +452,16 @@ var exampleConfig = {
         name: "iPortal",
         name_en: "iPortal",
         content: {
-            "ip_map": {
-                name: "地图",
-                name_en: "Web map",
-                content: [{
-                    name: "举办过奥运会的城市",
-                    name_en: "city hosted the Olympic Games",
-                    thumbnail: "l_iPortalWebmap.png",
-                    fileName: "iPortalWebmap"
-                }]
-            },
+            // "ip_map": {
+            //     name: "地图",
+            //     name_en: "Web map",
+            //     content: [{
+            //         name: "举办过奥运会的城市",
+            //         name_en: "city hosted the Olympic Games",
+            //         thumbnail: "l_iPortalWebmap.png",
+            //         fileName: "iPortalWebmap"
+            //     }]
+            // },
             "ip_security": {
                 name: "安全",
                 name_en: "Security",
