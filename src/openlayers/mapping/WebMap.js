@@ -308,7 +308,7 @@ export class WebMap extends Observable {
         that.mapParams = {
             title: mapInfo.title,
             description: mapInfo.description
-        }; 
+        };
 
         if (handleResult.action === "BrowseMap") {
             that.createSpecLayer(mapInfo);
@@ -351,7 +351,7 @@ export class WebMap extends Observable {
     * @private
     * @param {string} crs 必传参数，值是webmap2中定义的坐标系，可能是 1、EGSG:xxx 2、WKT string
     * @param {string} baseLayerUrl  可选参数，地图的服务地址；用于EPSG：-1 的时候，用于请求iServer提供的wkt
-    * @return {Object} 
+    * @return {Object}
     */
     async handleCRS(crs, baseLayerUrl) {
         let that = this, handleResult = {};
@@ -1160,7 +1160,7 @@ export class WebMap extends Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.createXYZSource
      * @description 创建图层的XYZsource。
-     * @param {Object} layerInfo - 图层信息。。
+     * @param {Object} layerInfo - 图层信息
      * @returns {ol/source/XYZ} xyz的source
      */
     createXYZSource(layerInfo) {
@@ -1196,52 +1196,71 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function ol.supermap.WebMap.prototype.getLayerExtent
-     * @description 获取(Supermap Rest/WMS)的图层参数。
+     * @function ol.supermap.WebMap.prototype.getTileLayerExtent
+     * @description 获取(Supermap RestMap)的图层参数。
      * @param {Object} layerInfo - 图层信息。
-     * @param {function} callback - 获得wmts图层参数执行的回调函数
+     * @param {function} callback - 获得tile图层参数执行的回调函数
      */
-    getLayerExtent(layerInfo, callback) {
+    async getTileLayerExtent(layerInfo, callback) {
+        let that = this;
+        // 默认使用动态投影方式请求数据
+        let dynamicLayerInfo = await that.getTileLayerExtentInfo(layerInfo)
+        if (dynamicLayerInfo) {
+            Object.assign(layerInfo, dynamicLayerInfo);
+            callback(layerInfo);
+        } else {
+            // 不支持动态投影，请求restmap原始信息
+            let originLayerInfo = await that.getTileLayerExtentInfo(layerInfo, false);
+            Object.assign(layerInfo, originLayerInfo);
+            callback(layerInfo);
+        }
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getTileLayerExtentInfo
+     * @description 获取rest map的图层参数。
+     * @param {String} url - 图层url。
+     * @param {Boolean} isDynamic - 是否请求动态投影信息
+     */
+    getTileLayerExtentInfo(layerInfo, isDynamic = true) {
         let that = this,
-            url = layerInfo.url.trim();
-        if (layerInfo.layerType === "TILE") {
-            // 直接使用动态投影方式请求数据
+            token,
+            url = layerInfo.url.trim(),
+            credential = layerInfo.credential,
+            options = {
+                withCredentials: this.withCredentials,
+                withoutFormatSuffix: true
+            };
+        if (isDynamic) {
             let projection = {
                 epsgCode: that.baseProjection.split(":")[1]
             }
-            if(that.baseProjection !== "EPSG:-1") {
+            if (that.baseProjection !== "EPSG:-1") {
                 // bug IE11 不会自动编码
                 url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
-            } 
-            if (layerInfo.credential) {
-                url = `${url}&token=${encodeURI(layerInfo.credential.token)}`;
             }
-        } else {
-            url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
         }
-        let options = {
-            withCredentials: this.withCredentials,
-            withoutFormatSuffix: true
-        };
-        FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
-            return layerInfo.layerType === "TILE" ? response.json() : response.text();
-        }).then(async function (result) {
-            if (layerInfo.layerType === "TILE") {
-                layerInfo.units = result.coordUnit && result.coordUnit.toLowerCase();
-                layerInfo.coordUnit = result.coordUnit;
-                layerInfo.visibleScales = result.visibleScales;
-                layerInfo.extent = [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top];
-                layerInfo.projection = `EPSG:${result.prjCoordSys.epsgCode}`;
-                let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-                let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
-                // eslint-disable-next-line require-atomic-updates
-                layerInfo.format = isSupprtWebp ? 'webp' : 'png';
-                callback(layerInfo);
-            } else {
-                layerInfo.projection = that.baseProjection;
-                callback(layerInfo);
+        if (credential) {
+            url = `${url}&token=${encodeURI(credential.token)}`;
+            token = credential.token;
+        }
+        return FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
+            return response.json();
+        }).then(async (result) => {
+            if (result.succeed === false) {
+                return null
+            };
+            let isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
+            return {
+                units: result.coordUnit && result.coordUnit.toLowerCase(),
+                coordUnit: result.coordUnit,
+                visibleScales: result.visibleScales,
+                extent: [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top],
+                projection: `EPSG:${result.prjCoordSys.epsgCode}`,
+                format: isSupportWebp ? 'webp' : 'png'
             }
-        }).catch((error) =>{
+        }).catch((error) => {
             throw error;
         });
     }
@@ -1663,8 +1682,13 @@ export class WebMap extends Observable {
                     }
                 } else if (dataSource && dataSource.type === "USER_DATA") {
                     that.addGeojsonFromUrl(layer, len, layerIndex, false);
-                } else if (layer.layerType === 'SUPERMAP_REST' ||
-                    layer.layerType === "TILE" ||
+                } else if (layer.layerType === "TILE"){
+                    that.getTileLayerExtent(layer, function (layerInfo) {
+                        that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
+                    })
+                }else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "WMS" ||
                     layer.layerType === "WMTS") {
                     if (layer.layerType === "WMTS") {
@@ -1674,11 +1698,10 @@ export class WebMap extends Observable {
                             that.sendMapToUser(len);
                         })
                     } else {
-                        that.getLayerExtent(layer, function (layerInfo) {
-                            that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
-                            that.layerAdded++;
-                            that.sendMapToUser(len);
-                        });
+                        layer.projection = that.baseProjection;
+                        that.map.addLayer(that.createBaseLayer(layer, layerIndex));
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
                     }
                 } else if (dataSource && dataSource.type === "REST_DATA") {
                     //从restData获取数据
@@ -3749,7 +3772,7 @@ export class WebMap extends Observable {
      *
      * @param {String} wkt 字符串
      * @param {string} crsCode epsg信息，如： "EPSG:4490"
-     * 
+     *
      * @returns {Boolean} 坐标系是否添加成功
      */
     addProjctionFromWKT(wkt, crsCode) {
