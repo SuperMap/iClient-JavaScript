@@ -1225,7 +1225,7 @@ export class WebMap extends Observable {
      */
     getTileLayerExtentInfo(layerInfo, isDynamic = true) {
         let that = this,
-            token,
+            // token,
             url = layerInfo.url.trim(),
             credential = layerInfo.credential,
             options = {
@@ -1243,7 +1243,7 @@ export class WebMap extends Observable {
         }
         if (credential) {
             url = `${url}&token=${encodeURI(credential.token)}`;
-            token = credential.token;
+            // token = credential.token;
         }
         return FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
             return response.json();
