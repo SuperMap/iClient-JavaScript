@@ -75,6 +75,7 @@ import { GeometryBufferAnalystParameters } from './GeometryBufferAnalystParamete
 import { GeometryOverlayAnalystParameters } from './GeometryOverlayAnalystParameters';
 import { GeometrySurfaceAnalystParameters } from './GeometrySurfaceAnalystParameters';
 import { GeometryThiessenAnalystParameters } from './GeometryThiessenAnalystParameters';
+import { GeoprocessingService } from './GeoprocessingService';
 import { GeoRelationAnalystParameters } from './GeoRelationAnalystParameters';
 import { GeoRelationAnalystService } from './GeoRelationAnalystService';
 import { GetFeaturesByBoundsParameters } from './GetFeaturesByBoundsParameters';
@@ -306,6 +307,7 @@ export { GenerateSpatialDataParameters };
 export { GenerateSpatialDataService };
 export { GeoBoundingBoxQueryBuilderParameter };
 export { GeoCodingParameter };
+export { GeoprocessingService };
 export { GeoDecodingParameter };
 export { GeoHashGridAggParameter };
 export { GeometryBufferAnalystParameters };

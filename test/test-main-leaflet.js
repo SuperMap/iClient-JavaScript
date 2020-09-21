@@ -42,6 +42,8 @@ import './leaflet/services/FieldServiceSpec.js';
 import './leaflet/services/GenerateSpatialDataSpec.js';
 import './leaflet/services/GeoRelationAnalysisSpec.js';
 import './leaflet/services/GeometryBatchAnalysisSpec.js';
+import './leaflet/services/GeoprocessingServiceSpec.js';
+
 import './leaflet/services/GetFeaturesByBoundsSpec.js';
 import './leaflet/services/GetFeaturesByBufferSpec.js';
 import './leaflet/services/GetFeaturesByGeometrySpec.js';

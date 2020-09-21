@@ -26,6 +26,8 @@ import './common/iServer/FindTSPPathsServiceSpec.js';
 import './common/iServer/GenerateSpatialDataServiceSpec.js';
 import './common/iServer/GeoBoundingBoxQueryBuilderParameterSpec.js';
 import './common/iServer/GeoHashGridAggParameterSpec.js';
+import './common/iServer/GeoprocessingServiceSpec.js';
+
 import './common/iServer/GeometryBatchAnalystServiceSpec.js';
 import './common/iServer/GeoRelationAnalystServiceSpec.js';
 import './common/iServer/GetFeaturesByBoundsServiceSpec.js';

@@ -274,6 +274,10 @@
             "WebPrintingJob": {
                 "name": "地图打印",
                 "name_en": "WebPrintingJob"
+            },
+            "GeoprocessingService": {
+                "name": "地理处理服务接口",
+                "name_en": "GeoprocessingService"
             }
         }
     },

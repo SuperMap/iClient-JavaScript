@@ -7,6 +7,7 @@ export {DataFlowService} from './DataFlowService';
 export {FeatureService} from './FeatureService';
 export {FieldService} from './FieldService';
 export {GridCellInfosService} from './GridCellInfosService';
+export {GeoprocessingService} from './GeoprocessingService';
 export {LayerInfoService} from './LayerInfoService';
 export {MapService} from './MapService';
 export {MeasureService} from './MeasureService';

@@ -42,6 +42,7 @@ import {
     FeatureService,
     FieldService,
     GridCellInfosService,
+    GeoprocessingService,
     LayerInfoService,
     MapService,
     MeasureService,
@@ -101,6 +102,7 @@ if (window && window.ol) {
     ol.supermap.FeatureService = FeatureService;
     ol.supermap.FieldService = FieldService;
     ol.supermap.GridCellInfosService = GridCellInfosService;
+    ol.supermap.GeoprocessingService = GeoprocessingService;
     ol.supermap.LayerInfoService = LayerInfoService;
     ol.supermap.MapService = MapService;
     ol.supermap.MeasureService = MeasureService;

@@ -45,6 +45,8 @@ import './openlayers/services/GetFeaturesByBufferSpec.js';
 import './openlayers/services/GetFeaturesByGeometrySpec.js';
 import './openlayers/services/GetFeaturesByIDsSpec.js';
 import './openlayers/services/GetFeaturesBySQLSpec.js';
+import './openlayers/services/GeoprocessingServiceSpec.js';
+
 import './openlayers/services/InterpolationAnalysisSpec.js';
 import './openlayers/services/LayerInfoServiceSpec.js';
 import './openlayers/services/MathExpressionAnalysisSpec.js';
