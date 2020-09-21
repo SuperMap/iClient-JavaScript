@@ -27,7 +27,7 @@ import SampleDataInfo from './webmap/config/SampleDataInfo.json';// eslint-disab
 import GeoJSON from 'ol/format/GeoJSON';
 import MVT from 'ol/format/MVT';
 import Observable from 'ol/Observable';
-import olMap from 'ol/Map';
+import Map from 'ol/Map';
 import View from 'ol/View';
 import * as olProj from 'ol/proj';
 import * as olProj4 from 'ol/proj/proj4';
@@ -216,7 +216,7 @@ export class WebMap extends Observable {
             overlays = mapSetting.overlays;
             controls = mapSetting.controls;
         }
-        this.map = new olMap({
+        this.map = new Map({
             interactions: interactions,
             overlays: overlays,
             controls: controls,
@@ -302,57 +302,100 @@ export class WebMap extends Observable {
             that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
             return;
         }
-        if (mapInfo.projection === 'EPSG:910111' || mapInfo.projection === 'EPSG:910112') {
-            // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
-            mapInfo.projection = "EPSG:3857";
-        } else if (mapInfo.projection === 'EPSG:910101' || mapInfo.projection === 'EPSG:910102') {
-            // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
-            mapInfo.projection = "EPSG:4326";
-        }
-        // 传入webMap的就使用rootUrl.没有传入就用默认值
-        if (that.webMap) {
-            that.server = mapInfo.rootUrl;
-        }
-        that.baseProjection = mapInfo.projection;
-        that.webMapVersion = mapInfo.version;
-        that.baseLayer = mapInfo.baseLayer;
+        let handleResult = await that.handleCRS(mapInfo.projection, mapInfo.baseLayer.url);
+
+        //存储地图的名称以及描述等信息，返回给用户
         that.mapParams = {
             title: mapInfo.title,
             description: mapInfo.description
-        }; //存储地图的名称以及描述等信息，返回给用户
+        }; 
 
-        // 目前iServer服务中可能出现的EPSG 0，-1，-1000
-        if (mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0) {
-            //对于这两种地图，只能view，不能叠加其他图层
+        if (handleResult.action === "BrowseMap") {
             that.createSpecLayer(mapInfo);
-            return;
-        } else if (that.addProjctionFromWKT(mapInfo.projection)) {
-            mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
-        } else {
-            // 不支持的坐标系
-            that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
-            return;
-        }
+        } else if (handleResult.action === "OpenMap") {
+            that.baseProjection = mapInfo.projection;
+            that.webMapVersion = mapInfo.version;
+            that.baseLayer = mapInfo.baseLayer;
+            // that.mapParams = {
+            //     title: mapInfo.title,
+            //     description: mapInfo.description
+            // }; //存储地图的名称以及描述等信息，返回给用户
 
-        if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
-            // 添加矢量瓦片服务作为底图
-            that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
-                that.createView(mapInfo);
+            if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
+                // 添加矢量瓦片服务作为底图
+                that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
+                    that.createView(mapInfo);
+                    if (!mapInfo.layers || mapInfo.layers.length === 0) {
+                        that.sendMapToUser(0);
+                    } else {
+                        that.addLayers(mapInfo);
+                    }
+                });
+            } else {
+                await that.addBaseMap(mapInfo);
                 if (!mapInfo.layers || mapInfo.layers.length === 0) {
                     that.sendMapToUser(0);
                 } else {
                     that.addLayers(mapInfo);
                 }
-            });
-        } else {
-            await that.addBaseMap(mapInfo);
-            if (!mapInfo.layers || mapInfo.layers.length === 0) {
-                that.sendMapToUser(0);
-            } else {
-                that.addLayers(mapInfo);
             }
+        } else {
+            // 不支持的坐标系
+            that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
+            return;
         }
     }
+
+    /**
+    * 处理坐标系
+    * @private
+    * @param {string} crs 必传参数，值是webmap2中定义的坐标系，可能是 1、EGSG:xxx 2、WKT string
+    * @param {string} baseLayerUrl  可选参数，地图的服务地址；用于EPSG：-1 的时候，用于请求iServer提供的wkt
+    * @return {Object} 
+    */
+    async handleCRS(crs, baseLayerUrl) {
+        let that = this, handleResult = {};
+        let newCrs = crs, action = "OpenMap";
+
+        if (crs === "EPSG:-1") {
+            // 去iServer请求wkt  否则只能预览出图
+            await FetchRequest.get(that.getRequestUrl(`${baseLayerUrl}/prjCoordSys.wkt`), null, {
+                withCredentials: that.withCredentials,
+                withoutFormatSuffix: true
+            }).then(function (response) {
+                return response.text();
+            }).then(async function (result) {
+                if(result.indexOf("<!doctype html>") === -1) {
+                    that.addProjctionFromWKT(result, "EPSG:-1");
+                    handleResult = {action, newCrs};
+                } else {
+                    throw 'ERROR';
+                }
+            }).catch(function () {
+                action = "BrowseMap";
+                handleResult = {action, newCrs}
+            });
+        } else {
+            if (crs.indexOf("EPSG") === 0 && crs.split(":")[1] <= 0) {
+                // 自定义坐标系 rest map EPSG:-1(自定义坐标系) 支持编辑
+                // 未知坐标系情况特殊处理，只支持预览 1、rest map EPSG:-1000(没定义坐标系)  2、wms/wmts EPSG:0 （自定义坐标系）
+                action = "BrowseMap";
+            } else if (crs === 'EPSG:910111' || crs === 'EPSG:910112') {
+                // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
+                newCrs = "EPSG:3857";
+            } else if (crs === 'EPSG:910101' || crs === 'EPSG:910102') {
+                // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
+                newCrs = "EPSG:4326";
+            } else if (crs.indexOf("EPSG") !== 0) {
+                // wkt
+                that.addProjctionFromWKT(newCrs);
+                newCrs = that.getEpsgInfoFromWKT(crs);
+            }
+            handleResult = {action, newCrs};
+        }
+        return handleResult;
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getScales
@@ -475,7 +518,7 @@ export class WebMap extends Observable {
             me.mapParams.extent = extent;
             me.mapParams.projection = mapInfo.projection;
         }
-        if (url.indexOf("?token=") > -1) {
+        if (url && url.indexOf("?token=") > -1) {
             //兼容iserver地址有token的情况
             me.credentialKey = 'token';
             me.credentialValue = mapInfo.baseLayer.credential = url.split("?token=")[1];
@@ -532,6 +575,7 @@ export class WebMap extends Observable {
         } else {
             me.errorCallback && me.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${baseLayerType}`}, 'getMapFaild', me.map);
         }
+        view && view.fit(extent);
     }
 
     /**
@@ -595,7 +639,7 @@ export class WebMap extends Observable {
             baseLayer.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
         }
         this.createView(mapInfo);
-        let layer = this.createBaseLayer(baseLayer, 0);
+        let layer = this.createBaseLayer(baseLayer, 0, null, null, true);
         //底图增加图层类型，DV分享需要用它来识别版权信息
         layer.setProperties({
             layerType: layerType
@@ -734,8 +778,8 @@ export class WebMap extends Observable {
      * @param {boolean} isCallBack - 是否调用回调函数
      * @param {scope} {object} this对象
      */
-    createBaseLayer(layerInfo, index, isCallBack, scope) {
-        let source, isBaseLayer, that = this;
+    createBaseLayer(layerInfo, index, isCallBack, scope, isBaseLayer) {
+        let source, that = this;
 
         if (scope) {
             // 解决异步回调
@@ -996,9 +1040,12 @@ export class WebMap extends Observable {
             serverType: serverType,
             // crossOrigin: 'anonymous', //在IE11.0.9600版本，会影响通过注册服务打开的iserver地图，不出图。因为没有携带cookie会报跨域问题
             // extent: this.baseLayerExtent,
-            prjCoordSys: {epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1]},
+            // prjCoordSys: {epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1]},
             format: layerInfo.format
         };
+        if(!isBaseLayer && this.baseProjection !== "EPSG:-1"){
+            options.prjCoordSys = { epsgCode : this.baseProjection.split(':')[1]};
+        }
         if (layerInfo.visibleScales && layerInfo.visibleScales.length > 0) {
             let visibleResolutions = [];
             for (let i in layerInfo.visibleScales) {
@@ -1162,12 +1209,13 @@ export class WebMap extends Observable {
             let projection = {
                 epsgCode: that.baseProjection.split(":")[1]
             }
-            // bug IE11 不会自动编码
-            url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
+            if(that.baseProjection !== "EPSG:-1") {
+                // bug IE11 不会自动编码
+                url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
+            } 
             if (layerInfo.credential) {
                 url = `${url}&token=${encodeURI(layerInfo.credential.token)}`;
             }
-
         } else {
             url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
         }
@@ -1175,10 +1223,13 @@ export class WebMap extends Observable {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
-        FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
             return layerInfo.layerType === "TILE" ? response.json() : response.text();
         }).then(async function (result) {
             if (layerInfo.layerType === "TILE") {
+                layerInfo.units = result.coordUnit && result.coordUnit.toLowerCase();
+                layerInfo.coordUnit = result.coordUnit;
+                layerInfo.visibleScales = result.visibleScales;
                 layerInfo.extent = [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top];
                 layerInfo.projection = `EPSG:${result.prjCoordSys.epsgCode}`;
                 let token = layerInfo.credential ? layerInfo.credential.token : undefined;
@@ -1190,6 +1241,8 @@ export class WebMap extends Observable {
                 layerInfo.projection = that.baseProjection;
                 callback(layerInfo);
             }
+        }).catch((error) =>{
+            throw error;
         });
     }
 
@@ -1282,8 +1335,7 @@ export class WebMap extends Observable {
                 let content = capabilities.Contents,
                     tileMatrixSet = content.TileMatrixSet,
                     layers = content.Layer,
-                    layer, relSet = [],
-                    idx, layerFormat, style = 'default';
+                    layer, idx, layerFormat, style = 'default';
 
                 for (let n = 0; n < layers.length; n++) {
                     if (layers[n].Identifier === layerInfo.layer) {
@@ -1314,8 +1366,7 @@ export class WebMap extends Observable {
                         break;
                     }
                 }
-                let name = layerInfo.name,
-                    matrixSet = relSet[idx], extent;
+                let name = layerInfo.name, extent;
                 if (layerBounds) {
                     extent = olProj.transformExtent(layerBounds, 'EPSG:4326', that.baseProjection);
                 } else {
@@ -1324,7 +1375,6 @@ export class WebMap extends Observable {
                 layerInfo.tileUrl = that.getTileUrl(capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get, layer, layerFormat, isKvp);
                 //将需要的参数补上
                 layerInfo.extent = extent;
-                layerInfo.matrixSet = matrixSet;
                 layerInfo.name = name;
                 layerInfo.orginEpsgCode = layerInfo.projection;
                 layerInfo.overLayer = true;
@@ -3698,9 +3748,11 @@ export class WebMap extends Observable {
      * 通过wkt参数扩展支持多坐标系
      *
      * @param {String} wkt 字符串
+     * @param {string} crsCode epsg信息，如： "EPSG:4490"
+     * 
      * @returns {Boolean} 坐标系是否添加成功
      */
-    addProjctionFromWKT(wkt) {
+    addProjctionFromWKT(wkt, crsCode) {
         if (typeof (wkt) !== 'string') {
             //参数类型错误
             return false;
@@ -3708,7 +3760,7 @@ export class WebMap extends Observable {
             if (wkt === "EPSG:4326" || wkt === "EPSG:3857") {
                 return true;
             } else {
-                let epsgCode = this.getEpsgInfoFromWKT(wkt);
+                let epsgCode = crsCode || this.getEpsgInfoFromWKT(wkt);
                 if (epsgCode) {
                     proj4.defs(epsgCode, wkt);
                     // 重新注册proj4到ol.proj，不然不会生效
