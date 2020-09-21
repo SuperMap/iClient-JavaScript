@@ -276,7 +276,7 @@
                 "name_en": "WebPrintingJob"
             },
             "GeoprocessingService": {
-                "name": "地理处理服务接口",
+                "name": "地理处理",
                 "name_en": "GeoprocessingService"
             }
         }
