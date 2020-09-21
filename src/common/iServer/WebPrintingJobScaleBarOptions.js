@@ -6,7 +6,7 @@ import { Util } from '../commontypes/Util';
 
 /**
  * @class SuperMap.WebPrintingJobScaleBarOptions
- * @classdesc 地图比例尺参数类。
+ * @classdesc Web 打印比例尺参数类。
  * @category iServer WebPrintingJob
  * @version 10.1.0
  * @param {Object} option - 初始化参数。

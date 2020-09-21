@@ -3,7 +3,7 @@
  *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v10.1.0-beta
+ *     version: v10.1.0
  *    
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -108,23 +108,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("f8a6");
-
-
-/***/ }),
-
-/***/ "00f3":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/table-popup/TablePopup.vue?vue&type=template&id=38bfab64&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-table-popup",style:([_vm.backgroundStyle, _vm.getTextColorStyle, _vm.styleObject])},[_c('a-table',{staticClass:"sm-component-table-popup__table",style:(_vm.backgroundStyle),attrs:{"data-source":_vm.data,"columns":_vm.columns,"rowKey":function (record, index) { return index; },"pagination":false}})],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/table-popup/TablePopup.vue?vue&type=template&id=38bfab64&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
 
 /***/ }),
@@ -777,6 +760,23 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "0b11":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=1f1efe10&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=1f1efe10&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "0e27":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -834,11 +834,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
-
 var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("4066"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
 
 __webpack_require__("f840");
 
@@ -874,59 +874,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-/**
- * @module Chart
- * @category Components
- * @desc Chart 组件。除了prop: dataset和datasetOptions，其他的所有prop,event,computed, methods都是ECharts的配置，参考https://echarts.baidu.com/api.html#echartsInstance.dispose
- * @vue-prop {String} [iconClass='sm-components-icons-attribute']  - 设置组件图标的类名。
- * @vue-prop {Object} [dataset=null] - 数据来源,支持的参数类型为iPortalDataParameter/RestDataParameter/RestMapParameter。
- * @vue-prop {Array} datasetOptions - 数据来源的配置。
- * @vue-prop {Array} [colorGroup] - 图表颜色数组。
- * @vue-prop {Object} theme - 当前 ECharts 实例使用的主题。
- * @vue-prop {Object} initOptions - 用来初始化 ECharts 实例。
- * @vue-prop {Object} options - ECharts 实例的数据。修改这个 prop 会触发 ECharts 实例的 setOption 方法。如果直接修改 options 绑定的数据而对象引用保持不变，setOption 方法调用时将带有参数 notMerge: false。否则，如果为 options 绑定一个新的对象，setOption 方法调用时则将带有参数 notMerge: true。
- * @vue-prop {Boolean} [autoresize = true] - 用来指定 ECharts 实例在组件根元素尺寸变化时是否需要自动进行重绘。
- * @vue-prop {String} group - 实例的分组，会自动绑定到 ECharts 组件的同名属性上。
- * @vue-prop {Boolean} [manualUpdate = false] - 在性能敏感（数据量很大）的场景下，我们最好对于 options prop 绕过 Vue 的响应式系统。当将 manual-update prop 指定为 true 且不传入 options prop 时，数据将不会被监听。然后，你需要用 ref 获取组件实例以后手动调用 mergeOptions 方法来更新图表。
- * @vue-prop {Boolean} [autoPlay = false] - 是否自动播放，图表类型为 pie 时生效。
- * @vue-computed {String} computedOptions - 用来读取 ECharts 更新内部 options 后的实际数据。
- * @vue-event {Object} legendselectchanged - 切换图例选中状态后的事件。
- * @vue-event {Object} legendselected - 图例选中后的事件。
- * @vue-event {Object} legendunselected - 图例取消选中后的事件。
- * @vue-event {Object} legendscroll - 图例滚动事件。
- * @vue-event {Object} datazoom - 数据区域缩放后的事件。
- * @vue-event {Object} datarangeselected - 视觉映射组件中，range 值改变后触发的事件。
- * @vue-event {Object} timelinechanged - 时间轴中的时间点改变后的事件。
- * @vue-event {Object} timelineplaychanged - 时间轴中播放状态的切换事件。
- * @vue-event {Object} restore - 重置 option 事件。
- * @vue-event {Object} dataviewchanged - 工具栏中数据视图的修改事件。
- * @vue-event {Object} magictypechanged - 工具栏中动态类型切换的切换事件。
- * @vue-event {Object} geoselectchanged - geo 中地图区域切换选中状态的事件。
- * @vue-event {Object} geoselected - geo 中地图区域选中后的事件。
- * @vue-event {Object} geounselected - geo 中地图区域取消选中后的事件。
- * @vue-event {Object} pieselectchanged - series-pie 中饼图扇形切换选中状态的事件。
- * @vue-event {Object} pieselected - series-pie 中饼图扇形选中后的事件。
- * @vue-event {Object} pieunselected - series-pie 中饼图扇形取消选中后的事件。
- * @vue-event {Object} mapselectchanged - series-map 中地图区域切换选中状态的事件。
- * @vue-event {Object} mapselected - series-map 中地图区域选中后的事件。
- * @vue-event {Object} mapunselected - series-map 中地图区域取消选中后的事件。
- * @vue-event {Object} axisareaselected - 平行坐标轴 (Parallel)范围选取事件。
- * @vue-event {Object} focusnodeadjacency - graph的邻接节点高亮事件。
- * @vue-event {Object} unfocusnodeadjacency - graph的邻接节点取消高亮事件。
- * @vue-event {Object} brush - 选框添加事件。即发出 brush action 得到的事件。
- * @vue-event {Object} brushselected - 对外通知当前选中了什么。
- * @vue-event {Object} rendered - 渲染结束事件
- * @vue-event {Object} finished - 渲染完成事件。当渲染动画
- * @vue-event {Object} click - 鼠标事件.click
- * @vue-event {Object} dblclick - 鼠标事件.dblclick
- * @vue-event {Object} mouseover - 鼠标事件.mouseover
- * @vue-event {Object} mouseout - 鼠标事件.mouseout
- * @vue-event {Object} mousemove - 鼠标事件.mousemove
- * @vue-event {Object} mousedown - 鼠标事件.mousedown
- * @vue-event {Object} mouseup - 鼠标事件.mouseup
- * @vue-event {Object} globalout - 鼠标事件.globalout
- * @vue-event {Object} contextmenu - 鼠标事件.contextmenu
- */
 // 枚举事件类型
 var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'legendscroll', 'datazoom', 'datarangeselected', 'timelinechanged', 'timelineplaychanged', 'restore', 'dataviewchanged', 'magictypechanged', 'geoselectchanged', 'geoselected', 'geounselected', 'pieselectchanged', 'pieselected', 'pieunselected', 'mapselectchanged', 'mapselected', 'mapunselected', 'axisareaselected', 'focusnodeadjacency', 'unfocusnodeadjacency', 'brush', 'brushselected', 'rendered', 'finished', 'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove', 'mousedown', 'mouseup', 'globalout', 'contextmenu'];
 var _default2 = {
@@ -991,6 +938,10 @@ var _default2 = {
       default: function _default() {
         return [];
       }
+    },
+    highlightColor: {
+      type: String,
+      default: '#01ffff'
     }
   },
   data: function data() {
@@ -1004,6 +955,8 @@ var _default2 = {
       // dataset是否改变
       dataSeriesCache: {},
       tablePopupProps: {},
+      startSpin: null,
+      customSeries: [],
       dataZoomHandler: function dataZoomHandler() {}
     };
   },
@@ -1023,8 +976,42 @@ var _default2 = {
         height: this.headerName ? 'calc(100% - 30px)' : '100%'
       };
     },
+    parseOptions: function parseOptions() {
+      var _this2 = this;
+
+      if (!this.options.series) {
+        return this.options;
+      }
+
+      if (this.options.series.find(function (item) {
+        return item.type === '2.5Bar';
+      })) {
+        return _objectSpread({}, this.options, {
+          series: []
+        });
+      }
+
+      if (this.options.series[0] && this.options.series[0].customType === 'customRingsSeries') {
+        return _objectSpread({}, this.options, {
+          series: [].concat((0, _toConsumableArray2.default)(this.options.series), (0, _toConsumableArray2.default)(this.customSeries))
+        });
+      }
+
+      var series = this.options.series.map(function (serie, index) {
+        if (serie.label) {
+          var cloneSerie = (0, _lodash4.default)(serie);
+          cloneSerie.label.normal = _this2._controlLabel(cloneSerie.label.normal, cloneSerie.maxLabels);
+          return cloneSerie;
+        }
+
+        return serie;
+      });
+      return _objectSpread({}, this.options, {
+        series: series
+      });
+    },
     _chartOptions: function _chartOptions() {
-      return this._isRequestData && this.echartOptions || this.options;
+      return this._isRequestData && this.echartOptions || this.parseOptions;
     },
     // 是否传入dataset和datasetOptions
     _isRequestData: function _isRequestData() {
@@ -1035,6 +1022,16 @@ var _default2 = {
     },
     popupBackground: function popupBackground() {
       return this.backgroundData ? (0, _util.getColorWithOpacity)(this.backgroundData, 0.5) : this.backgroundData;
+    },
+    colorNumber: function colorNumber() {
+      var length = this.datasetOptions && this.datasetOptions.length || this.echartOptions.series && this.echartOptions.series.length;
+      var colorNumber = this.colorGroupsData.length;
+
+      if (length && length > colorNumber) {
+        colorNumber = length;
+      }
+
+      return colorNumber;
     }
   },
   watch: {
@@ -1060,38 +1057,34 @@ var _default2 = {
     },
     dataset: {
       handler: function handler(newVal, oldVal) {
-        if (!(0, _lodash3.default)(newVal, oldVal)) {
-          this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
-          this.datasetChange = true;
-        }
+        this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+        this.datasetChange = true;
       },
       deep: true
     },
     datasetOptions: {
       handler: function handler(newVal, oldVal) {
-        if (!(0, _lodash3.default)(newVal, oldVal) && newVal.length) {
-          if (newVal) {
-            this._setChartTheme();
-          }
+        if (!(0, _lodash3.default)(newVal, oldVal)) {
+          this._setChartTheme();
 
-          !this.echartsDataService && this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
-          this.echartsDataService && this.echartsDataService.setDatasetOptions(this.datasetOptions);
-          this.echartsDataService && this.dataSeriesCache && this._changeChartData(this.echartsDataService, this.datasetOptions, this.options);
+          this.registerShape();
         }
+
+        !this.echartsDataService && this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+        this.echartsDataService && this.echartsDataService.setDatasetOptions(this.datasetOptions);
+        this.echartsDataService && this.dataSeriesCache && this._changeChartData(this.echartsDataService, this.datasetOptions, this.options);
       }
     },
     options: {
       handler: function handler(newVal, oldVal) {
-        if (!(0, _lodash3.default)(newVal, oldVal)) {
-          if (this.datasetChange && !this.dataSeriesCache) {
-            return;
-          }
+        if (this.datasetChange && !this.dataSeriesCache) {
+          return;
+        }
 
-          if (this.dataSeriesCache && JSON.stringify(this.dataSeriesCache) !== '{}') {
-            this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache);
-          } else {
-            this.echartOptions = Object.assign({}, this.options);
-          }
+        if (this.dataSeriesCache && JSON.stringify(this.dataSeriesCache) !== '{}') {
+          this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache);
+        } else {
+          this.echartOptions = Object.assign({}, this.options);
         }
       },
       deep: true
@@ -1123,9 +1116,7 @@ var _default2 = {
     },
     highlightOptions: {
       handler: function handler(newVal, oldVal) {
-        this._offHighlight(oldVal);
-
-        this._initHighlight();
+        this.setItemStyleColor();
       },
       deep: true
     }
@@ -1136,10 +1127,10 @@ var _default2 = {
     //   this._setChartTheme();
     // });
 
+
+    this.registerShape();
   },
   mounted: function mounted() {
-    var _this = this;
-
     // 设置echarts实例
     this.smChart = this.$refs[this.chartId]; // 派发echart所有事件
 
@@ -1160,14 +1151,13 @@ var _default2 = {
 
     this._initDataZoom();
 
+    if (this.options.series && this.options.series[0] && this.options.series[0].customType === 'customRingsSeries') {
+      this.startEffect();
+    }
+
     !this._isRequestData && this.autoPlay && this._handlePieAutoPlay(); // 请求数据, 合并echartopiton, 设置echartOptions
 
     this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
-    this.smChart.$on('mouseout', function (params) {
-      _this._initHighlight();
-    });
-
-    this._initHighlight();
   },
   updated: function updated() {
     this._handlePieAutoPlay(); // 更新自动播放
@@ -1176,18 +1166,18 @@ var _default2 = {
   beforeDestroy: function beforeDestroy() {
     clearInterval(this.pieAutoPlay); // clear 自动播放
 
+    clearInterval(this.startAngle);
+
     if (this.autoresize) {
       (0, _resizeDetector.removeListener)(this.$el, this.__resizeHandler);
     }
-
-    this.smChart.$off('mouseout');
   },
   methods: {
     _initAutoResize: function _initAutoResize() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.__resizeHandler = (0, _debounce.default)(function () {
-        _this2.resize();
+        _this3.resize();
       }, 100, {
         leading: true
       });
@@ -1198,33 +1188,129 @@ var _default2 = {
       }
     },
     _initDataZoom: function _initDataZoom() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.dataZoomHandler = (0, _debounce.default)(function () {
-        _this3._dataZoomChanged();
+        _this4._dataZoomChanged();
       }, 500, {
         leading: true
       });
     },
-    _initHighlight: function _initHighlight() {
-      var echartsNode = this.smChart && this.smChart.chart;
-      this.highlightOptions.forEach(function (option) {
-        option = Object.assign({}, option, {
-          type: 'highlight'
-        });
-        echartsNode.dispatchAction(option);
-      });
-    },
-    _offHighlight: function _offHighlight(options) {
-      if (options && options.length) {
-        var echartsNode = this.smChart && this.smChart.chart;
-        options.forEach(function (option) {
-          option = Object.assign({}, option, {
-            type: 'downplay'
-          });
-          echartsNode.dispatchAction(option);
-        });
+    getStringColor: function getStringColor(color) {
+      if (color instanceof Object) {
+        return ((color.colorStops || [])[0] || {}).color;
       }
+
+      return color;
+    },
+    setGradientColor: function setGradientColor(color, nextColor) {
+      if (typeof color === 'string') {
+        return new this.$options.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: color
+        }, {
+          offset: 1,
+          color: nextColor || color
+        }]);
+      }
+
+      return color;
+    },
+    _initAxisLabel: function _initAxisLabel(axisLabel, data, visualMap, series) {
+      if (!this.xBar) {
+        return;
+      }
+
+      var sortSeriesIndex = this.datasetOptions.findIndex(function (item) {
+        return item.sort !== 'unsort' && item.rankLabel;
+      });
+
+      if (sortSeriesIndex > -1 && axisLabel && data) {
+        for (var index = 0, len = data.length, rankIndex = len - 1; index < len; index++, rankIndex--) {
+          data[index] = rankIndex < 10 ? "0".concat(rankIndex).concat(data[index]) : "".concat(rankIndex).concat(data[index]);
+        }
+
+        var firstVisualMap = visualMap && visualMap.find(function (item) {
+          return item.seriesIndex === sortSeriesIndex;
+        });
+        axisLabel.rich = axisLabel.rich || {};
+        axisLabel.rich.default = {
+          backgroundColor: this.getStringColor(this.colorGroup[sortSeriesIndex]),
+          width: 20,
+          height: 20,
+          align: 'center',
+          borderRadius: 2
+        };
+        firstVisualMap && firstVisualMap.pieces.map(function (item) {
+          axisLabel.rich["".concat(parseInt(item.min), "_").concat(parseInt(item.max))] = {
+            backgroundColor: item.color,
+            width: 20,
+            height: 20,
+            align: 'center',
+            borderRadius: 2
+          };
+        });
+        var serieData = series && series[sortSeriesIndex].data;
+
+        axisLabel.formatter = function (label, index) {
+          var orderNum = parseInt(label.slice(0, 2)) + 1;
+          var leftLabel = label.slice(2);
+          var labelValue = serieData && +serieData[index];
+
+          if (firstVisualMap) {
+            var matchItem = firstVisualMap.pieces.find(function (item) {
+              return labelValue >= item.min && labelValue <= item.max;
+            });
+
+            if (matchItem) {
+              return ["{".concat(parseInt(matchItem.min), "_").concat(parseInt(matchItem.max), "|").concat(orderNum, "}  ").concat(leftLabel)].join('\n');
+            }
+          }
+
+          return ["{default|".concat(orderNum, "}  ").concat(leftLabel)].join('\n');
+        };
+      }
+    },
+    setItemStyleColor: function setItemStyleColor() {
+      var _this5 = this;
+
+      var isSet = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var series = arguments.length > 1 ? arguments[1] : undefined;
+      var highlightOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.highlightOptions;
+      var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : this.highlightColor;
+      series = series || (0, _lodash4.default)(this.echartOptions && this.echartOptions.series) || [];
+      series.forEach(function (serie, seriesIndex) {
+        var dataIndexs = highlightOptions.map(function (item) {
+          if (item.seriesIndex.includes(seriesIndex)) {
+            return item.dataIndex;
+          }
+        });
+        var colors = highlightOptions.map(function (item) {
+          if (item.seriesIndex.includes(seriesIndex)) {
+            return item.color || color;
+          }
+        });
+        var serieColor = _this5.options.series && _this5.options.series[seriesIndex] && _this5.options.series[seriesIndex].itemStyle && _this5.options.series[seriesIndex].itemStyle.color;
+        serie.itemStyle = serie.itemStyle || {
+          color: ''
+        };
+
+        serie.itemStyle.color = function (_ref) {
+          var dataIndex = _ref.dataIndex;
+          var index = dataIndexs.indexOf(dataIndex);
+
+          if (index > -1) {
+            return colors[index];
+          } else if (serie.type === 'pie') {
+            var colorGroup = _this5._handlerColorGroup(serie.data.length);
+
+            return colorGroup[dataIndex];
+          } else {
+            return serieColor;
+          }
+        };
+      });
+      isSet && this.$set(this.echartOptions, 'series', series);
     },
     _handlePieAutoPlay: function _handlePieAutoPlay() {
       var seriesType = this._chartOptions.series && this._chartOptions.series[0] && this._chartOptions.series[0].type;
@@ -1239,7 +1325,7 @@ var _default2 = {
       }
     },
     setPieAutoPlay: function setPieAutoPlay(echartsNode) {
-      var _this4 = this;
+      var _this6 = this;
 
       var i = -1;
       this.pieAutoPlay = setInterval(function () {
@@ -1250,7 +1336,7 @@ var _default2 = {
         });
         i++;
 
-        if (i >= _this4._chartOptions.legend.data.length) {
+        if (i >= _this6._chartOptions.legend.data.length) {
           i = 0;
         }
 
@@ -1273,21 +1359,21 @@ var _default2 = {
       }
     },
     timing: function timing() {
-      var _this5 = this;
+      var _this7 = this;
 
       this.echartsDataService && this.echartsDataService.getDataOption(this.dataset, this.xBar).then(function (options) {
-        _this5.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
+        _this7.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
 
 
-        _this5.dataSeriesCache = Object.assign({}, options);
-        _this5.datasetChange = false; // 设置echartOptions
+        _this7.dataSeriesCache = Object.assign({}, options);
+        _this7.datasetChange = false; // 设置echartOptions
 
-        _this5.echartOptions = _this5._optionsHandler(_this5.options, options);
+        _this7.echartOptions = _this7._optionsHandler(_this7.options, options);
       });
     },
     // 请求数据,设置echartOptions
     _setEchartOptions: function _setEchartOptions(dataset, datasetOptions, echartOptions) {
-      var _this6 = this;
+      var _this8 = this;
 
       this.echartsDataService = null;
       this.dataSeriesCache = null;
@@ -1304,21 +1390,23 @@ var _default2 = {
 
       this.echartsDataService = new _EchartsDataService.default(dataset, datasetOptions);
       this.echartsDataService.getDataOption(dataset, this.xBar).then(function (options) {
-        _this6.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
+        _this8.hideLoading(); // 缓存dataSeriesCache，请求后格式化成echart的数据
 
 
-        _this6.dataSeriesCache = Object.assign({}, options);
-        _this6.datasetChange = false; // 设置echartOptions
+        _this8.dataSeriesCache = Object.assign({}, options);
+        _this8.datasetChange = false; // 设置echartOptions
 
-        _this6.echartOptions = _this6._optionsHandler(echartOptions, options);
+        _this8.echartOptions = _this8._optionsHandler(echartOptions, options);
       });
     },
     _optionsHandler: function _optionsHandler(options, dataOptions, dataZoomChanged) {
-      var _this7 = this;
+      var _this9 = this;
 
       dataOptions = dataOptions && (0, _lodash4.default)(dataOptions); // clone 避免引起重复刷新
 
       options = options && (0, _lodash4.default)(options); // clone 避免引起重复刷新
+
+      var extraSeries = [];
 
       if (options && options.legend && !options.legend.type) {
         options.legend.type = 'scroll';
@@ -1338,6 +1426,8 @@ var _default2 = {
           axis = yAxis;
           dataOptions.yAxis = dataOptions.xAxis;
           delete dataOptions.xAxis;
+
+          this._initAxisLabel(yAxis.axisLabel, dataOptions.yAxis[0].data, options.visualMap, dataOptions.series);
         }
 
         if (dataOptions.series.length === 0) {
@@ -1357,12 +1447,16 @@ var _default2 = {
         if (dataOptions.series.length === 0) {
           options.series = [];
         } else {
-          options.series = dataOptions.series.map(function (element, index) {
-            return Object.assign({}, options.series[index] || {}, element);
+          options.series = options.series.map(function (element, index) {
+            return Object.assign({}, element, dataOptions.series[index] || {});
           });
           var dataZoom = options.dataZoom && options.dataZoom[0];
-          options.series = options.series.map(function (serie) {
+          options.series = options.series.map(function (serie, index) {
             var label = serie.label && serie.label.normal;
+
+            if (serie.label) {
+              serie.label.normal = _this9._controlLabel(label, serie.maxLabels);
+            }
 
             if (label && label.show && label.smart) {
               label.position = label.position || 'top';
@@ -1378,9 +1472,9 @@ var _default2 = {
                 }
 
                 if (dataZoomChanged) {
-                  var _ref = _this7.smChart.chart.getOption().dataZoom[0] || {},
-                      startValue = _ref.startValue,
-                      endValue = _ref.endValue;
+                  var _ref2 = _this9.smChart.chart.getOption().dataZoom[0] || {},
+                      startValue = _ref2.startValue,
+                      endValue = _ref2.endValue;
 
                   startDataIndex = startValue;
                   endDataIndex = endValue;
@@ -1403,9 +1497,9 @@ var _default2 = {
                 data = serie.data.slice(startDataIndex, endDataIndex + 1);
               }
 
-              label.formatter = function (_ref2) {
-                var dataIndex = _ref2.dataIndex,
-                    value = _ref2.value;
+              label.formatter = function (_ref3) {
+                var dataIndex = _ref3.dataIndex,
+                    value = _ref3.value;
                 var result = '';
 
                 if (dataIndex === startDataIndex || dataIndex === endDataIndex || Math.max.apply(null, data) + '' === value + '') {
@@ -1415,35 +1509,145 @@ var _default2 = {
                 return result;
               };
             } else if (serie && serie.type !== 'pie' && serie.type !== 'radar') {
-              label && delete label.formatter;
-            } else if (serie && serie.type === 'pie') {
-              // 控制label显示条数
-              if (serie.maxLabels) {
-                var formatMode;
+              var colorGroup = (0, _chart.getMultiColorGroup)(_this9.colorGroupsData, _this9.colorNumber);
 
-                if (label.formatter && typeof label.formatter === 'string') {
-                  formatMode = label.formatter;
-                }
+              if (serie.type === '2.5Bar') {
+                var shape = serie.shape;
+                var defaultColor = serie.itemStyle && serie.itemStyle.color;
 
-                label.formatter = function (_ref3) {
-                  var dataIndex = _ref3.dataIndex,
-                      value = _ref3.value,
-                      name = _ref3.name,
-                      percent = _ref3.percent;
-                  var FORMATTER_MAP = {
-                    '{b}: {c}': "".concat(name, ": ").concat(value),
-                    '{b}': "".concat(name),
-                    '{c}': "".concat(value),
-                    '{d}%': "".concat(percent, "%")
+                if (['square', 'rectangle'].includes(shape)) {
+                  var cubeType = shape;
+                  serie.type = 'custom';
+                  dataOptions.series[index] && (dataOptions.series[index].type = 'custom');
+                  var _this = _this9;
+
+                  serie.renderItem = function (params, api) {
+                    var location = api.coord([api.value(0), api.value(1)]);
+                    var fillColor = defaultColor || colorGroup[params.seriesIndex];
+
+                    if (_this.highlightOptions) {
+                      var matchData = _this.highlightOptions.find(function (item) {
+                        return item.seriesIndex.includes(params.seriesIndex) && item.dataIndex === params.dataIndex;
+                      });
+
+                      if (matchData && (matchData.color || _this.highlightColor)) {
+                        fillColor = matchData.color || _this.highlightColor;
+                      }
+                    }
+
+                    var leftColor, rightColor, topColor;
+
+                    if ((0, _typeof2.default)(fillColor) === 'object') {
+                      var copyLeftColor = (0, _lodash4.default)(fillColor);
+                      var copyRightColor = (0, _lodash4.default)(fillColor);
+                      var copyTopColor = (0, _lodash4.default)(fillColor);
+                      copyLeftColor.colorStops[0].color = (0, _util.getColorWithOpacity)(copyLeftColor.colorStops[0].color, 0.4);
+                      copyLeftColor.colorStops[1].color = (0, _util.getColorWithOpacity)(copyLeftColor.colorStops[1].color, 0.4);
+                      copyRightColor.colorStops[0].color = (0, _util.getColorWithOpacity)(copyRightColor.colorStops[0].color, 0.7);
+                      copyRightColor.colorStops[1].color = (0, _util.getColorWithOpacity)(copyRightColor.colorStops[1].color, 0.7);
+                      copyTopColor.colorStops[0].color = (0, _util.getColorWithOpacity)(copyTopColor.colorStops[0].color, 0.85);
+                      copyTopColor.colorStops[1].color = (0, _util.getColorWithOpacity)(copyTopColor.colorStops[1].color, 0.85);
+                      leftColor = copyLeftColor;
+                      rightColor = copyRightColor;
+                      topColor = copyTopColor;
+                    } else {
+                      leftColor = (0, _util.getColorWithOpacity)(fillColor, 0.4);
+                      rightColor = (0, _util.getColorWithOpacity)(fillColor, 0.7);
+                      topColor = (0, _util.getColorWithOpacity)(fillColor, 0.85);
+                    }
+
+                    return {
+                      type: 'group',
+                      children: [{
+                        type: "Cube".concat(cubeType, "Left"),
+                        shape: {
+                          api: api,
+                          xValue: api.value(0),
+                          yValue: api.value(1),
+                          x: location[0],
+                          y: location[1],
+                          xAxisPoint: api.coord([api.value(0), 0])
+                        },
+                        style: {
+                          fill: leftColor
+                        }
+                      }, {
+                        type: "Cube".concat(cubeType, "Right"),
+                        shape: {
+                          api: api,
+                          xValue: api.value(0),
+                          yValue: api.value(1),
+                          x: location[0],
+                          y: location[1],
+                          xAxisPoint: api.coord([api.value(0), 0])
+                        },
+                        style: {
+                          fill: rightColor
+                        }
+                      }, {
+                        type: "Cube".concat(cubeType, "Top"),
+                        shape: {
+                          api: api,
+                          xValue: api.value(0),
+                          yValue: api.value(1),
+                          x: location[0],
+                          y: location[1],
+                          xAxisPoint: api.coord([api.value(0), 0])
+                        },
+                        style: {
+                          fill: topColor
+                        }
+                      }]
+                    };
                   };
-                  var result = '';
+                } else if (shape === 'cylinder') {
+                  var baseWidth = '100%';
+                  var nextSerieDatas = dataOptions.series[index + 1] && dataOptions.series[index + 1].data;
+                  serie.type = 'bar';
+                  serie.barGap = '-100%';
+                  options.tooltip.trigger === 'axis' && (options.tooltip.trigger = 'item');
+                  dataOptions.series[index] && (dataOptions.series[index].type = 'bar');
+                  var cirCleColor = defaultColor || colorGroup[index];
 
-                  if (dataIndex < serie.maxLabels) {
-                    result = FORMATTER_MAP[formatMode];
+                  if (typeof cirCleColor === 'string') {
+                    cirCleColor = _this9.setGradientColor(cirCleColor, '#fff');
                   }
 
-                  return result;
-                };
+                  extraSeries.push( // 头部的圆片
+                  {
+                    name: '',
+                    type: 'pictorialBar',
+                    symbolOffset: [0, -8],
+                    symbolPosition: 'end',
+                    z: 12,
+                    itemStyle: {
+                      normal: {
+                        color: cirCleColor
+                      }
+                    },
+                    data: dataOptions.series[index].data.map(function (item, dataIndex) {
+                      return {
+                        value: item,
+                        symbolSize: !nextSerieDatas || nextSerieDatas[dataIndex] && +item >= +nextSerieDatas[dataIndex] ? [baseWidth, 15] : [0, 15]
+                      };
+                    })
+                  }, {
+                    // 底部的圆片
+                    name: '',
+                    type: 'pictorialBar',
+                    symbolSize: [baseWidth, 10],
+                    symbolOffset: [0, 5],
+                    z: 12,
+                    itemStyle: {
+                      normal: {
+                        color: cirCleColor
+                      }
+                    },
+                    data: dataOptions.series[index].data
+                  });
+                }
+
+                delete serie.shape;
               }
             }
 
@@ -1464,11 +1668,13 @@ var _default2 = {
           if (options.legend && options.series.length > 0 && options.series[0].type === 'pie') {
             options.legend.data = [];
             options.series.forEach(function (element) {
-              var _options$legend$data;
+              if (element.data) {
+                var _options$legend$data;
 
-              (_options$legend$data = options.legend.data).push.apply(_options$legend$data, (0, _toConsumableArray2.default)(element.data.map(function (item) {
-                return item.name;
-              })));
+                (_options$legend$data = options.legend.data).push.apply(_options$legend$data, (0, _toConsumableArray2.default)(element.data.map(function (item) {
+                  return item.name;
+                })));
+              }
             });
           }
         }
@@ -1480,38 +1686,143 @@ var _default2 = {
 
       var series = dataOptions.series;
 
-      if (series && series.length) {
-        series.forEach(function (serie) {
-          // 对pie处理数据颜色分段
-          if (serie.type === 'pie') {
-            if (serie.data && serie.data.length > _this7.colorGroupsData.length) {
-              var colorGroup;
+      if (series && series.length && series[0].type === 'pie') {
+        this.setItemStyleColor(false, series);
+      }
 
-              if ((0, _typeof2.default)(_this7.colorGroupsData[0]) === 'object') {
-                colorGroup = (0, _chart.handleMultiGradient)(_this7.colorGroupsData, serie.data.length);
-              } else {
-                colorGroup = SuperMap.ColorsPickerUtil.getGradientColors(_this7.colorGroupsData, serie.data.length, 'RANGE');
-              }
+      if (this.highlightOptions && this.highlightOptions.length > 0) {
+        this.setItemStyleColor(true, series);
+      }
 
-              if (serie.itemStyle) {
-                serie.itemStyle.color = function (_ref4) {
-                  var dataIndex = _ref4.dataIndex;
-                  return colorGroup[dataIndex];
-                };
-              } else {
-                serie.itemStyle = {
-                  color: function color(_ref5) {
-                    var dataIndex = _ref5.dataIndex;
-                    return colorGroup[dataIndex];
-                  }
-                };
-              }
-            }
+      dataOptions.series = this._createRingShineSeries(series, options.series);
+      var mergeOptions = (0, _lodash2.default)(options, dataOptions);
+
+      if (extraSeries.length > 0) {
+        var _mergeOptions$series;
+
+        (_mergeOptions$series = mergeOptions.series).push.apply(_mergeOptions$series, extraSeries);
+      }
+
+      return mergeOptions;
+    },
+    _createRingShineSeries: function _createRingShineSeries(series, optionsSeries) {
+      var _this10 = this;
+
+      if (optionsSeries) {
+        this.datasetOptions.forEach(function (datasetOption, index) {
+          var _ref4 = optionsSeries[index] || {},
+              type = _ref4.type,
+              outerGap = _ref4.outerGap,
+              isShine = _ref4.isShine;
+
+          if (type === 'pie' && outerGap >= 0) {
+            var data = series[index].data.map(function (val) {
+              return val.value;
+            });
+            outerGap = outerGap || Math.min.apply(null, data) / 5;
+            series[index].data = _this10._createRingShineDataOption(series[index].data, outerGap, isShine);
+            delete optionsSeries[index].outerGap;
+            delete optionsSeries[index].isShine;
           }
         });
       }
 
-      return (0, _lodash2.default)(options, dataOptions);
+      return series;
+    },
+    _createRingShineDataOption: function _createRingShineDataOption(data, outerGap, isShine) {
+      if (!data) {
+        return;
+      }
+
+      var colors = this._handlerColorGroup(data.length);
+
+      var gapItem = {
+        value: outerGap,
+        name: '',
+        itemStyle: {
+          normal: {
+            label: {
+              show: false
+            },
+            labelLine: {
+              show: false
+            },
+            color: 'rgba(0, 0, 0, 0)',
+            borderColor: 'rgba(0, 0, 0, 0)',
+            borderWidth: 0
+          }
+        }
+      };
+      var result = [];
+
+      for (var i = 0; i < data.length; i++) {
+        var dataItem = {
+          value: data[i].value,
+          name: data[i].name
+        };
+
+        if (isShine) {
+          dataItem.itemStyle = {
+            normal: {
+              borderWidth: 5,
+              shadowBlur: 10,
+              color: colors[i],
+              borderColor: colors[i],
+              shadowColor: colors[i]
+            }
+          };
+        }
+
+        result.push(dataItem);
+
+        if (data.length > 1) {
+          result.push(gapItem);
+        }
+      }
+
+      return result;
+    },
+    _handlerColorGroup: function _handlerColorGroup(serielDataLength) {
+      if ((0, _typeof2.default)(this.colorGroupsData[0]) === 'object') {
+        return (0, _chart.handleMultiGradient)(this.colorGroupsData, serielDataLength);
+      } else {
+        return SuperMap.ColorsPickerUtil.getGradientColors(this.colorGroupsData, serielDataLength, 'RANGE');
+      }
+    },
+    // 控制label显示条数
+    _controlLabel: function _controlLabel(normalLabel, maxLabels) {
+      if (normalLabel && normalLabel.show && maxLabels) {
+        var endNormalLabel = (0, _lodash4.default)(normalLabel);
+        var formatMode;
+
+        if (endNormalLabel.formatter && typeof endNormalLabel.formatter === 'string') {
+          formatMode = endNormalLabel.formatter;
+        }
+
+        endNormalLabel.formatter = function (_ref5) {
+          var dataIndex = _ref5.dataIndex,
+              value = _ref5.value,
+              name = _ref5.name,
+              percent = _ref5.percent;
+          var FORMATTER_MAP = {
+            '{b}: {c}': "".concat(name, ": ").concat(value),
+            '{b}': "".concat(name),
+            '{c}': "".concat(value),
+            '{d}%': "".concat(percent, "%")
+          };
+          var result = '';
+
+          if (dataIndex < maxLabels) {
+            result = FORMATTER_MAP[formatMode || '{c}'];
+          }
+
+          return result;
+        };
+
+        return endNormalLabel;
+      }
+
+      return normalLabel;
     },
     // 当datasetUrl不变，datasetOptions改变时
     _changeChartData: function _changeChartData(echartsDataService, datasetOptions, echartOptions) {
@@ -1524,13 +1835,7 @@ var _default2 = {
     },
     _setChartTheme: function _setChartTheme() {
       if (!this.theme) {
-        var length = this.datasetOptions && this.datasetOptions.length || this.echartOptions.series && this.echartOptions.series.length;
-        var colorNumber = this.colorGroupsData.length;
-
-        if (length && length > colorNumber) {
-          colorNumber = length;
-        }
-
+        var colorNumber = this.colorNumber;
         this.chartTheme = (0, _chart.chartThemeUtil)(this.backgroundData, this.textColorsData, this.colorGroupsData, colorNumber);
       }
     },
@@ -1674,7 +1979,7 @@ var _default2 = {
       }
     },
     showDetailInfo: function showDetailInfo(feature) {
-      var _this8 = this;
+      var _this11 = this;
 
       var coordinates = ((feature || {}).geometry || {}).coordinates;
       var hasCoordinates = coordinates && !!coordinates.length;
@@ -1687,7 +1992,7 @@ var _default2 = {
         var propsData = this.generateTableData(properties);
         this.tablePopupProps = _objectSpread({}, propsData);
         this.$nextTick(function () {
-          _this8.viewModel.setPopupContent(_coordinates, _this8.$refs.chartTablePopup.$el, _this8.changePopupArrowStyle);
+          _this11.viewModel.setPopupContent(_coordinates, _this11.$refs.chartTablePopup.$el, _this11.changePopupArrowStyle);
         });
       } else {
         var mapNotLoaded = this.mapNotLoadedTip();
@@ -1730,7 +2035,7 @@ var _default2 = {
     mapNotLoadedTip: function mapNotLoadedTip() {},
     _dataZoomChanged: function _dataZoomChanged() {
       var flag = false;
-      this.options.series.forEach(function (serie, index) {
+      this.options.series && this.options.series.forEach(function (serie, index) {
         var labelConfig = serie.label && serie.label.normal;
         flag = labelConfig.show && labelConfig.smart;
       });
@@ -1738,7 +2043,235 @@ var _default2 = {
       if (flag) {
         this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache, true);
       }
-    }
+    },
+    registerShape: function registerShape() {
+      var _this12 = this;
+
+      this.datasetOptions && this.options.series && this.datasetOptions.forEach(function (item, index) {
+        var graphicIntance = _this12.$options.graphic;
+
+        if (item.seriesType === '2.5Bar') {
+          var cubeType = _this12.options.series[index].shape;
+
+          if (graphicIntance.getShapeClass("Cube".concat(cubeType, "Left"))) {
+            return;
+          }
+
+          var CubeLeft, CubeRight, CubeTop;
+
+          switch (cubeType) {
+            case 'square':
+              // 绘制左侧面
+              CubeLeft = graphicIntance.extendShape({
+                shape: {
+                  x: 0,
+                  y: 0
+                },
+                buildPath: function buildPath(ctx, shape) {
+                  // 会canvas的应该都能看得懂，shape是从custom传入的
+                  var xAxisPoint = shape.xAxisPoint;
+                  var c0 = [shape.x, shape.y];
+                  var c1 = [shape.x - 13, shape.y - 13];
+                  var c2 = [xAxisPoint[0] - 13, xAxisPoint[1] - 13];
+                  var c3 = [xAxisPoint[0], xAxisPoint[1]];
+                  ctx.moveTo(c0[0], c0[1]).lineTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).closePath();
+                }
+              }); // 绘制右侧面
+
+              CubeRight = graphicIntance.extendShape({
+                shape: {
+                  x: 0,
+                  y: 0
+                },
+                buildPath: function buildPath(ctx, shape) {
+                  var xAxisPoint = shape.xAxisPoint;
+                  var c1 = [shape.x, shape.y];
+                  var c2 = [xAxisPoint[0], xAxisPoint[1]];
+                  var c3 = [xAxisPoint[0] + 18, xAxisPoint[1] - 9];
+                  var c4 = [shape.x + 18, shape.y - 9];
+                  ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath();
+                }
+              }); // 绘制顶面
+
+              CubeTop = graphicIntance.extendShape({
+                shape: {
+                  x: 0,
+                  y: 0
+                },
+                buildPath: function buildPath(ctx, shape) {
+                  var c1 = [shape.x, shape.y];
+                  var c2 = [shape.x + 18, shape.y - 9];
+                  var c3 = [shape.x + 5, shape.y - 22];
+                  var c4 = [shape.x - 13, shape.y - 13];
+                  ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath();
+                }
+              });
+              break;
+
+            case 'rectangle':
+              // 绘制左侧面
+              CubeLeft = graphicIntance.extendShape({
+                shape: {
+                  x: 0,
+                  y: 0
+                },
+                buildPath: function buildPath(ctx, shape) {
+                  var xAxisPoint = shape.xAxisPoint;
+                  var c0 = [shape.x, shape.y];
+                  var c1 = [shape.x - 9, shape.y - 9];
+                  var c2 = [xAxisPoint[0] - 9, xAxisPoint[1] - 9];
+                  var c3 = [xAxisPoint[0], xAxisPoint[1]];
+                  ctx.moveTo(c0[0], c0[1]).lineTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).closePath();
+                }
+              });
+              CubeRight = graphicIntance.extendShape({
+                shape: {
+                  x: 0,
+                  y: 0
+                },
+                buildPath: function buildPath(ctx, shape) {
+                  var xAxisPoint = shape.xAxisPoint;
+                  var c1 = [shape.x, shape.y];
+                  var c2 = [xAxisPoint[0], xAxisPoint[1]];
+                  var c3 = [xAxisPoint[0] + 18, xAxisPoint[1] - 9];
+                  var c4 = [shape.x + 18, shape.y - 9];
+                  ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath();
+                }
+              });
+              CubeTop = graphicIntance.extendShape({
+                shape: {
+                  x: 0,
+                  y: 0
+                },
+                buildPath: function buildPath(ctx, shape) {
+                  var c1 = [shape.x, shape.y];
+                  var c2 = [shape.x + 18, shape.y - 9];
+                  var c3 = [shape.x + 9, shape.y - 18];
+                  var c4 = [shape.x - 9, shape.y - 9];
+                  ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath();
+                }
+              });
+              break;
+          }
+
+          CubeLeft && graphicIntance.registerShape("Cube".concat(cubeType, "Left"), CubeLeft);
+          CubeRight && graphicIntance.registerShape("Cube".concat(cubeType, "Right"), CubeRight);
+          CubeTop && graphicIntance.registerShape("Cube".concat(cubeType, "Top"), CubeTop);
+        }
+      });
+    },
+    getCirlPoint: function getCirlPoint(x0, y0, r, angle) {
+      var x1 = x0 + r * Math.cos(angle * Math.PI / 180);
+      var y1 = y0 + r * Math.sin(angle * Math.PI / 180);
+      return {
+        x: x1,
+        y: y1
+      };
+    },
+    spinLine: function spinLine(startAngle, endAngle, angle, effectColor, radius) {
+      return function (params, api) {
+        return {
+          type: 'arc',
+          shape: {
+            cx: api.getWidth() / 2,
+            cy: api.getHeight() / 2,
+            r: Math.min(api.getWidth(), api.getHeight()) / 2 * radius,
+            startAngle: (startAngle + angle) * Math.PI / 180,
+            endAngle: (endAngle + angle) * Math.PI / 180
+          },
+          style: {
+            stroke: effectColor,
+            fill: 'transparent',
+            lineWidth: 1.5
+          },
+          silent: true
+        };
+      };
+    },
+    spinPoint: function spinPoint(angle, spinAngle, effectColor, radius) {
+      var _this13 = this;
+
+      return function (params, api) {
+        var x0 = api.getWidth() / 2;
+        var y0 = api.getHeight() / 2;
+        var r = Math.min(api.getWidth(), api.getHeight()) / 2 * radius;
+
+        var point = _this13.getCirlPoint(x0, y0, r, angle + spinAngle);
+
+        return {
+          type: 'circle',
+          shape: {
+            cx: point.x,
+            cy: point.y,
+            r: 4
+          },
+          style: {
+            stroke: effectColor,
+            fill: effectColor
+          },
+          silent: true
+        };
+      };
+    },
+    customRingsLine: function customRingsLine(startAngle, endAngle, angle, effectColor, effectRadius) {
+      var series = {
+        name: 'ring0',
+        type: 'custom',
+        coordinateSystem: 'none',
+        renderItem: null,
+        data: [0]
+      };
+      series.renderItem = this.spinLine(startAngle, endAngle, angle, effectColor, effectRadius);
+      return series;
+    },
+    customRingsPoint: function customRingsPoint(startAngle, angle, effectColor, outEffectRadius) {
+      var series = {
+        name: 'ring4',
+        type: 'custom',
+        coordinateSystem: 'none',
+        renderItem: null,
+        data: [0]
+      };
+      series.renderItem = this.spinPoint(startAngle, angle, effectColor, outEffectRadius);
+      return series;
+    },
+    addEffect: function addEffect(angle) {
+      angle = angle || 0;
+      var effectColor = this.options.series[0].customOptions.color;
+      var effectRadius = this.options.series[0].customOptions.radius;
+      var outEffectRadius = effectRadius + 0.1; // customRightBottomLine
+
+      this.customSeries.push(this.customRingsLine(0, 90, angle, effectColor, effectRadius)); // customRightTopLine
+
+      this.customSeries.push(this.customRingsLine(270, 40, -angle, effectColor, outEffectRadius)); // customLeftTopLine
+
+      this.customSeries.push(this.customRingsLine(180, 270, angle, effectColor, effectRadius)); // customLeftBottomLine
+
+      this.customSeries.push(this.customRingsLine(90, 220, -angle, effectColor, outEffectRadius));
+
+      if (this.options.series[0].customOptions.pointState === 'startPoint') {
+        this.customSeries.push(this.customRingsPoint(270, -angle, effectColor, outEffectRadius));
+        this.customSeries.push(this.customRingsPoint(90, -angle, effectColor, outEffectRadius));
+      }
+    },
+    startEffect: function startEffect() {
+      var _this14 = this;
+
+      var angle = 0;
+      this.startSpin = setInterval(function () {
+        if (!_this14.options.series) {
+          return;
+        }
+
+        if (_this14.options.series[0].customType === 'customRingsSeries') {
+          _this14.customSeries = [];
+          angle += 3;
+
+          _this14.addEffect(angle);
+        }
+      }, 100);
+    },
+    customRenderItem: function customRenderItem() {}
   },
   // echarts所有静态方法
 
@@ -1855,6 +2388,7 @@ var _theme = _interopRequireDefault(__webpack_require__("9259"));
 
 var _util = __webpack_require__("1448");
 
+//
 //
 //
 //
@@ -2512,8 +3046,6 @@ var _theme = _interopRequireDefault(__webpack_require__("9259"));
 
 var _IdentifyViewModel = _interopRequireDefault(__webpack_require__("9153"));
 
-var _lodash = _interopRequireDefault(__webpack_require__("5f9f"));
-
 //
 //
 //
@@ -2561,7 +3093,7 @@ var _default2 = {
   },
   watch: {
     layerNames: function layerNames(val, oldVal) {
-      if (val && !(0, _lodash.default)(val, oldVal)) {
+      if (val) {
         this.$options.removed.call(this, oldVal);
         this.setLayers();
       }
@@ -8619,7 +9151,7 @@ var _interopRequireDefault = __webpack_require__("8e6d");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.chartThemeUtil = exports.handleMultiGradient = void 0;
+exports.chartThemeUtil = exports.getMultiColorGroup = exports.handleMultiGradient = void 0;
 
 var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
 
@@ -8657,19 +9189,26 @@ var handleMultiGradient = function handleMultiGradient(colorGroupsData, dataLeng
 
 exports.handleMultiGradient = handleMultiGradient;
 
+var getMultiColorGroup = function getMultiColorGroup(colorGroup, dataNumber) {
+  var nextColorGroup; // 是否需要产生分段颜色值
+
+  if (colorGroup && dataNumber > colorGroup.length && (0, _typeof2.default)(colorGroup[0]) === 'object') {
+    nextColorGroup = handleMultiGradient(colorGroup, dataNumber);
+  } else {
+    nextColorGroup = SuperMap.ColorsPickerUtil.getGradientColors(colorGroup, dataNumber, 'RANGE');
+  }
+
+  return nextColorGroup;
+};
+
+exports.getMultiColorGroup = getMultiColorGroup;
+
 var chartThemeUtil = function chartThemeUtil() {
   var background = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'rgba(255, 255, 255, 0.6)';
   var textColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#333';
   var colorGroup = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8'];
   var dataNumber = arguments.length > 3 ? arguments[3] : undefined;
-
-  // 是否需要产生分段颜色值
-  if (colorGroup && dataNumber > colorGroup.length && (0, _typeof2.default)(colorGroup[0]) === 'object') {
-    colorGroup = handleMultiGradient(colorGroup, dataNumber);
-  } else {
-    colorGroup = SuperMap.ColorsPickerUtil.getGradientColors(colorGroup, dataNumber, 'RANGE');
-  }
-
+  colorGroup = getMultiColorGroup(colorGroup, dataNumber);
   var chartTheme = {
     color: colorGroup,
     backgroundColor: background,
@@ -9207,7 +9746,7 @@ module.exports = _iterableToArrayLimit;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChartMixin_vue_vue_type_template_id_f0db6a9c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("bc57");
+/* harmony import */ var _ChartMixin_vue_vue_type_template_id_1f1efe10___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("0b11");
 /* harmony import */ var _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("d83d");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -9220,8 +9759,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ChartMixin_vue_vue_type_template_id_f0db6a9c___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _ChartMixin_vue_vue_type_template_id_f0db6a9c___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _ChartMixin_vue_vue_type_template_id_1f1efe10___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _ChartMixin_vue_vue_type_template_id_1f1efe10___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -9998,7 +10537,7 @@ exports.convertDistance = convertDistance;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Border_vue_vue_type_template_id_52e77cab___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("b3c2");
+/* harmony import */ var _Border_vue_vue_type_template_id_531a677a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("c492");
 /* harmony import */ var _Border_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("cadc");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Border_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Border_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -10011,8 +10550,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Border_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Border_vue_vue_type_template_id_52e77cab___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Border_vue_vue_type_template_id_52e77cab___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Border_vue_vue_type_template_id_531a677a___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Border_vue_vue_type_template_id_531a677a___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -12234,6 +12773,23 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f2ac")))
+
+/***/ }),
+
+/***/ "3e59":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/table-popup/TablePopup.vue?vue&type=template&id=1c51b447&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-table-popup",style:([_vm.backgroundStyle, _vm.getTextColorStyle, _vm.styleObject])},[_c('div',{staticClass:"sm-component-table-popup__close"},[_vm._v("x")]),_vm._v(" "),_c('a-table',{staticClass:"sm-component-table-popup__table",style:(_vm.backgroundStyle),attrs:{"data-source":_vm.data,"columns":_vm.columns,"rowKey":function (record, index) { return index; },"pagination":false}})],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/table-popup/TablePopup.vue?vue&type=template&id=1c51b447&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -15531,11 +16087,11 @@ function sortData(features, datasetOptions, maxFeatures, xBar) {
   var matchItem = datasetOptions.find(function (item) {
     return item.sort && item.sort !== 'unsort';
   });
-  var nextFeatures = features;
+  var nextFeatures = [].concat(features);
 
   if (matchItem) {
     nextFeatures = (0, _lodash3.default)(features, function (feature) {
-      return +feature.properties[matchItem.yField];
+      return isNaN(+feature.properties[matchItem.yField]) ? -Number.MAX_VALUE : +feature.properties[matchItem.yField];
     }, matchItem.sort === 'ascending' ? 'asc' : 'desc');
   }
 
@@ -15760,12 +16316,7 @@ function () {
       var serieData = {
         type: chartType,
         name: datasetOption.yField,
-        data: [],
-        emphasis: {
-          itemStyle: {
-            color: '#409eff'
-          }
-        }
+        data: []
       };
 
       if (chartType === 'pie') {
@@ -15856,7 +16407,9 @@ function () {
           }
         };
         axisData = this.radarAxis;
-      } else if (chartType === 'bar' || chartType === 'line' || chartType === 'scatter') {
+      } else if (['bar', 'line', 'scatter', '2.5Bar'].find(function (item) {
+        return item === chartType;
+      })) {
         var data = XData && (0, _toConsumableArray2.default)(XData);
 
         if (!this.gridAxis.xAxis) {
@@ -16873,6 +17426,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("279f"));
+
 var _typeof2 = _interopRequireDefault(__webpack_require__("7ae5"));
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__("19e1"));
@@ -16890,6 +17445,10 @@ var _Events2 = __webpack_require__("e3e2");
 var _util = __webpack_require__("1448");
 
 var _statistics = __webpack_require__("9dde");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var RestService =
 /*#__PURE__*/
@@ -16927,7 +17486,7 @@ function (_Events) {
 
 
       if ((0, _typeof2.default)(data) === 'object') {
-        this.transfromGeoJSON(data, queryInfo);
+        this.transfromGeoJSON(_objectSpread({}, data), queryInfo);
         return;
       } // 如果是url， 就发送请求
 
@@ -17075,23 +17634,6 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 )
 
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "5dd1":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/identify/Identify.vue?vue&type=template&id=a1e2c0ac&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"Popup",class:['sm-component-identify'],style:([_vm.getTextColorStyle])},_vm._l((_vm.popupProps),function(value,key,index){return _c('li',{key:index,staticClass:"sm-component-identify__body"},[_c('div',{staticClass:"sm-component-identify__left",attrs:{"title":key}},[_vm._v(_vm._s(key))]),_vm._v(" "),_c('div',{staticClass:"sm-component-identify__right",attrs:{"title":value}},[_vm._v(_vm._s(value))])])}),0)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/leaflet/identify/Identify.vue?vue&type=template&id=a1e2c0ac&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -35342,9 +35884,9 @@ function statisticsFeatures(features, fields, fieldCaptions, fieldTypes) {
   };
 
   if (features && !!features.length && !fieldCaptions && !fields) {
-    var feature = features[0]; // 获取每个字段的名字和类型
+    var properties = Object.assign({}, features[0].properties, features[features.length - 1].properties); // 获取每个字段的名字和类型
 
-    for (var attr in feature.properties) {
+    for (var attr in properties) {
       data.fieldCaptions.push(attr);
       data.fields.push(attr);
     }
@@ -35354,9 +35896,9 @@ function statisticsFeatures(features, fields, fieldCaptions, fieldTypes) {
     var fieldValue = [];
 
     for (var j in features) {
-      var _feature = features[j];
+      var feature = features[j];
       var field = data.fields[m];
-      var value = _feature.properties[field];
+      var value = feature.properties[field];
       fieldValue.push(value);
     } // fieldValues   [[每个字段的所有要素值],[],[]]
 
@@ -35982,23 +36524,6 @@ var _default2 = {
   }
 };
 exports.default = _default2;
-
-/***/ }),
-
-/***/ "ab98":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/video-player/VideoPlayer.vue?vue&type=template&id=6a6899a8&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-video-player"},[_c('video-player',{ref:"videoPlayer",staticClass:"sm-component-video-player__player sm-component-video-player__player--main",attrs:{"options":_vm.playerOptions,"playsinline":true},on:{"play":function($event){return _vm.onPlayerPlay($event)},"ended":function($event){return _vm.onPlayerEnded($event)},"loadeddata":function($event){return _vm.onPlayerLoadeddata($event)}}},[_vm._v(">")]),_vm._v(" "),(_vm.url)?_c('a-modal',{attrs:{"wrapClassName":"sm-component-video-player-modal","footer":null,"width":"60%","maskClosable":false},model:{value:(_vm.modalVisible),callback:function ($$v) {_vm.modalVisible=$$v},expression:"modalVisible"}},[_c('video-player',{ref:"modalVideoPlayer",staticClass:"sm-component-video-player__player",attrs:{"options":_vm.modalPlayerOptions,"playsinline":true},on:{"play":function($event){return _vm.onModalPlayerPlay($event)},"loadeddata":function($event){return _vm.onModalPlayerLoadeddata($event)}}})],1):_vm._e()],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/video-player/VideoPlayer.vue?vue&type=template&id=6a6899a8&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -38508,7 +39033,7 @@ module.exports = orderBy;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _VideoPlayer_vue_vue_type_template_id_6a6899a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ab98");
+/* harmony import */ var _VideoPlayer_vue_vue_type_template_id_4df6cab8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("c363");
 /* harmony import */ var _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("14f6");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -38521,8 +39046,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _VideoPlayer_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _VideoPlayer_vue_vue_type_template_id_6a6899a8___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _VideoPlayer_vue_vue_type_template_id_6a6899a8___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _VideoPlayer_vue_vue_type_template_id_4df6cab8___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _VideoPlayer_vue_vue_type_template_id_4df6cab8___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -38539,7 +39064,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TablePopup_vue_vue_type_template_id_38bfab64___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("00f3");
+/* harmony import */ var _TablePopup_vue_vue_type_template_id_1c51b447___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("3e59");
 /* harmony import */ var _TablePopup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("e4fa");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TablePopup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TablePopup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -38552,8 +39077,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _TablePopup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TablePopup_vue_vue_type_template_id_38bfab64___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _TablePopup_vue_vue_type_template_id_38bfab64___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _TablePopup_vue_vue_type_template_id_1c51b447___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _TablePopup_vue_vue_type_template_id_1c51b447___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -38562,23 +39087,6 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 )
 
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "b3c2":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/border/Border.vue?vue&type=template&id=52e77cab&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:_vm.borderId,staticClass:"sm-component-border",style:(_vm.borderStyle)},[_c('div',{staticClass:"sm-component-border__content",style:(_vm.contentStyle)},[_vm._t("default")],2)])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/border/Border.vue?vue&type=template&id=52e77cab&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -39327,23 +39835,6 @@ exports.PassThrough = __webpack_require__("e525");
 
 /***/ }),
 
-/***/ "bc57":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/chart/ChartMixin.vue?vue&type=template&id=f0db6a9c&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme},on:{"datazoom":_vm.dataZoomHandler}}),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"chartTablePopup",attrs:{"text-color":_vm.textColor,"background":_vm.background}},'TablePopup',_vm.tablePopupProps,false))],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/chart/ChartMixin.vue?vue&type=template&id=f0db6a9c&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "be3f":
 /***/ (function(module, exports) {
 
@@ -39369,6 +39860,23 @@ module.exports = _getPrototypeOf;
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,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BHoSECx6grYbAgQIECAwBQHBYgqrrEYCBAgQINCTgGDRE7TdECBAgACBKQgIFlNYZTUSIECAAIGeBASLnqDthgABAgQITEFAsJjCKquRAAECBAj0JCBY9ARtNwQIECBAYAoCgsUUVlmNBAgQIECgJwHBoidouyFAgAABAlMQECymsMpqJECAAAECPQkIFj1B2w0BAgQIEJiCgGAxhVVWIwECBAgQ6ElAsOgJ2m4IECBAgMAUBASLKayyGgkQIECAQE8CgkVP0HZDgAABAgSmICBYTGGV1UiAAAECBHoSECx6grYbAgQIECAwBQHBYgqrrEYCBAgQINCTgGDRE7TdECBAgACBKQgIFlNYZTUSIECAAIGeBASLnqDthgABAgQITEFAsJjCKquRAAECBAj0JCBY9ARtNwQIECBAYAoCgsUUVlmNBAgQIECgJwHBoidouyFAgAABAlMQECymsMpqJECAAAECPQkIFj1B2w0BAgQIEJiCgGAxhVVWIwECBAgQ6ElAsOgJ2m4IECBAgMAUBASLKayyGgkQIECAQE8CgkVP0HZDgAABAgSmICBYTGGV1UiAAAECBHoSECx6grYbAgQIECAwBQHBYgqrrEYCBAgQINCTgGDRE7TdECBAgACBKQgIFlNYZTUSIECAAIGeBASLnqDthgABAgQITEFAsJjCKquRAAECBAj0JCBY9ARtNwQIECBAYAoCgsUUVlmNBAgQIECgJwHBoidouyFAgAABAlMQECymsMpqJECAAAECPQkIFj1B2w0BAgQIEJiCgGAxhVVWIwECBAgQ6ElAsOgJ2m4IECBAgMAUBASLKayyGgkQIECAQE8CgkVP0HZDgAABAgSmICBYTGGV1UiAAAECBHoSECx6grYbAgQIECAwBQHBYgqrrEYCBAgQINCTgGDRE7TdECBAgACBKQhsLYqcvfP986vvfKGsruycPFEs2vwmQIAAAQIECOQIOGKRo6QPAQIECBAgkCUgWGQx6USAAAECBAjkCAgWOUr6ECBAgAABAlkCW7NH5+dUZPXWiQABAgQIECCQEHDEIoGjiQABAgQIEGgnIFi089KbAAECBAgQSAgIFgkcTQQIECBAgEA7AcGinZfeBAgQIECAQEJAsEjgaCJAgAABAgTaCQgW7bz0JkCAAAECBBICgkUCRxMBAgQIECDQTkCwaOelNwECBAgQ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"
+
+/***/ }),
+
+/***/ "c363":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/video-player/VideoPlayer.vue?vue&type=template&id=4df6cab8&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-video-player"},[_c('video-player',{ref:"videoPlayer",staticClass:"sm-component-video-player__player sm-component-video-player__player--main",attrs:{"options":_vm.playerOptions,"playsinline":true},on:{"play":function($event){return _vm.onPlayerPlay($event)},"ended":function($event){return _vm.onPlayerEnded($event)},"loadeddata":function($event){return _vm.onPlayerLoadeddata($event)}}}),_vm._v(" "),(_vm.url)?_c('a-modal',{attrs:{"wrapClassName":"sm-component-video-player-modal","footer":null,"width":"60%","maskClosable":false},model:{value:(_vm.modalVisible),callback:function ($$v) {_vm.modalVisible=$$v},expression:"modalVisible"}},[_c('video-player',{ref:"modalVideoPlayer",staticClass:"sm-component-video-player__player",attrs:{"options":_vm.modalPlayerOptions,"playsinline":true},on:{"play":function($event){return _vm.onModalPlayerPlay($event)},"loadeddata":function($event){return _vm.onModalPlayerLoadeddata($event)}}})],1):_vm._e()],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/video-player/VideoPlayer.vue?vue&type=template&id=4df6cab8&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -39727,6 +40235,23 @@ var iPortalDataParameter = function iPortalDataParameter(options) {
 };
 
 exports.default = iPortalDataParameter;
+
+/***/ }),
+
+/***/ "c492":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/border/Border.vue?vue&type=template&id=531a677a&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:_vm.borderId,staticClass:"sm-component-border",style:(_vm.borderStyle)},[_c('div',{staticClass:"sm-component-border__content",style:(_vm.contentStyle)},[_vm._t("default")],2)])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/border/Border.vue?vue&type=template&id=531a677a&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -41438,7 +41963,7 @@ webpackContext.id = "d073";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Identify_vue_vue_type_template_id_a1e2c0ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5dd1");
+/* harmony import */ var _Identify_vue_vue_type_template_id_44a6aa12___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("d865");
 /* harmony import */ var _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("14c7");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b429");
@@ -41451,8 +41976,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Identify_vue_vue_type_template_id_a1e2c0ac___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _Identify_vue_vue_type_template_id_a1e2c0ac___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _Identify_vue_vue_type_template_id_44a6aa12___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Identify_vue_vue_type_template_id_44a6aa12___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -41682,7 +42207,9 @@ function (_Events) {
     value: function setZoom(zoom) {
       if (this.map) {
         this.mapOptions.zoom = zoom;
-        (zoom || zoom === 0) && this.map.setZoom(zoom);
+        (zoom || zoom === 0) && this.map.setZoom(zoom, {
+          from: 'setZoom'
+        });
       }
     }
   }, {
@@ -41794,8 +42321,8 @@ function (_Events) {
     value: function getMapurls() {
       var mapurl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var mapUrls = {
-        CLOUD: mapurl.CLOUD || 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-        CLOUD_BLACK: mapurl.CLOUD_BLACK || 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+        CLOUD: mapurl.CLOUD || 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+        CLOUD_BLACK: mapurl.CLOUD_BLACK || 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}',
         OSM: mapurl.OSM || 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         GOOGLE: 'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
         GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
@@ -41916,7 +42443,6 @@ function (_Events) {
 
           if (colors && colors.length > 0) {
             color = customSettings[_i] && customSettings[_i].color ? customSettings[_i].color : rangeColors[_i] || fillColor;
-            ;
             style.fillColor = color;
           }
 
@@ -42727,6 +43253,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartMixin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "d865":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/identify/Identify.vue?vue&type=template&id=44a6aa12&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"Popup",class:['sm-component-identify'],style:([_vm.getTextColorStyle])},_vm._l((_vm.popupProps),function(value,key,index){return _c('li',{key:index,staticClass:"sm-component-identify__body"},[_c('div',{staticClass:"sm-component-identify__left",attrs:{"title":key}},[_vm._v(_vm._s(key))]),_vm._v(" "),_c('div',{staticClass:"sm-component-identify__right",attrs:{"title":value}},[_vm._v(_vm._s(value))])])}),0)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/leaflet/identify/Identify.vue?vue&type=template&id=44a6aa12&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
@@ -44210,7 +44753,7 @@ function (_Events) {
                 break;
 
               case 12:
-                if (!results.result) {
+                if (!(results.result && results.result.features)) {
                   _context.next = 23;
                   break;
                 }
@@ -47219,6 +47762,9 @@ var _default = {
     type: {
       type: [String],
       default: 'border1'
+    },
+    customBorder: {
+      type: Object
     }
   },
   data: function data() {
@@ -47241,17 +47787,27 @@ var _default = {
     };
   },
   computed: {
+    borderConfig: function borderConfig() {
+      if (!this.customBorder && this.type) {
+        return _borderConfig.default[this.type];
+      } else {
+        return this.customBorder;
+      }
+    },
+    borderImage: function borderImage() {
+      if ((!this.customBorder || !this.customBorder.src) && this.type) {
+        return __webpack_require__("ded2")("./".concat(this.type, ".png"));
+      } else {
+        return "".concat(this.customBorder.src);
+      }
+    },
     borderStyle: function borderStyle() {
       var borderImageSlice = this.borderWidth.join(' ') + ' fill';
       var borderWidth = this.borderWidth.join('px ') + 'px';
-
-      var borderImage = __webpack_require__("ded2")("./".concat(this.type, ".png"));
-
       return {
         borderWidth: borderWidth,
         // 当图片大小超过8KB, webpack就不会转换成base64, 直接引入时路径出错（此时的图片路径在index.html下？）
-        // borderImage: `url(./assets/image/${this.type}.png)`,
-        borderImage: 'url(' + borderImage + ') ' + borderImageSlice + ' / 1 / 0 stretch'
+        borderImage: 'url(' + this.borderImage + ') ' + borderImageSlice + ' / 1 / 0 stretch'
       };
     },
     contentStyle: function contentStyle() {
@@ -47285,7 +47841,7 @@ var _default = {
   methods: {
     // 设置content的位置大小
     setPosition: function setPosition() {
-      var borderConfig = _borderConfig.default[this.type];
+      var borderConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.borderConfig;
       this.borderEdge = borderConfig.borderEdge;
       this.borderWidth = borderConfig.borderWidth;
       this.calcPosition();
@@ -48114,23 +48670,72 @@ function (_Events) {
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
-          if (data.succeed === false) {
-            reject(data.error);
-          }
+          return __awaiter(_this10, void 0, void 0,
+          /*#__PURE__*/
+          _regenerator.default.mark(function _callee2() {
+            var _layerInfo$dataSource, divisionType, divisionField, geojson;
 
-          if (data && data.type) {
-            if (data.type === 'JSON' || data.type === 'GEOJSON') {
-              data.content = JSON.parse(data.content.trim());
-              features = _this10._formatGeoJSON(data.content);
-            } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-              features = _this10._excelData2Feature(data.content, layerInfo && layerInfo.xyField || {});
-            }
+            return _regenerator.default.wrap(function _callee2$(_context2) {
+              while (1) {
+                switch (_context2.prev = _context2.next) {
+                  case 0:
+                    if (data.succeed === false) {
+                      reject(data.error);
+                    }
 
-            resolve({
-              type: 'feature',
-              features: features
-            });
-          }
+                    if (!(data && data.type)) {
+                      _context2.next = 19;
+                      break;
+                    }
+
+                    if (!(data.type === 'JSON' || data.type === 'GEOJSON')) {
+                      _context2.next = 7;
+                      break;
+                    }
+
+                    data.content = JSON.parse(data.content.trim());
+                    features = this._formatGeoJSON(data.content);
+                    _context2.next = 18;
+                    break;
+
+                  case 7:
+                    if (!(data.type === 'EXCEL' || data.type === 'CSV')) {
+                      _context2.next = 18;
+                      break;
+                    }
+
+                    if (!(layerInfo.dataSource && layerInfo.dataSource.administrativeInfo)) {
+                      _context2.next = 17;
+                      break;
+                    }
+
+                    data.content.rows.unshift(data.content.colTitles);
+                    _layerInfo$dataSource = layerInfo.dataSource.administrativeInfo, divisionType = _layerInfo$dataSource.divisionType, divisionField = _layerInfo$dataSource.divisionField;
+                    _context2.next = 13;
+                    return this._excelData2FeatureByDivision(data.content, divisionType, divisionField);
+
+                  case 13:
+                    geojson = _context2.sent;
+                    features = this._formatGeoJSON(geojson);
+                    _context2.next = 18;
+                    break;
+
+                  case 17:
+                    features = this._excelData2Feature(data.content, layerInfo && layerInfo.xyField || {});
+
+                  case 18:
+                    resolve({
+                      type: 'feature',
+                      features: features
+                    });
+
+                  case 19:
+                  case "end":
+                    return _context2.stop();
+                }
+              }
+            }, _callee2, this);
+          }));
         }).catch(function (error) {
           reject(error);
         });
@@ -48460,9 +49065,93 @@ function (_Events) {
       return features;
     }
   }, {
+    key: "_excelData2FeatureByDivision",
+    value: function _excelData2FeatureByDivision(content, divisionType, divisionField) {
+      var _this14 = this;
+
+      var dataName = ['城市', 'City'].includes(divisionType) ? 'MunicipalData' : 'ProvinceData';
+
+      if (window[dataName] && window[dataName].features) {
+        return new Promise(function (resolve) {
+          resolve(_this14._combineFeature(content, window[dataName], divisionField));
+        });
+      }
+
+      var dataFileName = ['城市', 'City'].includes(divisionType) ? 'MunicipalData.js' : 'ProvincialData.js';
+      var proxy = this.handleProxy();
+      var dataUrl = "".concat(this.serverUrl, "apps/dataviz/libs/administrative_data/").concat(dataFileName);
+      return SuperMap.FetchRequest.get(dataUrl, null, {
+        withCredentials: this.handleWithCredentials(proxy, dataUrl, this.withCredentials),
+        proxy: proxy,
+        withoutFormatSuffix: true
+      }).then(function (response) {
+        return response.text();
+      }).then(function (result) {
+        new Function(result)();
+        return _this14._combineFeature(content, window[dataName], divisionField);
+      });
+    }
+  }, {
+    key: "_combineFeature",
+    value: function _combineFeature(properties, geoData, divisionField) {
+      var _this15 = this;
+
+      var geojson = {
+        type: 'FeatureCollection',
+        features: []
+      };
+
+      if (properties.length < 2) {
+        return geojson;
+      }
+
+      var titles = properties.colTitles,
+          rows = properties.rows,
+          fieldIndex = titles.findIndex(function (title) {
+        return title === divisionField;
+      });
+      rows.forEach(function (row) {
+        var feature = geoData.features.find(function (item, index) {
+          return _this15._isMatchAdministrativeName(item.properties.Name, row[fieldIndex]);
+        });
+
+        if (feature) {
+          var combineFeature = {
+            properties: {},
+            geometry: feature.geometry,
+            type: 'Feature'
+          };
+          row.forEach(function (item, idx) {
+            combineFeature.properties[titles[idx]] = item;
+          });
+          geojson.features.push(combineFeature);
+        }
+      });
+      return geojson;
+    }
+  }, {
+    key: "_isMatchAdministrativeName",
+    value: function _isMatchAdministrativeName(featureName, fieldName) {
+      if (featureName && typeof fieldName === 'string' && fieldName.constructor === String) {
+        var shortName = featureName.substr(0, 2);
+
+        if (shortName === '张家') {
+          shortName = featureName.substr(0, 3);
+        }
+
+        if (shortName === '阿拉') {
+          shortName = featureName.substr(0, 3);
+        }
+
+        return !!fieldName.startsWith(shortName);
+      }
+
+      return false;
+    }
+  }, {
     key: "_getTileLayerInfo",
     value: function _getTileLayerInfo(url, baseProjection) {
-      var _this14 = this;
+      var _this16 = this;
 
       var proxy = this.handleProxy();
       var epsgCode = baseProjection.split('EPSG:')[1];
@@ -48480,7 +49169,7 @@ function (_Events) {
             var promise = SuperMap.FetchRequest.get("".concat(info.path, ".json?prjCoordSys=").concat(JSON.stringify({
               epsgCode: epsgCode
             })), null, {
-              withCredentials: _this14.withCredentials,
+              withCredentials: _this16.withCredentials,
               proxy: proxy
             }).then(function (response) {
               return response.json();
@@ -48874,8 +49563,8 @@ function (_WebMapBase) {
       var layerInfo = mapInfo.baseLayer || mapInfo;
       var layerType = this.getBaseLayerType(layerInfo);
       var mapUrls = this.getMapurls({
-        CLOUD: 'http://t2.supermapcloud.com/FileService/image',
-        CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp',
+        CLOUD: 'http://t2.dituhui.com/FileService/image',
+        CLOUD_BLACK: 'http://t3.dituhui.com/MapService/getGdp',
         OSM: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       });
       var url;

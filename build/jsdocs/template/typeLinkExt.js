@@ -1,4 +1,4 @@
-var olapi = "https://openlayers.org/en/v6.1.1/apidoc/";
+var olapi = "https://openlayers.org/en/v6.4.3/apidoc/";
 var lfapi = "https://leafletjs.com/reference-1.7.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";

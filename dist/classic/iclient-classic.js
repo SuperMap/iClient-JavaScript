@@ -3,7 +3,7 @@
  *          iclient-classic.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.0-beta
+ *          version: v10.1.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6103,7 +6103,10 @@ var GeometryType = SuperMap.GeometryType = {
   RECTANGLE: "RECTANGLE",
 
   /** UNKNOWN */
-  UNKNOWN: "UNKNOWN"
+  UNKNOWN: "UNKNOWN",
+
+  /** GEOCOMPOUND */
+  GEOCOMPOUND: "GEOCOMPOUND"
 };
 
 /**
@@ -7678,6 +7681,82 @@ var DataItemType = SuperMap.DataItemType = {
 
   /** json数据  */
   JSON: "JSON"
+};
+
+/**
+ * @enum WebExportFormatType
+ * @memberOf SuperMap
+ * @description Web 打印输出的格式。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebExportFormatType = SuperMap.WebExportFormatType = {
+  /** png */
+  PNG: "PNG",
+
+  /** pdf */
+  PDF: "PDF"
+};
+
+/**
+ * @enum WebScaleOrientationType
+ * @memberOf SuperMap
+ * @description Web 比例尺的方位样式。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
+  /** horizontal labels below */
+  HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
+
+  /** horizontal labels above */
+  HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
+
+  /** vertical labels left */
+  VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
+
+  /** vertical labels right */
+  VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
+};
+
+/**
+ * @enum WebScaleType
+ * @memberOf SuperMap
+ * @description Web 比例尺的样式。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebScaleType = SuperMap.WebScaleType = {
+  /** line */
+  LINE: "LINE",
+
+  /** bar */
+  BAR: "BAR",
+
+  /** bar sub */
+  BAR_SUB: "BAR_SUB"
+};
+
+/**
+ * @enum WebScaleUnit
+ * @memberOf SuperMap
+ * @description Web 比例尺的单位制。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebScaleUnit = SuperMap.WebScaleUnit = {
+  /** meter */
+  METER: "METER",
+
+  /** foot */
+  FOOT: "FOOT",
+
+  /** degrees */
+  DEGREES: "DEGREES"
 };
 
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js

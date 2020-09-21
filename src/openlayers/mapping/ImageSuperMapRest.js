@@ -139,8 +139,6 @@ export class ImageSuperMapRest extends TileImage {
       tileLoadFunction: options.tileLoadFunction,
       tilePixelRatio: options.tilePixelRatio,
       tileUrlFunction: tileUrlFunction,
-      url: options.url,
-      urls: options.urls,
       wrapX: options.wrapX !== undefined ? options.wrapX : false,
       cacheEnabled: options.cacheEnabled,
       layersID: options.layersID

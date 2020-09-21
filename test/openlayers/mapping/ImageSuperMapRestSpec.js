@@ -58,7 +58,6 @@ describe('openlayers_ImageSuperMapRest', () => {
                 expect(imageTileOptions.serverType).toBe('ISERVER');
                 expect(imageTileOptions.crossOrigin).toBe('anonymous');
                 expect(imageTileSource).not.toBeNull();
-                expect(imageTileSource.urls.length).toBe(1);
                 done();
             } catch (exception) {
                 console.log("'initialize'案例失败：" + exception.name + ':' + exception.message);

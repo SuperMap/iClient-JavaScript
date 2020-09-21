@@ -1,6 +1,3 @@
-<!--********************************************************************
-* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
-*********************************************************************-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,26 +20,28 @@
         </style>
     </head>
     <body>
-        <div id="map" style="width:100%;height:100%;z-index:0;position: absolute;"></div>
+        <div id="map" style="width: 100%; height: 100%; z-index: 0; position: absolute"></div>
         <script
             type="text/javascript"
             include="mapbox-gl-enhance"
             src="../../dist/mapboxgl/include-mapboxgl.js"
         ></script>
         <script type="text/javascript">
-            var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var attribution =
                 "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
                 " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                 " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
             var tile1 =
                 host +
-                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/railways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin={x:-180,y:90}';
+                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/railways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
+                encodeURIComponent('{x:-180,y:90}');
             var tile2 =
                 host +
-                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/waterways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin={x:-180,y:90}';
+                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/waterways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
+                encodeURIComponent('{x:-180,y:90}');
             var map = new mapboxgl.Map({
-                container: 'map', 
+                container: 'map',
                 style: {
                     version: 8,
                     sources: {
@@ -51,7 +50,10 @@
                             type: 'raster',
                             tiles: [
                                 host +
-                                    '/iserver/services/map-china400/rest/maps/ChinaDark/tileImage.png?prjCoordSys={"epsgCode":4326}&scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}'
+                                    '/iserver/services/map-china400/rest/maps/ChinaDark/tileImage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&prjCoordSys=' +
+                                    encodeURIComponent('{epsgCode:4326}') +
+                                    '&origin=' +
+                                    encodeURIComponent('{x:-180,y:90}')
                             ],
                             tileSize: 256
                         },

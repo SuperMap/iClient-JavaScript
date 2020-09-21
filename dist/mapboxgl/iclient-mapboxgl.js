@@ -3,7 +3,7 @@
  *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.0-beta
+ *          version: v10.1.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2413,7 +2413,10 @@ var GeometryType = SuperMap.GeometryType = {
   RECTANGLE: "RECTANGLE",
 
   /** UNKNOWN */
-  UNKNOWN: "UNKNOWN"
+  UNKNOWN: "UNKNOWN",
+
+  /** GEOCOMPOUND */
+  GEOCOMPOUND: "GEOCOMPOUND"
 };
 
 /**
@@ -3988,6 +3991,82 @@ var DataItemType = SuperMap.DataItemType = {
 
   /** json数据  */
   JSON: "JSON"
+};
+
+/**
+ * @enum WebExportFormatType
+ * @memberOf SuperMap
+ * @description Web 打印输出的格式。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebExportFormatType = SuperMap.WebExportFormatType = {
+  /** png */
+  PNG: "PNG",
+
+  /** pdf */
+  PDF: "PDF"
+};
+
+/**
+ * @enum WebScaleOrientationType
+ * @memberOf SuperMap
+ * @description Web 比例尺的方位样式。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
+  /** horizontal labels below */
+  HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
+
+  /** horizontal labels above */
+  HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
+
+  /** vertical labels left */
+  VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
+
+  /** vertical labels right */
+  VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
+};
+
+/**
+ * @enum WebScaleType
+ * @memberOf SuperMap
+ * @description Web 比例尺的样式。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebScaleType = SuperMap.WebScaleType = {
+  /** line */
+  LINE: "LINE",
+
+  /** bar */
+  BAR: "BAR",
+
+  /** bar sub */
+  BAR_SUB: "BAR_SUB"
+};
+
+/**
+ * @enum WebScaleUnit
+ * @memberOf SuperMap
+ * @description Web 比例尺的单位制。
+ * @version 10.0.1
+ * @type {string}
+ */
+
+var WebScaleUnit = SuperMap.WebScaleUnit = {
+  /** meter */
+  METER: "METER",
+
+  /** foot */
+  FOOT: "FOOT",
+
+  /** degrees */
+  DEGREES: "DEGREES"
 };
 
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
@@ -11974,9 +12053,10 @@ function ServerGeometry_createClass(Constructor, protoProps, staticProps) { if (
 
 
 
+
 /**
  * @class SuperMap.ServerGeometry
- * @category  iServer  
+ * @category  iServer
  * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
  * @param {Object} options - 参数。
  * @param {string} options.id - 服务端几何对象唯一标识符。
@@ -12048,7 +12128,7 @@ function () {
       Util_Util.extend(this, options);
     }
 
-    this.CLASS_NAME = "SuperMap.ServerGeometry";
+    this.CLASS_NAME = 'SuperMap.ServerGeometry';
   }
   /**
    * @function SuperMap.ServerGeometry.prototype.destroy
@@ -12101,6 +12181,9 @@ function () {
 
         case GeometryType.REGIONEPS:
           return me.toGeoRegionEPS();
+
+        case GeometryType.GEOCOMPOUND:
+          return me.transformGeoCompound();
       }
     }
     /**
@@ -12495,6 +12578,26 @@ function () {
 
       return new MultiPolygon(polygonArray);
     }
+  }, {
+    key: "transformGeoCompound",
+    value: function transformGeoCompound() {
+      var me = this,
+          geoParts = me.geoParts || [],
+          len = geoParts.length;
+
+      if (len <= 0) {
+        return null;
+      }
+
+      var geometryList = [];
+
+      for (var index = 0; index < len; index++) {
+        var geometry = geoParts[index];
+        geometryList.push(new ServerGeometry(geometry).toGeometry());
+      }
+
+      return new Collection_Collection(geometryList);
+    }
     /**
      * @function SuperMap.ServerGeometry.prototype.fromJson
      * @description 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
@@ -12543,7 +12646,7 @@ function () {
           icomponents = geometry.components,
           className = geometry.CLASS_NAME,
           prjCoordSys = {
-        "epsgCode": geometry.SRID
+        epsgCode: geometry.SRID
       };
 
       if (!isNaN(geometry.id)) {
@@ -12551,7 +12654,7 @@ function () {
       } //坑爹的改法，没法，为了支持态势标绘，有时间就得全改
 
 
-      if (className != "SuperMap.Geometry.LinearRing" && className != "SuperMap.Geometry.LineString" && (geometry instanceof MultiPoint || geometry instanceof MultiLineString)) {
+      if (className != 'SuperMap.Geometry.LinearRing' && className != 'SuperMap.Geometry.LineString' && (geometry instanceof MultiPoint || geometry instanceof MultiLineString)) {
         var ilen = icomponents.length;
 
         for (var i = 0; i < ilen; i++) {
@@ -12564,7 +12667,7 @@ function () {
         } //这里className不是多点就全部是算线
 
 
-        type = className == "SuperMap.Geometry.MultiPoint" ? GeometryType.POINT : GeometryType.LINE;
+        type = className == 'SuperMap.Geometry.MultiPoint' ? GeometryType.POINT : GeometryType.LINE;
       } else if (geometry instanceof MultiPolygon) {
         var _ilen = icomponents.length;
 
@@ -12961,8 +13064,7 @@ function (_JSONFormat) {
           _geometry.parts = [_geometry.points.length];
         }
 
-        var geo = new ServerGeometry_ServerGeometry(_geometry).toGeometry() || _geometry;
-
+        var geo = _geometry.hasOwnProperty('geometryType') ? _geometry : new ServerGeometry_ServerGeometry(_geometry).toGeometry() || _geometry;
         var geometryType = geo.geometryType || geo.type;
         var data;
 
@@ -13290,7 +13392,7 @@ function (_JSONFormat) {
       }
 
       function isGeometry(input) {
-        return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
+        return input.hasOwnProperty("parts") && input.hasOwnProperty("points") || input.hasOwnProperty("geoParts");
       }
 
       return geojson;
@@ -16705,7 +16807,7 @@ function (_IPortalServiceBase) {
     key: "addMap",
     value: function addMap(addMapParams) {
       if (!(addMapParams instanceof iPortalAddResourceParam_IPortalAddResourceParam)) {
-        this.getErrMsgPromise("addMapParams is not instanceof IPortalAddResourceParam !");
+        return this.getErrMsgPromise("addMapParams is not instanceof IPortalAddResourceParam !");
       }
 
       var cloneAddMapParams = {
@@ -16730,7 +16832,7 @@ function (_IPortalServiceBase) {
     key: "addScene",
     value: function addScene(addSceneParams) {
       if (!(addSceneParams instanceof iPortalAddResourceParam_IPortalAddResourceParam)) {
-        this.getErrMsgPromise("addSceneParams is not instanceof IPortalAddResourceParam !");
+        return this.getErrMsgPromise("addSceneParams is not instanceof IPortalAddResourceParam !");
       }
 
       var cloneAddSceneParams = {
@@ -16755,7 +16857,7 @@ function (_IPortalServiceBase) {
     key: "registerService",
     value: function registerService(registerParams) {
       if (!(registerParams instanceof iPortalRegisterServiceParam_IPortalRegisterServiceParam)) {
-        this.getErrMsgPromise("registerParams is not instanceof IPortalRegisterServiceParam !");
+        return this.getErrMsgPromise("registerParams is not instanceof IPortalRegisterServiceParam !");
       }
 
       var cloneRegisterParams = {
@@ -16816,7 +16918,7 @@ function (_IPortalServiceBase) {
       var _this2 = this;
 
       if (!(params instanceof iPortalAddDataParam_IPortalAddDataParam)) {
-        this.getErrMsgPromise("params is not instanceof iPortalAddDataParam !");
+        return this.getErrMsgPromise("params is not instanceof iPortalAddDataParam !");
       }
 
       var datasUrl = this.iportalUrl + "/web/mycontent/datas.json";
@@ -16830,7 +16932,7 @@ function (_IPortalServiceBase) {
 
       if (type === "excel" || type === "csv") {
         if (!(params.dataMetaInfo instanceof iPortalDataMetaInfoParam_IPortalDataMetaInfoParam)) {
-          this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
+          return this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
         }
 
         dataMetaInfo = {
@@ -16846,11 +16948,11 @@ function (_IPortalServiceBase) {
         entity.dataMetaInfo = dataMetaInfo;
       } else if (type === "hdfs" || type === "hbase") {
         if (!(params.dataMetaInfo instanceof iPortalDataMetaInfoParam_IPortalDataMetaInfoParam)) {
-          this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
+          return this.getErrMsgPromise("params.dataMetaInfo is not instanceof iPortalDataMetaInfoParam !");
         }
 
         if (!(params.dataMetaInfo.dataStoreInfo instanceof iPortalDataStoreInfoParam_IPortalDataStoreInfoParam)) {
-          this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo is not instanceof iPortalDataStoreInfoParam !");
+          return this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo is not instanceof iPortalDataStoreInfoParam !");
         }
 
         var dataStoreInfo = {
@@ -16868,7 +16970,7 @@ function (_IPortalServiceBase) {
 
           case "hbase":
             if (!(params.dataMetaInfo.dataStoreInfo.connectionInfo instanceof iPortalDataConnectionInfoParam_IPortalDataConnectionInfoParam)) {
-              this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo.connectionInfo is not instanceof iPortalDataConnectionInfoParam !");
+              return this.getErrMsgPromise("params.dataMetaInfo.dataStoreInfo.connectionInfo is not instanceof iPortalDataConnectionInfoParam !");
             }
 
             dataStoreInfo.connectionInfo = {
@@ -16915,7 +17017,7 @@ function (_IPortalServiceBase) {
     key: "publishOrUnpublish",
     value: function publishOrUnpublish(option, forPublish) {
       if (!option.dataId || !option.serviceType) {
-        this.getErrMsgPromise("option.dataID and option.serviceType are Required!");
+        return this.getErrMsgPromise("option.dataID and option.serviceType are Required!");
       }
 
       var dataId = option.dataId;
@@ -45587,10 +45689,1387 @@ function (_RasterFunctionParame) {
   return HillshadeParameter;
 }(RasterFunctionParameter_RasterFunctionParameter);
 SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobCustomItems.js
+function WebPrintingJobCustomItems_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobCustomItems_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobCustomItems_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobCustomItems_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobCustomItems_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobCustomItems
+ * @classdesc Web 打印图例元素参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} option.name - 图例元素的名称。
+ * @param {string} [option.picAsUrl] - 图例元素 Base64 格式图片。
+ * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。
+ */
+
+var WebPrintingJobCustomItems_WebPrintingJobCustomItems =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobCustomItems(option) {
+    WebPrintingJobCustomItems_classCallCheck(this, WebPrintingJobCustomItems);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobCustomItems.prototype.name
+     * @description  图例元素的名称。
+     */
+    this.name = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobCustomItems.prototype.picAsUrl]
+     * @description  图例元素 Base64 格式图片。
+     */
+
+    this.picAsUrl = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobCustomItems.prototype.picAsBase64]
+     * @description  图例元素图片的获取地址。
+     */
+
+    this.picAsBase64 = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobCustomItems';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobCustomItems.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobCustomItems_createClass(WebPrintingJobCustomItems, [{
+    key: "destroy",
+    value: function destroy() {
+      var me = this;
+      me.name = null;
+      me.picAsUrl = null;
+      me.picAsBase64 = null;
+    }
+    /**
+     * @function SuperMap.WebPrintingJobCustomItems.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobCustomItems 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        name: this.name
+      };
+
+      if (this.title) {
+        params.title = this.title;
+      }
+
+      if (this.picAsUrl) {
+        params.picAsUrl = this.picAsUrl;
+      } else if (this.picAsBase64) {
+        params.picAsBase64 = this.picAsBase64.replace(/^data:.+;base64,/, '');
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobCustomItems;
+}();
+SuperMap.WebPrintingJobCustomItems = WebPrintingJobCustomItems_WebPrintingJobCustomItems;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobImage.js
+function WebPrintingJobImage_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobImage_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobImage_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobImage_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobImage_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobImage
+ * @classdesc 表达小地图的静态图片参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} [option.picAsUrl] - 小地图的图片 url 地址。
+ * @param {string} [option.picAsBase64] - 小地图的base64位图片信息。
+ */
+
+var WebPrintingJobImage_WebPrintingJobImage =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobImage(option) {
+    WebPrintingJobImage_classCallCheck(this, WebPrintingJobImage);
+
+    /**
+     * @member {string} [SuperMap.WebPrintingJobImage.prototype.picAsUrl]
+     * @description 小地图的图片 url 地址。
+     */
+    this.picAsUrl = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobImage.prototype.picAsBase64]
+     * @description 小地图的base64位图片信息。
+     */
+
+    this.picAsBase64 = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobImage';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobImage.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobImage_createClass(WebPrintingJobImage, [{
+    key: "destroy",
+    value: function destroy() {
+      this.picAsUrl = null;
+      this.picAsBase64 = null;
+    }
+    /**
+     * @function SuperMap.WebPrintingJobImage.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobImage 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {};
+
+      if (this.picAsUrl) {
+        params.picAsUrl = this.picAsUrl;
+      }
+
+      if (this.picAsBase64) {
+        params.picAsBase64 = this.picAsBase64.replace(/^data:.+;base64,/, '');
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobImage;
+}();
+SuperMap.WebPrintingJobImage = WebPrintingJobImage_WebPrintingJobImage;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayers.js
+function WebPrintingJobLayers_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobLayers_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobLayers_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobLayers_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobLayers_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobLayers
+ * @classdesc 将图例添加到布局的业务图层参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} [option.name] - 表示图层 name 的字符串。此 name 必须唯一，并且必须与定义业务图层的 LegendOptions_layers 元素中的图层 name 匹配。
+ */
+
+var WebPrintingJobLayers_WebPrintingJobLayers =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobLayers(option) {
+    WebPrintingJobLayers_classCallCheck(this, WebPrintingJobLayers);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayers.prototype.name
+     * @description  图层 name。
+     */
+    this.name = null;
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayers.prototype.layerType
+     * @description  图层 type。
+     */
+
+    this.layerType = null;
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayers.prototype.url
+     * @description  图层 url。
+     */
+
+    this.url = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobLayers';
+    Util_Util.extend(this, option);
+  }
+  /**
+  * @function SuperMap.WebPrintingJobLayers.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+
+
+  WebPrintingJobLayers_createClass(WebPrintingJobLayers, [{
+    key: "destroy",
+    value: function destroy() {
+      this.name = null;
+      this.layerType = null;
+      this.url = null;
+    }
+  }]);
+
+  return WebPrintingJobLayers;
+}();
+SuperMap.WebPrintingJobLayers = WebPrintingJobLayers_WebPrintingJobLayers;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLegendOptions.js
+function WebPrintingJobLegendOptions_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobLegendOptions_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobLegendOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobLegendOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobLegendOptions_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.WebPrintingJobLegendOptions
+ * @classdesc Web 打印图例参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} [option.title] - 图例名称。
+ * @param {string} [option.picAsUrl] - 图例的图片 url 地址。
+ * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
+ * @param {SuperMap.WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
+ * @param {SuperMap.WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
+ */
+
+var WebPrintingJobLegendOptions_WebPrintingJobLegendOptions =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobLegendOptions(option) {
+    WebPrintingJobLegendOptions_classCallCheck(this, WebPrintingJobLegendOptions);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobLegendOptions.prototype.title
+     * @description  图例名称。
+     */
+    this.title = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobLegendOptions.prototype.picAsUrl]
+     * @description  图例的图片 url 地址。
+     */
+
+    this.picAsUrl = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobLegendOptions.prototype.picAsBase64]
+     * @description  图例的 base64 位图片信息。
+     */
+
+    this.picAsBase64 = null;
+    /**
+     * @member {SuperMap.WebPrintingJobLayers} [SuperMap.WebPrintingJobLegendOptions.prototype.layers]
+     * @description  图例的布局业务图层参数类。
+     */
+
+    this.layers = null;
+    /**
+     * @member {SuperMap.WebPrintingJobCustomItems} [SuperMap.WebPrintingJobLegendOptions.prototype.customItems]
+     * @description  自定义图例元素参数类。
+     */
+
+    this.customItems = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobLegendOptions';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobLegendOptions.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobLegendOptions_createClass(WebPrintingJobLegendOptions, [{
+    key: "destroy",
+    value: function destroy() {
+      this.title = null;
+      this.picAsUrl = null;
+      this.picAsBase64 = null;
+
+      if (this.layers instanceof WebPrintingJobLayers_WebPrintingJobLayers) {
+        this.layers.destroy();
+        this.layers = null;
+      }
+
+      if (this.customItems instanceof WebPrintingJobCustomItems_WebPrintingJobCustomItems) {
+        this.customItems.destroy();
+        this.customItems = null;
+      }
+    }
+    /**
+     * @function SuperMap.WebPrintingJobLegendOptions.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobLegendOptions 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        title: this.title || ""
+      };
+
+      if (this.picAsUrl) {
+        params.picAsUrl = this.picAsUrl;
+      } else if (this.picAsBase64) {
+        params.picAsBase64 = this.picAsBase64.replace(/^data:.+;base64,/, '');
+      } else if (this.customItems) {
+        params.customItems = this.customItems;
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobLegendOptions;
+}();
+SuperMap.WebPrintingJobLegendOptions = WebPrintingJobLegendOptions_WebPrintingJobLegendOptions;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLittleMapOptions.js
+function WebPrintingJobLittleMapOptions_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobLittleMapOptions_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobLittleMapOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobLittleMapOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobLittleMapOptions_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.WebPrintingJobLittleMapOptions
+ * @classdesc Web 打印小地图参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} option.center - 小地图的中心点。
+ * @param {number} [option.scale] - 小地图的比例尺。
+ * @param {Array.<string>} [option.layerNames] - 指定 WebMap中图层名称的列表，用于渲染小地图。
+ * @param {SuperMap.WebPrintingJobImage} [option.image] - 表达小地图的静态图类。
+ * @param {SuperMap.WebPrintingJobLayers} [option.layers] - 指定 WebMap 中的 layers 图层类。
+ */
+
+var WebPrintingJobLittleMapOptions_WebPrintingJobLittleMapOptions =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobLittleMapOptions(option) {
+    WebPrintingJobLittleMapOptions_classCallCheck(this, WebPrintingJobLittleMapOptions);
+
+    /**
+     * @member {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} SuperMap.WebPrintingJobLittleMapOptions.prototype.center
+     * @description 小地图的中心点。
+     */
+    this.center = null;
+    /**
+     * @member {number} [SuperMap.WebPrintingJobLittleMapOptions.prototype.scale]
+     * @description 小地图的比例尺。
+     */
+
+    this.scale = null;
+    /**
+     * @member {Array.<string>} SuperMap.WebPrintingJobLittleMapOptions.prototype.layerNames
+     * @description 指定 WebMap中图层名称的列表，用于渲染小地图。
+     */
+
+    this.layerNames = null;
+    /**
+     * @member {SuperMap.WebPrintingJobImage} [SuperMap.WebPrintingJobLittleMapOptions.prototype.image]
+     * @description 表达小地图的静态图类。暂不支持
+     */
+
+    this.image = null;
+    /**
+     * @member {SuperMap.WebPrintingJobLayers} [SuperMap.WebPrintingJobLittleMapOptions.prototype.layers]
+     * @description 指定 WebMap 中的 layers 图层类。
+     */
+
+    this.layers = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobLittleMapOptions';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobLittleMapOptions.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobLittleMapOptions_createClass(WebPrintingJobLittleMapOptions, [{
+    key: "destroy",
+    value: function destroy() {
+      this.center = null;
+      this.scale = null;
+      this.layerNames = null;
+
+      if (this.image instanceof WebPrintingJobImage_WebPrintingJobImage) {
+        this.image.destroy();
+        this.image = null;
+      }
+
+      if (this.layers instanceof WebPrintingJobLayers_WebPrintingJobLayers) {
+        this.layers.destroy();
+        this.layers = null;
+      }
+    }
+    /**
+     * @function SuperMap.WebPrintingJobLittleMapOptions.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobLittleMapOptions 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        scale: this.scale,
+        center: this.center
+      };
+
+      if (this.layerNames) {
+        params.layerNames = this.layerNames;
+      } else if (this.layers) {
+        params.layers = this.layers;
+      }
+
+      if (this.image) {
+        params.image = this.image;
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobLittleMapOptions;
+}();
+SuperMap.WebPrintingJobLittleMapOptions = WebPrintingJobLittleMapOptions_WebPrintingJobLittleMapOptions;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobNorthArrowOptions.js
+function WebPrintingJobNorthArrowOptions_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobNorthArrowOptions_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobNorthArrowOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobNorthArrowOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobNorthArrowOptions_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobNorthArrowOptions
+ * @classdesc Web 打印地图指北针参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} option.picAsUrl - 指北针的图片 url 地址。
+ * @param {string} [option.picAsBase64] - 指北针的base64位图片信息。
+ */
+
+var WebPrintingJobNorthArrowOptions_WebPrintingJobNorthArrowOptions =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobNorthArrowOptions(option) {
+    WebPrintingJobNorthArrowOptions_classCallCheck(this, WebPrintingJobNorthArrowOptions);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobNorthArrowOptions.prototype.picAsUrl
+     * @description 指北针的图片 url 地址。
+     */
+    this.picAsUrl = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobNorthArrowOptions.prototype.picAsBase64]
+     * @description 指北针的base64位图片信息。
+     */
+
+    this.picAsBase64 = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobNorthArrowOptions';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobNorthArrowOptions.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobNorthArrowOptions_createClass(WebPrintingJobNorthArrowOptions, [{
+    key: "destroy",
+    value: function destroy() {
+      this.picAsUrl = null;
+      this.picAsBase64 = null;
+    }
+    /**
+     * @function SuperMap.WebPrintingJobNorthArrowOptions.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobNorthArrowOptions 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {};
+
+      if (this.picAsUrl) {
+        params.picAsUrl = this.picAsUrl;
+      } else if (this.picAsBase64) {
+        params.picAsBase64 = this.picAsBase64.replace(/^data:.+;base64,/, '');
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobNorthArrowOptions;
+}();
+SuperMap.WebPrintingJobNorthArrowOptions = WebPrintingJobNorthArrowOptions_WebPrintingJobNorthArrowOptions;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobScaleBarOptions.js
+function WebPrintingJobScaleBarOptions_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobScaleBarOptions_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobScaleBarOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobScaleBarOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobScaleBarOptions_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobScaleBarOptions
+ * @classdesc Web 打印比例尺参数类。
+ * @category iServer WebPrintingJob
+ * @version 10.1.0
+ * @param {Object} option - 初始化参数。
+ * @param {string} [option.scaleText] - 比例尺文本信息。例如：1:1000000
+ * @param {SuperMap.WebScaleOrientationType} [option.orientation] - 比例尺的方位样式。
+ * @param {SuperMap.WebScaleType} [option.type] - 比例尺的样式。
+ * @param {number} [option.intervals] - 比例尺条的段数。
+ * @param {SuperMap.WebScaleUnit} [option.unit] - 比例尺的单位制。
+ */
+
+var WebPrintingJobScaleBarOptions_WebPrintingJobScaleBarOptions =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobScaleBarOptions(option) {
+    WebPrintingJobScaleBarOptions_classCallCheck(this, WebPrintingJobScaleBarOptions);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobScaleBarOptions.prototype.scaleText
+     * @description 比例尺文本信息。
+     */
+    this.scaleText = null;
+    /**
+     * @member {SuperMap.WebScaleOrientationType} [SuperMap.WebPrintingJobScaleBarOptions.prototype.orientation]
+     * @description 比例尺的方位样式。
+     */
+
+    this.orientation = null;
+    /**
+     * @member {SuperMap.WebScaleType} [SuperMap.WebPrintingJobScaleBarOptions.prototype.type]
+     * @description 比例尺的样式。
+     */
+
+    this.type = null;
+    /**
+     * @member {object} [SuperMap.WebPrintingJobScaleBarOptions.prototype.intervals]
+     * @description 比例尺条的段数。
+     */
+
+    this.intervals = null;
+    /**
+     * @member {SuperMap.WebScaleUnit} [SuperMap.WebPrintingJobScaleBarOptions.prototype.unit]
+     * @description 比例尺的单位制。
+     */
+
+    this.unit = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobScaleBarOptions';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobScaleBarOptions.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobScaleBarOptions_createClass(WebPrintingJobScaleBarOptions, [{
+    key: "destroy",
+    value: function destroy() {
+      this.scaleText = null;
+      this.orientation = null;
+      this.type = null;
+      this.intervals = null;
+      this.unit = null;
+    }
+    /**
+     * @function SuperMap.WebPrintingJobScaleBarOptions.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobScaleBarOptions 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        scaleText: this.scaleText || "",
+        type: this.type || "BAR",
+        intervals: this.intervals || "",
+        unit: this.unit || "METER"
+      };
+
+      if (this.orientation) {
+        params.orientation = this.orientation;
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobScaleBarOptions;
+}();
+SuperMap.WebPrintingJobScaleBarOptions = WebPrintingJobScaleBarOptions_WebPrintingJobScaleBarOptions;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobContent.js
+function WebPrintingJobContent_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobContent_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobContent_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobContent_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobContent_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobContent
+ * @classdesc Web 打印内容参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP
+ * @param {string} [option.url] - 待打印的 SuperMap iPortal WebMap 的 url 地址。例如：http://supermapiportal:8190/iportal/web/maps/{mapid}/map.rjson
+ * @param {string} [option.token] - 如果待打印的是 SuperMap iPortal 用户私有的 WebMap，需要提供 SuperMap iPortal 用户的 token。
+ * @param {WebMapSummaryObject} [option.value] - 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 json 表达。如果已填了 url 参数，此参数可不传
+ */
+
+var WebPrintingJobContent_WebPrintingJobContent =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobContent(option) {
+    WebPrintingJobContent_classCallCheck(this, WebPrintingJobContent);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobContent.prototype.type
+     * @description Web 打印内容支持的类型。
+     */
+    this.type = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobContent.prototype.url]
+     * @description 待打印的 SuperMap iPortal WebMap 的 url 地址。
+     */
+
+    this.url = null;
+    /**
+     * @member {string} [SuperMap.WebPrintingJobContent.prototype.token]
+     * @description 如果待打印的是 SuperMap iPortal 用户私有的 WebMap，需要提供 SuperMap iPortal 用户的 token。
+     */
+
+    this.token = null;
+    /**
+     * @member {WebMapSummaryObject} [SuperMap.WebPrintingJobContent.prototype.value]
+     * @description 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 json 表达。
+     */
+
+    this.value = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobContent';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobContent.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobContent_createClass(WebPrintingJobContent, [{
+    key: "destroy",
+    value: function destroy() {
+      this.type =  false || "WEBMAP";
+      this.url = null;
+      this.token = null;
+      this.value = null;
+    }
+    /**
+     * @function SuperMap.WebPrintingJobContent.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobContent 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        type: this.type
+      };
+
+      if (this.token) {
+        params.token = this.token;
+      }
+
+      if (this.url) {
+        params.url = this.url;
+      } else if (this.value) {
+        params.value = this.value;
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobContent;
+}();
+SuperMap.WebPrintingJobContent = WebPrintingJobContent_WebPrintingJobContent;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayoutOptions.js
+function WebPrintingJobLayoutOptions_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobLayoutOptions_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobLayoutOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobLayoutOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobLayoutOptions_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class SuperMap.WebPrintingJobLayoutOptions
+ * @classdesc Web 打印的布局参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {string} option.templateName - 布局模板的名称。
+ * @param {string} option.title - 地图主标题名称。
+ * @param {string} option.subTitle - 地图副标题名称。
+ * @param {string} option.author - 地图作者名称。
+ * @param {string} option.copyright - 地图版权信息。
+ * @param {SuperMap.WebPrintingJobLittleMapOptions} option.littleMapOptions - 小地图参数类。
+ * @param {SuperMap.WebPrintingJobLegendOptions} option.legendOptions - 图例参数类。
+ * @param {SuperMap.WebPrintingJobScaleBarOptions} [option.scaleBarOptions] - 地图比例尺参数类。
+ * @param {SuperMap.WebPrintingJobNorthArrowOptions} [option.northArrowOptions] - 地图指北针参数类。
+ */
+
+var WebPrintingJobLayoutOptions_WebPrintingJobLayoutOptions =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobLayoutOptions(option) {
+    WebPrintingJobLayoutOptions_classCallCheck(this, WebPrintingJobLayoutOptions);
+
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.templateName
+     * @description 布局模板的名称。
+     */
+    this.templateName = null;
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.title
+     * @description 地图主标题名称。
+     */
+
+    this.title = null;
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.subTitle
+     * @description 地图副标题名称。
+     */
+
+    this.subTitle = null;
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.author
+     * @description 地图作者名称。
+     */
+
+    this.author = null;
+    /**
+     * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.copyright
+     * @description 地图版权信息。
+     */
+
+    this.copyright = null;
+    /**
+     * @member {SuperMap.WebPrintingJobScaleBarOptions} [SuperMap.WebPrintingJobLayoutOptions.prototype.scaleBarOptions]
+     * @description 地图比例尺参数类。
+     */
+
+    this.scaleBarOptions = null;
+    /**
+     * @member {SuperMap.WebPrintingJobNorthArrowOptions} [SuperMap.WebPrintingJobLayoutOptions.prototype.northArrowOptions]
+     * @description 地图指北针参数类。
+     */
+
+    this.northArrowOptions = null;
+    /**
+     * @member {SuperMap.WebPrintingJobLittleMapOptions} SuperMap.WebPrintingJobLayoutOptions.prototype.littleMapOptions
+     * @description 小地图参数类。
+     */
+
+    this.littleMapOptions = null;
+    /**
+     * @member {SuperMap.WebPrintingJobLegendOptions} SuperMap.WebPrintingJobLayoutOptions.prototype.legendOptions
+     * @description 图例参数类。
+     */
+
+    this.legendOptions = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobLayoutOptions';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobLayoutOptions.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobLayoutOptions_createClass(WebPrintingJobLayoutOptions, [{
+    key: "destroy",
+    value: function destroy() {
+      this.templateName = null;
+      this.title = null;
+      this.subTitle = null;
+      this.author = null;
+      this.copyright = null;
+
+      if (this.scaleBarOptions instanceof WebPrintingJobScaleBarOptions_WebPrintingJobScaleBarOptions) {
+        this.scaleBarOptions.destroy();
+        this.scaleBarOptions = null;
+      }
+
+      if (this.northArrowOptions instanceof WebPrintingJobNorthArrowOptions_WebPrintingJobNorthArrowOptions) {
+        this.northArrowOptions.destroy();
+        this.northArrowOptions = null;
+      }
+
+      if (this.littleMapOptions instanceof WebPrintingJobLittleMapOptions_WebPrintingJobLittleMapOptions) {
+        this.littleMapOptions.destroy();
+        this.littleMapOptions = null;
+      }
+
+      if (this.legendOptions instanceof WebPrintingJobLegendOptions_WebPrintingJobLegendOptions) {
+        this.legendOptions.destroy();
+        this.legendOptions = null;
+      }
+    }
+    /**
+     * @function SuperMap.WebPrintingJobLayoutOptions.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobLayoutOptions 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        templateName: this.templateName,
+        title: this.title,
+        subTitle: this.subTitle,
+        author: this.author,
+        copyright: this.copyright
+      };
+
+      if (this.scaleBarOptions) {
+        params.scaleBarOptions = this.scaleBarOptions;
+      }
+
+      if (this.northArrowOptions) {
+        params.northArrowOptions = this.northArrowOptions;
+      }
+
+      if (this.littleMapOptions) {
+        params.littleMapOptions = this.littleMapOptions;
+      }
+
+      if (this.legendOptions) {
+        params.legendOptions = this.legendOptions;
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobLayoutOptions;
+}();
+SuperMap.WebPrintingJobLayoutOptions = WebPrintingJobLayoutOptions_WebPrintingJobLayoutOptions;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobExportOptions.js
+function WebPrintingJobExportOptions_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobExportOptions_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobExportOptions_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobExportOptions_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobExportOptions_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.WebPrintingJobExportOptions
+ * @classdesc Web 打印的输出参数类。
+ * @version 10.1.0
+ * @category iServer WebPrintingJob
+ * @param {Object} option - 初始化参数。
+ * @param {SuperMap.WebExportFormatType} option.format - Web 打印输出的格式，目前支持：PNG、PDF。
+ * @param {number} [option.dpi=96] - Web 打印输出的分辨率，单位为每英寸点数。默认值为 96 dpi。
+ * @param {number} [option.scale] - Web 打印输出的地图比例尺。
+ * @param {number} [option.rotation] - Web 打印输出的地图角度。
+ * @param {SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} [option.center] - Web 打印输出的地图中心点。
+ */
+
+var WebPrintingJobExportOptions_WebPrintingJobExportOptions =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobExportOptions(option) {
+    WebPrintingJobExportOptions_classCallCheck(this, WebPrintingJobExportOptions);
+
+    /**
+     * @member {SuperMap.WebExportFormatType} SuperMap.WebPrintingJobExportOptions.prototype.format
+     * @description Web 打印输出的格式。
+     */
+    this.format = null;
+    /**
+     * @member {number} [SuperMap.WebPrintingJobExportOptions.prototype.dpi=96]
+     * @description  Web 打印输出的分辨率，单位为每英寸点数。
+     */
+
+    this.dpi = 96;
+    /**
+     * @member {number} [SuperMap.WebPrintingJobExportOptions.prototype.scale]
+     * @description Web 打印输出的地图比例尺。
+     */
+
+    this.scale = null;
+    /**
+     * @member {number} [SuperMap.WebPrintingJobExportOptions.prototype.rotation]
+     * @description Web 打印输出的地图角度。
+     */
+
+    this.rotation = null;
+    /**
+     * @member {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} [SuperMap.WebPrintingJobExportOptions.prototype.center]
+     * @description Web 打印输出的地图中心点。
+     */
+
+    this.center = null;
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobExportOptions';
+    Util_Util.extend(this, option);
+  }
+  /**
+   * @function SuperMap.WebPrintingJobExportOptions.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobExportOptions_createClass(WebPrintingJobExportOptions, [{
+    key: "destroy",
+    value: function destroy() {
+      this.format = null;
+      this.dpi = null;
+      this.scale = null;
+      this.rotation = null;
+      this.center = null;
+      this.outputSize = null;
+    }
+    /**
+     * @function SuperMap.WebPrintingJobExportOptions.prototype.toJSON
+     * @description 将 SuperMap.WebPrintingJobExportOptions 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      var params = {
+        format: this.format || "PDF",
+        dpi: this.dpi,
+        scale: this.scale,
+        center: this.center
+      };
+
+      if (this.rotation) {
+        params.rotation = this.rotation;
+      }
+
+      if (this.outputSize) {
+        params.outputSize = this.outputSize;
+      }
+
+      return Util_Util.toJSON(params);
+    }
+  }]);
+
+  return WebPrintingJobExportOptions;
+}();
+SuperMap.WebPrintingJobExportOptions = WebPrintingJobExportOptions_WebPrintingJobExportOptions;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobParameters.js
+function WebPrintingJobParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobParameters_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.WebPrintingJobParameters
+ * @category iServer WebPrintingJob
+ * @version 10.1.0
+ * @classdesc Web 打印参数类
+ * @param {Object} options - 初始化参数。
+ * @param {SuperMap.WebPrintingJobContent} options.content - Web 打印的内容类。
+ * @param {SuperMap.WebPrintingJobLayoutOptions} options.layoutOptions - Web 打印的布局类，包含各种布局元素的设置。
+ * @param {SuperMap.WebPrintingJobExportOptions} options.exportOptions - Web 打印的输出类，包含 DPI、页面大小等。
+ */
+
+var WebPrintingJobParameters_WebPrintingJobParameters =
+/*#__PURE__*/
+function () {
+  function WebPrintingJobParameters(options) {
+    WebPrintingJobParameters_classCallCheck(this, WebPrintingJobParameters);
+
+    if (!options) {
+      return;
+    }
+    /**
+     * @member {SuperMap.WebPrintingJobContent} SuperMap.WebPrintingJobParameters.prototype.content
+     * @description Web 打印的内容类。
+     */
+
+
+    this.content = null;
+    /**
+     * @member {SuperMap.WebPrintingJobLayoutOptions} SuperMap.WebPrintingJobParameters.prototype.layoutOptions
+     * @description Web 打印的布局类，包含各种布局元素的设置。
+     */
+
+    this.layoutOptions = null;
+    /**
+     * @member {SuperMap.WebPrintingJobExportOptions} SuperMap.WebPrintingJobParameters.prototype.exportOptions
+     * @description Web 打印的输出类，包含 DPI、页面大小等。
+     */
+
+    this.exportOptions = null;
+    Util_Util.extend(this, options);
+    this.CLASS_NAME = 'SuperMap.WebPrintingJobParameters';
+  }
+  /**
+   * @function SuperMap.WebPrintingJobParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingJobParameters_createClass(WebPrintingJobParameters, [{
+    key: "destroy",
+    value: function destroy() {
+      if (this.content instanceof WebPrintingJobContent_WebPrintingJobContent) {
+        this.content.destroy();
+        this.content = null;
+      }
+
+      if (this.layoutOptions instanceof WebPrintingJobLayoutOptions_WebPrintingJobLayoutOptions) {
+        this.layoutOptions.destroy();
+        this.layoutOptions = null;
+      }
+
+      if (this.exportOptions instanceof WebPrintingJobExportOptions_WebPrintingJobExportOptions) {
+        this.exportOptions.destroy();
+        this.exportOptions = null;
+      }
+    }
+  }]);
+
+  return WebPrintingJobParameters;
+}();
+SuperMap.WebPrintingJobParameters = WebPrintingJobParameters_WebPrintingJobParameters;
+// CONCATENATED MODULE: ./src/common/iServer/WebPrintingService.js
+function WebPrintingService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { WebPrintingService_typeof = function _typeof(obj) { return typeof obj; }; } else { WebPrintingService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return WebPrintingService_typeof(obj); }
+
+function WebPrintingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function WebPrintingService_possibleConstructorReturn(self, call) { if (call && (WebPrintingService_typeof(call) === "object" || typeof call === "function")) { return call; } return WebPrintingService_assertThisInitialized(self); }
+
+function WebPrintingService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function WebPrintingService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { WebPrintingService_get = Reflect.get; } else { WebPrintingService_get = function _get(target, property, receiver) { var base = WebPrintingService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return WebPrintingService_get(target, property, receiver || target); }
+
+function WebPrintingService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = WebPrintingService_getPrototypeOf(object); if (object === null) break; } return object; }
+
+function WebPrintingService_getPrototypeOf(o) { WebPrintingService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return WebPrintingService_getPrototypeOf(o); }
+
+function WebPrintingService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) WebPrintingService_setPrototypeOf(subClass, superClass); }
+
+function WebPrintingService_setPrototypeOf(o, p) { WebPrintingService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return WebPrintingService_setPrototypeOf(o, p); }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.WebPrintingService
+ * @category iServer WebPrintingJob
+ * @version 10.1.0
+ * @classdesc 打印地图服务基类。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+
+var WebPrintingService_WebPrintingService =
+/*#__PURE__*/
+function (_CommonServiceBase) {
+  WebPrintingService_inherits(WebPrintingService, _CommonServiceBase);
+
+  /**
+   * @function SuperMap.WebPrintingService.prototype.constructor
+   * @description 打印地图服务基类。
+   * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
+   * @param {Object} options -参数。
+   * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+   */
+  function WebPrintingService(url, options) {
+    var _this;
+
+    WebPrintingService_classCallCheck(this, WebPrintingService);
+
+    _this = WebPrintingService_possibleConstructorReturn(this, WebPrintingService_getPrototypeOf(WebPrintingService).call(this, url, options));
+
+    if (options) {
+      Util_Util.extend(WebPrintingService_assertThisInitialized(_this), options);
+    }
+
+    _this.CLASS_NAME = 'SuperMap.WebPrintingService';
+
+    if (!_this.url) {
+      return WebPrintingService_possibleConstructorReturn(_this);
+    }
+
+    return _this;
+  }
+  /**
+   * @function SuperMap.WebPrintingService.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  WebPrintingService_createClass(WebPrintingService, [{
+    key: "destroy",
+    value: function destroy() {
+      WebPrintingService_get(WebPrintingService_getPrototypeOf(WebPrintingService.prototype), "destroy", this).call(this);
+    }
+    /**
+     * @function SuperMap.WebPrintingService.prototype.createWebPrintingJob
+     * @description 创建 Web 打印任务。
+     * @param {SuperMap.WebPrintingJobParameters} params - Web 打印的请求参数。
+     */
+
+  }, {
+    key: "createWebPrintingJob",
+    value: function createWebPrintingJob(params) {
+      if (!params) {
+        return;
+      }
+
+      if (params.layoutOptions) {
+        if (params.layoutOptions.legendOptions) {
+          !params.layoutOptions.legendOptions.title && (params.layoutOptions.legendOptions.title = '');
+          params.layoutOptions.legendOptions.picAsBase64 = params.layoutOptions.legendOptions.picAsBase64 && params.layoutOptions.legendOptions.picAsBase64.replace(/^data:.+;base64,/, '');
+
+          if (params.layoutOptions.legendOptions.customItems && params.layoutOptions.legendOptions.customItems.hasOwnProperty('picAsBase64')) {
+            params.layoutOptions.legendOptions.customItems.picAsBase64 = params.layoutOptions.legendOptions.customItems.picAsBase64.replace(/^data:.+;base64,/, '');
+          }
+        }
+      }
+
+      var me = this;
+      me.request({
+        url: me._processUrl('jobs'),
+        method: 'POST',
+        data: Util_Util.toJSON(params),
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.WebPrintingService.prototype.getPrintingJob
+     * @description 获取 Web 打印输出文档任务。
+     * @param {String} jobId - Web 打印任务 ID
+     */
+
+  }, {
+    key: "getPrintingJob",
+    value: function getPrintingJob(jobId) {
+      var me = this;
+
+      var url = me._processUrl("jobs/".concat(jobId));
+
+      me.request({
+        url: url,
+        method: 'GET',
+        scope: me,
+        success: function success(result) {
+          me.rollingProcess(result, url);
+        },
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.WebPrintingService.prototype.getPrintingJobResult
+     * @description 获取 Web 打印任务的输出文档。
+     * @param {String} jobId - Web 打印输入文档任务 ID。
+     */
+
+  }, {
+    key: "getPrintingJobResult",
+    value: function getPrintingJobResult(jobId) {
+      var me = this;
+      me.request({
+        url: me._processUrl("jobs/".concat(jobId, "/result")),
+        method: 'GET',
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.WebPrintingService.prototype.getLayoutTemplates
+     * @description 查询 Web 打印服务所有可用的模板信息。
+     */
+
+  }, {
+    key: "getLayoutTemplates",
+    value: function getLayoutTemplates() {
+      var me = this;
+      me.request({
+        url: me._processUrl('layouts'),
+        method: 'GET',
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.WebPrintingService.prototype.rollingProcess
+     * @description 轮询查询 Web 打印任务。
+     * @param {Object} result - 服务器返回的结果对象。
+     */
+
+  }, {
+    key: "rollingProcess",
+    value: function rollingProcess(result, url) {
+      var me = this;
+
+      if (!result) {
+        return;
+      }
+
+      var id = setInterval(function () {
+        me.request({
+          url: url,
+          method: 'GET',
+          scope: me,
+          success: function success(result) {
+            switch (result.status) {
+              case 'FINISHED':
+                clearInterval(id);
+                me.serviceProcessCompleted(result);
+                break;
+
+              case 'ERROR':
+                clearInterval(id);
+                me.serviceProcessFailed(result);
+                break;
+
+              case 'RUNNING':
+                me.events.triggerEvent('processRunning', result);
+                break;
+            }
+          },
+          failure: me.serviceProcessFailed
+        });
+      }, 1000);
+    }
+  }, {
+    key: "_processUrl",
+    value: function _processUrl(appendContent) {
+      if (appendContent) {
+        return Util_Util.urlPathAppend(this.url, appendContent);
+      }
+
+      return this.url;
+    }
+  }]);
+
+  return WebPrintingService;
+}(CommonServiceBase_CommonServiceBase);
+SuperMap.WebPrintingService = WebPrintingService_WebPrintingService;
 // CONCATENATED MODULE: ./src/common/iServer/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -49836,7 +51315,7 @@ function () {
       //
 
 
-      function $(tok) {
+      function _match(tok) {
         var match, length, c, endIndex; // Non-terminal
 
         if (tok instanceof Function) {
@@ -49889,7 +51368,7 @@ function () {
             return match.length === 1 ? match[0] : match;
           }
         }
-      } // Same as $(), but don't change the state of the parser,
+      } // Same as _match(), but don't change the state of the parser,
       // just return the match.
 
 
@@ -50090,7 +51569,7 @@ function () {
           // output.
 
 
-          root = new SuperMap.CartoCSS.Tree.Ruleset([], $(this.parsers.primary));
+          root = new SuperMap.CartoCSS.Tree.Ruleset([], _match(this.parsers.primary));
           root.root = true; // Get an array of Ruleset objects, flattened
           // and sorted according to specificitySort
 
@@ -50124,7 +51603,7 @@ function () {
         //
         //   Ruleset ->  Rule -> Value -> Expression -> Entity
         //
-        //  In general, most rules will try to parse a token with the `$()` function, and if the return
+        //  In general, most rules will try to parse a token with the `_match()` function, and if the return
         //  value is truly, will return a new node, of the relevant type. Sometimes, we need to check
         //  first, before parsing, that's when we use `peek()`.
         parsers: {
@@ -50145,7 +51624,7 @@ function () {
             var node,
                 root = [];
 
-            while ((node = $(this.rule) || $(this.ruleset) || $(this.comment)) || $(/^[\s\n]+/) || (node = $(this.invalid))) {
+            while ((node = _match(this.rule) || _match(this.ruleset) || _match(this.comment)) || _match(/^[\s\n]+/) || (node = _match(this.invalid))) {
               if (node) {
                 root.push(node);
               }
@@ -50154,7 +51633,8 @@ function () {
             return root;
           },
           invalid: function invalid() {
-            var chunk = $(/^[^;\n]*[;\n]/); // To fail gracefully, match everything until a semicolon or linebreak.
+            var chunk = _match(/^[^;\n]*[;\n]/); // To fail gracefully, match everything until a semicolon or linebreak.
+
 
             if (chunk) {
               return new SuperMap.CartoCSS.Tree.Invalid(chunk, memo);
@@ -50171,8 +51651,8 @@ function () {
             }
 
             if (input.charAt(i + 1) === '/') {
-              return new SuperMap.CartoCSS.Tree.Comment($(/^\/\/.*/), true);
-            } else if (comment = $(/^\/\*(?:[^*]|\*+[^\/*])*\*+\/\n?/)) {
+              return new SuperMap.CartoCSS.Tree.Comment(_match(/^\/\/.*/), true);
+            } else if (comment = _match(/^\/\*(?:[^*]|\*+[^\/*])*\*+\/\n?/)) {
               return new SuperMap.CartoCSS.Tree.Comment(comment);
             }
           },
@@ -50184,7 +51664,7 @@ function () {
                 return;
               }
 
-              var str = $(/^"((?:[^"\\\r\n]|\\.)*)"|'((?:[^'\\\r\n]|\\.)*)'/);
+              var str = _match(/^"((?:[^"\\\r\n]|\\.)*)"|'((?:[^'\\\r\n]|\\.)*)'/);
 
               if (str) {
                 return new SuperMap.CartoCSS.Tree.Quoted(str[1] || str[2]);
@@ -50197,13 +51677,13 @@ function () {
               var l = '[',
                   r = ']';
 
-              if (!$(l)) {
+              if (!_match(l)) {
                 return;
               }
 
-              var field_name = $(/(^[^\]]+)/);
+              var field_name = _match(/(^[^\]]+)/);
 
-              if (!$(r)) {
+              if (!_match(r)) {
                 return;
               }
 
@@ -50213,7 +51693,7 @@ function () {
             },
             // This is a comparison operator
             comparison: function comparison() {
-              var str = $(/^=~|=|!=|<=|>=|<|>/);
+              var str = _match(/^=~|=|!=|<=|>=|<|>/);
 
               if (str) {
                 return str;
@@ -50223,7 +51703,7 @@ function () {
             // These can start with either a letter or a dash (-),
             // and then contain numbers, underscores, and letters.
             keyword: function keyword() {
-              var k = $(/^[A-Za-z\u4e00-\u9fa5-]+[A-Za-z-0-9\u4e00-\u9fa5_]*/);
+              var k = _match(/^[A-Za-z\u4e00-\u9fa5-]+[A-Za-z-0-9\u4e00-\u9fa5_]*/);
 
               if (k) {
                 return new SuperMap.CartoCSS.Tree.Keyword(k);
@@ -50249,11 +51729,13 @@ function () {
 
               var l = '(',
                   r = ')';
-              $(l); // Parse the '(' and consume whitespace.
 
-              args = $(this.entities['arguments']);
+              _match(l); // Parse the '(' and consume whitespace.
 
-              if (!$(r)) {
+
+              args = _match(this.entities['arguments']);
+
+              if (!_match(r)) {
                 return;
               }
 
@@ -50266,11 +51748,11 @@ function () {
               var args = [],
                   arg;
 
-              while (arg = $(this.expression)) {
+              while (arg = _match(this.expression)) {
                 args.push(arg);
                 var q = ',';
 
-                if (!$(q)) {
+                if (!_match(q)) {
                   break;
                 }
               }
@@ -50278,7 +51760,7 @@ function () {
               return args;
             },
             literal: function literal() {
-              return $(this.entities.dimension) || $(this.entities.keywordcolor) || $(this.entities.hexcolor) || $(this.entities.quoted);
+              return _match(this.entities.dimension) || _match(this.entities.keywordcolor) || _match(this.entities.hexcolor) || _match(this.entities.quoted);
             },
             // Parse url() tokens
             //
@@ -50288,14 +51770,14 @@ function () {
             url: function url() {
               var value;
 
-              if (input.charAt(i) !== 'u' || !$(/^url\(/)) {
+              if (input.charAt(i) !== 'u' || !_match(/^url\(/)) {
                 return;
               }
 
-              value = $(this.entities.quoted) || $(this.entities.variable) || $(/^[\-\w%@$\/.&=:;#+?~]+/) || '';
+              value = _match(this.entities.quoted) || _match(this.entities.variable) || _match(/^[\-\w%@_match\/.&=:;#+?~]+/) || '';
               var r = ')';
 
-              if (!$(r)) {
+              if (!_match(r)) {
                 return new SuperMap.CartoCSS.Tree.Invalid(value, memo, 'Missing closing ) in URL.');
               } else {
                 return new SuperMap.CartoCSS.Tree.URL(typeof value.value !== 'undefined' || value instanceof SuperMap.CartoCSS.Tree.Variable ? value : new SuperMap.CartoCSS.Tree.Quoted(value));
@@ -50311,14 +51793,14 @@ function () {
               var name,
                   index = i;
 
-              if (input.charAt(i) === '@' && (name = $(/^@[\w-]+/))) {
+              if (input.charAt(i) === '@' && (name = _match(/^@[\w-]+/))) {
                 return new SuperMap.CartoCSS.Tree.Variable(name, index, env.filename);
               }
             },
             hexcolor: function hexcolor() {
               var rgb;
 
-              if (input.charAt(i) === '#' && (rgb = $(/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/))) {
+              if (input.charAt(i) === '#' && (rgb = _match(/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/))) {
                 return new SuperMap.CartoCSS.Tree.Color(rgb[1]);
               }
             },
@@ -50326,7 +51808,7 @@ function () {
               var rgb = chunks[j].match(/^[a-z]+/);
 
               if (rgb && rgb[0] in SuperMap.CartoCSS.Tree.Reference.data.colors) {
-                return new SuperMap.CartoCSS.Tree.Color(SuperMap.CartoCSS.Tree.Reference.data.colors[$(/^[a-z]+/)]);
+                return new SuperMap.CartoCSS.Tree.Color(SuperMap.CartoCSS.Tree.Reference.data.colors[_match(/^[a-z]+/)]);
               }
             },
             // A Dimension, that is, a number and a unit. The only
@@ -50338,7 +51820,7 @@ function () {
                 return;
               }
 
-              var value = $(/^(-?\d*\.?\d+(?:[eE][-+]?\d+)?)(\%|\w+)?/);
+              var value = _match(/^(-?\d*\.?\d+(?:[eE][-+]?\d+)?)(\%|\w+)?/);
 
               if (value) {
                 return new SuperMap.CartoCSS.Tree.Dimension(value[1], value[2], memo);
@@ -50350,16 +51832,19 @@ function () {
           variable: function variable() {
             var name;
 
-            if (input.charAt(i) === '@' && (name = $(/^(@[\w-]+)\s*:/))) {
+            if (input.charAt(i) === '@' && (name = _match(/^(@[\w-]+)\s*:/))) {
               return name[1];
             }
           },
           // Entities are the smallest recognized token,
           // and can be found inside a rule's value.
           entity: function entity() {
-            var property1 = $(this.entities.call) || $(this.entities.literal);
-            var property2 = $(this.entities.field) || $(this.entities.variable);
-            var property3 = $(this.entities.url) || $(this.entities.keyword);
+            var property1 = _match(this.entities.call) || _match(this.entities.literal);
+
+            var property2 = _match(this.entities.field) || _match(this.entities.variable);
+
+            var property3 = _match(this.entities.url) || _match(this.entities.keyword);
+
             return property1 || property2 || property3;
           },
           // A Rule terminator. Note that we use `peek()` to check for '}',
@@ -50367,13 +51852,13 @@ function () {
           // it's there, if ';' was ommitted.
           end: function end() {
             var q = ';';
-            return $(q) || peek('}');
+            return _match(q) || peek('}');
           },
           // Elements are the building blocks for Selectors. They consist of
           // an element name, such as a tag a class, or `*`.
           //增加对中文的支持，[\u4e00-\u9fa5]
           element: function element() {
-            var e = $(/^(?:[.#][\w\u4e00-\u9fa5\-]+|\*|Map)/);
+            var e = _match(/^(?:[.#][\w\u4e00-\u9fa5\-]+|\*|Map)/);
 
             if (e) {
               return new SuperMap.CartoCSS.Tree.Element(e);
@@ -50382,7 +51867,7 @@ function () {
           // Attachments allow adding multiple lines, polygons etc. to an
           // object. There can only be one attachment per selector.
           attachment: function attachment() {
-            var s = $(/^::([\w\-]+(?:\/[\w\-]+)*)/);
+            var s = _match(/^::([\w\-]+(?:\/[\w\-]+)*)/);
 
             if (s) {
               return s[1];
@@ -50401,7 +51886,7 @@ function () {
                 segments = 0,
                 conditions = 0;
 
-            while ((e = $(this.element)) || (z = $(this.zoom)) || (f = $(this.filter)) || (a = $(this.attachment))) {
+            while ((e = _match(this.element)) || (z = _match(this.zoom)) || (f = _match(this.filter)) || (a = _match(this.attachment))) {
               segments++;
 
               if (e) {
@@ -50448,17 +51933,17 @@ function () {
                 l = '[',
                 r = ']';
 
-            if (!$(l)) {
+            if (!_match(l)) {
               return;
             }
 
-            if (key = $(/^[a-zA-Z0-9\-_]+/) || $(this.entities.quoted) || $(this.entities.variable) || $(this.entities.keyword) || $(this.entities.field)) {
+            if (key = _match(/^[a-zA-Z0-9\-_]+/) || _match(this.entities.quoted) || _match(this.entities.variable) || _match(this.entities.keyword) || _match(this.entities.field)) {
               if (key instanceof SuperMap.CartoCSS.Tree.Quoted) {
                 key = new SuperMap.CartoCSS.Tree.Field(key.toString());
               }
 
-              if ((op = $(this.entities.comparison)) && (val = $(this.entities.quoted) || $(this.entities.variable) || $(this.entities.dimension) || $(this.entities.keyword) || $(this.entities.field))) {
-                if (!$(r)) {
+              if ((op = _match(this.entities.comparison)) && (val = _match(this.entities.quoted) || _match(this.entities.variable) || _match(this.entities.dimension) || _match(this.entities.keyword) || _match(this.entities.field))) {
+                if (!_match(r)) {
                   throw makeError({
                     message: 'Missing closing ] of filter.',
                     index: memo - 1
@@ -50479,7 +51964,7 @@ function () {
                 val,
                 r = ']';
 
-            if ($(/^\[\s*zoom/g) && (op = $(this.entities.comparison)) && (val = $(this.entities.variable) || $(this.entities.dimension)) && $(r)) {
+            if (_match(/^\[\s*zoom/g) && (op = _match(this.entities.comparison)) && (val = _match(this.entities.variable) || _match(this.entities.dimension)) && _match(r)) {
               return new SuperMap.CartoCSS.Tree.Zoom(op, val, memo);
             } else {
               // backtrack
@@ -50493,7 +51978,7 @@ function () {
                 l = '{',
                 r = '}';
 
-            if ($(l) && (content = $(this.primary)) && $(r)) {
+            if (_match(l) && (content = _match(this.primary)) && _match(r)) {
               return content;
             }
           },
@@ -50505,26 +51990,26 @@ function () {
                 q = ',';
             save();
 
-            while (s = $(this.selector)) {
+            while (s = _match(this.selector)) {
               selectors.push(s);
 
-              while ($(this.comment)) {//NOSONAR
+              while (_match(this.comment)) {//NOSONAR
               }
 
-              if (!$(q)) {
+              if (!_match(q)) {
                 break;
               }
 
-              while ($(this.comment)) {//NOSONAR
+              while (_match(this.comment)) {//NOSONAR
               }
             }
 
             if (s) {
-              while ($(this.comment)) {//NOSONAR
+              while (_match(this.comment)) {//NOSONAR
               }
             }
 
-            if (selectors.length > 0 && (rules = $(this.block))) {
+            if (selectors.length > 0 && (rules = _match(this.block))) {
               if (selectors.length === 1 && selectors[0].elements.length && selectors[0].elements[0].value === 'Map') {
                 var rs = new SuperMap.CartoCSS.Tree.Ruleset(selectors, rules);
                 rs.isMap = true;
@@ -50547,10 +52032,10 @@ function () {
               return;
             }
 
-            if (name = $(this.variable) || $(this.property)) {
-              value = $(this.value);
+            if (name = _match(this.variable) || _match(this.property)) {
+              value = _match(this.value);
 
-              if (value && $(this.end)) {
+              if (value && _match(this.end)) {
                 return new SuperMap.CartoCSS.Tree.Rule(name, value, memo, env.filename);
               } else {
                 furthest = i;
@@ -50564,17 +52049,17 @@ function () {
                 e,
                 q = ',';
 
-            while (e = $(this.entity)) {
+            while (e = _match(this.entity)) {
               expression.push(e);
             }
 
             value.push(new SuperMap.CartoCSS.Tree.Expression(expression));
 
-            if ($(q)) {
-              while (e = $(this.expression)) {
+            if (_match(q)) {
+              while (e = _match(this.expression)) {
                 value.push(e);
 
-                if (!$(q)) {
+                if (!_match(q)) {
                   break;
                 }
               }
@@ -50590,10 +52075,10 @@ function () {
                 expressions = [],
                 q = ',';
 
-            while (e = $(this.expression)) {
+            while (e = _match(this.expression)) {
               expressions.push(e);
 
-              if (!$(q)) {
+              if (!_match(q)) {
                 break;
               }
             }
@@ -50612,7 +52097,7 @@ function () {
                 l = '(',
                 r = ")";
 
-            if ($(l) && (e = $(this.expression)) && $(r)) {
+            if (_match(l) && (e = _match(this.expression)) && _match(r)) {
               return e;
             }
           },
@@ -50625,8 +52110,8 @@ function () {
                 operation,
                 q = '/';
 
-            if (m = $(this.operand)) {
-              while ((op = $(q) || $('*') || $('%')) && (a = $(this.operand))) {
+            if (m = _match(this.operand)) {
+              while ((op = _match(q) || _match('*') || _match('%')) && (a = _match(this.operand))) {
                 operation = new SuperMap.CartoCSS.Tree.Operation(op, [operation || m, a], memo);
               }
 
@@ -50640,8 +52125,8 @@ function () {
                 operation,
                 plus = '+';
 
-            if (m = $(this.multiplication)) {
-              while ((op = $(/^[-+]\s+/) || input.charAt(i - 1) != ' ' && ($(plus) || $('-'))) && (a = $(this.multiplication))) {
+            if (m = _match(this.multiplication)) {
+              while ((op = _match(/^[-+]\s+/) || input.charAt(i - 1) != ' ' && (_match(plus) || _match('-'))) && (a = _match(this.multiplication))) {
                 operation = new SuperMap.CartoCSS.Tree.Operation(op, [operation || m, a], memo);
               }
 
@@ -50651,7 +52136,7 @@ function () {
           // An operand is anything that can be part of an operation,
           // such as a Color, or a Variable
           operand: function operand() {
-            return $(this.sub) || $(this.entity);
+            return _match(this.sub) || _match(this.entity);
           },
           // Expressions either represent mathematical operations,
           // or white-space delimited Entities.  @var * 2
@@ -50659,7 +52144,7 @@ function () {
             var e,
                 entities = [];
 
-            while (e = $(this.addition) || $(this.entity)) {
+            while (e = _match(this.addition) || _match(this.entity)) {
               entities.push(e);
             }
 
@@ -50668,7 +52153,7 @@ function () {
             }
           },
           property: function property() {
-            var name = $(/^(([a-z][-a-z_0-9]*\/)?\*?-?[-a-z_0-9]+)\s*:/);
+            var name = _match(/^(([a-z][-a-z_0-9]*\/)?\*?-?[-a-z_0-9]+)\s*:/);
 
             if (name) {
               return name[1];
@@ -53148,7 +54633,7 @@ function () {
       var key = filter.key.toString(),
           value = filter.val.toString();
 
-      if (value.match(/^[0-9]+(\.[0-9]*)?$/)) {
+      if (value.match(/^[0-9]+(\.[0-9]*)?_match/)) {
         value = parseFloat(value);
       }
 
@@ -54227,7 +55712,7 @@ function () {
         v = "'" + v + "'";
       } else if (val.is === 'field') {
         // replace [varuable] by ctx['variable']
-        v = v.replace(/\[(.*)\]/g, "attributes['\$1']");
+        v = v.replace(/\[(.*)\]/g, "attributes['\_match1']");
       } else if (val.value && CartoCSS_typeof(val.value) === "object") {
         v = "[" + v + "]";
       }
@@ -58874,15 +60359,15 @@ function Math_createClass(Constructor, protoProps, staticProps) { if (protoProps
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-数学辅助类
  */
-var Math_Math =
+var MathTool =
 /*#__PURE__*/
 function () {
   /**
   * @function SuperMap.LevelRenderer.Tool.Math.constructor
   * @description 构造函数。
   */
-  function Math() {
-    Math_classCallCheck(this, Math);
+  function MathTool() {
+    Math_classCallCheck(this, MathTool);
 
     /**
      * @member {number} SuperMap.LevelRenderer.Tool.Math._radians
@@ -58900,7 +60385,7 @@ function () {
    */
 
 
-  Math_createClass(Math, [{
+  Math_createClass(MathTool, [{
     key: "sin",
     value: function sin(angle, isDegrees) {
       return window.Math.sin(isDegrees ? angle * this._radians : angle);
@@ -58946,7 +60431,7 @@ function () {
     }
   }]);
 
-  return Math;
+  return MathTool;
 }();
 // CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Matrix.js
 function Matrix_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59431,7 +60916,7 @@ SUtil.Util_env = new Env();
 SUtil.Util_event = new Event_Event();
 SUtil.Util_http = new Http();
 SUtil.Util_log = new Log_Log();
-SUtil.Util_math = new Math_Math();
+SUtil.Util_math = new MathTool();
 SUtil.Util_matrix = new Matrix();
 SUtil.Util = new levelRenderer_Util_Util();
 SUtil.Util_vector = new levelRenderer_Vector_Vector();
@@ -74854,7 +76339,7 @@ function () {
     ChartModel_classCallCheck(this, ChartModel);
 
     this.datasets = datasets;
-    this.EVENT_TYPES = ["getdatafailed"];
+    this.EVENT_TYPES = ['getdatafailed'];
     this.events = new Events_Events(this, null, this.EVENT_TYPES);
   }
   /**
@@ -74904,20 +76389,20 @@ function () {
       var datasetsInfo = results.result;
       var getFeatureParam, getFeatureBySQLParams, getFeatureBySQLService;
       var params = {
-        name: datasetsInfo.datasetName + "@" + datasetsInfo.dataSourceName
+        name: datasetsInfo.datasetName + '@' + datasetsInfo.dataSourceName
       };
       Object.assign(params, this.datasets.queryInfo);
       getFeatureParam = new SuperMap.FilterParameter(params);
       getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
         queryParameter: getFeatureParam,
-        datasetNames: [datasetsInfo.dataSourceName + ":" + datasetsInfo.datasetName],
+        datasetNames: [datasetsInfo.dataSourceName + ':' + datasetsInfo.datasetName],
         fromIndex: 0,
         toIndex: 100000
       });
       getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(datasetsInfo.dataUrl, {
         eventListeners: {
-          "processCompleted": success,
-          "processFailed": function processFailed() {}
+          processCompleted: success,
+          processFailed: function processFailed() {}
         }
       });
       getFeatureBySQLService.processAsync(getFeatureBySQLParams);
@@ -74946,8 +76431,8 @@ function () {
       });
       queryBySQLService = new SuperMap.QueryBySQLService(datasetsInfo.dataUrl, {
         eventListeners: {
-          "processCompleted": success,
-          "processFailed": function processFailed() {}
+          processCompleted: success,
+          processFailed: function processFailed() {}
         }
       });
       queryBySQLService.processAsync(queryBySQLParams);
@@ -74957,7 +76442,7 @@ function () {
      * @function SuperMap.Components.ChartModel.prototype.getDataInfoByIptl
      * @description 用dataId获取iportal的数据。
      * @param {Callbacks} success - getdatachart。
-     * 
+     *
      */
 
   }, {
@@ -74970,7 +76455,7 @@ function () {
      * @private
      * @function SuperMap.Components.ChartModel.prototype.getServiceInfo
      * @description 用iportal获取dataItemServices。
-     * @param {String} url 
+     * @param {String} url
      * @param {Callbacks} success - getdatachart。
      * */
 
@@ -75023,7 +76508,7 @@ function () {
      * @private
      * @function SuperMap.Components.ChartModel.prototype.getDatafromURL
      * @description 用iportal获取数据。（通过固定的url来请求，但是不能请求工作空间的数据）
-     * @param {String} url 
+     * @param {String} url
      * @param {Callbacks} success - getdatachart。
      */
 
@@ -75037,7 +76522,8 @@ function () {
         result: {}
       },
           me = this;
-      url += '/content.json?pageSize=9999999&currentPage=1', // 获取图层数据
+      url += '/content.json?pageSize=9999999&currentPage=1'; // 获取图层数据
+
       FetchRequest.get(url, null, {
         withCredentials: this.datasets.withCredentials
       }).then(function (response) {
@@ -75051,7 +76537,7 @@ function () {
         }
 
         if (data.type) {
-          if (data.type === "JSON" || data.type === "GEOJSON") {
+          if (data.type === 'JSON' || data.type === 'GEOJSON') {
             // 将字符串转换成json
             data.content = JSON.parse(data.content.trim()); // 如果是json文件 data.content = {type:'fco', features},格式不固定
 
@@ -75222,7 +76708,7 @@ function () {
     value: function _getFeatureBySQL(url, datasetNames, queryInfo, _processCompleted, processFaild) {
       var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
       var params = {
-        name: datasetNames.join().replace(":", "@")
+        name: datasetNames.join().replace(':', '@')
       };
       Object.assign(params, queryInfo);
       getFeatureParam = new FilterParameter_FilterParameter(params);
@@ -75384,12 +76870,12 @@ function () {
         attributes['index'] = _i + ''; //目前csv 只支持处理点，所以先生成点类型的 geojson
 
         var feature = {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [x, y]
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [x, y]
           },
-          "properties": attributes
+          properties: attributes
         };
         features.push(feature);
       }
@@ -75418,7 +76904,7 @@ function () {
        * @property {Object} error  - 事件对象。
        */
 
-      this.events.triggerEvent("getdatafailed", errorData);
+      this.events.triggerEvent('getdatafailed', errorData);
     }
   }]);
 
@@ -76705,7 +78191,7 @@ function (_TemplateBase) {
     key: "_createElement",
     value: function _createElement(tagName, className, parentEle) {
       var ele = document.createElement(tagName || 'div');
-      className && ~~(ele.className = className);
+      className && (ele.className = className);
       parentEle && parentEle.appendChild(ele);
       return ele;
     }
@@ -76979,7 +78465,7 @@ function (_TemplateBase) {
     key: "_createElement",
     value: function _createElement(tagName, className, parentEle) {
       var ele = document.createElement(tagName || 'div');
-      className && ~~(ele.className = className);
+      className && (ele.className = className);
       parentEle && parentEle.appendChild(ele);
       return ele;
     }
@@ -91570,10 +93056,212 @@ function (_ServiceBase) {
   return TrafficTransferAnalystService;
 }(ServiceBase);
 external_mapboxgl_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService_TrafficTransferAnalystService;
+// CONCATENATED MODULE: ./src/mapboxgl/services/WebPrintingJobService.js
+function WebPrintingJobService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { WebPrintingJobService_typeof = function _typeof(obj) { return typeof obj; }; } else { WebPrintingJobService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return WebPrintingJobService_typeof(obj); }
+
+function WebPrintingJobService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function WebPrintingJobService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function WebPrintingJobService_createClass(Constructor, protoProps, staticProps) { if (protoProps) WebPrintingJobService_defineProperties(Constructor.prototype, protoProps); if (staticProps) WebPrintingJobService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function WebPrintingJobService_possibleConstructorReturn(self, call) { if (call && (WebPrintingJobService_typeof(call) === "object" || typeof call === "function")) { return call; } return WebPrintingJobService_assertThisInitialized(self); }
+
+function WebPrintingJobService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function WebPrintingJobService_getPrototypeOf(o) { WebPrintingJobService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return WebPrintingJobService_getPrototypeOf(o); }
+
+function WebPrintingJobService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) WebPrintingJobService_setPrototypeOf(subClass, superClass); }
+
+function WebPrintingJobService_setPrototypeOf(o, p) { WebPrintingJobService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return WebPrintingJobService_setPrototypeOf(o, p); }
+
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class mapboxgl.supermap.WebPrintingJobService
+ * @category  iServer WebPrintingJob
+ * @version 10.1.0
+ * @classdesc Web 打印服务类。
+ *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
+ * @extends {mapboxgl.supermap.ServiceBase}
+ * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
+ * @param {Object} options - 服务交互时所需的可选参数。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @example
+ * new mapboxgl.supermap.WebPrintingJobService(url)
+ * .createWebPrintingJob(param,function(result){
+ *     //doSomething
+ * })
+ */
+
+var WebPrintingJobService_WebPrintingJobService =
+/*#__PURE__*/
+function (_ServiceBase) {
+  WebPrintingJobService_inherits(WebPrintingJobService, _ServiceBase);
+
+  function WebPrintingJobService(url, options) {
+    WebPrintingJobService_classCallCheck(this, WebPrintingJobService);
+
+    return WebPrintingJobService_possibleConstructorReturn(this, WebPrintingJobService_getPrototypeOf(WebPrintingJobService).call(this, url, options));
+  }
+  /**
+   * @function mapboxgl.supermap.WebPrintingJobService.prototype.createWebPrintingJob
+   * @description 创建 Web 打印任务。
+   * @param {SuperMap.WebPrintingJobParameters} params - 打印的请求参数。
+   * @param {RequestCallback} callback - 回调函数。
+   */
+
+
+  WebPrintingJobService_createClass(WebPrintingJobService, [{
+    key: "createWebPrintingJob",
+    value: function createWebPrintingJob(params, callback) {
+      if (!params) {
+        return;
+      }
+
+      var me = this;
+      var webPrintingService = new WebPrintingService_WebPrintingService(me.url, {
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
+        serverType: me.options.serverType,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      webPrintingService.createWebPrintingJob(me._processParams(params));
+    }
+    /**
+     * @function mapboxgl.supermap.WebPrintingJobService.prototype.getPrintingJob
+     * @description 获取 Web 打印输出文档任务。
+     * @param {String} jobId - Web 打印输入文档任务 Id。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+
+  }, {
+    key: "getPrintingJob",
+    value: function getPrintingJob(jobId, callback) {
+      var me = this;
+      var webPrintingService = new WebPrintingService_WebPrintingService(me.url, {
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
+        serverType: me.options.serverType,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      webPrintingService.getPrintingJob(jobId);
+    }
+    /**
+     * @function mapboxgl.supermap.WebPrintingJobService.prototype.getPrintingJobResult
+     * @description 获取 Web 打印任务的输出文档。
+     * @param {String} jobId - Web 打印输入文档任务 Id。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+
+  }, {
+    key: "getPrintingJobResult",
+    value: function getPrintingJobResult(jobId, callback) {
+      var me = this;
+      var webPrintingService = new WebPrintingService_WebPrintingService(me.url, {
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
+        serverType: me.options.serverType,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      webPrintingService.getPrintingJobResult(jobId);
+    }
+    /**
+     * @function mapboxgl.supermap.WebPrintingJobService.prototype.getLayoutTemplates
+     * @description 查询 Web 打印服务所有可用的模板信息。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+
+  }, {
+    key: "getLayoutTemplates",
+    value: function getLayoutTemplates(callback) {
+      var me = this;
+      var webPrintingService = new WebPrintingService_WebPrintingService(me.url, {
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
+        serverType: me.options.serverType,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      webPrintingService.getLayoutTemplates();
+    }
+  }, {
+    key: "_processParams",
+    value: function _processParams(params) {
+      if (params.layoutOptions && params.layoutOptions.littleMapOptions) {
+        params.layoutOptions.littleMapOptions.center = this._toPointObject(params.layoutOptions.littleMapOptions.center);
+      }
+
+      if (params.exportOptions) {
+        params.exportOptions.center = this._toPointObject(params.exportOptions.center);
+      }
+
+      return params;
+    }
+  }, {
+    key: "_toPointObject",
+    value: function _toPointObject(point) {
+      if (core_Util_Util.isArray(point)) {
+        return {
+          x: point[0],
+          y: point[1]
+        };
+      } else if (point instanceof SuperMap.Geometry.Point || point instanceof external_mapboxgl_default.a.Point) {
+        return {
+          x: point.x,
+          y: point.y
+        };
+      } else if (point instanceof external_mapboxgl_default.a.LngLat) {
+        return {
+          x: point.lng,
+          y: point.lat
+        };
+      }
+
+      return point;
+    }
+  }]);
+
+  return WebPrintingJobService;
+}(ServiceBase);
+external_mapboxgl_default.a.supermap.WebPrintingJobService = WebPrintingJobService_WebPrintingJobService;
 // CONCATENATED MODULE: ./src/mapboxgl/services/index.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -91809,8 +93497,16 @@ function (_mapboxgl$Evented) {
 
       var oldcenter = mapInfo.center,
           zoom = mapInfo.level || 0,
-          center;
-      zoom = zoom === 0 ? 0 : zoom - 1;
+          center,
+          zoomBase = 0; // zoom = zoom === 0 ? 0 : zoom - 1;
+
+      if (mapInfo.minScale && mapInfo.maxScale) {
+        zoomBase = this._transformScaleToZoom(mapInfo.minScale, external_mapboxgl_default.a.CRS ? external_mapboxgl_default.a.CRS.get(this.baseProjection) : 'EPSG:3857');
+      } else {
+        zoomBase = +Math.log2(this._getResolution(external_mapboxgl_default.a.CRS ? external_mapboxgl_default.a.CRS.get(this.baseProjection).getExtent() : [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]) / this._getResolution(mapInfo.extent)).toFixed(2);
+      }
+
+      zoom += zoomBase;
       center = oldcenter ? this._unproject([oldcenter.x, oldcenter.y]) : new external_mapboxgl_default.a.LngLat(0, 0); // 初始化 map
 
       this.map = new external_mapboxgl_default.a.Map({
@@ -91918,8 +93614,8 @@ function (_mapboxgl$Evented) {
       }
 
       var mapUrls = {
-        CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-        CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+        CLOUD: 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+        CLOUD_BLACK: 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}',
         OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         GOOGLE: 'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
         GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
@@ -92104,6 +93800,10 @@ function (_mapboxgl$Evented) {
           spaces: 4
         })).Capabilities.Contents.TileMatrixSet;
 
+        if (!Array.isArray(tileMatrixSet)) {
+          tileMatrixSet = [tileMatrixSet];
+        }
+
         for (var i = 0; i < tileMatrixSet.length; i++) {
           if (tileMatrixSet[i]['ows:Identifier'] && tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet) {
             if (DEFAULT_WELLKNOWNSCALESET.indexOf(tileMatrixSet[i]['WellKnownScaleSet']['_text']) > -1) {
@@ -92221,9 +93921,12 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createDynamicTiledLayer",
     value: function _createDynamicTiledLayer(layerInfo) {
-      var url = layerInfo.url + '/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var url = layerInfo.url;
+      var layerId = layerInfo.layerID || layerInfo.name;
+      var minzoom = layerInfo.minzoom,
+          maxzoom = layerInfo.maxzoom;
 
-      this._addBaselayer([url], 'tile-layers-' + layerInfo.name);
+      this._addBaselayer([url], layerId, minzoom, maxzoom, true);
     }
     /**
      * @private
@@ -93738,13 +95441,18 @@ function (_mapboxgl$Evented) {
     value: function _addBaselayer(url, layerID) {
       var minzoom = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       var maxzoom = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 22;
+      var isIserver = arguments.length > 4 ? arguments[4] : undefined;
       this.map.addLayer({
         id: layerID,
         type: 'raster',
         source: {
           type: 'raster',
           tiles: url,
-          tileSize: 256
+          tileSize: 256,
+          rasterSource: isIserver ? 'iserver' : '',
+          prjCoordSys: isIserver ? {
+            epsgCode: this.baseProjection.split(':')[1]
+          } : ''
         },
         minzoom: minzoom,
         maxzoom: maxzoom
@@ -93903,6 +95611,29 @@ function (_mapboxgl$Evented) {
         }
       });
       return features;
+    }
+  }, {
+    key: "_transformScaleToZoom",
+    value: function _transformScaleToZoom(scale, crs) {
+      var scale_0 = 295829515.2024169;
+
+      if ((crs || this.map.getCRS()).epsgCode !== 'EPSG:3857') {
+        scale_0 = 295295895;
+      }
+
+      var scaleDenominator = scale.split(':')[1];
+      return Math.min(24, +Math.log2(scale_0 / +scaleDenominator).toFixed(2));
+    }
+  }, {
+    key: "_getResolution",
+    value: function _getResolution(bounds) {
+      var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 512.0;
+
+      if (bounds.leftBottom && bounds.rightTop) {
+        return Math.max(bounds.rightTop.x - bounds.leftBottom.x, bounds.rightTop.y - bounds.leftBottom.y) / tileSize;
+      }
+
+      return Math.max(bounds[2] - bounds[0], bounds[3] - bounds[1]) / tileSize;
     }
   }]);
 
@@ -94149,6 +95880,18 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport UpdateTurnNodeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
 /* concated harmony reexport Vector */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
 /* concated harmony reexport VectorClipJobsParameter */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
+/* concated harmony reexport WebPrintingJobCustomItems */__webpack_require__.d(__webpack_exports__, "WebPrintingJobCustomItems", function() { return WebPrintingJobCustomItems_WebPrintingJobCustomItems; });
+/* concated harmony reexport WebPrintingJobImage */__webpack_require__.d(__webpack_exports__, "WebPrintingJobImage", function() { return WebPrintingJobImage_WebPrintingJobImage; });
+/* concated harmony reexport WebPrintingJobLayers */__webpack_require__.d(__webpack_exports__, "WebPrintingJobLayers", function() { return WebPrintingJobLayers_WebPrintingJobLayers; });
+/* concated harmony reexport WebPrintingJobLegendOptions */__webpack_require__.d(__webpack_exports__, "WebPrintingJobLegendOptions", function() { return WebPrintingJobLegendOptions_WebPrintingJobLegendOptions; });
+/* concated harmony reexport WebPrintingJobLittleMapOptions */__webpack_require__.d(__webpack_exports__, "WebPrintingJobLittleMapOptions", function() { return WebPrintingJobLittleMapOptions_WebPrintingJobLittleMapOptions; });
+/* concated harmony reexport WebPrintingJobNorthArrowOptions */__webpack_require__.d(__webpack_exports__, "WebPrintingJobNorthArrowOptions", function() { return WebPrintingJobNorthArrowOptions_WebPrintingJobNorthArrowOptions; });
+/* concated harmony reexport WebPrintingJobScaleBarOptions */__webpack_require__.d(__webpack_exports__, "WebPrintingJobScaleBarOptions", function() { return WebPrintingJobScaleBarOptions_WebPrintingJobScaleBarOptions; });
+/* concated harmony reexport WebPrintingJobContent */__webpack_require__.d(__webpack_exports__, "WebPrintingJobContent", function() { return WebPrintingJobContent_WebPrintingJobContent; });
+/* concated harmony reexport WebPrintingJobLayoutOptions */__webpack_require__.d(__webpack_exports__, "WebPrintingJobLayoutOptions", function() { return WebPrintingJobLayoutOptions_WebPrintingJobLayoutOptions; });
+/* concated harmony reexport WebPrintingJobExportOptions */__webpack_require__.d(__webpack_exports__, "WebPrintingJobExportOptions", function() { return WebPrintingJobExportOptions_WebPrintingJobExportOptions; });
+/* concated harmony reexport WebPrintingJobParameters */__webpack_require__.d(__webpack_exports__, "WebPrintingJobParameters", function() { return WebPrintingJobParameters_WebPrintingJobParameters; });
+/* concated harmony reexport WebPrintingService */__webpack_require__.d(__webpack_exports__, "WebPrintingService", function() { return WebPrintingService_WebPrintingService; });
 /* concated harmony reexport FileTypes */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
 /* concated harmony reexport FileConfig */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
 /* concated harmony reexport FileModel */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
@@ -94210,6 +95953,7 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport SpatialAnalystService */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService_SpatialAnalystService; });
 /* concated harmony reexport ThemeService */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
 /* concated harmony reexport TrafficTransferAnalystService */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService_TrafficTransferAnalystService; });
+/* concated harmony reexport WebPrintingJobService */__webpack_require__.d(__webpack_exports__, "WebPrintingJobService", function() { return WebPrintingJobService_WebPrintingJobService; });
 /* concated harmony reexport WebMap */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap_WebMap; });
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

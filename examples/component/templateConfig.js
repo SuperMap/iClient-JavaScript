@@ -10,14 +10,14 @@ var exampleConfig = {
                     {
                         name: '生态大数据平台示例',
                         name_en: 'Estate project visual monitoring platform example',
-                        version: '10.0.0',
+                        version: '10.1.0',
                         thumbnail: 'components_ecologicalBigDataPlatform_vue.png',
                         fileName: 'components_ecologicalBigDataPlatform_vue'
                     },
                     {
                         name: '自然资源平台大屏示例',
                         name_en: 'Nature Resource platform example',
-                        version: '10.0.0',
+                        version: '10.1.0',
                         thumbnail: 'components_natureResource_vue.png',
                         fileName: 'components_natureResource_vue'
                     },
@@ -26,8 +26,7 @@ var exampleConfig = {
                         name_en: 'Land use example',
                         version: '10.0.0',
                         thumbnail: 'components_demo_vue.png',
-                        fileName: 'components_demo_vue',
-                        localIgnore: true
+                        fileName: 'components_demo_vue'
                     },
                     {
                         name: '房产项目可视化监控平台示例',
