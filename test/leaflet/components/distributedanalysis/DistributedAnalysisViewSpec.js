@@ -25,7 +25,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
         distributedAnalysis = distributedAnalysisView(distributedAnalysisURL);
         // 模拟发送请求
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url.indexOf("/sharefile") > -1) {
+            if (url.indexOf("/sharefile.json") > -1) {
                 var resultJson1 = `{"datasetCount":8,"datasetNames":["samples_processing_newyorkZone_R","samples_processing_singleRegion_R","samples_processing_newyorkRoads_L","samples_processing_newyorkPoint_P","samples_processing_newyorkResidential_R", "samples_processing_featurejoin_states_R", "samples_processing_reconstructTracks_P", "samples_newyork_taxi_2013-01_14k"],
                 "childUriList":["http://54.223.164.155:8090/iserver/services/dataca…atalog/sharefile/samples_processing_newyorkZone_R", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_singleRegion_R", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_newyorkRoads_L", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_newyorkPoint_P", "http://54.223.164.155:8090/iserver/services/dataca…sharefile/samples_processing_newyorkResidential_R", "http://54.223.164.155:8090/iserver/services/dataca…sharefile/samples_processing_featurejoin_states_R", "http://54.223.164.155:8090/iserver/services/dataca…/sharefile/samples_processing_reconstructTracks_P", "http://54.223.164.155:8090/iserver/services/dataca…atalog/sharefile/samples_newyork_taxi_2013-01_14k"]}`
                 return Promise.resolve(new Response(resultJson1));
@@ -161,14 +161,12 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
     });
 
     // get请求来的data里面缺失datasetInfo
-    it('getDatasetInfo', () => {
-        console.log("debug");
+    it('getDatasetInfo', (done) => {
         // document.getElementsByClassName("component-triangle-down-img")[1].click();
         var datasetUrl="/iserver/services/datacatalog/rest/datacatalog/sharefile/samples_processing_newyorkResidential_R.json";
         distributedAnalysis.viewModel.on('datasetinfoloaded', (e) => {
             var result = e.result;
             try {
-              
                 expect(result).not.toBeNull();
                 done();
             } catch (exception) {
