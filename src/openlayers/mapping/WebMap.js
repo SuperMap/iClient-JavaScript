@@ -313,7 +313,7 @@ export class WebMap extends Observable {
         if (handleResult.action === "BrowseMap") {
             that.createSpecLayer(mapInfo);
         } else if (handleResult.action === "OpenMap") {
-            that.baseProjection = mapInfo.projection;
+            that.baseProjection = handleResult.newCrs ||mapInfo.projection;
             that.webMapVersion = mapInfo.version;
             that.baseLayer = mapInfo.baseLayer;
             // that.mapParams = {
