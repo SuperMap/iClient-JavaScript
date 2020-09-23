@@ -27,7 +27,7 @@ import SampleDataInfo from './webmap/config/SampleDataInfo.json';// eslint-disab
 import GeoJSON from 'ol/format/GeoJSON';
 import MVT from 'ol/format/MVT';
 import Observable from 'ol/Observable';
-import Map from 'ol/Map';
+import olMap from 'ol/Map';
 import View from 'ol/View';
 import * as olProj from 'ol/proj';
 import * as olProj4 from 'ol/proj/proj4';
@@ -216,7 +216,7 @@ export class WebMap extends Observable {
             overlays = mapSetting.overlays;
             controls = mapSetting.controls;
         }
-        this.map = new Map({
+        this.map = new olMap({
             interactions: interactions,
             overlays: overlays,
             controls: controls,
@@ -1200,18 +1200,27 @@ export class WebMap extends Observable {
      * @description 获取(Supermap RestMap)的图层参数。
      * @param {Object} layerInfo - 图层信息。
      * @param {function} callback - 获得tile图层参数执行的回调函数
+     * @param {function} failedCallback - 失败回调函数
      */
-    async getTileLayerExtent(layerInfo, callback) {
+    async getTileLayerExtent(layerInfo, callback, failedCallback) {
         let that = this;
         // 默认使用动态投影方式请求数据
         let dynamicLayerInfo = await that.getTileLayerExtentInfo(layerInfo)
-        if (dynamicLayerInfo) {
-            Object.assign(layerInfo, dynamicLayerInfo);
-            callback(layerInfo);
+        if (dynamicLayerInfo.succeed === false) {
+            if (dynamicLayerInfo.error.code === 400) {
+                // dynamicLayerInfo.error.code === 400 不支持动态投影，请求restmap原始信息
+                let originLayerInfo = await that.getTileLayerExtentInfo(layerInfo, false);
+                if (originLayerInfo.succeed === false) {
+                    failedCallback();
+                } else {
+                    Object.assign(layerInfo, originLayerInfo);
+                    callback(layerInfo);
+                }
+            } else {
+                failedCallback();
+            }
         } else {
-            // 不支持动态投影，请求restmap原始信息
-            let originLayerInfo = await that.getTileLayerExtentInfo(layerInfo, false);
-            Object.assign(layerInfo, originLayerInfo);
+            Object.assign(layerInfo, dynamicLayerInfo);
             callback(layerInfo);
         }
     }
@@ -1220,7 +1229,7 @@ export class WebMap extends Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.getTileLayerExtentInfo
      * @description 获取rest map的图层参数。
-     * @param {String} url - 图层url。
+     * @param {Object} layerInfo - 图层信息。
      * @param {Boolean} isDynamic - 是否请求动态投影信息
      */
     getTileLayerExtentInfo(layerInfo, isDynamic = true) {
@@ -1249,7 +1258,7 @@ export class WebMap extends Observable {
             return response.json();
         }).then(async (result) => {
             if (result.succeed === false) {
-                return null
+                return result
             }
             // let isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
             return {
@@ -1261,7 +1270,10 @@ export class WebMap extends Observable {
                 format: 'png'
             }
         }).catch((error) => {
-            throw error;
+            return {
+                succeed: false,
+                error: error
+            }
         });
     }
 
@@ -1688,6 +1700,10 @@ export class WebMap extends Observable {
                         that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
                         that.layerAdded++;
                         that.sendMapToUser(len);
+                    }, function (e) {
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
+                        that.errorCallback && that.errorCallback(e, 'getLayerFaild', that.map);
                     })
                 }else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "WMS" ||
