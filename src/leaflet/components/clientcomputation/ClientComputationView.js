@@ -419,6 +419,9 @@ export var ClientComputationView = ComponentsViewBase.extend({
 
         //复选框事件
         let isSaveStatus = true;
+        //合并缓冲区
+        //合并缓冲区，默认不选中，即为false
+        let isUnion = false;
         //选中select
         saveAttrsLabel.classList.add("selected");
         saveAttrsCheckbox.classList.add("checkbox-active");
@@ -444,9 +447,6 @@ export var ClientComputationView = ComponentsViewBase.extend({
                 }
             }
         }
-        //合并缓冲区
-        //合并缓冲区，默认不选中，即为false
-        let isUnion = false;
         isUnionContainer.onclick = () => {
             if (isUnion) {
                 //将选中状态 由选中->不选中，修改其样式和状态

@@ -49,10 +49,10 @@ export class Util {
      * @param {Object} smObj - 待转参数。
      */
     static toGeoJSON(smObj) {
-        if (smObj) {
-            var format = new GeoJSONFormat();
-            return format.toGeoJSON(smObj);
+        if (!smObj) {
+            return null;
         }
+        return new GeoJSONFormat().toGeoJSON(smObj);
     }
 
     /**
@@ -61,11 +61,11 @@ export class Util {
      * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
      */
     static toSuperMapGeometry(geoJSON) {
-        if (geoJSON && geoJSON.type) {
-            var format = new GeoJSONFormat();
-            var result = format.read(geoJSON, 'FeatureCollection');
-            return result[0].geometry;
+        if (!geoJSON || !geoJSON.type) {
+            return null;
         }
+        const result = new GeoJSONFormat().read(geoJSON, 'FeatureCollection');
+        return result[0].geometry;
     }
 
     /**
@@ -77,11 +77,10 @@ export class Util {
      * @returns {number} 比例尺。
      */
     static resolutionToScale(resolution, dpi, mapUnit) {
-        var inchPerMeter = 1 / 0.0254;
+        const inchPerMeter = 1 / 0.0254;
         // 地球半径。
-        var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
-        var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
-        scale = 1 / scale;
+        const meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
+        const scale = 1 / (resolution * dpi * inchPerMeter * meterPerMapUnit);
         return scale;
     }
 
@@ -102,21 +101,19 @@ export class Util {
      * @returns processing 服务裁剪、查询分析的分析参数。
      */
     static toProcessingParam(points) {
-        var geometryParam = {};
         if (points.length < 1) {
-            geometryParam = '';
-        } else {
-            var results = [];
-            for (var i = 0; i < points.length; i++) {
-                var point = {};
-                point.x = points[i][0];
-                point.y = points[i][1];
-                results.push(point);
-            }
-            results.push(results[0]);
-            geometryParam.type = 'REGION';
-            geometryParam.points = results;
+            return '';
         }
+        const geometryParam = {};
+        const results = [];
+        for (let i = 0; i < points.length; i++) {
+            const point = { x: points[i][0], y: points[i][1] };
+            results.push(point);
+        }
+        results.push(results[0]);
+        geometryParam.type = 'REGION';
+        geometryParam.points = results;
+
         return geometryParam;
     }
 
@@ -129,10 +126,9 @@ export class Util {
      * @returns {number} 分辨率。
      */
     static scaleToResolution(scale, dpi, mapUnit) {
-        var inchPerMeter = 1 / 0.0254;
-        var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
-        var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
-        resolution = 1 / resolution;
+        const inchPerMeter = 1 / 0.0254;
+        const meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
+        const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
         return resolution;
     }
 
@@ -144,8 +140,8 @@ export class Util {
      * @returns {number} 返回每地图单位多少米。
      */
     static getMeterPerMapUnit(mapUnit) {
-        var earchRadiusInMeters = 6378137;
-        var meterPerMapUnit;
+        const earchRadiusInMeters = 6378137;
+        let meterPerMapUnit;
         if (mapUnit === Unit.METER) {
             meterPerMapUnit = 1;
         } else if (mapUnit === Unit.DEGREE) {
@@ -170,7 +166,7 @@ export class Util {
      * @returns {boolean} 是否是数组。
      */
     static isArray(obj) {
-        return Object.prototype.toString.call(obj) == '[object Array]';
+        return Object.prototype.toString.call(obj) === '[object Array]';
     }
 
     /**
@@ -180,7 +176,7 @@ export class Util {
      * @param {Object} options - 转换参数。
      */
     static Csv2GeoJSON(csv, options) {
-        var defaultOptions = {
+        const defaultOptions = {
             titles: ['lon', 'lat'],
             latitudeTitle: 'lat',
             longitudeTitle: 'lon',
@@ -190,9 +186,9 @@ export class Util {
             firstLineTitles: false
         };
         options = options || defaultOptions;
-        var _propertiesNames = [];
+        const _propertiesNames = [];
         if (typeof csv === 'string') {
-            var titulos = options.titles;
+            let titulos = options.titles;
             if (options.firstLineTitles) {
                 csv = csv.split(options.lineSeparator);
                 if (csv.length < 2) {
@@ -208,12 +204,12 @@ export class Util {
                 options.titles = titulos;
             }
             for (let i = 0; i < titulos.length; i++) {
-                var prop = titulos[i]
+                let prop = titulos[i]
                     .toLowerCase()
                     .replace(/[^\w ]+/g, '')
                     .replace(/ +/g, '_');
-                if (prop == '' || prop == '_') {
-                    prop = 'prop-' + i;
+                if (prop === '' || prop === '_') {
+                    prop = `prop-${i}`;
                 }
                 _propertiesNames[i] = prop;
             }
@@ -229,29 +225,29 @@ export class Util {
         }
 
         function _csv2json(csv) {
-            var json = {};
+            const json = {};
             json['type'] = 'FeatureCollection';
             json['features'] = [];
-            var titulos = options.titles;
+            const titulos = options.titles;
             csv = csv.split(options.lineSeparator);
-            for (var num_linea = 0; num_linea < csv.length; num_linea++) {
-                var campos = csv[num_linea].trim().split(options.fieldSeparator),
+            for (let num_linea = 0; num_linea < csv.length; num_linea++) {
+                const campos = csv[num_linea].trim().split(options.fieldSeparator),
                     lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)]),
                     lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
 
-                var isInRange = lng < 180 && lng > -180 && lat < 90 && lat > -90;
-                if (!(campos.length == titulos.length && isInRange)) {
+                const isInRange = lng < 180 && lng > -180 && lat < 90 && lat > -90;
+                if (!(campos.length === titulos.length && isInRange)) {
                     continue;
                 }
 
-                var feature = {};
+                const feature = {};
                 feature['type'] = 'Feature';
                 feature['geometry'] = {};
                 feature['properties'] = {};
                 feature['geometry']['type'] = 'Point';
                 feature['geometry']['coordinates'] = [lng, lat];
-                for (var i = 0; i < titulos.length; i++) {
-                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+                for (let i = 0; i < titulos.length; i++) {
+                    if (titulos[i] !== options.latitudeTitle && titulos[i] !== options.longitudeTitle) {
                         feature['properties'][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
                     }
                 }
@@ -268,7 +264,7 @@ export class Util {
      * @param {number} opt_height - 画布高度。
      */
     static createCanvasContext2D(opt_width, opt_height) {
-        var canvas = document.createElement('CANVAS');
+        const canvas = document.createElement('CANVAS');
         if (opt_width) {
             canvas.width = opt_width;
         }
@@ -282,7 +278,7 @@ export class Util {
      * @description 是否支持 webgl2。
      */
     static supportWebGL2() {
-        var canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas');
         return Boolean(canvas && canvas.getContext('webgl2'));
     }
 
@@ -389,15 +385,14 @@ export class Util {
         recordLength,
         onlyAttribute
     ) {
-        var queryParam, queryBySQLParams, queryBySQLService;
-        queryParam = new FilterParameter({
+        const queryParam = new FilterParameter({
             name: layerName,
             attributeFilter: attributeFilter
         });
         if (fields) {
             queryParam.fields = fields;
         }
-        var params = {
+        const params = {
             queryParams: [queryParam]
         };
         if (onlyAttribute) {
@@ -410,8 +405,8 @@ export class Util {
                 epsgCode: epsgCode
             };
         }
-        queryBySQLParams = new QueryBySQLParameters(params);
-        queryBySQLService = new QueryService(url);
+        const queryBySQLParams = new QueryBySQLParameters(params);
+        const queryBySQLService = new QueryService(url);
         queryBySQLService.queryBySQL(queryBySQLParams, function (data) {
             data.type === 'processCompleted' ? processCompleted(data) : processFaild(data);
         });
@@ -466,7 +461,7 @@ export class Util {
         if (!(geo instanceof Geometry) && ['MultiPolygon', 'Polygon'].indexOf(polygon.getType()) < 0) {
             return;
         }
-        const feature =  polygon instanceof Feature ? polygon : new Feature(polygon);
+        const feature = polygon instanceof Feature ? polygon : new Feature(polygon);
         const style = new Style({
             fill: new Fill({
                 color: 'black'
@@ -481,7 +476,7 @@ export class Util {
         });
 
         const clipRender = function (e) {
-            var vectorContext = getVectorContext(e);
+            const vectorContext = getVectorContext(e);
             e.context.globalCompositeOperation = 'destination-in';
             clipLayer.getSource().forEachFeature(function (feature) {
                 vectorContext.drawFeature(feature, style);

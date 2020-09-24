@@ -25,7 +25,7 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
         /**
          * @member {Object} SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
          * @description 要做缓冲区分析的几何对象。<br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。 
          */

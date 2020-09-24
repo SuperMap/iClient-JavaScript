@@ -91,7 +91,9 @@ export class GeoprocessingService extends CommonServiceBase {
         const timer = setInterval(function () {
             const serviceProcessCompleted = function (serverResult) {
                 const state = serverResult.state.runState;
-                options.statusCallback ? options.statusCallback(state) : null;
+                if (options.statusCallback) {
+                    options.statusCallback(state);
+                }
                 switch (state) {
                     case 'FINISHED':
                         clearInterval(timer);

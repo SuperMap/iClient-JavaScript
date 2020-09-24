@@ -54,6 +54,7 @@ var typeLinks = {
     "L.LayerGroup": lfapi + '#layergroup',
     "L.TileLayer": lfapi + '#tilelayer',
     "L.CircleMarker": lfapi + '#circlemarker',
+    "L.Circle": lfapi + '#circle',
     "L.Path-option": lfapi + '#path-option',
     "L.Rectangle": lfapi + '#rectangle',
     'L.LatLngBounds': lfapi+ '#latlngbounds',
