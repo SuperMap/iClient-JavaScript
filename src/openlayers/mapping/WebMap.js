@@ -1297,10 +1297,13 @@ export class WebMap extends Observable {
         }
         return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
-        }).then(async function (result) {
+        }).then(function (result) {
             // layerInfo.projection = mapInfo.projection;
             // layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
             // 比例尺 单位
+            if(result.code !== 200) {
+                throw result;
+            }
             if (result.visibleScales) {
                 layerInfo.visibleScales = result.visibleScales;
                 layerInfo.coordUnit = result.coordUnit;
@@ -1321,7 +1324,7 @@ export class WebMap extends Observable {
             }
 
         }).catch(function (error) {
-            that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
+            that.errorCallback && that.errorCallback(error, 'getTileInfo', that.map)
         });
     }
     /**
