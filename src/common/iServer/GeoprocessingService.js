@@ -27,8 +27,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @description 获取地理处理工具列表。
      */
     getTools() {
-        const url = `${this.url}/list`;
-        this._get(url);
+        this._get(`${this.url}/list`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTool
@@ -36,8 +35,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 地理处理工具ID。
      */
     getTool(identifier) {
-        const url = `${this.url}/${identifier}`;
-        this._get(url);
+        this._get(`${this.url}/${identifier}`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.execute
@@ -49,9 +47,8 @@ export class GeoprocessingService extends CommonServiceBase {
     execute(identifier, parameter, environment) {
         parameter = parameter ? parameter : null;
         environment = environment ? environment : null;
-        const paramter = { parameter, environment };
-        const url = `${this.url}/${identifier}/execute`;
-        this._get(url, paramter);
+        const executeParamter = { parameter, environment };
+        this._get(`${this.url}/${identifier}/execute`, executeParamter);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.submitJob
@@ -63,13 +60,12 @@ export class GeoprocessingService extends CommonServiceBase {
     submitJob(identifier, parameter, environments) {
         parameter = parameter ? parameter : null;
         environments = environments ? environments : null;
-        const asyncParameter = { parameter: parameter, environments: environments };
-        const url = `${this.url}/${identifier}/jobs`;
+        const asyncParamter = { parameter: parameter, environments: environments };
         this.request({
-            url: url,
+            url: `${this.url}/${identifier}/jobs`,
             headers: { 'Content-type': 'application/json' },
             method: 'POST',
-            data: JSON.stringify(asyncParameter),
+            data: JSON.stringify(asyncParamter),
             scope: this,
             success: this.serviceProcessCompleted,
             failure: this.serviceProcessFailed
@@ -87,7 +83,6 @@ export class GeoprocessingService extends CommonServiceBase {
      */
     waitForJobCompletion(jobId, identifier, options) {
         const me = this;
-        const url = `${me.url}/${identifier}/jobs/${jobId}`;
         const timer = setInterval(function () {
             const serviceProcessCompleted = function (serverResult) {
                 const state = serverResult.state.runState;
@@ -107,7 +102,7 @@ export class GeoprocessingService extends CommonServiceBase {
                             result: serverResult
                         });
                         break;
-                    case 'CANCEL':
+                    case 'CANCELED':
                         clearInterval(timer);
                         me.events.triggerEvent('processFailed', {
                             result: serverResult
@@ -115,7 +110,7 @@ export class GeoprocessingService extends CommonServiceBase {
                         break;
                 }
             };
-            me._get(url, null, serviceProcessCompleted);
+            me._get(`${me.url}/${identifier}/jobs/${jobId}`, null, serviceProcessCompleted);
         }, options.interval);
     }
 
@@ -126,8 +121,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} jobId - 地理处理任务ID。
      */
     getJobInfo(identifier, jobId) {
-        const url = `${this.url}/${identifier}/jobs/${jobId}`;
-        this._get(url);
+        this._get(`${this.url}/${identifier}/jobs/${jobId}`);
     }
 
     /**
@@ -137,8 +131,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} jobId - 地理处理任务ID。
      */
     cancelJob(identifier, jobId) {
-        const url = `${this.url}/${identifier}/jobs/${jobId}/cancel`;
-        this._get(url);
+        this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobs
