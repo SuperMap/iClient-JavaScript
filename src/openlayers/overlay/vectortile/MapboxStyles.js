@@ -275,6 +275,10 @@ export class MapboxStyles extends Observable {
                         this._spriteImage = img;
                         this._initStyleFunction();
                     };
+                    img.onerror = () => {
+                        this._spriteImage = null;
+                        this._initStyleFunction();
+                    }
                     img.src = this._spriteImageUrl;
                 });
         } else {
