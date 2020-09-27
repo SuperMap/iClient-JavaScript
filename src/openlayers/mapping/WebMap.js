@@ -683,7 +683,7 @@ export class WebMap extends Observable {
                         layerType: 'VECTOR_TILE'
                     });
                 }
-
+                layerInfo.visibleScale && this.setVisibleScales(layer, layerInfo.visibleScale);
                 //否则没有ID，对不上号
                 layerInfo.layer = layer;
                 layerInfo.layerID = layerID;
@@ -738,30 +738,35 @@ export class WebMap extends Observable {
         // if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
         //     maxZoom = options.baseLayer.visibleScales.length;
         // }
-        let viewOptions;
-        if (baseLayer.layerType === "WMTS") {
-            if (baseLayer.scales && baseLayer.scales.length > 0) {
-                //因为新版extent超出，不可见。所以将extent去除
-                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
-            } else {
-                viewOptions = {zoom, center, projection, maxZoom};
-                this.getScales(baseLayer);
-            }
-        } else {
-            if (this.resolutionArray && this.resolutionArray.length > 0) {
-                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
-            } else {
-                viewOptions = {zoom, center, projection, maxResolution, minResolution, maxZoom};
-                this.getScales(baseLayer);
-            }
-        }
+        let viewOptions = {};
         if (['4', '5'].indexOf(Util.getOlVersion()) < 0) { // 兼容 ol 4，5，6
             viewOptions.multiWorld = true;
             viewOptions.showFullExtent = true;
             viewOptions.enableRotation = false;
             viewOptions.constrainResolution = true; //设置此参数，是因为需要显示整数级别。为了可视比例尺中包含当前比例尺
         }
-        this.map.setView(new View(viewOptions));
+        if (baseLayer.layerType === "WMTS") {
+            if (baseLayer.scales && baseLayer.scales.length > 0) {
+                //因为新版extent超出，不可见。所以将extent去除
+                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
+                this.map.setView(new View(viewOptions));
+            } else {
+                viewOptions = {zoom, center, projection, maxZoom};
+                this.map.setView(new View(viewOptions));
+                this.getScales(baseLayer);
+            }
+        } else {
+            if (this.resolutionArray && this.resolutionArray.length > 0) {
+                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
+                this.map.setView(new View(viewOptions));
+            } else {
+                viewOptions = {zoom, center, projection, maxResolution, minResolution, maxZoom};
+                this.map.setView(new View(viewOptions));
+                this.getScales(baseLayer);
+            }
+        }
+       
+        
         if (options.visibleExtent) {
             const view = this.map.getView();
             const resolution = view.getResolutionForExtent(options.visibleExtent, this.map.getSize());
@@ -1301,7 +1306,7 @@ export class WebMap extends Observable {
             // layerInfo.projection = mapInfo.projection;
             // layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
             // 比例尺 单位
-            if(result.code !== 200) {
+            if(result && result.code && result.code !== 200) {
                 throw result;
             }
             if (result.visibleScales) {
