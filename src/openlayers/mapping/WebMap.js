@@ -765,8 +765,8 @@ export class WebMap extends Observable {
                 this.getScales(baseLayer);
             }
         }
-       
-        
+
+
         if (options.visibleExtent) {
             const view = this.map.getView();
             const resolution = view.getResolutionForExtent(options.visibleExtent, this.map.getSize());
@@ -4259,7 +4259,18 @@ export class WebMap extends Observable {
         if (this.isRestMapMapboxStyle(layerInfo)) {
             url = url.replace(restMapMVTStr, '')
         }
-        return FetchRequest.get(this.getRequestUrl(url + '.json'), null, {
+        url = this.getRequestUrl(url + '.json')
+
+        let credential = layerInfo.credential;
+        let credentialValue,keyfix;
+        //携带令牌(restmap用的首字母大写，但是这里要用小写)
+        if (credential) {
+            keyfix = Object.keys(credential)[0]
+            credentialValue = credential[keyfix];
+            url = `${url}?${keyfix}=${credentialValue}`;
+        }
+
+        return FetchRequest.get(url, null, {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true,
             headers: {
@@ -4295,7 +4306,17 @@ export class WebMap extends Observable {
         if (styleUrl.indexOf('/restjsr/') > -1) {
             styleUrl = `${styleUrl}/style.json`;
         }
-        return FetchRequest.get(this.getRequestUrl(styleUrl), null, {
+        styleUrl = this.getRequestUrl(styleUrl)
+        let credential = layerInfo.credential;
+        //携带令牌(restmap用的首字母大写，但是这里要用小写)
+        let credentialValue, keyfix;
+        if (credential) {
+            keyfix = Object.keys(credential)[0]
+            credentialValue = credential[keyfix];
+            styleUrl = `${styleUrl}?${keyfix}=${credentialValue}`;
+        }
+
+        return FetchRequest.get(styleUrl, null, {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true,
             headers: {
@@ -4306,6 +4327,18 @@ export class WebMap extends Observable {
         }).then(styles => {
             _this._matchStyleObject(styles);
             let bounds = layerInfo.bounds;
+            // 处理携带令牌的情况
+            if (credentialValue) {
+                styles.sprite = `${styles.sprite}?${keyfix}=${credentialValue}`;
+                let sources = styles.sources;
+                let sourcesNames = Object.keys(sources);
+                sourcesNames.forEach(function (sourceName) {
+                    styles.sources[sourceName].tiles.forEach(function (tiles, i) {
+                        styles.sources[sourceName].tiles[i] = `${tiles}?${keyfix}=${credentialValue}`
+                    })
+                })
+            }
+
             let newLayerInfo = {
                 url: url,
                 sourceType: 'VECTOR_TILE',
