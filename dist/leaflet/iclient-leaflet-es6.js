@@ -18797,7 +18797,7 @@ class GeometryBufferAnalystParameters_GeometryBufferAnalystParameters extends Bu
         /**
          * @member {Object} SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
          * @description 要做缓冲区分析的几何对象。<br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。 
          */
@@ -25075,7 +25075,7 @@ SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter_GeoHashGridAggParamet
  * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
  * @param {Object} options - 参数。 
  * @param {Object} options.operateGeometry - 叠加分析的操作几何对象。 </br>
- *                                   点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+ *                                   点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
  *                                   线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
  *                                   面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。 
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。 
@@ -25307,6 +25307,182 @@ class GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters extend
 }
 
 SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters;
+// CONCATENATED MODULE: ./src/common/iServer/GeoprocessingService.js
+
+
+
+/**
+ * @class SuperMap.GeoprocessingService
+ * @category  iServer GeoprocessingService
+ * @classdesc 地理处理服务接口的基类。
+ * @version 10.1.0
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
+ */
+class GeoprocessingService_GeoprocessingService extends CommonServiceBase_CommonServiceBase {
+    constructor(url, options) {
+        options = options || {};
+        options.EVENT_TYPES = ['processCompleted', 'processFailed', 'processRunning'];
+        super(url, options);
+        this.CLASS_NAME = 'SuperMap.GeoprocessingService';
+        this.headers = {};
+        this.crossOrigin = true;
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getTools
+     * @description 获取地理处理工具列表。
+     */
+    getTools() {
+        this._get(`${this.url}/list`);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getTool
+     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 地理处理工具ID。
+     */
+    getTool(identifier) {
+        this._get(`${this.url}/${identifier}`);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.execute
+     * @description 同步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environment - 地理处理工具的环境参数。
+     */
+    execute(identifier, parameter, environment) {
+        parameter = parameter ? parameter : null;
+        environment = environment ? environment : null;
+        const executeParamter = { parameter, environment };
+        this._get(`${this.url}/${identifier}/execute`, executeParamter);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.submitJob
+     * @description 异步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environments - 地理处理工具的环境参数。
+     */
+    submitJob(identifier, parameter, environments) {
+        parameter = parameter ? parameter : null;
+        environments = environments ? environments : null;
+        const asyncParamter = { parameter: parameter, environments: environments };
+        this.request({
+            url: `${this.url}/${identifier}/jobs`,
+            headers: { 'Content-type': 'application/json' },
+            method: 'POST',
+            data: JSON.stringify(asyncParamter),
+            scope: this,
+            success: this.serviceProcessCompleted,
+            failure: this.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.waitForJobCompletion
+     * @description 获取地理处理异步执行状态信息。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} options - 状态信息参数。
+     * @param {number} options.interval - 定时器时间间隔。
+     * @param {Callback} options.statusCallback - 任务状态的回调函数。
+     */
+    waitForJobCompletion(jobId, identifier, options) {
+        const me = this;
+        const timer = setInterval(function () {
+            const serviceProcessCompleted = function (serverResult) {
+                const state = serverResult.state.runState;
+                if (options.statusCallback) {
+                    options.statusCallback(state);
+                }
+                switch (state) {
+                    case 'FINISHED':
+                        clearInterval(timer);
+                        me.events.triggerEvent('processCompleted', {
+                            result: serverResult
+                        });
+                        break;
+                    case 'FAILED':
+                        clearInterval(timer);
+                        me.events.triggerEvent('processFailed', {
+                            result: serverResult
+                        });
+                        break;
+                    case 'CANCELED':
+                        clearInterval(timer);
+                        me.events.triggerEvent('processFailed', {
+                            result: serverResult
+                        });
+                        break;
+                }
+            };
+            me._get(`${me.url}/${identifier}/jobs/${jobId}`, null, serviceProcessCompleted);
+        }, options.interval);
+    }
+
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getJobInfo
+     * @description 获取地理处理任务的执行信息。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     */
+    getJobInfo(identifier, jobId) {
+        this._get(`${this.url}/${identifier}/jobs/${jobId}`);
+    }
+
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.cancelJob
+     * @description 取消地理处理任务的异步执行。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     */
+    cancelJob(identifier, jobId) {
+        this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getJobs
+     * @description 获取地理处理服务任务列表。
+     * @param {string} identifier - 地理处理工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     */
+    getJobs(identifier) {
+        let url = `${this.url}/jobs`;
+        if (identifier) {
+            url = `${this.url}/${identifier}/jobs`;
+        }
+        this._get(url);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getResults
+     * @description 地理处理工具执行的结果等,支持结果过滤。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     */
+    getResults(identifier, jobId, filter) {
+        let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
+        if (filter) {
+            url = `${url}/${filter}`;
+        }
+        this._get(url);
+    }
+    _get(url, paramter, serviceProcessCompleted, serviceProcessFailed) {
+        this.request({
+            url: url,
+            method: 'GET',
+            params: paramter,
+            headers: { 'Content-type': 'application/json' },
+            scope: this,
+            success: serviceProcessCompleted ? serviceProcessCompleted : this.serviceProcessCompleted,
+            failure: serviceProcessFailed ? serviceProcessFailed : this.serviceProcessFailed
+        });
+    }
+}
+SuperMap.GeoprocessingService = GeoprocessingService_GeoprocessingService;
+
 // CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystParameters.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -26025,7 +26201,7 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
         /**
          * @member {Object} SuperMap.GetFeaturesByBufferParameters.prototype.geometry
          * @description 空间查询条件。 <br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>  
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。  
          */
@@ -26212,7 +26388,7 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
         /**
          * @member {Object} SuperMap.GetFeaturesByGeometryParameters.prototype.geometry
          * @description 用于查询的几何对象。 </br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>  
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。  
          */
@@ -32480,10 +32656,10 @@ class MapService_MapService extends CommonServiceBase_CommonServiceBase {
             var arr = me.projection.split(":");
             if (arr instanceof Array) {
                 if (arr.length === 2) {
-                    me.url = Util.urlAppend(me.url,`prjCoordSys={\"epsgCode\":"${arr[1]}"}`)
+                    me.url = Util.urlAppend(me.url,`prjCoordSys=${encodeURIComponent(`{\"epsgCode\":"${arr[1]}"}`)}`)
                 }
                 if (arr.length === 1) {
-                    me.url = Util.urlAppend(me.url,`prjCoordSys={\"epsgCode\":"${arr[0]}"}`)
+                    me.url = Util.urlAppend(me.url,`prjCoordSys=${encodeURIComponent(`{\"epsgCode\":"${arr[0]}"}`)}`)
                 }
             }
         }
@@ -32785,7 +32961,7 @@ class MeasureParameters_MeasureParameters {
         /**
          * @member {Object} SuperMap.MeasureParameters.prototype.geometry
          * @description 要量算的几何对象。<br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
          */
@@ -33590,7 +33766,7 @@ class QueryByDistanceParameters_QueryByDistanceParameters extends QueryParameter
         /**
          * @member SuperMap.QueryByDistanceParameters.prototype.geometry
          * @description 用于查询的地理对象。<br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
          */
@@ -33765,7 +33941,7 @@ class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameter
         /**
          * @member {Object} SuperMap.QueryByGeometryParameters.prototype.geometry
          * @description 用于查询的几何对象。<br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
          */
@@ -40086,6 +40262,8 @@ SuperMap.WebPrintingService = WebPrintingService_WebPrintingService;
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -91252,6 +91430,266 @@ var gridCellInfosService = function (url, options) {
 };
 
 external_L_default.a.supermap.gridCellInfosService = gridCellInfosService;
+// CONCATENATED MODULE: ./src/leaflet/services/GeoprocessingService.js
+
+
+
+
+
+/** 
+ * @class L.supermap.geoprocessingService
+ * @classdesc 地理处理服务接口类。
+ * @version 10.1.0
+ * @category  iServer GeoprocessingService
+ * @extends  L.supermap.ServiceBase
+ * @example
+ *  //为了安全访问受保护的地理处理服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。
+ * SuperMap.SecurityManager.registerToken(serviceUrl, token);
+ *  var geoprocessingService = new L.supermap.geoprocessingService("http://localhost:8090/iserver/services/geoprocessing/restjsr/gp/v2")
+        geoprocessingService.submitJob(identifier,params, environments, function(serverResult) {
+            console.log(serverResult.result);
+            var jobID = serverResult.result.jobID;
+            var options = {
+                interval: 5000,
+                statusCallback: function(state) {
+                    console.log("Job Status: ", state);
+                }
+            };
+            geoprocessingService.waitForJobCompletion(jobID, identifier, options, function(serverResult) {
+                console.log(serverResult);
+            })
+        })
+ *  
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ */
+const services_GeoprocessingService_GeoprocessingService = ServiceBase.extend({
+    initialize: function (url, options) {
+        options = options || {};
+        external_L_default.a.setOptions(this, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
+        this.headers = {};
+        this.crossOrigin = true;
+        this.withCredentials = true;
+        this.proxy = true;
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.getTools
+     * @description 获取地理处理工具列表。
+     * @param {RequestCallback} callback 请求结果的回调函数。
+     */
+    getTools: function (callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.getTools();
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.getTool
+     * @description 获取工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {RequestCallback} callback 请求结果的回调函数。
+     */
+    getTool: function (identifier, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.getTool(identifier);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.execute
+     * @description 同步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environment - 地理处理工具的环境参数。
+     * @param {RequestCallback} callback 回调函数。
+     */
+    execute: function (identifier, parameter, environment, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.execute(identifier, parameter, environment);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.submitJob
+     * @description 异步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environment - 地理处理工具的环境参数。
+     * @param {RequestCallback} callback 回调函数。
+     */
+    submitJob: function (identifier, parameter, environment, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.submitJob(identifier, parameter, environment);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.waitForJobCompletion
+     * @description 获取地理处理异步执行状态信息。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} options - 状态信息参数。
+     * @param {number} options.interval - 定时器时间间隔。
+     * @param {RequestCallback} options.statusCallback - 任务状态的回调函数。
+     * @param {Callback} callback 回调函数。
+     */
+    waitForJobCompletion: function (jobId, identifier, options, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.getJobInfo
+     * @description 获取地理处理任务的执行信息。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {RequestCallback} callback 回调函数。
+     */
+    getJobInfo: function (identifier, jobId, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.getJobInfo(identifier, jobId);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.cancelJob
+     * @description 取消地理处理任务的异步执行。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {RequestCallback} callback 回调函数。
+     */
+    cancelJob: function (identifier, jobId, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.cancelJob(identifier, jobId);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.getJobs
+     * @description 获取地理处理服务任务列表。
+     * @param {string} identifier - 地理处理工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @param {RequestCallback} callback 回调函数。
+     */
+    getJobs: function (identifier, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.getJobs(identifier);
+    },
+
+    /**
+     * @function L.supermap.geoprocessingService.prototype.getResults
+     * @description 地理处理工具异步执行的结果,支持结果过滤。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {RequestCallback} callback 请求结果的回调函数。
+     */
+    getResults: function (identifier, jobId, filter, callback) {
+        const geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers,
+            serverType: this.options.serverType,
+            eventListeners: {
+                scope: this,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        geoprocessingJobsService.getResults(identifier, jobId, filter);
+    }
+});
+const geoprocessingService = function (url, options) {
+    return new services_GeoprocessingService_GeoprocessingService(url, options);
+};
+
+external_L_default.a.supermap.geoprocessingService = geoprocessingService;
+
 // CONCATENATED MODULE: ./src/leaflet/services/LayerInfoService.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -94007,6 +94445,8 @@ external_L_default.a.supermap.webPrintingJobService = webPrintingJobService;
 
 
 
+
+
 // CONCATENATED MODULE: ./src/leaflet/components/ComponentsViewBase.js
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 * This program are made available under the terms of the Apache License, Version 2.0
@@ -95129,6 +95569,9 @@ var SearchView = ComponentsViewBase.extend({
         //--------搜索按钮：
         const searchBtn = document.createElement("div");
         searchBtn.setAttribute("class", "component-search-icon supermapol-icons-search");
+        //查询结果页面
+        const resultDomObj = new PaginationContainer_PaginationContainer();
+        this._resultDomObj = resultDomObj;
         //查询要素或匹配要素【搜索按钮点击事件】
         searchBtn.onclick = () => {
             //若是遮挡结果显示，则关闭
@@ -95162,9 +95605,6 @@ var SearchView = ComponentsViewBase.extend({
         poiContainer.appendChild(searchBtn);
         //--------搜索按钮 END
 
-        //查询结果页面
-        const resultDomObj = new PaginationContainer_PaginationContainer();
-        this._resultDomObj = resultDomObj;
         const resultContainer = function createResultPage() {
             const resultContainer = resultDomObj.getElement();
             resultContainer.style.position = "absolute";
@@ -96748,6 +97188,9 @@ var ClientComputationView = ComponentsViewBase.extend({
 
         //复选框事件
         let isSaveStatus = true;
+        //合并缓冲区
+        //合并缓冲区，默认不选中，即为false
+        let isUnion = false;
         //选中select
         saveAttrsLabel.classList.add("selected");
         saveAttrsCheckbox.classList.add("checkbox-active");
@@ -96773,9 +97216,6 @@ var ClientComputationView = ComponentsViewBase.extend({
                 }
             }
         }
-        //合并缓冲区
-        //合并缓冲区，默认不选中，即为false
-        let isUnion = false;
         isUnionContainer.onclick = () => {
             if (isUnion) {
                 //将选中状态 由选中->不选中，修改其样式和状态

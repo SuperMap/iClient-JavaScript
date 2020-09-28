@@ -19573,7 +19573,7 @@ function (_BufferAnalystParamet) {
     /**
      * @member {Object} SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
      * @description 要做缓冲区分析的几何对象。<br>
-     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
      * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
      * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。 
      */
@@ -27731,7 +27731,7 @@ function GeometryOverlayAnalystParameters_setPrototypeOf(o, p) { GeometryOverlay
  * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
  * @param {Object} options - 参数。 
  * @param {Object} options.operateGeometry - 叠加分析的操作几何对象。 </br>
- *                                   点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+ *                                   点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
  *                                   线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
  *                                   面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。 
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。 
@@ -28064,6 +28064,258 @@ function (_ThiessenAnalystParam) {
   return GeometryThiessenAnalystParameters;
 }(ThiessenAnalystParameters_ThiessenAnalystParameters);
 SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters;
+// CONCATENATED MODULE: ./src/common/iServer/GeoprocessingService.js
+function GeoprocessingService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GeoprocessingService_typeof = function _typeof(obj) { return typeof obj; }; } else { GeoprocessingService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GeoprocessingService_typeof(obj); }
+
+function GeoprocessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function GeoprocessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function GeoprocessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoprocessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoprocessingService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function GeoprocessingService_possibleConstructorReturn(self, call) { if (call && (GeoprocessingService_typeof(call) === "object" || typeof call === "function")) { return call; } return GeoprocessingService_assertThisInitialized(self); }
+
+function GeoprocessingService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function GeoprocessingService_getPrototypeOf(o) { GeoprocessingService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return GeoprocessingService_getPrototypeOf(o); }
+
+function GeoprocessingService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) GeoprocessingService_setPrototypeOf(subClass, superClass); }
+
+function GeoprocessingService_setPrototypeOf(o, p) { GeoprocessingService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GeoprocessingService_setPrototypeOf(o, p); }
+
+
+
+/**
+ * @class SuperMap.GeoprocessingService
+ * @category  iServer GeoprocessingService
+ * @classdesc 地理处理服务接口的基类。
+ * @version 10.1.0
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
+ */
+
+var GeoprocessingService_GeoprocessingService =
+/*#__PURE__*/
+function (_CommonServiceBase) {
+  GeoprocessingService_inherits(GeoprocessingService, _CommonServiceBase);
+
+  function GeoprocessingService(url, options) {
+    var _this;
+
+    GeoprocessingService_classCallCheck(this, GeoprocessingService);
+
+    options = options || {};
+    options.EVENT_TYPES = ['processCompleted', 'processFailed', 'processRunning'];
+    _this = GeoprocessingService_possibleConstructorReturn(this, GeoprocessingService_getPrototypeOf(GeoprocessingService).call(this, url, options));
+    _this.CLASS_NAME = 'SuperMap.GeoprocessingService';
+    _this.headers = {};
+    _this.crossOrigin = true;
+    return _this;
+  }
+  /**
+   * @function SuperMap.GeoprocessingService.prototype.getTools
+   * @description 获取地理处理工具列表。
+   */
+
+
+  GeoprocessingService_createClass(GeoprocessingService, [{
+    key: "getTools",
+    value: function getTools() {
+      this._get("".concat(this.url, "/list"));
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getTool
+     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 地理处理工具ID。
+     */
+
+  }, {
+    key: "getTool",
+    value: function getTool(identifier) {
+      this._get("".concat(this.url, "/").concat(identifier));
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.execute
+     * @description 同步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environment - 地理处理工具的环境参数。
+     */
+
+  }, {
+    key: "execute",
+    value: function execute(identifier, parameter, environment) {
+      parameter = parameter ? parameter : null;
+      environment = environment ? environment : null;
+      var executeParamter = {
+        parameter: parameter,
+        environment: environment
+      };
+
+      this._get("".concat(this.url, "/").concat(identifier, "/execute"), executeParamter);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.submitJob
+     * @description 异步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environments - 地理处理工具的环境参数。
+     */
+
+  }, {
+    key: "submitJob",
+    value: function submitJob(identifier, parameter, environments) {
+      parameter = parameter ? parameter : null;
+      environments = environments ? environments : null;
+      var asyncParamter = {
+        parameter: parameter,
+        environments: environments
+      };
+      this.request({
+        url: "".concat(this.url, "/").concat(identifier, "/jobs"),
+        headers: {
+          'Content-type': 'application/json'
+        },
+        method: 'POST',
+        data: JSON.stringify(asyncParamter),
+        scope: this,
+        success: this.serviceProcessCompleted,
+        failure: this.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.waitForJobCompletion
+     * @description 获取地理处理异步执行状态信息。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} options - 状态信息参数。
+     * @param {number} options.interval - 定时器时间间隔。
+     * @param {Callback} options.statusCallback - 任务状态的回调函数。
+     */
+
+  }, {
+    key: "waitForJobCompletion",
+    value: function waitForJobCompletion(jobId, identifier, options) {
+      var me = this;
+      var timer = setInterval(function () {
+        var serviceProcessCompleted = function serviceProcessCompleted(serverResult) {
+          var state = serverResult.state.runState;
+
+          if (options.statusCallback) {
+            options.statusCallback(state);
+          }
+
+          switch (state) {
+            case 'FINISHED':
+              clearInterval(timer);
+              me.events.triggerEvent('processCompleted', {
+                result: serverResult
+              });
+              break;
+
+            case 'FAILED':
+              clearInterval(timer);
+              me.events.triggerEvent('processFailed', {
+                result: serverResult
+              });
+              break;
+
+            case 'CANCELED':
+              clearInterval(timer);
+              me.events.triggerEvent('processFailed', {
+                result: serverResult
+              });
+              break;
+          }
+        };
+
+        me._get("".concat(me.url, "/").concat(identifier, "/jobs/").concat(jobId), null, serviceProcessCompleted);
+      }, options.interval);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getJobInfo
+     * @description 获取地理处理任务的执行信息。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     */
+
+  }, {
+    key: "getJobInfo",
+    value: function getJobInfo(identifier, jobId) {
+      this._get("".concat(this.url, "/").concat(identifier, "/jobs/").concat(jobId));
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.cancelJob
+     * @description 取消地理处理任务的异步执行。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     */
+
+  }, {
+    key: "cancelJob",
+    value: function cancelJob(identifier, jobId) {
+      this._get("".concat(this.url, "/").concat(identifier, "/jobs/").concat(jobId, "/cancel"));
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getJobs
+     * @description 获取地理处理服务任务列表。
+     * @param {string} identifier - 地理处理工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     */
+
+  }, {
+    key: "getJobs",
+    value: function getJobs(identifier) {
+      var url = "".concat(this.url, "/jobs");
+
+      if (identifier) {
+        url = "".concat(this.url, "/").concat(identifier, "/jobs");
+      }
+
+      this._get(url);
+    }
+    /**
+     * @function SuperMap.GeoprocessingService.prototype.getResults
+     * @description 地理处理工具执行的结果等,支持结果过滤。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     */
+
+  }, {
+    key: "getResults",
+    value: function getResults(identifier, jobId, filter) {
+      var url = "".concat(this.url, "/").concat(identifier, "/jobs/").concat(jobId, "/results");
+
+      if (filter) {
+        url = "".concat(url, "/").concat(filter);
+      }
+
+      this._get(url);
+    }
+  }, {
+    key: "_get",
+    value: function _get(url, paramter, serviceProcessCompleted, serviceProcessFailed) {
+      this.request({
+        url: url,
+        method: 'GET',
+        params: paramter,
+        headers: {
+          'Content-type': 'application/json'
+        },
+        scope: this,
+        success: serviceProcessCompleted ? serviceProcessCompleted : this.serviceProcessCompleted,
+        failure: serviceProcessFailed ? serviceProcessFailed : this.serviceProcessFailed
+      });
+    }
+  }]);
+
+  return GeoprocessingService;
+}(CommonServiceBase_CommonServiceBase);
+SuperMap.GeoprocessingService = GeoprocessingService_GeoprocessingService;
 // CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystParameters.js
 function GeoRelationAnalystParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28996,7 +29248,7 @@ function (_GetFeaturesParameter) {
     /**
      * @member {Object} SuperMap.GetFeaturesByBufferParameters.prototype.geometry
      * @description 空间查询条件。 <br>
-     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
      * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>  
      * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。  
      */
@@ -29260,7 +29512,7 @@ function (_GetFeaturesParameter) {
     /**
      * @member {Object} SuperMap.GetFeaturesByGeometryParameters.prototype.geometry
      * @description 用于查询的几何对象。 </br>
-     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
      * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>  
      * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。  
      */
@@ -37141,11 +37393,11 @@ function (_CommonServiceBase) {
 
       if (arr instanceof Array) {
         if (arr.length === 2) {
-          me.url = Util_Util.urlAppend(me.url, "prjCoordSys={\"epsgCode\":\"".concat(arr[1], "\"}"));
+          me.url = Util_Util.urlAppend(me.url, "prjCoordSys=".concat(encodeURIComponent("{\"epsgCode\":\"".concat(arr[1], "\"}"))));
         }
 
         if (arr.length === 1) {
-          me.url = Util_Util.urlAppend(me.url, "prjCoordSys={\"epsgCode\":\"".concat(arr[0], "\"}"));
+          me.url = Util_Util.urlAppend(me.url, "prjCoordSys=".concat(encodeURIComponent("{\"epsgCode\":\"".concat(arr[0], "\"}"))));
         }
       }
     }
@@ -37518,7 +37770,7 @@ function () {
     /**
      * @member {Object} SuperMap.MeasureParameters.prototype.geometry
      * @description 要量算的几何对象。<br>
-     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
+     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
      * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
      * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
      */
@@ -38626,7 +38878,7 @@ function (_QueryParameters) {
     /**
      * @member SuperMap.QueryByDistanceParameters.prototype.geometry
      * @description 用于查询的地理对象。<br>
-     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
+     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
      * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
      * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
      */
@@ -38868,7 +39120,7 @@ function (_QueryParameters) {
     /**
      * @member {Object} SuperMap.QueryByGeometryParameters.prototype.geometry
      * @description 用于查询的几何对象。<br>
-     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
+     * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
      * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
      * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
      */
@@ -47046,6 +47298,8 @@ SuperMap.WebPrintingService = WebPrintingService_WebPrintingService;
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -89915,6 +90169,307 @@ function (_ServiceBase) {
   return GridCellInfosService;
 }(ServiceBase);
 external_mapboxgl_default.a.supermap.GridCellInfosService = GridCellInfosService_GridCellInfosService;
+// CONCATENATED MODULE: ./src/mapboxgl/services/GeoprocessingService.js
+function services_GeoprocessingService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { services_GeoprocessingService_typeof = function _typeof(obj) { return typeof obj; }; } else { services_GeoprocessingService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return services_GeoprocessingService_typeof(obj); }
+
+function services_GeoprocessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function services_GeoprocessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function services_GeoprocessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_GeoprocessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_GeoprocessingService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function services_GeoprocessingService_possibleConstructorReturn(self, call) { if (call && (services_GeoprocessingService_typeof(call) === "object" || typeof call === "function")) { return call; } return services_GeoprocessingService_assertThisInitialized(self); }
+
+function services_GeoprocessingService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function services_GeoprocessingService_getPrototypeOf(o) { services_GeoprocessingService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_GeoprocessingService_getPrototypeOf(o); }
+
+function services_GeoprocessingService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) services_GeoprocessingService_setPrototypeOf(subClass, superClass); }
+
+function services_GeoprocessingService_setPrototypeOf(o, p) { services_GeoprocessingService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_GeoprocessingService_setPrototypeOf(o, p); }
+
+
+
+
+
+/**
+ * @class mapboxgl.supermap.GeoprocessingService
+ * @classdesc 地理处理服务接口类。
+ * @version 10.1.0
+ * @category  iServer GeoprocessingService
+ * @extends  {mapboxgl.supermap.ServiceBase}
+ * @example
+ *  //为了安全访问受保护的地理处理服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。
+ * SuperMap.SecurityManager.registerToken(serviceUrl, token);
+ *  var geoprocessingService = new L.supermap.geoprocessingService("http://localhost:8090/iserver/services/geoprocessing/restjsr/gp/v2")
+        geoprocessingService.submitJob(identifier,params, environments, function(serverResult) {
+            console.log(serverResult.result);
+            var jobID = serverResult.result.jobID;
+            var options = {
+                interval: 5000,
+                statusCallback: function(state) {
+                console.log("Job Status: ", state);
+                }
+            };
+            geoprocessingService.waitForJobCompletion(jobID, identifier, options, function(serverResult) {
+                console.log(serverResult);
+            })
+        })
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ */
+
+var services_GeoprocessingService_GeoprocessingService =
+/*#__PURE__*/
+function (_ServiceBase) {
+  services_GeoprocessingService_inherits(GeoprocessingService, _ServiceBase);
+
+  function GeoprocessingService(url, options) {
+    var _this;
+
+    services_GeoprocessingService_classCallCheck(this, GeoprocessingService);
+
+    _this = services_GeoprocessingService_possibleConstructorReturn(this, services_GeoprocessingService_getPrototypeOf(GeoprocessingService).call(this, url, options));
+    _this.headers = {};
+    _this.crossOrigin = true;
+    _this.withCredentials = true;
+    _this.proxy = true;
+    return _this;
+  }
+  /**
+   * @function mapboxgl.supermap.GeoprocessingService.prototype.getTools
+   * @description 获取地理处理工具列表。
+   * @param {RequestCallback} callback 请求结果的回调函数。
+   */
+
+
+  services_GeoprocessingService_createClass(GeoprocessingService, [{
+    key: "getTools",
+    value: function getTools(callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.getTools();
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.getTool
+     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {RequestCallback} callback 请求结果的回调函数。
+     */
+
+  }, {
+    key: "getTool",
+    value: function getTool(identifier, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.getTool(identifier);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.execute
+     * @description 同步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environment - 地理处理工具的环境参数。
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "execute",
+    value: function execute(identifier, parameter, environment, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.execute(identifier, parameter, environment);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.submitJob
+     * @description 异步执行地理处理工具。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} parameter - 地理处理工具的输入参数。
+     * @param {Object} environment - 地理处理工具的环境参数。
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "submitJob",
+    value: function submitJob(identifier, parameter, environment, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.submitJob(identifier, parameter, environment);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.waitForJobCompletion
+     * @description 获取地理处理异步执行状态信息。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {Object} options - 状态信息参数。
+     * @param {number} options.interval - 定时器时间间隔。
+     * @param {Callback} options.statusCallback - 任务状态的回调函数。
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "waitForJobCompletion",
+    value: function waitForJobCompletion(jobId, identifier, options, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.getJobInfo
+     * @description 获取地理处理任务的执行信息。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "getJobInfo",
+    value: function getJobInfo(identifier, jobId, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.getJobInfo(identifier, jobId);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.cancelJob
+     * @description 取消地理处理任务的异步执行。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "cancelJob",
+    value: function cancelJob(identifier, jobId, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.cancelJob(identifier, jobId);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.getJobs
+     * @description 获取地理处理服务任务列表。
+     * @param {string} identifier - 地理处理工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "getJobs",
+    value: function getJobs(identifier, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.getJobs(identifier);
+    }
+    /**
+     * @function mapboxgl.supermap.GeoprocessingService.prototype.getResults
+     * @description 地理处理工具异步执行的结果,支持结果过滤。
+     * @param {string} identifier - 地理处理工具ID。
+     * @param {string} jobId - 地理处理任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {RequestCallback} callback 请求结果的回调函数。
+     */
+
+  }, {
+    key: "getResults",
+    value: function getResults(identifier, jobId, filter, callback) {
+      var geoprocessingJobsService = new GeoprocessingService_GeoprocessingService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers,
+        serverType: this.options.serverType,
+        eventListeners: {
+          scope: this,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      geoprocessingJobsService.getResults(identifier, jobId, filter);
+    }
+  }]);
+
+  return GeoprocessingService;
+}(ServiceBase);
+external_mapboxgl_default.a.supermap.GeoprocessingService = services_GeoprocessingService_GeoprocessingService;
 // CONCATENATED MODULE: ./src/mapboxgl/services/LayerInfoService.js
 function LayerInfoService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { LayerInfoService_typeof = function _typeof(obj) { return typeof obj; }; } else { LayerInfoService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return LayerInfoService_typeof(obj); }
 
@@ -93279,6 +93834,7 @@ external_mapboxgl_default.a.supermap.WebPrintingJobService = WebPrintingJobServi
 
 
 
+
 // EXTERNAL MODULE: external "function(){try{return convert}catch(e){return {}}}()"
 var external_function_try_return_convert_catch_e_return_ = __webpack_require__(6);
 var external_function_try_return_convert_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_convert_catch_e_return_);
@@ -95942,6 +96498,7 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport FeatureService */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService_FeatureService; });
 /* concated harmony reexport FieldService */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService_FieldService; });
 /* concated harmony reexport GridCellInfosService */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService_GridCellInfosService; });
+/* concated harmony reexport GeoprocessingService */__webpack_require__.d(__webpack_exports__, "GeoprocessingService", function() { return services_GeoprocessingService_GeoprocessingService; });
 /* concated harmony reexport LayerInfoService */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService_LayerInfoService; });
 /* concated harmony reexport MapService */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
 /* concated harmony reexport MeasureService */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });

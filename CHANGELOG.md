@@ -1,3 +1,242 @@
+# 10.1.0 #
+## 新特性
+
+### 新增地理机器学习服务线上示例
+![1010-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-6.gif)
+
+### 新增地理处理服务API
+![1010-11](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-11.png)
+
+### 新增Web地图打印服务API
+![1010-7](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-7.gif)
+
+### 新增新增掩膜API
+![1010-8](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-8.gif)
+
+### 动态标绘：新增支持动态目标图层
+![1010-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-3.png)
+
+### 可视化：新增PixiJS图层
+![1010-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-4.png)
+
+### 全面支持webp地图瓦片格式
+![1010-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-5.png)
+
+### 新增卷帘组件等多处更新
+![1010-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-2.png)
+
+### 新增自然资源模板
+![1010-9](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-9.png)
+
+### 新增生态大数据模板
+![1010-10](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-10.png)
+
+### 新增新冠疫情图范例
+![1010-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-1.png)
+
+## API changes
+
+### for Leaflet
+
+- 对接 SuperMap iServer Web 打印服务
+
+  - 新增 `L.supermap.WebPrintingJobService` Web 打印服务类，支持创建打印任务，获取打印结果，获取打印模板
+
+  - 新增 `SuperMap.WebPrintingJobParameters` Web 打印参数类
+  
+  - 新增 `SuperMap.WebPrintingJobLayoutOptions` Web 打印的布局参数类
+
+  - 新增 `SuperMap.WebPrintingJobLegendOptions` Web 打印图例参数类
+
+  - 新增 `SuperMap.WebPrintingJobLittleMapOptions` Web 打印小地图参数类
+
+  - 新增 `SuperMap.WebPrintingJobNorthArrowOptions` Web 打印地图指北针参数类
+
+  - 新增 `SuperMap.WebPrintingJobScaleBarOptions` Web 打印比例尺参数类
+
+  - 新增 `SuperMap.WebPrintingJobExportOptions` Web 打印的输出参数类
+
+  - 新增 `SuperMap.WebPrintingJobContent` Web 打印内容参数类
+  
+  - 新增 `SuperMap.WebPrintingJobCustomItems` Web 打印图例元素参数类
+
+  - 新增 `SuperMap.WebPrintingJobImage` Web 打印图片参数类
+
+  - 新增 `SuperMap.WebPrintingJobLayers` Web 打印图层参数类
+
+- 支持对接 SuperMap iServer 返回的类型为`GEOCOMPOUND` 类型的几何对象
+
+- 动态标绘
+
+- `L.supermap.plotting.picture`
+  
+  - 新增 `options.symbolTexts` 支持设置一个或多个标牌
+  
+  - 新增 `options.bloodVolumes` 支持设置一个或多个生命值
+  
+  - 新增 `options.trajectory` 支持设置轨迹线，只支持动态目标图层显示
+  
+  - 新增 `options.autoRotation` 支持设置根据轨迹线方向自动旋转，只支持动态目标图层显示
+  
+- `L.supermap.plotting.dotSymbol` 新增 `options.autoRotation` 支持设置根据轨迹线方向自动旋转，只支持动态目标图层显示
+
+- 动目标标牌新增支持多行文本换行
+
+- `L.supermap.plotting.sitDataManager` 新增 `getSmlData` 接口,支持获取态势图数据
+
+- `L.supermap.plotting` 新增 `getTouchMode` `setTouchMode` 接口,支持设置触屏模式，触屏模式下做触屏标绘和编辑更容易操作
+
+### for OpenLayers
+
+- 对接 SuperMap iServer Web 打印服务
+
+  - 新增 `ol.supermap.WebPrintingJobService` Web 打印服务类，支持创建打印任务，获取打印结果，获取打印模板
+
+  - 新增 `SuperMap.WebPrintingJobParameters` Web 打印参数类
+  
+  - 新增 `SuperMap.WebPrintingJobLayoutOptions` Web 打印的布局参数类
+
+  - 新增 `SuperMap.WebPrintingJobLegendOptions` Web 打印图例参数类
+
+  - 新增 `SuperMap.WebPrintingJobLittleMapOptions` Web 打印小地图参数类
+
+  - 新增 `SuperMap.WebPrintingJobNorthArrowOptions` Web 打印地图指北针参数类
+
+  - 新增 `SuperMap.WebPrintingJobScaleBarOptions` Web 打印比例尺参数类
+
+  - 新增 `SuperMap.WebPrintingJobExportOptions` Web 打印的输出参数类
+
+  - 新增 `SuperMap.WebPrintingJobContent` Web 打印内容参数类
+  
+  - 新增 `SuperMap.WebPrintingJobCustomItems` Web 打印图例元素参数类
+
+  - 新增 `SuperMap.WebPrintingJobImage` Web 打印图片参数类
+
+  - 新增 `SuperMap.WebPrintingJobLayers` Web 打印图层参数类
+
+- `ol.supermap.Util` 新增 `setMask` `unsetMask` 接口，支持为图层设置/移除掩膜
+
+- 支持对接 SuperMap iServer 返回的类型为`GEOCOMPOUND` 类型的几何对象
+
+- `ol.supermap.WebMap`
+
+  - `options` 新增 `webmap` 参数，支持直接传入获取 webmap spec的地址或者是webMap JSON 对象来加载webmap
+  
+  - 支持 EPSG:-1 地图作为底图
+
+### for MapboxGL
+
+- 对接 SuperMap iServer Web 打印服务
+
+  - 新增 `mapboxgl.supermap.WebPrintingJobService` Web 打印服务类，支持创建打印任务，获取打印结果，获取打印模板
+
+  - 新增 `SuperMap.WebPrintingJobParameters` Web 打印参数类
+  
+  - 新增 `SuperMap.WebPrintingJobLayoutOptions` Web 打印的布局参数类
+
+  - 新增 `SuperMap.WebPrintingJobLegendOptions` Web 打印图例参数类
+
+  - 新增 `SuperMap.WebPrintingJobLittleMapOptions` Web 打印小地图参数类
+
+  - 新增 `SuperMap.WebPrintingJobNorthArrowOptions` Web 打印地图指北针参数类
+
+  - 新增 `SuperMap.WebPrintingJobScaleBarOptions` Web 打印比例尺参数类
+
+  - 新增 `SuperMap.WebPrintingJobExportOptions` Web 打印的输出参数类
+
+  - 新增 `SuperMap.WebPrintingJobContent` Web 打印内容参数类
+  
+  - 新增 `SuperMap.WebPrintingJobCustomItems` Web 打印图例元素参数类
+
+  - 新增 `SuperMap.WebPrintingJobImage`  Web 打印图片参数类
+
+  - 新增 `SuperMap.WebPrintingJobLayers` Web 打印图层参数类
+  
+- 支持对接 SuperMap iServer 返回的类型为 `GEOCOMPOUND` 的几何对象
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图(sm-web-map)组件
+
+    - 新增 `defaultLoading` 参数，支持控制地图初始加载时是否显示loading效果
+  
+    - 新增 `loading ` 参数，支持手动控制是否显示loading
+
+    - 对接最新功能
+
+      - 支持行政区划上图
+
+  - 图表(sm-chart)组件
+
+    - 新增 `highlightColor ` 参数，支持设置高亮颜色
+  
+    - `datasetOptions` 的 `seriesType` 新增 `2.5Bar` 枚举值
+
+  - 边框(sm-border)组件
+
+    - 新增 `customBorder  ` 参数，支持自定义边框
+
+  - 多行文本(sm-text-list)组件
+
+    - 新增 `highlightOptions ` `highlightCurrentRow` `highlightColor` 参数，支持设置行高亮
+  
+    - 支持hover效果
+  
+  - 新增轨迹图层(sm-track-layer)组件
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.tiandituTileLayer` 与 `L.control.layers` 合用时报错的问题
+  
+- 修复 `L.supermap.tiledVectorLayer` 点击点要素获取坐标不对的问题
+
+- 修复多个 `L.supermap.graphicLayer` 叠加鼠标事件被阻止的问题
+
+- 修复 `L.supermap.tiandituTileLayer` 的 `noWrap` 参数无效的问题
+
+- 动态标绘
+  
+  - 修复图片标号在动目标图层上第一次加载不显示的问题
+
+  - 修复箭头标号库，长虚线钳击箭头无法绘制问题
+
+  - 修复触屏模式，结束标绘时箭头变形问题
+
+### for OpenLayers
+
+- 修复 `ol.supermap.WebMap` 多坐标系地图的出图问题
+
+- 优化 `ol.supermap.WebMap` 线面数据标签布局、沿线标注的显示，超出线面范围不显示
+
+## Examples
+
+### for OpenLayers
+
+- iServer
+
+  - 增加 “Web 打印” 分类及示例
+
+- 可视化
+
+  - 增加 “掩膜” 分类及示例
+
+### for MapboxGL
+
+- iServer
+  
+  - 增加 “机器学习” 分类及示例
+
+  - 增加 “Web 打印” 分类及示例
+
+### Component
+
+- 增加 “行业模板” 分类
+
+
 # 10.1.0-beta #
 
 ## API changes
