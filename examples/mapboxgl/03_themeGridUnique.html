@@ -28,7 +28,7 @@
                 "raster-tiles": {
                     "attribution": attribution,
                     "type": "raster",
-                    "tiles": [host + '/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}'],
+                    "tiles": [host + '/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}'],
                     "tileSize": 256,
                 },
             },

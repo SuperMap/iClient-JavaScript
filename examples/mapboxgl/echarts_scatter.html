@@ -33,7 +33,7 @@
             " Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
             " <a href='https://echarts.baidu.com' target='_blank'>© 2018 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}';
+    var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}';
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var chart, div, popup = '', features = [];
     var map = new mapboxgl.Map({

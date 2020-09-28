@@ -47,10 +47,10 @@ export class MapService extends CommonServiceBase {
             var arr = me.projection.split(":");
             if (arr instanceof Array) {
                 if (arr.length === 2) {
-                    me.url = Util.urlAppend(me.url,`prjCoordSys={\"epsgCode\":"${arr[1]}"}`)
+                    me.url = Util.urlAppend(me.url,`prjCoordSys=${encodeURIComponent(`{\"epsgCode\":"${arr[1]}"}`)}`)
                 }
                 if (arr.length === 1) {
-                    me.url = Util.urlAppend(me.url,`prjCoordSys={\"epsgCode\":"${arr[0]}"}`)
+                    me.url = Util.urlAppend(me.url,`prjCoordSys=${encodeURIComponent(`{\"epsgCode\":"${arr[0]}"}`)}`)
                 }
             }
         }
