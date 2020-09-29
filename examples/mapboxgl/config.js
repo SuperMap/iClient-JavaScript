@@ -362,19 +362,19 @@ var exampleConfig = {
                 ]
             },
             machinelearning: {
-                name: "机器学习",
-                name_en: "Machine Learning",
+                name: "机器学习结果叠加",
+                name_en: "Machine Learning Result Overlay",
                 content: [
                     {
-                        name: "二元分类",
-                        name_en: "Binary Classification",
+                        name: "二元分类结果叠加",
+                        name_en: "Binary Classification Result Overlay",
                         version: "10.1.0",
                         thumbnail: "machinelearning_binaryclassification.png",
                         fileName: "machinelearning_binaryclassification"
                     },
                     {
-                        name: "目标检测",
-                        name_en: "Object Detection",
+                        name: "目标检测结果叠加",
+                        name_en: "Object Detection Result Overlay",
                         version: "10.1.0",
                         thumbnail: "machinelearning_objectdetection.png",
                         fileName: "machinelearning_objectdetection"

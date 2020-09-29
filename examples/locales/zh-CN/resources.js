@@ -616,8 +616,8 @@ window.examplesResources = {
         "title_natureResourcePlatform_Vue": '自然资源平台大屏',
         "title_ecologicalBigDataPlatform_Vue": '生态大数据平台大屏',
         "title_mask":'图层掩膜',
-        "title_objectdetection":"机器学习（目标检测）",
-        "title_binaryclassification":"机器学习（二元分类）",
+        "title_objectdetection":"机器学习结果叠加（目标检测）",
+        "title_binaryclassification":"机器学习结果叠加（二元分类）",
 
         "text_service_name":"名称",
         "text_service_type":"类型",

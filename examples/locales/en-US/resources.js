@@ -665,8 +665,8 @@ window.examplesResources = {
         "title_natureResourcePlatform_Vue": 'Nature Resource Platform(Vue)',
         "title_ecologicalBigDataPlatform_Vue": 'Ecological Big Data Platform(Vue)',
         "title_mask":'Layer Mask',
-        "title_objectdetection":"Machinelearning(Objectdetection)",
-        "title_binaryclassification":"Machinelearning(Binaryclassification)",
+        "title_objectdetection":"Machinelearning Result Overlay(Objectdetection)",
+        "title_binaryclassification":"Machinelearning Result Overlay(Binaryclassification)",
 
         "text_service_name":"Name",
         "text_service_type":"Type",
