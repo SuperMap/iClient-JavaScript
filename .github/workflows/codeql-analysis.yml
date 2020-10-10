@@ -4,7 +4,12 @@
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
 name: "CodeQL"
-
+disable-default-queries: true
+paths-ignore: 
+ - node_modules
+ - '**/*.test.js'
+paths:
+ - src
 on:
   push:
     branches: [master]
@@ -18,7 +23,6 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
