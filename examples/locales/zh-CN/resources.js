@@ -56,7 +56,7 @@ window.examplesResources = {
             "vuecomponents_leaflet": "Vue - Leaflet",
             "reactcomponents_mbgl": 'React - MapboxGL',
             "h5components": "H5",
-            "template": '行业模板'
+            "template": '模板'
         }
     },
     "footer": {

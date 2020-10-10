@@ -87,7 +87,7 @@ window.examplesResources = {
             "vuecomponents_leaflet": "Vue - Leaflet",
             "reactcomponents_mbgl": 'React - MapboxGL',
             "h5components": "H5",
-            "template": 'Industry Template'
+            "template": 'Templates'
         },
         "more": {
             "_name": "More>>",

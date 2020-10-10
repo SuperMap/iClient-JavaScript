@@ -1,11 +1,11 @@
 var exampleConfig = {
     vuecomponents_mbgl: {
-        name: '行业模板',
-        name_en: 'Industry Template',
+        name: '模板',
+        name_en: 'Templates',
         content: {
             others_vue: {
-                name: '模板',
-                name_en: 'Template',
+                name: 'Vue - Templates',
+                name_en: 'Vue - Templates',
                 content: [
                     {
                         name: '生态大数据平台示例',
