@@ -14,8 +14,6 @@ on:
      - src
   schedule:
     - cron: '0 20 * * 3'
-paths:
- - src
 jobs:
   analyze:
     name: Analyze
