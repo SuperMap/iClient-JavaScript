@@ -80,7 +80,7 @@
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.16.3",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "file-loader": "^5.0.2",
+    "file-loader": "^6.1.1",
     "get-pixels": "^3.3.0",
     "image-size": "^0.8.3",
     "imports-loader": "^0.8.0",
