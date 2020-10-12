@@ -65,26 +65,22 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         var parameterObject = {};
         var me = this;
 
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         if (parameter instanceof DatasetOverlayAnalystParameters) {
             me.mode = "datasets";
-            me.url += 'datasets/' + parameter.sourceDataset + '/overlay.json?returnContent=true';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.sourceDataset + '/overlay');
             DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
         } else if (parameter instanceof GeometryOverlayAnalystParameters) {
             me.mode = "geometry";
             //支持传入多个几何要素进行叠加分析
             if(parameter.operateGeometries && parameter.sourceGeometries){
-                me.url += 'geometry/overlay/batch.json?returnContent=true&ignoreAnalystParam=true';
+                me.url = Util.urlPathAppend(me.url, 'geometry/overlay/batch');
+                me.url = Util.urlAppend(me.url, 'ignoreAnalystParam=true');
             }else {
-                me.url += 'geometry/overlay.json?returnContent=true';
+                me.url = Util.urlPathAppend(me.url, 'geometry/overlay');
             }
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         var jsonParameters = Util.toJSON(parameterObject);
         me.request({
             method: "POST",

@@ -9,7 +9,7 @@ import XYZ from 'ol/source/XYZ';
  * @category  ThirdPartyMap
  * @classdesc 超图云地图图层源。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
+ * @param {string} [opt_options.url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @extends {ol/source/XYZ}
  */
@@ -21,7 +21,7 @@ export class SuperMapCloud extends XYZ {
         var attributions = options.attributions || "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';
-        var url = options.url || 'http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
+        var url = options.url || 'http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
         url = url.replace('{mapName}', mapName).replace('{type}', mapType);
 
         var superOptions = {

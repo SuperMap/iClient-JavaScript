@@ -153,7 +153,7 @@ describe('Util', () => {
             }
         };
         var paramsArr = Util.getParameterString(params);
-        expect(paramsArr).toBe("type=json&coordinates=abc,edf&properties=%5Bobject%20Object%5D");
+        expect(paramsArr).toBe("type=json&coordinates=%5B%22abc%22%2C%22edf%22%5D&properties=%7B%22constructor%22%3A%5B1%2C2%2C3%5D%7D");
     });
 
     it('urlAppend', () => {

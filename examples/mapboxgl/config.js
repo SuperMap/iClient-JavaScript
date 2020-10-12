@@ -20,14 +20,14 @@ var exampleConfig = {
                         name_en: "3857 coordinate system",
                         thumbnail: "mb_TileLayer.png",
                         fileName: "01_tiledMapLayer"
-                    }, 
+                    },
                     {
                         name: "地图-栅格分析",
                         name_en: "map rasterFunction",
                         version: "10.0.0",
                         thumbnail: "tiledMapLayerRasterfunction.png",
                         fileName: "01_tiledMapLayer_rasterfunction"
-                    },          
+                    },
                     {
                         name: "地图信息",
                         name_en: "map query service",
@@ -288,6 +288,19 @@ var exampleConfig = {
                     }
                 ]
             },
+            webPrinting: {
+                name: "Web 打印",
+                name_en: "Web Printing",
+                content: [
+                    {
+                        name: "Web 地图打印",
+                        name_en: "Web Map Print",
+                        version: "10.1.0",
+                        thumbnail: "webPrintingJob.png",
+                        fileName: "webPrintingJob"
+                    }
+                ]
+            },
             processingService: {
                 name: "分布式分析",
                 name_en: "Distributed analysis services",
@@ -347,7 +360,35 @@ var exampleConfig = {
                         fileName: "topologyValidatorJobService"
                     }
                 ]
-            }
+            },
+            machinelearning: {
+                name: "机器学习结果叠加",
+                name_en: "Machine Learning Result Overlay",
+                content: [
+                    {
+                        name: "二元分类结果叠加",
+                        name_en: "Binary Classification Result Overlay",
+                        version: "10.1.0",
+                        thumbnail: "machinelearning_binaryclassification.png",
+                        fileName: "machinelearning_binaryclassification"
+                    },
+                    {
+                        name: "目标检测结果叠加",
+                        name_en: "Object Detection Result Overlay",
+                        version: "10.1.0",
+                        thumbnail: "machinelearning_objectdetection.png",
+                        fileName: "machinelearning_objectdetection"
+                    }
+                    // ,
+                    // {
+                    //     name: "地物分类",
+                    //     name_en: "Landcover Classification",
+                    //     version: "10.1.0",
+                    //     thumbnail: "machinelearning_landcoverclassification.png",
+                    //     fileName: "machinelearning_landcoverclassification"
+                    // }
+                ]
+            },
         }
     },
     iPortal: {
@@ -408,6 +449,13 @@ var exampleConfig = {
                 name_en: "Heat map",
                 version: "9.1.0",
                 content: [
+                    {
+                        name: "随机点",
+                        name_en: "random points",
+                        version: "10.1.0",
+                        thumbnail: "mb_heatMapLayer.png",
+                        fileName: "heatmaplayer_mbgl"
+                    },
                     {
                         name: "随机点 (Classic)",
                         name_en: "random points (Classic)",
@@ -1064,6 +1112,13 @@ var exampleConfig = {
                         version: "9.1.1",
                         thumbnail: "mvt_4326.png",
                         fileName: "mvtVectorTile_4326"
+                    },
+                    {
+                        name: "地图打印",
+                        name_en: "Map Print",
+                        version: "10.1.0",
+                        thumbnail: "print_pdf.png",
+                        fileName: "print_pdf"
                     }
                 ]
             },

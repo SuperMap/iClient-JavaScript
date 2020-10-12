@@ -28,7 +28,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         var queryByBoundsService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("BoundsQuery");
             expect(paramsObj.bounds.rightTop.y).toBe(39);
@@ -95,7 +95,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         var queryByBoundsService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnCustomResult=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("BoundsQuery");
             expect(paramsObj.queryParameters.expectCount).toBe(100);
@@ -137,7 +137,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         var queryByBoundsService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
@@ -172,7 +172,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         var queryByBoundsService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {

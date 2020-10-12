@@ -19,13 +19,10 @@
       }
     </style>
   </head>
-
-  <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;">
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%;">
     <div id="main">
-      <!-- 天地图 -->
       <sm-web-map :map-options="mapOptions"></sm-web-map>
     </div>
-
     <script>
       new Vue({
         el: '#main',
@@ -37,34 +34,62 @@
               style: {
                 version: 8,
                 sources: {
-                  baseLayer: {
+                  baseLayer_img: {
                     type: 'raster',
                     tiles: [
-                      'http://t0.tianditu.com/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}'
+                      'https://t0.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}'
                     ],
                     tileSize: 256
                   },
-                  labelLayer: {
+                  baseLayer_vec: {
                     type: 'raster',
                     tiles: [
-                      'http://t0.tianditu.com/cia_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}'
+                      'https://t0.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}'
+                    ],
+                    tileSize: 256
+                  },
+                  labelLayer_img: {
+                    type: 'raster',
+                    tiles: [
+                      'https://t0.tianditu.gov.cn/cia_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}'
+                    ],
+                    tileSize: 256
+                  },
+                  labelLayer_vec: {
+                    type: 'raster',
+                    tiles: [
+                      'https://t0.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}'
                     ],
                     tileSize: 256
                   }
                 },
                 layers: [
                   {
-                    id: 'baseLayer',
+                    id: 'baseLayer_img',
                     type: 'raster',
-                    source: 'baseLayer',
+                    source: 'baseLayer_img',
                     minzoom: 0,
+                    maxzoom: 12
+                  },
+                  {
+                    id: 'baseLayer_vec',
+                    type: 'raster',
+                    source: 'baseLayer_vec',
+                    minzoom: 12,
                     maxzoom: 18
                   },
                   {
-                    id: 'labelLayer',
+                    id: 'labelLayer_img',
                     type: 'raster',
-                    source: 'labelLayer',
+                    source: 'labelLayer_img',
                     minzoom: 0,
+                    maxzoom: 12
+                  },
+                  {
+                    id: 'labelLayer_vec',
+                    type: 'raster',
+                    source: 'labelLayer_vec',
+                    minzoom: 12,
                     maxzoom: 18
                   }
                 ]

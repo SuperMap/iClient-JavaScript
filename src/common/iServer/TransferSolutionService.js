@@ -53,13 +53,9 @@ export class TransferSolutionService extends CommonServiceBase {
         }
         var me = this,
             method = "GET",
-            jsonParameters,
-            end;
+            jsonParameters;
 
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? '' : '/';
-        me.url += "solutions.json?";
-
+        me.url = Util.urlPathAppend(me.url, 'solutions');
         jsonParameters = {
             points: Util.toJSON(params.points),
             walkingRatio: params['walkingRatio'],

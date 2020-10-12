@@ -29,7 +29,7 @@ describe('openlayers_SpatialAnalystService_densityAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(changchunServiceUrl + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/Railway@Changchun/densityanalyst/kernel?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.fieldName).toBe("SmLength");
             expect(paramsObj.resultGridName).toBe("KernelDensity_openlayersTest");

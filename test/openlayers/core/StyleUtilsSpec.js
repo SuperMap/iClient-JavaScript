@@ -513,6 +513,3 @@ var requestFeature = (url) => {
             return features;
         });
 }
-
-
-

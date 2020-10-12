@@ -31,7 +31,7 @@ describe('leaflet_SpatialAnalystService_overlayAnalysis', () => {
         var overlayAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/BaseMap_R@Jingjin/overlay.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/BaseMap_R@Jingjin/overlay?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.operateDataset).toBe("Neighbor_R@Jingjin");
             expect(options).not.toBeNull();

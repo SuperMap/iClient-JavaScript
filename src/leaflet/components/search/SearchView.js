@@ -272,6 +272,9 @@ export var SearchView = ComponentsViewBase.extend({
         //--------搜索按钮：
         const searchBtn = document.createElement("div");
         searchBtn.setAttribute("class", "component-search-icon supermapol-icons-search");
+        //查询结果页面
+        const resultDomObj = new PaginationContainer();
+        this._resultDomObj = resultDomObj;
         //查询要素或匹配要素【搜索按钮点击事件】
         searchBtn.onclick = () => {
             //若是遮挡结果显示，则关闭
@@ -305,9 +308,6 @@ export var SearchView = ComponentsViewBase.extend({
         poiContainer.appendChild(searchBtn);
         //--------搜索按钮 END
 
-        //查询结果页面
-        const resultDomObj = new PaginationContainer();
-        this._resultDomObj = resultDomObj;
         const resultContainer = function createResultPage() {
             const resultContainer = resultDomObj.getElement();
             resultContainer.style.position = "absolute";

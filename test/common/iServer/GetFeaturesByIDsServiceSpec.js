@@ -79,7 +79,7 @@ describe('GetFeaturesByIDsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       // expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
       // expect(params).toContain("'getFeatureMode':\"ID\"");
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
@@ -128,7 +128,7 @@ describe('GetFeaturesByIDsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true');
       // expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
       // expect(params).toContain("'getFeatureMode':\"ID\"");
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
@@ -170,7 +170,7 @@ describe('GetFeaturesByIDsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(
@@ -214,7 +214,7 @@ describe('GetFeaturesByIDsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:CapitalsNotExsit');
       expect(paramsObj.getFeatureMode).toBe('ID');

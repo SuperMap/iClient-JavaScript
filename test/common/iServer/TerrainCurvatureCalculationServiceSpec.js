@@ -77,7 +77,7 @@ describe('TerrainCurvatureCalculationService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.zFactor).toEqual(1.0);
             expect(paramsObj.deleteExistResultDataset).toBeTruthy();
@@ -124,7 +124,7 @@ describe('TerrainCurvatureCalculationService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/XX@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/XX@Jingjin/terraincalculation/curvature?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.zFactor).toEqual(1.0);
             expect(paramsObj.deleteExistResultDataset).toBeTruthy();

@@ -26,7 +26,7 @@ describe('openlayers_SpatialAnalystService_overlayAnalysis', () => {
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(sampleServiceUrl + "/datasets/BaseMap_R@Jingjin/overlay.json?returnContent=true");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/BaseMap_R@Jingjin/overlay?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.operateDataset).toBe("Neighbor_R@Jingjin");
             expect(paramsObj.operation).toBe("UNION");

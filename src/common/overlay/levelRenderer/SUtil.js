@@ -9,7 +9,7 @@ import {Env} from './Env';
 import {Event} from './Event';
 import {Http} from './Http';
 import {Log} from './Log';
-import {Math as SMath} from './Math';
+import {MathTool as SMath} from './Math';
 import {Matrix} from './Matrix';
 import {Util} from './Util';
 import {Vector} from './Vector';

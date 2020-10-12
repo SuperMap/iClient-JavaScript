@@ -1,0 +1,236 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        <title>国家紧急状态</title>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-web-map style="background: #081f30;" :map-options="mapOptions" @load="mapLoaded"></sm-web-map>
+            <div id="group"></div>
+        </div>
+        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+        <script
+            include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <script src="../data/ncp//world_4326.js"></script>
+        <script src="../data/ncp/Country_Center.js"></script>
+        <style>
+            #main {
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <script>
+            //数据截止时间为2020-03-26
+            var nationalEmergencyArea = [
+                '意大利',
+                '西班牙',
+                '美国',
+                '法国',
+                '韩国',
+                '瑞士',
+                '南非',
+                '格鲁吉亚',
+                '多米尼加',
+                '葡萄牙',
+                '芬兰',
+                '澳大利亚',
+                '萨尔瓦多',
+                '洪都拉斯',
+                '卢森堡',
+                '津巴布韦',
+                '哥伦比亚',
+                '约旦',
+                '纳米比亚',
+                '斯威士兰',
+                '苏丹',
+                '亚美尼亚',
+                '厄瓜多尔',
+                '摩尔多瓦',
+                '哥斯达黎加',
+                '波黑',
+                '奥地利',
+                '塞浦路斯',
+                '黎巴嫩',
+                '塞尔维亚',
+                '秘鲁',
+                '哈萨克斯坦',
+                '罗马尼亚',
+                '利比亚',
+                '保加利亚',
+                '爱沙尼亚',
+                '波兰',
+                '巴拿马',
+                '委内瑞拉',
+                '斯洛伐克',
+                '拉脱维亚',
+                '阿根廷',
+                '捷克',
+                '匈牙利',
+                '菲律宾',
+                '巴勒斯坦',
+                '危地马拉',
+                '立陶宛',
+                '巴布亚新几内亚',
+                '吉尔吉斯斯坦',
+                '摩洛哥',
+                '萨摩亚',
+                '汤加',
+                '以色列',
+                '新西兰',
+                '安哥拉',
+                '刚果（金）',
+                '泰国',
+                '科特迪瓦',
+                '乌克兰'
+            ];
+            var styles = { emergencyColor: '#ef6548', defaultColor: '#002F4E' };
+            new Vue({
+                el: '#main',
+                data() {
+                    var attribution =
+                        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                        " Map Data <span>© <a href='https://www.supermapol.com/' target='_blank'>SuperMap Online</a></span> ";
+
+                    return {
+                        mapOptions: {
+                            container: 'map', // container id
+                            style: {
+                                version: 8,
+                                glyphs: 'https://ncov.supermapol.com/statichtml/font/{fontstack}/{range}.pbf',
+                                sources: {
+                                    'raster-tiles': {
+                                        attribution: attribution,
+                                        type: 'raster',
+                                        tiles: [
+                                            'https://maptiles.supermapol.com/iserver/services/map-China-2/rest/maps/China_DarkBlue_Nolable'
+                                        ],
+                                        prjCoordSys: { epsgCode: 4326 },
+                                        rasterSource: 'iserver',
+                                        tileSize: 256
+                                    }
+                                },
+                                layers: [
+                                    {
+                                        id: 'simple-tiles',
+                                        type: 'raster',
+                                        source: 'raster-tiles',
+                                        minzoom: 0,
+                                        maxzoom: 22
+                                    }
+                                ]
+                            },
+                            center: [101.58, 33.11],
+                            maxZoom: 5,
+                            zoom: 2,
+                            crs: 'EPSG:4326'
+                        }
+                    };
+                },
+                methods: {
+                    mapLoaded(e) {
+                        this.map = e.map;
+                        this.initWorldData();
+                        this.map.addSource('world', {
+                            type: 'geojson',
+                            data: CountryData
+                        });
+                        this.map.addLayer({
+                            id: 'world',
+                            type: 'fill',
+                            source: 'world',
+                            layout: {},
+                            paint: {
+                                'fill-color': [
+                                    'case',
+                                    ['has', 'nationalEmergency'],
+                                    [
+                                        'case',
+                                        ['==', ['get', 'nationalEmergency'], true],
+                                        styles.emergencyColor,
+                                        styles.defaultColor
+                                    ],
+                                    styles.defaultColor
+                                ]
+                            }
+                        });
+                        this.map.addLayer({
+                            id: 'world-strokeLine',
+                            type: 'line',
+                            source: 'world',
+                            layout: {},
+                            paint: {
+                                'line-width': 0.5,
+                                'line-color': '#83838D',
+                                'line-opacity': 1
+                            }
+                        });
+
+                        this.map.addSource('world-label', {
+                            type: 'geojson',
+                            data: CountryCenterData
+                        });
+                        this.map.addLayer({
+                            id: 'world-label',
+                            type: 'symbol',
+                            source: 'world-label',
+                            filter: ['has', 'nationalEmergency'],
+                            layout: {
+                                'text-field': ['get', 'Country'],
+                                'text-font': ['Microsoft YaHei Regular'],
+                                'text-size': 12,
+                                'text-allow-overlap': false,
+                                'text-letter-spacing': 0,
+                                'text-max-width': 0
+                            },
+                            paint: {
+                                'text-color': 'white',
+                                'text-opacity': 1,
+                                'text-halo-color': '#696868',
+                                'text-halo-width': 1.5
+                            }
+                        });
+                    },
+                    initWorldData() {
+                        nationalEmergencyArea.forEach(element => {
+                            var country = CountryData.features.find(function(item) {
+                                if (
+                                    findCNName(item.properties.NAME_0) === element ||
+                                    findCNName(item.properties.GID_0) === element
+                                ) {
+                                    item.zhName = element;
+                                    return true;
+                                }
+                                return false;
+                            });
+                            if (country) {
+                                country.properties.nationalEmergency = true;
+                            }
+                            var countryCenter = CountryCenterData.features.find(function(item) {
+                                return item.properties.Country === element;
+                            });
+                            if (countryCenter) {
+                                countryCenter.properties.nationalEmergency = true;
+                            }
+                        });
+                    }
+                }
+            });
+            function findCNName(enName) {
+                for (const key in CountriesNameEn) {
+                    if (CountriesNameEn[key] === enName) return key;
+                }
+                return null;
+            }
+        </script>
+    </body>
+</html>

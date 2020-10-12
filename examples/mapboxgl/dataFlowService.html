@@ -21,7 +21,7 @@
     <script>
         var host = (window.isLocal ? window.server : "https://iserver.supermap.io"),
             tileUrl = host +
-            '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}',
+            '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}',
             urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
 
         wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");

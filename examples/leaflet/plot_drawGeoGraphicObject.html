@@ -16,6 +16,7 @@
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_drawLine" onclick="draw_line()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_drawPolygon" onclick="draw_polygon()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawText" onclick="draw_text()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawImage" onclick="draw_Image()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayers()"/>
     </div>
 </div>
@@ -47,7 +48,7 @@
     function draw_dot(){
         clearLayers();
         var latlngs = [new L.latLng(34,105)];
-        plottingLayer.createSymbol(421, 10100,latlngs,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
+        plottingLayer.createSymbol(421, 10100, latlngs);
     }
 
     function draw_line() {
@@ -73,8 +74,17 @@
     function draw_text() {
         clearLayers();
         var latlngs = [new L.latLng(34,105)];
-        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.TEXTSYMBOL,latlngs,null,{fontSize:30});
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.TEXTSYMBOL, latlngs, null, {fontSize:30});
     }
+
+    function draw_Image(){
+        clearLayers();
+        var latlngs = [new L.latLng(34,105)];
+        //var path ="https://www.supermap.com/cn/cn2019/images/logo.png";
+        var path ="../img/marker.png";
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.PICTURE,latlngs,null,{graphicWidth:44,graphicHeight:33},{path:path}, function(evt){},{});
+    }
+
     $(document).ready(function(){
         $('#panelheading').click(function(){
             $('#panelbodycontent').toggle();

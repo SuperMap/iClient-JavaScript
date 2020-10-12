@@ -90,7 +90,7 @@ describe('TransferPathService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(trafficTransferURL+"/path.json?");
+            expect(testUrl).toBe(trafficTransferURL+"/path");
             return Promise.resolve(new Response(JSON.stringify(transferPathServiceResult)));
         });
         service.processAsync(params);

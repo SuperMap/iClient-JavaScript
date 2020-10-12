@@ -134,8 +134,7 @@ export class SecurityManager {
      * @returns {Promise} 返回包含 iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
+        url = Util.urlPathAppend(url, 'services/security/login');
         var loginInfo = {
             username: username && username.toString(),
             password: password && password.toString(),
@@ -160,9 +159,7 @@ export class SecurityManager {
      * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/logout" : "/services/security/logout";
-
+        url = Util.urlPathAppend(url, 'services/security/logout');
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -197,8 +194,7 @@ export class SecurityManager {
      * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login.json" : "/web/login.json";
+        url = Util.urlPathAppend(url, 'web/login');
         var loginInfo = {
             username: username && username.toString(),
             password: password && password.toString()
@@ -223,9 +219,7 @@ export class SecurityManager {
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/logout" : "/services/security/logout";
-
+        url = Util.urlPathAppend(url, 'services/security/logout');
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -258,8 +252,7 @@ export class SecurityManager {
             this._open(url, isNewTab);
             return;
         }
-        var end = url.substr(url.length - 1, 1);
-        var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
+        var requestUrl = Util.urlPathAppend(url, 'icloud/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),

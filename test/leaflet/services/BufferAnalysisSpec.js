@@ -76,7 +76,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/buffer.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/buffer?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.analystParameter.endType).toBe("ROUND");
@@ -136,7 +136,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystService = spatialAnalystService(spatialAnalystURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");

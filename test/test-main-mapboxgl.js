@@ -28,6 +28,8 @@ import './mapboxgl/services/FieldServiceSpec.js';
 import './mapboxgl/services/GenerateSpatialDataSpec.js';
 import './mapboxgl/services/GeoRelationAnalysisSpec.js';
 import './mapboxgl/services/GeometryBatchAnalysisSpec.js';
+import './mapboxgl/services/GeoprocessingServiceSpec.js';
+
 import './mapboxgl/services/GetFeaturesByBoundsSpec.js';
 import './mapboxgl/services/GetFeaturesByBufferSpec.js';
 import './mapboxgl/services/GetFeaturesByGeometrySpec.js';
@@ -50,6 +52,7 @@ import './mapboxgl/services/TerrainCurvatureCalculateSpec.js';
 import './mapboxgl/services/ThemeServiceSpec.js';
 import './mapboxgl/services/ThiessenAnalysisSpec.js';
 import './mapboxgl/services/TrafficTransferAnalystServiceSpec.js';
+import './mapboxgl/services/WebPrintingJobServiceSpec.js';
 
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';

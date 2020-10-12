@@ -125,6 +125,6 @@ describe('mapboxgl_MapvRenderer', () => {
     });
 
     it('_canvasUpdate', () => {
-        expect(mapvRenderLayer.options._size).toEqual(0.05110415838546709);
+        expect(mapvRenderLayer.options._size).toBeCloseTo(0.051104158385467,1E-15)
     });
 });

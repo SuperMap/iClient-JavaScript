@@ -83,7 +83,7 @@ describe('MeasureService', () => {
         expect(measureService.url).toEqual(worldMapURL);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(worldMapURL+"/distance.json?");
+            expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance":1565109.0991230179}`));
         });
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
@@ -126,7 +126,7 @@ describe('MeasureService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(worldMapURL+"/distance.json?");
+            expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 point2Ds 不合法，必须至少包含两个二维点"}}`));
         });
         measureService.processAsync(measureParameters);
@@ -166,7 +166,7 @@ describe('MeasureService', () => {
         measureParameters.unit = "error";
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(worldMapURL+"/distance.json?");
+            expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"No enum constant com.supermap.services.components.commontypes.Unit.error"}}`));
         });
         measureService.events.on({
@@ -214,7 +214,7 @@ describe('MeasureService', () => {
         var measureParameters = new MeasureParameters(geometry);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(worldMapURL+"/area.json?");
+            expect(testUrl).toBe(worldMapURL+"/area");
             return Promise.resolve(new Response(`{"area":6.170492166191235E11,"unit":"METER","distance":-1}`));
         });
         measureService.processAsync(measureParameters);
@@ -258,7 +258,7 @@ describe('MeasureService', () => {
         var measureParameters = new MeasureParameters(geometry);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(worldMapURL+"/area.json?");
+            expect(testUrl).toBe(worldMapURL+"/area");
             return Promise.resolve(new Response(`{"area":0,"unit":"METER","distance":-1}`));
         });
         measureService.processAsync(measureParameters);
@@ -298,7 +298,7 @@ describe('MeasureService', () => {
         var measureParameters = new MeasureParameters(geometry);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(worldMapURL+"/area.json?");
+            expect(testUrl).toBe(worldMapURL+"/area");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"传入参数 points 的长度小于3。"}}`));
         });
         measureService.processAsync(measureParameters);
@@ -341,7 +341,7 @@ describe('MeasureService', () => {
         var measureParameters = new MeasureParameters(geometry, {unit: Unit.KILOMETER});
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(mapServiceURL+"World Map_Error/area.json?");
+            expect(testUrl).toBe(mapServiceURL+"World Map_Error/area");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`));
         });
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});

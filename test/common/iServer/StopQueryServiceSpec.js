@@ -82,7 +82,7 @@ describe('StopQueryService', () => {
             returnPosition: true
         });
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民.json?");
+            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":{"x":5308.614037099708,"y":-3935.573639156803}}]`));
         });
         stopQueryService.processAsync(stopQueryServiceParams);
@@ -118,7 +118,38 @@ describe('StopQueryService', () => {
             returnPosition: false
         });
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民.json?");
+            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民");
+            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
+        });
+        stopQueryService.processAsync(stopQueryServiceParams);
+    })
+    it('success:processAsync_customQueryParam', (done) => {
+        var trafficTransferURL = GlobeParameter.trafficTransferURL;
+        var succeed = (event) => {
+            stopQueryServiceEventArgsSystem = event;
+            try {
+                stopQueryService.destroy();
+                stopQueryServiceParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("StopQueryService_" + exception.name + ":" + exception.message);
+                stopQueryService.destroy();
+                stopQueryServiceParams.destroy();
+                done();
+            }
+        };
+        var failed = (event) => {
+            serviceFailedEventArgsSystem = event;
+
+        };
+        var stopQueryService = initStopQueryService(trafficTransferURL + '?key=123',succeed,failed);
+        var stopQueryServiceParams = new StopQueryParameters({
+            keyWord: '人民',
+            returnPosition: false
+        });
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民?key=123");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
         });
         stopQueryService.processAsync(stopQueryServiceParams);

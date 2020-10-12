@@ -14,6 +14,7 @@ import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 
 var padding = 8, doublePadding = padding * 2;
+const ZERO = 0.0000001;
 
 /**
  * @class ol.supermap.StyleUtils
@@ -599,7 +600,6 @@ export class StyleUtils {
     style = style || this.getDefaultStyle();
     let olStyle = new Style();
     let newImage, newFill, newStroke;
-    const ZERO = 0.0000001;
     let {
       fillColor,
       fillOpacity,
@@ -610,6 +610,8 @@ export class StyleUtils {
       lineCap,
       src,
       scale,
+      offsetX,
+      offsetY,
       //size,
       //imgSize,
       anchor
@@ -647,14 +649,15 @@ export class StyleUtils {
         }
       } else {
         newImage = new CircleStyle({
-          radius: radius,
+          radius,
           fill: new FillStyle({
             color: fillColorArray
           }),
           stroke: new StrokeStyle({
             width: strokeWidth || ZERO,
             color: strokeColorArray
-          })
+          }),
+          displacement: this.getCircleDisplacement(radius, offsetX, offsetY)
         });
       }
       olStyle.setImage(newImage);
@@ -690,6 +693,44 @@ export class StyleUtils {
       olStyle.setImage(newImage);
     }
     return olStyle;
+  }
+
+  /**
+   * @function ol.supermap.StyleUtils.getIconAnchor
+   * @description 获取图标的锚点
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {array}
+   */
+  static getIconAnchor(offsetX=0.5, offsetY=0.5) {
+    return [offsetX, offsetY];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getCircleDisplacement
+   * @description 获取圆圈的偏移
+   * @param {number} radius - 圆圈半径
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {array}
+   */
+  static getCircleDisplacement(radius, offsetX=0, offsetY=0) {
+      const dispX = radius*offsetX, dispY = radius*offsetY;
+      return [dispX, -dispY];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getTextOffset
+   * @description 获取字体图标的偏移值
+   * @param {string} fontSize - 字体大小，如12px
+   * @param {number} offsetX - X方向偏移分数
+   * @param {number} offsetY - Y方向偏移分数
+   * @returns {object}
+   */
+  static getTextOffset(fontSize, offsetX=0, offsetY=0) {
+    const radius = fontSize.substr(0, fontSize.length - 2) / 2;
+    return {
+          x: radius*offsetX, 
+          y: radius*offsetY
+    };     
   }
 
   /**
@@ -912,6 +953,7 @@ export class StyleUtils {
         index === 3 ? rgb += color : rgb += color + ',';
       });
     }
+    rgb += ")"
     return rgb;
   }
 
@@ -1033,23 +1075,28 @@ export class StyleUtils {
 
     let fontSize = isRank ? 2 * parameters.radius + "px" : parameters.fontSize;
 
+    const {offsetX, offsetY, rotation} = parameters;
+    const offset = StyleUtils.getTextOffset(fontSize, offsetX, offsetY);
     return new Style({
-      text: new Text({
-        text: text,
-        font: fontSize + " supermapol-icons",
-        placement: 'point',
-        textAlign: 'center',
-        fill: new FillStyle({
-          color: fillColor
-        }),
-        backgroundFill: new FillStyle({
-          color: [0, 0, 0, 0]
-        }),
-        stroke: new StrokeStyle({
-          width: parameters.strokeWidth || 0.000001,
-          color: strokeColor
+        text: new Text({
+            text: text,
+            font: fontSize + " supermapol-icons",
+            placement: 'point',
+            textAlign: 'center',
+            fill: new FillStyle({
+              color: fillColor
+            }),
+            backgroundFill: new FillStyle({
+              color: [0, 0, 0, 0]
+            }),
+            stroke: new StrokeStyle({
+              width: parameters.strokeWidth || 0.000001,
+              color: strokeColor
+            }),
+            offsetX: offset.x,
+            offsetY: offset.y,
+            rotation
         })
-      })
     });
   }
   /**
@@ -1063,14 +1110,18 @@ export class StyleUtils {
       that.svgDiv = document.createElement('div');
       document.body.appendChild(that.svgDiv);
     }
-    StyleUtils.getCanvasFromSVG(styleParams.url, that.svgDiv, function (canvas) {
+    const { url, radius, offsetX, offsetY, fillOpacity, rotation } = styleParams;
+    let anchor = this.getIconAnchor(offsetX, offsetY);
+    StyleUtils.getCanvasFromSVG(url, that.svgDiv, function (canvas) {
       style = new Style({
         image: new Icon({
           img: that.setColorToCanvas(canvas, styleParams),
-          scale: styleParams.radius / canvas.width,
+          scale: 2 * radius / canvas.width,
           imgSize: [canvas.width, canvas.height],
-          anchor: [0.5, 0.5],
-          opacity: styleParams.fillOpacity
+          anchor: anchor || [0.5, 0.5],
+          opacity: fillOpacity,
+          anchorOrigin: 'bottom-right',
+          rotation
         })
       });
     });
@@ -1102,23 +1153,95 @@ export class StyleUtils {
    * @returns {Object} style对象
    */
   static getImageStyle(styleParams) {
-    let size = styleParams.imageInfo.size,
-      scale = 2 * styleParams.radius / size.w;
-    let imageInfo = styleParams.imageInfo;
-    let imgDom = imageInfo.img;
-    if (!imgDom || !imgDom.src) {
-      imgDom = new Image();
-      //要组装成完整的url
-      imgDom.src = imageInfo.url;
-    }
-    return new Style({
-      image: new Icon({
-        img: imgDom,
-        scale,
-        imgSize: [size.w, size.h],
-        anchor: [0.5, 0.5]
-      })
-    });
+      let size = styleParams.imageInfo.size,
+        scale = 2 * styleParams.radius / size.w;
+      let imageInfo = styleParams.imageInfo;
+      let imgDom = imageInfo.img;
+      if (!imgDom || !imgDom.src) {
+        imgDom = new Image();
+        //要组装成完整的url
+        imgDom.src = imageInfo.url;
+      }
+      const { offsetX, offsetY, rotation } = styleParams;
+      let anchor = this.getIconAnchor(offsetX, offsetY);
+      return new Style({
+        image: new Icon({
+          img: imgDom,
+          scale,
+          imgSize: [size.w, size.h],
+          anchor: anchor || [0.5, 0.5],
+          anchorOrigin: 'bottom-right',
+          rotation
+        })
+      });
   }
-
+  /**
+   * @function ol.supermap.StyleUtils.getRoadPath 获取道路样式
+   * @param {object} style - 样式参数
+   * @param {object} outlineStyle - 轮廓样式参数
+   * @returns {Object} style对象
+   */
+  static getRoadPath(style, outlineStyle) {
+    const { strokeWidth=ZERO, lineCap, strokeColor, strokeOpacity } = style;
+    // 道路线都是solid
+    let strokeColorArray = this.hexToRgb(strokeColor);
+    strokeColorArray && strokeColorArray.push(strokeOpacity);
+    var stroke = new Style({
+        stroke: new StrokeStyle({
+            width: strokeWidth || ZERO,
+            color: strokeColorArray,
+            lineCap: lineCap || 'round',
+            lineDash: [0]
+        })
+    });
+    
+    const { strokeColor: outlineColor } = outlineStyle;
+    let outlineColorArray = this.hexToRgb(outlineColor);
+    // opacity使用style的透明度。保持两根线透明度一致
+    outlineColorArray && outlineColorArray.push(strokeOpacity);
+    let outlineWidth = strokeWidth === 0 ? ZERO : strokeWidth + 2; //外部宽度=内部样式宽度 + 2
+    var outlineStroke = new Style({
+        stroke: new StrokeStyle({
+            width: outlineWidth, //外部宽度=内部样式宽度 + 2
+            color: outlineColorArray,
+            lineCap: lineCap || 'round',
+            lineDash: [0]
+        })
+    });
+    return [outlineStroke, stroke];
+  }
+  /**
+   * @function ol.supermap.StyleUtils.getPathway 获取铁路样式
+   * @param {object} style - 样式参数
+   * @param {object} outlineStyle - 轮廓样式参数
+   * @returns {Object} style对象
+   */
+  static getPathway(style, outlineStyle) {
+      let { strokeWidth=ZERO, strokeColor, strokeOpacity } = style;
+      // 道路线都是solid, lineCap都是直角
+      const lineDash = (w => [w, w + strokeWidth * 2])(4 * strokeWidth), lineCap= 'square';
+      let strokeColorArray = this.hexToRgb(strokeColor);
+      strokeColorArray && strokeColorArray.push(strokeOpacity);
+      var stroke = new Style({
+          stroke: new StrokeStyle({
+              width: strokeWidth*0.5 || ZERO,
+              color: strokeColorArray,
+              lineCap,
+              lineDash
+          })
+      });
+    
+    const { strokeColor: outlineColor } = outlineStyle;
+    let outlineColorArray = this.hexToRgb(outlineColor);
+    // opacity使用style的透明度。保持两根线透明度一致
+    outlineColorArray && outlineColorArray.push(strokeOpacity);
+    var outlineStroke = new Style({
+        stroke: new StrokeStyle({
+          width: strokeWidth || ZERO, 
+            color: outlineColorArray,
+            lineCap
+        })
+    });
+    return [outlineStroke, stroke];
+  }
 }

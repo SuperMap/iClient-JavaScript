@@ -1,0 +1,155 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_graphiclayerWebgl"></title>
+    <script type="text/javascript" include="randomcolor,papaparse,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 50px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+<script type="text/javascript">
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        container = document.getElementById('popup'),
+        content = document.getElementById('popup-content'),
+        overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        })),
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 12,
+                projection: 'EPSG:3857',
+                multiWorld: true
+            }),
+            overlays: [overlay]
+        });
+
+    var colorCount = 10;
+    var colors = getRandomColors(colorCount);
+    loadData();
+
+    function loadData() {
+        widgets.loader.showLoader();
+        $.get('../data/nyc_taxi_18W.csv', function (nycData) {
+            new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+                var mapJSONObj = serviceResult.result;
+                var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+                var layer = new ol.layer.Tile({
+                    source: new ol.source.TileSuperMapRest(options)
+                });
+                map.addLayer(layer);
+
+                var randomCircleStyles = [];
+                for (var i = 0; i < colorCount; i++) {
+                    randomCircleStyles.push(new ol.style.Circle({
+                        radius: Math.floor(Math.random() * 3 + 1),
+                        fill: new ol.style.Fill({
+                            color: colors[i]
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: colors[i]
+                        }),
+                    }));
+                }
+                var features = Papa.parse(nycData, {skipEmptyLines: true, header: true}).data;
+                var count = features.length;    //矢量点的个数
+                var graphics = new Array(count);
+                for (var i = 0; i < count; ++i) {
+                    var coordinates = [Number(features[i].X), Number(features[i].Y)];
+                    if (coordinates[0] === coordinates[1]) {
+                        continue;
+                    }
+                    coordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857');
+                    graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
+                    graphics[i].setStyle(randomCircleStyles[Math.floor(Math.random() * colorCount)]);
+                }
+                map.once('postrender', function () {
+                    var graphicLayer = new ol.layer.Image({
+                        source: new ol.source.Graphic({
+                            graphics: graphics,
+                            render: "canvas",
+                            map: map,
+                            onClick: function (graphic) {
+                                if (graphic) {
+                                    var coords = graphic.getGeometry().getCoordinates();
+                                    content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
+                                    overlay.setPosition(graphic.getGeometry().getCoordinates());
+                                    return;
+                                }
+                                overlay.setPosition(undefined);
+                            }
+                        })
+                    });
+                    map.addLayer(graphicLayer);
+                    widgets.loader.removeLoader();
+                })
+            });
+        });
+    }
+
+    function getRandomColors(count) {
+        return randomColor({
+            luminosity: 'bright',
+            hue: 'random',
+            alpha: 0.5,
+            format: 'rgba',
+            count: count
+        });
+    }
+</script>
+</body>
+</html>

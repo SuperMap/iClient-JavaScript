@@ -8,7 +8,8 @@ import {
     GetLayersInfoService,
     SetLayerInfoService,
     SetLayersInfoService,
-    SetLayerStatusService
+    SetLayerStatusService,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -27,7 +28,7 @@ import {
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 export class LayerInfoService extends ServiceBase {
 
@@ -74,8 +75,7 @@ export class LayerInfoService extends ServiceBase {
         if (!resourceID || !tempLayerName) {
             return;
         }
-        var url = me.url.concat();
-        url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
+        var url = CommonUtil.urlPathAppend(me.url, "tempLayersSet/" + resourceID + "/" + tempLayerName);
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

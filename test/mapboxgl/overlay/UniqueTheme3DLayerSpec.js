@@ -107,6 +107,7 @@ describe('mapboxgl_UniqueTheme3DLayer', () => {
                         expect(themeLayer.height).toEqual(6000);
                         expect(themeLayer.heightField).toBe("height");
                         expect(themeLayer.id).toBe("uniqueTheme3DLayer");
+                        expect(themeLayer._highlightLayerId).toBe("uniqueTheme3DLayer-highlightLayer");
                         expect(themeLayer.highlight.color).toBe("#ADA91E");
                         expect(themeLayer.legendTitle).toBe("土地利用类型");
                         var layerStyleOptions = themeLayer.getLayerStyleOptions();

@@ -52,7 +52,7 @@ describe('QueryByBoundsService_processAsync', () => {
         };
         var queryByBoundsService = initQueryByBoundsService(worldMapURL,QueryByBoundsFailed,QueryByBoundsCompleted);
         expect(queryByBoundsService).not.toBeNull();
-        expect(queryByBoundsService.url).toEqual(worldMapURL + "/queryResults.json?");
+        expect(queryByBoundsService.url).toEqual(worldMapURL + "/queryResults");
         queryByBoundsService.destroy();
         expect(queryByBoundsService.EVENT_TYPES).toBeNull();
         expect(queryByBoundsService.events).toBeNull();
@@ -102,7 +102,7 @@ describe('QueryByBoundsService_processAsync', () => {
         queryByBoundsParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("BoundsQuery");
@@ -159,7 +159,7 @@ describe('QueryByBoundsService_processAsync', () => {
         queryByBoundsParameters.returnCustomResult = true;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnCustomResult=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("BoundsQuery");
@@ -207,7 +207,7 @@ describe('QueryByBoundsService_processAsync', () => {
         queryByBoundsParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("BoundsQuery");

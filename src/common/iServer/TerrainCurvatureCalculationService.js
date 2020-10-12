@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {TerrainCurvatureCalculationParameters} from './TerrainCurvatureCalculationParameters';
 
@@ -47,21 +48,15 @@ export class TerrainCurvatureCalculationService extends SpatialAnalystBase {
      */
     processAsync(parameter) {
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         var parameterObject = {};
 
         if (parameter instanceof TerrainCurvatureCalculationParameters) {
-            me.url += 'datasets/' + parameter.dataset + '/terraincalculation/curvature';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/terraincalculation/curvature');
         }
 
         TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         me.request({
             method: "POST",
             data: jsonParameters,

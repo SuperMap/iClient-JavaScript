@@ -27,7 +27,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Town_P@Jingjin/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Town_P@Jingjin/thiessenpolygon?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.dataset).toBe("Town_P@Jingjin");
@@ -102,7 +102,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/geometry/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(url + "/geometry/thiessenpolygon?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.points[0].type).toBe("Point");

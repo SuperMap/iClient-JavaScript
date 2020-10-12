@@ -11,7 +11,8 @@ import {
     SetLayerStatusService,
     SetLayerStatusParameters,
     SetLayerInfoParameters,
-    SetLayersInfoParameters
+    SetLayersInfoParameters,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -26,7 +27,7 @@ import {
  * @param {string} url - 与服务端交互的地图服务地址。请求地图服务 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -38,7 +39,7 @@ export var LayerInfoService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.layerInfoService.prototype.getLayerInfo
+     * @function L.supermap.layerInfoService.prototype.getLayersInfo
      * @description 获取图层信息。
      * @param {RequestCallback} callback - 获取信息完成后的回调函数。
      */
@@ -75,8 +76,7 @@ export var LayerInfoService = ServiceBase.extend({
         if (!resourceID || !tempLayerName) {
             return;
         }
-        var url = me.url.concat();
-        url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
+        var url = CommonUtil.urlPathAppend(me.url,`tempLayersSet/${resourceID}/${tempLayerName}`);
 
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,

@@ -1,0 +1,138 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title data-i18n="resources.title_plotMovingTarget"></title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+	var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+	var url = host + "/iserver/services/map-world/rest/maps/World";
+	var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+	var features = [];
+	var trackingDirs = {};
+	var e = 60;
+	map = L.map('map', {
+		crs: L.CRS.EPSG4326,
+		center: [0, 0],
+		maxZoom: 18,
+		zoom: 2
+	});
+
+	L.supermap.tiledMapLayer(url).addTo(map);
+	//L.supermap.plotting.editControl().addTo(map);
+	var movingTargetLayer = L.supermap.plotting.movingTargetLayer("Moving-Target", serverUrl).addTo(map);
+
+	map.on("zoomstart", function(){
+		movingTargetLayer.setVisibility(false);
+	});
+	map.on("zoomend", function(){
+		movingTargetLayer.setVisibility(true);
+	});
+	map.on("movestart", function(){
+		movingTargetLayer.setVisibility(false);
+	});
+	map.on("moveend", function(){
+		movingTargetLayer.setVisibility(true);
+	});
+
+	drawGraphics();
+	window.setInterval(updateInterval, 1000);
+
+	function updateInterval() {
+		var features = movingTargetLayer.features;
+		for(var i =  0; i < features.length; i++) {
+			if(features[i].symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL){
+				var latlng = features[i].getLatLngs()[0];
+
+				var x = latlng.lat;
+				var y = latlng.lng;
+				if(x >= e || x <= ((-1)*e)){
+					trackingDirs[features[i].uuid][0] *= (-1);
+				}
+				if(y >= e || y <= ((-1)*e)){
+					trackingDirs[features[i].uuid][1] *= (-1);
+				}
+
+				var trackingDir = trackingDirs[features[i].uuid];
+
+				features[i].move(trackingDir[0] * 1, trackingDir[1] * 1);
+			}
+		}
+
+		movingTargetLayer.update();
+	}
+
+	function drawGraphics() {
+		var count = 2000;
+		var randomCode = [9, 80101, 80102, 80103, 80104, 80105, 80106, 80107, 80108, 80109];
+		var randomDir = [[0, 1], [0, -1], [-1, 0], [1, 0], [1, 1], [-1, -1], [1, -1], [-1, 1]];
+		var randomSymbolData = [];
+		var symbolDataIndex = 0;
+
+		function getSymbolInfoSuccess(result) {
+			randomSymbolData.push(result.result);
+			symbolDataIndex++;
+			if(symbolDataIndex < randomCode.length) {
+				var params = new SuperMap.GetSymbolInfoParameters({
+					libID: 421,
+					code: randomCode[symbolDataIndex]
+				});
+				L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
+			} else {
+				for(var i = 0; i < count; ++i) {
+					var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+					var randomIndex = Math.floor(10 * Math.random());
+					var dotSymbol = L.supermap.plotting.PlottingObject.createSymbol(
+						421, randomCode[randomIndex], L.latLng(
+							coordinates[0], coordinates[1]), {
+							serverUrl: serverUrl,
+							symbolData: randomSymbolData[randomIndex],
+							symbolSize:  new SuperMap.Size(20, 20),
+							symbolTexts: [new SuperMap.Plot.SymbolText("速度_米 每秒:500", SuperMap.Plot.AnnoPosition.ANCHOR, {
+								fontSize: 15,
+								fillSymbolID: 0,
+								fillColor: "#00ff00",
+								fillOpacity: 0.8,
+								color: "#ffffff"
+
+							}, {
+								border: true,
+								offsetX: 20,
+								offsetY: -30,
+								paddingX: 5,
+								paddingY: 7,
+								lineStyle: {
+									color: "#00ff00"
+								}
+							})],
+								// bloodVolumes:[ new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.TOP, {remainingVolumeColor: "#ff0000", consumeVolumeColor:"#ffffff"}), new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.BOTTOM),
+								// 	new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.LEFT, null, {offsetX: -20, width: 80, height: 15}), new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.RIGHT, null, {offsetX:20})
+								// ],
+
+								//pictureFrames:[ new SuperMap.Plot.PictureFrame("../img/marker.png", SuperMap.Plot.AnnoPosition.RIGHT, {width:32, height:32, offsetY: 0, offsetX: 0})],
+								trajectory: new SuperMap.Plot.Trajectory(10, true, false, {color: "#00ff00"}, {saveTrackingPoint: true})
+						}, null, null);
+					features.push(dotSymbol);
+
+					var randomDirIndex = Math.floor(8 * Math.random());
+					trackingDirs[dotSymbol.uuid] = randomDir[randomDirIndex];
+				}
+				movingTargetLayer.addFeatures(features);
+			}
+		}
+		var params = new SuperMap.GetSymbolInfoParameters({
+			libID: 421,
+			code: randomCode[symbolDataIndex]
+		});
+		L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
+	}
+</script>
+</body>
+</html>

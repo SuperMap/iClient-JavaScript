@@ -58,7 +58,6 @@ describe('openlayers_ImageSuperMapRest', () => {
                 expect(imageTileOptions.serverType).toBe('ISERVER');
                 expect(imageTileOptions.crossOrigin).toBe('anonymous');
                 expect(imageTileSource).not.toBeNull();
-                expect(imageTileSource.urls.length).toBe(1);
                 done();
             } catch (exception) {
                 console.log("'initialize'案例失败：" + exception.name + ':' + exception.message);
@@ -81,7 +80,7 @@ describe('openlayers_ImageSuperMapRest', () => {
         var tileUrl = imageTileSource.tileUrlFunction(coords, pixelRatio, tempOptions);
         expect(tileUrl).toBe(
             GlobeParameter.mapServiceURL +
-                '%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Day/image.png?&transparent=true&cacheEnabled=true&redirect=false&width=256&height=256&viewBounds=%7B%22leftBottom%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D,%22rightTop%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D%7D'
+                '%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Day/image.png?transparent=true&cacheEnabled=true&redirect=false&width=256&height=256&viewBounds=%7B%22leftBottom%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D,%22rightTop%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D%7D'
         );
         expect(imageTileSource.getTileGrid().getTileSize()).toEqual(256);
     });

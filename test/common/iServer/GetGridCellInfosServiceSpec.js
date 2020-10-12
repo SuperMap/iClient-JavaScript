@@ -81,14 +81,14 @@ describe('GetGridCellInfosService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('GET');
             expect(options).not.toBeNull();
-            if (testUrl.indexOf('/datasources/World/datasets/LandCover.json') > 0) {
+            if (testUrl.indexOf('/datasources/World/datasets/LandCover') > 0) {
                 return Promise.resolve(
                     new Response(
                         `{"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/LandCover/fields","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/LandCover/features","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/LandCover/domain"],"supportAttachments":false,"supportFeatureMetadatas":false,"datasetInfo":{"pixelFormat":"BIT32","maxValue":13,"description":"","type":"GRID","blockSize":256,"dataSourceName":"World","tableName":"LandCover","noValue":-9999,"minValue":0,"isReadOnly":false,"encodeType":"SGL","width":5760,"bounds":{"top":90,"left":-180,"bottom":-90,"leftBottom":{"x":-180,"y":-90},"right":180,"rightTop":{"x":180,"y":90}},"name":"LandCover","prjCoordSys":{"distanceUnit":"METER","projectionParam":null,"epsgCode":4326,"coordUnit":"DEGREE","name":"Longitude / Latitude Coordinate System---GCS_WGS_1984","projection":null,"type":"PCS_EARTH_LONGITUDE_LATITUDE","coordSystem":{"datum":{"name":"D_WGS_1984","type":"DATUM_WGS_1984","spheroid":{"flatten":0.00335281066474748,"name":"WGS_1984","axis":6378137,"type":"SPHEROID_WGS_1984"}},"unit":"DEGREE","spatialRefType":"SPATIALREF_EARTH_LONGITUDE_LATITUDE","name":"GCS_WGS_1984","type":"GCS_WGS_1984","primeMeridian":{"longitudeValue":0,"name":"Greenwich","type":"PRIMEMERIDIAN_GREENWICH"}}},"datasourceConnectionInfo":null,"height":2880}}`
                     )
                 );
             } else {
-                if (testUrl.indexOf('/datasources/World/datasets/LandCover/gridValue.json?x=110&y=50') > 0) {
+                if (testUrl.indexOf('/datasources/World/datasets/LandCover/gridValue?x=110&y=50') > 0) {
                     return Promise.resolve(
                         new Response(`{"column":4640,"row":640,"value":1,"centerPoint":{"x":110,"y":50}}`)
                     );
@@ -101,7 +101,7 @@ describe('GetGridCellInfosService', () => {
         setTimeout(() => {
             try {
                 expect(myService.url).toEqual(
-                    dataServiceURL + '/datasources/World/datasets/LandCover/gridValue.json?x=110&y=50'
+                    dataServiceURL + '/datasources/World/datasets/LandCover/gridValue?x=110&y=50'
                 );
                 myService.destroy();
                 queryParam.destroy();
@@ -165,10 +165,10 @@ describe('GetGridCellInfosService', () => {
                 type: 'GRID'
             }
         };
-        myService.url = dataServiceURL + '/datasources/World/datasets/LandCover.json';
+        myService.url = dataServiceURL + '/datasources/World/datasets/LandCover';
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe('GET');
-            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/LandCover/gridValue.json');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/LandCover/gridValue');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"请求体格式错误"}}`));
         });
@@ -190,13 +190,13 @@ describe('GetGridCellInfosService', () => {
     });
 
     it('queryGridInfos', () => {
-        var url = dataServiceURL + '/datasources/World/datasets/LandCover.json';
+        var url = dataServiceURL + '/datasources/World/datasets/LandCover';
         var myService = initGetGridCellInfosService(url);
         myService.X = '110';
         myService.Y = '50';
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe('GET');
-            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/LandCover/imageValue.json?x=110&y=50');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/LandCover/imageValue?x=110&y=50');
             expect(options).not.toBeNull();
             return Promise.resolve(
                 new Response(
@@ -206,7 +206,25 @@ describe('GetGridCellInfosService', () => {
         });
         myService.queryGridInfos();
         expect(myService.url).toEqual(
-            dataServiceURL + '/datasources/World/datasets/LandCover/imageValue.json?x=110&y=50'
+            dataServiceURL + '/datasources/World/datasets/LandCover/imageValue?x=110&y=50'
+        );
+    });
+    it('queryGridInfos_customQueryParam', () => {
+        var url = dataServiceURL + '/datasources/World/datasets/LandCover?key=123';
+        var myService = initGetGridCellInfosService(url);
+        myService.X = '110';
+        myService.Y = '50';
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/LandCover/imageValue?key=123&x=110&y=50');
+            return Promise.resolve(
+                new Response(
+                    `{"succeed":false,"error":{"code":400,"errorMsg":"所查询的数据集的类型不正确！数据集类型应为影像数据集"}}`
+                )
+            );
+        });
+        myService.queryGridInfos();
+        expect(myService.url).toEqual(
+            dataServiceURL + '/datasources/World/datasets/LandCover/imageValue?key=123&x=110&y=50'
         );
     });
 });

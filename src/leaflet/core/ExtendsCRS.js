@@ -36,12 +36,15 @@ for (let i = 1; i < 19; i++) {
 export var TianDiTu_WGS84CRS = L.CRS.TianDiTu_WGS84 = L.Proj.CRS("EPSG:4326",{
     origin: [-180, 90],
     resolutions: tdt_WGS84_resolutions,
-    bounds: L.bounds([-180, -90], [180, 90])
+    bounds: L.bounds([-180, -90], [180, 90]),
+    wrapLng: [-180, 180]
 });
 
+const c = Math.PI * 2 * 6378137;
+const halfC = c / 2;
 var tdt_Mercator_resolutions = [];
 for (let i = 1; i < 19; i++) {
-    tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / (Math.pow(2, i)));
+    tdt_Mercator_resolutions.push(c / 256 / Math.pow(2, i));
 }
 
 /**
@@ -50,11 +53,12 @@ for (let i = 1; i < 19; i++) {
  * @category BaseTypes Projection
  * @namespace
  */
-export var TianDiTu_MercatorCRS = L.CRS.TianDiTu_Mercator = L.Proj.CRS("EPSG:3857",{
-    origin: [-20037508.3427892, 20037508.3427892],
+export var TianDiTu_MercatorCRS = (L.CRS.TianDiTu_Mercator = L.Proj.CRS('EPSG:3857', {
+    origin: [-halfC, halfC],
     resolutions: tdt_Mercator_resolutions,
-    bounds: L.bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
-});
+    bounds: L.bounds([-halfC, -halfC], [halfC, halfC]),
+    wrapLng: [-180, 180]
+}));
 L.CRS.BaiduCRS = BaiduCRS;
 L.CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
 L.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;

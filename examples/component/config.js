@@ -45,6 +45,14 @@ var exampleConfig = {
             thumbnail: 'components_vector_tile_vue.png',
             fileName: 'components_vector_tile_vue',
             localIgnore: true
+          },
+          {
+            name: '地图卷帘',
+            name_en: 'Map Compare',
+            version: '10.1.0',
+            thumbnail: 'components_compare_vue.png',
+            fileName: 'components_compare_vue',
+            localIgnore: true
           }
         ]
       },
@@ -380,21 +388,6 @@ var exampleConfig = {
             thumbnail: 'components_theme_vue.png',
             fileName: 'components_theme_vue',
             localIgnore: true
-          },
-          {
-            name: '土地利用示例',
-            name_en: 'Land use example',
-            version: '10.0.0',
-            thumbnail: 'components_demo_vue.png',
-            fileName: 'components_demo_vue',
-            localIgnore: true
-          },
-          {
-            name: '房产项目可视化监控平台示例',
-            name_en: 'Estate project visual monitoring platform example',
-            version: '10.0.0',
-            thumbnail: 'components_estateMonitoringPlatform_vue.png',
-            fileName: 'components_estateMonitoringPlatform_vue'
           }
         ]
       }

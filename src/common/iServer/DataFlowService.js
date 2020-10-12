@@ -51,12 +51,7 @@ export class DataFlowService extends CommonServiceBase {
          */
         this.excludeField = null;
 
-        var me = this;
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-        Util.extend(me, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -68,7 +63,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     initBroadcast() {
         var me = this;
-        this.broadcastWebSocket = this._connect(me.url + 'broadcast');
+        this.broadcastWebSocket = this._connect(Util.urlPathAppend(me.url, 'broadcast'));
         this.broadcastWebSocket.onopen = function (e) {
             me.broadcastWebSocket.isOpen = true;
             e.eventType = 'broadcastSocketConnected';
@@ -108,7 +103,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     initSubscribe() {
         var me = this;
-        this.subscribeWebSocket = this._connect(this.url + 'subscribe');
+        this.subscribeWebSocket = this._connect(Util.urlPathAppend(me.url, 'subscribe'));
         this.subscribeWebSocket.onopen = function (e) {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
@@ -232,8 +227,9 @@ export class DataFlowService extends CommonServiceBase {
     _appendCredentials(url) {
         var token = SecurityManager.getToken(url);
         if (token) {
-            url += "?token=" + token;
+            url = Util.urlAppend(url, "token=" + token);
         }
+       
         return url;
     }
 

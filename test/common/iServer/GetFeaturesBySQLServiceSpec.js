@@ -81,7 +81,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(options).not.toBeNull();
@@ -131,7 +131,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(options).not.toBeNull();
@@ -173,7 +173,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(
@@ -220,7 +220,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countriess');
       expect(options).not.toBeNull();

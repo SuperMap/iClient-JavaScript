@@ -28,7 +28,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
     var getFeaturesByIDsService = featureService(dataServiceURL, options);
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe("POST");
-      expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+      expect(testUrl).toBe(dataServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
       var paramsObj = JSON.parse(params.replace(/'/g, "\""));
       expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
       expect(options).not.toBeNull();
@@ -76,7 +76,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
     var getFeaturesByIDsService = featureService(dataServiceURL, options);
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe("POST");
-      expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+      expect(testUrl).toBe(dataServiceURL + "/featureResults");
       var paramsObj = JSON.parse(params.replace(/'/g, "\""));
       expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
       expect(options).not.toBeNull();
@@ -113,7 +113,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
     var getFeaturesByIDsService = featureService(dataServiceURL, options);
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe("POST");
-      expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+      expect(testUrl).toBe(dataServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
       var paramsObj = JSON.parse(params.replace(/'/g, "\""));
       expect(paramsObj.datasetNames[0]).toBe("World1:Capitals");
       expect(paramsObj.getFeatureMode).toBe("ID");
@@ -149,7 +149,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
     var getFeaturesByIDsService = featureService(dataServiceURL, options);
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
       expect(method).toBe("POST");
-      expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+      expect(testUrl).toBe(dataServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
     });

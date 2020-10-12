@@ -1,4 +1,1023 @@
+# 10.1.0 #
+## 新特性
+
+### 新增地理机器学习服务线上示例
+![1010-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-6.gif)
+
+### 新增地理处理服务API
+![1010-11](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-11.png)
+
+### 新增Web地图打印服务API
+![1010-7](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-7.gif)
+
+### 新增新增掩膜API
+![1010-8](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-8.gif)
+
+### 动态标绘：新增支持动态目标图层
+![1010-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-3.png)
+
+### 可视化：新增PixiJS图层
+![1010-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-4.png)
+
+### 全面支持webp地图瓦片格式
+![1010-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-5.png)
+
+### 新增卷帘组件等多处更新
+![1010-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-2.png)
+
+### 新增自然资源模板
+![1010-9](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-9.png)
+
+### 新增生态大数据模板
+![1010-10](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-10.png)
+
+### 新增新冠疫情图范例
+![1010-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-1.png)
+
+## API changes
+
+### for Leaflet
+
+- 对接 SuperMap iServer Web 打印服务
+
+  - 新增 `L.supermap.WebPrintingJobService` Web 打印服务类，支持创建打印任务，获取打印结果，获取打印模板
+
+  - 新增 `SuperMap.WebPrintingJobParameters` Web 打印参数类
+  
+  - 新增 `SuperMap.WebPrintingJobLayoutOptions` Web 打印的布局参数类
+
+  - 新增 `SuperMap.WebPrintingJobLegendOptions` Web 打印图例参数类
+
+  - 新增 `SuperMap.WebPrintingJobLittleMapOptions` Web 打印小地图参数类
+
+  - 新增 `SuperMap.WebPrintingJobNorthArrowOptions` Web 打印地图指北针参数类
+
+  - 新增 `SuperMap.WebPrintingJobScaleBarOptions` Web 打印比例尺参数类
+
+  - 新增 `SuperMap.WebPrintingJobExportOptions` Web 打印的输出参数类
+
+  - 新增 `SuperMap.WebPrintingJobContent` Web 打印内容参数类
+  
+  - 新增 `SuperMap.WebPrintingJobCustomItems` Web 打印图例元素参数类
+
+  - 新增 `SuperMap.WebPrintingJobImage` Web 打印图片参数类
+
+  - 新增 `SuperMap.WebPrintingJobLayers` Web 打印图层参数类
+
+- 支持对接 SuperMap iServer 返回的类型为`GEOCOMPOUND` 类型的几何对象
+
+- 动态标绘
+
+- `L.supermap.plotting.picture`
+  
+  - 新增 `options.symbolTexts` 支持设置一个或多个标牌
+  
+  - 新增 `options.bloodVolumes` 支持设置一个或多个生命值
+  
+  - 新增 `options.trajectory` 支持设置轨迹线，只支持动态目标图层显示
+  
+  - 新增 `options.autoRotation` 支持设置根据轨迹线方向自动旋转，只支持动态目标图层显示
+  
+- `L.supermap.plotting.dotSymbol` 新增 `options.autoRotation` 支持设置根据轨迹线方向自动旋转，只支持动态目标图层显示
+
+- 动目标标牌新增支持多行文本换行
+
+- `L.supermap.plotting.sitDataManager` 新增 `getSmlData` 接口,支持获取态势图数据
+
+- `L.supermap.plotting` 新增 `getTouchMode` `setTouchMode` 接口,支持设置触屏模式，触屏模式下做触屏标绘和编辑更容易操作
+
+### for OpenLayers
+
+- 对接 SuperMap iServer Web 打印服务
+
+  - 新增 `ol.supermap.WebPrintingJobService` Web 打印服务类，支持创建打印任务，获取打印结果，获取打印模板
+
+  - 新增 `SuperMap.WebPrintingJobParameters` Web 打印参数类
+  
+  - 新增 `SuperMap.WebPrintingJobLayoutOptions` Web 打印的布局参数类
+
+  - 新增 `SuperMap.WebPrintingJobLegendOptions` Web 打印图例参数类
+
+  - 新增 `SuperMap.WebPrintingJobLittleMapOptions` Web 打印小地图参数类
+
+  - 新增 `SuperMap.WebPrintingJobNorthArrowOptions` Web 打印地图指北针参数类
+
+  - 新增 `SuperMap.WebPrintingJobScaleBarOptions` Web 打印比例尺参数类
+
+  - 新增 `SuperMap.WebPrintingJobExportOptions` Web 打印的输出参数类
+
+  - 新增 `SuperMap.WebPrintingJobContent` Web 打印内容参数类
+  
+  - 新增 `SuperMap.WebPrintingJobCustomItems` Web 打印图例元素参数类
+
+  - 新增 `SuperMap.WebPrintingJobImage` Web 打印图片参数类
+
+  - 新增 `SuperMap.WebPrintingJobLayers` Web 打印图层参数类
+
+- `ol.supermap.Util` 新增 `setMask` `unsetMask` 接口，支持为图层设置/移除掩膜
+
+- 支持对接 SuperMap iServer 返回的类型为`GEOCOMPOUND` 类型的几何对象
+
+- `ol.supermap.WebMap`
+
+  - `options` 新增 `webmap` 参数，支持直接传入获取 webmap spec的地址或者是webMap JSON 对象来加载webmap
+  
+  - 支持 EPSG:-1 地图作为底图
+
+### for MapboxGL
+
+- 对接 SuperMap iServer Web 打印服务
+
+  - 新增 `mapboxgl.supermap.WebPrintingJobService` Web 打印服务类，支持创建打印任务，获取打印结果，获取打印模板
+
+  - 新增 `SuperMap.WebPrintingJobParameters` Web 打印参数类
+  
+  - 新增 `SuperMap.WebPrintingJobLayoutOptions` Web 打印的布局参数类
+
+  - 新增 `SuperMap.WebPrintingJobLegendOptions` Web 打印图例参数类
+
+  - 新增 `SuperMap.WebPrintingJobLittleMapOptions` Web 打印小地图参数类
+
+  - 新增 `SuperMap.WebPrintingJobNorthArrowOptions` Web 打印地图指北针参数类
+
+  - 新增 `SuperMap.WebPrintingJobScaleBarOptions` Web 打印比例尺参数类
+
+  - 新增 `SuperMap.WebPrintingJobExportOptions` Web 打印的输出参数类
+
+  - 新增 `SuperMap.WebPrintingJobContent` Web 打印内容参数类
+  
+  - 新增 `SuperMap.WebPrintingJobCustomItems` Web 打印图例元素参数类
+
+  - 新增 `SuperMap.WebPrintingJobImage`  Web 打印图片参数类
+
+  - 新增 `SuperMap.WebPrintingJobLayers` Web 打印图层参数类
+  
+- 支持对接 SuperMap iServer 返回的类型为 `GEOCOMPOUND` 的几何对象
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图(sm-web-map)组件
+
+    - 新增 `defaultLoading` 参数，支持控制地图初始加载时是否显示loading效果
+  
+    - 新增 `loading ` 参数，支持手动控制是否显示loading
+
+    - 对接最新功能
+
+      - 支持行政区划上图
+
+  - 图表(sm-chart)组件
+
+    - 新增 `highlightColor ` 参数，支持设置高亮颜色
+  
+    - `datasetOptions` 的 `seriesType` 新增 `2.5Bar` 枚举值
+
+  - 边框(sm-border)组件
+
+    - 新增 `customBorder  ` 参数，支持自定义边框
+
+  - 多行文本(sm-text-list)组件
+
+    - 新增 `highlightOptions ` `highlightCurrentRow` `highlightColor` 参数，支持设置行高亮
+  
+    - 支持hover效果
+  
+  - 新增轨迹图层(sm-track-layer)组件
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.tiandituTileLayer` 与 `L.control.layers` 合用时报错的问题
+  
+- 修复 `L.supermap.tiledVectorLayer` 点击点要素获取坐标不对的问题
+
+- 修复多个 `L.supermap.graphicLayer` 叠加鼠标事件被阻止的问题
+
+- 修复 `L.supermap.tiandituTileLayer` 的 `noWrap` 参数无效的问题
+
+- 动态标绘
+  
+  - 修复图片标号在动目标图层上第一次加载不显示的问题
+
+  - 修复箭头标号库，长虚线钳击箭头无法绘制问题
+
+  - 修复触屏模式，结束标绘时箭头变形问题
+
+### for OpenLayers
+
+- 修复 `ol.supermap.WebMap` 多坐标系地图的出图问题
+
+- 优化 `ol.supermap.WebMap` 线面数据标签布局、沿线标注的显示，超出线面范围不显示
+
+## Examples
+
+### for OpenLayers
+
+- iServer
+
+  - 增加 “Web 打印” 分类及示例
+
+- 可视化
+
+  - 增加 “掩膜” 分类及示例
+
+### for MapboxGL
+
+- iServer
+  
+  - 增加 “机器学习” 分类及示例
+
+  - 增加 “Web 打印” 分类及示例
+
+### Component
+
+- 增加 “行业模板” 分类
+
+
+# 10.1.0-beta #
+
+## API changes
+
+### for OpenLayers
+
+- `ol.supermap.WebMap` 新增 `refresh` 接口，支持刷新地图
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图(sm-web-map)组件
+
+    - 新增 `useLoading` 参数，支持控制地图加载时是否显示loading效果
+
+    - 对接最新功能
+
+      - 对接矢量瓦片图层出图
+
+      - 点类型的专题图，支持符号的偏移和旋转
+
+      - 点类型的专题图和线类型专题图，标签支持位置设置
+
+      - 线类型专题图，支持道路样式和铁路样式
+
+  - 指标(sm-indicator)组件  
+
+    - `numBackground` 参数，支持设置 `padding`
+
+  - 图表(sm-chart)组件
+
+    - 新增 `highlightOptions` 参数，支持设置高亮数据
+
+## Fixed
+
+### for Leaflet
+
+- iServer
+
+  - 优化各 `Service` 类拼装url的逻辑，支持 `url` 参数传入时携带自定义查询参数
+  
+- 动态标绘
+
+  - 修改动目标图层的动目标注记、注记位置、注记风格、动目标角度、动目标风格不生效 问题
+
+  - 修改高性能图层的标号注记、注记位置、注记风格、标号角度、标号风格不生效 问题
+
+### for OpenLayers
+
+- iServer
+
+  - 优化各 `Service` 类拼装url的逻辑，支持 `url` 参数传入时携带自定义查询参数
+
+- 修复 Internet Explorer 11/10 浏览器不能使用问题
+
+- 修复 Internet Explorer 11/10 浏览器客户端专题图报错的问题
+
+- `ol.supermap.WebMap` 优化沿线标签显示效果
+
+### for MapboxGL
+
+- iServer
+
+  - 优化各 `Service` 类拼装url的逻辑，支持 `url` 参数传入时携带自定义查询参数
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复文本(sm-text)组件不能根据换行符换行问题
+
+  - 地图(sm-web-map)组件
+
+    - 修复webmap使用两个svg图标会丢失其中一个的问题  
+
+    - 修复分段转图图分段数大于9时报错的问题
+
+    - 数据来源不包含smid字段查询失败的问题
+
+    - 修复岛洞显示问题
+
+    - 优化对象标签显示过多问题
+
+    - 修复过滤条件不起作用问题
+
+  - 修复图表(sm-chart)组件y轴数据颜色分段与渐变冲突的问题
+
+  - 修复数据查询(sm-query)组件查询结果后结果可能被置空的问题
+
+## Examples
+
+### for Leaflet
+  
+- 动态标绘
+
+  - 修改 “动目标图层” 示例，浏览地图时动目标不显示问题
+
+
+## Web Site &amp;&amp; Docs
+
+- 修复api首页链接不可用问题
+
+# 10.1.0-alpha #
+
+## 新特性
+
+### SuperMap iClient Vue MapboxGL组件新增新冠疫情图范例
+
+![1010-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-1.png)
+
+### SuperMap iClient Vue MapboxGL组件新增卷帘组件等多处更新
+![1010-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-2.png)
+
+### iClient for Leaflet动态标绘：新增支持动态目标图层
+![1010-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-3.png)
+
+### iClient for Leaflet可视化：新增PixiJS图层
+![1010-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-4.png)
+
+### 全面支持webp地图瓦片格式
+![1010-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1010-5.png)
+
+## API changes
+
+### for Leaflet
+
+- `L.supermap.tiledMapLayer` `L.supermap.imageMapLayer` 的 `options.format` 参数支持设置 webp瓦片格式。
+  
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+- 动态标绘
+
+  - 新增 `L.supermap.plot.picture` 类，支持绘制图片标号
+
+  - 新增 `L.supermap.plot.movingTargetLayer` 类， 支持显示动态目标及其轨迹
+
+  - 新增 `SuperMap.Plot.BloodVolume` 类， 支持设置生命值大小、偏移及风格
+
+  - 新增 `SuperMap.Plot.PictureFrame` 类， 支持设置自定义图片大小、偏移
+
+  - 新增 `SuperMap.Plot.Trajectory` 类， 支持设置动态目标轨迹线显示轨迹点长度及风格等
+
+  - `L.supermap.plot.dotSymbol`
+
+    - 新增 `options.symbolTexts` 支持设置一个或多个标牌
+
+    - 新增 `options.bloodVolumes` 支持设置一个或多个生命值
+
+    - 新增 `options.pictureFrames` 支持设置一个或多个自定义图片
+
+    - 新增 `options.trajectory` 支持设置轨迹线，只支持动态目标图层显示
+
+### for OpenLayers
+
+- `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 的 `options.format` 参数支持设置 webp瓦片格式
+
+- `ol.source.VectorTileSuperMapRest` `ol.supermap.MapboxStyles` 增加 `options.withCredentials` 参数支持携带 cookie
+
+- `ol.supermap.WebMap` 对接最新功能
+
+  - 图层设置可见比例尺范围
+
+  - 图层自动刷新
+
+  - 自定义GeoJSON url地址创建图层
+
+  - 对接ARCGIS的WMTS服务
+
+  - 等级符号专题图支持符号颜色修改
+
+  - 对接Geoserver的WMTS服务
+
+  - 过滤条件增加Name in格式的查询
+
+  - 对接矢量瓦片图层出图
+
+  - 点类型的专题图，支持符号的偏移和旋转
+
+  - 点类型的专题图和线类型专题图，标签支持位置设置
+
+  - 对接标签图层的阴影颜色
+
+  - 线类型专题图，支持道路样式和铁路样式
+
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+### for MapboxGL
+
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+### Classic
+
+- iPortal
+
+  - `SuperMap.iPortalUser` 类
+
+    - 新增 `addMap` 接口，支持添加地图资源
+  
+    - 新增 `addScene` 接口，支持添加场景资源
+
+    - 新增 `registerService` 接口，支持注册服务资源
+
+    - 新增 `uploadDataRequest` 接口，支持上传数据
+
+    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+
+    - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
+
+    - 新增 `getDataPublishedStatus` 接口，支持查询数据服务状态
+
+    - 新增 `unPublishDataService` 接口，支持取消发布
+
+    - 新增 `publishDataService` 接口，支持发布数据服务
+
+    - 新增 `getErrMsgPromise` 接口，获取包含错误信息的Promise对象
+
+  - 新增 `SuperMap.iPortalAddResourceParam` 添加资源参数类
+
+  - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
+
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+
+  - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
+
+  - 新增 `SuperMap.iPortalDataMetaInfoParam` 数据元信息参数类
+
+  - 新增 `SuperMap.iPortalDataStoreInfoParam`  HBASE HDFS数据存储参数类
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图(sm-web-map)组件
+
+    - 新增 `keepBounds` 参数，支持设置当地图容器大小发生变化时，是否保持地图范围不变
+
+    - 新增 `proxy` 参数，支持为WebMap中的HTTP请求设置代理请求地址
+
+    - 修改 `mapId` 参数:，支持传如 number 类型
+
+    - 对接最新功能
+
+        图层设置可见比例尺范围
+
+        图层自动刷新
+
+        自定义GeoJSON url地址创建图层
+
+        等级符号专题图支持符号颜色修改
+
+  - 新增地图卷帘(sm-compare) 组件
+
+  - 指标(sm-indicator)组件  
+
+    - 新增 `textFontSize` 参数，支持设置指标数字字体大小
+
+    - 新增 `thresholdsStyle` 参数，支持设置指标阈值样式
+
+  - 点选查询(sm-identify)组件
+
+    - 修改 `fields` 参数类型，由一维数组改动为二维数组，以支持为每个layer配置显示字段数组
+
+  - 缩放(sm-zoom)组件
+
+    - 新增 `showZoom` 参数，支持设置是否显示当前级别
+
+  - 多行文本(sm-text-list)组件
+
+    - `dataset` 参数新增支持传入GeoJSONParameter类型
+
+    - 新增 `columnWidths` 参数，支持设置列宽度
+
+    - 新增 `rowHeight` 参数，支持设置行高度
+
+    - 新增 `headerHeight` 参数，支持设置头部高度
+
+    - 新增 `rowStyle` 参数，支持设置行样式
+
+    - 新增 `headerStyle` 参数，支持设置头部样式
+
+    - 新增 `thresholdsStyle` 参数，支持设置阈值样式
+
+    - 新增 `columns` 参数，支持统一的设置列参数，包括列的头名称，字段名称，列宽度，列排序，列前后缀
+
+  - 图表(sm-chart)组件
+
+    - `dataset` 参数新增支持传入GeoJSONParameter类型
+
+  - 进度条(sm-progress)组件
+
+    - 新增 `trailColor` 参数，支持设置底色
+
+- vue-iclient-leaflet
+
+  - 地图(sm-web-map)组件
+
+    - 修改 `mapId` 参数，支持传如 number 类型
+
+  - 指标(sm-indicator)组件
+
+    - 新增 `textFontSize` 参数，支持设置指标数字字体大小
+
+    - 新增 `thresholdsStyle` 参数，支持设置指标阈值样式
+
+  - 图表(sm-chart)组件
+
+    - `dataset` 参数新增支持传入GeoJSONParameter类型
+
+  - 进度条(sm-progress)组件
+
+    - 新增 `trailColor` 参数，支持设置底色
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.CRS.NonEarthCRS` 平面坐标系设置分辨率后移动端双指缩放级别错乱的问题
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+### for OpenLayers
+
+- 修复 `ol.source.Graphic` 高效率点图层click事件触发多次的问题
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+- `ol.supermap.WebMap`
+
+  - 修复使用二进制数据或者示例数据，迁徙图不出图问题
+
+  - 修复小范围底图叠加其他范围的地图后无法拖动地图的问题
+
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.DeckglLayer`  `setStyle` 方法不起作用的问题
+
+- 修复 `mapboxgl.supermap.MapvLayer` 在移除后拖动报错的问题
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+### Classic
+
+- 修复 iPortal 资源列表资源无法查询的问题
+
+- 修复 iPortal 我的资源列表资源无法查询的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+  
+  - 修复图例组件的 `isShowTile` 参数在 `mode` 参数为 `panel` 时不起作用的问题
+
+  - 修复大数据量时chart组件卡顿的问题
+
+- vue-iclient-leaflet
+
+  - 修复大数据量时chart组件卡顿的问题
+
+## Examples
+
+### for Leaflet
+
+- 动态标绘
+
+  - 新增 “动态目标图层” 示例
+
+- iPortal
+
+  - 新增“添加地图/场景”示例
+
+  - 新增“添加场景”示例
+
+  - 新增资源共享设置可分享给部门，群组以及用户的功能
+
+  - 新增“上传数据”示例
+
+  - 新增“注册数据”示例
+
+  - 新增“发布数据”示例
+
+### for OpenLayers
+
+- iPortal
+
+  - 新增“添加地图/场景”示例
+
+  - 新增“添加场景”示例
+
+  - 新增资源共享设置可分享给部门，群组以及用户的功能
+
+  - 新增“上传数据”示例
+
+  - 新增“注册数据”示例
+
+  - 新增“发布数据”示例
+
+### for MapboxGL
+
+- 多坐标系 – 地图
+
+  - 新增“地图打印”示例
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图  
+
+    - 新增“中国疫情”示例
+
+    - 新增“全球疫情”示例
+
+    - 新增“疫情国家紧急状态”示例
+
 # 10.0.1 #
+
+## 新特性
+
+### SuperMap iClient for OpenLayers 升级支持 OpenLayers 5/6，支持模块化开发，提升应用的可维护性
+
+![1001-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-1.png)
+
+（具体兼容情况详见compatibility一节）
+
+### 新增 SuperMap iPortal 资源访问系列接口和范例，支持对资源中心的地图、服务、大屏、洞察等资源进行更新
+![1001-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-6.png)
+
+### 新增 Vue-iClient-Leaflet 组件库，提供二维地图、图表等常用组件
+
+### 更新 Vue-iClient-MapboxGL 组件库，新增点选查询、图层管理等地图交互组件
+![1001-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-3.png)
+
+### 微信小程序版示例正式上线
+![1001-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-4.png)
+![1001-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-5.jpg)
+
+## API changes
+
+
+### for Leaflet
+
+- `SuperMap.GetFeaturesParametersBase` 及其子类
+
+  - 新增 `options.targetEpsgCode`，`options.targetPrj` 参数，支持设置是返回结果的投影
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+- `L.supermap.heatMapLayer` 新增 `options.blur` 参数，支持设置热力图的模糊半径。
+
+- `L.supermap.graphicLayer` 的 `options.render` 为 canvas 时，支持通过 on 方法绑定 click、 mousemove、 dblclick、 mousedown 、mouseup、 mouseout 、contextmenu鼠标事件。
+
+### for OpenLayers
+
+- `SuperMap.GetFeaturesParametersBase` 及其子类
+
+  - 新增 `options.targetEpsgCode`，`options.targetPrj` 参数，支持设置是返回结果的投影
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+### for MapboxGL
+
+- `SuperMap.GetFeaturesParametersBase` 及其子类
+
+  - 新增 `options.targetEpsgCode`，`options.targetPrj` 参数，支持设置是返回结果的投影
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+### Classic
+
+- iPortal
+
+  - `SuperMap.iPortal` 新增 `queryResources`、`updateResourcesShareSetting` 接口，支持查询资源，共享设置。
+
+  - 新增 `SuperMap.iPortalUser` 类，增加 `deleteResources` 接口，支持删除资源
+
+  - 新增 `SuperMap.iPortalQueryParam` 类
+
+  - 新增 `SuperMap.iPortalQueryResult` 类
+
+  - 新增 `SuperMap.iPortalResource` 类
+
+  - 新增 `SuperMap.iPortalShareEntity` 类
+
+  - 新增 `SuperMap.iPortalShareParam` 类
+
+  - 移除 `SuperMap.iPortalMap` 、`SuperMap.iPortalService` 类，请使用 `SuperMap.iPortalResource` 类
+
+  - `SuperMap.iPortal` 移除 `queryServices`、`queryMaps` 接口，请使用 `queryResources` 接口
+
+  - `SuperMap.iPortal` 移除 `deleteServices` 接口，请使用 `SuperMap.iPortalUser.deleteResources` 接口
+
+### Web Components
+
+- vue-iclient-mapboxgl
+
+   - 新增点选查询(Identify)组件
+
+   - 新增图层管理(LayerManager)组件
+
+   - 图表组件 `dataset` 参数新增 `proxy` 字段，支持代理请求
+
+   - 图表组件新增 `associatedMap` 参数，支持与地图联动
+
+   - 文本/水球/进度条组件新增 `field` 参数，支持指定三方服务字段值
+
+   - 指标组件新增 `titleField` 、`numField` 、`unitField` 参数，支持指定三方服务字段值
+
+   - 文本列表组件新增 `startTiming` 、`frequency` 参数，支持定时刷新功能
+
+- vue-iclient-leaflet
+
+   - 新增基础组件：图标(Icon)、指标(Indicator)、水球(LiquidFill)、进度条(Progress)、文本(Text)、时间(TimeText)、图片(Image)、视频(VideoPlayer)、Iframe(Iframe)、边框(Border)
+
+   - 新增地图(WebMap)组件
+
+   - 新增瓦片图层(TileLayer)组件
+
+   - 新增弹窗(Popup)组件
+
+   - 新增点选查询(Identify)组件
+
+   - 新增图表(Chart)组件
+
+
+## Fixed
+
+### for Leaflet
+
+ - 修复在https站点下SecurityManager注册及获取token/key失效的问题
+ - 修复L.supermap.mapVLayer的options. mapVOptions.unit为 ’m’ 时不起作用的问题
+ - 修复L.supermap.tiledMapLayer在经纬度地图下设置 options. clipRegion出图错乱的问题
+
+### for OpenLayers
+
+ - 修复ol.source.Mapv的options. mapVOptions.unit为 ’m’ 时不起作用的问题
+ - 修复ol.supermap.MapboxStyles 的 updateStyles 方法在传入的更新样式内容不完整时样式丢失的问题
+ - 修复ol.supermap.WebMap加载EPSG:-1000坐标系的地图失败的问题
+ - 修复ol.supermap.WebMap加载迁徙图失败的问题
+ - 修复ol.supermap.WebMap加载EPSG:4326的小范围的WMTS地图的出图失败的问题
+
+### for MapboxGL
+
+ - 修复mapboxgl.supermap.MapvLayer的options. mapVOptions.unit为 ’m’ 时不起作用的问题
+
+### Classic
+
+ - 修复SuperMap.Layer.MapVLayer的options.unit为 ’m’ 时不起作用的问题
+
+
+## Examples
+
+### for Leaflet
+
+- iPortal 
+
+  - 新增 “资源中心” 示例
+
+  - 新增 “我的资源” 示例
+
+  - 移除 “地图列表” 示例
+
+- 可视化 – Pixi
+
+  - 新增 “纽约出租车上车点分布图（140万点数据绘制）” 示例
+
+### for OpenLayers
+
+- iPortal
+
+  - 新增 “资源中心” 示例
+
+  - 新增 “我的资源” 示例
+
+  - 移除 “地图列表” 示例
+
+### Web Components
+
+- 新增 “Vue - Leaflet” 分类及示例
+
+- Vue – MapboxGL
+
+  - 新增“点选查询”示例
+
+  - 新增“图层管理”示例
+
+
+## Compatibility
+
+### for OpenLayers
+
+- 不兼容 openlayers 6 的功能点
+
+  - 矢量瓦片
+
+    - 多面（MultiPolygon）
+  
+    - 中文沿线标注
+
+- 不兼容 openlayers 6 的三方插件
+
+  - OSMBuildings-OL3 https://github.com/kekscom/osmbuildings
+
+  - OL3-AnimatedCluster https://github.com/Viglino/OL3-AnimatedCluster
+
+- 不兼容 openlayers 6 的示例
+
+  - 可视化 – OSMBuildings
+
+  - 可视化 – 聚点图
+
+  - 可视化 – ECharts - 2005到2016年地震概况统计
 
 
 

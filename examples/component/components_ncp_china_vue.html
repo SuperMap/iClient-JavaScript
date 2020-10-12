@@ -1,0 +1,536 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        <title></title>
+    </head>
+    <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0;">
+        <div id="main">
+            <sm-web-map :map-options="mapOptions" @load="mapLoaded" @click="mapClicked"></sm-web-map>
+            <div id="group">
+                <a-radio-group class="radio-group" v-model="type" default-value="china-riskLevel" size="large">
+                    <a-radio-button value="china-riskLevel" data-i18n="resources.text_ncp_riskLevel"></a-radio-button>
+                    <a-radio-button
+                        value="china-incrementConfirmed"
+                        data-i18n="resources.text_ncp_incrementConfirmed"
+                    ></a-radio-button>
+                    <a-radio-button
+                        value="china-nowConfirmed"
+                        data-i18n="resources.text_ncp_nowConfirmed"
+                    ></a-radio-button>
+                    <a-radio-button value="china-incidence" data-i18n="resources.text_ncp_incidence"></a-radio-button>
+                </a-radio-group>
+                <br />
+                <sm-indicator :title="title" unit="" mode="horizontal" :num="num" font-size="44px" font-weight="400">
+                </sm-indicator>
+                <sm-text
+                    :title="time"
+                    text-color="rgba(255, 255, 255, 0.6)"
+                    :font-style='{ fontSize: "18px", fontWeight: "400" ,display: "block"}'
+                >
+                </sm-text>
+            </div>
+            <sm-image
+                repeat="noRepeat"
+                src="../img/online-qr.png"
+                style="position: absolute; bottom: 32px; right: 16px; z-index: 1000; height: 88px; width: 88px;"
+            ></sm-image>
+        </div>
+        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+        <script
+            include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <script src="../data/ncp/ProvinceData1M.js"></script>
+        <script src="../data/ncp/province_center_data.js"></script>
+        <style>
+            #main {
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+            #group {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                z-index: 1000;
+            }
+            .ant-radio-button-wrapper {
+                color: #fff;
+                background: #333333;
+                padding: 0px 10px;
+            }
+            .mapboxgl-popup-content {
+                border: solid 1px #464646;
+                background-color: #464646;
+                border-radius: 7px;
+                padding: 16px;
+                z-index: 3;
+                font-size: 20px;
+                text-align: center;
+                color: #ffffff;
+                line-height: 30px;
+            }
+            .mapboxgl-popup-tip {
+                display: none;
+            }
+            .ant-radio-button-wrapper-checked:first-child {
+                color: #1890ff;
+            }
+            @media screen and (max-width: 768px) {
+                .sm-component-count-to__numItem {
+                    font-size: 32px !important;
+                }
+                .sm-component-indicator__title {
+                    font-size: 20px !important;
+                }
+                .sm-component-indicator__num {
+                    font-size: 32px !important;
+                }
+                .sm-component-text {
+                    font-size: 16px !important;
+                }
+                #group {
+                    margin-top: 28px;
+                }
+                .ant-radio-group-large .ant-radio-button-wrapper {
+                    height: 32px;
+                    line-height: 30px;
+                    font-size: 14px;
+                    padding: 0 10px;
+                }
+            }
+        </style>
+        <script>
+            var styles = {
+                'china-riskLevel': {
+                    tooltip: function (properties) {
+                        if (properties.daysNoConfirmedAdd >= 3) {
+                            return resources.text_ncp_riskLevel_tooltip
+                                .replace('{name}', properties['省份'])
+                                .replace('{daysNoConfirmedAdd}', properties.daysNoConfirmedAdd);
+                        }
+                        return resources.text_ncp_riskLevel_tooltip1
+                            .replace('{name}', properties['省份'])
+                            .replace('{daysMaxConfirmedAdd}', properties.daysMaxConfirmedAdd)
+                            .replace('{confirmedAdd}', properties.confirmedAdd);
+                    },
+                    title: resources.text_ncp_riskLevel_title,
+                    'fill-color': [
+                        'case',
+                        ['>=', ['get', 'daysMaxConfirmedAdd'], 10],
+                        '#FC9A6B',
+                        ['>=', ['get', 'daysMaxConfirmedAdd'], 1],
+                        '#FDCD8C',
+                        ['>=', ['get', 'daysNoConfirmedAdd'], 14],
+                        '#53AB5E',
+                        ['>=', ['get', 'daysNoConfirmedAdd'], 7],
+                        '#ADDD8E',
+                        ['>=', ['get', 'daysNoConfirmedAdd'], 3],
+                        '#D6FDB9',
+                        '#F4F4F4'
+                    ],
+                    'text-field': [
+                        'concat',
+                        ['get', '省份'],
+                        ['case', ['>', ['get', 'daysNoConfirmedAdd'], 0], ['get', 'daysNoConfirmedAdd'], '']
+                    ],
+                    'line-color': '#5F5F5F'
+                },
+                'china-incrementConfirmed': {
+                    tooltip: function (properties) {
+                        if (isNaN(properties['confirmedAdd'])) {
+                            return resources.text_ncp_nodata_tooltip.replace('{name}', properties['省份']);
+                        }
+                        return resources.text_ncp_incrementConfirmed_tooltip
+                            .replace('{name}', properties['省份'])
+                            .replace('{confirmedAdd}', properties['confirmedAdd']);
+                    },
+                    title: resources.text_ncp_incrementConfirmed_title,
+                    'fill-color': [
+                        'case',
+                        ['has', 'confirmedAdd'],
+                        [
+                            'case',
+                            ['>=', ['get', 'confirmedAdd'], 200],
+                            '#d7301f',
+                            ['>=', ['get', 'confirmedAdd'], 100],
+                            '#ef6548',
+                            ['>=', ['get', 'confirmedAdd'], 50],
+                            '#fc8d59',
+                            ['>=', ['get', 'confirmedAdd'], 10],
+                            '#fdbb84',
+                            ['>=', ['get', 'confirmedAdd'], 1],
+                            '#fdd49e',
+                            '#F4F4F4'
+                        ],
+                        '#D9D9D9'
+                    ],
+                    'text-field': [
+                        'concat',
+                        ['get', '省份'],
+                        ['case', ['>', ['get', 'confirmedAdd'], 0], ['concat', '+', ['get', 'confirmedAdd']], '']
+                    ],
+                    'line-color': '#83838D'
+                },
+                'china-nowConfirmed': {
+                    tooltip: function (properties) {
+                        if (isNaN(properties['nowConfirmed'])) {
+                            return resources.text_ncp_nodata_tooltip.replace('{name}', properties['省份']);
+                        }
+                        return resources.text_ncp_nowConfirmed_tooltip
+                            .replace('{name}', properties['省份'])
+                            .replace('{nowConfirmed}', properties['nowConfirmed']);
+                    },
+                    title: resources.text_ncp_nowConfirmed_title,
+                    'fill-color': [
+                        'case',
+                        ['has', 'nowConfirmed'],
+                        [
+                            'case',
+                            ['>=', ['get', 'nowConfirmed'], 200],
+                            '#d7301f',
+                            ['>=', ['get', 'nowConfirmed'], 100],
+                            '#ef6548',
+                            ['>=', ['get', 'nowConfirmed'], 50],
+                            '#fc8d59',
+                            ['>=', ['get', 'nowConfirmed'], 10],
+                            '#fdbb84',
+                            ['>=', ['get', 'nowConfirmed'], 1],
+                            '#fdd49e',
+                            '#F4F4F4'
+                        ],
+                        '#D9D9D9'
+                    ],
+                    'text-field': ['get', '省份'],
+                    'line-color': '#83838D'
+                },
+                'china-incidence': {
+                    tooltip: function (properties) {
+                        return resources.text_ncp_incidence_tooltip
+                            .replace('{name}', properties['省份'])
+                            .replace('{incidence}', properties['incidence'])
+                            .replace('{confirmed}', properties['confirmed'])
+                            .replace('{population}', parseInt(properties['population'] / 10000));
+                    },
+                    title: resources.text_ncp_incidence_title,
+                    'fill-color': [
+                        'case',
+                        ['>=', ['get', 'incidence'], 5],
+                        '#6a51a3',
+                        ['>=', ['get', 'incidence'], 1.5],
+                        '#7f7dba',
+                        ['>=', ['get', 'incidence'], 1],
+                        '#9e9ac8',
+                        ['>=', ['get', 'incidence'], 0.5],
+                        '#dadaeb',
+                        ['>=', ['get', 'incidence'], 0],
+                        '#efedf5',
+                        '#F4F4F4'
+                    ],
+                    'text-field': ['get', '省份'],
+                    'line-color': '#83838D'
+                }
+            };
+            new Vue({
+                el: '#main',
+                data() {
+                    var attribution =
+                        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                        " Map Data <span>© <a href='https://www.supermapol.com/' target='_blank'>SuperMap Online</a></span> ";
+
+                    return {
+                        type: 'china-riskLevel',
+                        time: '04/01 24:00',
+                        nums: {
+                            'china-incrementConfirmed': 0,
+                            'china-nowConfirmed': 0,
+                            'china-incidence': 0,
+                            'china-confirmed': 0
+                        },
+                        mapOptions: {
+                            container: 'map', // container id
+                            style: {
+                                version: 8,
+                                glyphs: 'https://ncov.supermapol.com/statichtml/font/{fontstack}/{range}.pbf',
+                                sources: {
+                                    'raster-tiles': {
+                                        attribution: attribution,
+                                        type: 'raster',
+                                        tiles: [
+                                            'https://maptiles.supermapol.com/iserver/services/map-China/rest/maps/China_Dark_Nolable'
+                                        ],
+                                        transparent: false,
+                                        rasterSource: 'iserver',
+                                        tileSize: 256
+                                    }
+                                },
+                                layers: [
+                                    {
+                                        id: 'simple-tiles',
+                                        type: 'raster',
+                                        source: 'raster-tiles',
+                                        minzoom: 0,
+                                        maxzoom: 22
+                                    }
+                                ]
+                            },
+                            bounds: [
+                                [72.10274031198492, 2.481417743284723],
+                                [137.0563536922412, 54.36513803178008]
+                            ],
+                            center: [105.9002304535943, 31.9592716277851],
+                            minZoom: 1.5,
+                            maxZoom: 6,
+                            zoom: 3.55
+                        }
+                    };
+                },
+                computed: {
+                    num() {
+                        return this.nums[this.type] || '';
+                    },
+                    title() {
+                        return styles[this.type].title;
+                    }
+                },
+                watch: {
+                    type(val) {
+                        if (this.popup) {
+                            this.popup.remove();
+                        }
+                        this.map.setPaintProperty('china', 'fill-color', styles[val]['fill-color']);
+                        this.map.setPaintProperty('china-strokeLine', 'line-color', styles[val]['line-color']);
+                        this.map.setLayoutProperty('china-label', 'text-field', styles[val]['text-field']);
+                    }
+                },
+                created() {
+                    SuperMap.Components.setTheme({
+                        textColor: 'rgba(255, 255, 255, 0.85)',
+                        background: 'rgba(0, 0, 0,0)',
+                        colorGroup: ['rgb(225, 2, 0)']
+                    });
+                    $.get(
+                        'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ui.json?time=' + new Date().getTime(),
+                        function (response) {
+                            document.title = getTitle(response);
+                        }
+                    );
+                },
+                methods: {
+                    mapLoaded(e) {
+                        this.map = e.map;
+                        $.get(
+                            'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ncp.json?time=' + new Date().getTime(),
+                            function (response) {
+                                // this.time = resources.text_ncp_time.replace('{time}', response.time);
+                                var latestProvinceData = this.getLatestProvinceData(response);
+                                this.map.addSource('china', {
+                                    type: 'geojson',
+                                    data: ProvinceData
+                                });
+                                this.map.addLayer({
+                                    id: 'china',
+                                    type: 'fill',
+                                    source: 'china',
+                                    layout: {},
+                                    paint: {
+                                        'fill-color': styles[this.type]['fill-color']
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'china-strokeLine',
+                                    type: 'line',
+                                    source: 'china',
+                                    layout: {},
+                                    paint: {
+                                        'line-width': 0.5,
+                                        'line-color': styles[this.type]['line-color'],
+                                        'line-opacity': 1
+                                    }
+                                });
+                                this.map.addSource('china-label', {
+                                    type: 'geojson',
+                                    data: ProvincesCenterData
+                                });
+                                this.map.addLayer({
+                                    id: 'china-label',
+                                    type: 'symbol',
+                                    source: 'china-label',
+                                    layout: {
+                                        'text-field': styles[this.type]['text-field'],
+                                        'text-font': ['Microsoft YaHei Regular'],
+                                        'text-size': 14,
+                                        'text-allow-overlap': {
+                                            stops: [
+                                                [2.5, false],
+                                                [3, true]
+                                            ]
+                                        },
+                                        'text-letter-spacing': 0,
+                                        'text-max-width': 0
+                                    },
+                                    paint: {
+                                        'text-color': 'white',
+                                        'text-opacity': 1,
+                                        'text-halo-color': '#696868',
+                                        'text-halo-width': 1.5
+                                    }
+                                });
+                                this.map.addSource('line', {
+                                    type: 'geojson',
+                                    data: {
+                                        type: 'FeatureCollection',
+                                        features: [
+                                            {
+                                                type: 'Feature',
+                                                geometry: {
+                                                    type: 'LineString',
+                                                    coordinates: [
+                                                        [127.53, 50.22],
+                                                        [97.5, 24.06]
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'line',
+                                    type: 'line',
+                                    source: 'line',
+                                    layout: {
+                                        'line-cap': 'round'
+                                    },
+                                    paint: {
+                                        'line-color': '#919191',
+                                        'line-opacity': 1,
+                                        'line-width': 2,
+                                        'line-dasharray': [2, 2]
+                                    }
+                                });
+                            }.bind(this)
+                        );
+                    },
+                    mapClicked(e) {
+                        var bbox = [
+                            [e.mapboxEvent.point.x - 5, e.mapboxEvent.point.y - 5],
+                            [e.mapboxEvent.point.x + 5, e.mapboxEvent.point.y + 5]
+                        ];
+                        var features = this.map.queryRenderedFeatures(bbox);
+                        if (features[0] && features[0].properties['省份']) {
+                            this.popup = new mapboxgl.Popup({ closeButton: false, maxWidth: 'none' })
+                                .setLngLat(e.mapboxEvent.lngLat)
+                                .setHTML(styles[this.type].tooltip(features[0].properties))
+                                .addTo(this.map);
+                        }
+                    },
+                    getLatestProvinceData(response) {
+                        var unit = 100000; //单位为10万
+                        var dataByName = {};
+                        ProvincesCenterData.features.forEach((provinceData) => {
+                            dataByName[provinceData.properties['省份']] = provinceData;
+                        });
+                        var dataExcludeNational = response.data.slice(1);
+                        var someDataOutOfDate = false;
+                        var latestProvinceData = [];
+                        var provinceLabelData = [];
+                        var provinceName = [];
+                        var daysNoConfirmedAdd = [];
+                        dataExcludeNational.forEach((data) => {
+                            if (data.provinces[1].provinceData && data.provinces[1].provinceData.properties) {
+                                var name = data.provinces[1].provinceData.provinceName;
+                                provinceName.push(name);
+                                daysNoConfirmedAdd.push(data.provinces[1].provinceData.properties.daysNoConfirmedAdd);
+                                // 计算连续三日最高的新增确诊数
+                                if (data.provinces[1].provinceData.properties.confirmedAdd != null) {
+                                    var latest3DaysConfiredInrement = data.provinces
+                                        .slice(1, 4)
+                                        .map((e) => e.provinceData.properties.confirmedAdd);
+                                    data.provinces[1].provinceData.properties.daysMaxConfirmedAdd = Math.max(
+                                        latest3DaysConfiredInrement[0],
+                                        latest3DaysConfiredInrement[1],
+                                        latest3DaysConfiredInrement[2]
+                                    );
+                                } else {
+                                    delete data.provinces[1].provinceData.properties.daysNoConfirmedAdd;
+                                }
+
+                                var confirmed = data.provinces[1].provinceData.properties.confirmed;
+                                var confirmedAbsent = false;
+                                if (confirmed == null) {
+                                    confirmed = data.provinces[1].provinceData.properties.confirmed;
+                                    confirmedAbsent = true;
+                                }
+                                var population = dataByName[name].properties.population;
+                                var incidence = (confirmed / population) * unit;
+                                incidence = Number(incidence.toFixed(2));
+                                if (!confirmedAbsent) {
+                                    data.provinces[1].provinceData.properties.incidence = incidence;
+                                }
+                                data.provinces[1].provinceData.properties.population = population;
+                                // provinceIncidence.push(incidence);
+                                var toPush = Object.assign(data.provinces[1].provinceData);
+                                // latestProvinceData.push(toPush);
+                                var province = ProvinceData.features.find(function (item) {
+                                    return item.properties.Name === name || item.properties.Name.indexOf(name) === 0;
+                                });
+                                var provinceLabel = ProvincesCenterData.features.find(function (item) {
+                                    return (
+                                        item.properties['省份'] === name || item.properties['省份'].indexOf(name) === 0
+                                    );
+                                });
+                                if (provinceLabel && province) {
+                                    provinceLabel.properties = Object.assign(
+                                        province.properties,
+                                        provinceLabel.properties,
+                                        toPush.properties,
+                                        { 省份: getProvinceName(name) }
+                                    );
+                                    province.properties = Object.assign(
+                                        province.properties,
+                                        provinceLabel.properties,
+                                        toPush.properties,
+                                        { 省份: getProvinceName(name) }
+                                    );
+                                }
+                            }
+                        });
+                        var chinaData = response.data[0].provinces[0].provinceData.properties;
+                        if (chinaData) {
+                            this.nums['china-nowConfirmed'] = chinaData['nowConfirmed'];
+                            this.nums['confirmed'] = chinaData['confirmed'];
+                            this.nums['china-incrementConfirmed'] = chinaData['confirmedAdd'];
+                            this.nums['china-incidence'] = ((chinaData['confirmed'] / 1428003306) * unit).toFixed(2);
+                        }
+
+                        return latestProvinceData;
+                    }
+                }
+            });
+            function getProvinceName(name) {
+                if (utils.getLanguage() === 'en-US') {
+                    return ProvincesNameEn[name];
+                }
+                return name;
+            }
+            function getTitle(response) {
+                var titles = response[utils.getLanguage()];
+                if (titles) {
+                    if (titles.firstPriorityTitle) {
+                        return titles.firstPriorityTitle;
+                    }
+                    if (titles.title && titles.title.indexOf('{') < 0) {
+                        return titles.title;
+                    }
+                }
+                return resources.text_ncp_china;
+            }
+        </script>
+    </body>
+</html>

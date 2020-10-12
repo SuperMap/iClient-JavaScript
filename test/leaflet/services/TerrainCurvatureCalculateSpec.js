@@ -30,7 +30,7 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', ()=> {
         var terrainCurvatureCalculationService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.zFactor).toBe(1);
             expect(options).not.toBeNull();

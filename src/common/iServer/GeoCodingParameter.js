@@ -17,19 +17,9 @@ import {Util} from '../commontypes/Util';
  * @param {number} [options.maxReturn] - 最大返回结果数。
  */
 export class GeoCodingParameter {
-
-
-
-
     constructor(options) {
-        if (options.filters) {
-            let strs = [];
-            let fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-                return field;
-            });
-            options.filters = strs;
+        if (options.filters && typeof(options.filters) === 'string') {        
+            options.filters =  options.filters.split(',');
         }
         /**
          * @member {string} SuperMap.GeoCodingParameter.prototype.address

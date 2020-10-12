@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ProcessingServiceBase} from './ProcessingServiceBase';
-import {BuffersAnalystJobsParameter} from './BuffersAnalystJobsParameter';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { ProcessingServiceBase } from './ProcessingServiceBase';
+import { BuffersAnalystJobsParameter } from './BuffersAnalystJobsParameter';
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
@@ -18,8 +19,8 @@ import {BuffersAnalystJobsParameter} from './BuffersAnalystJobsParameter';
 export class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/buffers";
-        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsService";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/buffers');
+        this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
     }
 
     /**
@@ -43,7 +44,7 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id。
      */
     getBuffersJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**

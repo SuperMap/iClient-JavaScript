@@ -90,7 +90,7 @@ describe('FindMTSPPathsService', () => {
 
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath");
             return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)))
         });
         findMTSPPathsService.processAsync(parameter);
@@ -159,7 +159,7 @@ describe('FindMTSPPathsService', () => {
 
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath");
             return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)))
         });
         findMTSPPathsService.processAsync(parameter);
@@ -223,7 +223,7 @@ describe('FindMTSPPathsService', () => {
 
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath");
             return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)))
         });
         findMTSPPathsService.processAsync(parameter);
@@ -281,7 +281,7 @@ describe('FindMTSPPathsService', () => {
         };
         var findMTSPPathsService = initFindMTSPathsService(findMTSPathsServiceCompleted, findMTSPathsServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数centers 不是有效的JSON 字符串对象"}}`))
         });
         findMTSPPathsService.processAsync(parameter);
@@ -340,7 +340,7 @@ describe('FindMTSPPathsService', () => {
         var findMTSPPathsService = initFindMTSPathsService(findMTSPathsServiceCompleted, findMTSPathsServiceFailed);
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findMTSPPath 操作时出错,原因是：权重字段TurnCost1不存在。"}}`))
         });
         findMTSPPathsService.processAsync(parameter);
@@ -414,7 +414,7 @@ describe('FindMTSPPathsService', () => {
         var findMTSPPathsService = initFindMTSPathsService(findMTSPathsServiceCompleted, findMTSPathsServiceFailed);
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/mtsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findMTSPPath 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0"}}`))
         });
         findMTSPPathsService.processAsync(parameter);

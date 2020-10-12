@@ -11,18 +11,18 @@ import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
 import './leaflet/mapping/WebMapSpec.js';
+import './leaflet/mapping/TiandituTileLayerSpec';
 
 /*leaflet -- overlay*/
 
 import './leaflet/overlay/EchartsLayerSpec.js';
-/*deck相关测试未通过，待解决后打开注释*/
 import './leaflet/overlay/graphic/GraphicSpec.js';
 import './leaflet/overlay/GraphicLayerSpec.js';
 import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';
 import './leaflet/overlay/LabelThemeLayerSpec.js';
-import './leaflet/overlay/mapVLayerSpec.js';
+import './leaflet/overlay/MapVLayerSpec.js';
 import './leaflet/overlay/RangeThemeLayerSpec.js';
 import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
 import './leaflet/overlay/TileVectorLayerSpec.js';
@@ -42,6 +42,8 @@ import './leaflet/services/FieldServiceSpec.js';
 import './leaflet/services/GenerateSpatialDataSpec.js';
 import './leaflet/services/GeoRelationAnalysisSpec.js';
 import './leaflet/services/GeometryBatchAnalysisSpec.js';
+import './leaflet/services/GeoprocessingServiceSpec.js';
+
 import './leaflet/services/GetFeaturesByBoundsSpec.js';
 import './leaflet/services/GetFeaturesByBufferSpec.js';
 import './leaflet/services/GetFeaturesByGeometrySpec.js';
@@ -67,6 +69,7 @@ import './leaflet/services/TerrainCurvatureCalculateSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
+import './leaflet/services/WebPrintingJobServiceSpec.js';
 
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
@@ -75,5 +78,5 @@ import './leaflet/components/distributedanalysis/DistributedAnalysisViewSpec.js'
 import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/components/search/SearchViewSpec.js';
 import './leaflet/components/dataflow/DataFlowViewSpec.js';
-import './leaflet/overlay/DataFlowlayerSpec.js';
+import './leaflet/overlay/DataFlowLayerSpec.js';
 

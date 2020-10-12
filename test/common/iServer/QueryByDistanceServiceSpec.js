@@ -52,7 +52,7 @@ describe('QueryByBoundsService', () => {
         };
         var queryByDistanceService = initQueryByDistanceService(worldMapURL,QueryByDistanceFailed,QueryByDistanceCompleted);
         expect(queryByDistanceService).not.toBeNull();
-        expect(queryByDistanceService.url).toEqual(worldMapURL + "/queryResults.json?");
+        expect(queryByDistanceService.url).toEqual(worldMapURL + "/queryResults");
         queryByDistanceService.destroy();
         expect(queryByDistanceService.EVENT_TYPES).toBeNull();
         expect(queryByDistanceService.events).toBeNull();
@@ -84,7 +84,7 @@ describe('QueryByBoundsService', () => {
             };
         var queryByDistanceService = initQueryByDistanceService(worldMapURL, QueryByDistanceFailed,QueryByDistanceCompleted);
         expect(queryByDistanceService).not.toBeNull();
-        expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults.json?");
+        expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults");
         var queryByDistanceParameters = new QueryByDistanceParameters({
             customParams: null,
             startRecord: 1,
@@ -99,7 +99,7 @@ describe('QueryByBoundsService', () => {
         queryByDistanceParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.distance).toEqual(20);
@@ -136,7 +136,7 @@ describe('QueryByBoundsService', () => {
         };
         var queryByDistanceService = initQueryByDistanceService(worldMapURL,QueryByDistanceFailed,QueryByDistanceCompleted);
         expect(queryByDistanceService).not.toBeNull();
-        expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults.json?");
+        expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults");
         var queryByDistanceParameters = new QueryByDistanceParameters({
             customParams: null,
             expectCount: 100,
@@ -153,7 +153,7 @@ describe('QueryByBoundsService', () => {
         queryByDistanceParameters.holdTime = 10;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.distance).toEqual(20);
@@ -189,7 +189,7 @@ describe('QueryByBoundsService', () => {
         };
         var queryByDistanceService = initQueryByDistanceService(worldMapURL,QueryByDistanceFailed,QueryByDistanceCompleted);
         expect(queryByDistanceService).not.toBeNull();
-        expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults.json?");
+        expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults");
         var queryByDistanceParameters = new QueryByDistanceParameters({
             customParams: null,
             expectCount: 100,
@@ -203,7 +203,7 @@ describe('QueryByBoundsService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.distance).toEqual(20);

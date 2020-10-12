@@ -57,13 +57,8 @@ export class StopQueryService extends CommonServiceBase {
         if (!(params instanceof StopQueryParameters)) {
             return;
         }
-        var me = this, end;
-
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? '' : '/';
-        me.url += "stops/keyword/" + params.keyWord;
-        me.url += ".json?";
-
+        var me = this;
+        me.url = Util.urlPathAppend(me.url, 'stops/keyword/' + params.keyWord);
         me.request({
             method: "GET",
             params: {returnPosition: params.returnPosition},

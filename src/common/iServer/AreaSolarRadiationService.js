@@ -52,24 +52,17 @@ export class AreaSolarRadiationService extends SpatialAnalystBase {
             return;
         }
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         var parameterObject = {};
 
         if (parameter instanceof AreaSolarRadiationParameters) {
-            me.url += 'datasets/' + parameter.dataset + '/solarradiation';
+            me.url = Util.urlPathAppend(me.url, `datasets/${parameter.dataset}/solarradiation`);
         }
-
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         AreaSolarRadiationParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
 
         me.request({
-            method: "POST",
+            method: 'POST',
             data: jsonParameters,
             scope: me,
             success: me.serviceProcessCompleted,

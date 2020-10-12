@@ -129,7 +129,7 @@ describe('SurfaceAnalystService', () => {
         expect(surfaceAnalystService.url).toEqual(spatialAnalystURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.resolution).toEqual(3000);
@@ -175,7 +175,7 @@ describe('SurfaceAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoregion.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoregion?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.resolution).toEqual(3000);
             expect(paramsObj.resultSetting.expectCount).toEqual(1);
@@ -234,7 +234,7 @@ describe('SurfaceAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoline.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoline?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.extractParameter.resampleTolerance).toBe(0.7);
             expect(paramsObj.resolution).toBe(3000);
@@ -293,7 +293,7 @@ describe('SurfaceAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoregion.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoregion?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.extractParameter.resampleTolerance).toBe(0.7);
             expect(paramsObj.resolution).toBe(3000);
@@ -334,7 +334,7 @@ describe('SurfaceAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP1@Interpolation/isoline.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP1@Interpolation/isoline?returnContent=true");
             var escapedJson = "{\"succeed\":false,\"error\":{\"code\":400,\"errorMsg\":\"数据集SamplesP1@Interpolation不存在\"}}";
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.resolution).toEqual(3000);

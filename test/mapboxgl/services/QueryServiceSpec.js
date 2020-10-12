@@ -29,7 +29,7 @@ describe('mapboxgl_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             expect(params).toContain("'queryMode':'BoundsQuery'");
             expect(params).toContain("'bounds': {'rightTop':{'y':39,'x':60},'leftBottom':{'y':0,'x':0}}");
@@ -79,7 +79,7 @@ describe('mapboxgl_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             expect(params).toContain("'queryMode':'DistanceQuery'");
             expect(params).toContain("'distance':10");
@@ -130,7 +130,7 @@ describe('mapboxgl_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             expect(params).toContain("'queryMode':'SqlQuery'");
             expect(params).toContain("'name':\"Capitals@World\"");
@@ -186,7 +186,7 @@ describe('mapboxgl_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             expect(params).toContain("'queryMode':'SpatialQuery'");
             expect(options).not.toBeNull();

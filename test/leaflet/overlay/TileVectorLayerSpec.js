@@ -38,11 +38,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('initialize_serverCartoCSSStyle:false', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -83,16 +82,16 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('initialize_serverCartoCSSStyle:true', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
-                return Promise.resolve(new Response(JSON.stringify(tileFeature)));
-            }
-            else if (testUrl.indexOf("/vectorstyles.json") != -1) {
+            else if (testUrl.indexOf("/vectorstyles") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(vectorStyle)));
             }
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
+                return Promise.resolve(new Response(JSON.stringify(tileFeature)));
+            }
+           
         });
         var tileVectorLayer = new tiledVectorLayer(ChinaURL, {
             cacheEnabled: false,
@@ -114,11 +113,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('initialize_cartoCSS', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -149,11 +147,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('setClientCartoCSS', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -178,11 +175,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('setServerCartoCss', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -207,16 +203,16 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('cartoCSS911', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
-                return Promise.resolve(new Response(JSON.stringify(tileFeature)));
-            }
-            else if (testUrl.indexOf("/vectorstyles.json") != -1) {
+            else if (testUrl.indexOf("/vectorstyles") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(vectorStyle)));
             }
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
+                return Promise.resolve(new Response(JSON.stringify(tileFeature)));
+            }
+            
         });
         var cartoCss911 = "#China_Province_ln@China{text-placement-type:simple;line-color:rgba(123,123,82,1);line-width:0.37795275590551186;polygon-fill:rgba(13,80,143,1);point-file:url(SYMBOLMARKER__China_Province_ln@China__22__22__true__517597963.png);polygon-opacity:1.0;polygon-pattern-opacity:1.0;}#China_Province_ln@China#1{text-placement-type:simple;line-color:rgba(123,123,82,1);line-width:0.37795275590551186;polygon-fill:rgba(13,80,143,1);point-file:url(SYMBOLMARKER__China_Province_ln@China#1__22__22__true__504647673.png);polygon-opacity:1.0;polygon-pattern-opacity:1.0;}\",\"type\":\"cartoCSS\"";
         var tileVectorLayer = tiledVectorLayer(ChinaURL, {
@@ -236,11 +232,10 @@ describe('leaflet_TileVectorLayer', () => {
     //测试其父类
     it('getStyles', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -259,11 +254,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('setFeatureStyle, resetFeatureStyle', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -292,11 +286,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('getDataLayerNames', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });
@@ -316,11 +309,10 @@ describe('leaflet_TileVectorLayer', () => {
 
     it('_extendStyle', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            console.log(testUrl);
-            if (testUrl.indexOf(ChinaURL + "/layers.json") != -1) {
+            if (testUrl.indexOf(ChinaURL + "/layers") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(layer_china)));
             }
-            else if (testUrl.indexOf(ChinaURL + "/tileFeature.json") != -1) {
+            else if (testUrl.indexOf(ChinaURL + "/tileFeature") != -1) {
                 return Promise.resolve(new Response(JSON.stringify(tileFeature)));
             }
         });

@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import {DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
+import {DataFormat, ChartQueryService, ChartFeatureInfoSpecsService, CommonUtil} from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
 import {CommontypesConversion} from '../core/CommontypesConversion';
 
@@ -20,7 +20,7 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
  * @param {string} url - 与客户端交互的海图服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -66,7 +66,7 @@ export var ChartService = ServiceBase.extend({
      */
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.url.concat();
-        url += "/chartFeatureInfoSpecs";
+        url = CommonUtil.urlPathAppend(url, 'chartFeatureInfoSpecs');
         var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

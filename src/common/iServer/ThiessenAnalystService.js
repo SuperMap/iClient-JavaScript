@@ -67,24 +67,18 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
     processAsync(parameter) {
         var parameterObject = {};
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         if (parameter instanceof DatasetThiessenAnalystParameters) {
             me.mode = "datasets";
-            me.url += 'datasets/' + parameter.dataset + '/thiessenpolygon';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/thiessenpolygon');
             DatasetThiessenAnalystParameters.toObject(parameter, parameterObject);
         } else if (parameter instanceof GeometryThiessenAnalystParameters) {
             me.mode = "geometry";
-            me.url += 'geometry/thiessenpolygon';
+            me.url = Util.urlPathAppend(me.url, 'geometry/thiessenpolygon');
             GeometryThiessenAnalystParameters.toObject(parameter, parameterObject);
         }
 
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         me.request({
             method: "POST",
             data: jsonParameters,

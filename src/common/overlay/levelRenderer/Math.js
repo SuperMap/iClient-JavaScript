@@ -7,7 +7,7 @@
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-数学辅助类
  */
-export class Math {
+export class MathTool {
 
      /**
      * @function SuperMap.LevelRenderer.Tool.Math.constructor

@@ -56,9 +56,8 @@ export class FindPathService extends NetworkAnalystServiceBase {
         if (!(params instanceof FindPathParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "path" : "/path") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'path');
         jsonObject = {
             hasLeastEdgeCount: params.hasLeastEdgeCount,
             parameter: Util.toJSON(params.parameter),

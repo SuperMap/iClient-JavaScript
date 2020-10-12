@@ -1,4 +1,4 @@
-import { Unit } from '../index';
+import { Unit } from '../REST';
 
 export var getMeterPerMapUnit = function(mapUnit) {
     var earchRadiusInMeters = 6378137;

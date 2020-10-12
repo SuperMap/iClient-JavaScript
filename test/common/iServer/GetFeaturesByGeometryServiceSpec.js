@@ -84,7 +84,7 @@ describe('GetFeaturesByGeometryService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
@@ -136,7 +136,7 @@ describe('GetFeaturesByGeometryService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
@@ -185,7 +185,7 @@ describe('GetFeaturesByGeometryService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
@@ -231,7 +231,7 @@ describe('GetFeaturesByGeometryService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       // expect(params).toContain("'spatialQueryMode':\"CONTAIN\"");
       // expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
@@ -285,7 +285,7 @@ describe('GetFeaturesByGeometryService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       // expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
       // expect(params).toContain("'datasetNames':[\"World:CountriesNotExsit\"]");
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));

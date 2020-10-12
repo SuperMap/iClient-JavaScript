@@ -12,7 +12,7 @@ import Attributions from '../core/Attributions'
  * @category Visualization Turf
  * @extends {L.Layer}
  * @param {Object} options - 可选参数。
- * @param {string} [options.attribution='<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
  */
 export var TurfLayer = L.GeoJSON.extend({
 

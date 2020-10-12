@@ -36,7 +36,7 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
         var mathExpressionAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(options).not.toBeNull();

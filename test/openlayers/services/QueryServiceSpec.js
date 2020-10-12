@@ -32,7 +32,7 @@ describe('openlayers_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("BoundsQuery");
@@ -84,7 +84,7 @@ describe('openlayers_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("DistanceQuery");
@@ -136,7 +136,7 @@ describe('openlayers_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("SqlQuery");
@@ -188,7 +188,7 @@ describe('openlayers_QueryService', () => {
         var queryService = new QueryService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(url + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("SpatialQuery");

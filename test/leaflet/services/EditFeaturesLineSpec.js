@@ -28,7 +28,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
         var addFeaturesService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features.json?returnContent=true");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].geometry.type).toBe("LINE");
             expect(options).not.toBeNull();
@@ -69,7 +69,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
         var deleteLineService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features.json?ids=[98]");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features?ids=[98]");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });

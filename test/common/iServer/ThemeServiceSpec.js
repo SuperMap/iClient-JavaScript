@@ -42,8 +42,8 @@ var themeCompleted = (themeEventArgs) => {
 var themeFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 };
-var initThemeService = () => {
-    return new ThemeService(themeURL);
+var initThemeService = (newUrl) => {
+    return new ThemeService(newUrl || themeURL);
 };
 var initThemeService_RegisterListener = () => {
     return new ThemeService(themeURL,
@@ -121,7 +121,7 @@ describe('ThemeService', () => {
             });
         themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
         expect(themeService).not.toBeNull();
-        expect(themeService.url).toEqual(themeURL + "/tempLayersSet.json?");
+        expect(themeService.url).toEqual(themeURL + "/tempLayersSet");
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -130,7 +130,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].type).toBe("UGC");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -208,7 +208,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -328,7 +328,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -404,7 +404,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -501,7 +501,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -589,7 +589,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -685,7 +685,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -754,7 +754,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -861,7 +861,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -997,7 +997,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -1074,7 +1074,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -1147,7 +1147,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -1237,7 +1237,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -1294,7 +1294,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
@@ -1362,7 +1362,7 @@ describe('ThemeService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet");
             console.log(params);
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].name).toBe("World Map");
@@ -1412,5 +1412,73 @@ describe('ThemeService', () => {
         expect(themeUniqueItem.caption).toBeNull();
         expect(themeUniqueItem.style).toBeNull();
     })
+    it('processAsync_customQueryParam', (done) => {
+        var themeService = initThemeService(themeURL + '?key=123');
+        var themeRange = new ThemeRange({
+                rangeExpression: "POP_1994",
+                rangeParameter: 3,
+                rangeMode: RangeMode.CUSTOMINTERVAL
+            }),
+            style1 = new ServerStyle({
+                fillForeColor: new ServerColor(250, 105, 25),
+                lineWidth: 0.05
+            }),
+            themeRangeItem1 = new ThemeRangeItem({
+                style: style1,
+                visible: true,
+                start: -5,
+                caption: "item1",
+                end: 8609844.5
+            }),
+            style2 = new ServerStyle({
+                fillForeColor: new ServerColor(114, 15, 205),
+                lineWidth: 0.02
+            }),
+            themeRangeItem2 = new ThemeRangeItem({
+                style: style2,
+                visible: true,
+                start: 8609844.5,
+                caption: "item2",
+                end: 28609844.5
+            }),
+            themeRangeItem3 = new ThemeRangeItem({
+                style: new ServerStyle({
+                    fillForeColor: new ServerColor(67, 78, 127),
+                    lineWidth: 0.01
+                }),
+                visible: true,
+                start: 28609844.5,
+                caption: "item3",
+                end: 15028139690,
+            });
+        themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
+        expect(themeService.url).toEqual(themeURL + "/tempLayersSet?key=123");
+        var themeParameters = new ThemeParameters({
+            datasetNames: new Array("Countries"),
+            dataSourceNames: new Array("World"),
+            joinItems: null,
+            themes: new Array(themeRange)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(testUrl).toBe(themeURL + "/tempLayersSet?key=123");
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
+        themeService.processAsync(themeParameters);
+        themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
+    
+        setTimeout(() => {
+            try {
+                themeService.destroy();
+                themeParameters.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("ThemeService_" + exception.name + ":" + exception.message);
+                themeService.destroy();
+                themeParameters.destroy();
+                done();
+            }
+        }, 4000);
+    });
 });
 

@@ -30,12 +30,11 @@ describe('leaflet_GridCellInfosService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
             expect(options).not.toBeNull();
-            if (testUrl.indexOf("WorldEarth.json") > 0) {
+            if (testUrl.indexOf("imageValue") > 0) {
+                return Promise.resolve(new Response(getGridCellInfosEcapedJson));
+            }
+            if (testUrl.indexOf("WorldEarth") > 0) {
                 return Promise.resolve(new Response(getDatasetInfoEcapedJson));
-            } else {
-                if (testUrl.indexOf("imageValue.json") > 0) {
-                    return Promise.resolve(new Response(getGridCellInfosEcapedJson));
-                }
             }
             return null;
         });

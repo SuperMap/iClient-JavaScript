@@ -40,7 +40,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features?returnContent=true");
             return Promise.resolve(new Response(`[257]`));
         });
         service.editFeatures(addFeatureParams, (result) => {
@@ -76,7 +76,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features.json?ids=[257]");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features?ids=[257]");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.editFeatures(deleteFeatureParams, (result) => {

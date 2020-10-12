@@ -23,13 +23,7 @@ export class GeoDecodingParameter {
     constructor(options) {
 
         if (options.filters) {
-            let strs = [];
-            let fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-                return field
-            });
-            options.filters = strs;
+            options.filters = options.filters.split(',');
         }
         /**
          * @member {number} SuperMap.GeoDecodingParameter.prototype.x

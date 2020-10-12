@@ -1,0 +1,143 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_iPortalRegisterData"></title>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+    <div class="container">
+        <div class="page-header">
+            <h4 data-i18n="resources.title_iPortalRegisterData"></h4>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-12" style="background: #FFF;">
+                    <!--注册数据-->
+                    <div class="row" style="padding: 10px;">
+                        <h5 data-i18n="resources.text_data_type"></h5>
+                        <select id='typeSelect-type' class='form-control' onchange="onSelectDataType()">
+                            <option value="HDFS">HDFS</option>
+                            <option value="HBASE">HBASE</option>
+                        </select>
+                        <div class="hdfs-container">
+                            <h5 data-i18n="resources.text_hdfs_directory"></h5>
+                            <span style="position: relative;">
+                                <input id="hdfs-address" class='form-control' type="text" style="width: 100%;" placeholder="hdfs://<ip>:<port>/data/a.csv"><i class="fa fa-question-circle question" aria-hidden="true"></i>
+                            </span>
+                            <h5 data-i18n="resources.detail_iPortal_name"></h5>
+                            <input id="hdfs-name" class='form-control' type="text" style="width: 100%;">
+                            <h5 data-i18n="resources.detail_iPortal_tags"></h5>
+                            <input id="hdfs-tags" class='form-control' type="text" style="width: 100%;">
+                        </div>
+                        <div class="hbase-container">
+                            <h5 data-i18n="resources.text_hbase_address"></h5>
+                            <span style="position: relative;">
+                                <input id="hbase-address" class='form-control' type="text" style="width: 100%;" placeholder="{ip}:{port}"><i class="fa fa-question-circle question" aria-hidden="true"></i>
+                            </span>
+                            <h5 data-i18n="resources.text_dataBase_name"></h5>
+                            <input id="hbase-name" class='form-control' type="text" style="width: 100%;">
+                            <h5 data-i18n="resources.detail_iPortal_tags"></h5>
+                            <input id="hbase-tags" class='form-control' type="text" style="width: 100%;">
+                        </div>
+                        <div><button class="btn btn-primary col-md-offset-6" style="margin-top: 20px;" onclick="registerDataClick()" data-i18n="resources.btn_OK"></button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="iclient-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
+    var iPortalUrl = "https://iportal.supermap.io/iportal";
+    var token = "MFEKl8kVmkvEDrDFcgnjoUF4o2VKXT1eZhKh7hU3tnJL1jPculOBmvCtA6Xfrw4KuAyxWj2OcUV1Aj3M41nSNQ..";
+    //数据类型
+    var dataType;
+
+    $(document).ready(function () {
+        generatePortalToken();
+        //初始化数据类型
+        onSelectDataType();
+    });
+    
+    //获取token
+    function generatePortalToken() {
+        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+            server: iPortalUrl
+        });
+
+        SuperMap.SecurityManager.registerServers([serverInfo]);
+        SuperMap.SecurityManager.destroyToken(iPortalUrl);
+        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+    }
+    
+    //选中数据类型函数
+    function onSelectDataType(){
+        dataType = $("#typeSelect-type").val();
+        if(dataType === 'HDFS') {
+            $(".hdfs-container").css("display","block");
+            $(".hbase-container").css("display","none");
+        }else {
+            $(".hbase-container").css("display","block");
+            $(".hdfs-container").css("display","none");
+        }
+    }
+    
+    //注册数据函数
+    function registerDataClick(){
+        var params;
+        switch (dataType) {
+            case "HDFS":
+                var tags = $("#hdfs-tags").val();
+                var HDFSCatalog = $("#hdfs-address").val();
+                var dataStoreInfoParams = new SuperMap.iPortalDataStoreInfoParam({
+                    type:dataType,
+                    url:HDFSCatalog
+                })
+                var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam({
+                    url:HDFSCatalog,
+                    dataStoreInfo:dataStoreInfoParams
+                })
+                params = new SuperMap.iPortalAddDataParam({
+                    type:dataType,
+                    fileName:$("#hdfs-name").val(),
+                    tags:tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
+                    dataMetaInfo:dataMetaParams
+                })
+                break;
+            case "HBASE":
+                var tags = $("#hbase-tags").val();
+                var serviceAddress = $("#hbase-address").val();
+                var connectionInfoParam =  new SuperMap.iPortalDataConnectionInfoParam({
+                    dataBase:$("#hbase-name").val(),
+                    server:serviceAddress
+                })
+                var dataStoreInfoParams = new SuperMap.iPortalDataStoreInfoParam({
+                    type:dataType,
+                    connectionInfo:connectionInfoParam
+                })
+                var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam({
+                    dataStoreInfo:dataStoreInfoParams
+                })
+                params = new SuperMap.iPortalAddDataParam({
+                    type:dataType,
+                    fileName:$("#hbase-name").val(),
+                    tags:tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
+                    dataMetaInfo:dataMetaParams
+                });
+                break;
+        }
+        new SuperMap.iPortalUser(iPortalUrl).addData(params).then(res=>{
+            if(res.childID) {
+                widgets.alert.showAlert(resources.msg_register_success, true);
+            }else {
+                widgets.alert.showAlert(res.error.errorMsg, false);
+            }
+        })
+    }
+</script>
+</body>
+</html>

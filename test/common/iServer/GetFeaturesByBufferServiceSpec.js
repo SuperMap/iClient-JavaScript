@@ -83,7 +83,7 @@ describe('GetFeaturesByBufferService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
       expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
@@ -147,7 +147,7 @@ describe('GetFeaturesByBufferService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
       expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
@@ -197,7 +197,7 @@ describe('GetFeaturesByBufferService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
       expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
@@ -252,7 +252,7 @@ describe('GetFeaturesByBufferService', () => {
     );
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults.json?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Capitalss');
       expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');

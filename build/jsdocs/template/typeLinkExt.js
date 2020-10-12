@@ -1,9 +1,10 @@
-var olapi = "https://openlayers.org/en/v6.1.1/apidoc/";
-var lfapi = "https://leafletjs.com/reference-1.5.1.html";
+var olapi = "https://openlayers.org/en/v6.4.3/apidoc/";
+var lfapi = "https://leafletjs.com/reference-1.7.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
 var geojsonapi = "https://geojson.org";
+var helpDocApi = "https://iportal.supermap.io/iportal/help/html/zh/index.htm";
 var typeLinks = {
     //openlayers
     "ol/Map": olapi + "module-ol_Map-Map",
@@ -33,7 +34,7 @@ var typeLinks = {
     "ol/StyleFunction": olapi + "module-ol_style_Style.html#~StyleFunction",
     "ol/control/ScaleLine": olapi + "module-ol_control_ScaleLine-ScaleLine.html",
     "ol/control/Control": olapi + "module-ol_control_Control-Control.html",
-   
+
 
     //leaflet
     "L.Marker": lfapi + '#marker',
@@ -53,6 +54,7 @@ var typeLinks = {
     "L.LayerGroup": lfapi + '#layergroup',
     "L.TileLayer": lfapi + '#tilelayer',
     "L.CircleMarker": lfapi + '#circlemarker',
+    "L.Circle": lfapi + '#circle',
     "L.Path-option": lfapi + '#path-option',
     "L.Rectangle": lfapi + '#rectangle',
     'L.LatLngBounds': lfapi+ '#latlngbounds',
@@ -63,6 +65,8 @@ var typeLinks = {
     "mapboxgl.Evented": mbglapi + '#Evented',
     "mapboxgl.Map": mbglapi + '#map',
     "mapboxgl.LngLatbounds": mbglapi + '#lnglatbounds',
+    "mapboxgl.LngLat": mbglapi + '#lnglat',
+    "mapboxgl.Point": mbglapi + '#point',
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
     "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md',
@@ -70,9 +74,12 @@ var typeLinks = {
     //classic
     "SuperMap.Layer":classicapi + '/Layer-js.html',
     "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
-    
+
 	//GeoJSON
-    "GeoJSONObject": geojsonapi
-    
+    "GeoJSONObject": geojsonapi,
+
+    // WebMap 结构
+    "WebMapSummaryObject": helpDocApi + '#iP/Appendix/WebMap/WebMapSummary.htm'
+
 }
 exports.typeLinks = typeLinks;

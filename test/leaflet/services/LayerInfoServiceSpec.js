@@ -28,7 +28,7 @@ describe('leaflet_LayerInfoService', () => {
         var layerService = layerInfoService(layerInfoURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(layerInfoURL+"/layers.json?");
+            expect(testUrl).toBe(layerInfoURL+"/layers");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response("["+JSON.stringify(layersInfo)+"]"));
         });
@@ -95,12 +95,12 @@ describe('leaflet_LayerInfoService', () => {
         });
         var layerService = layerInfoService(layerInfoURL, options);
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet.json?");
+            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c.json"}`));
         });
         spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
-            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c.json?elementRemain=true&reference=c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c&holdTime=15");
+            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c?elementRemain=true&reference=c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c&holdTime=15");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -132,7 +132,7 @@ describe('leaflet_LayerInfoService', () => {
         });
         var service = layerInfoService(layerInfoURL);
         spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
-            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet.json?");
+            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
         });
@@ -169,7 +169,7 @@ describe('leaflet_LayerInfoService', () => {
         });
         var service = layerInfoService(layerInfoURL);
         spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
-            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json?");
+            expect(testUrl).toBe(layerInfoURL+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -204,7 +204,7 @@ describe('leaflet_LayerInfoService', () => {
             layerInfo: layers
         });
         spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
-            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World.json");
+            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World"}`));
         });

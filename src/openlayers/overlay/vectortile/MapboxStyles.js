@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { FetchRequest } from "@supermap/iclient-common";
+import { FetchRequest, CommonUtil } from "@supermap/iclient-common";
 import { olExtends } from "./olExtends";
 import remove from "lodash.remove";
 import Observable from 'ol/Observable';
@@ -16,7 +16,7 @@ import Text from 'ol/style/Text';
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js"></script>`
+ *      `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2-1/dist/olms.js"></script>`
  * </div>
  * @category  Visualization VectorTile
  * @param {Object} options - 初始化参数。
@@ -30,6 +30,7 @@ import Text from 'ol/style/Text';
  * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {ol/Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol/StyleFunction} [options.selectedStyle] -选中样式Function。
+ * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @example
  *  var mbStyle = new ol.supermap.MapboxStyles({
             url: url,
@@ -61,8 +62,13 @@ export class MapboxStyles extends Observable {
         this.map = options.map;
         this.source = options.source;
         this.styleTarget =
-            options.style || options.url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true";
+            options.style ||
+            CommonUtil.urlAppend(
+                CommonUtil.urlPathAppend(options.url, 'tileFeature/vectorstyles'),
+                'type=MapBox_GL&styleonly=true'
+            );
         this.resolutions = options.resolutions;
+        this.withCredentials = options.withCredentials;
         this.selectedObjects = [];
         this.selectedStyle =
             options.selectedStyle ||
@@ -239,7 +245,7 @@ export class MapboxStyles extends Observable {
             this._mbStyle = style;
             this._resolve();
         } else {
-            FetchRequest.get(style)
+            FetchRequest.get(style,null,{withCredentials:this.withCredentials})
                 .then(response => response.json())
                 .then(mbStyle => {
                     this._mbStyle = mbStyle;
@@ -257,18 +263,22 @@ export class MapboxStyles extends Observable {
             //兼容一下iServer 等iServer修改
             this._mbStyle.sprite = this._mbStyle.sprite.replace("@2x", "");
             const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".json");
-            FetchRequest.get(spriteUrl)
+            FetchRequest.get(spriteUrl,null,{withCredentials:this.withCredentials})
                 .then(response => response.json())
                 .then(spritesJson => {
                     this._spriteData = spritesJson;
                     this._spriteImageUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".png");
                     this._spriteImage = null;
                     const img = new Image();
-                    img.crossOrigin = "anonymous";
+                    img.crossOrigin = this.withCredentials?"use-credentials":"anonymous";
                     img.onload = () => {
                         this._spriteImage = img;
                         this._initStyleFunction();
                     };
+                    img.onerror = () => {
+                        this._spriteImage = null;
+                        this._initStyleFunction();
+                    }
                     img.src = this._spriteImageUrl;
                 });
         } else {

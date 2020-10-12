@@ -64,7 +64,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         var service = trafficTransferAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/stops/keyword/人民.json?");
+            expect(testUrl).toBe(url + "/stops/keyword/人民");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":{"x":5308.614037099708,"y":-3935.573639156803}}]`));
         });
         service.queryStop(stopQueryParams, (result) => {
@@ -100,7 +100,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         var service = trafficTransferAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/stops/keyword/人民.json?");
+            expect(testUrl).toBe(url + "/stops/keyword/人民");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
         });
         service.queryStop(stopQueryParams, (result) => {

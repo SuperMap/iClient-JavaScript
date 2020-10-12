@@ -1,22 +1,23 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Point} from '../commontypes/geometry/Point';
-import {MultiPoint} from '../commontypes/geometry/MultiPoint';
-import {LinearRing} from '../commontypes/geometry/LinearRing';
-import {LineString} from '../commontypes/geometry/LineString';
-import {MultiLineString} from '../commontypes/geometry/MultiLineString';
-import {Polygon} from '../commontypes/geometry/Polygon';
-import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
-import {ServerStyle} from './ServerStyle';
-import {Route} from './Route';
-import {Util} from '../commontypes/Util';
-import {GeometryType} from '../REST';
+import { SuperMap } from '../SuperMap';
+import { Point } from '../commontypes/geometry/Point';
+import { MultiPoint } from '../commontypes/geometry/MultiPoint';
+import { LinearRing } from '../commontypes/geometry/LinearRing';
+import { LineString } from '../commontypes/geometry/LineString';
+import { MultiLineString } from '../commontypes/geometry/MultiLineString';
+import { Polygon } from '../commontypes/geometry/Polygon';
+import { MultiPolygon } from '../commontypes/geometry/MultiPolygon';
+import { Collection } from '../commontypes/geometry/Collection';
+import { ServerStyle } from './ServerStyle';
+import { Route } from './Route';
+import { Util } from '../commontypes/Util';
+import { GeometryType } from '../REST';
 
 /**
  * @class SuperMap.ServerGeometry
- * @category  iServer  
+ * @category  iServer
  * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
  * @param {Object} options - 参数。
  * @param {string} options.id - 服务端几何对象唯一标识符。
@@ -26,15 +27,13 @@ import {GeometryType} from '../REST';
  * @param {SuperMap.ServerStyle} [options.style] - 服务端几何对象的风格。
  */
 export class ServerGeometry {
-
     constructor(options) {
-
         /**
          * @member {string} SuperMap.ServerGeometry.prototype.id
          * @description 服务端几何对象唯一标识符。
          */
         this.id = 0;
-        
+
         /**
          * @member {SuperMap.ServerStyle} [SuperMap.ServerGeometry.prototype.style]
          * @description 服务端几何对象的风格（ServerStyle）。
@@ -84,7 +83,7 @@ export class ServerGeometry {
             Util.extend(this, options);
         }
 
-        this.CLASS_NAME = "SuperMap.ServerGeometry";
+        this.CLASS_NAME = 'SuperMap.ServerGeometry';
     }
 
     /**
@@ -125,6 +124,8 @@ export class ServerGeometry {
                 return me.toGeoLineEPS();
             case GeometryType.REGIONEPS:
                 return me.toGeoRegionEPS();
+            case GeometryType.GEOCOMPOUND:
+                return me.transformGeoCompound();
         }
     }
 
@@ -264,14 +265,9 @@ export class ServerGeometry {
         var pointList = [];
         if (len == 1) {
             for (let i = 0; i < geoPoints.length; i++) {
-                pointList.push(
-                    new Point(geoPoints[i].x, geoPoints[i].y))
+                pointList.push(new Point(geoPoints[i].x, geoPoints[i].y));
             }
-            polygonArray.push(
-                new Polygon(
-                    [new LinearRing(pointList)]
-                )
-            );
+            polygonArray.push(new Polygon([new LinearRing(pointList)]));
             return new MultiPolygon(polygonArray);
         }
         //处理复杂面
@@ -283,17 +279,13 @@ export class ServerGeometry {
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
             for (let j = 0; j < geoParts[i]; j++) {
-                pointList.push(
-                    new Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y)
-                );
+                pointList.push(new Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
             }
             pointIndex += geoParts[i];
-            var polygon = new Polygon(
-                [new LinearRing(pointList)]
-            );
+            var polygon = new Polygon([new LinearRing(pointList)]);
             pointList = [];
             polygonArrayTemp.push(polygon);
-            if (geoTopo.length === 0){
+            if (geoTopo.length === 0) {
                 polygonBounds.push(polygon.getBounds());
             }
             CCWIdent.push(1);
@@ -324,7 +316,9 @@ export class ServerGeometry {
                 if (CCWIdent[i] > 0) {
                     polygonArray.push(polygonArrayTemp[i]);
                 } else {
-                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
+                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(
+                        polygonArrayTemp[i].components
+                    );
                     //占位
                     polygonArray.push('');
                 }
@@ -338,22 +332,22 @@ export class ServerGeometry {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components = polygonArray[
+                            polygonArray.length - 1
+                        ].components.concat(CCWArray);
                         CCWArray = [];
                     }
-                    polygonArray.push(
-                        polygonArrayTemp[i]
-                    );
+                    polygonArray.push(polygonArrayTemp[i]);
                 }
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
+                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
+                            CCWArray
+                        );
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
-                            polygonArray.push(
-                                new Polygon(CCWArray)
-                            );
+                            polygonArray.push(new Polygon(CCWArray));
                         }
                     }
                 }
@@ -382,16 +376,11 @@ export class ServerGeometry {
         var lineEPS;
         if (len == 1) {
             for (var i = 0; i < geoPoints.length; i++) {
-                pointList.push(
-                    new Point(geoPoints[i].x, geoPoints[i].y))
+                pointList.push(new Point(geoPoints[i].x, geoPoints[i].y));
             }
 
             lineEPS = LineString.createLineEPS(pointList);
-            polygonArray.push(
-                new Polygon(
-                    [new LinearRing(lineEPS)]
-                )
-            );
+            polygonArray.push(new Polygon([new LinearRing(lineEPS)]));
             return new MultiPolygon(polygonArray);
         }
         //处理复杂面
@@ -403,19 +392,15 @@ export class ServerGeometry {
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
             for (let j = 0; j < geoParts[i]; j++) {
-                pointList.push(
-                    new Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y)
-                );
+                pointList.push(new Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
             }
             pointIndex += geoParts[i];
 
             lineEPS = LineString.createLineEPS(pointList);
-            var polygon = new Polygon(
-                [new LinearRing(lineEPS)]
-            );
+            var polygon = new Polygon([new LinearRing(lineEPS)]);
             pointList = [];
             polygonArrayTemp.push(polygon);
-            if (geoTopo.length === 0){
+            if (geoTopo.length === 0) {
                 polygonBounds.push(polygon.getBounds());
             }
             CCWIdent.push(1);
@@ -446,7 +431,9 @@ export class ServerGeometry {
                 if (CCWIdent[i] > 0) {
                     polygonArray.push(polygonArrayTemp[i]);
                 } else {
-                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
+                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(
+                        polygonArrayTemp[i].components
+                    );
                     //占位
                     polygonArray.push('');
                 }
@@ -459,28 +446,42 @@ export class ServerGeometry {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components = polygonArray[
+                            polygonArray.length - 1
+                        ].components.concat(CCWArray);
                         CCWArray = [];
                     }
-                    polygonArray.push(
-                        polygonArrayTemp[i]
-                    );
+                    polygonArray.push(polygonArrayTemp[i]);
                 }
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
+                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
+                            CCWArray
+                        );
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
-                            polygonArray.push(
-                                new Polygon(CCWArray)
-                            );
+                            polygonArray.push(new Polygon(CCWArray));
                         }
                     }
                 }
             }
         }
         return new MultiPolygon(polygonArray);
+    }
+    transformGeoCompound() {
+        const me = this,
+            geoParts = me.geoParts || [],
+            len = geoParts.length;
+        if (len <= 0) {
+            return null;
+        }
+        const geometryList = [];
+        for (let index = 0; index < len; index++) {
+            const geometry = geoParts[index];
+            geometryList.push(new ServerGeometry(geometry).toGeometry());
+        }
+        return new Collection(geometryList);
     }
 
     /**
@@ -505,7 +506,6 @@ export class ServerGeometry {
             minM: jsonObject.minM,
             type: jsonObject.type
         });
-
     }
 
     /**
@@ -524,13 +524,17 @@ export class ServerGeometry {
             type = null,
             icomponents = geometry.components,
             className = geometry.CLASS_NAME,
-            prjCoordSys = {"epsgCode": geometry.SRID};
+            prjCoordSys = { epsgCode: geometry.SRID };
 
         if (!isNaN(geometry.id)) {
             id = geometry.id;
         }
         //坑爹的改法，没法，为了支持态势标绘，有时间就得全改
-        if (className != "SuperMap.Geometry.LinearRing" && className != "SuperMap.Geometry.LineString" && (geometry instanceof MultiPoint || geometry instanceof MultiLineString)) {
+        if (
+            className != 'SuperMap.Geometry.LinearRing' &&
+            className != 'SuperMap.Geometry.LineString' &&
+            (geometry instanceof MultiPoint || geometry instanceof MultiLineString)
+        ) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
                 let partPointsCount = icomponents[i].getVertices().length;
@@ -540,7 +544,7 @@ export class ServerGeometry {
                 }
             }
             //这里className不是多点就全部是算线
-            type = (className == "SuperMap.Geometry.MultiPoint") ? GeometryType.POINT : GeometryType.LINE;
+            type = className == 'SuperMap.Geometry.MultiPoint' ? GeometryType.POINT : GeometryType.LINE;
         } else if (geometry instanceof MultiPolygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -551,9 +555,16 @@ export class ServerGeometry {
                     let partPointsCount = linearRingOfPolygon[j].getVertices().length + 1;
                     parts.push(partPointsCount);
                     for (let k = 0; k < partPointsCount - 1; k++) {
-                        points.push(new Point(linearRingOfPolygon[j].getVertices()[k].x, linearRingOfPolygon[j].getVertices()[k].y));
+                        points.push(
+                            new Point(
+                                linearRingOfPolygon[j].getVertices()[k].x,
+                                linearRingOfPolygon[j].getVertices()[k].y
+                            )
+                        );
                     }
-                    points.push(new Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
+                    points.push(
+                        new Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y)
+                    );
                 }
             }
             type = GeometryType.REGION;
@@ -578,7 +589,7 @@ export class ServerGeometry {
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);
-            type = (geometry instanceof Point) ? GeometryType.POINT : GeometryType.LINE;
+            type = geometry instanceof Point ? GeometryType.POINT : GeometryType.LINE;
         }
 
         return new ServerGeometry({
@@ -610,7 +621,7 @@ export class ServerGeometry {
         return s * 0.5;
     }
 
-    static bubbleSort(areaArray, pointList, geoTopo,polygonBounds) {
+    static bubbleSort(areaArray, pointList, geoTopo, polygonBounds) {
         for (var i = 0; i < areaArray.length; i++) {
             for (var j = 0; j < areaArray.length; j++) {
                 if (areaArray[i] > areaArray[j]) {
@@ -634,7 +645,6 @@ export class ServerGeometry {
             }
         }
     }
-
 }
 
 SuperMap.ServerGeometry = ServerGeometry;

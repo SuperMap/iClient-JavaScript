@@ -57,11 +57,12 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
         if (!(params instanceof FindMTSPPathsParameters)) {
             return;
         }
-        var me = this, jsonObject,
+        var me = this,
+            jsonObject,
             //end = me.url.substr(me.url.length - 1, 1),
             centers = me.getJson(params.isAnalyzeById, params.centers),
             nodes = me.getJson(params.isAnalyzeById, params.nodes);
-        me.url = me.url + "/mtsppath" + ".json?";
+        me.url = Util.urlPathAppend(me.url, 'mtsppath');
         jsonObject = {
             centers: centers,
             nodes: nodes,

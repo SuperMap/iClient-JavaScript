@@ -66,24 +66,18 @@ export class BufferAnalystService extends SpatialAnalystBase {
     processAsync(parameter) {
         var parameterObject = {};
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         if (parameter instanceof DatasetBufferAnalystParameters) {
-            me.mode = "datasets";
-            me.url += 'datasets/' + parameter.dataset + '/buffer';
+            me.mode = 'datasets';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/buffer');
             DatasetBufferAnalystParameters.toObject(parameter, parameterObject);
         } else if (parameter instanceof GeometryBufferAnalystParameters) {
-            me.mode = "geometry";
-            me.url += 'geometry/buffer';
+            me.mode = 'geometry';
+            me.url = Util.urlPathAppend(me.url, 'geometry/buffer');
             GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
         }
 
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         me.request({
             method: "POST",
             data: jsonParameters,

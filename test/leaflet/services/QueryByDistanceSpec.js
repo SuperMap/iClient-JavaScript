@@ -29,7 +29,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
         var queryByDistanceService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("DistanceQuery");
@@ -87,7 +87,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
         var queryByDistanceService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("DistanceQuery");
@@ -129,7 +129,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
         var queryByDistanceService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
         });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {

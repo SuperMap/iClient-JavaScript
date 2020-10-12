@@ -60,7 +60,6 @@
                     L.supermap.graphicLayer(graphics, {
                         render: 'canvas',
                         onClick: function (graphic, evt) {
-                            console.log(evt);
                             L.popup().setLatLng(evt.latlng)
                                 .setContent('<p>' + resources.text_latLng + '：<br>' + graphic.getLatLng()
                                     .lng + ',<br>' + graphic.getLatLng().lat + '</p>')

@@ -58,13 +58,13 @@ describe('leaflet_search_SearchView', () => {
                     addressUrl: "http://test:8090/iserver/services/localsearch/rest/searchdatas/China/poiinfos"
                 },
             }).addTo(map);
-            var queryUrl = " http://test:8090/iserver/services/map-world/rest/maps/World/queryResults.json?returnContent=true";
+            var queryUrl = " http://test:8090/iserver/services/map-world/rest/maps/World/queryResults?returnContent=true";
             spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
                 console.log(url);
                 var paramsObj = JSON.parse(queryString.replace(/'/g, "\""));
                 expect(paramsObj.queryMode).toBe("SqlQuery");
                 expect(paramsObj.queryParameters.queryOption).toBe("ATTRIBUTEANDGEOMETRY");
-                if (url.indexOf("/queryResults.json") > -1) {
+                if (url.indexOf("/queryResults") > -1) {
                     var escapedJson = capitals;
                     return Promise.resolve(new Response(JSON.stringify(escapedJson)));
 

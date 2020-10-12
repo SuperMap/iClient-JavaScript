@@ -13,7 +13,7 @@ import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
  * @param {string} url - 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -91,10 +91,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
         }
         Util.extend(this, params);
         var me = this;
-        var end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
-            ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json");
-
+        me.url = Util.urlPathAppend(me.url,`datasources/${me.dataSourceName}/datasets/${me.datasetName}`);
         me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
     }
 
@@ -132,19 +129,10 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @description 执行服务，查询数据集栅格信息信息。
      */
     queryGridInfos() {
-        var me = this,
-            re = /\.json/,
-            index = re.exec(me.url).index,
-            urlBack = me.url.substring(index),
-            urlFront = me.url.substring(0, me.url.length - urlBack.length);
-        if (me.datasetType == "GRID") {
-            me.url = urlFront + "/gridValue" + urlBack;
-        } else {
-            me.url = urlFront + "/imageValue" + urlBack;
-        }
-
+        var me = this;
+        me.url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
         if (me.X != null && me.Y != null) {
-            me.url += '?x=' + me.X + '&y=' + me.Y;
+            me.url = Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
         }
         me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed);
     }

@@ -1,0 +1,635 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        <title></title>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-web-map
+                style="background: #081f30;"
+                :map-options="mapOptions"
+                @load="mapLoaded"
+                @click="mapClicked"
+            ></sm-web-map>
+            <div id="group">
+                <a-radio-group class="radio-group" v-model="type" default-value="world-confirmedIncrement" size="large">
+                    <a-radio-button
+                        value="world-confirmedIncrement"
+                        data-i18n="resources.text_ncp_incrementConfirmed"
+                    ></a-radio-button>
+                    <a-radio-button value="world-confirmed" data-i18n="resources.text_ncp_confirmed"></a-radio-button>
+                    <a-radio-button value="world-incidence" data-i18n="resources.text_ncp_incidence"></a-radio-button>
+                </a-radio-group>
+                <br />
+                <sm-indicator :title="title" unit="" mode="horizontal" :num="num" font-size="44px" font-weight="400">
+                </sm-indicator>
+                <sm-text
+                    :title="time"
+                    text-color="rgba(255, 255, 255, 0.6)"
+                    :font-style='{ fontSize: "18px", fontWeight: "400" ,display: "block"}'
+                >
+                </sm-text>
+            </div>
+            <sm-image
+                repeat="noRepeat"
+                src="../img/online-qr.png"
+                style="position: absolute; bottom: 32px;right: 16px;z-index: 1000;height: 88px;width: 88px;"
+            ></sm-image>
+        </div>
+        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+        <script
+            include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <script src="../data/ncp/Country_Region.js"></script>
+        <script src="../data/ncp/Country_Center.js"></script>
+        <script src="../data/ncp/CountriesPopulation.js"></script>
+        <style>
+            #main {
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+            #group {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                z-index: 1000;
+            }
+            .ant-radio-button-wrapper {
+                color: #fff;
+                background: #333333;
+            }
+            .mapboxgl-popup-content {
+                border: solid 1px #464646;
+                background-color: #464646;
+                border-radius: 7px;
+                padding: 16px;
+                z-index: 3;
+                font-size: 20px;
+                text-align: center;
+                color: #ffffff;
+                line-height: 30px;
+            }
+            .mapboxgl-popup-tip {
+                display: none;
+            }
+            .ant-radio-button-wrapper-checked:first-child {
+                color: #1890ff;
+            }
+            @media screen and (max-width: 768px) {
+                .sm-component-count-to__numItem {
+                    font-size: 32px !important;
+                }
+                .sm-component-indicator__title {
+                    font-size: 20px !important;
+                }
+                .sm-component-indicator__num {
+                    font-size: 32px !important;
+                }
+                .sm-component-text {
+                    font-size: 16px !important;
+                }
+                .ant-radio-group-large .ant-radio-button-wrapper {
+                    height: 32px;
+                    line-height: 30px;
+                    font-size: 14px;
+                    padding: 0 10px;
+                }
+            }
+        </style>
+        <script>
+            var styles = {
+                'world-confirmedIncrement': {
+                    tooltip: function(properties) {
+                        return resources.text_ncp_incrementConfirmed_tooltip
+                            .replace('{name}', properties['areaName'])
+                            .replace('{confirmedAdd}', properties['confirmedIncrement']);
+                    },
+                    title: resources.text_ncpworld_incrementConfirmed_title,
+                    'fill-color': '#002F4E',
+                    'text-field': ['case', ['>', ['get', 'confirmedIncrement'], 0], ['get', 'confirmedIncrement'], ''],
+                    'line-color': '#0C4B68',
+                    'circle-visibility': 'visible',
+                    'label-visibility': 'none'
+                },
+                'world-confirmed': {
+                    tooltip: function(properties) {
+                        return resources.text_ncp_confirmed_tooltip
+                            .replace('{name}', properties['areaName'])
+                            .replace('{confirmed}', properties['confirmed']);
+                    },
+                    title: resources.text_ncpworld_confirmed_title,
+                    'fill-color': [
+                        'case',
+                        ['has', 'confirmed'],
+                        [
+                            'case',
+                            ['>=', ['get', 'confirmed'], 1000000],
+                            '#580000',
+                            ['>=', ['get', 'confirmed'], 100000],
+                            '#900000',
+                            ['>=', ['get', 'confirmed'], 10000],
+                            '#ef6548',
+                            ['>=', ['get', 'confirmed'], 1000],
+                            '#fc8d59',
+                            ['>=', ['get', 'confirmed'], 100],
+                            '#fdbb84',
+                            ['>=', ['get', 'confirmed'], 10],
+                            '#fdd49e',
+                            ['>=', ['get', 'confirmed'], 1],
+                            '#fee8c8',
+                            '#F4F4F4'
+                        ],
+                        '#F4F4F4'
+                    ],
+                    'text-field': [
+                        'concat',
+                        ['get', 'areaName'],
+                        ' ',
+                        ['case', ['>', ['get', 'confirmed'], 0], ['get', 'confirmed'], '']
+                    ],
+                    'line-color': '#83838D',
+                    'circle-visibility': 'none',
+                    'label-visibility': 'visible'
+                },
+                'world-incidence': {
+                    tooltip: function(properties) {
+                        return resources.text_ncp_incidence_tooltip
+                            .replace('{name}', properties['areaName'])
+                            .replace('{incidence}', properties['worldIncidence'])
+                            .replace('{confirmed}', properties['confirmed'])
+                            .replace('{population}', parseInt(properties['population'] / 10000));
+                    },
+                    title: resources.text_ncpworld_incidence_title,
+                    'fill-color': [
+                        'case',
+                        ['has', 'worldIncidence'],
+                        [
+                            'case',
+                            ['>=', ['get', 'worldIncidence'], 20],
+                            '#47366D',
+                            ['>=', ['get', 'worldIncidence'], 10],
+                            '#6a51a3',
+                            ['>=', ['get', 'worldIncidence'], 5],
+                            '#7f7dba',
+                            ['>=', ['get', 'worldIncidence'], 1],
+                            '#9e9ac8',
+                            ['>=', ['get', 'worldIncidence'], 0.1],
+                            '#dadaeb',
+                            '#efedf5'
+                        ],
+                        '#F4F4F4'
+                    ],
+                    'text-field': ['get', 'areaName'],
+                    'line-color': '#83838D',
+                    'circle-visibility': 'none',
+                    'label-visibility': 'visible'
+                }
+            };
+            new Vue({
+                el: '#main',
+                data() {
+                    var attribution =
+                        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                        " Map Data <span>© <a href='https://www.supermapol.com/' target='_blank'>SuperMap Online</a></span> ";
+
+                    return {
+                        type: 'world-confirmedIncrement',
+                        nums: { 'world-confirmedIncrement': 0, 'world-confirmed': 0, 'world-incidence': 0 },
+                        chinaConfirmed: 0,
+                        chinaConfirmedIncrement: 0,
+                        time: '',
+                        // mapOptions是sm-map组件的props
+                        mapOptions: {
+                            container: 'map', // container id
+                            style: {
+                                version: 8,
+                                glyphs: 'https://ncov.supermapol.com/statichtml/font/{fontstack}/{range}.pbf',
+                                sources: {
+                                    'raster-tiles': {
+                                        attribution: attribution,
+                                        type: 'raster',
+                                        tiles: [
+                                            'https://maptiles.supermapol.com/iserver/services/map-China-2/rest/maps/China_DarkBlue_Nolable'
+                                        ],
+                                        prjCoordSys: { epsgCode: 4326 },
+                                        rasterSource: 'iserver',
+                                        tileSize: 256
+                                    }
+                                },
+                                layers: [
+                                    {
+                                        id: 'simple-tiles',
+                                        type: 'raster',
+                                        source: 'raster-tiles',
+                                        minzoom: 0,
+                                        maxzoom: 22
+                                    }
+                                ]
+                            },
+                            center: [101.58, 33.11],
+                            maxZoom: 5,
+                            zoom: 2,
+                            crs: 'EPSG:4326'
+                        }
+                    };
+                },
+                created() {
+                    SuperMap.Components.setTheme({
+                        textColor: 'rgba(255, 255, 255, 0.85)',
+                        background: 'rgba(0, 0, 0,0)',
+                        colorGroup: ['rgb(225, 2, 0)']
+                    });
+                    $.get('https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/ui.json?time=' + new Date().getTime(), function(response) {
+                        document.title = getTitle(response);
+                    });
+                },
+                computed: {
+                    num() {
+                        if (this.type === 'world-incidence') {
+                            return this.nums['world-incidence'];
+                        }
+                        if (this.type === 'world-confirmedIncrement') {
+                            return this.nums['world-confirmedIncrement'] - this.chinaConfirmedIncrement;
+                        }
+                        if (this.type === 'world-confirmed') {
+                            return this.nums['world-confirmed'] - this.chinaConfirmed;
+                        }
+                        return '';
+                    },
+                    title() {
+                        return styles[this.type].title;
+                    }
+                },
+                watch: {
+                    type(val) {
+                        if (this.popup) {
+                            this.popup.remove();
+                        }
+                        this.map.setPaintProperty('china', 'fill-color', styles[val]['fill-color']);
+                        this.map.setPaintProperty('world-strokeLine', 'line-color', styles[val]['line-color']);
+                        this.map.setLayoutProperty('world-label', 'text-field', styles[val]['text-field']);
+                        this.map.setLayoutProperty('world-clusters', 'visibility', styles[val]['circle-visibility']);
+                        this.map.setLayoutProperty(
+                            'world-label-clusters',
+                            'visibility',
+                            styles[val]['circle-visibility']
+                        );
+                        this.map.setLayoutProperty(
+                            'world-label-area-clusters',
+                            'visibility',
+                            styles[val]['circle-visibility']
+                        );
+                        this.map.setLayoutProperty('world-serious', 'visibility', styles[val]['circle-visibility']);
+                        this.map.setLayoutProperty(
+                            'world-label-area-serious',
+                            'visibility',
+                            styles[val]['circle-visibility']
+                        );
+                        this.map.setLayoutProperty(
+                            'world-label-serious',
+                            'visibility',
+                            styles[val]['circle-visibility']
+                        );
+                        this.map.setLayoutProperty('world-label', 'visibility', styles[val]['label-visibility']);
+                    }
+                },
+                methods: {
+                    mapLoaded(e) {
+                        this.map = e.map;
+                        $.get(
+                            'https://ncpviz.oss-cn-beijing.aliyuncs.com/ncpviz/worldNcp.json?time=' +
+                                new Date().getTime(),
+                            function(response) {
+                                this.time = resources.text_ncp_time.replace('{time}', response.time);
+                                var latestProvinceData = this.getLatestWorldData(response);
+                                this.map.addSource('china', {
+                                    type: 'geojson',
+                                    data: CountryData
+                                });
+                                this.map.addLayer({
+                                    id: 'china',
+                                    type: 'fill',
+                                    source: 'china',
+                                    layout: {},
+                                    paint: {
+                                        'fill-color': styles[this.type]['fill-color']
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'world-strokeLine',
+                                    type: 'line',
+                                    source: 'china',
+                                    layout: {},
+                                    paint: {
+                                        'line-width': 0.5,
+                                        'line-color': styles[this.type]['line-color'],
+                                        'line-opacity': 1
+                                    }
+                                });
+                                this.map.addSource('world-label-clusters', {
+                                    type: 'geojson',
+                                    data: CountryCenterData,
+                                    cluster: true,
+                                    clusterRadius: 10
+                                });
+                                this.map.addSource('world-label', {
+                                    type: 'geojson',
+                                    data: CountryCenterData
+                                });
+                                this.map.addLayer({
+                                    id: 'world-clusters',
+                                    type: 'circle',
+                                    source: 'world-label-clusters',
+                                    filter: [
+                                        'all',
+                                        ['<', ['get', 'confirmedIncrement'], 1000],
+                                        ['>', ['get', 'confirmedIncrement'], 0]
+                                    ],
+                                    layout: {
+                                        visibility: styles[this.type]['circle-visibility']
+                                    },
+                                    paint: {
+                                        'circle-color': [
+                                            'case',
+                                            ['>=', ['get', 'confirmedIncrement'], 1000],
+                                            '#F35735',
+                                            ['>=', ['get', 'confirmedIncrement'], 100],
+                                            '#F39146',
+                                            ['>=', ['get', 'confirmedIncrement'], 50],
+                                            '#F9B657',
+                                            ['>=', ['get', 'confirmedIncrement'], 10],
+                                            '#E2B06A',
+                                            '#ADB37E'
+                                        ],
+                                        'circle-radius': [
+                                            'case',
+                                            ['>=', ['get', 'confirmedIncrement'], 1000],
+                                            18,
+                                            ['>=', ['get', 'confirmedIncrement'], 100],
+                                            15,
+                                            ['>=', ['get', 'confirmedIncrement'], 50],
+                                            12,
+                                            ['>=', ['get', 'confirmedIncrement'], 10],
+                                            10,
+                                            7
+                                        ],
+                                        'circle-stroke-width': 1,
+                                        'circle-stroke-color': '#fff',
+                                        'circle-stroke-opacity': 0.8
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'world-label-area-clusters',
+                                    type: 'symbol',
+                                    source: 'world-label-clusters',
+                                    filter: [
+                                        'all',
+                                        ['<', ['get', 'confirmedIncrement'], 1000],
+                                        ['>', ['get', 'confirmedIncrement'], 0]
+                                    ],
+                                    layout: {
+                                        visibility: styles[this.type]['circle-visibility'],
+                                        'text-field': '{areaName}',
+                                        'text-font': ['Microsoft YaHei Regular'],
+                                        'text-size': 12,
+                                        'text-letter-spacing': 0,
+                                        'text-max-width': 0,
+                                        'text-offset': [0, -2]
+                                    },
+                                    paint: {
+                                        'text-color': 'white',
+                                        'text-opacity': 1,
+                                        'text-halo-color': '#696868',
+                                        'text-halo-width': 1.5
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'world-label-clusters',
+                                    type: 'symbol',
+                                    source: 'world-label-clusters',
+                                    filter: [
+                                        'all',
+                                        ['<', ['get', 'confirmedIncrement'], 1000],
+                                        ['>', ['get', 'confirmedIncrement'], 0]
+                                    ],
+                                    layout: {
+                                        visibility: styles[this.type]['circle-visibility'],
+                                        'text-field': styles[this.type]['text-field'],
+                                        'text-font': ['Microsoft YaHei Regular'],
+                                        'text-size': 12,
+                                        'text-letter-spacing': 0,
+                                        'text-max-width': 0
+                                    },
+                                    paint: {
+                                        'text-color': '#000',
+                                        'text-opacity': 1
+                                    }
+                                });
+
+                                this.map.addLayer({
+                                    id: 'world-serious',
+                                    type: 'circle',
+                                    source: 'world-label',
+                                    filter: ['>=', ['get', 'confirmedIncrement'], 1000],
+                                    layout: {
+                                        visibility: styles[this.type]['circle-visibility']
+                                    },
+                                    paint: {
+                                        'circle-color': '#F35735',
+                                        'circle-radius': 18,
+                                        'circle-stroke-width': 1,
+                                        'circle-stroke-color': '#fff',
+                                        'circle-stroke-opacity': 0.8
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'world-label-area-serious',
+                                    type: 'symbol',
+                                    source: 'world-label',
+                                    filter: ['>=', ['get', 'confirmedIncrement'], 1000],
+                                    layout: {
+                                        visibility: styles[this.type]['circle-visibility'],
+                                        'text-field': '{areaName}',
+                                        'text-font': ['Microsoft YaHei Regular'],
+                                        'text-size': 12,
+                                        'text-allow-overlap': false,
+                                        'text-ignore-placement': false,
+                                        'text-letter-spacing': 0,
+                                        'text-max-width': 0,
+                                        'text-offset': [0, -2],
+                                        'symbol-sort-key': 9
+                                    },
+                                    paint: {
+                                        'text-color': 'white',
+                                        'text-opacity': 1,
+                                        'text-halo-color': '#696868',
+                                        'text-halo-width': 1.5
+                                    }
+                                });
+                                this.map.addLayer({
+                                    id: 'world-label-serious',
+                                    type: 'symbol',
+                                    source: 'world-label',
+                                    filter: ['>=', ['get', 'confirmedIncrement'], 1000],
+                                    layout: {
+                                        visibility: styles[this.type]['circle-visibility'],
+                                        'text-field': styles[this.type]['text-field'],
+                                        'text-font': ['Microsoft YaHei Regular'],
+                                        'text-size': 12,
+                                        'text-letter-spacing': 0,
+                                        'text-max-width': 0,
+                                        'symbol-sort-key': 10
+                                    },
+                                    paint: {
+                                        'text-color': '#000',
+                                        'text-opacity': 1
+                                    }
+                                });
+
+                                this.map.addLayer({
+                                    id: 'world-label',
+                                    type: 'symbol',
+                                    source: 'world-label',
+                                    layout: {
+                                        visibility: styles[this.type]['label-visibility'],
+                                        'text-field': styles[this.type]['text-field'],
+                                        'text-font': ['Microsoft YaHei Regular'],
+                                        'text-size': 12,
+                                        'text-allow-overlap': false,
+                                        'text-letter-spacing': 0,
+                                        'text-max-width': 0
+                                    },
+                                    paint: {
+                                        'text-color': 'white',
+                                        'text-opacity': 1,
+                                        'text-halo-color': '#696868',
+                                        'text-halo-width': 1.5
+                                    }
+                                });
+                            }.bind(this)
+                        );
+                    },
+                    mapClicked(e) {
+                        var bbox = [
+                            [e.mapboxEvent.point.x - 5, e.mapboxEvent.point.y - 5],
+                            [e.mapboxEvent.point.x + 5, e.mapboxEvent.point.y + 5]
+                        ];
+                        var features = this.map.queryRenderedFeatures(bbox);
+                        if (features[0] && features[0].properties.areaName) {
+                            this.popup = new mapboxgl.Popup({ closeButton: false, maxWidth: 'none' })
+                                .setLngLat(e.mapboxEvent.lngLat)
+                                .setHTML(styles[this.type].tooltip(features[0].properties))
+                                .addTo(this.map);
+                        }
+                    },
+                    getLatestWorldData(result) {
+                        var countrys = [];
+                        var confirmeds = [];
+                        worldTime = result.time;
+                        worldDataUpdateTime = result.updateTime;
+
+                        // 最新当天的数据
+                        todayWorldData = result.data.worldHistory[0].historyList[0];
+                        var unit = 100000; //单位为10万
+
+                        result.data.worldList.forEach(data => {
+                            // 砖石号游轮不计算发病率
+                            // 计算各国报告发病率
+                            var confirmed = data.confirmed;
+
+                            var name = data.areaName;
+                            if (name === '日本本土') {
+                                name = data.areaName = '日本';
+                            }
+                            var countryName = CountriesNameEn[name];
+                            if (CountriesPopulation[countryName]) {
+                                data.population = CountriesPopulation[countryName] * 1000; //联合国数以千计
+                            }
+
+                            // 大于等于10万 才计算发病率
+                            if (data.population >= 100000) {
+                                var incidence = (confirmed / data.population) * unit;
+                                incidence = Number(incidence.toFixed(2));
+                                // 地图使用
+                                data.worldIncidence = incidence;
+                            }
+                            if (!isNaN(data.confirmedIncrement)) {
+                                this.nums['world-confirmedIncrement'] += parseInt(data.confirmedIncrement);
+                                if (name === '中国') {
+                                    this.chinaConfirmedIncrement = data.confirmedIncrement;
+                                }
+                            }
+
+                            if (!isNaN(data.confirmed)) {
+                                this.nums['world-confirmed'] += parseInt(data.confirmed);
+                                if (name === '中国') {
+                                    this.chinaConfirmed = data.confirmed;
+                                }
+                            }
+                            if (!isNaN(data.worldIncidence)) {
+                                this.nums['world-incidence'] = (
+                                    (this.nums['world-confirmed'] / 7751396374) *
+                                    unit
+                                ).toFixed(2);
+                            }
+                            var country = CountryData.features.find(function(item) {
+                                return (
+                                    item.properties.Country === name ||
+                                    (name === '中国' && item.properties.Country === '中华人民共和国')
+                                );
+                            });
+                            var countryLabel = CountryCenterData.features.find(function(item) {
+                                return (
+                                    item.properties.Country === name ||
+                                    (name === '中国' && item.properties.Country === '中华人民共和国')
+                                );
+                            });
+
+                            if (country && countryLabel) {
+                                country.properties = Object.assign(country.properties, countryLabel.properties, data, {
+                                    areaName: getareaName(name)
+                                });
+                                countryLabel.properties = Object.assign(
+                                    country.properties,
+                                    countryLabel.properties,
+                                    data,
+                                    { areaName: getareaName(name) }
+                                );
+                            }
+                        });
+                        CountryCenterData.features = CountryCenterData.features.sort(function(val1, val2) {
+                            return (val2.properties.confirmed || 0) - (val1.properties.confirmed || 0);
+                        });
+                    }
+                }
+            });
+            function getareaName(name) {
+                if (utils.getLanguage() === 'en-US') {
+                    return CountriesNameEn[name];
+                }
+                return name;
+            }
+            function getTitle(response) {
+                var titles = response[utils.getLanguage()];
+                if (titles) {
+                    if (titles.firstPriorityTitle) {
+                        return titles.firstPriorityTitle;
+                    }
+                    if (titles.title && titles.title.indexOf('{') < 0) {
+                        return titles.title;
+                    }
+                }
+                return resources.text_ncp_world;
+            }
+        </script>
+    </body>
+</html>

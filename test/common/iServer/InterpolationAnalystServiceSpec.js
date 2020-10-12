@@ -82,7 +82,7 @@ describe('InterpolationAnalystService', () => {
             outputDatasetName: resultDataset_RBFByDS
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/datasets/SamplesP@Interpolation/interpolation/rbf.json?returnContent=true');
+            expect(testUrl).toBe(url + '/datasets/SamplesP@Interpolation/interpolation/rbf?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.smooth).toEqual(0.1);
@@ -133,7 +133,7 @@ describe('InterpolationAnalystService', () => {
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
             expect(testUrl).toBe(
-                url + '/datasets/SamplesP@Interpolation/interpolation/density.json?returnContent=true'
+                url + '/datasets/SamplesP@Interpolation/interpolation/density?returnContent=true'
             );
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
@@ -191,7 +191,7 @@ describe('InterpolationAnalystService', () => {
             outputDatasetName: resultDataset_IDWByDS
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/datasets/SamplesP@Interpolation/interpolation/idw.json?returnContent=true');
+            expect(testUrl).toBe(url + '/datasets/SamplesP@Interpolation/interpolation/idw?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.searchMode).toBe('KDTREE_FIXED_COUNT');
@@ -257,7 +257,7 @@ describe('InterpolationAnalystService', () => {
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
             expect(testUrl).toBe(
-                url + '/datasets/SamplesP@Interpolation/interpolation/kriging.json?returnContent=true'
+                url + '/datasets/SamplesP@Interpolation/interpolation/kriging?returnContent=true'
             );
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
@@ -322,7 +322,7 @@ describe('InterpolationAnalystService', () => {
             ]
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/geometry/interpolation/rbf.json?returnContent=true');
+            expect(testUrl).toBe(url + '/geometry/interpolation/rbf?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.smooth).toEqual(0.1);
@@ -383,7 +383,7 @@ describe('InterpolationAnalystService', () => {
             ]
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/geometry/interpolation/density.json?returnContent=true');
+            expect(testUrl).toBe(url + '/geometry/interpolation/density?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.searchRadius).toEqual(0);
@@ -447,7 +447,7 @@ describe('InterpolationAnalystService', () => {
             ]
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/geometry/interpolation/idw.json?returnContent=true');
+            expect(testUrl).toBe(url + '/geometry/interpolation/idw?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.power).toEqual(2);
@@ -515,7 +515,7 @@ describe('InterpolationAnalystService', () => {
             ]
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/geometry/interpolation/kriging.json?returnContent=true');
+            expect(testUrl).toBe(url + '/geometry/interpolation/kriging?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.type).toBe('KRIGING');
@@ -572,7 +572,7 @@ describe('InterpolationAnalystService', () => {
             }
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
-            expect(testUrl).toBe(url + '/datasets/xxx@Interpolation/interpolation/rbf.json?returnContent=true');
+            expect(testUrl).toBe(url + '/datasets/xxx@Interpolation/interpolation/rbf?returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.smooth).toEqual(0.1);

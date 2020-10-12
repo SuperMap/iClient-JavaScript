@@ -114,7 +114,7 @@ export class WebMap extends mapboxgl.Evented {
 	resize() {
 		this.map.resize();
   }
-  
+
 	/**
 	 * @function mapboxgl.supermap.WebMap.prototype.setMapId
 	 * @param {string} mapId - webMap 地图 ID。
@@ -125,7 +125,7 @@ export class WebMap extends mapboxgl.Evented {
 		this.mapId = mapId;
 		this._createWebMap();
   }
-  
+
   /**
 	 * @function mapboxgl.supermap.WebMap.prototype.setWebMapOptions
 	 * @param {Object} webMapOptions - webMap 参数。
@@ -201,8 +201,17 @@ export class WebMap extends mapboxgl.Evented {
 		// zoom center
 		let oldcenter = mapInfo.center,
 			zoom = mapInfo.level || 0,
-			center;
-		zoom = zoom === 0 ? 0 : zoom - 1;
+            center,
+            zoomBase = 0;
+        // zoom = zoom === 0 ? 0 : zoom - 1;
+        if (mapInfo.minScale && mapInfo.maxScale) {
+            zoomBase = this._transformScaleToZoom(mapInfo.minScale, mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection):'EPSG:3857');
+        } else {
+            zoomBase = +Math.log2(
+                this._getResolution(mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection).getExtent():[-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]) / this._getResolution(mapInfo.extent)
+            ).toFixed(2);
+        }
+        zoom += zoomBase;
 		center = oldcenter ? this._unproject([oldcenter.x, oldcenter.y]) : new mapboxgl.LngLat(0, 0);
 		// 初始化 map
 		this.map = new mapboxgl.Map({
@@ -301,16 +310,16 @@ export class WebMap extends mapboxgl.Evented {
 			layerType = layerType.substr(0, 12);
 		}
 		let mapUrls = {
-				CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-				CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+				CLOUD: 'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+				CLOUD_BLACK: 'http://t3.dituhui.com/MapService/getGdp?x={x}&y={y}&z={z}',
 				OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 				GOOGLE:
-					'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+					'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
 				GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-				JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-				JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-				JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-				JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+				JAPAN_STD: 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+				JAPAN_PALE: 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+				JAPAN_RELIEF: 'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+				JAPAN_ORT: 'https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
 			},
 			url;
 		switch (layerType) {
@@ -344,8 +353,53 @@ export class WebMap extends mapboxgl.Evented {
 				url = mapUrls[layerType];
 				this._createXYZLayer(layerInfo, url);
 				break;
+			case 'MAPBOXSTYLE':
+				this._createMapboxStyle(layerInfo);
+				break;
 			default:
 				break;
+		}
+	}
+
+	/**
+	 * @private
+	 * @function mapboxgl.supermap.WebMap.prototype._createMapboxStyle
+	 * @description 创建 Mapbox 样式。
+	 * @param {Object} mapInfo - map 信息。
+	 */
+	_createMapboxStyle(mapInfo) {
+		let _this = this,
+			{ dataSource = {} } = mapInfo,
+			{ serverId, url } = dataSource,
+			styleUrl;
+		styleUrl = serverId !== undefined ? `${this.server}web/datas/${serverId}/download` : url;
+		FetchRequest.get(styleUrl, null, {
+			withCredentials: this.withCredentials,
+			withoutFormatSuffix: true,
+			headers: {
+				'Content-Type': 'application/json;chartset=uft-8'
+			}
+		}).then(response => {
+			return response.json();
+		}).then(style => {
+			_this._matchStyleObject(style);
+			_this.map.setStyle(style);
+		})
+	}
+
+	/**
+	 * @private
+	 * @function mapboxgl.supermap.WebMap.prototype._matchStyleObject
+	 * @description 恢复 style 为标准格式。
+	 * @param {Object} style - mapbox 样式。
+	 */
+	_matchStyleObject(style) {
+		let { sprite, glyphs } = style;
+		if (sprite && typeof sprite === 'object'){
+			style.sprite = Object.values(sprite)[0];
+		}
+		if (glyphs && typeof glyphs === 'object'){
+			style.glyphs = Object.values(glyphs)[0];
 		}
 	}
 
@@ -400,14 +454,17 @@ export class WebMap extends mapboxgl.Evented {
 			})
 			.then(capabilitiesText => {
 				let converts = convert ? convert : window.convert;
-				let tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, { compact: true, spaces: 4 }))
-					.Capabilities.Contents.TileMatrixSet;
+                let tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, { compact: true, spaces: 4 }))
+                    .Capabilities.Contents.TileMatrixSet;
+                if (!Array.isArray(tileMatrixSet)) {
+                    tileMatrixSet = [tileMatrixSet];
+                }
 				for (let i = 0; i < tileMatrixSet.length; i++) {
 					if (
 						tileMatrixSet[i]['ows:Identifier'] &&
 						tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet
 					) {
-						if (DEFAULT_WELLKNOWNSCALESET.includes(tileMatrixSet[i]['WellKnownScaleSet']['_text'])) {
+						if (DEFAULT_WELLKNOWNSCALESET.indexOf(tileMatrixSet[i]['WellKnownScaleSet']['_text']) > -1) {
 							isMatched = true;
 						} else if (
 							tileMatrixSet[i]['WellKnownScaleSet'] &&
@@ -461,7 +518,7 @@ export class WebMap extends mapboxgl.Evented {
 	 */
 	_createBingLayer(layerName) {
 		let bingUrl =
-			'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadkey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
+			'https://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadkey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
 		this.addLayer([bingUrl], 'bing-layers-' + layerName);
 	}
 
@@ -514,8 +571,10 @@ export class WebMap extends mapboxgl.Evented {
 	 * @param {Object} layerInfo - 图层信息。
 	 */
 	_createDynamicTiledLayer(layerInfo) {
-		let url = layerInfo.url + '/zxyTileImage.png?z={z}&x={x}&y={y}';
-		this._addBaselayer([url], 'tile-layers-' + layerInfo.name);
+        let url = layerInfo.url;
+        const layerId = layerInfo.layerID || layerInfo.name;
+        const { minzoom, maxzoom } = layerInfo;
+        this._addBaselayer([url], layerId, minzoom, maxzoom, true);
 	}
 
 	/**
@@ -570,7 +629,7 @@ export class WebMap extends mapboxgl.Evented {
 		let layerType = mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();
 		let isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
 		// let isLabel = true;
-		let url = 'http://t0.tianditu.gov.cn/{layer}_{proj}/wmts?';
+		let url = 'https://t0.tianditu.gov.cn/{layer}_{proj}/wmts?';
 		let labelUrl = url;
 		let layerLabelMap = {
 			vec: 'cva',
@@ -1888,14 +1947,16 @@ export class WebMap extends mapboxgl.Evented {
 		}
 	}
 
-	_addBaselayer(url, layerID, minzoom = 0, maxzoom = 22) {
+	_addBaselayer(url, layerID, minzoom = 0, maxzoom = 22, isIserver) {
 		this.map.addLayer({
 			id: layerID,
 			type: 'raster',
 			source: {
 				type: 'raster',
 				tiles: url,
-				tileSize: 256
+                tileSize: 256,
+                rasterSource: isIserver ? 'iserver' : '',
+                prjCoordSys: isIserver ? { epsgCode: this.baseProjection.split(':')[1] } : ''
 			},
 			minzoom: minzoom,
 			maxzoom: maxzoom
@@ -2038,7 +2099,23 @@ export class WebMap extends mapboxgl.Evented {
 			}
 		});
 		return features;
-	}
+    }
+
+    _transformScaleToZoom(scale, crs) {
+        let scale_0 = 295829515.2024169;
+        if ((crs || this.map.getCRS()).epsgCode !== 'EPSG:3857') {
+          scale_0 = 295295895;
+        }
+        const scaleDenominator = scale.split(':')[1];
+        return Math.min(24, +Math.log2(scale_0 / +scaleDenominator).toFixed(2));
+    }
+
+    _getResolution(bounds, tileSize = 512.0) {
+        if (bounds.leftBottom && bounds.rightTop) {
+            return Math.max(bounds.rightTop.x - bounds.leftBottom.x, bounds.rightTop.y - bounds.leftBottom.y) / tileSize;
+        }
+        return Math.max(bounds[2] - bounds[0], bounds[3] - bounds[1]) / tileSize;
+    }
 }
 
 mapboxgl.supermap.WebMap = WebMap;

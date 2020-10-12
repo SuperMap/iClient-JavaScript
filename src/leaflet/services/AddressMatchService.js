@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
-import {AddressMatchService as CommonMatchAddressService} from '@supermap/iclient-common';
+import {AddressMatchService as CommonMatchAddressService, CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.addressMatchService
@@ -20,7 +20,7 @@ import {AddressMatchService as CommonMatchAddressService} from '@supermap/iclien
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -39,7 +39,7 @@ export var AddressMatchService = ServiceBase.extend({
      */
     code: function (params, callback) {
         var me = this;
-        var addressMatchService = new CommonMatchAddressService(me.url, {
+        var addressMatchService = new CommonMatchAddressService(this.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
@@ -51,7 +51,7 @@ export var AddressMatchService = ServiceBase.extend({
                 processFailed: callback
             }
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
     },
 
     /**
@@ -74,7 +74,7 @@ export var AddressMatchService = ServiceBase.extend({
                 processFailed: callback
             }
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
     }
 
 });

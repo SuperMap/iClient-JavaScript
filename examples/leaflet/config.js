@@ -452,16 +452,16 @@ var exampleConfig = {
         name: "iPortal",
         name_en: "iPortal",
         content: {
-            "ip_map": {
-                name: "地图",
-                name_en: "Web map",
-                content: [{
-                    name: "举办过奥运会的城市",
-                    name_en: "city hosted the Olympic Games",
-                    thumbnail: "l_iPortalWebmap.png",
-                    fileName: "iPortalWebmap"
-                }]
-            },
+            // "ip_map": {
+            //     name: "地图",
+            //     name_en: "Web map",
+            //     content: [{
+            //         name: "举办过奥运会的城市",
+            //         name_en: "city hosted the Olympic Games",
+            //         thumbnail: "l_iPortalWebmap.png",
+            //         fileName: "iPortalWebmap"
+            //     }]
+            // },
             "ip_security": {
                 name: "安全",
                 name_en: "Security",
@@ -490,8 +490,52 @@ var exampleConfig = {
                     name: "我的资源",
                     name_en: "My Resource",
                     version: "10.0.1",
-                    thumbnail: "l_iPortalQueryResources.png",
+                    thumbnail: "l_iPortalQueryMyResources.png",
                     fileName: "iPortalQueryMyResources"
+                }]
+            },
+            "ip_batchaddresource": {
+                name: "添加地图/场景",
+                name_en: "Batch Add Map/Scene",
+                content: [{
+                    name: "添加地图/场景",
+                    name_en: "Batch Add Map/Scene",
+                    version: "10.1.0",
+                    thumbnail: "l_iPortalAddResource.png",
+                    fileName: "iPortalBatchAddResource"
+                }]
+            },
+            "ip_uploaddata": {
+                name: "上传数据",
+                name_en: "Upload Data",
+                content: [{
+                    name: "上传数据",
+                    name_en: "Upload Data",
+                    version: "10.1.0",
+                    thumbnail: "l_iPortalUploadData.png",
+                    fileName: "iPortalUploadData"
+                }]
+            },
+            "ip_registerdata": {
+                name: "注册数据",
+                name_en: "Register Data",
+                content: [{
+                    name: "注册数据",
+                    name_en: "Register Data",
+                    version: "10.1.0",
+                    thumbnail: "l_iPortalRegisterData.png",
+                    fileName: "iPortalRegisterData"
+                }]
+            },
+            "ip_publishdata": {
+                name: "发布数据",
+                name_en: "Publish Data",
+                content: [{
+                    name: "发布数据",
+                    name_en: "Publish Data",
+                    version: "10.1.0",
+                    thumbnail: "l_iportalPublishData.png",
+                    fileName: "iPortalPublishData"
                 }]
             }
         }
@@ -946,10 +990,12 @@ var exampleConfig = {
             pixi: {
                 name: 'Pixi',
                 name_en: 'Pixi',
+                version: '10.0.1',
                 content: [
                     {
                         name: '纽约出租车上车点分布图（140万点数据绘制）',
                         name_en: 'Use Pixi to draw 1.4 millions New York Taxi Points',
+                        version: '10.0.1',
                         thumbnail: 'l_pixiOverlay_taxi.png',
                         fileName: 'l_pixiOverlay_taxi'
                     }
@@ -1094,6 +1140,12 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "plot_symbolAvoid.png",
                     fileName: "plot_symbolAvoid"
+                }, {
+                    name: "动态目标图层",
+                    name_en: "moving target layer",
+                    version: "10.1.0",
+                    thumbnail: "plot_movingTarget.gif",
+                    fileName: "plot_movingTarget"
                 }]
             }
         }
@@ -1255,8 +1307,8 @@ var exampleConfig = {
                     version: "9.1.2",
                     thumbnail: "components_chart_iptl.png",
                     fileName: "components_chart_iptl"
-                } 
-            
+                }
+
             ]
             },
             "componentsAdvanced": {

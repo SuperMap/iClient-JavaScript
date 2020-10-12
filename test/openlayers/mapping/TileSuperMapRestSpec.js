@@ -27,7 +27,6 @@ describe('openlayers_TileSuperMapRest', () => {
         var tileSource = new TileSuperMapRest(tileOptions);
         expect(tileSource.options).not.toBeNull();
         expect(tileSource.options.serverType).toBe('ISERVER');
-        expect(tileSource.urls.length).toBe(1);
     });
 
     it('tileUrlFunction', () => {

@@ -113,7 +113,7 @@ describe('MapService', () => {
             GetMapStatusCompleted
         );
         spyOn(FetchRequest, 'get').and.callFake(testUrl => {
-            expect(testUrl).toBe('http://localhost:8090/iserver/services/map-world/rest/maps/MapNameError');
+            expect(testUrl).toBe(GlobeParameter.mapServiceURL + 'MapNameError');
             return Promise.resolve(
                 new Response(
                     `{"succeed":false,"error":{"code":404,"errorMsg":"地图 MapNameError 不存在，获取相应的地图业务组件失败"}}`

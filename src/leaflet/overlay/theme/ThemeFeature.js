@@ -33,17 +33,15 @@ export var ThemeFeature = L.Class.extend({
      */
     toFeature: function () {
         let geometry = this.geometry;
-        const points = [];
-        let geojsonObject
         if (geometry.toGeoJSON) {
-            geojsonObject = geometry.toGeoJSON();
+            const geojsonObject = geometry.toGeoJSON();
             geojsonObject.properties = this.attributes;
             return new GeoJSON().read(geojsonObject)[0];
         }
         if (geometry.length === 3) {
             geometry = new GeoText(geometry[1], geometry[0], geometry[2]);
         } else if (geometry.length === 2) {
-            geometry = new GeometryPoint(points[0], points[1]);
+            geometry = new GeometryPoint(geometry[0], geometry[1]);
         } else if (geometry instanceof L.LatLng) {
             geometry = new GeometryPoint(geometry.lng, geometry.lat);
         } else if (geometry instanceof L.Point) {

@@ -11,7 +11,7 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
  * @classdesc 天地图图层源。
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。
- * @param {string} options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
+ * @param {string} opt_options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
  * @param {string} [opt_options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
  * @param {string} [opt_options.attributions] - 版权描述信息。
  * @param {number} [opt_options.cacheSize = 2048] - 缓冲大小。

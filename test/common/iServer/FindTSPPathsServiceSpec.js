@@ -110,7 +110,7 @@ describe('FindTSPPathsService', () => {
         };
         var findTSPPathsService = initFindTSPPathService(findTSPPathServiceCompleted, findTSPPathServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
         });
         findTSPPathsService.processAsync(parameter);
@@ -163,7 +163,7 @@ describe('FindTSPPathsService', () => {
 
         var findTSPPathsService = initFindTSPPathService(findTSPPathServiceCompleted, findTSPPathServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`))
         });
         findTSPPathsService.processAsync(parameter);
@@ -216,7 +216,7 @@ describe('FindTSPPathsService', () => {
 
         var findTSPPathsService = initFindTSPPathService(findTSPPathServiceCompleted, findTSPPathServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findTSPPath 操作时出错,原因是：权重字段TurnCost1不存在。 "}}`))
         });
         findTSPPathsService.processAsync(parameter);
@@ -284,7 +284,7 @@ describe('FindTSPPathsService', () => {
 
         var findTSPPathsService = initFindTSPPathService(findTSPPathServiceCompleted, findTSPPathServiceFailed);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath.json?");
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(`tsppath`))
         });
 

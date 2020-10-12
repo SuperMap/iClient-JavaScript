@@ -27,7 +27,7 @@ describe('openlayers_MeasureService', () => {
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/distance.json?");
+            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/distance");
             return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance":1565109.0991230179}`));
         });
         service.measureDistance(distanceMeasureParam, (result) => {
@@ -56,7 +56,7 @@ describe('openlayers_MeasureService', () => {
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/distance.json?");
+            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/distance");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 point2Ds 不合法，必须至少包含两个二维点"}}`));
         });
         service.measureDistance(distanceMeasureParam, (result) => {
@@ -83,7 +83,7 @@ describe('openlayers_MeasureService', () => {
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/area.json?");
+            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/area");
             return Promise.resolve(new Response(`{"area":5.586861668611416E12,"unit":"METER","distance":-1}`));
         });
         service.measureArea(areaMeasureParam, (result) => {
@@ -112,7 +112,7 @@ describe('openlayers_MeasureService', () => {
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/area.json?");
+            expect(testUrl).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/area");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"传入参数 points 的长度小于3。"}}`));
         });
         service.measureArea(areaMeasureParam, (result) => {

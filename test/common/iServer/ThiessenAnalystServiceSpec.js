@@ -81,7 +81,7 @@ describe('ThiessenAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/datasets/Park@Changchun/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/datasets/Park@Changchun/thiessenpolygon?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.dataset).toBe("Park@Changchun");
             expect(paramsObj.filterQueryParameter.attributeFilter).toBe("SMID %26lt; 5");
@@ -132,7 +132,7 @@ describe('ThiessenAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/geometry/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/geometry/thiessenpolygon?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.createResultDataset).toBeFalsy();
             expect(paramsObj.points.length).toEqual(6);
@@ -170,7 +170,7 @@ describe('ThiessenAnalystService', () => {
         var geoThiessenAnalystParameters = new GeometryThiessenAnalystParameters();
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/geometry/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/geometry/thiessenpolygon?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.points).toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 points 错误：不能为空。"}}`));
@@ -209,7 +209,7 @@ describe('ThiessenAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/datasets/test/thiessenpolygon.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL_Changchun + "/datasets/test/thiessenpolygon?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.dataset).toBe('test');
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据集test不存在"}}`));

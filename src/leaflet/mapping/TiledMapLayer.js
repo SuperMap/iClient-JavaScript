@@ -1,14 +1,15 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L, { Util as LUtil} from "leaflet";
 import "../core/Base";
 import {
     SecurityManager,
     ServerType,
     Unit,
     Credential,
-    ServerGeometry
+    ServerGeometry,
+    CommonUtil
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
 import Attributions from '../core/Attributions'
@@ -33,9 +34,9 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {string} [options.tileProxy] -  代理地址。
- * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
@@ -291,21 +292,12 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     _createLayerUrl: function () {
-        var me = this;
-        var layerUrl = me._url + "/tileImage." + this.options.format + "?";
-        layerUrl += encodeURI(me._getRequestParamString());
+        let layerUrl = CommonUtil.urlPathAppend(this._url, `tileImage.${this.options.format}`);
+        this.requestParams = this.requestParams || this._getAllRequestParams();
+        layerUrl = CommonUtil.urlAppend(layerUrl, LUtil.getParamString(this.requestParams));
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
         return layerUrl;
-    },
-
-    _getRequestParamString: function () {
-        this.requestParams = this.requestParams || this._getAllRequestParams();
-        var params = [];
-        for (var key in this.requestParams) {
-            params.push(key + "=" + this.requestParams[key]);
-        }
-        return params.join('&');
     },
 
     _getAllRequestParams: function () {
@@ -397,7 +389,7 @@ export var TiledMapLayer = L.TileLayer.extend({
                 break;
         }
         if (credential) {
-            newUrl += "&" + credential.getUrlParameters();
+            newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
         }
         return newUrl;
     }

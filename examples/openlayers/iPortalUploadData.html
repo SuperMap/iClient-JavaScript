@@ -1,0 +1,343 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_iPortalUploadData"></title>
+    <style>
+        #two {
+            display: none;
+        }
+        .component-openfile__span--select {
+            min-width: 150px!important;
+        }
+        .component-openfile__span--select .component-openfile__span {
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+    <div class="container">
+        <div class="page-header">
+            <h4 data-i18n="resources.title_iPortalUploadData"></h4>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-12" style="background: #FFF;">
+                    <!--上传数据-->
+                    <div class="row" id="batch-add-resource" style="padding: 10px;">
+                        <div id="one">
+                            <h5 data-i18n="resources.text_data_type"></h5>
+                            <select class='form-control' id='typeSelect-type' onchange="onSelectDataType()">
+                                <option value="WORKSPACE" data-i18n="resources.text_workspace"></option>
+                                <option value="UDB" data-i18n="resources.text_UDB"></option>
+                                <option value="SHP" data-i18n="resources.text_shapefile"></option>
+                                <option value="GEOJSON" data-i18n="resources.text_geojson"></option>
+                                <option value="SMTILES" data-i18n="resources.text_smtiles"></option>
+                                <option value="SVTILES" data-i18n="resources.text_svtiles"></option>
+                                <option value="MBTILES" data-i18n="resources.text_mbtiles"></option>
+                                <option value="TPK" data-i18n="resources.text_tpk"></option>
+                                <option value="UGCV5" data-i18n="resources.text_ugcv5"></option>
+                                <option value="UGCV5_MVT" data-i18n="resources.text_ugcv5_mvt"></option>
+                                <option value="EXCEL" data-i18n="resources.text_excel"></option>
+                                <option value="CSV" data-i18n="resources.text_csv"></option>
+                                <option value="JSON" data-i18n="resources.text_json"></option>
+                            </select>
+
+                            <h5 data-i18n="resources.text_data_file"></h5>
+                            <div class='file-select'>
+                                <label class='component-openfile__span--select' for='input_file'>
+                                <div class='supermapol-icons-upload'></div>
+                                <span class='component-openfile__span' data-i18n="resources.text_openFile"></span>
+                                </label>
+                                <input class='component-openfile__input' id='input_file' type='file'>
+                            </div>
+                            <h5 data-i18n="resources.text_data_name"></h5>
+                            <input id="data-name" class='form-control' type="text" style="width: 100%;">
+                            
+                            <h5 data-i18n="resources.detail_iPortal_tags"></h5>
+                            <input id="data-tags" class='form-control' type="text" style="width: 100%;" data-i18n="[placeholder]resources.text_user_data">
+                            
+                            <div><button class="btn btn-primary col-md-offset-6" style="margin-top: 20px;" onclick="inNext()" data-i18n="resources.btn_next" id="upload-or-next"></button></div>
+                        </div>
+                        <div id="two">
+                            <div>
+                                <h5 data-i18n="resources.text_x_field"></h5>
+                                <select id="xFleid" class='form-control' >
+
+                                </select>
+                            </div>
+                            <div>
+                                <h5 data-i18n="resources.text_y_field"></h5>
+                                <select id="yFleid" class='form-control' >
+                                    
+                                </select>
+                            </div>
+                            <div id="file-encoding-container">
+                                <h5 data-i18n="resources.text_file_encoding"></h5>
+                                <select class='form-control' id='file-encoding'>
+                                    <option value="UTF-8">UTF-8</option>
+                                    <option value="GBK">GBK</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary col-md-offset-6" style="margin-top: 20px;" onclick="returnOnePage()" data-i18n="resources.btn_previous"></button>
+                                <button class="btn btn-primary" style="margin-top: 20px;" onclick="buttonSubmit()" data-i18n="resources.btn_upload"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="iclient-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
+    var iPortalUrl = "https://iportal.supermap.io/iportal";
+    var token = "MFEKl8kVmkvEDrDFcgnjoUF4o2VKXT1eZhKh7hU3tnJL1jPculOBmvCtA6Xfrw4KuAyxWj2OcUV1Aj3M41nSNQ..";
+    //上传文件的一些变量（文件对象 文件格式 数据类型 上传的文件名称）
+    var file,fileFormats,dataType,uploadDataFileName;
+    //excel csv解析（回调重定向对象 x坐标区域 y坐标区域）
+    var context = {};
+    var Xfields = [];
+    var Yfields = [];
+    //数据名称
+    var dataName;
+
+    $(document).ready(function () {
+        generatePortalToken();
+        //初始化数据类型
+        onSelectDataType();
+        //初始化上传的文件名称（选择文件）
+        uploadDataFileName = resources.text_openFile;
+    });
+    
+    //获取token
+    function generatePortalToken() {
+        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+            server: iPortalUrl
+        });
+
+        SuperMap.SecurityManager.registerServers([serverInfo]);
+        SuperMap.SecurityManager.destroyToken(iPortalUrl);
+        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+    }
+    
+    //选中数据类型函数
+    function onSelectDataType(){
+        $("#data-tags").val("");
+        $(".component-openfile__span").text(resources.text_openFile)
+        $("#data-name").val("")
+        //获取选中的值
+        dataType = $("#typeSelect-type").val();
+        if(dataType === 'EXCEL' || dataType === 'CSV') {
+            $("#upload-or-next").text(resources.btn_next)
+        }else {
+            $("#upload-or-next").text(resources.btn_upload)
+        }
+        switch (dataType) {
+            case 'WORKSPACE':
+            case 'UDB':
+            case 'SHP':
+            case 'UGCV5':
+            case 'UGCV5_MVT':
+                fileFormats = "*.zip";
+                break;
+            case 'SMTILES':
+                fileFormats = "*.smtiles|*.zip";
+                break;
+            case 'SVTILES':
+                fileFormats = "*.svtiles|*.zip";
+                break;
+            case 'MBTILES':
+                fileFormats = "*.mbtiles|*.zip";
+                break;
+            case 'TPK':
+                fileFormats = "*.tpk|*.zip";
+                break;
+            case 'GEOJSON':
+                fileFormats = "*.geojson";
+                break;
+            case 'EXCEL':
+                fileFormats = "*.xls|*.xlsx";
+                break;
+            case 'CSV':
+                fileFormats = "*.csv";
+                break;
+            case 'JSON':
+                fileFormats = "*.json";
+                break;
+        }
+    }
+    
+    //上传文件函数
+    $("#input_file").change(function(e){
+        file = e.currentTarget.files[0];
+        if(file) {
+            var fileNameLength = file.name.split(".").length;
+            var result = fileFormats.split("|").filter((item) => {
+                return item === "*." +file.name.split(".")[fileNameLength-1];
+            });
+            if(result.length) {
+                uploadDataFileName = file.name;
+                dataName = file.name.substring(0,file.name.lastIndexOf('.'));
+            }else {
+                uploadDataFileName = resources.text_openFile;
+                dataName = '';
+                widgets.alert.showAlert(resources.msg_file_type, false);
+            }
+        }else {
+            dataName = '';
+            uploadDataFileName = resources.text_openFile;
+        }
+        $("#data-name").val(dataName)
+        $(".component-openfile__span").text(uploadDataFileName)
+    })
+   
+    //获取文件名称的后缀名
+    function getExtension(fileName) {
+        if (!fileName) {
+            return "";
+        }
+        if (fileName.indexOf('.') === -1) {
+            return "";
+        }
+        return fileName.substring(fileName.lastIndexOf('.'));
+    }
+    
+    //下一步
+    function inNext(){
+        if(!file) {
+            widgets.alert.showAlert(resources.msg_upload_file, false);
+            return;
+        }
+        if($("#data-name").val() === '') {
+            return;
+        }
+        if($("#upload-or-next").text() === resources.btn_upload) {
+            buttonSubmit();
+            return;
+        }
+        if(uploadDataFileName === resources.text_openFile){
+            widgets.alert.showAlert(resources.msg_upload_file, false);
+            return;
+        }
+        $("#one").css("display","none");
+        $("#two").css("display","block");
+        var isShow;
+        if(dataType === 'EXCEL' || dataType === 'CSV') {
+            dataType === 'CSV'?isShow = "block":isShow = "none";
+            $("#file-encoding-container").css("display",isShow)
+            visualForm();
+        }
+    }
+    
+    //返回上一步
+    function returnOnePage(){
+        $("#one").css("display","block");
+        $("#two").css("display","none");
+    }
+
+    //上传
+    function buttonSubmit(){
+        var params;
+        var fileNameParam = dataName ? dataName.replace(/(^\s*)|(\s*$)/g, "") : "";
+        if(!fileNameParam){
+            fileNameParam = uploadDataFileName;
+        } else {
+            //如果文件名后缀不相同则重新赋值
+            var realFileNameExt = getExtension(uploadDataFileName);
+            if (realFileNameExt !== getExtension(fileNameParam)) {
+                fileNameParam = fileNameParam + realFileNameExt;
+            }
+        }
+        var tags = $("#data-tags").val();
+        params = {
+            "fileName": fileNameParam,
+            "tags": tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
+            "type": dataType
+        }
+        var queryParams = new SuperMap.iPortalAddDataParam({
+            fileName: params.fileName,
+            type: params.type,
+            tags: params.tags
+        });
+        var newDataMetaParams;
+        if(dataType === 'EXCEL' || dataType === 'CSV') {
+            newDataMetaParams = {
+                xField:$("#xFleid").val(),
+                yField:$("#yFleid").val()
+            }
+            if(dataType === 'CSV') {
+                newDataMetaParams.fileEncoding = $("#file-encoding").val();
+            }
+            var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam(newDataMetaParams)
+            queryParams = new SuperMap.iPortalAddDataParam({
+                fileName: params.fileName,
+                type: params.type,
+                tags: params.tags,
+                dataMetaInfo:dataMetaParams
+            });
+        }
+        const formData = new FormData();
+        formData.append('newfile', file);
+        new SuperMap.iPortalUser(iPortalUrl).addData(queryParams,formData).then(res=>{
+            if(res.childID) {
+                widgets.alert.showAlert(resources.msg_upload_success, true);
+            }else {
+                widgets.alert.showAlert(resources.msg_upload_failed, false);
+            }
+        })
+    }
+    
+    //解析excel csv表格数据
+    function visualForm(){
+        var files = {
+            file:file
+        }
+        //解析excel csv
+        SuperMap.Components.FileReaderUtil.readFile(dataType,files,success,failed,context)
+    }
+    
+    //Excel CSV数据处理成功的回调
+    function success(res){
+        Xfields = [];
+        Yfields = [];
+        $("#xFleid").empty();
+        $("#yFleid").empty();
+        //把excel csv数据解析为geojson的数据
+        var result = SuperMap.Components.FileReaderUtil.processExcelDataToGeoJson(res);
+        //excel csv表头数据
+        var title = Object.keys(result[0].properties);
+        //把表格数据为数字的项 做为xField yField的值
+        title.forEach((item,index)=>{
+            if(item !== '') {
+                //使用正则表达式 判断excel表格中某一列是否是数字
+                if(/^\d+(\.\d+)?$/.test(result[0].properties[item])){
+                    Xfields.push(item);
+                    Yfields.push(item);
+                }
+            }
+        })
+        //渲染Xfields
+        Xfields.forEach(item=>{
+            $("#xFleid").append("<option value='"+item+"'>"+item+"</option>");//新增
+        })
+        //渲染Yfields
+        Yfields.forEach(item=>{
+            $("#yFleid").append("<option value='"+item+"'>"+item+"</option>");//新增
+        })
+    }
+    
+    //Excel CSV数据处理失败的回调
+    function failed(res){
+        console.log(res)
+    }
+</script>
+</body>
+</html>

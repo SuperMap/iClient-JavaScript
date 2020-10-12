@@ -28,7 +28,7 @@ describe('openlayers_LayerInfoService', () => {
         var layerService = new LayerInfoService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url+"/layers.json?");
+            expect(testUrl).toBe(url+"/layers");
             return Promise.resolve(new Response("["+JSON.stringify(layersInfo)+"]"));
         });
         layerService.getLayersInfo((result) => {
@@ -92,12 +92,12 @@ describe('openlayers_LayerInfoService', () => {
         });
         var layerInfoService = new LayerInfoService(url, options);
         spyOn(FetchRequest, 'post').and.callFake((testUrl,options) => {
-            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            expect(testUrl).toBe(url+"/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c.json"}`));
         });
         spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
-            expect(testUrl).toBe(url+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c.json?elementRemain=true&reference=c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c&holdTime=15");
+            expect(testUrl).toBe(url+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c?elementRemain=true&reference=c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c&holdTime=15");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -128,7 +128,7 @@ describe('openlayers_LayerInfoService', () => {
         });
         var service = new LayerInfoService(url);
        spyOn(FetchRequest, 'post').and.callFake((testUrl,params,options) => {
-           expect(testUrl).toBe(url+"/tempLayersSet.json?");
+           expect(testUrl).toBe(url+"/tempLayersSet");
            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
            expect(paramsObj[0].subLayers.layers.length).toEqual(1);
            expect(paramsObj[0].type).toBe("UGC");
@@ -166,7 +166,7 @@ describe('openlayers_LayerInfoService', () => {
         });
         var service = new LayerInfoService(url);
         spyOn(FetchRequest, 'put').and.callFake((testUrl,params,options) => {
-            expect(testUrl).toBe(url+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json?");
+            expect(testUrl).toBe(url+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].subLayers.layers.length).toEqual(1);
             expect(paramsObj[0].type).toBe("UGC");
@@ -202,7 +202,7 @@ describe('openlayers_LayerInfoService', () => {
             layerInfo: layers
         });
         spyOn(FetchRequest, 'put').and.callFake((testUrl,params,options) => {
-            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World.json");
+            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.ugcLayerType).toBe("VECTOR");
             expect(paramsObj.caption).toBe("continent_T@World");

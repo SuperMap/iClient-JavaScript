@@ -19,7 +19,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #toolbar {
@@ -101,7 +100,7 @@
             params = new SuperMap.REST.DatasetSurfaceAnalystParameters({
                 extractParameter: surfaceAnalystParameters,
                 dataset: "SamplesP@Interpolation",
-                resolution: 3000,
+                resolution: 9000,
                 zValueFieldName: "AVG_TMP"
             });
         surfaceAnalystService.events.on({

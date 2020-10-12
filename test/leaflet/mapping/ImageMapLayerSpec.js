@@ -2,6 +2,7 @@ import {imageMapLayer} from '../../../src/leaflet/mapping/ImageMapLayer';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
 import {getQueryValue} from '../../tool/utils';
+import {mockInitImage} from '../../tool/mock_leaflet';
 
 var url = GlobeParameter.WorldURL;
 describe('leaflet_ImageMapLayer', () => {
@@ -16,6 +17,7 @@ describe('leaflet_ImageMapLayer', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
+        mockInitImage();
         map = L.map('map', {
             center: [0, 0],
             maxZoom: 18,
@@ -121,7 +123,7 @@ describe('leaflet_ImageMapLayer', () => {
     it('getImageUrl', () => {
         imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
-        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
+        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
     });
 
     it('getImageUrl_tilePoxy', () => {
@@ -134,12 +136,12 @@ describe('leaflet_ImageMapLayer', () => {
         var oldUrl, newUrl;
         imageLayer.on('load', () => {
             oldUrl = imageLayer._currentImage._url;
-            expect(oldUrl).toBe(url + '/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-19567879.241005123%2C%22y%22%3A-19567879.24100514%7D%2C%22rightTop%22%3A%7B%22x%22%3A19567879.241005123%2C%22y%22%3A19567879.241005138%7D%7D&width=500&height=500&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false');
+            expect(oldUrl).toBe(url + '/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-19567879.241005123%2C%22y%22%3A-19567879.24100514%7D%2C%22rightTop%22%3A%7B%22x%22%3A19567879.241005123%2C%22y%22%3A19567879.241005138%7D%7D&width=500&height=500');
             map.zoomIn();
             imageLayer.off('load');
             imageLayer.on('load', () => {
                 newUrl = imageLayer._currentImage._url;
-                expect(newUrl).toBe(url + '/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-9783939.620502561%2C%22y%22%3A-9783939.620502561%7D%2C%22rightTop%22%3A%7B%22x%22%3A9783939.620502561%2C%22y%22%3A9783939.620502565%7D%7D&width=500&height=500&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false');
+                expect(newUrl).toBe(url + '/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-9783939.620502561%2C%22y%22%3A-9783939.620502561%7D%2C%22rightTop%22%3A%7B%22x%22%3A9783939.620502561%2C%22y%22%3A9783939.620502565%7D%7D&width=500&height=500');
                 expect(oldUrl).not.toEqual(newUrl);
                 done();
             });
@@ -176,7 +178,7 @@ describe('leaflet_ImageMapLayer', () => {
     it('getImageUrl_t', () => {
         imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
-        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
+        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
 
         var tempOptions = {
             cacheEnabled: false

@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from './CommonServiceBase';
-import {FacilityAnalystSources3DParameters} from './FacilityAnalystSources3DParameters';
+import { SuperMap } from '../SuperMap';
+import { CommonServiceBase } from './CommonServiceBase';
+import { Util } from '../commontypes/Util';
+import { FacilityAnalystSources3DParameters } from './FacilityAnalystSources3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystSources3DService
@@ -49,9 +50,8 @@ export class FacilityAnalystSources3DService extends CommonServiceBase {
         if (!(params instanceof FacilityAnalystSources3DParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "sources" : "/sources") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'sources');
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

@@ -42,6 +42,7 @@ import {
     FeatureService,
     FieldService,
     GridCellInfosService,
+    GeoprocessingService,
     LayerInfoService,
     MapService,
     MeasureService,
@@ -52,7 +53,8 @@ import {
     ServiceBase,
     SpatialAnalystService,
     ThemeService,
-    TrafficTransferAnalystService
+    TrafficTransferAnalystService,
+    WebPrintingJobService
 } from './services';
 
 if (window && window.ol) {
@@ -100,6 +102,7 @@ if (window && window.ol) {
     ol.supermap.FeatureService = FeatureService;
     ol.supermap.FieldService = FieldService;
     ol.supermap.GridCellInfosService = GridCellInfosService;
+    ol.supermap.GeoprocessingService = GeoprocessingService;
     ol.supermap.LayerInfoService = LayerInfoService;
     ol.supermap.MapService = MapService;
     ol.supermap.MeasureService = MeasureService;
@@ -111,6 +114,7 @@ if (window && window.ol) {
     ol.supermap.SpatialAnalystService = SpatialAnalystService;
     ol.supermap.ThemeService = ThemeService;
     ol.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
+    ol.supermap.WebPrintingJobService = WebPrintingJobService;
 }
 
 export * from './control';
@@ -193,6 +197,12 @@ export {
     IPortalShareEntity,
     IPortalServiceBase,
     IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam,
     //Online
     Online,
     OnlineData,

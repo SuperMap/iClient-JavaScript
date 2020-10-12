@@ -203,6 +203,67 @@ describe('leaflet_AddressMatchService', () => {
             }
         });
     });
+    it('code_customQueryParam', (done) => {
+        var geoCodingParams = new GeoCodingParameter({
+            address: '公司',
+            fromIndex: 0,
+            toIndex: 10,
+            filters: '北京市,海淀区',
+            prjCoordSys: '{epsgcode:4326}',
+            maxReturn: -1
+        });
+        var geoCodingService = addressMatchService(addressMatchURL +'?key=123', options);
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+             expect(testUrl).toBe(addressMatchURL + "/geocoding?key=123");
+             return Promise.resolve(new Response(codeSuccessEscapedJson));
+         }); 
+        
+         geoCodingService.code(geoCodingParams, (result) => {
+            serviceResult = result;
+             try {
+                 geoCodingService.destroy();
+                 done();
+             } catch (exception) {
+                 console.log("'successEvent:code'案例失败：" + exception.name + ":" + exception.message);
+                 geoCodingService.destroy();
+                 expect(false).toBeTruthy();
+                 done();
+             }
+        });
+    });
+
+    it('decode_customQueryParam', (done) => {
+        var GeoDecodingParams = new GeoDecodingParameter({
+            x: 116.31740122415627,
+            y: 39.92311315752059,
+            fromIndex: 0,
+            toIndex: 5,
+            filters: '北京市,海淀区',
+            prjCoordSys: '{epsgcode:4326}',
+            maxReturn: -1,
+            geoDecodingRadius: 500
+        });
+        var GeoDecodingService = addressMatchService(addressMatchURL+'?key=123', options);
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL + "/geodecoding?key=123");
+            return Promise.resolve(new Response(decodeSuccessEscapedJson));
+        });
+
+        GeoDecodingService.decode(GeoDecodingParams, (result) => {
+            serviceResult = result;
+            try {
+                GeoDecodingService.destroy();
+                done();
+            } catch (exception) {
+                console.log("'successEvent:decode'案例失败：" + exception.name + ":" + exception.message);
+                GeoDecodingService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
 });
 
 

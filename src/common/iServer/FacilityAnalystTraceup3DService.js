@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DParameters';
 
@@ -51,9 +52,8 @@ export class FacilityAnalystTraceup3DService extends CommonServiceBase {
         if (!(params instanceof FacilityAnalystTraceup3DParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "traceupresult" : "/traceupresult") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'traceupresult');
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

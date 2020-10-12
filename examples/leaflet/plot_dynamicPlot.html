@@ -22,7 +22,6 @@
             left: 250px;
             right: 0px;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #plottingMenu {
@@ -295,6 +294,7 @@
     function loadSimulationMap() {
         plotting.getSitDataManager().openSmlFileOnServer("situationMap", function(evt){
             drawControl.setDrawingLayer(evt.sitDataLayers[0]);
+            plottingLayer = evt.sitDataLayers[0];
         });
     }
 

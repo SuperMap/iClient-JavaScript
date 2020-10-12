@@ -1,10 +1,11 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
-import {FindTSPPathsParameters} from './FindTSPPathsParameters';
-import {GeoJSON} from '../format/GeoJSON';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
+import { FindTSPPathsParameters } from './FindTSPPathsParameters';
+import { GeoJSON } from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindTSPPathsService
@@ -57,9 +58,8 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
         if (!(params instanceof FindTSPPathsParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "tsppath" : "/tsppath") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'tsppath');
         jsonObject = {
             parameter: SuperMap.Util.toJSON(params.parameter),
             endNodeAssigned: params.endNodeAssigned,

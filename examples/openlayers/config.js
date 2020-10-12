@@ -404,6 +404,19 @@ var exampleConfig = {
                     fileName: "dataFlowService"
                 }]
             },
+            "webPrinting": {
+                name: "Web 打印",
+                name_en: "Web Printing",
+                content: [
+                    {
+                        name: "Web 地图打印",
+                        name_en: "Web Map Print",
+                        version: "10.1.0",
+                        thumbnail: "webPrintingJob.png",
+                        fileName: "webPrintingJob"
+                    }
+                ]
+            },
             "security": {
                 name: "安全",
                 name_en: "Security",
@@ -458,8 +471,52 @@ var exampleConfig = {
                     name: "我的资源",
                     name_en: "My Resource",
                     version: "10.0.1",
-                    thumbnail: "l_iPortalQueryResources.png",
+                    thumbnail: "ol_iPortalQueryMyResources.png",
                     fileName: "iPortalQueryMyResources"
+                }]
+            },
+            "ip_batchaddresource": {
+                name: "添加地图/场景",
+                name_en: "Batch Add Map/Scene",
+                content: [{
+                    name: "添加地图/场景",
+                    name_en: "Batch Add Map/Scene",
+                    version: "10.1.0",
+                    thumbnail: "ol_iPortalAddResource.png",
+                    fileName: "iPortalBatchAddResource"
+                }]
+            },
+            "ip_uploaddata": {
+                name: "上传数据",
+                name_en: "Upload Data",
+                content: [{
+                    name: "上传数据",
+                    name_en: "Upload Data",
+                    version: "10.1.0",
+                    thumbnail: "ol_iPortalUploadData.png",
+                    fileName: "iPortalUploadData"
+                }]
+            },
+            "ip_registerdata": {
+                name: "注册数据",
+                name_en: "Register Data",
+                content: [{
+                    name: "注册数据",
+                    name_en: "Register Data",
+                    version: "10.1.0",
+                    thumbnail: "ol_iPortalRegisterData.png",
+                    fileName: "iPortalRegisterData"
+                }]
+            },
+            "ip_publishdata": {
+                name: "发布数据",
+                name_en: "Publish Data",
+                content: [{
+                    name: "发布数据",
+                    name_en: "Publish Data",
+                    version: "10.1.0",
+                    thumbnail: "ol_iportalPublishData.png",
+                    fileName: "iPortalPublishData"
                 }]
             }
         }
@@ -552,10 +609,10 @@ var exampleConfig = {
                     thumbnail: "graphiclayer_canvas.png",
                     fileName: "07_graphiclayer_canvas"
                 }, {
-                    name: "纽约出租车18万点-webgl渲染",
-                    name_en: "webgl rendering",
+                    name: "纽约出租车18万点-canvas渲染",
+                    name_en: "canvas rendering",
                     thumbnail: "graphiclayer_webgl.png",
-                    fileName: "07_graphiclayer_webgl"
+                    fileName: "07_graphiclayer_circle"
                 }, {
                     name: "纽约145万出租车-webgl",
                     name_en: "picture drawing of 1.45 million NY taxis",
@@ -913,7 +970,19 @@ var exampleConfig = {
                     thumbnail: "ol_graphThemeLayer.png",
                     fileName: "graphThemeLayer"
                 }]
-            }
+            },
+            "mask": {
+                name: "掩膜",
+                name_en: "Mask",
+                version: "10.1.0",
+                content: [{
+                    name: "图层掩膜",
+                    name_en: "Layer Mask",
+                    version: "10.1.0",
+                    thumbnail: "mask.png",
+                    fileName: "mask"
+                }]
+            },
         }
     },
     "plot": {

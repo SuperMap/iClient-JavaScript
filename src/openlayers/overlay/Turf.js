@@ -19,7 +19,7 @@ export class Turf extends VectorSource {
         var options = opt_options ? opt_options : {};
 
         super({
-            attributions: options.attributions || "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "<span>© <a href='https://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             features: options.features,
             format: options.format,
             extent: options.extent,

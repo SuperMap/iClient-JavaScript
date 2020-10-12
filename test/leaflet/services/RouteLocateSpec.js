@@ -38,7 +38,7 @@ describe('leaflet_SpatialAnalystService_routeLocate', () => {
         var routeLocatorService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/routelocator.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/routelocator?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.sourceRoute.type).toBe("LINEM");
             expect(options).not.toBeNull();

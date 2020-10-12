@@ -78,7 +78,7 @@ describe('MathExpressionAnalysisService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/mathanalyst?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(paramsObj.resultGridName).toBe("MathExpression_commonTest");
@@ -121,7 +121,7 @@ describe('MathExpressionAnalysisService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/XX@Jingjin/mathanalyst.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/XX@Jingjin/mathanalyst?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(paramsObj.resultGridName).toBe("MathExpressionFail_commonTest");

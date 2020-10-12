@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
-import {UpdateEdgeWeightParameters} from './UpdateEdgeWeightParameters';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
+import { UpdateEdgeWeightParameters } from './UpdateEdgeWeightParameters';
 
 /**
  * @class SuperMap.UpdateEdgeWeightService
@@ -60,12 +61,9 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
             return;
         }
 
-        var me = this, end = me.url.substr(me.url.length - 1, 1);
+        var me = this;
         var paramStr = me.parse(params);
-        if (end === "/") {
-            me.url.splice(me.url.length - 1, 1);
-        }
-        me.url = me.url + paramStr + ".json?";
+        me.url = Util.urlPathAppend(me.url, paramStr);
         var data = params.edgeWeight ? params.edgeWeight : null;
         me.request({
             method: "PUT",

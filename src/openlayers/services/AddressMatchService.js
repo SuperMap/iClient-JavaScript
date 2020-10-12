@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
+import {AddressMatchService as CommonAddressMatchService, CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.AddressMatchService
@@ -16,7 +16,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @param {string} url - 与客户端交互的服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -48,7 +48,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
     }
 
     /**
@@ -71,7 +71,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
     }
 
 }

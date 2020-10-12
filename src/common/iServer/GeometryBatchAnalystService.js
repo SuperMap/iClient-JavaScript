@@ -50,13 +50,8 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
      */
     processAsync(parameters) {
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-        me.url += 'geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true';
-
+        me.url = Util.urlPathAppend(me.url, 'geometry/batchanalyst');
+        me.url = Util.urlAppend(me.url, 'returnContent=true&ignoreAnalystParam=true');
         var parameterObjects = me._processParams(parameters);
         var jsonParameters = Util.toJSON(parameterObjects);
 

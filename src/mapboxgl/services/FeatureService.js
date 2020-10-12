@@ -12,7 +12,8 @@ import {
     GetFeaturesByBoundsService,
     GetFeaturesByBufferService,
     GetFeaturesByGeometryService,
-    EditFeaturesService
+    EditFeaturesService,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -31,7 +32,7 @@ import {
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 export class FeatureService extends ServiceBase {
     constructor(url, options) {
@@ -174,7 +175,7 @@ export class FeatureService extends ServiceBase {
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url += '/datasources/' + dataSourceName + '/datasets/' + dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,

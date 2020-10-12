@@ -28,7 +28,7 @@ import {
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -71,24 +71,13 @@ export class QueryService extends CommonServiceBase {
         }
 
         this.CLASS_NAME = "SuperMap.QueryService";
-        var me = this,
-            end;
-        if (!me.url) {
+        if (!this.url) {
             return;
         }
         if (options && options.format) {
-            me.format = options.format.toUpperCase();
+            this.format = options.format.toUpperCase();
         }
-
-        end = me.url.substr(me.url.length - 1, 1);
-
-        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (this.format==="geojson") {
-        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-        // } else {
-        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-        // }
-        me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
+        this.url = Util.urlPathAppend(this.url,'queryResults');
     }
 
     /**
@@ -118,12 +107,12 @@ export class QueryService extends CommonServiceBase {
 
         jsonParameters = me.getJsonParameters(params);
         if (me.returnContent) {
-            me.url += "returnContent=" + me.returnContent;
+            me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
         } else {
             //仅供三维使用 获取高亮图片的bounds
             returnCustomResult = params.returnCustomResult;
             if (returnCustomResult) {
-                me.url += "returnCustomResult=" + returnCustomResult;
+                me.url = Util.urlAppend(me.url, 'returnCustomResult=' + returnCustomResult);
             }
         }
         me.returnFeatureWithFieldCaption = params.returnFeatureWithFieldCaption;

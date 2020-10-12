@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-mapboxgl",
   "description": "",
-  "version": "10.0.1",
+  "version": "10.1.0",
   "keywords": [
     "SuperMap",
     "MapboxGL"
@@ -14,13 +14,13 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "echarts": "4.5.0",
-    "mapv": "2.0.43",
-    "mapbox-gl": "1.6.1",
+    "echarts": "4.9.0",
+    "mapv": "2.0.56",
+    "mapbox-gl": "1.12.0",
     "three": "0.92.0",
-    "xlsx": "0.15.4",
-    "@supermap/iclient-common": "10.0.1",
-    "canvg": "3.0.2",
+    "xlsx": "0.16.7",
+    "@supermap/iclient-common": "10.1.0",
+    "canvg": "3.0.6",
     "xml-js": "1.6.8"
   }
 }

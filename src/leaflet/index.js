@@ -75,6 +75,12 @@ import {
     IPortalShareEntity,
     IPortalServiceBase,
     IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam,
     //Online
     Online,
     OnlineData,
@@ -241,6 +247,18 @@ import {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService,
     //components
     FileTypes,
     FileConfig,
@@ -399,7 +417,9 @@ import {
     ThemeService,
     themeService,
     TrafficTransferAnalystService,
-    trafficTransferAnalystService
+    trafficTransferAnalystService,
+    WebPrintingJobService,
+    webPrintingJobService
 } from './services';
 
 import {
@@ -530,6 +550,12 @@ export {
     IPortalShareEntity,
     IPortalServiceBase,
     IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam,
     //Online
     Online,
     OnlineData,
@@ -696,6 +722,18 @@ export {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService,
     //components
     FileTypes,
     FileConfig,
@@ -851,5 +889,7 @@ export {
     ThemeService,
     themeService,
     TrafficTransferAnalystService,
-    trafficTransferAnalystService
+    trafficTransferAnalystService,
+    WebPrintingJobService,
+    webPrintingJobService
 };

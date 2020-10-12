@@ -1,4 +1,4 @@
-import { MapVRenderer } from '../../../../src/leaflet/overlay/mapV/MapVRenderer';
+import { MapVRenderer } from '../../../../src/leaflet/overlay/mapv/MapVRenderer';
 import { mapVLayer } from '../../../../src/leaflet/overlay/MapVLayer';
 import { utilCityCenter, DataSet } from 'mapv';
 

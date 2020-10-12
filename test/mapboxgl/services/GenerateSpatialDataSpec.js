@@ -45,7 +45,7 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.routeIDField).toBe("RouteID");
             expect(options).not.toBeNull();

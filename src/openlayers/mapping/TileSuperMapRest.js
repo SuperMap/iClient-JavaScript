@@ -1,17 +1,8 @@
 /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    Unit,
-    ServerType,
-    SecurityManager,
-    Credential,
-    CommonUtil,
-    ServerGeometry
-} from '@supermap/iclient-common';
-import {
-    Util
-} from '../core/Util';
+import { Unit, ServerType, SecurityManager, Credential, CommonUtil, ServerGeometry } from '@supermap/iclient-common';
+import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
 import Geometry from 'ol/geom/Geometry';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -26,7 +17,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
- * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled = true] - 是否使用服务端的缓存。
@@ -38,22 +29,22 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
- * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol/source/TileImage}
  */
 export class TileSuperMapRest extends TileImage {
-
     constructor(options) {
         options = options || {};
         if (options.url === undefined) {
             return;
         }
 
-        options.attributions = options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        options.attributions =
+            options.attributions ||
+            "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
-        options.format = options.format ? options.format : "png";
-        var layerUrl = options.url + "/tileImage." + options.format + "?";
+        options.format = options.format ? options.format : 'png';
 
         options.serverType = options.serverType || ServerType.ISERVER;
         super({
@@ -70,8 +61,6 @@ export class TileSuperMapRest extends TileImage {
             tileLoadFunction: options.tileLoadFunction,
             tilePixelRatio: options.tilePixelRatio,
             tileUrlFunction: tileUrlFunction,
-            url: options.url,
-            urls: options.urls,
             wrapX: options.wrapX !== undefined ? options.wrapX : false,
             cacheEnabled: options.cacheEnabled,
             layersID: options.layersID
@@ -85,31 +74,33 @@ export class TileSuperMapRest extends TileImage {
         this.tileSetsIndex = -1;
         this.tempIndex = -1;
         var me = this;
+        var layerUrl = CommonUtil.urlPathAppend(options.url, 'tileImage.' + options.format);
 
         function appendCredential(url, serverType) {
             var newUrl = url,
-                credential, value;
+                credential,
+                value;
             switch (serverType) {
                 case ServerType.IPORTAL:
                     value = SecurityManager.getToken(me._url);
-                    credential = value ? new Credential(value, "token") : null;
+                    credential = value ? new Credential(value, 'token') : null;
                     if (!credential) {
                         value = SecurityManager.getKey(me._url);
-                        credential = value ? new Credential(value, "key") : null;
+                        credential = value ? new Credential(value, 'key') : null;
                     }
                     break;
                 case ServerType.ONLINE:
                     value = SecurityManager.getKey(me._url);
-                    credential = value ? new Credential(value, "key") : null;
+                    credential = value ? new Credential(value, 'key') : null;
                     break;
                 default:
                     //iserver or others
                     value = SecurityManager.getToken(me._url);
-                    credential = value ? new Credential(value, "token") : null;
+                    credential = value ? new Credential(value, 'token') : null;
                     break;
             }
             if (credential) {
-                newUrl += "&" + credential.getUrlParameters();
+                newUrl = CommonUtil.urlAppend(newUrl, credential.getUrlParameters());
             }
             return newUrl;
         }
@@ -122,53 +113,52 @@ export class TileSuperMapRest extends TileImage {
             var me = this,
                 params = {};
 
-            params["redirect"] = options.redirect !== undefined ? options.redirect : false;
+            params['redirect'] = options.redirect !== undefined ? options.redirect : false;
             //切片是否透明
-            params["transparent"] = options.transparent !== undefined ? options.transparent : true;
-            params["cacheEnabled"] = !(options.cacheEnabled === false);
+            params['transparent'] = options.transparent !== undefined ? options.transparent : true;
+            params['cacheEnabled'] = !(options.cacheEnabled === false);
             //存储一个cacheEnabled参数
-            me.cacheEnabled = params["cacheEnabled"];
-            params["_cache"] = params["cacheEnabled"];
+            me.cacheEnabled = params['cacheEnabled'];
+            params['_cache'] = params['cacheEnabled'];
 
             //设置切片原点
             if (this.origin) {
-                params["origin"] = JSON.stringify({
+                params['origin'] = JSON.stringify({
                     x: this.origin[0],
                     y: this.origin[1]
                 });
             }
 
             if (options.prjCoordSys) {
-                params["prjCoordSys"] = JSON.stringify(options.prjCoordSys);
+                params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
             }
 
             if (options.layersID) {
-                params["layersID"] = options.layersID.toString();
+                params['layersID'] = options.layersID.toString();
             }
-
 
             if (options.clipRegion instanceof Geometry) {
                 options.clipRegionEnabled = true;
                 options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
                 options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
-                params["clipRegionEnabled"] = options.clipRegionEnabled;
-                params["clipRegion"] = JSON.stringify(options.clipRegion);
+                params['clipRegionEnabled'] = options.clipRegionEnabled;
+                params['clipRegion'] = JSON.stringify(options.clipRegion);
             }
 
             if (!options.overlapDisplayed) {
-                params["overlapDisplayed"] = false;
+                params['overlapDisplayed'] = false;
                 if (options.overlapDisplayedOptions) {
-                    params["overlapDisplayedOptions"] = me.overlapDisplayedOptions.toString();
+                    params['overlapDisplayedOptions'] = me.overlapDisplayedOptions.toString();
                 }
             } else {
-                params["overlapDisplayed"] = true;
+                params['overlapDisplayed'] = true;
             }
 
             if (params.cacheEnabled && options.tileversion) {
-                params["tileversion"] = options.tileversion.toString();
+                params['tileversion'] = options.tileversion.toString();
             }
             if (options.rasterfunction) {
-                params["rasterfunction"] = JSON.stringify(options.rasterfunction);
+                params['rasterfunction'] = JSON.stringify(options.rasterfunction);
             }
 
             return params;
@@ -191,23 +181,11 @@ export class TileSuperMapRest extends TileImage {
          * @description 获取新建图层地址。
          */
         function createLayerUrl() {
-            this._layerUrl = layerUrl + encodeURI(getRequestParamString.call(this));
+            this.requestParams = this.requestParams || getAllRequestParams.call(this);
+            this._layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(this.requestParams));
             //为url添加安全认证信息片段
             this._layerUrl = appendCredential(this._layerUrl, options.serverType);
             return this._layerUrl;
-        }
-
-        /**
-         * @function  ol.source.TileSuperMapRest.prototype.getRequestParamString
-         * @description 获取请求参数的字符串。
-         */
-        function getRequestParamString() {
-            this.requestParams = this.requestParams || getAllRequestParams.call(this);
-            var params = [];
-            for (var key in this.requestParams) {
-                params.push(key + "=" + this.requestParams[key]);
-            }
-            return params.join('&');
         }
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
@@ -219,12 +197,10 @@ export class TileSuperMapRest extends TileImage {
                     }
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
-                        // me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
                         me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892], options.maxZoom, options.minZoom);
                         me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
-                        // me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
                         me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90], options.maxZoom, options.minZoom);
                         me.extent = [-180, -90, 180, 90];
                     }
@@ -233,7 +209,7 @@ export class TileSuperMapRest extends TileImage {
             me.origin = me.tileGrid.getOrigin(0);
             var z = tileCoord[0];
             var x = tileCoord[1];
-            var y = ['4', '5'].includes(Util.getOlVersion()) ? - tileCoord[2] - 1 : tileCoord[2];
+            var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
             var unit = projection.getUnits() || Unit.DEGREE;
@@ -248,17 +224,20 @@ export class TileSuperMapRest extends TileImage {
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = olSize.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            var url = layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            var url =
+                layerUrl +
+                encodeURI(
+                    '&x=' + x + '&y=' + y + '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&scale=' + scale
+                );
             //支持代理
             if (me.tileProxy) {
                 url = me.tileProxy + encodeURIComponent(url);
             }
             if (!me.cacheEnabled) {
-                url += "&_t=" + new Date().getTime();
+                url += '&_t=' + new Date().getTime();
             }
             return url;
         }
-
     }
 
     /**
@@ -348,7 +327,7 @@ export class TileSuperMapRest extends TileImage {
      */
     mergeTileVersionParam(version) {
         if (version) {
-            this.requestParams["tileversion"] = version;
+            this.requestParams['tileversion'] = version;
             this._paramsChanged = true;
             this.refresh();
             return true;
@@ -372,8 +351,8 @@ export class TileSuperMapRest extends TileImage {
         function getResolutions() {
             var level = 22;
             var dpi = 96;
-            var width = (extent[2] - extent[0]);
-            var height = (extent[3] - extent[1]);
+            var width = extent[2] - extent[0];
+            var height = extent[3] - extent[1];
             var tileSize = width >= height ? width : height;
             var maxReolution;
             if (tileSize === width) {

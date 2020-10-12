@@ -17,7 +17,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存，true 表示使用服务端的缓存。
@@ -30,6 +30,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @extends {ol/source/TileImage}
  */
 export class ImageSuperMapRest extends TileImage {
@@ -38,10 +39,10 @@ export class ImageSuperMapRest extends TileImage {
       return;
     }
     options.attributions =
-      options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
+      options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>"
 
-    options.format = options.format ? options.format : 'png';
-    var layerUrl = options.url + '/image.' + options.format + '?';
+    options.format = options.format ? options.format : 'png'
+    var layerUrl = CommonUtil.urlPathAppend(options.url, "image." + options.format);
 
     options.serverType = options.serverType || ServerType.ISERVER;
     //为url添加安全认证信息片段
@@ -51,7 +52,7 @@ export class ImageSuperMapRest extends TileImage {
      * @function ol.source.ImageSuperMapRest.prototype.appendCredential
      * @description 添加凭据。
      * @param {string} url - 地址。
-     * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
+     * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
      * @returns {string} 添加生成后的新地址。
      */
     function appendCredential(id, url, serverType) {
@@ -78,53 +79,52 @@ export class ImageSuperMapRest extends TileImage {
           break;
       }
       if (credential) {
-        newUrl += '&' + credential.getUrlParameters();
+        newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
       }
       return newUrl;
     }
 
+    const params = {};
     //切片是否透明
     var transparent = options.transparent !== undefined ? options.transparent : true;
-    layerUrl += '&transparent=' + transparent;
+    params['transparent'] = transparent;
 
     //是否使用缓存吗，默认为true
     var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;
-    layerUrl += '&cacheEnabled=' + cacheEnabled;
+    params['cacheEnabled'] = cacheEnabled;
 
     //如果有layersID，则是在使用专题图
     if (options.layersID !== undefined) {
-      layerUrl += '&layersID=' + options.layersID;
+      params['layersID'] = options.layersID;
     }
     //是否重定向,默认为false
     var redirect = false;
     if (options.redirect !== undefined) {
       redirect = options.redirect;
     }
-    layerUrl += '&redirect=' + redirect;
+    params['redirect'] = redirect;
 
     if (options.prjCoordSys) {
-      layerUrl += '&prjCoordSys=' + JSON.stringify(options.prjCoordSys);
+      params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
     }
     if (options.clipRegionEnabled && options.clipRegion instanceof Geometry) {
       options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
       options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
-      layerUrl +=
-        '&clipRegionEnabled=' + options.clipRegionEnabled + '&clipRegion=' + JSON.stringify(options.clipRegion);
+      params['clipRegionEnabled'] = options.clipRegionEnabled;
+      params['clipRegion'] = JSON.stringify(options.clipRegion);
     }
     if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
       // options.overlapDisplayedOptions = options.overlapDisplayedOptions;
-      layerUrl +=
-        '&overlapDisplayed=' +
-        options.overlapDisplayed +
-        '&overlapDisplayedOptions=' +
-        options.overlapDisplayedOptions.toString();
+      params['overlapDisplayed'] = options.overlapDisplayed;
+      params['overlapDisplayedOptions'] = options.overlapDisplayedOptions.toString();
     }
     if (cacheEnabled === true && options.tileversion) {
-      layerUrl += '&tileversion=' + options.tileversion;
+      params['tileversion'] = options.tileversion;
     }
     if (options.rasterfunction) {
-      layerUrl += '&rasterfunction=' + JSON.stringify(options.rasterfunction);
+      params['rasterfunction'] = JSON.stringify(options.rasterfunction);
     }
+    layerUrl = CommonUtil.urlAppend(encodeURI(layerUrl), CommonUtil.getParameterString(params));
     super({
       attributions: options.attributions,
       cacheSize: options.cacheSize,
@@ -139,8 +139,6 @@ export class ImageSuperMapRest extends TileImage {
       tileLoadFunction: options.tileLoadFunction,
       tilePixelRatio: options.tilePixelRatio,
       tileUrlFunction: tileUrlFunction,
-      url: options.url,
-      urls: options.urls,
       wrapX: options.wrapX !== undefined ? options.wrapX : false,
       cacheEnabled: options.cacheEnabled,
       layersID: options.layersID
@@ -190,27 +188,28 @@ export class ImageSuperMapRest extends TileImage {
       }
       var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
       var tileSize = olSize.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-      var url = encodeURI(
-        layerUrl +
-        '&width=' +
-        tileSize[0] +
-        '&height=' +
-        tileSize[1] +
-        '&viewBounds=' +
-        '{"leftBottom" : {"x":' +
-        tileExtent[0] +
-        ',"y":' +
-        tileExtent[1] +
-        '},"rightTop" : {"x":' +
-        tileExtent[2] +
-        ',"y":' +
-        tileExtent[3] +
-        '}}'
-      );
+      var url =
+          layerUrl +
+          encodeURI(
+              '&width=' +
+                  tileSize[0] +
+                  '&height=' +
+                  tileSize[1] +
+                  '&viewBounds=' +
+                  '{"leftBottom" : {"x":' +
+                  tileExtent[0] +
+                  ',"y":' +
+                  tileExtent[1] +
+                  '},"rightTop" : {"x":' +
+                  tileExtent[2] +
+                  ',"y":' +
+                  tileExtent[3] +
+                  '}}'
+          );
 
       //支持代理
       if (me.tileProxy) {
-        url = me.tileProxy + encodeURIComponent(url);
+          url = me.tileProxy + encodeURIComponent(url);
       }
       //不启用缓存时启用时间戳
       if (!me.cacheEnabled) {

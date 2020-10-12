@@ -40,7 +40,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/burstAnalyse.json?");
+            expect(testUrl).toBe(url + "/burstAnalyse");
             return Promise.resolve(new Response(JSON.stringify(burstPipelineAnalyst)));
         });
         service.burstPipelineAnalyst(burstPipelineAnalystParams, (result) => {
@@ -74,7 +74,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(testUrl).toBe(url + "/weightmatrix");
             return Promise.resolve(new Response(`[[0,42],[42,0]]`));
         });
         service.computeWeightMatrix(computeWeightMatrixParams, (result) => {
@@ -112,7 +112,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/closestfacility.json?");
+            expect(testUrl).toBe(url + "/closestfacility");
             return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_True)));
         });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
@@ -169,7 +169,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/closestfacility.json?");
+            expect(testUrl).toBe(url + "/closestfacility");
             return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_False)));
         });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
@@ -304,7 +304,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/location.json?");
+            expect(testUrl).toBe(url + "/location");
             return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
         });
         service.findLocation(findLocationParams, (result) => {
@@ -371,7 +371,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/path.json?");
+            expect(testUrl).toBe(url + "/path");
             return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
         });
         service.findPath(findPathParameter, (result) => {
@@ -459,7 +459,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/tsppath.json?");
+            expect(testUrl).toBe(url + "/tsppath");
             return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
         });
         service.findTSPPaths(findTSPPathsParameter, (result) => {
@@ -542,7 +542,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/mtsppath.json?");
+            expect(testUrl).toBe(url + "/mtsppath");
             return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)));
         });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
@@ -629,7 +629,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/servicearea.json?");
+            expect(testUrl).toBe(url + "/servicearea");
             return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)));
         });
         service.findServiceAreas(findServiceAreasParams, (result) => {
@@ -703,7 +703,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("PUT");
-            expect(testUrl).toBe(url + "/edgeweight/20/fromnode/26/tonode/109/weightfield/time.json?");
+            expect(testUrl).toBe(url + "/edgeweight/20/fromnode/26/tonode/109/weightfield/time");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.updateEdgeWeight(updateEdgeWeightParams, (result) => {
@@ -740,7 +740,7 @@ describe('leaflet_NetworkAnalystService', () => {
         var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("PUT");
-            expect(testUrl).toBe(url + "/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost.json?");
+            expect(testUrl).toBe(url + "/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.updateTurnNodeWeight(parameters, (result) => {

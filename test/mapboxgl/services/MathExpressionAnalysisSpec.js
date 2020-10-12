@@ -33,7 +33,7 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(options).not.toBeNull();
@@ -69,7 +69,7 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(options).not.toBeNull();

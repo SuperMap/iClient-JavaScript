@@ -83,7 +83,7 @@ describe('ComputeWeightMatrixService', () => {
 
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(testUrl).toBe(url + "/weightmatrix");
             expect(params.nodes.length).toBe(83);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[[0,53],[53,0]]`));
@@ -139,7 +139,7 @@ describe('ComputeWeightMatrixService', () => {
 
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(testUrl).toBe(url + "/weightmatrix");
             expect(params.nodes.length).toBe(33);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`));
@@ -225,7 +225,7 @@ describe('ComputeWeightMatrixService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(testUrl).toBe(url + "/weightmatrix");
             expect(params).not.toBeNull();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findWeightMatrix 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`));

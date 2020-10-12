@@ -101,7 +101,7 @@ describe('RouteLocatorService', () => {
         });
         var routeLocatorService = initRouteLocatorService(spatialAnalystURL,routeLocatorFailed,routeLocatorCompleted);
         spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
-            expect(url).toBe(spatialAnalystURL + "/geometry/routelocator.json?returnContent=true");
+            expect(url).toBe(spatialAnalystURL + "/geometry/routelocator?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.type).toBe("POINT");
@@ -170,7 +170,7 @@ describe('RouteLocatorService', () => {
         });
         var routeLocatorService = initRouteLocatorService(spatialAnalystURL,routeLocatorFailed,routeLocatorCompleted);
         spyOn(FetchRequest, 'post').and.callFake((url, params) => {
-            expect(url).toBe(spatialAnalystURL + "/geometry/routelocator.json?returnContent=true");
+            expect(url).toBe(spatialAnalystURL + "/geometry/routelocator?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.type).toBe("LINE");
@@ -179,6 +179,64 @@ describe('RouteLocatorService', () => {
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":3617.806369901496,"y":-6670.830929417594},"parts":[3],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":3667.3776818100096,"y":-6671.734168881392},{"x":3617.806369901496,"y":-6670.830929417594},{"x":3582.922419754957,"y":-6691.249636357378}]},"succeed":true,"message":null}`));
         });
         routeLocatorService.processAsync(routeLocatorParameters_line);
+    });
+    it('processAsync_customQueryParam', (done) => {
+        var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+        var routeLocatorCompleted = (routeLocatorEventArgs) => {
+            routeLocatorEventArgsSystem = routeLocatorEventArgs;
+            try {
+                routeLocatorService.destroy();
+                routeLocatorParameters_point.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("RouteLocatorService_" + exception.name + ":" + exception.message);
+                routeLocatorService.destroy();
+                routeLocatorParameters_point.destroy();
+                done();
+            }
+        };
+        var routeLocatorFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var routeLocatorParameters_point = new RouteLocatorParameters({
+            "sourceRoute": {
+                "type": "LINEM",
+                "parts": [4],
+                "points": [
+                    {
+                        "measure": 0,
+                        "y": -6674.466867067764,
+                        "x": 3817.3527876130133
+                    },
+                    {
+                        "measure": 199.57954019411724,
+                        "y": -6670.830929417594,
+                        "x": 3617.806369901496
+                    },
+                    {
+                        "measure": 609.3656478634477,
+                        "y": -6877.837541432356,
+                        "x": 3264.1498746678444
+                    },
+                    {
+                        "measure": 936.0174126282958,
+                        "y": -7038.687780615184,
+                        "x": 2979.846206068903
+                    }
+                ]
+            },
+            "type": "POINT",
+            "measure": 10,
+            "offset": 3,
+            "isIgnoreGap": true
+        });
+        var routeLocatorService = initRouteLocatorService(spatialAnalystURL + '?key=123',routeLocatorFailed,routeLocatorCompleted);
+        spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
+            expect(url).toBe(spatialAnalystURL + "/geometry/routelocator?key=123&returnContent=true");
+            return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":3807.299793262419,"y":-6677.2841893047325},"parts":[1],"style":null,"prjCoordSys":null,"id":0,"type":"POINT","partTopo":null,"points":[{"x":3807.299793262419,"y":-6677.2841893047325}]},"succeed":true,"message":null}`));
+        });
+        routeLocatorService.processAsync(routeLocatorParameters_point);
     });
 });
 

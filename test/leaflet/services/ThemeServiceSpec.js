@@ -96,7 +96,7 @@ describe('leaflet_ThemeService', () => {
         var themeDotDensityService = themeService(WorldURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(WorldURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(WorldURL + "/tempLayersSet");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].subLayers.layers[0].theme.type).toBe("DOTDENSITY");
             expect(paramsObj[0].subLayers.layers[0].theme.dotExpression).toBe("Pop_1994");
@@ -158,7 +158,7 @@ describe('leaflet_ThemeService', () => {
         var themeGraduatedSymbolService = themeService(ChinaURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(ChinaURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_53ac9e8fb44b4fee92cc0bd0d503e00c","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_53ac9e8fb44b4fee92cc0bd0d503e00c.json"}`));
         });
@@ -240,7 +240,7 @@ describe('leaflet_ThemeService', () => {
         var themeGraphService = themeService(jingjinPopulationURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_7042d3977d3440b2a02375d7bde4a640","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_7042d3977d3440b2a02375d7bde4a640.json"}`));
         });
@@ -323,7 +323,7 @@ describe('leaflet_ThemeService', () => {
         var themeGridRangeService = themeService(jingjinPopulationURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496.json"}`));
         });
@@ -416,7 +416,7 @@ describe('leaflet_ThemeService', () => {
         var themeLableService = themeService(WorldURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(WorldURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(WorldURL + "/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_aaffb9a238aa4ab88cca495fbca6991b","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_aaffb9a238aa4ab88cca495fbca6991b.json"}`));
         });
@@ -482,7 +482,7 @@ describe('leaflet_ThemeService', () => {
         var themeRangeService = themeService(ChinaURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(ChinaURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_689a8864220f484ea694c6f7d60ca3cb","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_689a8864220f484ea694c6f7d60ca3cb.json"}`));
         });
@@ -547,7 +547,7 @@ describe('leaflet_ThemeService', () => {
         var themeUniqueService = themeService(ChinaURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(ChinaURL + "/tempLayersSet.json?");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7.json"}`));
         });

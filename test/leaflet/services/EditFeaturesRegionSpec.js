@@ -32,7 +32,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var addFeaturesService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?returnContent=true");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].geometry.type).toBe("REGION");
             expect(options).not.toBeNull();
@@ -77,7 +77,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var addFeaturesService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].geometry.type).toBe("REGION");
             expect(options).not.toBeNull();
@@ -121,7 +121,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var deleteFeaturesService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?ids=[115,116]");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features?ids=[115,116]");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -158,7 +158,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var getFeaturesByIDsService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.datasetNames[0]).toContain("Jingjin:Landuse_R");
             expect(options).not.toBeNull();
@@ -198,7 +198,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             var updateFeaturesService = featureService(editServiceURL);
             spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
                 expect(method).toBe("PUT");
-                expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?");
+                expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features");
                 var paramsObj = JSON.parse(params.replace(/'/g, "\""));
                 expect(paramsObj[0].geometry.type).toBe("REGION");
                 expect(options).not.toBeNull();

@@ -74,7 +74,7 @@ describe('GeoRelationAnalystService', () => {
         var datasetRelationService =initGeoRelationAnalystService(generateSpatialDataCompleted,generateSpatialDataFailed);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.spatialRelationType).toBe("INTERSECT");
             expect(paramsObj.expectCount).toBe(20);
@@ -130,7 +130,7 @@ describe('GeoRelationAnalystService', () => {
         var datasetRelationService =initGeoRelationAnalystService(generateSpatialDataCompleted,generateSpatialDataFailed);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
             // expect(params).toContain("'expectCount':5");
             // expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
@@ -185,7 +185,7 @@ describe('GeoRelationAnalystService', () => {
         var datasetRelationService =initGeoRelationAnalystService(generateSpatialDataCompleted,generateSpatialDataFailed);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.spatialRelationType).toBe("INTERSECT");
             expect(options).not.toBeNull();

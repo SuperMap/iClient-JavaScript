@@ -8,7 +8,7 @@ describe('QueryService', () => {
     it("constructor", () => {
         var queryServices = initQueryService();
         expect(queryServices).not.toBeNull();
-        expect(queryServices.url).toEqual(url + "/queryResults.json?");
+        expect(queryServices.url).toEqual(url + "/queryResults");
     });
 
     it('headers', () => {

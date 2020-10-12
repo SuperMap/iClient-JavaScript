@@ -104,7 +104,7 @@ describe('RouteCalculateMeasureService', () => {
         });
         var calculateMeasureService = initCalculateMeasureService(spatialAnalystURL,routeCalculateMeasureFailed,routeCalculateMeasureCompleted);
         spyOn(FetchRequest, 'post').and.callFake((url, params) => {
-            expect(url).toBe(spatialAnalystURL + "/geometry/calculatemeasure.json?returnContent=true");
+            expect(url).toBe(spatialAnalystURL + "/geometry/calculatemeasure?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.sourceRoute.points.length).toEqual(4);

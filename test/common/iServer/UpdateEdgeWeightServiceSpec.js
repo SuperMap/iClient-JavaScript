@@ -71,7 +71,7 @@ describe('UpdateEdgeWeightService', () => {
         myUpdateEdgeWeightService = initUpdateEdgeWeightService_RegisterListener(networkAnalystURL,updateEdgeWeightFailed,updateEdgeWeightCompleted);
         expect(myUpdateEdgeWeightService).not.toBeNull();
         spyOn(FetchRequest, 'put').and.callFake((testUrl,params) => {
-            expect(testUrl).toBe(networkAnalystURL+"/edgeweight/20/fromnode/26/tonode/109/weightfield/time.json?");
+            expect(testUrl).toBe(networkAnalystURL+"/edgeweight/20/fromnode/26/tonode/109/weightfield/time");
             expect(params).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });

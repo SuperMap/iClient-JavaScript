@@ -180,5 +180,59 @@ describe('mapboxgl_AddressMatchService', () => {
             }
         });
     });
+    it('code_customQueryParam', (done) => {
+        var geoCodingParams = new GeoCodingParameter({
+            address: '公司',
+            fromIndex: 0,
+            toIndex: 10,
+            filters: '北京市,海淀区',
+            prjCoordSys: '{epsgcode:4326}',
+            maxReturn: -1
+        });
+        var service = new AddressMatchService(addressMatchURL + '?key=123');
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
+            expect(testUrl).toBe(addressMatchURL + "/geocoding?key=123");
+            return Promise.resolve(new Response(codeSuccessEscapedJson));
+        });
+        service.code(geoCodingParams, (result) => {
+            serviceResult = result;
+            try {
+                done();
+            } catch (exception) {
+                console.log("'code_successEvent'案例失败：" + exception.name + ":" + exception.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
+    it('decode_customQueryParam', (done) => {
+        var geoDecodingParams = new GeoDecodingParameter({
+            x: 116.31740122415627,
+            y: 39.92311315752059,
+            fromIndex: 0,
+            toIndex: 5,
+            filters: '北京市,海淀区',
+            prjCoordSys: '{epsgcode:4326}',
+            maxReturn: -1,
+            geoDecodingRadius: 500
+        });
+        var service = new AddressMatchService(addressMatchURL+ '?key=123');
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
+            expect(testUrl).toBe(addressMatchURL + "/geodecoding?key=123");
+            return Promise.resolve(new Response(decodeSuccessEscapedJson));
+        });
+
+        service.decode(geoDecodingParams, (result) => {
+            serviceResult = result;
+            try {
+                done();
+            } catch (exception) {
+                console.log("'decode_successEvent'案例失败：" + exception.name + ":" + exception.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
 });
 

@@ -110,7 +110,7 @@ describe('BurstPipelineAnalystService', () => {
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('GET');
-            expect(testUrl).toBe(url + "/burstAnalyse.json?");
+            expect(testUrl).toBe(url + "/burstAnalyse");
             expect(params.edgeID).toEqual(3434);
             expect(params.isUncertainDirectionValid).toBe(true);
             expect(params.sourceNodeIDs[0]).toEqual(1);

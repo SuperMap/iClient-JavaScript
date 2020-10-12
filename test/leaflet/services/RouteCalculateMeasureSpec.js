@@ -41,7 +41,7 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
         var routeCalculateMeasureService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/calculatemeasure.json?returnContent=true");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/calculatemeasure?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.sourceRoute.type).toBe("LINEM");

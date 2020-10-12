@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
+import {AddressMatchService as CommonAddressMatchService, CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.AddressMatchService
@@ -20,7 +20,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.headers] - 请求头。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
@@ -49,7 +49,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
     }
 
     /**
@@ -72,7 +72,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
     }
 
 }

@@ -1,17 +1,17 @@
-import {PointSymbolizer} from '../../../../src/leaflet/overlay/vectortile/PointSymbolizer';
-import {SVGRenderer} from '../../../../src/leaflet/overlay/vectortile/SVGRenderer';
+import { PointSymbolizer } from '../../../../src/leaflet/overlay/vectortile/PointSymbolizer';
+import { SVGRenderer } from '../../../../src/leaflet/overlay/vectortile/SVGRenderer';
 import '../../../resources/img/baiduTileTest.png';
 
 describe('leaflet_PointSymbolizer', () => {
     var testDiv, map;
     beforeAll(() => {
-        testDiv = window.document.createElement("div");
-        testDiv.setAttribute("id", "map");
-        testDiv.style.styleFloat = "left";
-        testDiv.style.marginLeft = "8px";
-        testDiv.style.marginTop = "50px";
-        testDiv.style.width = "400px";
-        testDiv.style.height = "400px";
+        testDiv = window.document.createElement('div');
+        testDiv.setAttribute('id', 'map');
+        testDiv.style.styleFloat = 'left';
+        testDiv.style.marginLeft = '8px';
+        testDiv.style.marginTop = '50px';
+        testDiv.style.width = '400px';
+        testDiv.style.height = '400px';
         window.document.body.appendChild(testDiv);
         map = L.map('map', {
             center: [39, 89, 116.34],
@@ -24,80 +24,79 @@ describe('leaflet_PointSymbolizer', () => {
 
     it('initialize', () => {
         var feature1 = {
-            geometry: [{x: 10, y: 10, type: "Point"}],
-            id: "1",
-            type: "Feature",
+            geometry: [{ x: 10, y: 10, type: 'Point' }],
+            id: '1',
+            type: 'Feature',
             properties: {
-                CAP_POP: "2207718.0",
-                SMLIBTILEID: "1",
-                COUNTRY_CH: "巴西",
-                CAPITAL_EN: "Brasilia",
-                POP: "2207718.0",
-                CAPITAL_CH: "巴西利亚",
-                SMID: "1",
-                COUNTRY: "巴西",
-                CAPITAL_LO: "Brasília",
-                COUNTRY_EN: "Brazil",
-                USERID: "0",
-                SMGEOMETRYSIZE: "16",
-                SMY: "-15.792110943058866",
-                CAPITAL: "巴西利亚",
-                SMX: "-47.8977476573595",
-                SMUSERID: "0"
+                CAP_POP: '2207718.0',
+                SMLIBTILEID: '1',
+                COUNTRY_CH: '巴西',
+                CAPITAL_EN: 'Brasilia',
+                POP: '2207718.0',
+                CAPITAL_CH: '巴西利亚',
+                SMID: '1',
+                COUNTRY: '巴西',
+                CAPITAL_LO: 'Brasília',
+                COUNTRY_EN: 'Brazil',
+                USERID: '0',
+                SMGEOMETRYSIZE: '16',
+                SMY: '-15.792110943058866',
+                CAPITAL: '巴西利亚',
+                SMX: '-47.8977476573595',
+                SMUSERID: '0'
             }
         };
         var feature2 = {
-            geometry: [
-                [{x: -10, y: -15, type: "Point"}],
-                [{x: -100, y: 50, type: "Point"}]],
-            id: "1",
-            type: "Feature",
+            geometry: [[{ x: -10, y: -15, type: 'Point' }], [{ x: -100, y: 50, type: 'Point' }]],
+            id: '1',
+            type: 'Feature',
             properties: {
-                CAP_POP: "2207718.0",
-                SMLIBTILEID: "1",
-                COUNTRY_CH: "巴西test",
-                CAPITAL_EN: "Brasilia",
-                POP: "2207718.0",
-                CAPITAL_CH: "巴西利亚test",
-                SMID: "1",
-                COUNTRY: "巴西",
-                CAPITAL_LO: "Brasília",
-                COUNTRY_EN: "Brazil",
-                USERID: "0",
-                SMGEOMETRYSIZE: "16",
-                SMY: "-15.792110943058866",
-                CAPITAL: "巴西利亚",
-                SMX: "-47.8977476573595",
-                SMUSERID: "0"
+                CAP_POP: '2207718.0',
+                SMLIBTILEID: '1',
+                COUNTRY_CH: '巴西test',
+                CAPITAL_EN: 'Brasilia',
+                POP: '2207718.0',
+                CAPITAL_CH: '巴西利亚test',
+                SMID: '1',
+                COUNTRY: '巴西',
+                CAPITAL_LO: 'Brasília',
+                COUNTRY_EN: 'Brazil',
+                USERID: '0',
+                SMGEOMETRYSIZE: '16',
+                SMY: '-15.792110943058866',
+                CAPITAL: '巴西利亚',
+                SMX: '-47.8977476573595',
+                SMUSERID: '0'
             }
         };
         var pointSymbolizer1 = new PointSymbolizer(feature1);
         var pointSymbolizer2 = new PointSymbolizer(feature2);
         expect(pointSymbolizer1).not.toBeNull();
         expect(pointSymbolizer1.properties).not.toBeNull();
-        expect(pointSymbolizer1.type).toEqual("Feature");
+        expect(pointSymbolizer1.type).toEqual('Feature');
         expect(pointSymbolizer1._empty).not.toBeNull();
         expect(pointSymbolizer1._point.x).toEqual(10);
         expect(pointSymbolizer1._point.y).toEqual(10);
         expect(pointSymbolizer2).not.toBeNull();
         expect(pointSymbolizer2.properties).not.toBeNull();
-        expect(pointSymbolizer2.type).toEqual("Feature");
+        expect(pointSymbolizer2.type).toEqual('Feature');
         expect(pointSymbolizer2._empty).not.toBeNull();
         expect(pointSymbolizer2._point.x).toEqual(-10);
         expect(pointSymbolizer2._point.y).toEqual(-15);
+        expect(pointSymbolizer2.getLatLng).toEqual(undefined);
     });
 
     it('updateStyle_svgRenderer', () => {
-        var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
+        var svgRenderer = new SVGRenderer({ x: 1686, y: 755, Z: 10 }, { x: 256, y: 256 });
         var feature = {
-            geometry: [{x: 10, y: 10, type: "Point"}],
-            type: "Feature",
+            geometry: [{ x: 10, y: 10, type: 'Point' }],
+            type: 'Feature',
             properties: {
-                texts: ["test"]
+                texts: ['test']
             }
         };
         var style = {
-            interactive: true,
+            interactive: true
         };
         var pointSymbolizer1 = new PointSymbolizer(feature);
         spyOn(pointSymbolizer1, '_updateBounds').and.callThrough();
@@ -107,16 +106,16 @@ describe('leaflet_PointSymbolizer', () => {
     });
 
     it('_getImage_Null', () => {
-        var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
+        var svgRenderer = new SVGRenderer({ x: 1686, y: 755, Z: 10 }, { x: 256, y: 256 });
         var feature = {
-            geometry: [{x: 10, y: 10, type: "Point"}],
-            type: "Feature",
+            geometry: [{ x: 10, y: 10, type: 'Point' }],
+            type: 'Feature',
             properties: {
-                texts: ["test"]
+                texts: ['test']
             }
         };
         var style1 = {
-            interactive: true,
+            interactive: true
         };
         var pointSymbolizer = new PointSymbolizer(feature);
         pointSymbolizer.render(svgRenderer, style1);
@@ -126,12 +125,12 @@ describe('leaflet_PointSymbolizer', () => {
     });
 
     it('_getImage', () => {
-        var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
+        var svgRenderer = new SVGRenderer({ x: 1686, y: 755, Z: 10 }, { x: 256, y: 256 });
         var feature = {
-            geometry: [{x: 10, y: 10, type: "Point"}],
-            type: "Feature",
+            geometry: [{ x: 10, y: 10, type: 'Point' }],
+            type: 'Feature',
             properties: {
-                texts: ["test"]
+                texts: ['test']
             }
         };
         var style2 = {
@@ -143,6 +142,42 @@ describe('leaflet_PointSymbolizer', () => {
         pointSymbolizer.updateStyle(svgRenderer, style2);
         var image = pointSymbolizer._getImage();
         expect(image).not.toBeNull();
-        expect(image.currentSrc).toContain("data:image/png");
+        expect(image.currentSrc).toContain('data:image/png');
+    });
+    it('onclick', (done) => {
+        var feature1 = {
+            geometry: [{ x: 10, y: 10, type: 'Point' }],
+            id: '1',
+            type: 'Feature',
+            properties: {
+                CAP_POP: '2207718.0',
+                SMLIBTILEID: '1',
+                COUNTRY_CH: '巴西',
+                CAPITAL_EN: 'Brasilia',
+                POP: '2207718.0',
+                CAPITAL_CH: '巴西利亚',
+                SMID: '1',
+                COUNTRY: '巴西',
+                CAPITAL_LO: 'Brasília',
+                COUNTRY_EN: 'Brazil',
+                USERID: '0',
+                SMGEOMETRYSIZE: '16',
+                SMY: '-15.792110943058866',
+                CAPITAL: '巴西利亚',
+                SMX: '-47.8977476573595',
+                SMUSERID: '0'
+            }
+        };
+
+        const pointSymbolizer1 = new PointSymbolizer(feature1);
+        pointSymbolizer1.on('click', function (e) {
+            expect(e).not.toBeNull();
+            expect(e.latlng).not.toBeNull();
+            expect(e.latlng.lat).toEqual(39.25565142103588);
+            expect(e.latlng.lng).toEqual(88.71734619140626);
+            done();
+        });
+        map._fireDOMEvent({ type: 'click' ,clientX:10,clientY:10}, 'click', [pointSymbolizer1]);
+        
     });
 });

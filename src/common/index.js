@@ -103,7 +103,13 @@ import {
     IPortalShareParam,
     IPortalShareEntity,
     IPortalServiceBase,
-    IPortalUser
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam
 } from './iPortal';
 import {
     AddressMatchService,
@@ -327,7 +333,19 @@ import {
     VectorClipJobsService,
     RasterFunctionParameter,
     NDVIParameter,
-    HillshadeParameter
+    HillshadeParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService
 } from './iServer';
 import {
     Online,
@@ -392,7 +410,7 @@ import {
     Handler,
     Http,
     Log,
-    Math,
+    MathTool,
     Matrix,
     Painter,
     PaintLayer,
@@ -558,7 +576,7 @@ export {
     getMeterPerMapUnit
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
-export { 
+export {
     IPortal,
     IPortalQueryParam,
     IPortalResource,
@@ -566,7 +584,13 @@ export {
     IPortalShareParam,
     IPortalShareEntity,
     IPortalServiceBase,
-    IPortalUser
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam
 };
 export {
     AddressMatchService,
@@ -790,7 +814,19 @@ export {
     VectorClipJobsService,
     RasterFunctionParameter,
     NDVIParameter,
-    HillshadeParameter
+    HillshadeParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService
 };
 export {
     Online,
@@ -842,7 +878,7 @@ export {
     Handler,
     Http,
     Log,
-    Math,
+    MathTool,
     Matrix,
     Painter,
     PaintLayer,

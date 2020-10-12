@@ -11,7 +11,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g path', 10000);
         browser.pause(8000);
         browser.elements('tag name', 'path', function (result) {
-            this.assert.equal(result.value.length, 22, "expect Number of surfaceAnalystService result to be 22, actual is " + result.value.length);
+            this.assert.equal(result.value.length, 20, "expect Number of surfaceAnalystService result to be 22, actual is " + result.value.length);
         });
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);

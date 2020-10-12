@@ -1,0 +1,259 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_iPortalAddMapOrScene"></title>
+    <style>
+        .title-checkbox-container p{
+            max-width: 150px;
+            float: left;
+        }
+        .title-checkbox-container input{
+            float: right;
+        }
+        #plottingPanel {
+            float: left;
+            background: #ffffff;
+            width: 250px;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+        .datagrid-cell {
+            word-break: break-all;
+            white-space: normal!important;
+        }
+        .tabs-container ,.tabs-panels,.panel-body{
+            height: auto!important;
+        }
+        .panel-title {
+            margin-top: 0!important;
+            margin-bottom: 0!important;
+            font-size: 16px!important;
+            color: inherit!important;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+    <!-- 资源过滤 and 资源展示 -->
+    <div class="container" style="margin-bottom: 100px;">
+        <div class="page-header">
+            <h4 id="resourceTypeText" data-i18n="resources.title_iPortalAddMap"></h4>
+        </div>
+        <br />
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12" style="background: #FFF;">
+                    <!--添加资源-->
+                    <div class="row" id="batch-add-resource" style="padding: 10px;">
+                        <h5 data-i18n="resources.title_iPortalQueryResourcesType"></h5>
+                        <select id='typeSelect' class='form-control' onchange="onSelectResourcesType()">
+                            <option value="MAP" data-i18n="resources.title_iPortalQueryResourcesMap"></option>
+                            <option value="SCENE" data-i18n="resources.title_iPortalQueryResourcesScene"></option>
+                        </select>
+                        <h5 data-i18n="resources.text_serviceAddress"></h5>
+                        <span style="position: relative;">
+                            <input id="address" class='form-control' type="text" style="width: 100%;"><i class="fa fa-question-circle question" aria-hidden="true"></i>
+                        </span>
+                        <h5 data-i18n="resources.detail_iPortal_tags"></h5>
+                        <input id="tags" class='form-control' type="text" style="width: 100%;" data-i18n="[placeholder]resources.text_userMap">
+                        <h5 data-i18n="resources.title_share_setting"></h5>
+                        <div>
+                            <form class="form-horizontal">
+                                <fieldset>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#public" aria-controls="public" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesPublic"></a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="public">
+                                                <div class="col-md-4 gallery-item" id="shareCheckboxs">
+                                                    <div class="publicPane sub-font">
+                                                        <input id="search" type="checkbox" value="search" onclick="clickSearchCheckBox()" />
+                                                        &nbsp;<label for="search" data-i18n="resources.text_user_search"></label>
+                                                    </div>
+                                                    <div class="publicPane sub-font">
+                                                        <input id="view" type="checkbox" value="view" onclick="clickViewCheckBox()" />
+                                                        &nbsp;<label for="view" data-i18n="resources.text_user_view"></label>
+                                                    </div>
+                                                    <div class="publicPane sub-font">
+                                                        <input id="edit" type="checkbox" value="edit" onclick="clickEditCheckBox()" />
+                                                        &nbsp;<label for="edit" data-i18n="resources.text_user_editor"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <div><button class="btn btn-primary col-md-offset-6" style="margin-top: 20px;" onclick="addMapOrScene()" data-i18n="resources.btn_OK"></button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" include="jquery,bootstrap,plottingPanel,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="iPortalStylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
+    var iPortalUrl = "https://iportal.supermap.io/iportal";
+    // iptl的admin1用户的token，模拟admin1用户登录状态
+    var token = "MFEKl8kVmkvEDrDFcgnjoUF4o2VKXT1eZhKh7hU3tnJL1jPculOBmvCtA6Xfrw4KuAyxWj2OcUV1Aj3M41nSNQ..";
+    //默认请求资源类型
+    var resourceType = "MAP";
+    //共享设置
+    var publicSettingEntity = {
+        "permissionType": "",
+        "entityType": "USER",
+        "entityName": "GUEST",
+        "entityId": null,
+        "authorizeList": []
+    }
+    function getDefaultUrl(){
+        iPortalUser = new SuperMap.iPortalUser(iPortalUrl);
+    }
+    // 注册token
+    function generatePortalToken() {
+        let serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+            server: iPortalUrl
+        });
+
+        SuperMap.SecurityManager.registerServers([serverInfo]);
+        SuperMap.SecurityManager.destroyToken(iPortalUrl);
+        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+    }
+    // 添加地图/场景
+    function addMapOrScene() {
+        generatePortalToken();
+        iPortalUser = new SuperMap.iPortalUser(iPortalUrl);
+        let params = new SuperMap.iPortalAddResourceParam({
+            rootUrl: $("#address").val(),
+            tags: $("#tags").val(),
+            entities: getShareEntities()
+        });
+        if(resourceType === "MAP") {
+            iPortalUser.addMap(params).then(res => {
+                if(res.succeed) {
+                    widgets.alert.showAlert(resources.msg_addSuccess, true);
+                } else {
+                    widgets.alert.showAlert(resources.msg_addFailed, false);
+                }
+            })
+        }
+        if(resourceType === "SCENE") {
+            iPortalUser.addScene(params).then(res => {
+                if(res.succeed) {
+                    widgets.alert.showAlert(resources.msg_addSuccess, true);
+                } else {
+                    widgets.alert.showAlert(resources.msg_addFailed, false);
+                }
+            })
+        }
+    }
+    function getShareEntities(){
+        shareSettingList = [];
+        //公开
+        addSettingEntity(publicSettingEntity);
+        return shareSettingList;
+    }
+    //生成分享的entities参数
+    function addSettingEntity(obj){
+        var settingEntity =  dealShareSettingParam(obj);
+        if(settingEntity){
+            shareSettingList.push(settingEntity);
+        }
+    }
+    function dealShareSettingParam(obj) {
+        var authorize = "";
+        if(!obj.authorizeList){
+            return null;
+        }
+        if(obj.authorizeList.includes("edit")){
+            authorize = "READWRITE";
+        }else if(obj.authorizeList.includes("view")){
+            authorize =  "READ";
+        }else if(obj.authorizeList.includes("download")){
+            authorize =  "DOWNLOAD";
+        }else if(obj.authorizeList.includes("search")){
+            authorize = "SEARCH";
+        }
+        if(authorize){
+            if(resourceType === "data") {
+                obj.dataPermissionType = authorize;
+            }
+            obj.permissionType = authorize;
+            let targetPermissionEntity  = Object.assign({},obj);
+            delete targetPermissionEntity.authorizeList;
+            delete targetPermissionEntity.aliasName;
+            delete targetPermissionEntity.entityRoles;
+            return targetPermissionEntity;
+        }else {
+            return null;
+        }
+    }
+    // 选择资源类型
+    function onSelectResourcesType(){
+        let type = $("#typeSelect").val();
+        resourceType = type;
+        if(resourceType === "MAP") {
+            $("#resourceTypeText")[0].innerText = resources.title_iPortalAddMap;
+        } else if(resourceType === "SCENE") {
+            $("#resourceTypeText")[0].innerText = resources.title_iPortalAddScene;
+        }
+        $("#address").val("");
+        $("#tags").val("");
+    }
+    // 点击所有用户可检索
+    function clickSearchCheckBox(){
+        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("search") === -1){
+            publicSettingEntity.authorizeList = ["search"];
+        }else {
+            publicSettingEntity.authorizeList = [];
+        }
+        if($("input[value='search']").is(':checked')){
+            publicSettingEntity.authorizeList.forEach(authorizeListItem=>{
+                $("input[value='"+authorizeListItem+"']").prop("checked", true);
+                $("input[value='view']").prop("checked", false);
+                $("input[value='edit']").prop("checked", false);
+            })
+        }else {
+            $("input[value='search']").prop("checked", false);
+            $("input[value='view']").prop("checked", false);
+            $("input[value='edit']").prop("checked", false);
+        }
+    }
+    // 点击所有用户可查看
+    function clickViewCheckBox(){
+        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("view") === -1){
+            publicSettingEntity.authorizeList = ["search","view"];
+        }else if((publicSettingEntity.authorizeList).indexOf("search") !== -1){
+            publicSettingEntity.authorizeList = ["search"];
+        }
+        if($("input[value='view']").is(':checked')){
+            publicSettingEntity.authorizeList.forEach(authorizeListItem=>{
+                $("input[value='"+authorizeListItem+"']").prop("checked", true);
+            })
+        }else {
+            $("input[value='edit']").prop("checked", false);
+        }
+    }
+    // 点击所有用户可编辑
+    function clickEditCheckBox(){
+        if(!publicSettingEntity.authorizeList || (publicSettingEntity.authorizeList).indexOf("edit") === -1){
+            publicSettingEntity.authorizeList = ["search","view","edit"];
+        }else if((publicSettingEntity.authorizeList).indexOf("view") !== -1){
+            publicSettingEntity.authorizeList = ["search","view"];
+        }
+        if($("input[value='edit']").is(':checked')){
+            publicSettingEntity.authorizeList.forEach(authorizeListItem=>{
+                $("input[value='"+authorizeListItem+"']").prop("checked", true);
+            })
+        }   
+    }
+</script>
+</body>
+</html>

@@ -31,7 +31,7 @@ describe('leaflet_QueryService_queryByGeometry', () => {
         var queryByGeometryService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryMode).toBe("SpatialQuery");
@@ -89,7 +89,7 @@ describe('leaflet_QueryService_queryByGeometry', () => {
         var queryByGeometryService = queryService(worldMapURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.queryParameters.expectCount).toBe(10);
@@ -117,68 +117,66 @@ describe('leaflet_QueryService_queryByGeometry', () => {
             }
         });
     });
-});
-
-it('failEvent:queryByGeometry_layerNotExist', (done) => {
-    var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
-    var queryByGeometryParams = new QueryByGeometryParameters({
-        queryParams: { name: "Capitals@World1" },
-        geometry: polygon
-    });
-    var queryByGeometryService = queryService(worldMapURL, options);
-    spyOn(FetchRequest, 'commit').and.callFake((method) => {
-        expect(method).toBe("POST");
-        return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
-    });
-    queryByGeometryService.queryByGeometry(queryByGeometryParams, (serviceResult) => {
-        try {
-            expect(queryByGeometryService).not.toBeNull();
-            expect(queryByGeometryService.options.serverType).toBe("iServer");
-            expect(serviceResult.type).toBe("processFailed");
-            expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-            expect(serviceResult.error).not.toBeNull();
-            expect(serviceResult.error.code).toEqual(400);
-            expect(serviceResult.error.errorMsg).toBe("查询目标图层不存在。(Capitals@World1)");
-            queryByGeometryService.destroy();
-            done();
-        } catch (exception) {
-            console.log("leaflet_queryByGeometry_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
-            queryByGeometryService.destroy();
-            expect(false).toBeTruthy();
-            done();
-        }
-    });
-});
-
-
-it('failEvent:queryByGeometry_queryParamsNull', (done) => {
-    var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
-    var queryByGeometryParams = new QueryByGeometryParameters({
-        queryParams: null,
-        geometry: polygon
-    });
-    var queryByGeometryService = queryService(worldMapURL, options);
-    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
-        expect(method).toBe("POST");
-        return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
-    });
-    queryByGeometryService.queryByGeometry(queryByGeometryParams, (serviceResult) => {
-        try {
-            expect(queryByGeometryService).not.toBeNull();
-            expect(queryByGeometryService.options.serverType).toBe("iServer");
-            expect(serviceResult.type).toBe("processFailed");
-            expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-            expect(serviceResult.error).not.toBeNull();
-            expect(serviceResult.error.code).toEqual(400);
-            expect(serviceResult.error.errorMsg).toBe("参数queryParameterSet.queryParams非法，不能为空。");
-            queryByGeometryService.destroy();
-            done();
-        } catch (exception) {
-            console.log("leaflet_queryByGeometry_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
-            queryByGeometryService.destroy();
-            expect(false).toBeTruthy();
-            done();
-        }
+    it('failEvent:queryByGeometry_layerNotExist', (done) => {
+        var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
+        var queryByGeometryParams = new QueryByGeometryParameters({
+            queryParams: { name: "Capitals@World1" },
+            geometry: polygon
+        });
+        var queryByGeometryService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("POST");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
+        });
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, (serviceResult) => {
+            try {
+                expect(queryByGeometryService).not.toBeNull();
+                expect(queryByGeometryService.options.serverType).toBe("iServer");
+                expect(serviceResult.type).toBe("processFailed");
+                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.error).not.toBeNull();
+                expect(serviceResult.error.code).toEqual(400);
+                expect(serviceResult.error.errorMsg).toBe("查询目标图层不存在。(Capitals@World1)");
+                queryByGeometryService.destroy();
+                done();
+            } catch (exception) {
+                console.log("leaflet_queryByGeometry_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
+                queryByGeometryService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    }); 
+    it('failEvent:queryByGeometry_queryParamsNull', (done) => {
+        var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
+        var queryByGeometryParams = new QueryByGeometryParameters({
+            queryParams: null,
+            geometry: polygon
+        });
+        var queryByGeometryService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
+        });
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, (serviceResult) => {
+            try {
+                expect(queryByGeometryService).not.toBeNull();
+                expect(queryByGeometryService.options.serverType).toBe("iServer");
+                expect(serviceResult.type).toBe("processFailed");
+                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.error).not.toBeNull();
+                expect(serviceResult.error.code).toEqual(400);
+                expect(serviceResult.error.errorMsg).toBe("参数queryParameterSet.queryParams非法，不能为空。");
+                queryByGeometryService.destroy();
+                done();
+            } catch (exception) {
+                console.log("leaflet_queryByGeometry_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
+                queryByGeometryService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
+        })
     })
-})
+});
+
 

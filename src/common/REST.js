@@ -69,7 +69,9 @@ var GeometryType = SuperMap.GeometryType = {
     /** RECTANGLE */
     RECTANGLE: "RECTANGLE",
     /** UNKNOWN */
-    UNKNOWN: "UNKNOWN"
+    UNKNOWN: "UNKNOWN",
+    /** GEOCOMPOUND */
+    GEOCOMPOUND:"GEOCOMPOUND"
 };
 export {
     GeometryType
@@ -1463,4 +1465,119 @@ var EntityType = SuperMap.EntityType = {
 }
 export {
     EntityType
+}
+
+/**
+ * @enum DataItemType
+ * @memberOf SuperMap
+ * @description iportal数据类型。
+ * @version 10.0.1
+ * @type {string}
+ */
+var DataItemType = SuperMap.DataItemType = {
+    /** 工作空间 sxwu, smwu, sxw, smw */
+    WORKSPACE: "WORKSPACE",
+    /** udb 数据源 */
+    UDB: "UDB",
+    /** shp空间数据 */
+    SHP: "SHP",
+    /** excel数据 */
+    EXCEL: "EXCEL",
+    /** csv数据 */
+    CSV: "CSV",
+    /** geojson数据。 */
+    GEOJSON: "GEOJSON",
+    /** smtiles */
+    SMTILES: "SMTILES",
+    /** svtiles */
+    SVTILES: "SVTILES",
+    /** mbtiles */
+    MBTILES: "MBTILES",
+    /** tpk */
+    TPK: "TPK",
+    /** ugc v5 */
+    UGCV5: "UGCV5",
+    /** UGCV5_MVT  */
+    UGCV5_MVT: "UGCV5_MVT",
+    /** json数据  */
+    JSON: "JSON"
+}
+export {
+    DataItemType
+}
+
+/**
+ * @enum WebExportFormatType
+ * @memberOf SuperMap
+ * @description Web 打印输出的格式。
+ * @version 10.0.1
+ * @type {string}
+ */
+var WebExportFormatType = SuperMap.WebExportFormatType = {
+    /** png */
+    PNG: "PNG",
+    /** pdf */
+    PDF: "PDF"
+}
+export {
+    WebExportFormatType
+}
+
+/**
+ * @enum WebScaleOrientationType
+ * @memberOf SuperMap
+ * @description Web 比例尺的方位样式。
+ * @version 10.0.1
+ * @type {string}
+ */
+var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
+    /** horizontal labels below */
+    HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
+    /** horizontal labels above */
+    HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
+    /** vertical labels left */
+    VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
+    /** vertical labels right */
+    VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
+}
+export {
+    WebScaleOrientationType
+}
+
+/**
+ * @enum WebScaleType
+ * @memberOf SuperMap
+ * @description Web 比例尺的样式。
+ * @version 10.0.1
+ * @type {string}
+ */
+var WebScaleType = SuperMap.WebScaleType = {
+    /** line */
+    LINE: "LINE",
+    /** bar */
+    BAR: "BAR",
+    /** bar sub */
+    BAR_SUB: "BAR_SUB"
+}
+export {
+    WebScaleType
+}
+
+/**
+ * @enum WebScaleUnit
+ * @memberOf SuperMap
+ * @description Web 比例尺的单位制。
+ * @version 10.0.1
+ * @type {string}
+ */
+var WebScaleUnit = SuperMap.WebScaleUnit = {
+    /** meter */
+    METER: "METER",
+    /** foot */
+    FOOT: "FOOT",
+    /** degrees */
+    DEGREES: "DEGREES"
+}
+export {
+    WebScaleUnit
 }

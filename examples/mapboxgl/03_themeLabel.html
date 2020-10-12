@@ -29,7 +29,7 @@
                 "raster-tiles": {
                     "attribution": attribution,
                     "type": "raster",
-                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}'],
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}'],
                     "tileSize": 256,
                 },
             },

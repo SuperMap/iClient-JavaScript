@@ -42,7 +42,7 @@ describe('openlayers_SpatialAnalystService_surfaceAnalysis', () => {
         var surfaceAnalystService = new SpatialAnalystService(sampleServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/isoline?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.extractParameter.datumValue).toEqual(0);
             expect(paramsObj.extractParameter.smoothness).toEqual(3);

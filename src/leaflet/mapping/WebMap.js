@@ -504,7 +504,7 @@ export var WebMap = L.LayerGroup.extend({
                 coordsToLatLng: coordsToLatLng,
                 style: function (geoJsonFeature) {
                     let lStyle = me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
-                    if (lStyle.dashArray && lStyle.dashArray.length == 0) {
+                    if (lStyle && lStyle.dashArray && lStyle.dashArray.length == 0) {
                         lStyle.dashArray = null;
                     }
                     return lStyle;
