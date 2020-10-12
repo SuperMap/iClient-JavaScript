@@ -6,7 +6,7 @@
 name: "CodeQL"
 env:
   LGTM_INDEX_INCLUDE: src
-  LGTM_INDEX_EXCLUDE: src/classic/(resource|libs)
+  LGTM_INDEX_EXCLUDE: src/classic/resource|libs
 on:
   push:
     branches: [master]
