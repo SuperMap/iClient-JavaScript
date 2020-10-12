@@ -71,7 +71,7 @@
     "browserify-imgify": "^0.0.1",
     "chromedriver": "75.1.0",
     "clean-css-cli": "^4.3.0",
-    "commander": "^4.0.1",
+    "commander": "^6.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.2.0",
     "es3ify-loader": "^0.2.0",
