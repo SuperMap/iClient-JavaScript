@@ -5,7 +5,7 @@
 # or to provide custom queries or build logic.
 name: "CodeQL"
 env:
-  LGTM_INDEX_EXCLUDE: src
+  LGTM_INDEX_INCLUDE: src
 on:
   push:
     branches: [master]
