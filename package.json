@@ -64,7 +64,7 @@
     "@geoman-io/leaflet-geoman-free": "2.7.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
-    "babel-plugin-istanbul": "^5.2.0",
+    "babel-plugin-istanbul": "^6.0.0",
     "babelify": "^10.0.0",
     "browserify": "^16.5.0",
     "browserify-css": "^0.15.0",
