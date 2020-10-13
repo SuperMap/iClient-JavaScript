@@ -26,7 +26,6 @@ module.exports = {
     module: {
         rules: (function () {
             let moduleRules = [];
-            moduleRules.push(configBase.module.rules.eslint);
             if (configBase.moduleVersion === "es5") {
                 //打包为es5相关配置
                 moduleRules.push({
