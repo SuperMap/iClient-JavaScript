@@ -102,7 +102,7 @@
     "selenium-server": "3.141.59",
     "serve-index": "^1.9.1",
     "shelljs": "^0.8.3",
-    "style-loader": "^1.0.0",
+    "style-loader": "^2.0.0",
     "uglify-es": "^3.3.9",
     "url-loader": "^4.1.1",
     "watchify": "^3.11.1",
