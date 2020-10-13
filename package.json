@@ -69,7 +69,7 @@
     "browserify": "^16.5.0",
     "browserify-css": "^0.15.0",
     "browserify-imgify": "^0.0.1",
-    "chromedriver": "75.1.0",
+    "chromedriver": "86.0.0",
     "clean-css-cli": "^4.3.0",
     "commander": "^6.1.0",
     "cross-env": "^7.0.2",
