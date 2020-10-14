@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const pkg = require('../package.json');
 
@@ -24,7 +24,8 @@ module.exports = {
 
     //是否启用压缩
     optimization: {
-        minimize: false
+        minimize: false,
+        noEmitOnErrors: true
     },
     //不显示打包文件大小相关警告
     performance: {
@@ -58,11 +59,7 @@ module.exports = {
             },
             css: {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: {
-                        loader: 'css-loader'
-                    }
-                })
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             }
         }
     },
@@ -79,8 +76,7 @@ module.exports = {
     plugins: function (libName, productName) {
         return [
             new webpack.BannerPlugin(this.bannerInfo(productName)),
-            new ExtractTextPlugin(`./${productName}.css`),
-            new webpack.NoEmitOnErrorsPlugin(),
+            new MiniCssExtractPlugin({filename:`./${productName}.css`}),
             new ESLintPlugin({ failOnError: true, files: 'src' })
         ];
     }
