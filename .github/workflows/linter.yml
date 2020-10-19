@@ -42,4 +42,4 @@ jobs:
         DEFAULT_BRANCH: master
         JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
         VALIDATE_EDITORCONFIG: false
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
