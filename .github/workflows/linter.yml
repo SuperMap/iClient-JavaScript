@@ -43,3 +43,4 @@ jobs:
         JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
         VALIDATE_EDITORCONFIG: false
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VALIDATE_JAVASCRIPT_ES: true
