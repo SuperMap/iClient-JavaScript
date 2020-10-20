@@ -1,16 +1,16 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const pkg = require('../package.json');
 
 //包版本(ES6或者ES5)
-let moduleVersion = process.env.moduleVersion || "es5";
+let moduleVersion = process.env.moduleVersion || 'es5';
 
 //打包公共配置
 module.exports = {
-
     moduleVersion: moduleVersion,
 
-    mode: "production",
+    mode: 'production',
     //页面入口文件配置
     entry: {},
 
@@ -19,12 +19,13 @@ module.exports = {
         return {
             path: `${__dirname}/../dist/${libName}/`,
             filename: `${fileName}.js`
-        }
+        };
     },
 
     //是否启用压缩
     optimization: {
-        minimize: false
+        minimize: false,
+        emitOnErrors: false
     },
     //不显示打包文件大小相关警告
     performance: {
@@ -37,9 +38,9 @@ module.exports = {
     },
 
     externals: {
-        'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
-        'mapv': "function(){try{return mapv}catch(e){return {}}}()",
-        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()'
+        echarts: 'function(){try{return echarts}catch(e){return {}}}()',
+        mapv: 'function(){try{return mapv}catch(e){return {}}}()',
+        elasticsearch: 'function(){try{return elasticsearch}catch(e){return {}}}()'
     },
 
     module: {
@@ -47,35 +48,21 @@ module.exports = {
             img: {
                 //图片小于80k采用base64编码
                 test: /\.(png|jpg|jpeg|gif|woff|woff2|svg|eot|ttf)$/,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        limit: 150000
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 150000
+                        }
                     }
-                }]
+                ]
             },
-
-            eslint: {
-                test: [/\.js$/],
-                exclude: /node_modules/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                options: {
-                    failOnError: true
-                }
-            },
-
             css: {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: {
-                        loader: 'css-loader'
-                    }
-                })
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             }
         }
     },
-
 
     bannerInfo: function (libName) {
         return `
@@ -89,8 +76,8 @@ module.exports = {
     plugins: function (libName, productName) {
         return [
             new webpack.BannerPlugin(this.bannerInfo(productName)),
-             new ExtractTextPlugin(`./${productName}.css`),
-            new webpack.NoEmitOnErrorsPlugin()
-        ]
+            new MiniCssExtractPlugin({filename:`./${productName}.css`}),
+            new ESLintPlugin({ failOnError: true, files: 'src' })
+        ];
     }
 };
