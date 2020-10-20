@@ -25,7 +25,7 @@ module.exports = {
     //是否启用压缩
     optimization: {
         minimize: false,
-        noEmitOnErrors: true
+        emitOnErrors: false
     },
     //不显示打包文件大小相关警告
     performance: {
