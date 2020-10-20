@@ -3457,7 +3457,7 @@ export class WebMap extends Observable {
         dataflowService.on('messageSucceeded', function (e) {
             let geojson = JSON.parse(e.value.data);
             let feature = transformTools.readFeature(geojson, {
-                dataProjection: "EPSG:4326", // todo 坐标系
+                dataProjection: layerInfo.projection || "EPSG:4326",
                 featureProjection: that.baseProjection || 'EPSG:4326'
             });
             feature.setProperties({attributes: geojson.properties});
