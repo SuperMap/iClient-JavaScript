@@ -83,7 +83,7 @@
             inputScript('https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js');
         }
         if (inArray(includes, 'three')) {
-            inputScript('https://cdn.bootcss.com/three.js/92/three.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.js');
         }
         if (inArray(includes, 'xlsx')) {
             inputScript('https://cdn.bootcss.com/xlsx/0.16.7/xlsx.core.min.js');
@@ -118,22 +118,17 @@
         if (inArray(includes, 'convert')) {
             inputScript('https://iclient.supermap.io/web/libs/xml-js/1.6.8/xml-js.min.js');
         }
-        if (inArray(includes, 'LoaderSupport')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderCommons.js');
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderBuilder.js');
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderWorkerSupport.js');
+        if (inArray(includes, 'LegacyJSONLoader')) {
+            inputScript('https://cdn.jsdelivr.net/npm/three@0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
         }
         if (inArray(includes, 'OBJLoader')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/OBJLoader.js');
-        }
-        if (inArray(includes, 'OBJLoader2')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/OBJLoader2.js');
+            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/OBJLoader.js');
         }
         if (inArray(includes, 'MTLLoader')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/MTLLoader.js');
+            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/MTLLoader.js');
         }
         if (inArray(includes, 'GLTFLoader')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/GLTFLoader.js');
+            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/GLTFLoader.js');
         }
         if (inArray(includes, 'echarts-gl')) {
             inputScript('https://iclient.supermap.io/web/libs/echarts-gl/1.1.2/echarts-gl.min.js');
