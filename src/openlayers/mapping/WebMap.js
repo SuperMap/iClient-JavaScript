@@ -85,6 +85,7 @@ const dpiConfig = {
  * @param {Object} [options.serviceProxy] - iportal内置代理信息, 仅矢量瓦片图层上图才会使用
  * @param {string} [options.tiandituKey] - 天地图的key
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
+ * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @param {function} [options.mapSetting.overlays] - 地图的overlayer
  * @param {function} [options.mapSetting.controls] - 地图的控件
@@ -118,6 +119,7 @@ export class WebMap extends Observable {
         this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.webMap = options.webMap;
+        this.tileFormat = options.tileFormat;
         this.createMap(options.mapSetting);
         if (this.webMap) {
             // webmap有可能是url地址，有可能是webmap对象
@@ -1235,7 +1237,7 @@ export class WebMap extends Observable {
      */
     getTileLayerExtentInfo(layerInfo, isDynamic = true) {
         let that = this,
-            // token,
+            token,
             url = layerInfo.url.trim(),
             credential = layerInfo.credential,
             options = {
@@ -1253,7 +1255,7 @@ export class WebMap extends Observable {
         }
         if (credential) {
             url = `${url}&token=${encodeURI(credential.token)}`;
-            // token = credential.token;
+            token = credential.token;
         }
         return FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
             return response.json();
@@ -1261,14 +1263,18 @@ export class WebMap extends Observable {
             if (result.succeed === false) {
                 return result
             }
-            // let isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
+            let format = 'png';
+            if(that.tileFormat === 'WebP') {
+                const isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
+                format = isSupportWebp ? 'webp' : 'png';
+            }
             return {
                 units: result.coordUnit && result.coordUnit.toLowerCase(),
                 coordUnit: result.coordUnit,
                 visibleScales: result.visibleScales,
                 extent: [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top],
                 projection: `EPSG:${result.prjCoordSys.epsgCode}`,
-                format: 'png'
+                format
             }
         }).catch((error) => {
             return {
@@ -1298,7 +1304,7 @@ export class WebMap extends Observable {
         }
         return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
-        }).then(function (result) {
+        }).then(async function (result) {
             // layerInfo.projection = mapInfo.projection;
             // layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
             // 比例尺 单位
@@ -1311,11 +1317,13 @@ export class WebMap extends Observable {
             }
             layerInfo.maxZoom = result.maxZoom;
             layerInfo.maxZoom = result.minZoom;
-            // let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-            // let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
-            // eslint-disable-next-line require-atomic-updates
-            // layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            let token = layerInfo.credential ? layerInfo.credential.token : undefined;
             layerInfo.format = 'png';
+            // china_dark为默认底图，还是用png出图
+            if(that.tileFormat === 'WebP' && layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark') {
+                const isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+                layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            }
             // 请求结果完成 继续添加图层
             if (mapInfo) {
                 //todo 这个貌似没有用到，下次优化
@@ -4597,36 +4605,36 @@ export class WebMap extends Observable {
      * @param {*} token 服务token
      * @returns {boolean}
      */
-    // isSupportWebp(url, token) {
-    //     // 还需要判断浏览器
-    //     let isIE = this.isIE();
-    //     if (isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
-    //         (this.isChrome() && this.getChromeVersion() < 32)) {
-    //         return false;
-    //     }
-    //     url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
-    //     let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
-    //     if (isSameDomain && !token) {
-    //         // online上服务域名一直，要用token值
-    //         excledeCreditial = false;
-    //     } else {
-    //         excledeCreditial = true;
-    //     }
-    //     url = this.getRequestUrl(url, excledeCreditial);
-    //     return FetchRequest.get(url, null, {
-    //         withCredentials: this.withCredentials,
-    //         withoutFormatSuffix: true
-    //     }).then(function (response) {
-    //         if (response.status !== 200) {
-    //             throw response.status;
-    //         }
-    //         return response;
-    //     }).then(() => {
-    //         return true;
-    //     }).catch(() => {
-    //         return false;
-    //     })
-    // }
+    isSupportWebp(url, token) {
+        // 还需要判断浏览器
+        let isIE = this.isIE();
+        if (isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
+            (this.isChrome() && this.getChromeVersion() < 32)) {
+            return false;
+        }
+        url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
+        let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
+        if (isSameDomain && !token) {
+            // online上服务域名一直，要用token值
+            excledeCreditial = false;
+        } else {
+            excledeCreditial = true;
+        }
+        url = this.getRequestUrl(url, excledeCreditial);
+        return FetchRequest.get(url, null, {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true
+        }).then(function (response) {
+            if (response.status !== 200) {
+                throw response.status;
+            }
+            return response;
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        })
+    }
     /**
     * @private
     * @function ol.supermap.WebMap.prototype.isIE
