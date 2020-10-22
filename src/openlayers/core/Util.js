@@ -496,7 +496,7 @@ export class Util {
         });
     }
     /**
-     * @function ol.supermap.Util.setMask
+     * @function ol.supermap.Util.unsetMask
      * @description 取消图层掩膜。
      * @version 10.1.0
      * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层

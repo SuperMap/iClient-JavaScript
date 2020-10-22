@@ -725,11 +725,11 @@ export class WebMap extends Observable {
 
         // 计算当前最大分辨率
         let baseLayer = options.baseLayer;
-        let maxResolution, minResolution;
+        let maxResolution;
         if ((baseLayer.visibleScales && baseLayer.visibleScales.length > 0) || (baseLayer.scales && baseLayer.scales.length > 0)) {
             //底图有固定比例尺，就直接获取。不用view计算
             this.getScales(baseLayer);
-        } else if (options.baseLayer && ['TILE', 'VECTOR_TILE'].indexOf(options.baseLayer.layerType) > -1 && extent && extent.length === 4) {
+        } else if (options.baseLayer && extent && extent.length === 4) {
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width / 512;
@@ -741,21 +741,16 @@ export class WebMap extends Observable {
         //     maxZoom = options.baseLayer.visibleScales.length;
         // }
         let viewOptions = {};
-        if (baseLayer.layerType === "WMTS") {
-            if (baseLayer.scales && baseLayer.scales.length > 0) {
-                //因为新版extent超出，不可见。所以将extent去除
-                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
-            } else {
-                viewOptions = {zoom, center, projection, maxZoom};
-                this.getScales(baseLayer);
-            }
+
+        if (baseLayer.scales && baseLayer.scales.length > 0 && baseLayer.layerType === "WMTS" ||
+            this.resolutionArray && this.resolutionArray.length > 0) {
+            viewOptions = { zoom, center, projection, resolutions: this.resolutionArray, maxZoom };
+        } else if (baseLayer.layerType === "WMTS") {
+            viewOptions = { zoom, center, projection, maxZoom };
+            this.getScales(baseLayer);
         } else {
-            if (this.resolutionArray && this.resolutionArray.length > 0) {
-                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
-            } else {
-                viewOptions = {zoom, center, projection, maxResolution, minResolution, maxZoom};
-                this.getScales(baseLayer);
-            }
+            viewOptions = { zoom, center, projection, maxResolution, maxZoom };
+            this.getScales(baseLayer);
         }
         if (['4', '5'].indexOf(Util.getOlVersion()) < 0) { // 兼容 ol 4，5，6
             viewOptions.multiWorld = true;
@@ -764,7 +759,7 @@ export class WebMap extends Observable {
             viewOptions.constrainResolution = true; //设置此参数，是因为需要显示整数级别。为了可视比例尺中包含当前比例尺
         }
         this.map.setView(new View(viewOptions));
-        
+
         if (options.visibleExtent) {
             const view = this.map.getView();
             const resolution = view.getResolutionForExtent(options.visibleExtent, this.map.getSize());
@@ -3465,7 +3460,7 @@ export class WebMap extends Observable {
         dataflowService.on('messageSucceeded', function (e) {
             let geojson = JSON.parse(e.value.data);
             let feature = transformTools.readFeature(geojson, {
-                dataProjection: "EPSG:4326", // todo 坐标系
+                dataProjection: layerInfo.projection || "EPSG:4326",
                 featureProjection: that.baseProjection || 'EPSG:4326'
             });
             feature.setProperties({attributes: geojson.properties});

@@ -31,7 +31,7 @@ module.exports = {
                 moduleRules.push({
                     test: /\.js/,
                     loader: 'babel-loader',
-                    query: {
+                    options: {
                         presets: ['@babel/preset-env']
                     }
                 });
