@@ -1954,6 +1954,7 @@ export class WebMap extends Observable {
             url = layer.dataSource.url,
             dataSourceName = dataSource.dataSourceName || layer.name;
         let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
+        serviceOptions.withCredentials = this.withCredentials;
         if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
         }
@@ -2049,7 +2050,7 @@ export class WebMap extends Observable {
             try {
                 if (dataSource.type === 'PORTAL_DATA') {
                     const {dataMetaInfo} = await FetchRequest.get(`${this.server}web/datas/${dataSource.serverId}.json`, null, {
-                        withCredentials: true
+                        withCredentials: this.withCredentials
                     }).then(res => res.json());
                     // eslint-disable-next-line require-atomic-updates
                     layerInfo.xyField = {
@@ -2435,6 +2436,7 @@ export class WebMap extends Observable {
             that.addGeojsonFromUrl(layerInfo, null, layerIndex)
         } else {
             let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
+            serviceOptions.withCredentials = this.withCredentials;
             if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
                 serviceOptions.proxy = this.getProxy();
             }
