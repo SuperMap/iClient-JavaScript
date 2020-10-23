@@ -12,22 +12,25 @@ import '../core/Base';
 export var MapExtend = function () {
 
     mapboxgl.Map.prototype.overlayLayersManager = {};
-    mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
-    mapboxgl.Map.prototype.addLayer = function (layer, before) {
-        if (layer.source || layer.type === 'custom' || layer.type === "background") {
-            this.addLayerBak(layer, before);
+    if (mapboxgl.Map.prototype.addLayerBak === undefined) {
+        mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
+        mapboxgl.Map.prototype.addLayer = function (layer, before) {
+            if (layer.source || layer.type === 'custom' || layer.type === 'background') {
+                this.addLayerBak(layer, before);
+                return this;
+            }
+            if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
+                this.fire('error', {
+                    error: new Error('A layer with this id already exists.')
+                });
+                return;
+            }
+            addLayer(layer, this);
+            this.overlayLayersManager[layer.id] = layer;
             return this;
-        }
-        if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
-            this.fire('error', {
-                error: new Error('A layer with this id already exists.')
-            });
-            return;
-        }
-        addLayer(layer, this);
-        this.overlayLayersManager[layer.id] = layer;
-        return this;
-    };
+        };
+    }
+    
     mapboxgl.Map.prototype.getLayer = function (id) {
         if (this.overlayLayersManager[id]) {
             return this.overlayLayersManager[id];
