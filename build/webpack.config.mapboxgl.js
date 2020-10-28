@@ -5,6 +5,7 @@ const libName = 'mapboxgl';
 const productName = 'iclient-mapboxgl';
 
 module.exports = {
+  target: configBase.target,
   mode: configBase.mode,
   //页面入口文件配置
   entry: configBase.entry,
