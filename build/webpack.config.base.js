@@ -8,6 +8,7 @@ let moduleVersion = process.env.moduleVersion || 'es5';
 
 //打包公共配置
 module.exports = {
+    target:  moduleVersion === 'es5' ? ['es5'] : undefined,
     moduleVersion: moduleVersion,
 
     mode: 'production',
