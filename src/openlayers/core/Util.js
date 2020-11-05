@@ -446,6 +446,34 @@ export class Util {
         }
         return false;
     }
+
+    /**
+     * @function ol.supermap.Util.getHighestMatchAdministration
+     * @param {string} featureName 初始匹配的要素数组
+     * @param {string} fieldName 要匹配的地名
+     * @returns {boolean} 是否匹配
+     */
+    static getHighestMatchAdministration(features, fieldName) {
+        let filterFeatures = features.filter(item => {
+            return Util.isMatchAdministrativeName(item.properties.Name, fieldName);
+        })
+
+        let maxMatchPercent = 0, maxMatchFeature = null;
+        filterFeatures.forEach(feature => {
+            let count = 0;
+            Array.from(new Set(feature.properties.Name.split(''))).forEach((char) => {
+                if (fieldName.includes(char)) {
+                    count++;
+                }
+            });
+            if (count > maxMatchPercent) {
+                maxMatchPercent = count;
+                maxMatchFeature = feature;
+            }
+        });
+        return maxMatchFeature;
+    }
+
     /**
      * @function ol.supermap.Util.setMask
      * @description 为图层设置掩膜。

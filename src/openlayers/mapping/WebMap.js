@@ -2184,13 +2184,12 @@ export class WebMap extends Observable {
             rows = datas.slice(1),
             fieldIndex = titles.findIndex(title => title === divisionField);
         rows.forEach(row => {
-            let feature = features.find(item => {
-                if (divisionType === 'GB-T_2260') {
-                    return item.properties.GB === row[fieldIndex];
-                } else {
-                    return Util.isMatchAdministrativeName(item.properties.Name, row[fieldIndex]);
-                }
-            })
+            let feature;
+            if (divisionType === 'GB-T_2260') {
+                feature = features.find(item => item.properties.GB === row[fieldIndex])
+            } else {
+                feature = Util.getHighestMatchAdministration(features, row[fieldIndex]);
+            }
             //todo 需提示忽略无效数据
             if (feature) {
                 let newFeature = window.cloneDeep(feature);
