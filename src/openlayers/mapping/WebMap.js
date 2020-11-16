@@ -2948,8 +2948,7 @@ export class WebMap extends Observable {
         let featureType = parameters.featureType,
             style = parameters.style,
             themeSetting = parameters.themeSetting;
-        let fieldName = themeSetting.themeField,
-            colors = themeSetting.colors;
+        let fieldName = themeSetting.themeField;
 
         let names = [],
             customSettings = themeSetting.customSettings;
@@ -2968,35 +2967,55 @@ export class WebMap extends Observable {
             }
         }
 
-        //获取一定量的颜色
-        let curentColors = colors;
-        curentColors = ColorsPickerUtil.getGradientColors(curentColors, names.length);
 
         //生成styleGroup
         let styleGroup = [];
         names.forEach(function (name, index) {
             //兼容之前自定义是用key，现在因为数据支持编辑，需要用属性值。
             let key = this.webMapVersion === "1.0" ? index : name;
-            let color = curentColors[key];
-            if (key in customSettings) {
-                color = customSettings[key];
-            }
-
-            if (featureType === "LINE") {
-                style.strokeColor = color;
-            } else {
-                style.fillColor = color;
-            }
+            let custom = customSettings[key];
+            if(Util.isString(custom)) {
+                //兼容之前自定义只存储一个color
+                custom = this.getCustomSetting(style, custom, featureType); 
+                customSettings[key] = custom; 
+            } 
+            
             // 转化成 ol 样式
-            let olStyle = StyleUtils.toOpenLayersStyle(style, featureType);
+            let olStyle, type = custom.type;
+            if(type === 'SYMBOL_POINT') {
+                olStyle = StyleUtils.getSymbolStyle(custom);  
+            } else if(type === 'SVG_POINT') {
+                olStyle = StyleUtils.getSVGStyle(custom);
+            } else if(type === 'IMAGE_POINT') {
+                olStyle = StyleUtils.getImageStyle(custom);
+            } else {
+                olStyle = StyleUtils.toOpenLayersStyle(custom, featureType);
+            }
             styleGroup.push({
                 olStyle: olStyle,
-                color: color,
+                style: customSettings[key],
                 value: name
             });
         }, this);
 
         return styleGroup;
+    }
+
+    /**
+     * 获取单值专题图自定义样式对象
+     * @param {*} style 图层上的样式
+     * @param {*} color 单值对应的颜色
+     * @param {*} featureType 要素类型
+     */
+    getCustomSetting(style, color, featureType) {
+        let newProps = {};
+        if (featureType === "LINE") {
+            newProps.strokeColor = color;
+        } else {
+            newProps.fillColor = color;
+        }
+        let customSetting = Object.assign(style, newProps)
+        return customSetting;
     }
 
     /**
