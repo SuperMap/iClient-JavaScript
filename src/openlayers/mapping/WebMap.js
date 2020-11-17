@@ -341,6 +341,11 @@ export class WebMap extends Observable {
                     that.addLayers(mapInfo);
                 }
             }
+
+            // 经纬网
+            if(mapInfo.grid && mapInfo.grid.graticule) {
+                that.createGraticuleLayer(mapInfo.grid.graticule);
+            }
         } else {
             // 不支持的坐标系
             that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
@@ -4707,5 +4712,55 @@ export class WebMap extends Observable {
         let userAgent = navigator.userAgent.toLowerCase(),
             version = userAgent.match(/chrome\/([\d.]+)/);
         return +version[1];
+    }
+    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createGraticuleLayer
+     * @description 创建经纬网图层
+     * @param {object} layerInfo - 图层信息
+     * @returns {ol/layer/Vector} 矢量图层
+     */
+    createGraticuleLayer(layerInfo) {
+        const { strokeColor, strokeWidth, lineDash, extent, visible, interval, lonLabelStyle, latLabelStyle } = layerInfo;
+        let graticuleOptions = {
+            layerID: 'graticule_layer',
+            strokeStyle: new StrokeStyle({
+                color: strokeColor,
+                width: strokeWidth,
+                lineDash
+            }),
+            extent,
+            visible: visible,
+            intervals: interval,
+            showLabels: true,
+            zIndex: 9999,
+            wrapX: false,
+            targetSize: 0
+        };
+        lonLabelStyle && (graticuleOptions.lonLabelStyle = new Text({
+            font: `${lonLabelStyle.fontSize} ${lonLabelStyle.fontFamily}`,
+            textBaseline: lonLabelStyle.textBaseline,
+            fill: new FillStyle({
+                color: lonLabelStyle.fill
+            }),
+            stroke: new StrokeStyle({
+                color: lonLabelStyle.outlineColor,
+                width: lonLabelStyle.outlineWidth
+            })
+        }))
+        latLabelStyle && (graticuleOptions.latLabelStyle = new Text({
+            font: `${latLabelStyle.fontSize} ${latLabelStyle.fontFamily}`,
+            textBaseline: latLabelStyle.textBaseline,
+            fill: new FillStyle({
+                color: latLabelStyle.fill
+            }),
+            stroke: new StrokeStyle({
+                color: latLabelStyle.outlineColor,
+                width: latLabelStyle.outlineWidth
+            })
+        }))
+        const layer = new olLayer.Graticule(graticuleOptions);
+        this.map.addLayer(layer);
     }
 }
