@@ -4723,6 +4723,13 @@ export class WebMap extends Observable {
      */
     createGraticuleLayer(layerInfo) {
         const { strokeColor, strokeWidth, lineDash, extent, visible, interval, lonLabelStyle, latLabelStyle } = layerInfo;
+        const epsgCode = this.baseProjection;
+        // 除以下坐标系外，添加经纬网需要设置extent、worldExtent
+        if(!['EPSG:4326', 'EPSG:3857'].includes(epsgCode)) {
+            let projection = new olProj.get(epsgCode);
+            projection.setExtent(extent);
+            projection.setWorldExtent(olProj.transformExtent(extent, 'EPSG:4326', epsgCode));
+        }
         let graticuleOptions = {
             layerID: 'graticule_layer',
             strokeStyle: new StrokeStyle({
