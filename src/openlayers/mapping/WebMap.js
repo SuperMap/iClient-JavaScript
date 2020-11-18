@@ -322,33 +322,27 @@ export class WebMap extends Observable {
             //     title: mapInfo.title,
             //     description: mapInfo.description
             // }; //存储地图的名称以及描述等信息，返回给用户
-            const isHaveGraticule = mapInfo.grid && mapInfo.grid.graticule;
+            that.isHaveGraticule = mapInfo.grid && mapInfo.grid.graticule;
 
             if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
                 // 添加矢量瓦片服务作为底图
                 that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
                     that.createView(mapInfo);
-                    if (!isHaveGraticule && (!mapInfo.layers || mapInfo.layers.length === 0)) {
+                    if (!mapInfo.layers || mapInfo.layers.length === 0) {
                         that.sendMapToUser(0);
                     } else {
                         that.addLayers(mapInfo);
                     }
+                    that.addGraticule(mapInfo);
                 });
             } else {
                 await that.addBaseMap(mapInfo);
-                if (!isHaveGraticule && (!mapInfo.layers || mapInfo.layers.length === 0)) {
+                if (!mapInfo.layers || mapInfo.layers.length === 0) {
                     that.sendMapToUser(0);
                 } else {
                     that.addLayers(mapInfo);
                 }
-            }
-
-            // 经纬网
-            if(isHaveGraticule) {
-                that.createGraticuleLayer(mapInfo.grid.graticule);
-                that.layerAdded++;
-                const lens = mapInfo.layers ? mapInfo.layers.length : 0;
-                that.sendMapToUser(lens + 1);
+                that.addGraticule(mapInfo);
             }
         } else {
             // 不支持的坐标系
@@ -2023,7 +2017,8 @@ export class WebMap extends Observable {
      * @param {number} layersLen - 叠加图层总数
      */
     sendMapToUser(layersLen) {
-        if (this.layerAdded === layersLen && this.successCallback) {
+        const lens = this.isHaveGraticule ? layersLen + 1 : layersLen;
+        if (this.layerAdded === lens && this.successCallback) {
             this.successCallback(this.map, this.mapParams, this.layers, this.baseLayer);
         }
     }
@@ -4716,6 +4711,21 @@ export class WebMap extends Observable {
         let userAgent = navigator.userAgent.toLowerCase(),
             version = userAgent.match(/chrome\/([\d.]+)/);
         return +version[1];
+    }
+    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.addGraticule
+     * @description 创建经纬网
+     * @param {object} mapInfo - 地图信息
+     */
+    addGraticule(mapInfo) {
+        if(this.isHaveGraticule) {
+            this.createGraticuleLayer(mapInfo.grid.graticule);
+            this.layerAdded++;
+            const lens = mapInfo.layers ? mapInfo.layers.length : 0;
+            this.sendMapToUser(lens);
+        }
     }
     
     /**
