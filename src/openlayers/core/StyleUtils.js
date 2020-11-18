@@ -1075,7 +1075,7 @@ export class StyleUtils {
 
     let fontSize = isRank ? 2 * parameters.radius + "px" : parameters.fontSize;
 
-    const {offsetX, offsetY, rotation} = parameters;
+    const {offsetX, offsetY, rotation=0} = parameters;
     const offset = StyleUtils.getTextOffset(fontSize, offsetX, offsetY);
     return new Style({
         text: new Text({
