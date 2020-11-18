@@ -345,6 +345,9 @@ export class WebMap extends Observable {
             // 经纬网
             if(mapInfo.grid && mapInfo.grid.graticule) {
                 that.createGraticuleLayer(mapInfo.grid.graticule);
+                that.isAdded++;
+                const lens = mapInfo.layers ? mapInfo.layers.length : 0;
+                that.sendMapToUser(lens + 1);
             }
         } else {
             // 不支持的坐标系
