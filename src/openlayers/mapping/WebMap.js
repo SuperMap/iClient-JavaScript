@@ -322,12 +322,13 @@ export class WebMap extends Observable {
             //     title: mapInfo.title,
             //     description: mapInfo.description
             // }; //存储地图的名称以及描述等信息，返回给用户
+            const isHaveGraticule = mapInfo.grid && mapInfo.grid.graticule;
 
             if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
                 // 添加矢量瓦片服务作为底图
                 that.addMVTMapLayer(mapInfo, mapInfo.baseLayer, 0).then(() => {
                     that.createView(mapInfo);
-                    if (!mapInfo.layers || mapInfo.layers.length === 0) {
+                    if (!isHaveGraticule && (!mapInfo.layers || mapInfo.layers.length === 0)) {
                         that.sendMapToUser(0);
                     } else {
                         that.addLayers(mapInfo);
@@ -335,7 +336,7 @@ export class WebMap extends Observable {
                 });
             } else {
                 await that.addBaseMap(mapInfo);
-                if (!mapInfo.layers || mapInfo.layers.length === 0) {
+                if (!isHaveGraticule && (!mapInfo.layers || mapInfo.layers.length === 0)) {
                     that.sendMapToUser(0);
                 } else {
                     that.addLayers(mapInfo);
@@ -343,9 +344,9 @@ export class WebMap extends Observable {
             }
 
             // 经纬网
-            if(mapInfo.grid && mapInfo.grid.graticule) {
+            if(isHaveGraticule) {
                 that.createGraticuleLayer(mapInfo.grid.graticule);
-                that.isAdded++;
+                that.layerAdded++;
                 const lens = mapInfo.layers ? mapInfo.layers.length : 0;
                 that.sendMapToUser(lens + 1);
             }
@@ -4727,12 +4728,11 @@ export class WebMap extends Observable {
     createGraticuleLayer(layerInfo) {
         const { strokeColor, strokeWidth, lineDash, extent, visible, interval, lonLabelStyle, latLabelStyle } = layerInfo;
         const epsgCode = this.baseProjection;
-        // 除以下坐标系外，添加经纬网需要设置extent、worldExtent
-        if(!['EPSG:4326', 'EPSG:3857'].includes(epsgCode)) {
-            let projection = new olProj.get(epsgCode);
-            projection.setExtent(extent);
-            projection.setWorldExtent(olProj.transformExtent(extent, 'EPSG:4326', epsgCode));
-        }
+        // 添加经纬网需要设置extent、worldExtent
+        let projection = new olProj.get(epsgCode);
+        projection.setExtent(extent);
+        projection.setWorldExtent(olProj.transformExtent(extent, 'EPSG:4326', epsgCode));
+
         let graticuleOptions = {
             layerID: 'graticule_layer',
             strokeStyle: new StrokeStyle({
