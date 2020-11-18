@@ -4731,7 +4731,7 @@ export class WebMap extends Observable {
         // 添加经纬网需要设置extent、worldExtent
         let projection = new olProj.get(epsgCode);
         projection.setExtent(extent);
-        projection.setWorldExtent(olProj.transformExtent(extent, 'EPSG:4326', epsgCode));
+        projection.setWorldExtent(olProj.transformExtent(extent, epsgCode, 'EPSG:4326'));
 
         let graticuleOptions = {
             layerID: 'graticule_layer',
