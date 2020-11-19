@@ -515,7 +515,7 @@ export class Util {
         Util.unsetMask(todoLayers);
         todoLayers.forEach((layer) => {
             layer.classNameBak_ = layer.className_;
-            layer.className_ = 'ol_mask_layer';
+            layer.className_ = `ol_mask_layer_${layer.ol_uid}`;
             layer.clipRender = clipRender;
             layer.extentBak_ = layer.getExtent();
             layer.setExtent(clipLayer.getSource().getExtent());

@@ -252,7 +252,7 @@ describe('openlayers_Util', () => {
         ]);
         Util.setMask(layer, polygon);
         expect(layer.classNameBak_).toBe('ol-layer');
-        expect(layer.className_).toBe('ol_mask_layer');
+        expect(layer.className_).toContain('ol_mask_layer_');
         expect(layer.clipRender).not.toBeNull;
         expect(layer.setExtent).toHaveBeenCalled;
         expect(layer.changed).toHaveBeenCalled;
