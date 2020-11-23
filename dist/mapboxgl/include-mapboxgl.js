@@ -57,8 +57,8 @@
             inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl@1.12.0/dist/mapbox-gl.min.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
-            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.2.0/mapbox-gl-enhance.css');
-            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.2.0/mapbox-gl-enhance.js');
+            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
+            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'draw')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.css');
