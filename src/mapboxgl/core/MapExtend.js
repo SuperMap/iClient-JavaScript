@@ -81,8 +81,6 @@ export var MapExtend = function () {
     };
     mapboxgl.Map.prototype.updateTransform = function (units, originX, originY, centerX, centerY, width, height) {
         this.transform.units = units;
-        this.transform.latRange = [this._tileExtent[1], this._tileExtent[3]];
-        this.transform.lngRange = [this._tileExtent[0], this._tileExtent[2]];
         var mercatorZfromAltitude = this.mercatorZfromAltitude;
         mapboxgl.MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
             altitude = altitude || 0;
