@@ -2322,7 +2322,10 @@ export class WebMap extends Observable {
                 featureProjection: metaData.featureProjection || this.baseProjection || 'EPSG:4326'
             });
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
-            let coordinate = feature.getGeometry().getCoordinates();
+            let geometry = feature.getGeometry();
+            // 如果不存在geometry，也不需要组装feature
+            if(!geometry) {continue;}
+            let coordinate = geometry.getCoordinates();
             if (allFeatures[i].geometry.type === 'Point') {
                 properties.lon = coordinate[0];
                 properties.lat = coordinate[1];
