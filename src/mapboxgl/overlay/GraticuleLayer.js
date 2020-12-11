@@ -120,9 +120,9 @@ export class GraticuleLayer {
      */
     setVisibility(visible) {
         const zoom = this.map.getZoom();
-        this.options.visible = typeof visible == 'boolean' ? visible : this.options.visible;
+        this.options.visible = typeof visible === 'boolean' ? visible : this.options.visible;
         this.visible =
-            typeof visible == 'boolean'
+            typeof visible === 'boolean'
                 ? visible
                 : this.options.visible && zoom >= this.options.minZoom && zoom <= this.options.maxZoom;
         if (this.map.getLayer(this.sourceId)) {
@@ -756,14 +756,14 @@ export class GraticuleLayer {
         };
 
         if (strokeStyle.lineWidth) {
-            if (typeof strokeStyle.lineDash === 'function') {
+            if (typeof strokeStyle.lineWidth === 'function') {
                 paint['line-width'] = strokeStyle.lineWidth(this.map);
             } else {
                 paint['line-width'] = strokeStyle.lineWidth;
             }
         }
         if (strokeStyle.lindDasharray) {
-            if (typeof strokeStyle.lineDash === 'function') {
+            if (typeof strokeStyle.lindDasharray === 'function') {
                 paint['line-dasharray'] = strokeStyle.lindDasharray(this.map);
             } else {
                 paint['line-dasharray'] = strokeStyle.lindDasharray;
