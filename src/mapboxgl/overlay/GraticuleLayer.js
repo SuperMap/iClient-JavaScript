@@ -222,7 +222,7 @@ export class GraticuleLayer {
 
     _getDefaultExtent(extent, map = this.map) {
         const crs = (map.getCRS && map.getCRS()) || {};
-        let { epsgCode, extent: crsExtent } = crs;
+        let { extent: crsExtent } = crs;
         if (!crsExtent) {
             crsExtent = [-180, -85.05119, 180, 85.05119];
         }
