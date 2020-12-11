@@ -388,7 +388,7 @@ var exampleConfig = {
                     //     fileName: "machinelearning_landcoverclassification"
                     // }
                 ]
-            },
+            }
         }
     },
     iPortal: {
@@ -1000,6 +1000,20 @@ var exampleConfig = {
                         fileName: "rangeTheme3DLayer"
                     }
                 ]
+            },
+            Graticule: {
+              name: "经纬网",
+              name_en: "Graticule",
+              version: "10.1.1",
+              content: [
+                {
+                  name: "经纬网",
+                  name_en: "graticule",
+                 
+                  thumbnail: "graticule_3857.png",
+                  fileName: "graticuleLayer_3857"
+                }
+              ]
             }
         }
     },
@@ -1119,7 +1133,16 @@ var exampleConfig = {
                         version: "10.1.0",
                         thumbnail: "print_pdf.png",
                         fileName: "print_pdf"
+                    },
+                    {
+                        name: "经纬网_WGS84",
+                        name_en: "graticule_WGS84",
+                        version: "10.1.1",
+                        thumbnail: "graticule.png",
+                        fileName: "graticuleLayer_4326"
                     }
+                    
+                    
                 ]
             },
             Multi_coordinate_cluster: {

@@ -353,6 +353,8 @@ window.examplesResources = {
         "title_measureDistance": "Distance Measurement Service",
         "title_tiledMapLayer": "3857 Coordinate System",
         "title_tiledMapLayer_4326": "4326Map",
+        "title_graticuleLayer_3857": "Graticule",
+        "title_graticuleLayer_4326": "Graticule_WGS84",
         "title_tiledMapLayer_4326WGS84": "Map WGS84",
         "title_tiledMapLayer_China2000": "Map China2000",
         "title_tiledMapLayer_Beijing54": "Map Beijing54",

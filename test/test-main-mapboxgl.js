@@ -17,6 +17,7 @@ import './mapboxgl/overlay/DeckglLayerSpec.js';
 import './mapboxgl/overlay/graphic/GraphicSpec.js';
 import './mapboxgl/overlay/GraphicLayerSpec.js';
 import './mapboxgl/overlay/mapv/MapvRenderSpec.js';
+import './mapboxgl/overlay/GraticuleLayerSpec.js';
 
 /*mapboxgl -- services*/
 import './mapboxgl/services/AddressMatchServiceSpec.js';

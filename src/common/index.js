@@ -367,7 +367,9 @@ import {
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
-    getMeterPerMapUnit
+    getMeterPerMapUnit,
+    getWrapNum,
+    conversionDegree
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -573,7 +575,9 @@ export {
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
-    getMeterPerMapUnit
+    getMeterPerMapUnit,
+    getWrapNum,
+    conversionDegree
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {
