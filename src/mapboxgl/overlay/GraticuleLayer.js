@@ -11,8 +11,6 @@
 
 import { getWrapNum, conversionDegree } from '@supermap/iclient-common';
 import mapboxgl from 'mapbox-gl';
-import proj4 from 'proj4';
-
 /**
  * @class mapboxgl.supermap.GraticuleLayer
  * @category Visualization GraticuleLayer
@@ -84,10 +82,10 @@ const defaultOptions = {
     latLabelStyle: defaultTextStyle
 };
 export class GraticuleLayer {
-    constructor(map, options) {
+    constructor(map, options, sourceId = 'sm-graticule-layer') {
         this.map = map;
         this.canvasId = 'sm-graticule-canvasid';
-        this.sourceId = 'sm-graticule-layer';
+        this.sourceId = sourceId;
         this.options = options;
         this.resetEvent = this._reset.bind(this);
         this.styleDataEevent = this._setLayerTop.bind(this);
@@ -226,13 +224,8 @@ export class GraticuleLayer {
         const crs = (map.getCRS && map.getCRS()) || {};
         let { epsgCode, extent: crsExtent } = crs;
         if (!crsExtent) {
-            epsgCode = 'EPSG:3857';
-            crsExtent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+            crsExtent = [-180, -85.05119, 180, 85.05119];
         }
-        crsExtent = [
-            ...this._unproject([crsExtent[0], crsExtent[1]], epsgCode),
-            ...this._unproject([crsExtent[2], crsExtent[3]], epsgCode)
-        ];
         if (!extent || extent.length === 0) {
             return crsExtent;
         }
@@ -245,18 +238,6 @@ export class GraticuleLayer {
             Math.min(crsExtent[3], extent[3])
         ];
         return extent;
-    }
-
-    _unproject(point, epsgCode) {
-        if (epsgCode === 'EPSG:4326') {
-            return point;
-        }
-        const coor = proj4(epsgCode, 'EPSG:4326', point);
-        const proj = proj4.defs(epsgCode);
-        if (proj.axis && proj.axis.indexOf('ne') === 0) {
-            coor.reverse();
-        }
-        return coor;
     }
 
     _updateRotate() {
