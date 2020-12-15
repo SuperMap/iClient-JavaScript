@@ -161,6 +161,10 @@
             inputCSS('../../dist/leaflet/iclient-leaflet-vue.css');
             inputScript('../../dist/leaflet/iclient-leaflet-vue.min.js');
         }
+        if (inArray(includes, 'leaflet-mapbox-gl')) {
+            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl-leaflet@0.0.14/leaflet-mapbox-gl.js');
+        }
+        
     }
 
     load();

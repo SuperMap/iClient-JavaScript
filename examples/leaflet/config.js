@@ -942,6 +942,12 @@ var exampleConfig = {
                         name_en: "natural style",
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
+                    }, {
+                        name: "MVT (叠加 MapboxGL)",
+                        name_en: "MVT (via MapboxGL)",
+                        version: '10.1.1',
+                        thumbnail: "l_mvt_mapboxgl.png",
+                        fileName: "mvt_mapboxgl"
                     }
                     // , {
                     //     name: "默认风格(MVT)",

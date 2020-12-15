@@ -669,6 +669,7 @@ window.examplesResources = {
         "title_mask":'Layer Mask',
         "title_objectdetection":"Machinelearning Result Overlay(Objectdetection)",
         "title_binaryclassification":"Machinelearning Result Overlay(Binaryclassification)",
+        "title_mvt_mapboxgl":"MVT (via MapboxGL)",
 
         "text_service_name":"Name",
         "text_service_type":"Type",
