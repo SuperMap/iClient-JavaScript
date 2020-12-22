@@ -20,7 +20,7 @@ export var getMeterPerMapUnit = function(mapUnit) {
     return meterPerMapUnit;
 };
 
-export function getWrapNum(x, range = [-180, 180], includeMax = true, includeMin) {
+export function getWrapNum(x, includeMax = true, includeMin = true, range = [-180, 180]) {
     var max = range[1],
         min = range[0],
         d = max - min;
@@ -38,10 +38,10 @@ export function getWrapNum(x, range = [-180, 180], includeMax = true, includeMin
 }
 
 export function conversionDegree(degrees) {
-  const degree = parseInt(degrees);
-  let fraction = parseInt((degrees - degree) * 60);
-  let second = parseInt(((degrees - degree) * 60 - fraction) * 60);
-  fraction = parseInt(fraction / 10) === 0 ? `0${fraction}` : fraction;
-  second = parseInt(second / 10) === 0 ? `0${second}` : second;
-  return `${degree}°${fraction}'${second}`;
+    const degree = parseInt(degrees);
+    let fraction = parseInt((degrees - degree) * 60);
+    let second = parseInt(((degrees - degree) * 60 - fraction) * 60);
+    fraction = parseInt(fraction / 10) === 0 ? `0${fraction}` : fraction;
+    second = parseInt(second / 10) === 0 ? `0${second}` : second;
+    return `${degree}°${fraction}'${second}`;
 }

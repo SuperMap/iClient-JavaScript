@@ -82,6 +82,47 @@ describe('mapboxgl_GraticuleLayer', () => {
         expect(visible).toBe('visible');
     });
 
+    it('setMinZoom', () => {
+        graticuleLayer.setMinZoom(0);
+        expect(graticuleLayer.options.minZoom).toEqual(0);
+    });
+
+    it('setMaxZoom', () => {
+        graticuleLayer.setMaxZoom(10);
+        expect(graticuleLayer.options.maxZoom).toEqual(10);
+    });
+
+    it('setShowLabel', () => {
+        graticuleLayer.setShowLabel(false);
+        expect(graticuleLayer.options.showLabel).toEqual(false);
+    });
+
+    it('setExtent', () => {
+        graticuleLayer.setExtent([[0, 0], [50, 50]]);
+        expect(graticuleLayer.options.extent[0]).toEqual(0);
+        expect(graticuleLayer.options.extent[3]).toEqual(50);
+    });
+
+    it('setStrokeStyle', () => {
+        graticuleLayer.setStrokeStyle({ lineWidth: 3 });
+        expect(graticuleLayer.options.strokeStyle.lineWidth).toEqual(3);
+    });
+
+    it('setLngLabelStyle', () => {
+        graticuleLayer.setLngLabelStyle({ textSize: '12px' });
+        expect(graticuleLayer.options.lngLabelStyle.textSize).toEqual('12px');
+    });
+
+    it('setLatLabelStyle', () => {
+        graticuleLayer.setLatLabelStyle({ textSize: '12px' });
+        expect(graticuleLayer.options.latLabelStyle.textSize).toEqual('12px');
+    });
+
+    it('setIntervals', () => {
+        graticuleLayer.setIntervals(5);
+        expect(graticuleLayer.options.interval).toEqual(5);
+    });
+
     it('_calcInterval', () => {
         const interval = map.getZoom();
         const calcInterval = map => {
