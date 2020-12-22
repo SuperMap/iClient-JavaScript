@@ -15,6 +15,7 @@ import mapboxgl from 'mapbox-gl';
  * @class mapboxgl.supermap.GraticuleLayer
  * @category Visualization GraticuleLayer
  * @classdesc 经纬网。
+ * @version 10.1.1
  * @param {mapboxgl.Map} map - mapboxgl 地图对象,将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Object} options -经纬网参数。
  * @param {boolean} [options.visible=true] - 是否显示经纬网。
@@ -22,7 +23,7 @@ import mapboxgl from 'mapbox-gl';
  * @param {number} [options.opacity=1] - 画布透明度。
  * @param {number|Function} [options.interval = 10] - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
  * @param {mapboxgl.LngLatBounds} [options.extent] - 经纬网渲染的边界范围（[minx, miny, maxx, maxy]），不传为整个地图范围。
- * @param {number} [options.minZoom] - 	最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。。
+ * @param {number} [options.minZoom] - 最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。
  * @param {number} [options.maxZoom] - 该图层可见的最大视图缩放级别（含）。
  * @param {Function} [options.lngLabelFormatter = null] - 经度标签转换函数。
  * @param {Function} [options.latLabelFormatter = null] - 纬度标签转换函数。
@@ -46,8 +47,8 @@ import mapboxgl from 'mapbox-gl';
  * @property {string} [lineColor = 'red'] - 线颜色。
  * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square。
  * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter。
- * @property {Array.<number>|Function} [lindDasharray = [0.5,4]] - 虚线样式。可以是数组，也可以是函数，参数是map。
- * @property {number|Function} [lineWidth = 1] - 线宽：可以是数字，也可以是函数，参数是map。
+ * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式。
+ * @property {number} [lineWidth = 1] - 线宽。
  */
 
 const defaultTextStyle = {
@@ -115,6 +116,7 @@ export class GraticuleLayer {
     /**
      * @function mapboxgl.supermap.GraticuleLayer.prototype.setVisibility
      * @description 设置是否可见。
+     * @param {boolean} visible - 是否可见。
      */
     setVisibility(visible) {
         const zoom = this.map.getZoom();
@@ -126,6 +128,97 @@ export class GraticuleLayer {
         if (this.map.getLayer(this.sourceId)) {
             this.map.setLayoutProperty(this.sourceId, 'visibility', this.visible ? 'visible' : 'none');
         }
+        this._drawLabel();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setMinZoom
+     * @description 设置最小视图缩放级别。
+     * @param {number} minZoom - 最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。
+     */
+    setMinZoom(minZoom) {
+        this.options.minZoom = minZoom;
+        this.setVisibility();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setMaxZoom
+     * @description 该图层可见的最大视图缩放级别。
+     * @param {number} maxZoom - 该图层可见的最大视图缩放级别（含）。
+     */
+    setMaxZoom(maxZoom) {
+        this.options.maxZoom = maxZoom;
+        this.setVisibility();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setShowLabel
+     * @description 设置显示标签。
+     * @param {boolean} showLabel - 是否显示标签。
+     */
+    setShowLabel(showLabel) {
+        this.options.showLabel = showLabel;
+        this._drawLabel();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setExtent
+     * @description 设置经纬网渲染的边界范围。
+     * @param {mapboxgl.LngLatBounds} extent - 经纬网渲染的边界范围。
+     */
+    setExtent(extent) {
+        this.options.extent = this._getDefaultExtent(extent, this.map);
+        this.features = this._getGraticuleFeatures();
+        this._updateGraticuleLayer();
+        this._drawLabel();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setStrokeStyle
+     * @description 设置经纬线样式。
+     * @param {mapboxgl.supermap.GraticuleLayer.StrokeStyle} strokeStyle - 经纬线样式。
+     */
+    setStrokeStyle(strokeStyle) {
+        this.options.strokeStyle = strokeStyle;
+        const { layout, paint } = this._transformStrokeStyle(strokeStyle);
+        for (let key in layout) {
+            this.map.setLayoutProperty(this.sourceId, key, layout[key]);
+        }
+        for (let key in paint) {
+            this.map.setPaintProperty(this.sourceId, key, paint[key]);
+        }
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setLngLabelStyle
+     * @description 设置经度标签样式。
+     * @param {mapboxgl.supermap.GraticuleLayer.LabelStyle} labelStyle - 标签样式。
+     */
+    setLngLabelStyle(labelStyle) {
+        this.options.lngLabelStyle = labelStyle;
+        this._drawLabel();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setLatLabelStyle
+     * @description 设置纬度标签样式。
+     * @param {mapboxgl.supermap.GraticuleLayer.LabelStyle} labelStyle - 标签样式。
+     */
+    setLatLabelStyle(labelStyle) {
+        this.options.latLabelStyle = labelStyle;
+        this._drawLabel();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraticuleLayer.prototype.setIntervals
+     * @description 设置经纬度的间隔（以度为单位)
+     * @param {number|Function} interval - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
+     */
+    setIntervals(interval) {
+        this.options.interval = interval;
+        this._calcInterval();
+        this.features = this._getGraticuleFeatures();
+        this._updateGraticuleLayer();
         this._drawLabel();
     }
 
@@ -241,10 +334,8 @@ export class GraticuleLayer {
     }
 
     _updateRotate() {
-        const canvas = this.canvas;
-        const sw = this.map.unproject([0, canvas.height]);
-        const ne = this.map.unproject([canvas.width, 0]);
-        this.isRotate = sw.lng > ne.lng;
+        const bearing = this.map.getBearing();
+        this.isRotate = (bearing > -180 && bearing <= -90) || (bearing >= 90 && bearing < 180);
     }
 
     _updateExtent() {
@@ -372,9 +463,7 @@ export class GraticuleLayer {
 
         features.forEach(feature => {
             const lat = feature.geometry.coordinates[0][1];
-
-            const isLatFeature = feature.geometry.coordinates[1][1];
-
+            const isLatFeature = feature.geometry.coordinates[1][1] === lat;
             if (isLatFeature) {
                 let lng = typeof lastLng === 'number' ? lastLng : lngRange[1];
                 if (this.isRotate) {
@@ -402,7 +491,7 @@ export class GraticuleLayer {
 
         features.forEach(feature => {
             let lng = feature.geometry.coordinates[0][0];
-            const isLngFeature = feature.geometry.coordinates[1][0];
+            const isLngFeature = feature.geometry.coordinates[1][0] === lng;
             if (isLngFeature) {
                 points.push([lng, lat]);
                 if (this.options.wrapX) {
@@ -420,9 +509,6 @@ export class GraticuleLayer {
         const lastLng = extent.length > 2 ? extent[2] : extent[1];
         while (lng >= _sw.lng) {
             const wrapNum = getWrapNum(lng, lastLng === 180, extent[0] === -180);
-            // if (wrapNum === -180 && lastLng === 180 && extent[0] !== -180) {
-            //     wrapNum = 180;
-            // }
             if (!extent || (wrapNum >= extent[0] && wrapNum <= lastLng)) {
                 points.push([lng, lat]);
             }
@@ -430,10 +516,6 @@ export class GraticuleLayer {
         }
         while (lng <= _ne.lng) {
             const wrapNum = getWrapNum(lng, lastLng === 180, extent[0] === -180);
-            // let wrapNum = getWrapNum(lng);
-            // if (wrapNum === 180 && lastLng !== 180 && extent[0] === -180) {
-            //     wrapNum = -180;
-            // }
             if (!extent || (wrapNum >= extent[0] && wrapNum <= lastLng)) {
                 points.push([lng, lat]);
             }
@@ -584,9 +666,21 @@ export class GraticuleLayer {
             return points;
         }
         var tmp = intersectPoints;
+        const width = this.canvas.width;
+        const height = this.canvas.height;
         for (var i in points) {
-            if (!tmp.find(item => item[0] === points[i][index])) {
+            const edgePoint = this.map.project(points[i]);
+            const intersetIndex = tmp.findIndex(item => item[0] === points[i][index]);
+            if (intersetIndex <= -1) {
                 tmp.push(points[i]);
+            } else if (
+                edgePoint &&
+                edgePoint.x >= 0 &&
+                edgePoint.x <= width &&
+                edgePoint.y >= 0 &&
+                edgePoint.y <= height
+            ) {
+                tmp[intersetIndex] = points[i];
             }
         }
         return tmp;
@@ -619,6 +713,17 @@ export class GraticuleLayer {
                 ...this._transformStrokeStyle()
             });
         }
+    }
+
+    _updateGraticuleLayer(features = this.features) {
+        if (this.map.getSource(this.sourceId)) {
+            const geoJSONData = {
+                type: 'FeatureCollection',
+                features
+            };
+            this.map.getSource(this.sourceId).setData(geoJSONData);
+        }
+        this._addGraticuleLayer();
     }
 
     _getGraticuleFeatures() {
@@ -665,22 +770,23 @@ export class GraticuleLayer {
         const realExtent = {};
         if (extent[1] % this._currLatInterval !== 0) {
             realExtent.firstLat = extent[1];
-            let intNumber = parseInt(extent[1] / this._currLatInterval);
-            intNumber = extent[1] > 0 ? intNumber + 1 : intNumber - 1;
+            const intNumber = Math.ceil(extent[1] / this._currLatInterval);
             extent[1] = intNumber * this._currLatInterval;
         }
         if (extent[3] % this._currLatInterval !== 0) {
             realExtent.lastLat = extent[3];
-            extent[3] = parseInt(extent[3] / this._currLatInterval) * this._currLatInterval;
+            const intNumber = Math.floor(extent[3] / this._currLatInterval);
+            extent[3] = intNumber * this._currLatInterval;
         }
         if (extent[0] % this._currLngInterval !== 0) {
             realExtent.firstLng = extent[0];
-            let intNumbers = parseInt(extent[0] / this._currLngInterval);
-            extent[0] = intNumbers * this._currLngInterval;
+            const intNumber = Math.ceil(extent[0] / this._currLngInterval);
+            extent[0] = intNumber * this._currLngInterval;
         }
         if (extent[2] % this._currLngInterval !== 0) {
             realExtent.lastLng = extent[2];
-            extent[2] = parseInt(extent[2] / this._currLngInterval) * this._currLngInterval;
+            const intNumber = Math.floor(extent[2] / this._currLngInterval);
+            extent[2] = intNumber * this._currLngInterval;
         }
         return { latRange: [extent[1], extent[3]], lngRange: [extent[0], extent[2]], extent, ...realExtent };
     }
@@ -758,7 +864,7 @@ export class GraticuleLayer {
             ctx.fillStyle = labelStyle.textColor;
         }
         if (labelStyle.textSize) {
-            ctx.font = labelStyle.textSize + ' ' + labelStyle.textFont.join(',');
+            ctx.font = labelStyle.textSize + ' ' + (labelStyle.textFont || ['Calibri', 'sans-serif']).join(',');
         }
         if (labelStyle.textHaloColor) {
             ctx.strokeStyle = labelStyle.textHaloColor;
