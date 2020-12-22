@@ -43,7 +43,9 @@
             var map = L.map('map', {
                 center: [37.71194458007813, -122.24143981933594],
                 zoom: 11,
-                crs: crs
+                crs: crs,
+                minZoom: 11,
+                maxZoom: 14
             });
             L.supermap.tiledMapLayer(url).addTo(map);
             $.get(
@@ -54,7 +56,10 @@
                     var gl = L.mapboxGL({
                         renderWorldCopies: false,
                         style: style,
-                        crs: 'EPSG:4326'
+                        crs: 'EPSG:4326',
+                        // mapboxgl zoom 和leaflet zoom 差一级
+                        minZoom:10,
+                        maxZoom: 13
                     }).addTo(map);
                     // 获取 mapboxgl 地图
                     // var mapboxglMap = gl.getMapboxMap();
