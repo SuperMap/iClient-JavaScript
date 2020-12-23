@@ -8,7 +8,7 @@
   <meta charset="UTF-8" />
   <title data-i18n="resources.title_componentsChart_Vue"></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="echarts-vue,ant-design-vue,iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
+  <script include="echarts-vue,iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
   <style>
     #main {
       margin: 0 auto;
@@ -20,7 +20,7 @@
       z-index: 500;
     }
 
-    .sm-component-chart .sm-component-card__content {
+    .sm-component-chart .sm-component-collapse-card__content {
       height: 300px;
     }
   </style>
@@ -31,11 +31,11 @@
     <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284">
     </sm-web-map>
     <sm-chart icon-class="" :style="chartStyle" :options="echartOptions" :dataset="dataset"
-      :dataset-options="datasetOptions"></sm-chart>
+      :dataset-options="datasetOptions" background="rgba(255,255,255,0.5)"></sm-chart>
     <sm-chart icon-class="" :style="chartStyle1" :options="echartOptions1" :dataset="dataset"
-      :dataset-options="datasetOptions1"></sm-chart>
+      :dataset-options="datasetOptions1" background="rgba(255,255,255,0.5)"></sm-chart>
     <sm-chart icon-class="" :style="chartStyle2" :options="echartOptions2" :dataset="dataset"
-      :dataset-options="datasetOptions2"></sm-chart>
+      :dataset-options="datasetOptions2" background="rgba(255,255,255,0.5)"></sm-chart>
   </div>
 
   <script>

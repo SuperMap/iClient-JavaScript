@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_componentsBasic_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="echarts,ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="echarts,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     body {
       margin: 0;
@@ -56,7 +56,7 @@
 
   <div id="main">
     <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" ref="map" @load.once='load'></sm-web-map>
-    <a-card class="box-card">
+    <sm-card class="box-card">
       <!-- 图标组件 -->
       <sm-icon icon-class="marker-layer" size="18px" text-color='rgb(63, 177, 227)' :style="{float: 'left'}">
       </sm-icon>
@@ -65,11 +65,11 @@
       </sm-text>
       <sm-text title="机场" :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}' text-color="rgb(51,51,51)">
       </sm-text>
-      <sm-text :title="name" :font-style='{ fontSize: "18px", color:"#73b9ac", fontWeight: "700" ,display: "block"}'>
+      <sm-text :title="name" :font-style='{ fontSize: "18px", fontWeight: "700" ,display: "block"}' text-color="#333">
       </sm-text>
       <!-- 指标组件 -->
-      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber"></sm-indicator>
-      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber"></sm-indicator>
+      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" text-color="#333"></sm-indicator>
+      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" text-color="#333"></sm-indicator>
       <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}' text-color="rgb(51,51,51)"></sm-text>
       <!-- 水球组件 -->
       <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true">
@@ -82,7 +82,7 @@
       <!-- 时间组件 -->
       <sm-time-text :font-style='{ fontSize: "12px"}' text-color="#333" time-type="date+second" style="float:right">
       </sm-time-text>
-    </a-card>
+    </sm-card>
   </div>
 
   <script>

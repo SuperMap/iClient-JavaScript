@@ -7,7 +7,7 @@
         <meta charset="UTF-8" />
         <title data-i18n="resources.title_componentsPopup_Vue"></title>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-        <script include="ant-design-vue,iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
+        <script include="iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
         <style>
             #main {
                 position: relative;
@@ -28,7 +28,7 @@
             <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="1329428269" @click="mapClick">
                 <!-- 弹窗组件 -->
                 <sm-popup>
-                    <a-table :columns="columns" :data-source="data" :pagination="false" />
+                    <sm-table :columns="columns" :data-source="data" :pagination="false" />
                 </sm-popup>
             </sm-web-map>
         </div>

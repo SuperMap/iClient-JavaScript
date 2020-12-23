@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_componentsMap_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     #main {
       margin: 0 auto;
@@ -24,7 +24,7 @@
     <!-- 地图组件：sm-map  props: map-options, access-token-->
     <sm-web-map :map-options="mapOptions"></sm-web-map>
   </div>
-  
+
   <script>
     new Vue({
       el: '#main',
