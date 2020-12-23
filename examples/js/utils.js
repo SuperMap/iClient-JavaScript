@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 var utils = {
     //设置语言。参数："zh_CN"，"en-US"
     setLanguage: null,
