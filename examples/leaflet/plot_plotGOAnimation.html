@@ -137,7 +137,7 @@
 
     function loadSmlAndAnimation(){
         $.getJSON("../data/ZaoYiHuiZhan_Sml.json",function(sitData){
-            plotting.getSitDataManager().addSmlData(sitData, true);
+            plotting.getSitDataManager().openSmlData(sitData, true);
 
             $.getJSON("../data/ZaoYiHuiZhan_Animation.json",function(animationJsonData){
                 goAnimationManager.fromJSONData(animationJsonData);
