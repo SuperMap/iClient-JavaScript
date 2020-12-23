@@ -315,7 +315,7 @@ export class WebMap extends Observable {
         if (handleResult.action === "BrowseMap") {
             that.createSpecLayer(mapInfo);
         } else if (handleResult.action === "OpenMap") {
-            that.baseProjection = handleResult.newCrs ||mapInfo.projection;
+            that.baseProjection = handleResult.newCrs || mapInfo.projection;
             that.webMapVersion = mapInfo.version;
             that.baseLayer = mapInfo.baseLayer;
             // that.mapParams = {
@@ -352,7 +352,7 @@ export class WebMap extends Observable {
     }
 
     /**
-    * 处理坐标系
+    * 处理坐标系(底图)
     * @private
     * @param {string} crs 必传参数，值是webmap2中定义的坐标系，可能是 1、EGSG:xxx 2、WKT string
     * @param {string} baseLayerUrl  可选参数，地图的服务地址；用于EPSG：-1 的时候，用于请求iServer提供的wkt
@@ -1068,8 +1068,8 @@ export class WebMap extends Observable {
             });
             options.tileGrid = tileGrid;
         }
-        //主机名相同时不添加代理
-        if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
+        //主机名相同时不添加代理,iportal geturlResource不支持webp代理
+        if (layerInfo.url && !this.isSameDomain(layerInfo.url) && layerInfo.format !== 'webp') {
             options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new TileSuperMapRest(options);
@@ -1715,7 +1715,7 @@ export class WebMap extends Observable {
                         that.sendMapToUser(len);
                         that.errorCallback && that.errorCallback(e, 'getLayerFaild', that.map);
                     })
-                }else if (layer.layerType === 'SUPERMAP_REST' ||
+                } else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "WMS" ||
                     layer.layerType === "WMTS") {
                     if (layer.layerType === "WMTS") {
@@ -1967,7 +1967,7 @@ export class WebMap extends Observable {
                 allDatas: {
                     features: result.result.features.features
                 },
-                fileCode: layer.projection,
+                fileCode: that.baseProjection, //因为获取restData用了动态投影，不需要再进行坐标转换。所以此处filecode和底图坐标系一致
                 featureProjection: that.baseProjection
             });
             that.addLayer(layer, features, layerIndex);
@@ -1977,7 +1977,7 @@ export class WebMap extends Observable {
             that.layerAdded++;
             that.sendMapToUser(layerLength);
             that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
-        });
+        }, that.baseProjection.split("EPSG:")[1]);
     }
 
     /**
