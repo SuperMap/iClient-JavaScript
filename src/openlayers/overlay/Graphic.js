@@ -82,8 +82,8 @@ export class Graphic extends ImageCanvasSource {
         const me = this;
 
         if (options.onClick) {
-            me.map.on('click', function (e) {
-                if(me.renderer instanceof GraphicWebGLRenderer){
+            me.map.on('click', function(e) {
+                if (me.renderer instanceof GraphicWebGLRenderer) {
                     return;
                 }
                 const features = me.map.getFeaturesAtPixel(e.pixel) || [];
@@ -108,9 +108,17 @@ export class Graphic extends ImageCanvasSource {
         }
         //eslint-disable-next-line no-unused-vars
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            var mapWidth = size[0] / pixelRatio;
+            var mapHeight = size[1] / pixelRatio;
+            var width = me.map.getSize()[0];
+            var height = me.map.getSize()[1];
             if (!me.renderer) {
                 me.renderer = createRenderer(size, pixelRatio);
             }
+            me.renderer.mapWidth = mapWidth;
+            me.renderer.mapHeight = mapHeight;
+            me.renderer.pixelRatio = pixelRatio;
+            me.renderer.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
             let graphics = this.getGraphicsInExtent(extent);
             me.renderer._clearBuffer();
             me.renderer.selected = this.selected;
@@ -142,10 +150,10 @@ export class Graphic extends ImageCanvasSource {
                 opt = CommonUtil.extend(me, opt);
                 opt.pixelRatio = pixelRatio;
                 opt.container = me.map.getViewport().getElementsByClassName('ol-overlaycontainer')[0];
-                opt.onBeforeRender = function () {
+                opt.onBeforeRender = function() {
                     return false;
                 };
-                opt.onAfterRender = function () {
+                opt.onAfterRender = function() {
                     return false;
                 };
 
@@ -539,13 +547,13 @@ export class Graphic extends ImageCanvasSource {
     getGraphicsInExtent(extent) {
         var graphics = [];
         if (!extent) {
-            this.graphics.map(function (graphic) {
+            this.graphics.map(function(graphic) {
                 graphics.push(graphic);
                 return graphic;
             });
             return graphics;
         }
-        this.graphics.map(function (graphic) {
+        this.graphics.map(function(graphic) {
             if (olExtent.containsExtent(extent, graphic.getGeometry().getExtent())) {
                 graphics.push(graphic);
             }

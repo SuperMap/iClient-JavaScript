@@ -16,7 +16,6 @@ import mapboxgl from 'mapbox-gl';
  * @category Visualization GraticuleLayer
  * @classdesc 经纬网。
  * @version 10.1.1
- * @param {mapboxgl.Map} map - mapboxgl 地图对象,将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Object} options -经纬网参数。
  * @param {boolean} [options.visible=true] - 是否显示经纬网。
  * @param {boolean} [options.showLabel=true] - 是否显示标签。
@@ -83,8 +82,7 @@ const defaultOptions = {
     latLabelStyle: defaultTextStyle
 };
 export class GraticuleLayer {
-    constructor(map, options, sourceId = 'sm-graticule-layer') {
-        this.map = map;
+    constructor(options, sourceId = 'sm-graticule-layer') {
         this.canvasId = 'sm-graticule-canvasid';
         this.sourceId = sourceId;
         this.options = options;
@@ -101,6 +99,7 @@ export class GraticuleLayer {
         this._bindEvent();
         this._drawCanvas();
         this._addGraticuleLayer();
+        this.setVisibility();
     }
 
     /**
