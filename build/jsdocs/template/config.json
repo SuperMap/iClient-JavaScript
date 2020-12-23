@@ -1,417 +1,417 @@
 {
-    "iServer": {
-        "name": "iServer",
+  "iServer": {
+    "name": "iServer",
+    "content": {
+      "Map": {
+        "name": "地图",
+        "name_en": "Map",
         "content": {
-            "Map": {
-                "name": "地图",
-                "name_en": "Map",
-                "content": {
-                    "Layer": {
-                        "name": "图层",
-                        "name_en": "Layer"
-                    },
-                    "Theme": {
-                        "name": "专题图",
-                        "name_en": "Theme"
-                    },
-                    "Chart": {
-                        "name": "海图",
-                        "name_en": "Chart"
-                    },
-                    "Measure": {
-                        "name": "测量",
-                        "name_en": "Measure"
-                    },
-                    "QueryResults": {
-                        "name": "地图查询",
-                        "name_en": "QueryResults"
-                    },
-                    "TempLayersSet": {
-                        "name": "临时图层",
-                        "name_en": "TempLayersSet"
-                    },
-                    "Tilesets": {
-                        "name": "切片集",
-                        "name_en": "Tilesets"
-                    }
-                }
-            },
-            "Data": {
-                "name": "数据",
-                "name_en": "Data",
-                "content": {
-                    "Feature": {
-                        "name": "要素",
-                        "name_en": "Feature"
-                    },
-                    "Field": {
-                        "name": "字段",
-                        "name_en": "Field"
-                    },
-                    "Grid": {
-                        "name": "栅格",
-                        "name_en": "Grid"
-                    },
-                    "FeatureResults": {
-                        "name": "数据查询",
-                        "name_en": "FeatureResults"
-                    }
-                }
-            },
-            "SpatialAnalyst": {
-                "name": "空间分析",
-                "name_en": "SpatialAnalyst",
-                "content": {
-                    "BufferAnalyst": {
-                        "name": "缓冲区分析",
-                        "name_en": "BufferAnalyst"
-                    },
-                    "OverlayAnalyst": {
-                        "name": "叠加分析",
-                        "name_en": "OverlayAnalyst"
-                    },
-                    "InterpolationAnalyst": {
-                        "name": "插值分析",
-                        "name_en": "InterpolationAnalyst"
-                    },
-                    "ThiessenAnalyst": {
-                        "name": "邻近分析",
-                        "name_en": "InterpolationAnalyst"
-                    },
-                    "SurfaceAnalyst": {
-                        "name": "表面分析",
-                        "name_en": "Surface"
-                    },
-                    "DensityAnalyst": {
-                        "name": "密度分析",
-                        "name_en": "DensityAnalyst"
-                    },
-                    "GenerateSpatialData": {
-                        "name": "动态分段",
-                        "name_en": "GenerateSpatialData"
-                    },
-                    "ThiessenPolygonAnalyst": {
-                        "name": "邻近分析",
-                        "name_en": "ThiessenPolygonAnalyst"
-                    },
-                    "GeorelationAnalyst": {
-                        "name": "空间关系分析",
-                        "name_en": "GeorelationAnalyst"
-                    },
-                    "GridMathAnalyst": {
-                        "name": "栅格代数运算",
-                        "name_en": "GridMathAnalyst"
-                    },
-                    "SolarradiationAnalyst": {
-                        "name": "太阳辐射分析",
-                        "name_en": "SolarradiationAnalyst"
-                    },
-                    "RouteCalculateMeasure": {
-                        "name": "路由计算",
-                        "name_en": "RouteCalculateMeasure"
-                    },
-                    "RouteLocator": {
-                        "name": "路由定点",
-                        "name_en": "RouteLocator"
-                    },
-                    "TerrainCalculation": {
-                        "name": "地形分析",
-                        "name_en": "TerrainCalculation"
-                    },
-                    "BatchAnalyst": {
-                        "name": "批量分析",
-                        "name_en": "BatchAnalyst"
-                    }
-                }
-
-            },
-            "NetworkAnalyst": {
-                "name": "网络分析",
-                "name_en": "NetworkAnalyst",
-                "content": {
-                    "BurstAnalyse": {
-                        "name": "爆管分析",
-                        "name_en": "BurstAnalyse"
-                    },
-                    "ClosestFacility": {
-                        "name": "最近设施查找",
-                        "name_en": "ClosestFacility"
-                    },
-                    "Location": {
-                        "name": "选址分区",
-                        "name_en": "Location"
-                    },
-                    "Path": {
-                        "name": "最佳路径分析",
-                        "name_en": "Path"
-                    },
-                    "TSPPath": {
-                        "name": "旅行商分析",
-                        "name_en": "TSPPath"
-                    },
-                    "MTSPPath": {
-                        "name": "多旅行商分析",
-                        "name_en": "MTSPPath"
-                    },
-                    "ServiceArea": {
-                        "name": "服务区分析",
-                        "name_en": "ServiceArea"
-                    },
-                    "UpstreamCirticalFaclilities": {
-                        "name": "上游关键设施查找",
-                        "name_en": "UpstreamCirticalFaclilities"
-                    },
-                    "WeightMatrix": {
-                        "name": "耗费矩阵",
-                        "name_en": "WeightMatrix"
-                    },
-                    "EdgeWeight": {
-                        "name": "弧段权值",
-                        "name_en": "EdgeWeight"
-                    },
-                    "TurnNodeWeight": {
-                        "name": "转向结点权值",
-                        "name_en": "TurnNodeWeight"
-                    }
-
-                }
-            },
-            "FacilityAnalyst3D": {
-                "name": "三维设施网络分析",
-                "name_en": "FacilityAnalyst3D",
-                "content": {
-                    "Sinks": {
-                        "name": "汇查找",
-                        "name_en": "Sinks"
-                    },
-                    "Sources": {
-                        "name": "源查找",
-                        "name_en": "Sources"
-                    },
-                    "TraceDownResult": {
-                        "name": "下游追踪",
-                        "name_en": "TraceDownResult"
-                    },
-                    "TraceUpResult": {
-                        "name": "上游追踪",
-                        "name_en": "TraceUpResult"
-                    },
-                    "UpstreamCirticalFaclilities": {
-                        "name": "上游关键设施查找",
-                        "name_en": "UpstreamCirticalFaclilities"
-                    }
-                }
-            },
-            "TrafficTransferAnalyst": {
-                "name": "交通换乘",
-                "name_en": "TrafficTransferAnalyst",
-                "content": {
-                    "TransferStops": {
-                        "name": "交通换乘站点",
-                        "name_en": "TransferStops"
-                    },
-                    "TransferPath": {
-                        "name": "交通换乘路线",
-                        "name_en": "TransferPath"
-                    },
-                    "TransferSolutions": {
-                        "name": "交通换乘方案",
-                        "name_en": "TransferSolutions"
-                    }
-                }
-            },
-            "ProcessingService": {
-                "name": "分布式分析",
-                "name_en": "ProcessingService",
-                "content": {
-                    "BufferAnalyst": {
-                        "name": "缓冲区分析",
-                        "name_en": "BufferAnalyst"
-                    },
-                    "DensityAnalyst": {
-                        "name": "密度分析",
-                        "name_en": "DensityAnalyst"
-                    },
-                    "OverlayAnalyst": {
-                        "name": "叠加分析",
-                        "name_en": "OverlayAnalyst"
-                    },
-                    "Query": {
-                        "name": "单对象空间查询分析",
-                        "name_en": "Query"
-                    },
-                    "SummaryAttributes": {
-                        "name": "属性汇总分析",
-                        "name_en": "SummaryAttributes"
-                    },
-                    "AggregatePoints": {
-                        "name": "点聚合分析",
-                        "name_en": "AggregatePoints"
-                    },
-                    "SummaryRegion": {
-                        "name": "区域汇总分析",
-                        "name_en": "SummaryRegion"
-                    },
-                    "TopologyValidator": {
-                        "name": "拓扑检查分析",
-                        "name_en": "TopologyValidator"
-                    },
-                    "VectorClip": {
-                        "name": "矢量裁剪分析",
-                        "name_en": "VectorClip"
-                    }
-
-                }
-            },
-            "AddressMatch": {
-                "name": "地址匹配",
-                "name_en": "AddressMatch"
-            },
-            "DataFlow": {
-                "name": "数据流",
-                "name_en": "DataFlow"
-            },
-            "WebPrintingJob": {
-                "name": "地图打印",
-                "name_en": "WebPrintingJob"
-            },
-            "GeoprocessingService": {
-                "name": "地理处理",
-                "name_en": "GeoprocessingService"
-            }
+          "Layer": {
+            "name": "图层",
+            "name_en": "Layer"
+          },
+          "Theme": {
+            "name": "专题图",
+            "name_en": "Theme"
+          },
+          "Chart": {
+            "name": "海图",
+            "name_en": "Chart"
+          },
+          "Measure": {
+            "name": "测量",
+            "name_en": "Measure"
+          },
+          "QueryResults": {
+            "name": "地图查询",
+            "name_en": "QueryResults"
+          },
+          "TempLayersSet": {
+            "name": "临时图层",
+            "name_en": "TempLayersSet"
+          },
+          "Tilesets": {
+            "name": "切片集",
+            "name_en": "Tilesets"
+          }
         }
-    },
-    "iPortal/Online": {
-        "name": "iPortal/Online"
-    },
-    "iManager": {
-        "name": "iManager"
-    },
-    "ElasticSearch": {
-        "name": "ElasticSearch"
-    },
-    "Visualization": {
-        "name": "可视化",
-        "name_en": "Visualization",
+      },
+      "Data": {
+        "name": "数据",
+        "name_en": "Data",
         "content": {
-            "HeatMap": {
-                "name": "热力图",
-                "name_en": "HeatMap"
-            },
-            "ECharts": {
-                "name": "ECharts"
-            },
-            "Graphic": {
-                "name": "高效率点图层",
-                "name_en": "Graphic"
-            },
-            "DeckGL": {
-                "name": "DeckGL",
-                "name_en": "DeckGL"
-            },
-            "Theme": {
-                "name": "客户端专题图",
-                "name_en": "Theme"
-            },
-            "MapV": {
-                "name": "MapV"
-            },
-            "VectorTile": {
-                "name": "矢量瓦片",
-                "name_en": "VectorTile"
-            },
-            "Turf": {
-                "name": "Turf"
-            },
-            "Marker": {
-                "name": "Marker"
-            },
-            "Three": {
-                "name": "Three"
-            }
+          "Feature": {
+            "name": "要素",
+            "name_en": "Feature"
+          },
+          "Field": {
+            "name": "字段",
+            "name_en": "Field"
+          },
+          "Grid": {
+            "name": "栅格",
+            "name_en": "Grid"
+          },
+          "FeatureResults": {
+            "name": "数据查询",
+            "name_en": "FeatureResults"
+          }
         }
-    },
-    "Control": {
-        "name": "控件",
-        "name_en": "Control"
-    },
-    "Components": {
-        "name": "组件",
-        "name_en": "Components",
+      },
+      "SpatialAnalyst": {
+        "name": "空间分析",
+        "name_en": "SpatialAnalyst",
         "content": {
-            "Common": {
-                "name": "通用",
-                "name_en": "Common"
-            },
-            "OpenFile": {
-                "name": "打开本地文件组件",
-                "name_en": "OpenFile"
-            },
-            "DataFlow": {
-                "name": "数据流组件",
-                "name_en": "DataFlow"
-            },
-            "ClientComputation": {
-                "name": "客户端计算组件",
-                "name_en": "ClientComputation"
-            },
-            "DistributedAnalysis": {
-                "name": "分布式分析组件",
-                "name_en": "DistributedAnalysis"
-            },
-            "Search": {
-                "name": "图层查询组件",
-                "name_en": "Search"
-            },
-            "DataServiceQuery": {
-                "name": "数据服务查询组件",
-                "name_en": "DataServiceQuery"
-            },
-            "Chart": {
-                "name": "图表组件",
-                "name_en": "Chart"
-            }
+          "BufferAnalyst": {
+            "name": "缓冲区分析",
+            "name_en": "BufferAnalyst"
+          },
+          "OverlayAnalyst": {
+            "name": "叠加分析",
+            "name_en": "OverlayAnalyst"
+          },
+          "InterpolationAnalyst": {
+            "name": "插值分析",
+            "name_en": "InterpolationAnalyst"
+          },
+          "ThiessenAnalyst": {
+            "name": "邻近分析",
+            "name_en": "InterpolationAnalyst"
+          },
+          "SurfaceAnalyst": {
+            "name": "表面分析",
+            "name_en": "Surface"
+          },
+          "DensityAnalyst": {
+            "name": "密度分析",
+            "name_en": "DensityAnalyst"
+          },
+          "GenerateSpatialData": {
+            "name": "动态分段",
+            "name_en": "GenerateSpatialData"
+          },
+          "ThiessenPolygonAnalyst": {
+            "name": "邻近分析",
+            "name_en": "ThiessenPolygonAnalyst"
+          },
+          "GeorelationAnalyst": {
+            "name": "空间关系分析",
+            "name_en": "GeorelationAnalyst"
+          },
+          "GridMathAnalyst": {
+            "name": "栅格代数运算",
+            "name_en": "GridMathAnalyst"
+          },
+          "SolarradiationAnalyst": {
+            "name": "太阳辐射分析",
+            "name_en": "SolarradiationAnalyst"
+          },
+          "RouteCalculateMeasure": {
+            "name": "路由计算",
+            "name_en": "RouteCalculateMeasure"
+          },
+          "RouteLocator": {
+            "name": "路由定点",
+            "name_en": "RouteLocator"
+          },
+          "TerrainCalculation": {
+            "name": "地形分析",
+            "name_en": "TerrainCalculation"
+          },
+          "BatchAnalyst": {
+            "name": "批量分析",
+            "name_en": "BatchAnalyst"
+          }
         }
-    },
-    "Security": {
-        "name": "安全",
-        "name_en": "Security"
-    },
-    "OGC": {
-        "name": "OGC"
-    },
-    "ThirdPartyMap": {
-        "name": "互联网地图",
-        "name_en": "ThirdPartyMap"
-    },
-    "BaseTypes": {
-        "name": "基础类",
-        "name_en": "BaseTypes",
+      },
+      "NetworkAnalyst": {
+        "name": "网络分析",
+        "name_en": "NetworkAnalyst",
         "content": {
-            "Namespace": {
-                "name": "命名空间",
-                "name_en": "Namespace"
-            },
-            "Util": {
-                "name": "工具",
-                "name_en": "Util"
-            },
-            "Geometry": {
-                "name": "几何要素",
-                "name_en": "Geometry"
-            },
-            "Projection": {
-                "name": "投影",
-                "name_en": "Projection"
-            },
-            "Format": {
-                "name": "格式",
-                "name_en": "Format"
-            },
-            "Style": {
-                "name": "样式",
-                "name_en": "Style"
-            }
+          "BurstAnalyse": {
+            "name": "爆管分析",
+            "name_en": "BurstAnalyse"
+          },
+          "ClosestFacility": {
+            "name": "最近设施查找",
+            "name_en": "ClosestFacility"
+          },
+          "Location": {
+            "name": "选址分区",
+            "name_en": "Location"
+          },
+          "Path": {
+            "name": "最佳路径分析",
+            "name_en": "Path"
+          },
+          "TSPPath": {
+            "name": "旅行商分析",
+            "name_en": "TSPPath"
+          },
+          "MTSPPath": {
+            "name": "多旅行商分析",
+            "name_en": "MTSPPath"
+          },
+          "ServiceArea": {
+            "name": "服务区分析",
+            "name_en": "ServiceArea"
+          },
+          "UpstreamCirticalFaclilities": {
+            "name": "上游关键设施查找",
+            "name_en": "UpstreamCirticalFaclilities"
+          },
+          "WeightMatrix": {
+            "name": "耗费矩阵",
+            "name_en": "WeightMatrix"
+          },
+          "EdgeWeight": {
+            "name": "弧段权值",
+            "name_en": "EdgeWeight"
+          },
+          "TurnNodeWeight": {
+            "name": "转向结点权值",
+            "name_en": "TurnNodeWeight"
+          }
         }
+      },
+      "FacilityAnalyst3D": {
+        "name": "三维设施网络分析",
+        "name_en": "FacilityAnalyst3D",
+        "content": {
+          "Sinks": {
+            "name": "汇查找",
+            "name_en": "Sinks"
+          },
+          "Sources": {
+            "name": "源查找",
+            "name_en": "Sources"
+          },
+          "TraceDownResult": {
+            "name": "下游追踪",
+            "name_en": "TraceDownResult"
+          },
+          "TraceUpResult": {
+            "name": "上游追踪",
+            "name_en": "TraceUpResult"
+          },
+          "UpstreamCirticalFaclilities": {
+            "name": "上游关键设施查找",
+            "name_en": "UpstreamCirticalFaclilities"
+          }
+        }
+      },
+      "TrafficTransferAnalyst": {
+        "name": "交通换乘",
+        "name_en": "TrafficTransferAnalyst",
+        "content": {
+          "TransferStops": {
+            "name": "交通换乘站点",
+            "name_en": "TransferStops"
+          },
+          "TransferPath": {
+            "name": "交通换乘路线",
+            "name_en": "TransferPath"
+          },
+          "TransferSolutions": {
+            "name": "交通换乘方案",
+            "name_en": "TransferSolutions"
+          }
+        }
+      },
+      "ProcessingService": {
+        "name": "分布式分析",
+        "name_en": "ProcessingService",
+        "content": {
+          "BufferAnalyst": {
+            "name": "缓冲区分析",
+            "name_en": "BufferAnalyst"
+          },
+          "DensityAnalyst": {
+            "name": "密度分析",
+            "name_en": "DensityAnalyst"
+          },
+          "OverlayAnalyst": {
+            "name": "叠加分析",
+            "name_en": "OverlayAnalyst"
+          },
+          "Query": {
+            "name": "单对象空间查询分析",
+            "name_en": "Query"
+          },
+          "SummaryAttributes": {
+            "name": "属性汇总分析",
+            "name_en": "SummaryAttributes"
+          },
+          "AggregatePoints": {
+            "name": "点聚合分析",
+            "name_en": "AggregatePoints"
+          },
+          "SummaryRegion": {
+            "name": "区域汇总分析",
+            "name_en": "SummaryRegion"
+          },
+          "TopologyValidator": {
+            "name": "拓扑检查分析",
+            "name_en": "TopologyValidator"
+          },
+          "VectorClip": {
+            "name": "矢量裁剪分析",
+            "name_en": "VectorClip"
+          }
+        }
+      },
+      "AddressMatch": {
+        "name": "地址匹配",
+        "name_en": "AddressMatch"
+      },
+      "DataFlow": {
+        "name": "数据流",
+        "name_en": "DataFlow"
+      },
+      "WebPrintingJob": {
+        "name": "地图打印",
+        "name_en": "WebPrintingJob"
+      },
+      "GeoprocessingService": {
+        "name": "地理处理",
+        "name_en": "GeoprocessingService"
+      }
     }
+  },
+  "iPortal/Online": {
+    "name": "iPortal/Online"
+  },
+  "iManager": {
+    "name": "iManager"
+  },
+  "ElasticSearch": {
+    "name": "ElasticSearch"
+  },
+  "Visualization": {
+    "name": "可视化",
+    "name_en": "Visualization",
+    "content": {
+      "HeatMap": {
+        "name": "热力图",
+        "name_en": "HeatMap"
+      },
+      "ECharts": {
+        "name": "ECharts"
+      },
+      "Graphic": {
+        "name": "高效率点图层",
+        "name_en": "Graphic"
+      },
+      "DeckGL": {
+        "name": "DeckGL",
+        "name_en": "DeckGL"
+      },
+      "Theme": {
+        "name": "客户端专题图",
+        "name_en": "Theme"
+      },
+      "MapV": {
+        "name": "MapV"
+      },
+      "VectorTile": {
+        "name": "矢量瓦片",
+        "name_en": "VectorTile"
+      },
+      "Turf": {
+        "name": "Turf"
+      },
+      "Marker": {
+        "name": "Marker"
+      },
+      "Three": {
+        "name": "Three"
+      },
+      "GraticuleLayer": {
+        "name": "经纬网"
+      }
+    }
+  },
+  "Control": {
+    "name": "控件",
+    "name_en": "Control"
+  },
+  "Components": {
+    "name": "组件",
+    "name_en": "Components",
+    "content": {
+      "Common": {
+        "name": "通用",
+        "name_en": "Common"
+      },
+      "OpenFile": {
+        "name": "打开本地文件组件",
+        "name_en": "OpenFile"
+      },
+      "DataFlow": {
+        "name": "数据流组件",
+        "name_en": "DataFlow"
+      },
+      "ClientComputation": {
+        "name": "客户端计算组件",
+        "name_en": "ClientComputation"
+      },
+      "DistributedAnalysis": {
+        "name": "分布式分析组件",
+        "name_en": "DistributedAnalysis"
+      },
+      "Search": {
+        "name": "图层查询组件",
+        "name_en": "Search"
+      },
+      "DataServiceQuery": {
+        "name": "数据服务查询组件",
+        "name_en": "DataServiceQuery"
+      },
+      "Chart": {
+        "name": "图表组件",
+        "name_en": "Chart"
+      }
+    }
+  },
+  "Security": {
+    "name": "安全",
+    "name_en": "Security"
+  },
+  "OGC": {
+    "name": "OGC"
+  },
+  "ThirdPartyMap": {
+    "name": "互联网地图",
+    "name_en": "ThirdPartyMap"
+  },
+  "BaseTypes": {
+    "name": "基础类",
+    "name_en": "BaseTypes",
+    "content": {
+      "Namespace": {
+        "name": "命名空间",
+        "name_en": "Namespace"
+      },
+      "Util": {
+        "name": "工具",
+        "name_en": "Util"
+      },
+      "Geometry": {
+        "name": "几何要素",
+        "name_en": "Geometry"
+      },
+      "Projection": {
+        "name": "投影",
+        "name_en": "Projection"
+      },
+      "Format": {
+        "name": "格式",
+        "name_en": "Format"
+      },
+      "Style": {
+        "name": "样式",
+        "name_en": "Style"
+      }
+    }
+  }
 }

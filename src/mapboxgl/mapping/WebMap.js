@@ -207,9 +207,13 @@ export class WebMap extends mapboxgl.Evented {
         if (mapInfo.minScale && mapInfo.maxScale) {
             zoomBase = this._transformScaleToZoom(mapInfo.minScale, mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection):'EPSG:3857');
         } else {
-            zoomBase = +Math.log2(
-                this._getResolution(mapboxgl.CRS ? mapboxgl.CRS.get(this.baseProjection).getExtent():[-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]) / this._getResolution(mapInfo.extent)
-            ).toFixed(2);
+			const e =
+                this._getResolution(
+                    mapboxgl.CRS
+                        ? mapboxgl.CRS.get(this.baseProjection).getExtent()
+                        : [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]
+                ) / this._getResolution(mapInfo.extent);
+            zoomBase = +Math.log(e) / Math.LN2.toFixed(2);
         }
         zoom += zoomBase;
 		center = oldcenter ? this._unproject([oldcenter.x, oldcenter.y]) : new mapboxgl.LngLat(0, 0);

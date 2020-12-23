@@ -45,7 +45,7 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.toSuperMapPolygon
      * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
-     * @param {Mapboxgl.LngLatbounds} lnglatBounds - Mapbox GL LngLatbounds对象。
+     * @param {Mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
      * @returns {SuperMap.Geometry.Polygon}
      */
     static toSuperMapPolygon(lnglatBounds) {

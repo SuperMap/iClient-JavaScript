@@ -84,7 +84,7 @@
             inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol-mapbox-style')) {
-            inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-2/olms.js');
         }
         if (inArray(includes, 'deck')) {
             inputScript('https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js');
