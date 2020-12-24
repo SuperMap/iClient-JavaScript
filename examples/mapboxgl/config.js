@@ -1009,7 +1009,7 @@ var exampleConfig = {
                 {
                   name: "经纬网",
                   name_en: "graticule",
-                 
+                  version: "10.1.1",
                   thumbnail: "graticule_3857.png",
                   fileName: "graticuleLayer_3857"
                 }
