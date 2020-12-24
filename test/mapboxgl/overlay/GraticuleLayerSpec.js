@@ -44,7 +44,7 @@ describe('mapboxgl_GraticuleLayer', () => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         if (!map.getLayer('graticuleLayer_1')) {
-            graticuleLayer = new GraticuleLayer(map);
+            graticuleLayer = new GraticuleLayer({layerID :'graticuleLayer_1'});
             graticuleLayer.onAdd(map);
         }
     });
