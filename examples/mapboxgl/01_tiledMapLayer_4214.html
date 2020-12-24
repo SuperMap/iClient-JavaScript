@@ -31,7 +31,7 @@
     <body>
         <div id="map"></div>
         <script type="text/javascript">
-            var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var url = host + '/iserver/services/map-china400/rest/maps/China_4214';
             var map = new mapboxgl.Map({
                 container: 'map', // container id
@@ -104,7 +104,7 @@
                         filter: ['==', '$type', 'Polygon']
                     });
                 });
-                map.addControl(new mapboxgl.NavigationControl());
+                map.addControl(new mapboxgl.NavigationControl(), 'top-left');
             });
         </script>
     </body>
