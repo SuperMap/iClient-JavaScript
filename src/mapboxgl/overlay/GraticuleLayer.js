@@ -84,7 +84,7 @@ const defaultOptions = {
 };
 export class GraticuleLayer {
     constructor(options) {
-        this.id = options.layerID ? options.layerID : CommonUtil.createUniqueID('graticuleLayer_');
+        this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('graticuleLayer_');
         this.sourceId = this.id;
         this.canvasId = this.id;
         this.options = options;
