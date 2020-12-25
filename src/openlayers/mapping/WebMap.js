@@ -119,7 +119,7 @@ export class WebMap extends Observable {
         this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.webMap = options.webMap;
-        this.tileFormat = options.tileFormat;
+        this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
         this.createMap(options.mapSetting);
         if (this.webMap) {
             // webmap有可能是url地址，有可能是webmap对象
@@ -1262,7 +1262,7 @@ export class WebMap extends Observable {
                 return result
             }
             let format = 'png';
-            if(that.tileFormat === 'WebP') {
+            if(that.tileFormat === 'webp') {
                 const isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
                 format = isSupportWebp ? 'webp' : 'png';
             }
@@ -1318,7 +1318,7 @@ export class WebMap extends Observable {
             let token = layerInfo.credential ? layerInfo.credential.token : undefined;
             layerInfo.format = 'png';
             // china_dark为默认底图，还是用png出图
-            if(that.tileFormat === 'WebP' && layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark') {
+            if(that.tileFormat === 'webp' && layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark') {
                 const isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
                 layerInfo.format = isSupprtWebp ? 'webp' : 'png';
             }
@@ -1960,6 +1960,13 @@ export class WebMap extends Observable {
         serviceOptions.withCredentials = this.withCredentials;
         if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
+        }
+        if(['EPSG:-1', 'EPSG:0', 'EPSG:-1000'].includes(layer.projection)) {
+            // 不支持动态投影restData服务
+            that.layerAdded++;
+            that.sendMapToUser(layerLength);
+            that.errorCallback && that.errorCallback({}, 'getFeatureFaild', that.map);
+            return;
         }
         //因为itest上使用的https，iserver是http，所以要加上代理
         Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
