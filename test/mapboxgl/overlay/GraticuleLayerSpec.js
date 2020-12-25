@@ -43,8 +43,8 @@ describe('mapboxgl_GraticuleLayer', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        if (!map.getLayer('sm-graticule-layer')) {
-            graticuleLayer = new GraticuleLayer(map);
+        if (!map.getLayer('graticuleLayer_1')) {
+            graticuleLayer = new GraticuleLayer({layerID :'graticuleLayer_1'});
             graticuleLayer.onAdd(map);
         }
     });
@@ -54,8 +54,8 @@ describe('mapboxgl_GraticuleLayer', () => {
     });
 
     afterAll(() => {
-        if (map.getLayer('sm-graticule-layer')) {
-            map.removeLayer('sm-graticule-layer');
+        if (map.getLayer('graticuleLayer_1')) {
+            map.removeLayer('graticuleLayer_1');
         }
         document.body.removeChild(testDiv);
         map = null;
@@ -75,10 +75,10 @@ describe('mapboxgl_GraticuleLayer', () => {
 
     it('setVisibility', () => {
         graticuleLayer.setVisibility(false);
-        var visible = map.getLayoutProperty('sm-graticule-layer', 'visibility');
+        var visible = map.getLayoutProperty('graticuleLayer_1', 'visibility');
         expect(visible).toBe('none');
         graticuleLayer.setVisibility(true);
-        visible = map.getLayoutProperty('sm-graticule-layer', 'visibility');
+        visible = map.getLayoutProperty('graticuleLayer_1', 'visibility');
         expect(visible).toBe('visible');
     });
 
@@ -98,7 +98,10 @@ describe('mapboxgl_GraticuleLayer', () => {
     });
 
     it('setExtent', () => {
-        graticuleLayer.setExtent([[0, 0], [50, 50]]);
+        graticuleLayer.setExtent([
+            [0, 0],
+            [50, 50]
+        ]);
         expect(graticuleLayer.options.extent[0]).toEqual(0);
         expect(graticuleLayer.options.extent[3]).toEqual(50);
     });

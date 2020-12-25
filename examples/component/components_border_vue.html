@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
     <title data-i18n="resources.title_componentsBorder_Vue"></title>
     <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
     <script
-      include="ant-design-vue,echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+      include="echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
       src="../../dist/mapboxgl/include-mapboxgl.js"
     ></script>
     <style>
@@ -59,29 +59,31 @@
       .select-border {
         width: 110px;
       }
-      .ant-select-selection {
+      .sm-component-select-selection {
         background: #262626;
         color: #fff;
       }
-      .ant-select-dropdown-content ul::-webkit-scrollbar {
+      .sm-component-select-dropdown-content ul::-webkit-scrollbar {
         width: 4px;
         height: 4px;
         background-color: rgba(245, 245, 245, 0);
       }
-      .ant-select-dropdown-content ul::-webkit-scrollbar-thumb {
+      .sm-component-select-dropdown-content ul::-webkit-scrollbar-thumb {
         border-radius: 10px;
         background-color: gray;
       }
-      .ant-select-dropdown-menu-item {
+      .sm-component-select-dropdown {
         background: #262626;
+      }
+      .sm-component-select-dropdown-menu-item {
         color: #909399;
       }
-      .ant-select-dropdown-menu-item-active {
+      .sm-component-select-dropdown-menu-item-active {
         background: #dddcdc !important;
         color: #4f4f4f !important;
       }
-      .ant-select-dropdown-menu-item-selected,
-      .ant-select-dropdown-menu-item-selected:hover {
+      .sm-component-select-dropdown-menu-item-selected,
+      .sm-component-select-dropdown-menu-item-selected:hover {
         background: #dddcdc !important;
         color: #4f4f4f !important;
       }
@@ -122,21 +124,21 @@
       <!-- 切换{{resources.text_opt_border}}类型 -->
       <div class="select-group">
         <span>{{ resources.text_sel_border }}:</span>
-        <a-select class="select-border" v-model="borderType">
-          <a-select-option value="border1">{{ resources.text_opt_border }}1</a-select-option>
-          <a-select-option value="border2">{{ resources.text_opt_border }}2</a-select-option>
-          <a-select-option value="border3">{{ resources.text_opt_border }}3</a-select-option>
-          <a-select-option value="border4">{{ resources.text_opt_border }}4</a-select-option>
-          <a-select-option value="border5">{{ resources.text_opt_border }}5</a-select-option>
-          <a-select-option value="border6">{{ resources.text_opt_border }}6</a-select-option>
-          <a-select-option value="border7">{{ resources.text_opt_border }}7</a-select-option>
-          <a-select-option value="border8">{{ resources.text_opt_border }}8</a-select-option>
-          <a-select-option value="border9">{{ resources.text_opt_border }}9</a-select-option>
-          <a-select-option value="border10">{{ resources.text_opt_border }}10</a-select-option>
-          <a-select-option value="border11">{{ resources.text_opt_border }}11</a-select-option>
-          <a-select-option value="border12">{{ resources.text_opt_border }}12</a-select-option>
-          <a-select-option value="border13">{{ resources.text_opt_border }}13</a-select-option>
-        </a-select>
+        <sm-select class="select-border" v-model="borderType">
+          <sm-select-option value="border1">{{ resources.text_opt_border }}1</sm-select-option>
+          <sm-select-option value="border2">{{ resources.text_opt_border }}2</sm-select-option>
+          <sm-select-option value="border3">{{ resources.text_opt_border }}3</sm-select-option>
+          <sm-select-option value="border4">{{ resources.text_opt_border }}4</sm-select-option>
+          <sm-select-option value="border5">{{ resources.text_opt_border }}5</sm-select-option>
+          <sm-select-option value="border6">{{ resources.text_opt_border }}6</sm-select-option>
+          <sm-select-option value="border7">{{ resources.text_opt_border }}7</sm-select-option>
+          <sm-select-option value="border8">{{ resources.text_opt_border }}8</sm-select-option>
+          <sm-select-option value="border9">{{ resources.text_opt_border }}9</sm-select-option>
+          <sm-select-option value="border10">{{ resources.text_opt_border }}10</sm-select-option>
+          <sm-select-option value="border11">{{ resources.text_opt_border }}11</sm-select-option>
+          <sm-select-option value="border12">{{ resources.text_opt_border }}12</sm-select-option>
+          <sm-select-option value="border13">{{ resources.text_opt_border }}13</sm-select-option>
+        </sm-select>
       </div>
     </div>
 

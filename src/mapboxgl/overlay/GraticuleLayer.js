@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -9,15 +9,15 @@
  * thanks dereklieu, cloudybay
  */
 
-import { getWrapNum, conversionDegree } from '@supermap/iclient-common';
+import { getWrapNum, conversionDegree, CommonUtil } from '@supermap/iclient-common';
 import mapboxgl from 'mapbox-gl';
 /**
  * @class mapboxgl.supermap.GraticuleLayer
  * @category Visualization GraticuleLayer
  * @classdesc 经纬网。
  * @version 10.1.1
- * @param {mapboxgl.Map} map - mapboxgl 地图对象,将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Object} options -经纬网参数。
+ * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("graticuleLayer_") 创建图层 ID。
  * @param {boolean} [options.visible=true] - 是否显示经纬网。
  * @param {boolean} [options.showLabel=true] - 是否显示标签。
  * @param {number} [options.opacity=1] - 画布透明度。
@@ -83,10 +83,10 @@ const defaultOptions = {
     latLabelStyle: defaultTextStyle
 };
 export class GraticuleLayer {
-    constructor(map, options, sourceId = 'sm-graticule-layer') {
-        this.map = map;
-        this.canvasId = 'sm-graticule-canvasid';
-        this.sourceId = sourceId;
+    constructor(options) {
+        this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('graticuleLayer_');
+        this.sourceId = this.id;
+        this.canvasId = this.id;
         this.options = options;
         this.resetEvent = this._reset.bind(this);
         this.styleDataEevent = this._setLayerTop.bind(this);
@@ -101,6 +101,7 @@ export class GraticuleLayer {
         this._bindEvent();
         this._drawCanvas();
         this._addGraticuleLayer();
+        this.setVisibility();
     }
 
     /**
@@ -119,7 +120,7 @@ export class GraticuleLayer {
      * @param {boolean} visible - 是否可见。
      */
     setVisibility(visible) {
-        const zoom = this.map.getZoom();
+        const zoom = this.map && this.map.getZoom();
         this.options.visible = typeof visible === 'boolean' ? visible : this.options.visible;
         this.visible =
             typeof visible === 'boolean'
@@ -179,6 +180,9 @@ export class GraticuleLayer {
      * @param {mapboxgl.supermap.GraticuleLayer.StrokeStyle} strokeStyle - 经纬线样式。
      */
     setStrokeStyle(strokeStyle) {
+        if (!this.map || !this.map.getLayer(this.sourceId)) {
+            return;
+        }
         this.options.strokeStyle = strokeStyle;
         const { layout, paint } = this._transformStrokeStyle(strokeStyle);
         for (let key in layout) {
@@ -252,6 +256,7 @@ export class GraticuleLayer {
         this.oldExtent = this.options.extent;
         this._calcInterval();
         this.isRotate = false;
+        this.visible = true;
         this.features = this._getGraticuleFeatures();
     }
 
@@ -832,6 +837,7 @@ export class GraticuleLayer {
             return { paint: { 'line-color': strokeStyle || 'rgba(0,0,0,0.2)' } };
         }
         const layout = {
+            visibility: this.visible ? 'visible' : 'none',
             'line-join': strokeStyle.lineJoin || 'round',
             'line-cap': strokeStyle.lineCap || 'round'
         };

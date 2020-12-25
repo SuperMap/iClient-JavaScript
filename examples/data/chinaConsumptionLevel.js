@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 // 中国各个省份的居民消费水平(单位：元)信息
 // 每个数组元素的含义如下：
 //       [省级行政单位名称, X坐标, Y坐标, 2009年居民消费水平, 2010年居民消费水平, 2011年居民消费水平, 2012年居民消费水平, 2013年居民消费水平],
