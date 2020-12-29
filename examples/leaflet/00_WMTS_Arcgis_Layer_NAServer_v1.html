@@ -1,0 +1,90 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>温榆河公园-嵌套图层</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+<!--    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>-->
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<input type="button" onclick="RouteSolve()" value="路径分析"/>
+<input type="button" onclick="projectTrance()" value="转换坐标"/>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, url = host + "/iserver/services/map-china400/rest/maps/China";
+    map = L.map('map', {
+        center: [40.07,116.46],
+        maxZoom: 20,
+        zoom: 15
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+
+    L.supermap.wmtsLayer("http://116.117.157.183:25599/wenyuhe_baidu/MapServer/WMTS",
+    // L.supermap.wmtsLayer("http://116.117.157.183:25597/arcgis/rest/services/wyh/wenyuhe_baidu/MapServer/WMTS",
+        {
+            layer: "wenyuhe_baidu",
+            style: "default",
+            tilematrixSet: "default028mm",
+            format: "image/jpgpng",
+            opacity:1,
+            requestEncoding: 'KVP'
+        }
+    ).addTo(map);
+    /**
+     * 坐标转换
+     */
+    function projectTrance(){
+        var projection = L.CRS.EPSG3857.projection;
+        var latlng=projection.project(L.latLng(40.0756594477,116.458870653));
+        console.log(latlng);
+        var latlng1=projection.unproject(L.point(12963918.991365522,4877080.510116231));
+        console.log(latlng1);
+        var latlng2=projection.unproject(L.point(12964004.983022345,4877333.707772432));
+        console.log(latlng2);
+    }
+    /**
+     * 最优路径查询
+     * @constructor
+     */
+    function RouteSolve() {
+        // var url = 'http://116.117.157.183:25597/arcgis/rest/services/wyh/networkAnalyst/NAServer/Route/solve';
+        var url = 'http://116.117.157.183:25599/networkAnalyst/NAServer/Route/solve';
+        var data={stops:[[116.45905440286576,40.07801667086068],[116.45643656686717,40.0763419393556]],
+        ignoreInvalidLocations: true, returnDirections: false,
+        impedanceAttributeName: 'Length',
+        restrictUTurns: 'esriNFSBAllowBacktrack',
+        returnRoutes: true,outSR:'4326',
+        outputLines: 'esriNAOutputLineTrueShape',
+        directionsOutputType: 'esriDOTComplete',
+        f: 'pjson'};
+
+        //
+        $.ajax({
+            dataType: 'json',
+            data:data,
+            url: url,
+            success: function (result) {
+                var latlngs=result.routes.features[0].geometry.paths[0];
+                var lnglatArr=new Array();
+                for(var i=0;i<latlngs.length;i++){
+                    var arr=new Array(latlngs[i][1],latlngs[i][0]);
+                    lnglatArr.push(arr);
+                }
+                var polyline = L.polyline(lnglatArr, {color: 'red'}).addTo(map);
+                map.fitBounds(polyline.getBounds());
+            },
+            error: function (jqXHR, status, errorThrown) {
+                console.log(status, errorThrown);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>温榆河公园-嵌套图层</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+<!--    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>-->
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+
+    // var map;
+    // //自定义比例尺
+    // var crs=L.Proj.CRS("EPSG:3857", {
+    //     origin:[-20037508.34,20037508.34],
+    //     scaleDenominators:[559082264.02850163,279541132.01425034,139770566.00712562,69885283.003562346,34942641.501781173,17471320.750890587,8735660.3754452933,4367830.1877226466,2183915.0938617955,1091957.5469304253,545978.77346568508,272989.38673237007,136494.69336618503,68247.346683092517,34123.673341546259,17061.836671245605,8530.9183356228023,4265.4591673389286,2132.7295841419359,1066.3647915984968,503.82663472020585,251.91331736010292]
+    // });
+    //
+    // map = L.map('map', {
+    //     center: [40.07,116.46],
+    //     maxZoom: 22,
+    //     zoom: 15,
+    //     crs:crs
+    // });
+    // L.control.scale().addTo(map);
+
+    // L.supermap.wmtsLayer("http://223.70.181.107:6083/wyh/wenyuhe/MapServer/WMTS",
+    //     {
+    //         maxZoom:20,
+    //         layer: "wenyuhe",
+    //         style: "default",
+    //         tilematrixSet: "default028mm",
+    //         format: "image/jpgpng",
+    //         opacity:1,
+    //         requestEncoding: 'KVP'
+    //     }
+    // ).addTo(map);
+
+    http://10.32.5.18:6080/arcgis/rest/services/wyh/wenyuhe_500/MapServer/WMTS/tile/1.0.0/wyh_wenyuhe_500/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png
+
+
+    var crs =L.Proj.CRS("EPSG:3857",{
+            // origin: [12964874.08375, 4876626.52588],
+            // bounds:	L.bounds([12962796.043902915,4874100.4430881925],[12967045.795061948,4878350.194216478]),
+            resolutions: [147924.14487249748, 73962.0724362486, 36981.03621812443, 18490.51810906209, 9245.259054531045, 4622.6295272655225, 2311.3147636327612, 1155.6573818163806, 577.8286909083153, 288.9143454540326, 144.4571727271413, 72.22858636344564, 36.11429318172282, 18.05714659086141, 9.028573295430705, 4.514286647840362, 2.257143323920181, 1.1285716618350818, 0.5642858310425494, 0.2821429153962664, 0.1333043970451819, 0.06665219852259095],
+        });
+
+    let map = L.map('map', {
+        crs:crs,
+        center: [12964874.08375, 4876626.52588],
+        maxZoom: 20,
+        zoom: 15
+    });
+
+    let extent = L.tileLayer.wms("http://223.70.181.107:6083/cache/service/wms", {
+        layers: 'GD:wyh_wenyuhe_500',
+        format: 'image/png',
+        transparent: true
+    }).addTo(map);
+
+    // L.supermap.wmtsLayer("http://223.70.181.107:6083/wyh/wenyuhe_500/MapServer/WMTS",
+    //     {
+    //         maxZoom:22,
+    //         layer: "wenyuhe_500",
+    //         style: "default",
+    //         tilematrixSet: "default028mm",
+    //         format: "image/png",
+    //         opacity:1,
+    //         requestEncoding: 'KVP'
+    //     }
+    // ).addTo(map);
+
+    // http://223.70.181.107:6083/wyh/wenyuhe_500/MapServer/WMTS
+
+    // let bounds = [
+    //     [4875732, 12962563],
+    //     [4877838, 12962563],
+    // ];
+    // // http://223.70.181.107:6082/arcgis/rest/services/wyh/wenyuhe/MapServer/WMTS/tile/1.0.0/wyh_wenyuhe/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png
+    //
+    // L.tileLayer(
+    //     `http://223.70.181.107:6083/wyh/wenyuhe/MapServer/WMTS?layer=&style=&tilematrixset=EPSG 3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG 3857:{z}&TileCol={x}&TileRow={y}`,
+    //     {
+    //         bounds//配置bounds属性之后，只会在指定的区域内加载切片服务，解决400问题，（现在可以正常捕捉图层加载异常）
+    //         //注意：因为配置了该属性只会在指定区域加载切片服务，所以用tileerror事件监听图层加载失败时，只有地图移动到这个范围内才会被监听到
+    //     }
+    // ).addTo(map);
+
+    // xmax: 12967120.583248805
+    // xmin: 12962563.02543718
+    // ymax: 4877838.804579157
+    // ymin: 4875732.008986991
+
+    // let bounds = [
+    //     [40.798808032020915, 107.81011442414682],
+    //     [40.79334985056709, 107.77521227880288],
+    // ];
+    // let map = L.map('map');
+    // map.fitBounds(bounds);
+    // L.tileLayer(
+    //     `http://ddns.zatxtech.com:8443/geoserver/gwc/service/wmts?layer=hjq-tif:hjq-mosaic&style=&tilematrixset=EPSG 3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG 3857:{z}&TileCol={x}&TileRow={y}`,
+    //     {
+    //         bounds//配置bounds属性之后，只会在指定的区域内加载切片服务，解决400问题，（现在可以正常捕捉图层加载异常）
+    //         //注意：因为配置了该属性只会在指定区域加载切片服务，所以用tileerror事件监听图层加载失败时，只有地图移动到这个范围内才会被监听到
+    //     }
+    // ).addTo(map);
+
+</script>
+</body>
+</html>
