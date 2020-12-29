@@ -1,0 +1,76 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>温榆河公园-嵌套图层</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+<!--    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>-->
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<input type="button" onclick="RouteSolve()" value="路径分析"/>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+
+    var map;
+    map = L.map('map', {
+        center: [40.07,116.46],
+        maxZoom: 20,
+        zoom: 15
+    });
+       L.supermap.wmtsLayer("http://223.70.181.107:6083/wyh/wenyuhe/MapServer/WMTS",
+        {
+            maxZoom: 20,
+            layer: "wenyuhe",
+            style: "default",
+            tilematrixSet: "default028mm",
+            format: "image/jpgpng",
+            opacity:1,
+            requestEncoding: 'KVP'
+        }
+    ).addTo(map);
+    L.control.scale().addTo(map);
+
+    /**
+     * 最优路径查询
+     * @constructor
+     */
+    function RouteSolve() {
+        var url = 'http://223.70.181.107:6083/wyh/networkAnalyst/NAServer/Route/solve';
+        var data={stops:'{"type":"features","features":[{"geometry":{"x":116.46140178400,"y":40.07958941310,"spatialReference":{"wkid":4326}}},' +
+                '{"geometry":{"x":116.46120913200,"y":40.07516150480,"spatialReference":{"wkid":4326}}}],"doNotLocateOnRestrictedElements":true}',
+        ignoreInvalidLocations: true, returnDirections: false,
+        impedanceAttributeName: 'Length',
+        restrictUTurns: 'esriNFSBAllowBacktrack',
+        returnRoutes: true,outSR:'4326',
+        outputLines: 'esriNAOutputLineTrueShape',
+        directionsOutputType: 'esriDOTComplete',
+        f: 'pjson'};
+
+        //账号登录
+        $.ajax({
+            dataType: 'json',
+            data:data,
+            url: url,
+            success: function (result) {
+                var latlngs=result.routes.features[0].geometry.paths[0];
+                var lnglatArr=new Array();
+                for(var i=0;i<latlngs.length;i++){
+                    var arr=new Array(latlngs[i][1],latlngs[i][0]);
+                    lnglatArr.push(arr);
+                }
+                var polyline = L.polyline(lnglatArr, {color: 'red'}).addTo(map);
+                map.fitBounds(polyline.getBounds());
+            },
+            error: function (jqXHR, status, errorThrown) {
+                console.log(status, errorThrown);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
