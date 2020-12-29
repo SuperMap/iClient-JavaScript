@@ -139,6 +139,8 @@
         $.getJSON("../data/ZaoYiHuiZhan_Sml.json",function(sitData){
             plotting.getSitDataManager().openSmlData(sitData, true);
 
+			plottingLayer = plotting.getSitDataManager().getSitDataLayers()[0];
+			drawControl.setDrawingLayer(plottingLayer);
             $.getJSON("../data/ZaoYiHuiZhan_Animation.json",function(animationJsonData){
                 goAnimationManager.fromJSONData(animationJsonData);
             });
