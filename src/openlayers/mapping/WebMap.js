@@ -1518,7 +1518,7 @@ export class WebMap extends Observable {
     getReslutionsFromScales(scales, dpi, unit, datumAxis) {
         unit = (unit && unit.toLowerCase()) || 'degrees';
         dpi = dpi || dpiConfig.iServerWMTS;
-        datumAxis = datumAxis || 6370997;
+        datumAxis = datumAxis || 6378137;
         let res = [],
             matrixIds = [];
         //给个默认的
