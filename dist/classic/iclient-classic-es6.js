@@ -1,1021 +1,16 @@
 /*!
  * 
  *          iclient-classic.(https://iclient.supermap.io)
- *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
+ *          Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.0
- *         
- */
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else { var mod; }
-})(this, function (exports, module) {
-  'use strict';
-
-  var defaultOptions = {
-    timeout: 5000,
-    jsonpCallback: 'callback',
-    jsonpCallbackFunction: null
-  };
-
-  function generateCallbackFunction() {
-    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-  }
-
-  function clearFunction(functionName) {
-    // IE8 throws an exception when you try to delete a property on window
-    // http://stackoverflow.com/a/1824228/751089
-    try {
-      delete window[functionName];
-    } catch (e) {
-      window[functionName] = undefined;
-    }
-  }
-
-  function removeScript(scriptId) {
-    var script = document.getElementById(scriptId);
-    if (script) {
-      document.getElementsByTagName('head')[0].removeChild(script);
-    }
-  }
-
-  function fetchJsonp(_url) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    // to avoid param reassign
-    var url = _url;
-    var timeout = options.timeout || defaultOptions.timeout;
-    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-
-    var timeoutId = undefined;
-
-    return new Promise(function (resolve, reject) {
-      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-      var scriptId = jsonpCallback + '_' + callbackFunction;
-
-      window[callbackFunction] = function (response) {
-        resolve({
-          ok: true,
-          // keep consistent with fetch API
-          json: function json() {
-            return Promise.resolve(response);
-          }
-        });
-
-        if (timeoutId) clearTimeout(timeoutId);
-
-        removeScript(scriptId);
-
-        clearFunction(callbackFunction);
-      };
-
-      // Check if the user set their own params, and if not add a ? to start a list of params
-      url += url.indexOf('?') === -1 ? '?' : '&';
-
-      var jsonpScript = document.createElement('script');
-      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-      if (options.charset) {
-        jsonpScript.setAttribute('charset', options.charset);
-      }
-      jsonpScript.id = scriptId;
-      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-
-      timeoutId = setTimeout(function () {
-        reject(new Error('JSONP request to ' + _url + ' timed out'));
-
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        window[callbackFunction] = function () {
-          clearFunction(callbackFunction);
-        };
-      }, timeout);
-
-      // Caught if got 404/500
-      jsonpScript.onerror = function () {
-        reject(new Error('JSONP request to ' + _url + ' failed'));
-
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        if (timeoutId) clearTimeout(timeoutId);
-      };
-    });
-  }
-
-  // export as global function
-  /*
-  let local;
-  if (typeof global !== 'undefined') {
-    local = global;
-  } else if (typeof self !== 'undefined') {
-    local = self;
-  } else {
-    try {
-      local = Function('return this')();
-    } catch (e) {
-      throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-  }
-  local.fetchJsonp = fetchJsonp;
-  */
-
-  module.exports = fetchJsonp;
-});
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate, global) {(function (global, factory) {
-	 true ? factory() :
-	undefined;
-}(this, (function () { 'use strict';
-
-/**
- * @this {Promise}
- */
-function finallyConstructor(callback) {
-  var constructor = this.constructor;
-  return this.then(
-    function(value) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function() {
-        return value;
-      });
-    },
-    function(reason) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function() {
-        // @ts-ignore
-        return constructor.reject(reason);
-      });
-    }
-  );
-}
-
-// Store setTimeout reference so promise-polyfill will be unaffected by
-// other code modifying setTimeout (like sinon.useFakeTimers())
-var setTimeoutFunc = setTimeout;
-
-function isArray(x) {
-  return Boolean(x && typeof x.length !== 'undefined');
-}
-
-function noop() {}
-
-// Polyfill for Function.prototype.bind
-function bind(fn, thisArg) {
-  return function() {
-    fn.apply(thisArg, arguments);
-  };
-}
-
-/**
- * @constructor
- * @param {Function} fn
- */
-function Promise(fn) {
-  if (!(this instanceof Promise))
-    throw new TypeError('Promises must be constructed via new');
-  if (typeof fn !== 'function') throw new TypeError('not a function');
-  /** @type {!number} */
-  this._state = 0;
-  /** @type {!boolean} */
-  this._handled = false;
-  /** @type {Promise|undefined} */
-  this._value = undefined;
-  /** @type {!Array<!Function>} */
-  this._deferreds = [];
-
-  doResolve(fn, this);
-}
-
-function handle(self, deferred) {
-  while (self._state === 3) {
-    self = self._value;
-  }
-  if (self._state === 0) {
-    self._deferreds.push(deferred);
-    return;
-  }
-  self._handled = true;
-  Promise._immediateFn(function() {
-    var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-    if (cb === null) {
-      (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-      return;
-    }
-    var ret;
-    try {
-      ret = cb(self._value);
-    } catch (e) {
-      reject(deferred.promise, e);
-      return;
-    }
-    resolve(deferred.promise, ret);
-  });
-}
-
-function resolve(self, newValue) {
-  try {
-    // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-    if (newValue === self)
-      throw new TypeError('A promise cannot be resolved with itself.');
-    if (
-      newValue &&
-      (typeof newValue === 'object' || typeof newValue === 'function')
-    ) {
-      var then = newValue.then;
-      if (newValue instanceof Promise) {
-        self._state = 3;
-        self._value = newValue;
-        finale(self);
-        return;
-      } else if (typeof then === 'function') {
-        doResolve(bind(then, newValue), self);
-        return;
-      }
-    }
-    self._state = 1;
-    self._value = newValue;
-    finale(self);
-  } catch (e) {
-    reject(self, e);
-  }
-}
-
-function reject(self, newValue) {
-  self._state = 2;
-  self._value = newValue;
-  finale(self);
-}
-
-function finale(self) {
-  if (self._state === 2 && self._deferreds.length === 0) {
-    Promise._immediateFn(function() {
-      if (!self._handled) {
-        Promise._unhandledRejectionFn(self._value);
-      }
-    });
-  }
-
-  for (var i = 0, len = self._deferreds.length; i < len; i++) {
-    handle(self, self._deferreds[i]);
-  }
-  self._deferreds = null;
-}
-
-/**
- * @constructor
- */
-function Handler(onFulfilled, onRejected, promise) {
-  this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-  this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-  this.promise = promise;
-}
-
-/**
- * Take a potentially misbehaving resolver function and make sure
- * onFulfilled and onRejected are only called once.
+ *          version: v10.1.1
  *
- * Makes no guarantees about asynchrony.
  */
-function doResolve(fn, self) {
-  var done = false;
-  try {
-    fn(
-      function(value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      },
-      function(reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      }
-    );
-  } catch (ex) {
-    if (done) return;
-    done = true;
-    reject(self, ex);
-  }
-}
-
-Promise.prototype['catch'] = function(onRejected) {
-  return this.then(null, onRejected);
-};
-
-Promise.prototype.then = function(onFulfilled, onRejected) {
-  // @ts-ignore
-  var prom = new this.constructor(noop);
-
-  handle(this, new Handler(onFulfilled, onRejected, prom));
-  return prom;
-};
-
-Promise.prototype['finally'] = finallyConstructor;
-
-Promise.all = function(arr) {
-  return new Promise(function(resolve, reject) {
-    if (!isArray(arr)) {
-      return reject(new TypeError('Promise.all accepts an array'));
-    }
-
-    var args = Array.prototype.slice.call(arr);
-    if (args.length === 0) return resolve([]);
-    var remaining = args.length;
-
-    function res(i, val) {
-      try {
-        if (val && (typeof val === 'object' || typeof val === 'function')) {
-          var then = val.then;
-          if (typeof then === 'function') {
-            then.call(
-              val,
-              function(val) {
-                res(i, val);
-              },
-              reject
-            );
-            return;
-          }
-        }
-        args[i] = val;
-        if (--remaining === 0) {
-          resolve(args);
-        }
-      } catch (ex) {
-        reject(ex);
-      }
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      res(i, args[i]);
-    }
-  });
-};
-
-Promise.resolve = function(value) {
-  if (value && typeof value === 'object' && value.constructor === Promise) {
-    return value;
-  }
-
-  return new Promise(function(resolve) {
-    resolve(value);
-  });
-};
-
-Promise.reject = function(value) {
-  return new Promise(function(resolve, reject) {
-    reject(value);
-  });
-};
-
-Promise.race = function(arr) {
-  return new Promise(function(resolve, reject) {
-    if (!isArray(arr)) {
-      return reject(new TypeError('Promise.race accepts an array'));
-    }
-
-    for (var i = 0, len = arr.length; i < len; i++) {
-      Promise.resolve(arr[i]).then(resolve, reject);
-    }
-  });
-};
-
-// Use polyfill for setImmediate for performance gains
-Promise._immediateFn =
-  // @ts-ignore
-  (typeof setImmediate === 'function' &&
-    function(fn) {
-      // @ts-ignore
-      setImmediate(fn);
-    }) ||
-  function(fn) {
-    setTimeoutFunc(fn, 0);
-  };
-
-Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-  if (typeof console !== 'undefined' && console) {
-    console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-  }
-};
-
-/** @suppress {undefinedVars} */
-var globalNS = (function() {
-  // the only reliable means to get the global object is
-  // `Function('return this')()`
-  // However, this causes CSP violations in Chrome apps.
-  if (typeof self !== 'undefined') {
-    return self;
-  }
-  if (typeof window !== 'undefined') {
-    return window;
-  }
-  if (typeof global !== 'undefined') {
-    return global;
-  }
-  throw new Error('unable to locate global object');
-})();
-
-if (!('Promise' in globalNS)) {
-  globalNS['Promise'] = Promise;
-} else if (!globalNS.Promise.prototype['finally']) {
-  globalNS.Promise.prototype['finally'] = finallyConstructor;
-}
-
-})));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5).setImmediate, __webpack_require__(1)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(6);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(7)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 693:
+/***/ (function(module) {
 
 (function(self) {
   'use strict';
@@ -1438,21 +433,520 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+/***/ 144:
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (exports, module) {
+  'use strict';
+
+  var defaultOptions = {
+    timeout: 5000,
+    jsonpCallback: 'callback',
+    jsonpCallbackFunction: null
+  };
+
+  function generateCallbackFunction() {
+    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+  }
+
+  function clearFunction(functionName) {
+    // IE8 throws an exception when you try to delete a property on window
+    // http://stackoverflow.com/a/1824228/751089
+    try {
+      delete window[functionName];
+    } catch (e) {
+      window[functionName] = undefined;
+    }
+  }
+
+  function removeScript(scriptId) {
+    var script = document.getElementById(scriptId);
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
+  }
+
+  function fetchJsonp(_url) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    // to avoid param reassign
+    var url = _url;
+    var timeout = options.timeout || defaultOptions.timeout;
+    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+
+    var timeoutId = undefined;
+
+    return new Promise(function (resolve, reject) {
+      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+      var scriptId = jsonpCallback + '_' + callbackFunction;
+
+      window[callbackFunction] = function (response) {
+        resolve({
+          ok: true,
+          // keep consistent with fetch API
+          json: function json() {
+            return Promise.resolve(response);
+          }
+        });
+
+        if (timeoutId) clearTimeout(timeoutId);
+
+        removeScript(scriptId);
+
+        clearFunction(callbackFunction);
+      };
+
+      // Check if the user set their own params, and if not add a ? to start a list of params
+      url += url.indexOf('?') === -1 ? '?' : '&';
+
+      var jsonpScript = document.createElement('script');
+      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
+      jsonpScript.id = scriptId;
+      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+
+      timeoutId = setTimeout(function () {
+        reject(new Error('JSONP request to ' + _url + ' timed out'));
+
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
+      }, timeout);
+
+      // Caught if got 404/500
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    });
+  }
+
+  // export as global function
+  /*
+  let local;
+  if (typeof global !== 'undefined') {
+    local = global;
+  } else if (typeof self !== 'undefined') {
+    local = self;
+  } else {
+    try {
+      local = Function('return this')();
+    } catch (e) {
+      throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+  }
+  local.fetchJsonp = fetchJsonp;
+  */
+
+  module.exports = fetchJsonp;
+});
+
+/***/ }),
+
+/***/ 107:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? factory() :
+	0;
+}(this, (function () { 'use strict';
+
+/**
+ * @this {Promise}
+ */
+function finallyConstructor(callback) {
+  var constructor = this.constructor;
+  return this.then(
+    function(value) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function() {
+        return value;
+      });
+    },
+    function(reason) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function() {
+        // @ts-ignore
+        return constructor.reject(reason);
+      });
+    }
+  );
+}
+
+// Store setTimeout reference so promise-polyfill will be unaffected by
+// other code modifying setTimeout (like sinon.useFakeTimers())
+var setTimeoutFunc = setTimeout;
+
+function isArray(x) {
+  return Boolean(x && typeof x.length !== 'undefined');
+}
+
+function noop() {}
+
+// Polyfill for Function.prototype.bind
+function bind(fn, thisArg) {
+  return function() {
+    fn.apply(thisArg, arguments);
+  };
+}
+
+/**
+ * @constructor
+ * @param {Function} fn
+ */
+function Promise(fn) {
+  if (!(this instanceof Promise))
+    throw new TypeError('Promises must be constructed via new');
+  if (typeof fn !== 'function') throw new TypeError('not a function');
+  /** @type {!number} */
+  this._state = 0;
+  /** @type {!boolean} */
+  this._handled = false;
+  /** @type {Promise|undefined} */
+  this._value = undefined;
+  /** @type {!Array<!Function>} */
+  this._deferreds = [];
+
+  doResolve(fn, this);
+}
+
+function handle(self, deferred) {
+  while (self._state === 3) {
+    self = self._value;
+  }
+  if (self._state === 0) {
+    self._deferreds.push(deferred);
+    return;
+  }
+  self._handled = true;
+  Promise._immediateFn(function() {
+    var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+    if (cb === null) {
+      (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+      return;
+    }
+    var ret;
+    try {
+      ret = cb(self._value);
+    } catch (e) {
+      reject(deferred.promise, e);
+      return;
+    }
+    resolve(deferred.promise, ret);
+  });
+}
+
+function resolve(self, newValue) {
+  try {
+    // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+    if (newValue === self)
+      throw new TypeError('A promise cannot be resolved with itself.');
+    if (
+      newValue &&
+      (typeof newValue === 'object' || typeof newValue === 'function')
+    ) {
+      var then = newValue.then;
+      if (newValue instanceof Promise) {
+        self._state = 3;
+        self._value = newValue;
+        finale(self);
+        return;
+      } else if (typeof then === 'function') {
+        doResolve(bind(then, newValue), self);
+        return;
+      }
+    }
+    self._state = 1;
+    self._value = newValue;
+    finale(self);
+  } catch (e) {
+    reject(self, e);
+  }
+}
+
+function reject(self, newValue) {
+  self._state = 2;
+  self._value = newValue;
+  finale(self);
+}
+
+function finale(self) {
+  if (self._state === 2 && self._deferreds.length === 0) {
+    Promise._immediateFn(function() {
+      if (!self._handled) {
+        Promise._unhandledRejectionFn(self._value);
+      }
+    });
+  }
+
+  for (var i = 0, len = self._deferreds.length; i < len; i++) {
+    handle(self, self._deferreds[i]);
+  }
+  self._deferreds = null;
+}
+
+/**
+ * @constructor
+ */
+function Handler(onFulfilled, onRejected, promise) {
+  this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+  this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+  this.promise = promise;
+}
+
+/**
+ * Take a potentially misbehaving resolver function and make sure
+ * onFulfilled and onRejected are only called once.
+ *
+ * Makes no guarantees about asynchrony.
+ */
+function doResolve(fn, self) {
+  var done = false;
+  try {
+    fn(
+      function(value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      },
+      function(reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      }
+    );
+  } catch (ex) {
+    if (done) return;
+    done = true;
+    reject(self, ex);
+  }
+}
+
+Promise.prototype['catch'] = function(onRejected) {
+  return this.then(null, onRejected);
+};
+
+Promise.prototype.then = function(onFulfilled, onRejected) {
+  // @ts-ignore
+  var prom = new this.constructor(noop);
+
+  handle(this, new Handler(onFulfilled, onRejected, prom));
+  return prom;
+};
+
+Promise.prototype['finally'] = finallyConstructor;
+
+Promise.all = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.all accepts an array'));
+    }
+
+    var args = Array.prototype.slice.call(arr);
+    if (args.length === 0) return resolve([]);
+    var remaining = args.length;
+
+    function res(i, val) {
+      try {
+        if (val && (typeof val === 'object' || typeof val === 'function')) {
+          var then = val.then;
+          if (typeof then === 'function') {
+            then.call(
+              val,
+              function(val) {
+                res(i, val);
+              },
+              reject
+            );
+            return;
+          }
+        }
+        args[i] = val;
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      } catch (ex) {
+        reject(ex);
+      }
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      res(i, args[i]);
+    }
+  });
+};
+
+Promise.resolve = function(value) {
+  if (value && typeof value === 'object' && value.constructor === Promise) {
+    return value;
+  }
+
+  return new Promise(function(resolve) {
+    resolve(value);
+  });
+};
+
+Promise.reject = function(value) {
+  return new Promise(function(resolve, reject) {
+    reject(value);
+  });
+};
+
+Promise.race = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.race accepts an array'));
+    }
+
+    for (var i = 0, len = arr.length; i < len; i++) {
+      Promise.resolve(arr[i]).then(resolve, reject);
+    }
+  });
+};
+
+// Use polyfill for setImmediate for performance gains
+Promise._immediateFn =
+  // @ts-ignore
+  (typeof setImmediate === 'function' &&
+    function(fn) {
+      // @ts-ignore
+      setImmediate(fn);
+    }) ||
+  function(fn) {
+    setTimeoutFunc(fn, 0);
+  };
+
+Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+  if (typeof console !== 'undefined' && console) {
+    console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+  }
+};
+
+/** @suppress {undefinedVars} */
+var globalNS = (function() {
+  // the only reliable means to get the global object is
+  // `Function('return this')()`
+  // However, this causes CSP violations in Chrome apps.
+  if (typeof self !== 'undefined') {
+    return self;
+  }
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+  if (typeof __webpack_require__.g !== 'undefined') {
+    return __webpack_require__.g;
+  }
+  throw new Error('unable to locate global object');
+})();
+
+if (!('Promise' in globalNS)) {
+  globalNS['Promise'] = Promise;
+} else if (!globalNS.Promise.prototype['finally']) {
+  globalNS.Promise.prototype['finally'] = finallyConstructor;
+}
+
+})));
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+(() => {
 "use strict";
-__webpack_require__.r(__webpack_exports__);
+
+// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap.Components = window.SuperMap.Components || {};
 
 // CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -1473,7 +967,7 @@ SuperMap.Components = window.SuperMap.Components || {};
  *  var size = new SuperMap.Size(21,25);
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
-class Pixel_Pixel {
+class Pixel {
 
 
     constructor(x, y, mode) {
@@ -1537,7 +1031,7 @@ class Pixel_Pixel {
      * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同 x、y 坐标的 pixel 对象。
      */
     clone() {
-        return new Pixel_Pixel(this.x, this.y, this.mode);
+        return new Pixel(this.x, this.y, this.mode);
     }
 
     /**
@@ -1594,7 +1088,7 @@ class Pixel_Pixel {
         if ((x == null) || (y == null)) {
             throw new TypeError('Pixel.add cannot receive null values');
         }
-        return new Pixel_Pixel(this.x + x, this.y + y);
+        return new Pixel(this.x + x, this.y + y);
     }
 
     /**
@@ -1632,11 +1126,11 @@ class Pixel_Pixel {
     }
 }
 
-SuperMap.Pixel = Pixel_Pixel;
+SuperMap.Pixel = Pixel;
 
 
 // CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2109,7 +1603,7 @@ var ArrayExt = SuperMap.Array = {
 };
 
 // CONCATENATED MODULE: ./src/common/commontypes/Util.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2566,9 +2060,9 @@ SuperMap.INCHES_PER_UNIT = {
     'dd': 4374754,
     'yd': 36
 };
-SuperMap.INCHES_PER_UNIT["in"] = SuperMap.INCHES_PER_UNIT.inches;
-SuperMap.INCHES_PER_UNIT["degrees"] = SuperMap.INCHES_PER_UNIT.dd;
-SuperMap.INCHES_PER_UNIT["nmi"] = 1852 * SuperMap.INCHES_PER_UNIT.m;
+SuperMap.INCHES_PER_UNIT.in = SuperMap.INCHES_PER_UNIT.inches;
+SuperMap.INCHES_PER_UNIT.degrees = SuperMap.INCHES_PER_UNIT.dd;
+SuperMap.INCHES_PER_UNIT.nmi = 1852 * SuperMap.INCHES_PER_UNIT.m;
 
 // Units from CS-Map
 SuperMap.METERS_PER_INCH = 0.02540005080010160020;
@@ -2634,21 +2128,21 @@ SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
 
 //unit abbreviations supported by PROJ.4
 SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
-    "mm": SuperMap.INCHES_PER_UNIT["Meter"] / 1000.0,
-    "cm": SuperMap.INCHES_PER_UNIT["Meter"] / 100.0,
-    "dm": SuperMap.INCHES_PER_UNIT["Meter"] * 100.0,
-    "km": SuperMap.INCHES_PER_UNIT["Meter"] * 1000.0,
-    "kmi": SuperMap.INCHES_PER_UNIT["nmi"],    //International Nautical Mile
-    "fath": SuperMap.INCHES_PER_UNIT["Fathom"], //International Fathom
-    "ch": SuperMap.INCHES_PER_UNIT["IntnlChain"],  //International Chain
-    "link": SuperMap.INCHES_PER_UNIT["IntnlLink"], //International Link
-    "us-in": SuperMap.INCHES_PER_UNIT["inches"], //U.S. Surveyor's Inch
-    "us-ft": SuperMap.INCHES_PER_UNIT["Foot"],    //U.S. Surveyor's Foot
-    "us-yd": SuperMap.INCHES_PER_UNIT["Yard"],    //U.S. Surveyor's Yard
-    "us-ch": SuperMap.INCHES_PER_UNIT["GunterChain"], //U.S. Surveyor's Chain
-    "us-mi": SuperMap.INCHES_PER_UNIT["Mile"],   //U.S. Surveyor's Statute Mile
-    "ind-yd": SuperMap.INCHES_PER_UNIT["IndianYd37"],  //Indian Yard
-    "ind-ft": SuperMap.INCHES_PER_UNIT["IndianFt37"],  //Indian Foot
+    "mm": SuperMap.INCHES_PER_UNIT.Meter / 1000.0,
+    "cm": SuperMap.INCHES_PER_UNIT.Meter / 100.0,
+    "dm": SuperMap.INCHES_PER_UNIT.Meter * 100.0,
+    "km": SuperMap.INCHES_PER_UNIT.Meter * 1000.0,
+    "kmi": SuperMap.INCHES_PER_UNIT.nmi,    //International Nautical Mile
+    "fath": SuperMap.INCHES_PER_UNIT.Fathom, //International Fathom
+    "ch": SuperMap.INCHES_PER_UNIT.IntnlChain,  //International Chain
+    "link": SuperMap.INCHES_PER_UNIT.IntnlLink, //International Link
+    "us-in": SuperMap.INCHES_PER_UNIT.inches, //U.S. Surveyor's Inch
+    "us-ft": SuperMap.INCHES_PER_UNIT.Foot,    //U.S. Surveyor's Foot
+    "us-yd": SuperMap.INCHES_PER_UNIT.Yard,    //U.S. Surveyor's Yard
+    "us-ch": SuperMap.INCHES_PER_UNIT.GunterChain, //U.S. Surveyor's Chain
+    "us-mi": SuperMap.INCHES_PER_UNIT.Mile,   //U.S. Surveyor's Statute Mile
+    "ind-yd": SuperMap.INCHES_PER_UNIT.IndianYd37,  //Indian Yard
+    "ind-ft": SuperMap.INCHES_PER_UNIT.IndianFt37,  //Indian Foot
     "ind-ch": 20.11669506 / SuperMap.METERS_PER_INCH  //Indian Chain
 });
 
@@ -2799,13 +2293,13 @@ SuperMap.Util.supportCanvas = function () {
 };
 
 //将服务端的地图单位转成SuperMap的地图单位
-SuperMap.INCHES_PER_UNIT["degree"] = SuperMap.INCHES_PER_UNIT.dd;
-SuperMap.INCHES_PER_UNIT["meter"] = SuperMap.INCHES_PER_UNIT.m;
-SuperMap.INCHES_PER_UNIT["foot"] = SuperMap.INCHES_PER_UNIT.ft;
-SuperMap.INCHES_PER_UNIT["inch"] = SuperMap.INCHES_PER_UNIT.inches;
-SuperMap.INCHES_PER_UNIT["mile"] = SuperMap.INCHES_PER_UNIT.mi;
-SuperMap.INCHES_PER_UNIT["kilometer"] = SuperMap.INCHES_PER_UNIT.km;
-SuperMap.INCHES_PER_UNIT["yard"] = SuperMap.INCHES_PER_UNIT.yd;
+SuperMap.INCHES_PER_UNIT.degree = SuperMap.INCHES_PER_UNIT.dd;
+SuperMap.INCHES_PER_UNIT.meter = SuperMap.INCHES_PER_UNIT.m;
+SuperMap.INCHES_PER_UNIT.foot = SuperMap.INCHES_PER_UNIT.ft;
+SuperMap.INCHES_PER_UNIT.inch = SuperMap.INCHES_PER_UNIT.inches;
+SuperMap.INCHES_PER_UNIT.mile = SuperMap.INCHES_PER_UNIT.mi;
+SuperMap.INCHES_PER_UNIT.kilometer = SuperMap.INCHES_PER_UNIT.km;
+SuperMap.INCHES_PER_UNIT.yard = SuperMap.INCHES_PER_UNIT.yd;
 
 /**
  * @description 判断一个 URL 请求是否在当前域中。
@@ -3204,7 +2698,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
 };
 
 // CONCATENATED MODULE: ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3551,7 +3045,7 @@ SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
 
 // CONCATENATED MODULE: ./src/common/commontypes/Events.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3569,7 +3063,7 @@ SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
  * @param {boolean} [fallThrough=false] - 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
  * @param {Object} options - 事件对象选项。
  */
-class Events_Events {
+class Events {
 
 
     constructor(object, element, eventTypes, fallThrough, options) {
@@ -3828,8 +3322,8 @@ class Events_Events {
      * @param {(boolean|Object)} [priority] - 当为 true 时将新的监听加在事件队列的前面。
      */
     register(type, obj, func, priority) {
-        if (type in Events_Events && !this.extensions[type]) {
-            this.extensions[type] = new Events_Events[type](this);
+        if (type in Events && !this.extensions[type]) {
+            this.extensions[type] = new Events[type](this);
         }
         if ((func != null) &&
             (Util.indexOf(this.eventTypes, type) !== -1)) {
@@ -4059,7 +3553,7 @@ class Events_Events {
             this.element.offsets = Util.pagePosition(this.element);
         }
 
-        return new Pixel_Pixel(
+        return new Pixel(
             (evt.clientX + this.element.scrolls[0]) - this.element.offsets[0]
             - this.element.lefttop[0],
             (evt.clientY + this.element.scrolls[1]) - this.element.offsets[1]
@@ -4069,7 +3563,7 @@ class Events_Events {
 
 }
 
-SuperMap.Events = Events_Events;
+SuperMap.Events = Events;
 SuperMap.Events.prototype.BROWSER_EVENTS = [
     "mouseover", "mouseout",
     "mousedown", "mouseup", "mousemove",
@@ -4080,12 +3574,12 @@ SuperMap.Events.prototype.BROWSER_EVENTS = [
     "MSGestureStart", "MSGestureChange", "MSGestureEnd",
     "contextmenu"
 ];
-// EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(3);
-var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
+// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
+const external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
+var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4105,7 +3599,7 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @param {Object} [options.geoFence] - 地理围栏。
  */
 
-class ElasticSearch_ElasticSearch {
+class ElasticSearch {
 
     constructor(url, options) {
         options = options || {};
@@ -4118,7 +3612,7 @@ class ElasticSearch_ElasticSearch {
          *  @member {Object} SuperMap.ElasticSearch.prototype.client
          *  @description client ES客户端
          */
-        this.client = new external_function_try_return_elasticsearch_catch_e_return_default.a.Client({
+        this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
             host: this.url
         });
         /**
@@ -4161,7 +3655,7 @@ class ElasticSearch_ElasticSearch {
          * @member {SuperMap.Events} SuperMap.ElasticSearch.prototype.events
          * @description 事件
          */
-        this.events = new Events_Events(this, null, this.EVENT_TYPES);
+        this.events = new Events(this, null, this.EVENT_TYPES);
 
         /**
          * @member {Object} SuperMap.ElasticSearch.prototype.eventListeners
@@ -4709,20 +4203,18 @@ class ElasticSearch_ElasticSearch {
 
 }
 
-SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
+SuperMap.ElasticSearch = ElasticSearch;
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(4);
-
+var polyfill = __webpack_require__(107);
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(8);
-
+var fetch = __webpack_require__(693);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(2);
+var fetch_jsonp = __webpack_require__(144);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5158,7 +4650,7 @@ SuperMap.Util.RequestJSONPPromise = {
 };
 
 // CONCATENATED MODULE: ./src/common/security/SecurityManager.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5176,7 +4668,7 @@ SuperMap.Util.RequestJSONPPromise = {
  *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
  *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
  */
-class SecurityManager_SecurityManager {
+class SecurityManager {
 
     /**
      * @description 从服务器获取一个token,在此之前要注册服务器信息。
@@ -5341,7 +4833,7 @@ class SecurityManager_SecurityManager {
      * @param {boolean} [newTab=true] - 是否新窗口打开。
      */
     static loginOnline(callbackLocation, newTab) {
-        var loginUrl = SecurityManager_SecurityManager.SSO + "/login?service=" + callbackLocation;
+        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     }
 
@@ -5513,15 +5005,15 @@ class SecurityManager_SecurityManager {
         return result[0];
     }
 }
-SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
-SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
-SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
-SuperMap.SecurityManager = SecurityManager_SecurityManager;
+SecurityManager.INNER_WINDOW_WIDTH = 600;
+SecurityManager.INNER_WINDOW_HEIGHT = 600;
+SecurityManager.SSO = "https://sso.supermap.com";
+SecurityManager.ONLINE = "https://www.supermapol.com";
+SuperMap.SecurityManager = SecurityManager;
 
 
 // CONCATENATED MODULE: ./src/common/REST.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6964,7 +6456,7 @@ var WebScaleUnit = SuperMap.WebScaleUnit = {
 
 
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6992,7 +6484,7 @@ var WebScaleUnit = SuperMap.WebScaleUnit = {
  * @param {string} [options.server] - 数据库服务器名或 SDB 文件名。 
  * @param {string} [options.user] - 登录数据库的用户名。 
  */
-class DatasourceConnectionInfo_DatasourceConnectionInfo {
+class DatasourceConnectionInfo {
 
 
     constructor(options) {
@@ -7104,9 +6596,9 @@ class DatasourceConnectionInfo_DatasourceConnectionInfo {
 
 }
 
-SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectionInfo;
+SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 // CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7124,7 +6616,7 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectio
  * @param {SuperMap.OutputType} [options.type=SuperMap.OutputType.UDB] - 输出类型。
  * @param {string} [options.outputPath] - 分析结果输出路径。
  */
-class OutputSetting_OutputSetting {
+class OutputSetting {
 
     constructor(options) {
 
@@ -7165,7 +6657,7 @@ class OutputSetting_OutputSetting {
         me.type = null;
         me.datasetName = null;
         me.outputPath = null;
-        if (me.datasourceInfo instanceof DatasourceConnectionInfo_DatasourceConnectionInfo) {
+        if (me.datasourceInfo instanceof DatasourceConnectionInfo) {
             me.datasourceInfo.destroy();
             me.datasourceInfo = null;
         }
@@ -7173,9 +6665,9 @@ class OutputSetting_OutputSetting {
 
 }
 
-SuperMap.OutputSetting = OutputSetting_OutputSetting;
+SuperMap.OutputSetting = OutputSetting;
 // CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7193,7 +6685,7 @@ SuperMap.OutputSetting = OutputSetting_OutputSetting;
  * @param {number} [options.rangeCount] - 专题图分段个数。
  * @param {SuperMap.ColorGradientType} [options.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED] - 专题图颜色渐变模式。
  */
-class MappingParameters_MappingParameters {
+class MappingParameters {
 
     constructor(options) {
 
@@ -7254,9 +6746,9 @@ class MappingParameters_MappingParameters {
 
 }
 
-SuperMap.MappingParameters = MappingParameters_MappingParameters;
+SuperMap.MappingParameters = MappingParameters;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7281,7 +6773,7 @@ SuperMap.MappingParameters = MappingParameters_MappingParameters;
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class KernelDensityJobParameter_KernelDensityJobParameter {
+class KernelDensityJobParameter {
 
     constructor(options) {
         if (!options) {
@@ -7379,11 +6871,11 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         this.meshSizeUnit = null;
         this.radiusUnit = null;
         this.areaUnit = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+        if (this.mappingParameters instanceof MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -7422,9 +6914,9 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         }
     }
 }
-SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobParameter;
+SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7444,7 +6936,7 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
+class SingleObjectQueryJobsParameter {
 
     constructor(options) {
         if (!options) {
@@ -7500,11 +6992,11 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
         this.datasetQuery = null;
         this.geometryQuery = null;
         this.mode = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters){
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -7540,10 +7032,10 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
 }
 
-SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter;
+SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 // CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7563,7 +7055,7 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
  * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
+class SummaryAttributesJobsParameter {
 
     constructor(options) {
         if (!options) {
@@ -7613,11 +7105,11 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
         this.groupField = null;
         this.attributeField = null;
         this.statisticModes = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters){
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -7652,9 +7144,9 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
     }
 
 }
-SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_SummaryAttributesJobsParameter;
+SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7679,7 +7171,7 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class SummaryMeshJobParameter_SummaryMeshJobParameter {
+class SummaryMeshJobParameter {
 
     constructor(options) {
         if (!options) {
@@ -7764,11 +7256,11 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
         this.fields = null;
         this.regionDataset = null;
         this.type = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters){
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -7824,10 +7316,10 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
 }
 
-SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParameter;
+SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 // CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7857,7 +7349,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class SummaryRegionJobParameter_SummaryRegionJobParameter {
+class SummaryRegionJobParameter {
 
     constructor(options) {
         if (!options) {
@@ -7984,11 +7476,11 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
         this.resolution = null;
         this.meshSizeUnit = null;
         this.type = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters){
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -8038,10 +7530,10 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
 
 }
 
-SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobParameter;
+SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 // CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8062,7 +7554,7 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class OverlayGeoJobParameter_OverlayGeoJobParameter {
+class OverlayGeoJobParameter {
 
     constructor(options) {
         if (!options) {
@@ -8124,11 +7616,11 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         this.mode = null;
         this.srcFields = null;
         this.overlayFields = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+        if (this.mappingParameters instanceof MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -8164,9 +7656,9 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
 
 }
 
-SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
+SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8188,7 +7680,7 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  */
-class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
+class BuffersAnalystJobsParameter {
     constructor(options) {
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
@@ -8257,11 +7749,11 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         this.distanceField = null;
         this.distanceUnit = null;
         this.dissolveField = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+        if (this.mappingParameters instanceof MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -8300,10 +7792,10 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
     }
 }
 
-SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalystJobsParameter;
+SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8324,7 +7816,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
+class TopologyValidatorJobsParameter {
 
     constructor(options) {
         if (!options) {
@@ -8380,11 +7872,11 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
         this.datasetTopology = null;
         this.tolerance = null;
         this.rule = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+        if (this.mappingParameters instanceof MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -8418,9 +7910,9 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
     }
 }
 
-SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_TopologyValidatorJobsParameter;
+SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8438,7 +7930,7 @@ SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_Topolog
  * @param {string} [options.prjCoordSys] - 查询结果的坐标系。 
  * @param {number} [options.maxReturn] - 最大返回结果数。
  */
-class GeoCodingParameter_GeoCodingParameter {
+class GeoCodingParameter {
     constructor(options) {
         if (options.filters && typeof(options.filters) === 'string') {        
             options.filters =  options.filters.split(',');
@@ -8496,9 +7988,9 @@ class GeoCodingParameter_GeoCodingParameter {
 
 }
 
-SuperMap.GeoCodingParameter = GeoCodingParameter_GeoCodingParameter;
+SuperMap.GeoCodingParameter = GeoCodingParameter;
 // CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8517,7 +8009,7 @@ SuperMap.GeoCodingParameter = GeoCodingParameter_GeoCodingParameter;
  * @param {number} [options.maxReturn] - 最大返回结果数。 
  * @param {number} [options.geoDecodingRadius] - 查询半径。
  */
-class GeoDecodingParameter_GeoDecodingParameter {
+class GeoDecodingParameter {
 
 
     constructor(options) {
@@ -8591,14 +8083,13 @@ class GeoDecodingParameter_GeoDecodingParameter {
 
 }
 
-SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
+SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 // CONCATENATED MODULE: ./src/classic/SuperMap.js
 var SuperMap_SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap_SuperMap.REST = SuperMap_SuperMap.REST || {};
 
-// EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
-
+// CONCATENATED MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
+const external_function_try_return_mapv_catch_e_return_namespaceObject = function(){try{return mapv}catch(e){return {}}}();
 // CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
 
 
@@ -8622,8 +8113,34 @@ var getMeterPerMapUnit = function(mapUnit) {
     return meterPerMapUnit;
 };
 
+function getWrapNum(x, includeMax = true, includeMin = true, range = [-180, 180]) {
+    var max = range[1],
+        min = range[0],
+        d = max - min;
+    if (x === max && includeMax) {
+        return x;
+    }
+    if (x === min && includeMin) {
+        return x;
+    }
+    var tmp = (((x - min) % d) + d) % d;
+    if (tmp === 0 && includeMax) {
+        return max;
+    }
+    return ((((x - min) % d) + d) % d) + min;
+}
+
+function conversionDegree(degrees) {
+    const degree = parseInt(degrees);
+    let fraction = parseInt((degrees - degree) * 60);
+    let second = parseInt(((degrees - degree) * 60 - fraction) * 60);
+    fraction = parseInt(fraction / 10) === 0 ? `0${fraction}` : fraction;
+    second = parseInt(second / 10) === 0 ? `0${second}` : second;
+    return `${degree}°${fraction}'${second}`;
+}
+
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8640,9 +8157,9 @@ var getMeterPerMapUnit = function(mapUnit) {
  * @param {Mapv.DataSet} dataSet - 待渲染的数据集，数据所属坐标系要求与 map 保持一致。
  * @param {Object} options - 渲染的参数。
  */
-var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
+var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer ? external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer.__proto__ : Function;
 
-class MapVRenderer_MapVRenderer extends MapVBaseLayer {
+class MapVRenderer extends MapVBaseLayer {
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);
         if (!MapVBaseLayer) {
@@ -8748,7 +8265,7 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
         if (data && data.get) {
             _data = data.get();
         }
-        this.dataSet = this.dataSet || new external_function_try_return_mapv_catch_e_return_["DataSet"]();
+        this.dataSet = this.dataSet || new external_function_try_return_mapv_catch_e_return_namespaceObject.DataSet();
         this.dataSet.set(_data);
         this.update({options: options});
     }
@@ -8963,7 +8480,7 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
     }
 }
 // CONCATENATED MODULE: ./src/classic/overlay/MapVLayer.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8979,7 +8496,7 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
  * @param {Mapv.DataSet} options.dataSet - mapv 的 dataSet 对象。
  * @param {Object} options.options - mapv 绘图风格配置信息。
  */
-class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
+class MapVLayer extends SuperMap_SuperMap.Layer {
     constructor(name, options) {
         super(name, options);
 
@@ -9126,7 +8643,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
      */
     setMap(map) {
         super.setMap(map);
-        this.renderer = new MapVRenderer_MapVRenderer(map, this, this.dataSet, this.options);
+        this.renderer = new MapVRenderer(map, this, this.dataSet, this.options);
         if (!this.supported) {
             this.map.removeLayer(this);
         } else {
@@ -9191,21 +8708,21 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     }
 }
 
-SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
+SuperMap_SuperMap.Layer.MapVLayer = MapVLayer;
 
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 // CONCATENATED MODULE: ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 // CONCATENATED MODULE: ./src/common/commontypes/Credential.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9302,7 +8819,7 @@ Credential.CREDENTIAL = null;
 SuperMap.Credential = Credential;
 
 // CONCATENATED MODULE: ./src/common/format/Format.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9316,7 +8833,7 @@ SuperMap.Credential = Credential;
  * @param {boolean} [options.keepData=false] - 如果设置为 true， data 属性会指向被解析的对象（例如 JSON 或 xml 数据对象）。
  * @param {Object} [options.data] - 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
  */
-class Format_Format {
+class Format {
 
 
     constructor(options) {
@@ -9367,10 +8884,10 @@ class Format_Format {
     }
 }
 
-SuperMap.Format = SuperMap.Format || Format_Format;
+SuperMap.Format = SuperMap.Format || Format;
 
 // CONCATENATED MODULE: ./src/common/format/JSON.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9389,7 +8906,7 @@ SuperMap.Format = SuperMap.Format || Format_Format;
  * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @extends {SuperMap.Format}
  */
-class JSON_JSONFormat extends Format_Format {
+class JSONFormat extends Format {
 
     constructor(options) {
         super(options);
@@ -9674,9 +9191,9 @@ class JSON_JSONFormat extends Format_Format {
 
 }
 
-SuperMap.Format.JSON = JSON_JSONFormat;
+SuperMap.Format.JSON = JSONFormat;
 // CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9702,7 +9219,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class CommonServiceBase_CommonServiceBase {
+class CommonServiceBase {
 
     constructor(url, options) {
         let me = this;
@@ -9770,7 +9287,7 @@ class CommonServiceBase_CommonServiceBase {
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
-        me.events = new Events_Events(me, null, me.EVENT_TYPES, true);
+        me.events = new Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
         }
@@ -9857,20 +9374,20 @@ class CommonServiceBase_CommonServiceBase {
             credential, value;
         switch (this.serverType) {
             case ServerType.IPORTAL:
-                value = SecurityManager_SecurityManager.getToken(keyUrl);
+                value = SecurityManager.getToken(keyUrl);
                 credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
-                    value = SecurityManager_SecurityManager.getKey(keyUrl);
+                    value = SecurityManager.getKey(keyUrl);
                     credential = value ? new Credential(value, "key") : null;
                 }
                 break;
             case ServerType.ONLINE:
-                value = SecurityManager_SecurityManager.getKey(keyUrl);
+                value = SecurityManager.getKey(keyUrl);
                 credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iServer or others
-                value = SecurityManager_SecurityManager.getToken(keyUrl);
+                value = SecurityManager.getToken(keyUrl);
                 credential = value ? new Credential(value, "token") : null;
                 break;
         }
@@ -10011,7 +9528,7 @@ class CommonServiceBase_CommonServiceBase {
         }).then(function (text) {
             var result = text;
             if (typeof text === "string") {
-                result = new JSON_JSONFormat().read(text);
+                result = new JSONFormat().read(text);
             }
             if (!result || result.error || result.code >= 300 && result.code !== 304) {
                 if (result && result.error) {
@@ -10039,7 +9556,7 @@ class CommonServiceBase_CommonServiceBase {
     }
 }
 
-SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
+SuperMap.CommonServiceBase = CommonServiceBase;
 
 /**
  * 服务器请求回调函数
@@ -10056,7 +9573,7 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
  */
 // CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10073,7 +9590,7 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
+class AddressMatchService_AddressMatchService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         this.options = options || {};
@@ -10094,7 +9611,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
      * @param {SuperMap.GeoCodingParameter} params - 正向地址匹配服务参数。
      */
     code(url, params) {
-        if (!(params instanceof GeoCodingParameter_GeoCodingParameter)) {
+        if (!(params instanceof GeoCodingParameter)) {
             return;
         }
         this.processAsync(url, params);
@@ -10106,7 +9623,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
      * @param {SuperMap.GeoDecodingParameter} params - 反向地址匹配服务参数。
      */
     decode(url, params) {
-        if (!(params instanceof GeoDecodingParameter_GeoDecodingParameter)) {
+        if (!(params instanceof GeoDecodingParameter)) {
             return;
         }
         this.processAsync(url, params);
@@ -10155,7 +9672,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
 
 // CONCATENATED MODULE: ./src/classic/services/AddressMatchService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10172,7 +9689,7 @@ SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class services_AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
+class AddressMatchService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -10226,9 +9743,9 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
     }
 }
 
-SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_AddressMatchService;
+SuperMap_SuperMap.REST.AddressMatchService = AddressMatchService;
 // CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10252,7 +9769,7 @@ SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_Addres
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
+class ProcessingServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
         options = options || {};
@@ -10384,17 +9901,17 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
     }
 
     _processUrl(url) {
-        if (SecurityManager_SecurityManager.getToken(url)) {
-            url = Util.urlAppend(url, 'token=' + SecurityManager_SecurityManager.getToken(url));
+        if (SecurityManager.getToken(url)) {
+            url = Util.urlAppend(url, 'token=' + SecurityManager.getToken(url));
         }
         return url;
     }
 
 }
 
-SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
+SuperMap.ProcessingServiceBase = ProcessingServiceBase;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10412,7 +9929,7 @@ SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class KernelDensityJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -10452,14 +9969,14 @@ class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServic
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addKernelDensityJob(params, seconds) {
-        super.addJob(this.url, params, KernelDensityJobParameter_KernelDensityJobParameter, seconds);
+        super.addJob(this.url, params, KernelDensityJobParameter, seconds);
     }
 
 }
 
-SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsService;
+SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10477,7 +9994,7 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class SingleObjectQueryJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url = Util.urlPathAppend(this.url, 'spatialanalyst/query');
@@ -10515,14 +10032,14 @@ class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends Processi
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addQueryJob(params, seconds) {
-        super.addJob(this.url, params, SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter, seconds);
+        super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
     }
 }
 
-SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjectQueryJobsService;
+SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 // CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10544,7 +10061,7 @@ SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjec
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class SummaryMeshJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url = Util.urlPathAppend(this.url, 'spatialanalyst/aggregatepoints');
@@ -10582,14 +10099,14 @@ class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBas
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryMeshJob(params, seconds) {
-        super.addJob(this.url, params, SummaryMeshJobParameter_SummaryMeshJobParameter, seconds);
+        super.addJob(this.url, params, SummaryMeshJobParameter, seconds);
     }
 }
 
-SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
+SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 // CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10607,7 +10124,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class SummaryRegionJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url = Util.urlPathAppend(this.url, 'spatialanalyst/summaryregion');
@@ -10645,14 +10162,14 @@ class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServic
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryRegionJob(params, seconds) {
-        super.addJob(this.url, params, SummaryRegionJobParameter_SummaryRegionJobParameter, seconds);
+        super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
     }
 }
 
-SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsService;
+SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 // CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10672,7 +10189,7 @@ SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsSe
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。 
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
-class VectorClipJobsParameter_VectorClipJobsParameter {
+class VectorClipJobsParameter {
 
     constructor(options) {
         options = options || {};
@@ -10727,11 +10244,11 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
         this.datasetVectorClip = null;
         this.geometryClip = null;
         this.mode = null;
-        if (this.output instanceof OutputSetting_OutputSetting) {
+        if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+        if (this.mappingParameters instanceof MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -10766,10 +10283,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
 
 }
 
-SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParameter;
+SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 // CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10787,7 +10304,7 @@ SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParamet
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class VectorClipJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url = Util.urlPathAppend(this.url, 'spatialanalyst/vectorclip');
@@ -10825,14 +10342,14 @@ class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addVectorClipJob(params, seconds) {
-        super.addJob(this.url, params, VectorClipJobsParameter_VectorClipJobsParameter, seconds);
+        super.addJob(this.url, params, VectorClipJobsParameter, seconds);
     }
 }
 
-SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
+SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 // CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10854,7 +10371,7 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class OverlayGeoJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url = Util.urlPathAppend(this.url, 'spatialanalyst/overlay');
@@ -10892,13 +10409,13 @@ class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addOverlayGeoJob(params, seconds) {
-        super.addJob(this.url, params, OverlayGeoJobParameter_OverlayGeoJobParameter, seconds);
+        super.addJob(this.url, params, OverlayGeoJobParameter, seconds);
     }
 }
-SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
+SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10916,7 +10433,7 @@ SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url = Util.urlPathAppend(this.url, 'spatialanalyst/buffers');
@@ -10954,14 +10471,14 @@ class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServ
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addBuffersJob(params, seconds) {
-        super.addJob(this.url, params, BuffersAnalystJobsParameter_BuffersAnalystJobsParameter, seconds);
+        super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds);
     }
 }
 
-SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJobsService;
+SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10979,7 +10496,7 @@ SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJob
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class TopologyValidatorJobsService_TopologyValidatorJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class TopologyValidatorJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -11018,14 +10535,14 @@ class TopologyValidatorJobsService_TopologyValidatorJobsService extends Processi
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addTopologyValidatorJob(params, seconds) {
-        super.addJob(this.url, params, TopologyValidatorJobsParameter_TopologyValidatorJobsParameter, seconds);
+        super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds);
     }
 
 }
 
-SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyValidatorJobsService;
+SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11043,7 +10560,7 @@ SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyVal
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class SummaryAttributesJobsService_SummaryAttributesJobsService extends ProcessingServiceBase_ProcessingServiceBase {
+class SummaryAttributesJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -11082,14 +10599,14 @@ class SummaryAttributesJobsService_SummaryAttributesJobsService extends Processi
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryAttributesJob(params, seconds) {
-        super.addJob(this.url, params, SummaryAttributesJobsParameter_SummaryAttributesJobsParameter, seconds);
+        super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);
     }
 
 }
 
-SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttributesJobsService;
+SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 // CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11121,7 +10638,7 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class ProcessingService_ProcessingService extends CommonServiceBase_CommonServiceBase {
+class ProcessingService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -11145,7 +10662,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getKernelDensityJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11171,7 +10688,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getKernelDensityJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11197,7 +10714,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             headers: me.headers,  
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11234,7 +10751,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getSummaryMeshJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             headers: me.headers,  
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11260,7 +10777,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getSummaryMeshJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             headers: me.headers,  
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11286,7 +10803,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
 */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11323,7 +10840,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getQueryJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11349,7 +10866,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getQueryJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11377,7 +10894,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
-        var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
@@ -11414,7 +10931,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getSummaryRegionJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             headers: me.headers,
             withCredentials: me.withCredentials,
@@ -11440,7 +10957,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getSummaryRegionJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11466,7 +10983,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
-        var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11503,7 +11020,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getVectorClipJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11529,7 +11046,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getVectorClipJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11557,7 +11074,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
-        var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11595,7 +11112,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getOverlayGeoJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
+        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11621,7 +11138,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getOverlayGeoJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
+        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11648,7 +11165,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     addOverlayGeoJob(params, callback, seconds, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
+        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11686,7 +11203,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getBuffersJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
+        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11712,7 +11229,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getBuffersJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
+        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11739,7 +11256,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     addBuffersJob(params, callback, seconds, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
+        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11777,7 +11294,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getTopologyValidatorJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
+        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11803,7 +11320,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getTopologyValidatorJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
+        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11830,7 +11347,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
+        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11868,7 +11385,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getSummaryAttributesJobs(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
+        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11894,7 +11411,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     getSummaryAttributesJob(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
+        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11921,7 +11438,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
+        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -11987,35 +11504,16 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
 
 }
 
-SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
+SuperMap_SuperMap.REST.ProcessingService = ProcessingService;
 
 // CONCATENATED MODULE: ./src/classic/services/index.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 // CONCATENATED MODULE: ./src/classic/index.js
-/* concated harmony reexport ElasticSearch */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
-/* concated harmony reexport SecurityManager */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
-/* concated harmony reexport KernelDensityJobParameter */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
-/* concated harmony reexport SingleObjectQueryJobsParameter */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
-/* concated harmony reexport SummaryAttributesJobsParameter */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
-/* concated harmony reexport SummaryMeshJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
-/* concated harmony reexport SummaryRegionJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
-/* concated harmony reexport OverlayGeoJobParameter */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
-/* concated harmony reexport BuffersAnalystJobsParameter */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
-/* concated harmony reexport TopologyValidatorJobsParameter */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
-/* concated harmony reexport OutputSetting */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
-/* concated harmony reexport MappingParameters */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
-/* concated harmony reexport GeoCodingParameter */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
-/* concated harmony reexport GeoDecodingParameter */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
-/* concated harmony reexport MapVLayer */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
-/* concated harmony reexport MapVRenderer */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
-/* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
-/* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
-/* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap_SuperMap; });
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12036,6 +11534,7 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 
 
 
+})();
 
-/***/ })
-/******/ ]);
+/******/ })()
+;

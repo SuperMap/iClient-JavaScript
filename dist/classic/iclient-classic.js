@@ -1,1055 +1,16 @@
 /*!
  * 
  *          iclient-classic.(https://iclient.supermap.io)
- *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
+ *          Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.0
- *         
+ *          version: v10.1.1
+ *
  */
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-var g; // This works in non-strict mode
-
-g = function () {
-  return this;
-}();
-
-try {
-  // This works if eval is allowed (see CSP)
-  g = g || new Function("return this")();
-} catch (e) {
-  // This works if the window reference is available
-  if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
-} // g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-
-module.exports = g;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else { var mod; }
-})(this, function (exports, module) {
-  'use strict';
-
-  var defaultOptions = {
-    timeout: 5000,
-    jsonpCallback: 'callback',
-    jsonpCallbackFunction: null
-  };
-
-  function generateCallbackFunction() {
-    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-  }
-
-  function clearFunction(functionName) {
-    // IE8 throws an exception when you try to delete a property on window
-    // http://stackoverflow.com/a/1824228/751089
-    try {
-      delete window[functionName];
-    } catch (e) {
-      window[functionName] = undefined;
-    }
-  }
-
-  function removeScript(scriptId) {
-    var script = document.getElementById(scriptId);
-
-    if (script) {
-      document.getElementsByTagName('head')[0].removeChild(script);
-    }
-  }
-
-  function fetchJsonp(_url) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1]; // to avoid param reassign
-
-    var url = _url;
-    var timeout = options.timeout || defaultOptions.timeout;
-    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-    var timeoutId = undefined;
-    return new Promise(function (resolve, reject) {
-      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-      var scriptId = jsonpCallback + '_' + callbackFunction;
-
-      window[callbackFunction] = function (response) {
-        resolve({
-          ok: true,
-          // keep consistent with fetch API
-          json: function json() {
-            return Promise.resolve(response);
-          }
-        });
-        if (timeoutId) clearTimeout(timeoutId);
-        removeScript(scriptId);
-        clearFunction(callbackFunction);
-      }; // Check if the user set their own params, and if not add a ? to start a list of params
-
-
-      url += url.indexOf('?') === -1 ? '?' : '&';
-      var jsonpScript = document.createElement('script');
-      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-
-      if (options.charset) {
-        jsonpScript.setAttribute('charset', options.charset);
-      }
-
-      jsonpScript.id = scriptId;
-      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-      timeoutId = setTimeout(function () {
-        reject(new Error('JSONP request to ' + _url + ' timed out'));
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-
-        window[callbackFunction] = function () {
-          clearFunction(callbackFunction);
-        };
-      }, timeout); // Caught if got 404/500
-
-      jsonpScript.onerror = function () {
-        reject(new Error('JSONP request to ' + _url + ' failed'));
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        if (timeoutId) clearTimeout(timeoutId);
-      };
-    });
-  } // export as global function
-
-  /*
-  let local;
-  if (typeof global !== 'undefined') {
-    local = global;
-  } else if (typeof self !== 'undefined') {
-    local = self;
-  } else {
-    try {
-      local = Function('return this')();
-    } catch (e) {
-      throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-  }
-  local.fetchJsonp = fetchJsonp;
-  */
-
-
-  module.exports = fetchJsonp;
-});
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate, global) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-(function (global, factory) {
-  ( false ? undefined : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
-})(this, function () {
-  'use strict';
-  /**
-   * @this {Promise}
-   */
-
-  function finallyConstructor(callback) {
-    var constructor = this.constructor;
-    return this.then(function (value) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function () {
-        return value;
-      });
-    }, function (reason) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function () {
-        // @ts-ignore
-        return constructor.reject(reason);
-      });
-    });
-  } // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-
-
-  var setTimeoutFunc = setTimeout;
-
-  function isArray(x) {
-    return Boolean(x && typeof x.length !== 'undefined');
-  }
-
-  function noop() {} // Polyfill for Function.prototype.bind
-
-
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-  /**
-   * @constructor
-   * @param {Function} fn
-   */
-
-
-  function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    /** @type {!number} */
-
-    this._state = 0;
-    /** @type {!boolean} */
-
-    this._handled = false;
-    /** @type {Promise|undefined} */
-
-    this._value = undefined;
-    /** @type {!Array<!Function>} */
-
-    this._deferreds = [];
-    doResolve(fn, this);
-  }
-
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-
-      return;
-    }
-
-    self._handled = true;
-
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-        return;
-      }
-
-      var ret;
-
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-
-      resolve(deferred.promise, ret);
-    });
-  }
-
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-
-      if (newValue && (_typeof(newValue) === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function () {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
-    }
-
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-
-    self._deferreds = null;
-  }
-  /**
-   * @constructor
-   */
-
-
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-
-
-  function doResolve(fn, self) {
-    var done = false;
-
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    // @ts-ignore
-    var prom = new this.constructor(noop);
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-
-  Promise.prototype['finally'] = finallyConstructor;
-
-  Promise.all = function (arr) {
-    return new Promise(function (resolve, reject) {
-      if (!isArray(arr)) {
-        return reject(new TypeError('Promise.all accepts an array'));
-      }
-
-      var args = Array.prototype.slice.call(arr);
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-
-      function res(i, val) {
-        try {
-          if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
-            var then = val.then;
-
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-
-          args[i] = val;
-
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  };
-
-  Promise.resolve = function (value) {
-    if (value && _typeof(value) === 'object' && value.constructor === Promise) {
-      return value;
-    }
-
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-
-  Promise.race = function (arr) {
-    return new Promise(function (resolve, reject) {
-      if (!isArray(arr)) {
-        return reject(new TypeError('Promise.race accepts an array'));
-      }
-
-      for (var i = 0, len = arr.length; i < len; i++) {
-        Promise.resolve(arr[i]).then(resolve, reject);
-      }
-    });
-  }; // Use polyfill for setImmediate for performance gains
-
-
-  Promise._immediateFn = // @ts-ignore
-  typeof setImmediate === 'function' && function (fn) {
-    // @ts-ignore
-    setImmediate(fn);
-  } || function (fn) {
-    setTimeoutFunc(fn, 0);
-  };
-
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-  /** @suppress {undefinedVars} */
-
-
-  var globalNS = function () {
-    // the only reliable means to get the global object is
-    // `Function('return this')()`
-    // However, this causes CSP violations in Chrome apps.
-    if (typeof self !== 'undefined') {
-      return self;
-    }
-
-    if (typeof window !== 'undefined') {
-      return window;
-    }
-
-    if (typeof global !== 'undefined') {
-      return global;
-    }
-
-    throw new Error('unable to locate global object');
-  }();
-
-  if (!('Promise' in globalNS)) {
-    globalNS['Promise'] = Promise;
-  } else if (!globalNS.Promise.prototype['finally']) {
-    globalNS.Promise.prototype['finally'] = finallyConstructor;
-  }
-});
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5).setImmediate, __webpack_require__(1)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
-var apply = Function.prototype.apply; // DOM APIs, for completeness
-
-exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-
-exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-
-exports.clearTimeout = exports.clearInterval = function (timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-
-Timeout.prototype.unref = Timeout.prototype.ref = function () {};
-
-Timeout.prototype.close = function () {
-  this._clearFn.call(scope, this._id);
-}; // Does not start the time, just sets up the members needed.
-
-
-exports.enroll = function (item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function (item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function (item) {
-  clearTimeout(item._idleTimeoutId);
-  var msecs = item._idleTimeout;
-
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout) item._onTimeout();
-    }, msecs);
-  }
-}; // setimmediate attaches itself to the global object
-
-
-__webpack_require__(6); // On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-
-
-exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || this && this.setImmediate;
-exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || typeof global !== "undefined" && global.clearImmediate || this && this.clearImmediate;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-  "use strict";
-
-  if (global.setImmediate) {
-    return;
-  }
-
-  var nextHandle = 1; // Spec says greater than zero
-
-  var tasksByHandle = {};
-  var currentlyRunningATask = false;
-  var doc = global.document;
-  var registerImmediate;
-
-  function setImmediate(callback) {
-    // Callback can either be a function or a string
-    if (typeof callback !== "function") {
-      callback = new Function("" + callback);
-    } // Copy function arguments
-
-
-    var args = new Array(arguments.length - 1);
-
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i + 1];
-    } // Store and register the task
-
-
-    var task = {
-      callback: callback,
-      args: args
-    };
-    tasksByHandle[nextHandle] = task;
-    registerImmediate(nextHandle);
-    return nextHandle++;
-  }
-
-  function clearImmediate(handle) {
-    delete tasksByHandle[handle];
-  }
-
-  function run(task) {
-    var callback = task.callback;
-    var args = task.args;
-
-    switch (args.length) {
-      case 0:
-        callback();
-        break;
-
-      case 1:
-        callback(args[0]);
-        break;
-
-      case 2:
-        callback(args[0], args[1]);
-        break;
-
-      case 3:
-        callback(args[0], args[1], args[2]);
-        break;
-
-      default:
-        callback.apply(undefined, args);
-        break;
-    }
-  }
-
-  function runIfPresent(handle) {
-    // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-    // So if we're currently running a task, we'll need to delay this invocation.
-    if (currentlyRunningATask) {
-      // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-      // "too much recursion" error.
-      setTimeout(runIfPresent, 0, handle);
-    } else {
-      var task = tasksByHandle[handle];
-
-      if (task) {
-        currentlyRunningATask = true;
-
-        try {
-          run(task);
-        } finally {
-          clearImmediate(handle);
-          currentlyRunningATask = false;
-        }
-      }
-    }
-  }
-
-  function installNextTickImplementation() {
-    registerImmediate = function registerImmediate(handle) {
-      process.nextTick(function () {
-        runIfPresent(handle);
-      });
-    };
-  }
-
-  function canUsePostMessage() {
-    // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-    // where `global.postMessage` means something completely different and can't be used for this purpose.
-    if (global.postMessage && !global.importScripts) {
-      var postMessageIsAsynchronous = true;
-      var oldOnMessage = global.onmessage;
-
-      global.onmessage = function () {
-        postMessageIsAsynchronous = false;
-      };
-
-      global.postMessage("", "*");
-      global.onmessage = oldOnMessage;
-      return postMessageIsAsynchronous;
-    }
-  }
-
-  function installPostMessageImplementation() {
-    // Installs an event handler on `global` for the `message` event: see
-    // * https://developer.mozilla.org/en/DOM/window.postMessage
-    // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-    var messagePrefix = "setImmediate$" + Math.random() + "$";
-
-    var onGlobalMessage = function onGlobalMessage(event) {
-      if (event.source === global && typeof event.data === "string" && event.data.indexOf(messagePrefix) === 0) {
-        runIfPresent(+event.data.slice(messagePrefix.length));
-      }
-    };
-
-    if (global.addEventListener) {
-      global.addEventListener("message", onGlobalMessage, false);
-    } else {
-      global.attachEvent("onmessage", onGlobalMessage);
-    }
-
-    registerImmediate = function registerImmediate(handle) {
-      global.postMessage(messagePrefix + handle, "*");
-    };
-  }
-
-  function installMessageChannelImplementation() {
-    var channel = new MessageChannel();
-
-    channel.port1.onmessage = function (event) {
-      var handle = event.data;
-      runIfPresent(handle);
-    };
-
-    registerImmediate = function registerImmediate(handle) {
-      channel.port2.postMessage(handle);
-    };
-  }
-
-  function installReadyStateChangeImplementation() {
-    var html = doc.documentElement;
-
-    registerImmediate = function registerImmediate(handle) {
-      // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-      // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-      var script = doc.createElement("script");
-
-      script.onreadystatechange = function () {
-        runIfPresent(handle);
-        script.onreadystatechange = null;
-        html.removeChild(script);
-        script = null;
-      };
-
-      html.appendChild(script);
-    };
-  }
-
-  function installSetTimeoutImplementation() {
-    registerImmediate = function registerImmediate(handle) {
-      setTimeout(runIfPresent, 0, handle);
-    };
-  } // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-
-
-  var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-  attachTo = attachTo && attachTo.setTimeout ? attachTo : global; // Don't get fooled by e.g. browserify environments.
-
-  if ({}.toString.call(global.process) === "[object process]") {
-    // For Node.js before 0.9
-    installNextTickImplementation();
-  } else if (canUsePostMessage()) {
-    // For non-IE10 modern browsers
-    installPostMessageImplementation();
-  } else if (global.MessageChannel) {
-    // For web workers, where supported
-    installMessageChannelImplementation();
-  } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-    // For IE 6–8
-    installReadyStateChangeImplementation();
-  } else {
-    // For older browsers
-    installSetTimeoutImplementation();
-  }
-
-  attachTo.setImmediate = setImmediate;
-  attachTo.clearImmediate = clearImmediate;
-})(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(7)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ (function() { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 122:
+/***/ (function(module) {
 
 (function (self) {
   'use strict'; // if __disableNativeFetch is set to true, the it will always polyfill fetch
@@ -1515,14 +476,517 @@ process.umask = function () {
 })(typeof self !== 'undefined' ? self : this);
 
 /***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+/***/ 683:
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (exports, module) {
+  'use strict';
+
+  var defaultOptions = {
+    timeout: 5000,
+    jsonpCallback: 'callback',
+    jsonpCallbackFunction: null
+  };
+
+  function generateCallbackFunction() {
+    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+  }
+
+  function clearFunction(functionName) {
+    // IE8 throws an exception when you try to delete a property on window
+    // http://stackoverflow.com/a/1824228/751089
+    try {
+      delete window[functionName];
+    } catch (e) {
+      window[functionName] = undefined;
+    }
+  }
+
+  function removeScript(scriptId) {
+    var script = document.getElementById(scriptId);
+
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
+  }
+
+  function fetchJsonp(_url) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1]; // to avoid param reassign
+
+    var url = _url;
+    var timeout = options.timeout || defaultOptions.timeout;
+    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+    var timeoutId = undefined;
+    return new Promise(function (resolve, reject) {
+      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+      var scriptId = jsonpCallback + '_' + callbackFunction;
+
+      window[callbackFunction] = function (response) {
+        resolve({
+          ok: true,
+          // keep consistent with fetch API
+          json: function json() {
+            return Promise.resolve(response);
+          }
+        });
+        if (timeoutId) clearTimeout(timeoutId);
+        removeScript(scriptId);
+        clearFunction(callbackFunction);
+      }; // Check if the user set their own params, and if not add a ? to start a list of params
+
+
+      url += url.indexOf('?') === -1 ? '?' : '&';
+      var jsonpScript = document.createElement('script');
+      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
+
+      jsonpScript.id = scriptId;
+      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+      timeoutId = setTimeout(function () {
+        reject(new Error('JSONP request to ' + _url + ' timed out'));
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
+      }, timeout); // Caught if got 404/500
+
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    });
+  } // export as global function
+
+  /*
+  let local;
+  if (typeof global !== 'undefined') {
+    local = global;
+  } else if (typeof self !== 'undefined') {
+    local = self;
+  } else {
+    try {
+      local = Function('return this')();
+    } catch (e) {
+      throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+  }
+  local.fetchJsonp = fetchJsonp;
+  */
+
+
+  module.exports = fetchJsonp;
+});
+
+/***/ }),
+
+/***/ 347:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : 0;
+})(this, function () {
+  'use strict';
+  /**
+   * @this {Promise}
+   */
+
+  function finallyConstructor(callback) {
+    var constructor = this.constructor;
+    return this.then(function (value) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function () {
+        return value;
+      });
+    }, function (reason) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function () {
+        // @ts-ignore
+        return constructor.reject(reason);
+      });
+    });
+  } // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+
+
+  var setTimeoutFunc = setTimeout;
+
+  function isArray(x) {
+    return Boolean(x && typeof x.length !== 'undefined');
+  }
+
+  function noop() {} // Polyfill for Function.prototype.bind
+
+
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
+  }
+  /**
+   * @constructor
+   * @param {Function} fn
+   */
+
+
+  function Promise(fn) {
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    /** @type {!number} */
+
+    this._state = 0;
+    /** @type {!boolean} */
+
+    this._handled = false;
+    /** @type {Promise|undefined} */
+
+    this._value = undefined;
+    /** @type {!Array<!Function>} */
+
+    this._deferreds = [];
+    doResolve(fn, this);
+  }
+
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
+    }
+
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+
+      return;
+    }
+
+    self._handled = true;
+
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+        return;
+      }
+
+      var ret;
+
+      try {
+        ret = cb(self._value);
+      } catch (e) {
+        reject(deferred.promise, e);
+        return;
+      }
+
+      resolve(deferred.promise, ret);
+    });
+  }
+
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+
+      if (newValue && (_typeof(newValue) === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function () {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+
+    self._deferreds = null;
+  }
+  /**
+   * @constructor
+   */
+
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+
+
+  function doResolve(fn, self) {
+    var done = false;
+
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    // @ts-ignore
+    var prom = new this.constructor(noop);
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+
+  Promise.prototype['finally'] = finallyConstructor;
+
+  Promise.all = function (arr) {
+    return new Promise(function (resolve, reject) {
+      if (!isArray(arr)) {
+        return reject(new TypeError('Promise.all accepts an array'));
+      }
+
+      var args = Array.prototype.slice.call(arr);
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        try {
+          if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
+            var then = val.then;
+
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+
+          args[i] = val;
+
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+
+  Promise.resolve = function (value) {
+    if (value && _typeof(value) === 'object' && value.constructor === Promise) {
+      return value;
+    }
+
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (arr) {
+    return new Promise(function (resolve, reject) {
+      if (!isArray(arr)) {
+        return reject(new TypeError('Promise.race accepts an array'));
+      }
+
+      for (var i = 0, len = arr.length; i < len; i++) {
+        Promise.resolve(arr[i]).then(resolve, reject);
+      }
+    });
+  }; // Use polyfill for setImmediate for performance gains
+
+
+  Promise._immediateFn = // @ts-ignore
+  typeof setImmediate === 'function' && function (fn) {
+    // @ts-ignore
+    setImmediate(fn);
+  } || function (fn) {
+    setTimeoutFunc(fn, 0);
+  };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+  /** @suppress {undefinedVars} */
+
+
+  var globalNS = function () {
+    // the only reliable means to get the global object is
+    // `Function('return this')()`
+    // However, this causes CSP violations in Chrome apps.
+    if (typeof self !== 'undefined') {
+      return self;
+    }
+
+    if (typeof window !== 'undefined') {
+      return window;
+    }
+
+    if (typeof __webpack_require__.g !== 'undefined') {
+      return __webpack_require__.g;
+    }
+
+    throw new Error('unable to locate global object');
+  }();
+
+  if (!('Promise' in globalNS)) {
+    globalNS['Promise'] = Promise;
+  } else if (!globalNS.Promise.prototype['finally']) {
+    globalNS.Promise.prototype['finally'] = finallyConstructor;
+  }
+});
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	!function() {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+!function() {
 "use strict";
-__webpack_require__.r(__webpack_exports__);
+
+// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
@@ -1534,7 +998,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -1555,9 +1019,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
 
-var Pixel_Pixel =
-/*#__PURE__*/
-function () {
+var Pixel = /*#__PURE__*/function () {
   function Pixel(x, y, mode) {
     _classCallCheck(this, Pixel);
 
@@ -1737,11 +1199,11 @@ function () {
 
   return Pixel;
 }();
-SuperMap.Pixel = Pixel_Pixel;
+SuperMap.Pixel = Pixel;
 // CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
 function BaseTypes_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2228,9 +1690,9 @@ var ArrayExt = SuperMap.Array = {
   }
 };
 // CONCATENATED MODULE: ./src/common/commontypes/Util.js
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2727,9 +2189,9 @@ SuperMap.INCHES_PER_UNIT = {
   'dd': 4374754,
   'yd': 36
 };
-SuperMap.INCHES_PER_UNIT["in"] = SuperMap.INCHES_PER_UNIT.inches;
-SuperMap.INCHES_PER_UNIT["degrees"] = SuperMap.INCHES_PER_UNIT.dd;
-SuperMap.INCHES_PER_UNIT["nmi"] = 1852 * SuperMap.INCHES_PER_UNIT.m; // Units from CS-Map
+SuperMap.INCHES_PER_UNIT.in = SuperMap.INCHES_PER_UNIT.inches;
+SuperMap.INCHES_PER_UNIT.degrees = SuperMap.INCHES_PER_UNIT.dd;
+SuperMap.INCHES_PER_UNIT.nmi = 1852 * SuperMap.INCHES_PER_UNIT.m; // Units from CS-Map
 
 SuperMap.METERS_PER_INCH = 0.02540005080010160020;
 SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
@@ -2823,31 +2285,31 @@ SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
 }); //unit abbreviations supported by PROJ.4
 
 SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
-  "mm": SuperMap.INCHES_PER_UNIT["Meter"] / 1000.0,
-  "cm": SuperMap.INCHES_PER_UNIT["Meter"] / 100.0,
-  "dm": SuperMap.INCHES_PER_UNIT["Meter"] * 100.0,
-  "km": SuperMap.INCHES_PER_UNIT["Meter"] * 1000.0,
-  "kmi": SuperMap.INCHES_PER_UNIT["nmi"],
+  "mm": SuperMap.INCHES_PER_UNIT.Meter / 1000.0,
+  "cm": SuperMap.INCHES_PER_UNIT.Meter / 100.0,
+  "dm": SuperMap.INCHES_PER_UNIT.Meter * 100.0,
+  "km": SuperMap.INCHES_PER_UNIT.Meter * 1000.0,
+  "kmi": SuperMap.INCHES_PER_UNIT.nmi,
   //International Nautical Mile
-  "fath": SuperMap.INCHES_PER_UNIT["Fathom"],
+  "fath": SuperMap.INCHES_PER_UNIT.Fathom,
   //International Fathom
-  "ch": SuperMap.INCHES_PER_UNIT["IntnlChain"],
+  "ch": SuperMap.INCHES_PER_UNIT.IntnlChain,
   //International Chain
-  "link": SuperMap.INCHES_PER_UNIT["IntnlLink"],
+  "link": SuperMap.INCHES_PER_UNIT.IntnlLink,
   //International Link
-  "us-in": SuperMap.INCHES_PER_UNIT["inches"],
+  "us-in": SuperMap.INCHES_PER_UNIT.inches,
   //U.S. Surveyor's Inch
-  "us-ft": SuperMap.INCHES_PER_UNIT["Foot"],
+  "us-ft": SuperMap.INCHES_PER_UNIT.Foot,
   //U.S. Surveyor's Foot
-  "us-yd": SuperMap.INCHES_PER_UNIT["Yard"],
+  "us-yd": SuperMap.INCHES_PER_UNIT.Yard,
   //U.S. Surveyor's Yard
-  "us-ch": SuperMap.INCHES_PER_UNIT["GunterChain"],
+  "us-ch": SuperMap.INCHES_PER_UNIT.GunterChain,
   //U.S. Surveyor's Chain
-  "us-mi": SuperMap.INCHES_PER_UNIT["Mile"],
+  "us-mi": SuperMap.INCHES_PER_UNIT.Mile,
   //U.S. Surveyor's Statute Mile
-  "ind-yd": SuperMap.INCHES_PER_UNIT["IndianYd37"],
+  "ind-yd": SuperMap.INCHES_PER_UNIT.IndianYd37,
   //Indian Yard
-  "ind-ft": SuperMap.INCHES_PER_UNIT["IndianFt37"],
+  "ind-ft": SuperMap.INCHES_PER_UNIT.IndianFt37,
   //Indian Foot
   "ind-ch": 20.11669506 / SuperMap.METERS_PER_INCH //Indian Chain
 
@@ -3023,13 +2485,13 @@ SuperMap.Util.supportCanvas = function () {
 }; //将服务端的地图单位转成SuperMap的地图单位
 
 
-SuperMap.INCHES_PER_UNIT["degree"] = SuperMap.INCHES_PER_UNIT.dd;
-SuperMap.INCHES_PER_UNIT["meter"] = SuperMap.INCHES_PER_UNIT.m;
-SuperMap.INCHES_PER_UNIT["foot"] = SuperMap.INCHES_PER_UNIT.ft;
-SuperMap.INCHES_PER_UNIT["inch"] = SuperMap.INCHES_PER_UNIT.inches;
-SuperMap.INCHES_PER_UNIT["mile"] = SuperMap.INCHES_PER_UNIT.mi;
-SuperMap.INCHES_PER_UNIT["kilometer"] = SuperMap.INCHES_PER_UNIT.km;
-SuperMap.INCHES_PER_UNIT["yard"] = SuperMap.INCHES_PER_UNIT.yd;
+SuperMap.INCHES_PER_UNIT.degree = SuperMap.INCHES_PER_UNIT.dd;
+SuperMap.INCHES_PER_UNIT.meter = SuperMap.INCHES_PER_UNIT.m;
+SuperMap.INCHES_PER_UNIT.foot = SuperMap.INCHES_PER_UNIT.ft;
+SuperMap.INCHES_PER_UNIT.inch = SuperMap.INCHES_PER_UNIT.inches;
+SuperMap.INCHES_PER_UNIT.mile = SuperMap.INCHES_PER_UNIT.mi;
+SuperMap.INCHES_PER_UNIT.kilometer = SuperMap.INCHES_PER_UNIT.km;
+SuperMap.INCHES_PER_UNIT.yard = SuperMap.INCHES_PER_UNIT.yd;
 /**
  * @description 判断一个 URL 请求是否在当前域中。
  * @param {string} url - URL 请求字符串。
@@ -3474,7 +2936,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
   };
 };
 // CONCATENATED MODULE: ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3817,7 +3279,7 @@ SuperMap.Event = Event;
 
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 // CONCATENATED MODULE: ./src/common/commontypes/Events.js
-function Events_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Events_typeof = function _typeof(obj) { return typeof obj; }; } else { Events_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Events_typeof(obj); }
+function Events_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Events_typeof = function _typeof(obj) { return typeof obj; }; } else { Events_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Events_typeof(obj); }
 
 function Events_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3825,7 +3287,7 @@ function Events_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Events_createClass(Constructor, protoProps, staticProps) { if (protoProps) Events_defineProperties(Constructor.prototype, protoProps); if (staticProps) Events_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3843,9 +3305,7 @@ function Events_createClass(Constructor, protoProps, staticProps) { if (protoPro
  * @param {Object} options - 事件对象选项。
  */
 
-var Events_Events =
-/*#__PURE__*/
-function () {
+var Events = /*#__PURE__*/function () {
   function Events(object, element, eventTypes, fallThrough, options) {
     Events_classCallCheck(this, Events);
 
@@ -4359,17 +3819,17 @@ function () {
         this.element.offsets = Util.pagePosition(this.element);
       }
 
-      return new Pixel_Pixel(evt.clientX + this.element.scrolls[0] - this.element.offsets[0] - this.element.lefttop[0], evt.clientY + this.element.scrolls[1] - this.element.offsets[1] - this.element.lefttop[1]);
+      return new Pixel(evt.clientX + this.element.scrolls[0] - this.element.offsets[0] - this.element.lefttop[0], evt.clientY + this.element.scrolls[1] - this.element.offsets[1] - this.element.lefttop[1]);
     }
   }]);
 
   return Events;
 }();
-SuperMap.Events = Events_Events;
+SuperMap.Events = Events;
 SuperMap.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
-// EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(3);
-var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
+// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
+var external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
+var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 function ElasticSearch_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -4378,7 +3838,7 @@ function ElasticSearch_defineProperties(target, props) { for (var i = 0; i < pro
 
 function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (protoProps) ElasticSearch_defineProperties(Constructor.prototype, protoProps); if (staticProps) ElasticSearch_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4397,9 +3857,7 @@ function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (p
  * @param {Object} [options.geoFence] - 地理围栏。
  */
 
-var ElasticSearch_ElasticSearch =
-/*#__PURE__*/
-function () {
+var ElasticSearch = /*#__PURE__*/function () {
   function ElasticSearch(url, options) {
     ElasticSearch_classCallCheck(this, ElasticSearch);
 
@@ -4415,7 +3873,7 @@ function () {
      *  @description client ES客户端
      */
 
-    this.client = new external_function_try_return_elasticsearch_catch_e_return_default.a.Client({
+    this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
       host: this.url
     });
     /**
@@ -4461,7 +3919,7 @@ function () {
      * @description 事件
      */
 
-    this.events = new Events_Events(this, null, this.EVENT_TYPES);
+    this.events = new Events(this, null, this.EVENT_TYPES);
     /**
      * @member {Object} SuperMap.ElasticSearch.prototype.eventListeners
      * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
@@ -5113,19 +4571,17 @@ function () {
 
   return ElasticSearch;
 }();
-SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
+SuperMap.ElasticSearch = ElasticSearch;
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(4);
-
+var polyfill = __webpack_require__(347);
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(8);
-
+var fetch = __webpack_require__(122);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(2);
+var fetch_jsonp = __webpack_require__(683);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5600,7 +5056,7 @@ function SecurityManager_defineProperties(target, props) { for (var i = 0; i < p
 
 function SecurityManager_createClass(Constructor, protoProps, staticProps) { if (protoProps) SecurityManager_defineProperties(Constructor.prototype, protoProps); if (staticProps) SecurityManager_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5618,9 +5074,7 @@ function SecurityManager_createClass(Constructor, protoProps, staticProps) { if 
  *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
  */
 
-var SecurityManager_SecurityManager =
-/*#__PURE__*/
-function () {
+var SecurityManager = /*#__PURE__*/function () {
   function SecurityManager() {
     SecurityManager_classCallCheck(this, SecurityManager);
   }
@@ -6018,13 +5472,13 @@ function () {
 
   return SecurityManager;
 }();
-SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
-SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
-SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
-SuperMap.SecurityManager = SecurityManager_SecurityManager;
+SecurityManager.INNER_WINDOW_WIDTH = 600;
+SecurityManager.INNER_WINDOW_HEIGHT = 600;
+SecurityManager.SSO = "https://sso.supermap.com";
+SecurityManager.ONLINE = "https://www.supermapol.com";
+SuperMap.SecurityManager = SecurityManager;
 // CONCATENATED MODULE: ./src/common/REST.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7766,7 +7220,7 @@ function DatasourceConnectionInfo_defineProperties(target, props) { for (var i =
 
 function DatasourceConnectionInfo_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceConnectionInfo_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceConnectionInfo_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7795,9 +7249,7 @@ function DatasourceConnectionInfo_createClass(Constructor, protoProps, staticPro
  * @param {string} [options.user] - 登录数据库的用户名。 
  */
 
-var DatasourceConnectionInfo_DatasourceConnectionInfo =
-/*#__PURE__*/
-function () {
+var DatasourceConnectionInfo = /*#__PURE__*/function () {
   function DatasourceConnectionInfo(options) {
     DatasourceConnectionInfo_classCallCheck(this, DatasourceConnectionInfo);
 
@@ -7912,7 +7364,7 @@ function () {
 
   return DatasourceConnectionInfo;
 }();
-SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectionInfo;
+SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 // CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
 function OutputSetting_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7920,7 +7372,7 @@ function OutputSetting_defineProperties(target, props) { for (var i = 0; i < pro
 
 function OutputSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) OutputSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) OutputSetting_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7938,9 +7390,7 @@ function OutputSetting_createClass(Constructor, protoProps, staticProps) { if (p
  * @param {string} [options.outputPath] - 分析结果输出路径。
  */
 
-var OutputSetting_OutputSetting =
-/*#__PURE__*/
-function () {
+var OutputSetting = /*#__PURE__*/function () {
   function OutputSetting(options) {
     OutputSetting_classCallCheck(this, OutputSetting);
 
@@ -7984,7 +7434,7 @@ function () {
       me.datasetName = null;
       me.outputPath = null;
 
-      if (me.datasourceInfo instanceof DatasourceConnectionInfo_DatasourceConnectionInfo) {
+      if (me.datasourceInfo instanceof DatasourceConnectionInfo) {
         me.datasourceInfo.destroy();
         me.datasourceInfo = null;
       }
@@ -7993,7 +7443,7 @@ function () {
 
   return OutputSetting;
 }();
-SuperMap.OutputSetting = OutputSetting_OutputSetting;
+SuperMap.OutputSetting = OutputSetting;
 // CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
 function MappingParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8001,7 +7451,7 @@ function MappingParameters_defineProperties(target, props) { for (var i = 0; i <
 
 function MappingParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) MappingParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) MappingParameters_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8019,9 +7469,7 @@ function MappingParameters_createClass(Constructor, protoProps, staticProps) { i
  * @param {SuperMap.ColorGradientType} [options.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED] - 专题图颜色渐变模式。
  */
 
-var MappingParameters_MappingParameters =
-/*#__PURE__*/
-function () {
+var MappingParameters = /*#__PURE__*/function () {
   function MappingParameters(options) {
     MappingParameters_classCallCheck(this, MappingParameters);
 
@@ -8088,7 +7536,7 @@ function () {
 
   return MappingParameters;
 }();
-SuperMap.MappingParameters = MappingParameters_MappingParameters;
+SuperMap.MappingParameters = MappingParameters;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
 function KernelDensityJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8096,7 +7544,7 @@ function KernelDensityJobParameter_defineProperties(target, props) { for (var i 
 
 function KernelDensityJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8120,9 +7568,7 @@ function KernelDensityJobParameter_createClass(Constructor, protoProps, staticPr
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var KernelDensityJobParameter_KernelDensityJobParameter =
-/*#__PURE__*/
-function () {
+var KernelDensityJobParameter = /*#__PURE__*/function () {
   function KernelDensityJobParameter(options) {
     KernelDensityJobParameter_classCallCheck(this, KernelDensityJobParameter);
 
@@ -8225,12 +7671,12 @@ function () {
       this.radiusUnit = null;
       this.areaUnit = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -8277,7 +7723,7 @@ function () {
 
   return KernelDensityJobParameter;
 }();
-SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobParameter;
+SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
 function SingleObjectQueryJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8285,7 +7731,7 @@ function SingleObjectQueryJobsParameter_defineProperties(target, props) { for (v
 
 function SingleObjectQueryJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8305,9 +7751,7 @@ function SingleObjectQueryJobsParameter_createClass(Constructor, protoProps, sta
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter =
-/*#__PURE__*/
-function () {
+var SingleObjectQueryJobsParameter = /*#__PURE__*/function () {
   function SingleObjectQueryJobsParameter(options) {
     SingleObjectQueryJobsParameter_classCallCheck(this, SingleObjectQueryJobsParameter);
 
@@ -8368,12 +7812,12 @@ function () {
       this.geometryQuery = null;
       this.mode = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -8414,7 +7858,7 @@ function () {
 
   return SingleObjectQueryJobsParameter;
 }();
-SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter;
+SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
 function SummaryAttributesJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8422,7 +7866,7 @@ function SummaryAttributesJobsParameter_defineProperties(target, props) { for (v
 
 function SummaryAttributesJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8442,9 +7886,7 @@ function SummaryAttributesJobsParameter_createClass(Constructor, protoProps, sta
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var SummaryAttributesJobsParameter_SummaryAttributesJobsParameter =
-/*#__PURE__*/
-function () {
+var SummaryAttributesJobsParameter = /*#__PURE__*/function () {
   function SummaryAttributesJobsParameter(options) {
     SummaryAttributesJobsParameter_classCallCheck(this, SummaryAttributesJobsParameter);
 
@@ -8505,12 +7947,12 @@ function () {
       this.attributeField = null;
       this.statisticModes = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -8551,7 +7993,7 @@ function () {
 
   return SummaryAttributesJobsParameter;
 }();
-SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_SummaryAttributesJobsParameter;
+SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
 function SummaryMeshJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8559,7 +8001,7 @@ function SummaryMeshJobParameter_defineProperties(target, props) { for (var i = 
 
 function SummaryMeshJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8583,9 +8025,7 @@ function SummaryMeshJobParameter_createClass(Constructor, protoProps, staticProp
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var SummaryMeshJobParameter_SummaryMeshJobParameter =
-/*#__PURE__*/
-function () {
+var SummaryMeshJobParameter = /*#__PURE__*/function () {
   function SummaryMeshJobParameter(options) {
     SummaryMeshJobParameter_classCallCheck(this, SummaryMeshJobParameter);
 
@@ -8674,12 +8114,12 @@ function () {
       this.regionDataset = null;
       this.type = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -8744,7 +8184,7 @@ function () {
 
   return SummaryMeshJobParameter;
 }();
-SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParameter;
+SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
 function SummaryRegionJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8752,7 +8192,7 @@ function SummaryRegionJobParameter_defineProperties(target, props) { for (var i 
 
 function SummaryRegionJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8782,9 +8222,7 @@ function SummaryRegionJobParameter_createClass(Constructor, protoProps, staticPr
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var SummaryRegionJobParameter_SummaryRegionJobParameter =
-/*#__PURE__*/
-function () {
+var SummaryRegionJobParameter = /*#__PURE__*/function () {
   function SummaryRegionJobParameter(options) {
     SummaryRegionJobParameter_classCallCheck(this, SummaryRegionJobParameter);
 
@@ -8915,12 +8353,12 @@ function () {
       this.meshSizeUnit = null;
       this.type = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -8978,7 +8416,7 @@ function () {
 
   return SummaryRegionJobParameter;
 }();
-SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobParameter;
+SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
 function OverlayGeoJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8986,7 +8424,7 @@ function OverlayGeoJobParameter_defineProperties(target, props) { for (var i = 0
 
 function OverlayGeoJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9007,9 +8445,7 @@ function OverlayGeoJobParameter_createClass(Constructor, protoProps, staticProps
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var OverlayGeoJobParameter_OverlayGeoJobParameter =
-/*#__PURE__*/
-function () {
+var OverlayGeoJobParameter = /*#__PURE__*/function () {
   function OverlayGeoJobParameter(options) {
     OverlayGeoJobParameter_classCallCheck(this, OverlayGeoJobParameter);
 
@@ -9077,12 +8513,12 @@ function () {
       this.srcFields = null;
       this.overlayFields = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -9123,7 +8559,7 @@ function () {
 
   return OverlayGeoJobParameter;
 }();
-SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
+SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 function BuffersAnalystJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9131,7 +8567,7 @@ function BuffersAnalystJobsParameter_defineProperties(target, props) { for (var 
 
 function BuffersAnalystJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9153,9 +8589,7 @@ function BuffersAnalystJobsParameter_createClass(Constructor, protoProps, static
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  */
 
-var BuffersAnalystJobsParameter_BuffersAnalystJobsParameter =
-/*#__PURE__*/
-function () {
+var BuffersAnalystJobsParameter = /*#__PURE__*/function () {
   function BuffersAnalystJobsParameter(options) {
     BuffersAnalystJobsParameter_classCallCheck(this, BuffersAnalystJobsParameter);
 
@@ -9230,12 +8664,12 @@ function () {
       this.distanceUnit = null;
       this.dissolveField = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -9281,7 +8715,7 @@ function () {
 
   return BuffersAnalystJobsParameter;
 }();
-SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalystJobsParameter;
+SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 function TopologyValidatorJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9289,7 +8723,7 @@ function TopologyValidatorJobsParameter_defineProperties(target, props) { for (v
 
 function TopologyValidatorJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9310,9 +8744,7 @@ function TopologyValidatorJobsParameter_createClass(Constructor, protoProps, sta
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var TopologyValidatorJobsParameter_TopologyValidatorJobsParameter =
-/*#__PURE__*/
-function () {
+var TopologyValidatorJobsParameter = /*#__PURE__*/function () {
   function TopologyValidatorJobsParameter(options) {
     TopologyValidatorJobsParameter_classCallCheck(this, TopologyValidatorJobsParameter);
 
@@ -9373,12 +8805,12 @@ function () {
       this.tolerance = null;
       this.rule = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -9419,7 +8851,7 @@ function () {
 
   return TopologyValidatorJobsParameter;
 }();
-SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_TopologyValidatorJobsParameter;
+SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
 function GeoCodingParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9427,7 +8859,7 @@ function GeoCodingParameter_defineProperties(target, props) { for (var i = 0; i 
 
 function GeoCodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoCodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoCodingParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9445,9 +8877,7 @@ function GeoCodingParameter_createClass(Constructor, protoProps, staticProps) { 
  * @param {number} [options.maxReturn] - 最大返回结果数。
  */
 
-var GeoCodingParameter_GeoCodingParameter =
-/*#__PURE__*/
-function () {
+var GeoCodingParameter = /*#__PURE__*/function () {
   function GeoCodingParameter(options) {
     GeoCodingParameter_classCallCheck(this, GeoCodingParameter);
 
@@ -9513,7 +8943,7 @@ function () {
 
   return GeoCodingParameter;
 }();
-SuperMap.GeoCodingParameter = GeoCodingParameter_GeoCodingParameter;
+SuperMap.GeoCodingParameter = GeoCodingParameter;
 // CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
 function GeoDecodingParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9521,7 +8951,7 @@ function GeoDecodingParameter_defineProperties(target, props) { for (var i = 0; 
 
 function GeoDecodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoDecodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoDecodingParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9540,9 +8970,7 @@ function GeoDecodingParameter_createClass(Constructor, protoProps, staticProps) 
  * @param {number} [options.geoDecodingRadius] - 查询半径。
  */
 
-var GeoDecodingParameter_GeoDecodingParameter =
-/*#__PURE__*/
-function () {
+var GeoDecodingParameter = /*#__PURE__*/function () {
   function GeoDecodingParameter(options) {
     GeoDecodingParameter_classCallCheck(this, GeoDecodingParameter);
 
@@ -9622,17 +9050,16 @@ function () {
 
   return GeoDecodingParameter;
 }();
-SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
+SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 // CONCATENATED MODULE: ./src/classic/SuperMap.js
 var SuperMap_SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap_SuperMap.REST = SuperMap_SuperMap.REST || {};
 
-// EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
-
+// CONCATENATED MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
+var external_function_try_return_mapv_catch_e_return_namespaceObject = function(){try{return mapv}catch(e){return {}}}();
 // CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
 
-var MapCalculateUtil_getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
+var getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
   var earchRadiusInMeters = 6378137;
   var meterPerMapUnit;
 
@@ -9653,8 +9080,40 @@ var MapCalculateUtil_getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
 
   return meterPerMapUnit;
 };
+function getWrapNum(x) {
+  var includeMax = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  var includeMin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+  var range = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [-180, 180];
+  var max = range[1],
+      min = range[0],
+      d = max - min;
+
+  if (x === max && includeMax) {
+    return x;
+  }
+
+  if (x === min && includeMin) {
+    return x;
+  }
+
+  var tmp = ((x - min) % d + d) % d;
+
+  if (tmp === 0 && includeMax) {
+    return max;
+  }
+
+  return ((x - min) % d + d) % d + min;
+}
+function conversionDegree(degrees) {
+  var degree = parseInt(degrees);
+  var fraction = parseInt((degrees - degree) * 60);
+  var second = parseInt(((degrees - degree) * 60 - fraction) * 60);
+  fraction = parseInt(fraction / 10) === 0 ? "0".concat(fraction) : fraction;
+  second = parseInt(second / 10) === 0 ? "0".concat(second) : second;
+  return "".concat(degree, "\xB0").concat(fraction, "'").concat(second);
+}
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
-function MapVRenderer_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { MapVRenderer_typeof = function _typeof(obj) { return typeof obj; }; } else { MapVRenderer_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return MapVRenderer_typeof(obj); }
+function MapVRenderer_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { MapVRenderer_typeof = function _typeof(obj) { return typeof obj; }; } else { MapVRenderer_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return MapVRenderer_typeof(obj); }
 
 function MapVRenderer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9662,21 +9121,25 @@ function MapVRenderer_defineProperties(target, props) { for (var i = 0; i < prop
 
 function MapVRenderer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MapVRenderer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MapVRenderer_defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (MapVRenderer_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (MapVRenderer_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9693,18 +9156,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * @param {Object} options - 渲染的参数。
  */
 
-var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
-var MapVRenderer_MapVRenderer =
-/*#__PURE__*/
-function (_MapVBaseLayer) {
+var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer ? external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer.__proto__ : Function;
+var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
   _inherits(MapVRenderer, _MapVBaseLayer);
+
+  var _super = _createSuper(MapVRenderer);
 
   function MapVRenderer(map, layer, dataSet, options) {
     var _this;
 
     MapVRenderer_classCallCheck(this, MapVRenderer);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MapVRenderer).call(this, map, dataSet, options));
+    _this = _super.call(this, map, dataSet, options);
 
     if (!MapVBaseLayer) {
       return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
@@ -9845,7 +9308,7 @@ function (_MapVBaseLayer) {
         _data = data.get();
       }
 
-      this.dataSet = this.dataSet || new external_function_try_return_mapv_catch_e_return_["DataSet"]();
+      this.dataSet = this.dataSet || new external_function_try_return_mapv_catch_e_return_namespaceObject.DataSet();
       this.dataSet.set(_data);
       this.update({
         options: options
@@ -9995,7 +9458,7 @@ function (_MapVBaseLayer) {
       var data = self.dataSet.get(dataGetOptions);
       this.processData(data); // 一个像素是多少米
 
-      var zoomUnit = map.getResolution() * MapCalculateUtil_getMeterPerMapUnit('DEGREE'); // // 兼容unit为'm'的情况
+      var zoomUnit = map.getResolution() * getMeterPerMapUnit('DEGREE'); // // 兼容unit为'm'的情况
 
       if (self.options.unit === 'm') {
         if (self.options.size) {
@@ -10097,7 +9560,7 @@ function (_MapVBaseLayer) {
   return MapVRenderer;
 }(MapVBaseLayer);
 // CONCATENATED MODULE: ./src/classic/overlay/MapVLayer.js
-function MapVLayer_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { MapVLayer_typeof = function _typeof(obj) { return typeof obj; }; } else { MapVLayer_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return MapVLayer_typeof(obj); }
+function MapVLayer_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { MapVLayer_typeof = function _typeof(obj) { return typeof obj; }; } else { MapVLayer_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return MapVLayer_typeof(obj); }
 
 function MapVLayer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10105,21 +9568,25 @@ function MapVLayer_defineProperties(target, props) { for (var i = 0; i < props.l
 
 function MapVLayer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MapVLayer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MapVLayer_defineProperties(Constructor, staticProps); return Constructor; }
 
-function MapVLayer_possibleConstructorReturn(self, call) { if (call && (MapVLayer_typeof(call) === "object" || typeof call === "function")) { return call; } return MapVLayer_assertThisInitialized(self); }
-
-function MapVLayer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function MapVLayer_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { MapVLayer_get = Reflect.get; } else { MapVLayer_get = function _get(target, property, receiver) { var base = MapVLayer_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return MapVLayer_get(target, property, receiver || target); }
 
 function MapVLayer_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = MapVLayer_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function MapVLayer_getPrototypeOf(o) { MapVLayer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MapVLayer_getPrototypeOf(o); }
 
 function MapVLayer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) MapVLayer_setPrototypeOf(subClass, superClass); }
 
 function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapVLayer_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function MapVLayer_createSuper(Derived) { var hasNativeReflectConstruct = MapVLayer_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = MapVLayer_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = MapVLayer_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return MapVLayer_possibleConstructorReturn(this, result); }; }
+
+function MapVLayer_possibleConstructorReturn(self, call) { if (call && (MapVLayer_typeof(call) === "object" || typeof call === "function")) { return call; } return MapVLayer_assertThisInitialized(self); }
+
+function MapVLayer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function MapVLayer_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function MapVLayer_getPrototypeOf(o) { MapVLayer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MapVLayer_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10135,17 +9602,17 @@ function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setP
  * @param {Object} options.options - mapv 绘图风格配置信息。
  */
 
-var MapVLayer_MapVLayer =
-/*#__PURE__*/
-function (_SuperMap$Layer) {
+var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
   MapVLayer_inherits(MapVLayer, _SuperMap$Layer);
+
+  var _super = MapVLayer_createSuper(MapVLayer);
 
   function MapVLayer(name, options) {
     var _this;
 
     MapVLayer_classCallCheck(this, MapVLayer);
 
-    _this = MapVLayer_possibleConstructorReturn(this, MapVLayer_getPrototypeOf(MapVLayer).call(this, name, options));
+    _this = _super.call(this, name, options);
     /**
      * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
      * @description mapv dataset 对象。
@@ -10314,7 +9781,7 @@ function (_SuperMap$Layer) {
     value: function setMap(map) {
       MapVLayer_get(MapVLayer_getPrototypeOf(MapVLayer.prototype), "setMap", this).call(this, map);
 
-      this.renderer = new MapVRenderer_MapVRenderer(map, this, this.dataSet, this.options);
+      this.renderer = new MapVRenderer(map, this, this.dataSet, this.options);
 
       if (!this.supported) {
         this.map.removeLayer(this);
@@ -10393,14 +9860,14 @@ function (_SuperMap$Layer) {
 
   return MapVLayer;
 }(SuperMap_SuperMap.Layer);
-SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
+SuperMap_SuperMap.Layer.MapVLayer = MapVLayer;
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 // CONCATENATED MODULE: ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10412,7 +9879,7 @@ function Credential_defineProperties(target, props) { for (var i = 0; i < props.
 
 function Credential_createClass(Constructor, protoProps, staticProps) { if (protoProps) Credential_defineProperties(Constructor.prototype, protoProps); if (staticProps) Credential_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10430,9 +9897,7 @@ function Credential_createClass(Constructor, protoProps, staticProps) { if (prot
  * pixcel.destroy();
  */
 
-var Credential =
-/*#__PURE__*/
-function () {
+var Credential = /*#__PURE__*/function () {
   function Credential(value, name) {
     Credential_classCallCheck(this, Credential);
 
@@ -10522,7 +9987,7 @@ function Format_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Format_createClass(Constructor, protoProps, staticProps) { if (protoProps) Format_defineProperties(Constructor.prototype, protoProps); if (staticProps) Format_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10536,9 +10001,7 @@ function Format_createClass(Constructor, protoProps, staticProps) { if (protoPro
  * @param {Object} [options.data] - 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
  */
 
-var Format_Format =
-/*#__PURE__*/
-function () {
+var Format = /*#__PURE__*/function () {
   function Format(options) {
     Format_classCallCheck(this, Format);
 
@@ -10566,8 +10029,8 @@ function () {
 
   Format_createClass(Format, [{
     key: "destroy",
-    value: function destroy() {} //用来销毁该格式类，释放相关资源
-
+    value: function destroy() {//用来销毁该格式类，释放相关资源
+    }
     /**
      * @function SuperMap.Format.prototype.read
      * @description 来从字符串中读取数据。
@@ -10576,9 +10039,9 @@ function () {
 
   }, {
     key: "read",
-    value: function read(data) {} // eslint-disable-line no-unused-vars
-    //用来从字符串中读取数据
-
+    value: function read(data) {// eslint-disable-line no-unused-vars
+      //用来从字符串中读取数据
+    }
     /**
      * @function SuperMap.Format.prototype.write
      * @description 将对象写成字符串。
@@ -10595,9 +10058,9 @@ function () {
 
   return Format;
 }();
-SuperMap.Format = SuperMap.Format || Format_Format;
+SuperMap.Format = SuperMap.Format || Format;
 // CONCATENATED MODULE: ./src/common/format/JSON.js
-function JSON_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { JSON_typeof = function _typeof(obj) { return typeof obj; }; } else { JSON_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return JSON_typeof(obj); }
+function JSON_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { JSON_typeof = function _typeof(obj) { return typeof obj; }; } else { JSON_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return JSON_typeof(obj); }
 
 function JSON_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10605,17 +10068,21 @@ function JSON_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function JSON_createClass(Constructor, protoProps, staticProps) { if (protoProps) JSON_defineProperties(Constructor.prototype, protoProps); if (staticProps) JSON_defineProperties(Constructor, staticProps); return Constructor; }
 
-function JSON_possibleConstructorReturn(self, call) { if (call && (JSON_typeof(call) === "object" || typeof call === "function")) { return call; } return JSON_assertThisInitialized(self); }
-
-function JSON_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function JSON_getPrototypeOf(o) { JSON_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return JSON_getPrototypeOf(o); }
-
 function JSON_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) JSON_setPrototypeOf(subClass, superClass); }
 
 function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return JSON_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function JSON_createSuper(Derived) { var hasNativeReflectConstruct = JSON_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = JSON_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = JSON_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return JSON_possibleConstructorReturn(this, result); }; }
+
+function JSON_possibleConstructorReturn(self, call) { if (call && (JSON_typeof(call) === "object" || typeof call === "function")) { return call; } return JSON_assertThisInitialized(self); }
+
+function JSON_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function JSON_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function JSON_getPrototypeOf(o) { JSON_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return JSON_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10634,17 +10101,17 @@ function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf
  * @extends {SuperMap.Format}
  */
 
-var JSONFormat =
-/*#__PURE__*/
-function (_Format) {
+var JSONFormat = /*#__PURE__*/function (_Format) {
   JSON_inherits(JSONFormat, _Format);
+
+  var _super = JSON_createSuper(JSONFormat);
 
   function JSONFormat(options) {
     var _this;
 
     JSON_classCallCheck(this, JSONFormat);
 
-    _this = JSON_possibleConstructorReturn(this, JSON_getPrototypeOf(JSONFormat).call(this, options));
+    _this = _super.call(this, options);
     /**
      * @member {string} [SuperMap.Format.JSON.prototype.indent="    "]
      * @description 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
@@ -10942,7 +10409,7 @@ function (_Format) {
   }]);
 
   return JSONFormat;
-}(Format_Format);
+}(Format);
 SuperMap.Format.JSON = JSONFormat;
 // CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
 function CommonServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10951,7 +10418,7 @@ function CommonServiceBase_defineProperties(target, props) { for (var i = 0; i <
 
 function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) CommonServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) CommonServiceBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10977,9 +10444,7 @@ function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { i
  * @param {Object} [options.headers] - 请求头。
  */
 
-var CommonServiceBase_CommonServiceBase =
-/*#__PURE__*/
-function () {
+var CommonServiceBase = /*#__PURE__*/function () {
   function CommonServiceBase(url, options) {
     CommonServiceBase_classCallCheck(this, CommonServiceBase);
 
@@ -11028,7 +10493,7 @@ function () {
     this.headers = options.headers;
     Util.extend(this, options);
     me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
-    me.events = new Events_Events(me, null, me.EVENT_TYPES, true);
+    me.events = new Events(me, null, me.EVENT_TYPES, true);
 
     if (me.eventListeners instanceof Object) {
       me.events.on(me.eventListeners);
@@ -11130,24 +10595,24 @@ function () {
 
       switch (this.serverType) {
         case ServerType.IPORTAL:
-          value = SecurityManager_SecurityManager.getToken(keyUrl);
+          value = SecurityManager.getToken(keyUrl);
           credential = value ? new Credential(value, "token") : null;
 
           if (!credential) {
-            value = SecurityManager_SecurityManager.getKey(keyUrl);
+            value = SecurityManager.getKey(keyUrl);
             credential = value ? new Credential(value, "key") : null;
           }
 
           break;
 
         case ServerType.ONLINE:
-          value = SecurityManager_SecurityManager.getKey(keyUrl);
+          value = SecurityManager.getKey(keyUrl);
           credential = value ? new Credential(value, "key") : null;
           break;
 
         default:
           //iServer or others
-          value = SecurityManager_SecurityManager.getToken(keyUrl);
+          value = SecurityManager.getToken(keyUrl);
           credential = value ? new Credential(value, "token") : null;
           break;
       }
@@ -11338,7 +10803,7 @@ function () {
 
   return CommonServiceBase;
 }();
-SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
+SuperMap.CommonServiceBase = CommonServiceBase;
 /**
  * 服务器请求回调函数
  * @callback RequestCallback
@@ -11354,7 +10819,7 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
  */
 // CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
-function AddressMatchService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { AddressMatchService_typeof = function _typeof(obj) { return typeof obj; }; } else { AddressMatchService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return AddressMatchService_typeof(obj); }
+function AddressMatchService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { AddressMatchService_typeof = function _typeof(obj) { return typeof obj; }; } else { AddressMatchService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return AddressMatchService_typeof(obj); }
 
 function AddressMatchService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11362,21 +10827,25 @@ function AddressMatchService_defineProperties(target, props) { for (var i = 0; i
 
 function AddressMatchService_createClass(Constructor, protoProps, staticProps) { if (protoProps) AddressMatchService_defineProperties(Constructor.prototype, protoProps); if (staticProps) AddressMatchService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function AddressMatchService_possibleConstructorReturn(self, call) { if (call && (AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } return AddressMatchService_assertThisInitialized(self); }
-
-function AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function AddressMatchService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { AddressMatchService_get = Reflect.get; } else { AddressMatchService_get = function _get(target, property, receiver) { var base = AddressMatchService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return AddressMatchService_get(target, property, receiver || target); }
 
 function AddressMatchService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = AddressMatchService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function AddressMatchService_getPrototypeOf(o) { AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return AddressMatchService_getPrototypeOf(o); }
 
 function AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) AddressMatchService_setPrototypeOf(subClass, superClass); }
 
 function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AddressMatchService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function AddressMatchService_createSuper(Derived) { var hasNativeReflectConstruct = AddressMatchService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = AddressMatchService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = AddressMatchService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return AddressMatchService_possibleConstructorReturn(this, result); }; }
+
+function AddressMatchService_possibleConstructorReturn(self, call) { if (call && (AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } return AddressMatchService_assertThisInitialized(self); }
+
+function AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function AddressMatchService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function AddressMatchService_getPrototypeOf(o) { AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return AddressMatchService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11393,17 +10862,17 @@ function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setProto
  * @param {Object} [options.headers] - 请求头。
  */
 
-var AddressMatchService_AddressMatchService =
-/*#__PURE__*/
-function (_CommonServiceBase) {
+var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
   AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
+
+  var _super = AddressMatchService_createSuper(AddressMatchService);
 
   function AddressMatchService(url, options) {
     var _this;
 
     AddressMatchService_classCallCheck(this, AddressMatchService);
 
-    _this = AddressMatchService_possibleConstructorReturn(this, AddressMatchService_getPrototypeOf(AddressMatchService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.options = options || {};
     _this.CLASS_NAME = 'SuperMap.AddressMatchService';
     return _this;
@@ -11428,7 +10897,7 @@ function (_CommonServiceBase) {
   }, {
     key: "code",
     value: function code(url, params) {
-      if (!(params instanceof GeoCodingParameter_GeoCodingParameter)) {
+      if (!(params instanceof GeoCodingParameter)) {
         return;
       }
 
@@ -11443,7 +10912,7 @@ function (_CommonServiceBase) {
   }, {
     key: "decode",
     value: function decode(url, params) {
-      if (!(params instanceof GeoDecodingParameter_GeoDecodingParameter)) {
+      if (!(params instanceof GeoDecodingParameter)) {
         return;
       }
 
@@ -11497,10 +10966,10 @@ function (_CommonServiceBase) {
   }]);
 
   return AddressMatchService;
-}(CommonServiceBase_CommonServiceBase);
+}(CommonServiceBase);
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
 // CONCATENATED MODULE: ./src/classic/services/AddressMatchService.js
-function services_AddressMatchService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { services_AddressMatchService_typeof = function _typeof(obj) { return typeof obj; }; } else { services_AddressMatchService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return services_AddressMatchService_typeof(obj); }
+function services_AddressMatchService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { services_AddressMatchService_typeof = function _typeof(obj) { return typeof obj; }; } else { services_AddressMatchService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return services_AddressMatchService_typeof(obj); }
 
 function services_AddressMatchService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11508,17 +10977,21 @@ function services_AddressMatchService_defineProperties(target, props) { for (var
 
 function services_AddressMatchService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_AddressMatchService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_AddressMatchService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function services_AddressMatchService_possibleConstructorReturn(self, call) { if (call && (services_AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } return services_AddressMatchService_assertThisInitialized(self); }
-
-function services_AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function services_AddressMatchService_getPrototypeOf(o) { services_AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_AddressMatchService_getPrototypeOf(o); }
-
 function services_AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) services_AddressMatchService_setPrototypeOf(subClass, superClass); }
 
 function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_AddressMatchService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function services_AddressMatchService_createSuper(Derived) { var hasNativeReflectConstruct = services_AddressMatchService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = services_AddressMatchService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = services_AddressMatchService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return services_AddressMatchService_possibleConstructorReturn(this, result); }; }
+
+function services_AddressMatchService_possibleConstructorReturn(self, call) { if (call && (services_AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } return services_AddressMatchService_assertThisInitialized(self); }
+
+function services_AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function services_AddressMatchService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function services_AddressMatchService_getPrototypeOf(o) { services_AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_AddressMatchService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11535,17 +11008,17 @@ function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMat
  * @param {Object} [options.headers] - 请求头。
  */
 
-var services_AddressMatchService_AddressMatchService =
-/*#__PURE__*/
-function (_CommonServiceBase) {
+var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
   services_AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
+
+  var _super = services_AddressMatchService_createSuper(AddressMatchService);
 
   function AddressMatchService(url, options) {
     var _this;
 
     services_AddressMatchService_classCallCheck(this, AddressMatchService);
 
-    _this = services_AddressMatchService_possibleConstructorReturn(this, services_AddressMatchService_getPrototypeOf(AddressMatchService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.CLASS_NAME = "SuperMap.REST.AddressMatchService";
     return _this;
   }
@@ -11603,10 +11076,10 @@ function (_CommonServiceBase) {
   }]);
 
   return AddressMatchService;
-}(CommonServiceBase_CommonServiceBase);
-SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_AddressMatchService;
+}(CommonServiceBase);
+SuperMap_SuperMap.REST.AddressMatchService = AddressMatchService;
 // CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
-function ProcessingServiceBase_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ProcessingServiceBase_typeof = function _typeof(obj) { return typeof obj; }; } else { ProcessingServiceBase_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ProcessingServiceBase_typeof(obj); }
+function ProcessingServiceBase_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ProcessingServiceBase_typeof = function _typeof(obj) { return typeof obj; }; } else { ProcessingServiceBase_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ProcessingServiceBase_typeof(obj); }
 
 function ProcessingServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11614,21 +11087,25 @@ function ProcessingServiceBase_defineProperties(target, props) { for (var i = 0;
 
 function ProcessingServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingServiceBase_defineProperties(Constructor, staticProps); return Constructor; }
 
-function ProcessingServiceBase_possibleConstructorReturn(self, call) { if (call && (ProcessingServiceBase_typeof(call) === "object" || typeof call === "function")) { return call; } return ProcessingServiceBase_assertThisInitialized(self); }
-
-function ProcessingServiceBase_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function ProcessingServiceBase_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { ProcessingServiceBase_get = Reflect.get; } else { ProcessingServiceBase_get = function _get(target, property, receiver) { var base = ProcessingServiceBase_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return ProcessingServiceBase_get(target, property, receiver || target); }
 
 function ProcessingServiceBase_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = ProcessingServiceBase_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingServiceBase_getPrototypeOf(o); }
 
 function ProcessingServiceBase_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ProcessingServiceBase_setPrototypeOf(subClass, superClass); }
 
 function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingServiceBase_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function ProcessingServiceBase_createSuper(Derived) { var hasNativeReflectConstruct = ProcessingServiceBase_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = ProcessingServiceBase_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = ProcessingServiceBase_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return ProcessingServiceBase_possibleConstructorReturn(this, result); }; }
+
+function ProcessingServiceBase_possibleConstructorReturn(self, call) { if (call && (ProcessingServiceBase_typeof(call) === "object" || typeof call === "function")) { return call; } return ProcessingServiceBase_assertThisInitialized(self); }
+
+function ProcessingServiceBase_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ProcessingServiceBase_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingServiceBase_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11652,10 +11129,10 @@ function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setP
  * @param {Object} [options.headers] - 请求头。
  */
 
-var ProcessingServiceBase_ProcessingServiceBase =
-/*#__PURE__*/
-function (_CommonServiceBase) {
+var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
   ProcessingServiceBase_inherits(ProcessingServiceBase, _CommonServiceBase);
+
+  var _super = ProcessingServiceBase_createSuper(ProcessingServiceBase);
 
   function ProcessingServiceBase(url, options) {
     var _this;
@@ -11673,7 +11150,7 @@ function (_CommonServiceBase) {
      */
 
     options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
-    _this = ProcessingServiceBase_possibleConstructorReturn(this, ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
     return _this;
   }
@@ -11806,8 +11283,8 @@ function (_CommonServiceBase) {
   }, {
     key: "_processUrl",
     value: function _processUrl(url) {
-      if (SecurityManager_SecurityManager.getToken(url)) {
-        url = Util.urlAppend(url, 'token=' + SecurityManager_SecurityManager.getToken(url));
+      if (SecurityManager.getToken(url)) {
+        url = Util.urlAppend(url, 'token=' + SecurityManager.getToken(url));
       }
 
       return url;
@@ -11815,10 +11292,10 @@ function (_CommonServiceBase) {
   }]);
 
   return ProcessingServiceBase;
-}(CommonServiceBase_CommonServiceBase);
-SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
+}(CommonServiceBase);
+SuperMap.ProcessingServiceBase = ProcessingServiceBase;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
-function KernelDensityJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { KernelDensityJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { KernelDensityJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return KernelDensityJobsService_typeof(obj); }
+function KernelDensityJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { KernelDensityJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { KernelDensityJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return KernelDensityJobsService_typeof(obj); }
 
 function KernelDensityJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11826,21 +11303,25 @@ function KernelDensityJobsService_defineProperties(target, props) { for (var i =
 
 function KernelDensityJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function KernelDensityJobsService_possibleConstructorReturn(self, call) { if (call && (KernelDensityJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return KernelDensityJobsService_assertThisInitialized(self); }
-
-function KernelDensityJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function KernelDensityJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { KernelDensityJobsService_get = Reflect.get; } else { KernelDensityJobsService_get = function _get(target, property, receiver) { var base = KernelDensityJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return KernelDensityJobsService_get(target, property, receiver || target); }
 
 function KernelDensityJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = KernelDensityJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function KernelDensityJobsService_getPrototypeOf(o) { KernelDensityJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return KernelDensityJobsService_getPrototypeOf(o); }
 
 function KernelDensityJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) KernelDensityJobsService_setPrototypeOf(subClass, superClass); }
 
 function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return KernelDensityJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function KernelDensityJobsService_createSuper(Derived) { var hasNativeReflectConstruct = KernelDensityJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = KernelDensityJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = KernelDensityJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return KernelDensityJobsService_possibleConstructorReturn(this, result); }; }
+
+function KernelDensityJobsService_possibleConstructorReturn(self, call) { if (call && (KernelDensityJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return KernelDensityJobsService_assertThisInitialized(self); }
+
+function KernelDensityJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function KernelDensityJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function KernelDensityJobsService_getPrototypeOf(o) { KernelDensityJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return KernelDensityJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11858,17 +11339,17 @@ function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsServic
  * @param {Object} [options.headers] - 请求头。
  */
 
-var KernelDensityJobsService_KernelDensityJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   KernelDensityJobsService_inherits(KernelDensityJobsService, _ProcessingServiceBas);
+
+  var _super = KernelDensityJobsService_createSuper(KernelDensityJobsService);
 
   function KernelDensityJobsService(url, options) {
     var _this;
 
     KernelDensityJobsService_classCallCheck(this, KernelDensityJobsService);
 
-    _this = KernelDensityJobsService_possibleConstructorReturn(this, KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/density');
     _this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
     return _this;
@@ -11915,15 +11396,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addKernelDensityJob",
     value: function addKernelDensityJob(params, seconds) {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "addJob", this).call(this, this.url, params, KernelDensityJobParameter_KernelDensityJobParameter, seconds);
+      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "addJob", this).call(this, this.url, params, KernelDensityJobParameter, seconds);
     }
   }]);
 
   return KernelDensityJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsService;
+}(ProcessingServiceBase);
+SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
-function SingleObjectQueryJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SingleObjectQueryJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SingleObjectQueryJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SingleObjectQueryJobsService_typeof(obj); }
+function SingleObjectQueryJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SingleObjectQueryJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SingleObjectQueryJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SingleObjectQueryJobsService_typeof(obj); }
 
 function SingleObjectQueryJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11931,21 +11412,25 @@ function SingleObjectQueryJobsService_defineProperties(target, props) { for (var
 
 function SingleObjectQueryJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function SingleObjectQueryJobsService_possibleConstructorReturn(self, call) { if (call && (SingleObjectQueryJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SingleObjectQueryJobsService_assertThisInitialized(self); }
-
-function SingleObjectQueryJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function SingleObjectQueryJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { SingleObjectQueryJobsService_get = Reflect.get; } else { SingleObjectQueryJobsService_get = function _get(target, property, receiver) { var base = SingleObjectQueryJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return SingleObjectQueryJobsService_get(target, property, receiver || target); }
 
 function SingleObjectQueryJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SingleObjectQueryJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function SingleObjectQueryJobsService_getPrototypeOf(o) { SingleObjectQueryJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SingleObjectQueryJobsService_getPrototypeOf(o); }
 
 function SingleObjectQueryJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) SingleObjectQueryJobsService_setPrototypeOf(subClass, superClass); }
 
 function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SingleObjectQueryJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function SingleObjectQueryJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SingleObjectQueryJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SingleObjectQueryJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SingleObjectQueryJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SingleObjectQueryJobsService_possibleConstructorReturn(this, result); }; }
+
+function SingleObjectQueryJobsService_possibleConstructorReturn(self, call) { if (call && (SingleObjectQueryJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SingleObjectQueryJobsService_assertThisInitialized(self); }
+
+function SingleObjectQueryJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function SingleObjectQueryJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function SingleObjectQueryJobsService_getPrototypeOf(o) { SingleObjectQueryJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SingleObjectQueryJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11963,17 +11448,17 @@ function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJo
  * @param {Object} [options.headers] - 请求头。
  */
 
-var SingleObjectQueryJobsService_SingleObjectQueryJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   SingleObjectQueryJobsService_inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
+
+  var _super = SingleObjectQueryJobsService_createSuper(SingleObjectQueryJobsService);
 
   function SingleObjectQueryJobsService(url, options) {
     var _this;
 
     SingleObjectQueryJobsService_classCallCheck(this, SingleObjectQueryJobsService);
 
-    _this = SingleObjectQueryJobsService_possibleConstructorReturn(this, SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/query');
     _this.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
     return _this;
@@ -12019,15 +11504,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addQueryJob",
     value: function addQueryJob(params, seconds) {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "addJob", this).call(this, this.url, params, SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter, seconds);
+      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "addJob", this).call(this, this.url, params, SingleObjectQueryJobsParameter, seconds);
     }
   }]);
 
   return SingleObjectQueryJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjectQueryJobsService;
+}(ProcessingServiceBase);
+SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
-function SummaryMeshJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SummaryMeshJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SummaryMeshJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SummaryMeshJobsService_typeof(obj); }
+function SummaryMeshJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SummaryMeshJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SummaryMeshJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SummaryMeshJobsService_typeof(obj); }
 
 function SummaryMeshJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12035,21 +11520,25 @@ function SummaryMeshJobsService_defineProperties(target, props) { for (var i = 0
 
 function SummaryMeshJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function SummaryMeshJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryMeshJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SummaryMeshJobsService_assertThisInitialized(self); }
-
-function SummaryMeshJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function SummaryMeshJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryMeshJobsService_get = Reflect.get; } else { SummaryMeshJobsService_get = function _get(target, property, receiver) { var base = SummaryMeshJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return SummaryMeshJobsService_get(target, property, receiver || target); }
 
 function SummaryMeshJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryMeshJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryMeshJobsService_getPrototypeOf(o); }
 
 function SummaryMeshJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) SummaryMeshJobsService_setPrototypeOf(subClass, superClass); }
 
 function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryMeshJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function SummaryMeshJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryMeshJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryMeshJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryMeshJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryMeshJobsService_possibleConstructorReturn(this, result); }; }
+
+function SummaryMeshJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryMeshJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SummaryMeshJobsService_assertThisInitialized(self); }
+
+function SummaryMeshJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function SummaryMeshJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryMeshJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12071,17 +11560,17 @@ function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_se
  * @param {Object} [options.headers] - 请求头。
  */
 
-var SummaryMeshJobsService_SummaryMeshJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   SummaryMeshJobsService_inherits(SummaryMeshJobsService, _ProcessingServiceBas);
+
+  var _super = SummaryMeshJobsService_createSuper(SummaryMeshJobsService);
 
   function SummaryMeshJobsService(url, options) {
     var _this;
 
     SummaryMeshJobsService_classCallCheck(this, SummaryMeshJobsService);
 
-    _this = SummaryMeshJobsService_possibleConstructorReturn(this, SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/aggregatepoints');
     _this.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
     return _this;
@@ -12127,15 +11616,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addSummaryMeshJob",
     value: function addSummaryMeshJob(params, seconds) {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryMeshJobParameter_SummaryMeshJobParameter, seconds);
+      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryMeshJobParameter, seconds);
     }
   }]);
 
   return SummaryMeshJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
+}(ProcessingServiceBase);
+SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
-function SummaryRegionJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SummaryRegionJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SummaryRegionJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SummaryRegionJobsService_typeof(obj); }
+function SummaryRegionJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SummaryRegionJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SummaryRegionJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SummaryRegionJobsService_typeof(obj); }
 
 function SummaryRegionJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12143,21 +11632,25 @@ function SummaryRegionJobsService_defineProperties(target, props) { for (var i =
 
 function SummaryRegionJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function SummaryRegionJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryRegionJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SummaryRegionJobsService_assertThisInitialized(self); }
-
-function SummaryRegionJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function SummaryRegionJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryRegionJobsService_get = Reflect.get; } else { SummaryRegionJobsService_get = function _get(target, property, receiver) { var base = SummaryRegionJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return SummaryRegionJobsService_get(target, property, receiver || target); }
 
 function SummaryRegionJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryRegionJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryRegionJobsService_getPrototypeOf(o); }
 
 function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) SummaryRegionJobsService_setPrototypeOf(subClass, superClass); }
 
 function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function SummaryRegionJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryRegionJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryRegionJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryRegionJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryRegionJobsService_possibleConstructorReturn(this, result); }; }
+
+function SummaryRegionJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryRegionJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SummaryRegionJobsService_assertThisInitialized(self); }
+
+function SummaryRegionJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function SummaryRegionJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryRegionJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12175,17 +11668,17 @@ function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsServic
  * @param {Object} [options.headers] - 请求头。
  */
 
-var SummaryRegionJobsService_SummaryRegionJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
+
+  var _super = SummaryRegionJobsService_createSuper(SummaryRegionJobsService);
 
   function SummaryRegionJobsService(url, options) {
     var _this;
 
     SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
 
-    _this = SummaryRegionJobsService_possibleConstructorReturn(this, SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/summaryregion');
     _this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
     return _this;
@@ -12231,13 +11724,13 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addSummaryRegionJob",
     value: function addSummaryRegionJob(params, seconds) {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryRegionJobParameter_SummaryRegionJobParameter, seconds);
+      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryRegionJobParameter, seconds);
     }
   }]);
 
   return SummaryRegionJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsService;
+}(ProcessingServiceBase);
+SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
 function VectorClipJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12245,7 +11738,7 @@ function VectorClipJobsParameter_defineProperties(target, props) { for (var i = 
 
 function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsParameter_defineProperties(Constructor, staticProps); return Constructor; }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12265,9 +11758,7 @@ function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProp
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 
-var VectorClipJobsParameter_VectorClipJobsParameter =
-/*#__PURE__*/
-function () {
+var VectorClipJobsParameter = /*#__PURE__*/function () {
   function VectorClipJobsParameter(options) {
     VectorClipJobsParameter_classCallCheck(this, VectorClipJobsParameter);
 
@@ -12325,12 +11816,12 @@ function () {
       this.geometryClip = null;
       this.mode = null;
 
-      if (this.output instanceof OutputSetting_OutputSetting) {
+      if (this.output instanceof OutputSetting) {
         this.output.destroy();
         this.output = null;
       }
 
-      if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+      if (this.mappingParameters instanceof MappingParameters) {
         this.mappingParameters.destroy();
         this.mappingParameters = null;
       }
@@ -12371,9 +11862,9 @@ function () {
 
   return VectorClipJobsParameter;
 }();
-SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParameter;
+SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 // CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
-function VectorClipJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VectorClipJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { VectorClipJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VectorClipJobsService_typeof(obj); }
+function VectorClipJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VectorClipJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { VectorClipJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VectorClipJobsService_typeof(obj); }
 
 function VectorClipJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12381,21 +11872,25 @@ function VectorClipJobsService_defineProperties(target, props) { for (var i = 0;
 
 function VectorClipJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function VectorClipJobsService_possibleConstructorReturn(self, call) { if (call && (VectorClipJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return VectorClipJobsService_assertThisInitialized(self); }
-
-function VectorClipJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function VectorClipJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { VectorClipJobsService_get = Reflect.get; } else { VectorClipJobsService_get = function _get(target, property, receiver) { var base = VectorClipJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return VectorClipJobsService_get(target, property, receiver || target); }
 
 function VectorClipJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = VectorClipJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function VectorClipJobsService_getPrototypeOf(o) { VectorClipJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VectorClipJobsService_getPrototypeOf(o); }
 
 function VectorClipJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) VectorClipJobsService_setPrototypeOf(subClass, superClass); }
 
 function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VectorClipJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function VectorClipJobsService_createSuper(Derived) { var hasNativeReflectConstruct = VectorClipJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = VectorClipJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = VectorClipJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return VectorClipJobsService_possibleConstructorReturn(this, result); }; }
+
+function VectorClipJobsService_possibleConstructorReturn(self, call) { if (call && (VectorClipJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return VectorClipJobsService_assertThisInitialized(self); }
+
+function VectorClipJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function VectorClipJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function VectorClipJobsService_getPrototypeOf(o) { VectorClipJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VectorClipJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12413,17 +11908,17 @@ function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setP
  * @param {Object} [options.headers] - 请求头。
  */
 
-var VectorClipJobsService_VectorClipJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   VectorClipJobsService_inherits(VectorClipJobsService, _ProcessingServiceBas);
+
+  var _super = VectorClipJobsService_createSuper(VectorClipJobsService);
 
   function VectorClipJobsService(url, options) {
     var _this;
 
     VectorClipJobsService_classCallCheck(this, VectorClipJobsService);
 
-    _this = VectorClipJobsService_possibleConstructorReturn(this, VectorClipJobsService_getPrototypeOf(VectorClipJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/vectorclip');
     _this.CLASS_NAME = 'SuperMap.VectorClipJobsService';
     return _this;
@@ -12469,15 +11964,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addVectorClipJob",
     value: function addVectorClipJob(params, seconds) {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "addJob", this).call(this, this.url, params, VectorClipJobsParameter_VectorClipJobsParameter, seconds);
+      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "addJob", this).call(this, this.url, params, VectorClipJobsParameter, seconds);
     }
   }]);
 
   return VectorClipJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
+}(ProcessingServiceBase);
+SuperMap.VectorClipJobsService = VectorClipJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
-function OverlayGeoJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { OverlayGeoJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { OverlayGeoJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return OverlayGeoJobsService_typeof(obj); }
+function OverlayGeoJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { OverlayGeoJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { OverlayGeoJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return OverlayGeoJobsService_typeof(obj); }
 
 function OverlayGeoJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12485,21 +11980,25 @@ function OverlayGeoJobsService_defineProperties(target, props) { for (var i = 0;
 
 function OverlayGeoJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function OverlayGeoJobsService_possibleConstructorReturn(self, call) { if (call && (OverlayGeoJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return OverlayGeoJobsService_assertThisInitialized(self); }
-
-function OverlayGeoJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function OverlayGeoJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { OverlayGeoJobsService_get = Reflect.get; } else { OverlayGeoJobsService_get = function _get(target, property, receiver) { var base = OverlayGeoJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return OverlayGeoJobsService_get(target, property, receiver || target); }
 
 function OverlayGeoJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = OverlayGeoJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return OverlayGeoJobsService_getPrototypeOf(o); }
 
 function OverlayGeoJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) OverlayGeoJobsService_setPrototypeOf(subClass, superClass); }
 
 function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OverlayGeoJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function OverlayGeoJobsService_createSuper(Derived) { var hasNativeReflectConstruct = OverlayGeoJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = OverlayGeoJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = OverlayGeoJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return OverlayGeoJobsService_possibleConstructorReturn(this, result); }; }
+
+function OverlayGeoJobsService_possibleConstructorReturn(self, call) { if (call && (OverlayGeoJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return OverlayGeoJobsService_assertThisInitialized(self); }
+
+function OverlayGeoJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function OverlayGeoJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return OverlayGeoJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12521,17 +12020,17 @@ function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setP
  * @param {Object} [options.headers] - 请求头。
  */
 
-var OverlayGeoJobsService_OverlayGeoJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   OverlayGeoJobsService_inherits(OverlayGeoJobsService, _ProcessingServiceBas);
+
+  var _super = OverlayGeoJobsService_createSuper(OverlayGeoJobsService);
 
   function OverlayGeoJobsService(url, options) {
     var _this;
 
     OverlayGeoJobsService_classCallCheck(this, OverlayGeoJobsService);
 
-    _this = OverlayGeoJobsService_possibleConstructorReturn(this, OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/overlay');
     _this.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
     return _this;
@@ -12577,15 +12076,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addOverlayGeoJob",
     value: function addOverlayGeoJob(params, seconds) {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "addJob", this).call(this, this.url, params, OverlayGeoJobParameter_OverlayGeoJobParameter, seconds);
+      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "addJob", this).call(this, this.url, params, OverlayGeoJobParameter, seconds);
     }
   }]);
 
   return OverlayGeoJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
+}(ProcessingServiceBase);
+SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
-function BuffersAnalystJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { BuffersAnalystJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { BuffersAnalystJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return BuffersAnalystJobsService_typeof(obj); }
+function BuffersAnalystJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { BuffersAnalystJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { BuffersAnalystJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return BuffersAnalystJobsService_typeof(obj); }
 
 function BuffersAnalystJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12593,21 +12092,25 @@ function BuffersAnalystJobsService_defineProperties(target, props) { for (var i 
 
 function BuffersAnalystJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function BuffersAnalystJobsService_possibleConstructorReturn(self, call) { if (call && (BuffersAnalystJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return BuffersAnalystJobsService_assertThisInitialized(self); }
-
-function BuffersAnalystJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function BuffersAnalystJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { BuffersAnalystJobsService_get = Reflect.get; } else { BuffersAnalystJobsService_get = function _get(target, property, receiver) { var base = BuffersAnalystJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return BuffersAnalystJobsService_get(target, property, receiver || target); }
 
 function BuffersAnalystJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = BuffersAnalystJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function BuffersAnalystJobsService_getPrototypeOf(o) { BuffersAnalystJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return BuffersAnalystJobsService_getPrototypeOf(o); }
 
 function BuffersAnalystJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) BuffersAnalystJobsService_setPrototypeOf(subClass, superClass); }
 
 function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BuffersAnalystJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function BuffersAnalystJobsService_createSuper(Derived) { var hasNativeReflectConstruct = BuffersAnalystJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = BuffersAnalystJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = BuffersAnalystJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return BuffersAnalystJobsService_possibleConstructorReturn(this, result); }; }
+
+function BuffersAnalystJobsService_possibleConstructorReturn(self, call) { if (call && (BuffersAnalystJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return BuffersAnalystJobsService_assertThisInitialized(self); }
+
+function BuffersAnalystJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function BuffersAnalystJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function BuffersAnalystJobsService_getPrototypeOf(o) { BuffersAnalystJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return BuffersAnalystJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12625,17 +12128,17 @@ function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsServ
  * @param {Object} [options.headers] - 请求头。
  */
 
-var BuffersAnalystJobsService_BuffersAnalystJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   BuffersAnalystJobsService_inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
+
+  var _super = BuffersAnalystJobsService_createSuper(BuffersAnalystJobsService);
 
   function BuffersAnalystJobsService(url, options) {
     var _this;
 
     BuffersAnalystJobsService_classCallCheck(this, BuffersAnalystJobsService);
 
-    _this = BuffersAnalystJobsService_possibleConstructorReturn(this, BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/buffers');
     _this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
     return _this;
@@ -12681,15 +12184,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addBuffersJob",
     value: function addBuffersJob(params, seconds) {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "addJob", this).call(this, this.url, params, BuffersAnalystJobsParameter_BuffersAnalystJobsParameter, seconds);
+      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "addJob", this).call(this, this.url, params, BuffersAnalystJobsParameter, seconds);
     }
   }]);
 
   return BuffersAnalystJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJobsService;
+}(ProcessingServiceBase);
+SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
-function TopologyValidatorJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TopologyValidatorJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { TopologyValidatorJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TopologyValidatorJobsService_typeof(obj); }
+function TopologyValidatorJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TopologyValidatorJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { TopologyValidatorJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TopologyValidatorJobsService_typeof(obj); }
 
 function TopologyValidatorJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12697,21 +12200,25 @@ function TopologyValidatorJobsService_defineProperties(target, props) { for (var
 
 function TopologyValidatorJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function TopologyValidatorJobsService_possibleConstructorReturn(self, call) { if (call && (TopologyValidatorJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return TopologyValidatorJobsService_assertThisInitialized(self); }
-
-function TopologyValidatorJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function TopologyValidatorJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { TopologyValidatorJobsService_get = Reflect.get; } else { TopologyValidatorJobsService_get = function _get(target, property, receiver) { var base = TopologyValidatorJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return TopologyValidatorJobsService_get(target, property, receiver || target); }
 
 function TopologyValidatorJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = TopologyValidatorJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function TopologyValidatorJobsService_getPrototypeOf(o) { TopologyValidatorJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TopologyValidatorJobsService_getPrototypeOf(o); }
 
 function TopologyValidatorJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TopologyValidatorJobsService_setPrototypeOf(subClass, superClass); }
 
 function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TopologyValidatorJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function TopologyValidatorJobsService_createSuper(Derived) { var hasNativeReflectConstruct = TopologyValidatorJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = TopologyValidatorJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = TopologyValidatorJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return TopologyValidatorJobsService_possibleConstructorReturn(this, result); }; }
+
+function TopologyValidatorJobsService_possibleConstructorReturn(self, call) { if (call && (TopologyValidatorJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return TopologyValidatorJobsService_assertThisInitialized(self); }
+
+function TopologyValidatorJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TopologyValidatorJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function TopologyValidatorJobsService_getPrototypeOf(o) { TopologyValidatorJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TopologyValidatorJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12729,17 +12236,17 @@ function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJo
  * @param {Object} [options.headers] - 请求头。
  */
 
-var TopologyValidatorJobsService_TopologyValidatorJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   TopologyValidatorJobsService_inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
+
+  var _super = TopologyValidatorJobsService_createSuper(TopologyValidatorJobsService);
 
   function TopologyValidatorJobsService(url, options) {
     var _this;
 
     TopologyValidatorJobsService_classCallCheck(this, TopologyValidatorJobsService);
 
-    _this = TopologyValidatorJobsService_possibleConstructorReturn(this, TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/topologyvalidator');
     _this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
     return _this;
@@ -12785,15 +12292,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addTopologyValidatorJob",
     value: function addTopologyValidatorJob(params, seconds) {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "addJob", this).call(this, this.url, params, TopologyValidatorJobsParameter_TopologyValidatorJobsParameter, seconds);
+      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "addJob", this).call(this, this.url, params, TopologyValidatorJobsParameter, seconds);
     }
   }]);
 
   return TopologyValidatorJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyValidatorJobsService;
+}(ProcessingServiceBase);
+SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
-function SummaryAttributesJobsService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SummaryAttributesJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SummaryAttributesJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SummaryAttributesJobsService_typeof(obj); }
+function SummaryAttributesJobsService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SummaryAttributesJobsService_typeof = function _typeof(obj) { return typeof obj; }; } else { SummaryAttributesJobsService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SummaryAttributesJobsService_typeof(obj); }
 
 function SummaryAttributesJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12801,21 +12308,25 @@ function SummaryAttributesJobsService_defineProperties(target, props) { for (var
 
 function SummaryAttributesJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function SummaryAttributesJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryAttributesJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SummaryAttributesJobsService_assertThisInitialized(self); }
-
-function SummaryAttributesJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function SummaryAttributesJobsService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryAttributesJobsService_get = Reflect.get; } else { SummaryAttributesJobsService_get = function _get(target, property, receiver) { var base = SummaryAttributesJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return SummaryAttributesJobsService_get(target, property, receiver || target); }
 
 function SummaryAttributesJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryAttributesJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-
-function SummaryAttributesJobsService_getPrototypeOf(o) { SummaryAttributesJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryAttributesJobsService_getPrototypeOf(o); }
 
 function SummaryAttributesJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) SummaryAttributesJobsService_setPrototypeOf(subClass, superClass); }
 
 function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryAttributesJobsService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function SummaryAttributesJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryAttributesJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryAttributesJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryAttributesJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryAttributesJobsService_possibleConstructorReturn(this, result); }; }
+
+function SummaryAttributesJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryAttributesJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } return SummaryAttributesJobsService_assertThisInitialized(self); }
+
+function SummaryAttributesJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function SummaryAttributesJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function SummaryAttributesJobsService_getPrototypeOf(o) { SummaryAttributesJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryAttributesJobsService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12833,17 +12344,17 @@ function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJo
  * @param {Object} [options.headers] - 请求头。
  */
 
-var SummaryAttributesJobsService_SummaryAttributesJobsService =
-/*#__PURE__*/
-function (_ProcessingServiceBas) {
+var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   SummaryAttributesJobsService_inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
+
+  var _super = SummaryAttributesJobsService_createSuper(SummaryAttributesJobsService);
 
   function SummaryAttributesJobsService(url, options) {
     var _this;
 
     SummaryAttributesJobsService_classCallCheck(this, SummaryAttributesJobsService);
 
-    _this = SummaryAttributesJobsService_possibleConstructorReturn(this, SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.url = Util.urlPathAppend(_this.url, 'spatialanalyst/summaryattributes');
     _this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
     return _this;
@@ -12889,15 +12400,15 @@ function (_ProcessingServiceBas) {
   }, {
     key: "addSummaryAttributesJob",
     value: function addSummaryAttributesJob(params, seconds) {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryAttributesJobsParameter_SummaryAttributesJobsParameter, seconds);
+      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryAttributesJobsParameter, seconds);
     }
   }]);
 
   return SummaryAttributesJobsService;
-}(ProcessingServiceBase_ProcessingServiceBase);
-SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttributesJobsService;
+}(ProcessingServiceBase);
+SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 // CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
-function ProcessingService_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ProcessingService_typeof = function _typeof(obj) { return typeof obj; }; } else { ProcessingService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ProcessingService_typeof(obj); }
+function ProcessingService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ProcessingService_typeof = function _typeof(obj) { return typeof obj; }; } else { ProcessingService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ProcessingService_typeof(obj); }
 
 function ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12905,17 +12416,21 @@ function ProcessingService_defineProperties(target, props) { for (var i = 0; i <
 
 function ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingService_defineProperties(Constructor, staticProps); return Constructor; }
 
-function ProcessingService_possibleConstructorReturn(self, call) { if (call && (ProcessingService_typeof(call) === "object" || typeof call === "function")) { return call; } return ProcessingService_assertThisInitialized(self); }
-
-function ProcessingService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function ProcessingService_getPrototypeOf(o) { ProcessingService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingService_getPrototypeOf(o); }
-
 function ProcessingService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ProcessingService_setPrototypeOf(subClass, superClass); }
 
 function ProcessingService_setPrototypeOf(o, p) { ProcessingService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingService_setPrototypeOf(o, p); }
 
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+function ProcessingService_createSuper(Derived) { var hasNativeReflectConstruct = ProcessingService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = ProcessingService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = ProcessingService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return ProcessingService_possibleConstructorReturn(this, result); }; }
+
+function ProcessingService_possibleConstructorReturn(self, call) { if (call && (ProcessingService_typeof(call) === "object" || typeof call === "function")) { return call; } return ProcessingService_assertThisInitialized(self); }
+
+function ProcessingService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ProcessingService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function ProcessingService_getPrototypeOf(o) { ProcessingService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12947,17 +12462,17 @@ function ProcessingService_setPrototypeOf(o, p) { ProcessingService_setPrototype
  * @param {Object} [options.headers] - 请求头。
  */
 
-var ProcessingService_ProcessingService =
-/*#__PURE__*/
-function (_CommonServiceBase) {
+var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
   ProcessingService_inherits(ProcessingService, _CommonServiceBase);
+
+  var _super = ProcessingService_createSuper(ProcessingService);
 
   function ProcessingService(url, options) {
     var _this;
 
     ProcessingService_classCallCheck(this, ProcessingService);
 
-    _this = ProcessingService_possibleConstructorReturn(this, ProcessingService_getPrototypeOf(ProcessingService).call(this, url, options));
+    _this = _super.call(this, url, options);
     _this.kernelDensityJobs = {};
     _this.summaryMeshJobs = {};
     _this.queryJobs = {};
@@ -12983,7 +12498,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+      var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13012,7 +12527,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+      var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13042,7 +12557,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+      var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13084,7 +12599,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+      var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13113,7 +12628,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+      var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13143,7 +12658,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+      var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13185,7 +12700,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+      var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13214,7 +12729,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+      var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13245,7 +12760,7 @@ function (_CommonServiceBase) {
           param = me._processParams(params),
           format = me._processFormat(resultFormat);
 
-      var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+      var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
@@ -13287,7 +12802,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
+      var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
         proxy: me.proxy,
         headers: me.headers,
         withCredentials: me.withCredentials,
@@ -13316,7 +12831,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
+      var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13346,7 +12861,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
+      var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13388,7 +12903,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
+      var vectorClipJobsService = new VectorClipJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13417,7 +12932,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
+      var vectorClipJobsService = new VectorClipJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13448,7 +12963,7 @@ function (_CommonServiceBase) {
           param = me._processParams(params),
           format = me._processFormat(resultFormat);
 
-      var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
+      var vectorClipJobsService = new VectorClipJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13491,7 +13006,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
+      var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13520,7 +13035,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
+      var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13550,7 +13065,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
+      var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13593,7 +13108,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
+      var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13622,7 +13137,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
+      var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13652,7 +13167,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
+      var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13695,7 +13210,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
+      var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13724,7 +13239,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
+      var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13754,7 +13269,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
+      var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13797,7 +13312,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
+      var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13826,7 +13341,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
+      var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13856,7 +13371,7 @@ function (_CommonServiceBase) {
       var me = this,
           format = me._processFormat(resultFormat);
 
-      var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
+      var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
@@ -13934,35 +13449,16 @@ function (_CommonServiceBase) {
   }]);
 
   return ProcessingService;
-}(CommonServiceBase_CommonServiceBase);
-SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
+}(CommonServiceBase);
+SuperMap_SuperMap.REST.ProcessingService = ProcessingService;
 // CONCATENATED MODULE: ./src/classic/services/index.js
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 // CONCATENATED MODULE: ./src/classic/index.js
-/* concated harmony reexport ElasticSearch */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
-/* concated harmony reexport SecurityManager */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
-/* concated harmony reexport KernelDensityJobParameter */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
-/* concated harmony reexport SingleObjectQueryJobsParameter */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
-/* concated harmony reexport SummaryAttributesJobsParameter */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
-/* concated harmony reexport SummaryMeshJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
-/* concated harmony reexport SummaryRegionJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
-/* concated harmony reexport OverlayGeoJobParameter */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
-/* concated harmony reexport BuffersAnalystJobsParameter */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
-/* concated harmony reexport TopologyValidatorJobsParameter */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
-/* concated harmony reexport OutputSetting */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
-/* concated harmony reexport MappingParameters */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
-/* concated harmony reexport GeoCodingParameter */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
-/* concated harmony reexport GeoDecodingParameter */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
-/* concated harmony reexport MapVLayer */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
-/* concated harmony reexport MapVRenderer */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
-/* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
-/* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
-/* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap_SuperMap; });
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13982,6 +13478,6 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 
 
 
-
-/***/ })
-/******/ ]);
+}();
+/******/ })()
+;

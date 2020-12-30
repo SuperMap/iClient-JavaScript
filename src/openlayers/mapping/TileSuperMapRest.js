@@ -73,6 +73,7 @@ export class TileSuperMapRest extends TileImage {
         //当前切片在切片集中的index
         this.tileSetsIndex = -1;
         this.tempIndex = -1;
+        this.dpi = this.options.dpi || 96;
         var me = this;
         var layerUrl = CommonUtil.urlPathAppend(options.url, 'tileImage.' + options.format);
 
@@ -216,7 +217,7 @@ export class TileSuperMapRest extends TileImage {
             var x = tileCoord[1];
             var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
             var resolution = me.tileGrid.getResolution(z);
-            var dpi = 96;
+            var dpi = me.dpi || 96;
             var unit = projection.getUnits() || Unit.DEGREE;
             // OGC WKT 解析出单位是 degree
             if (unit === 'degrees' || unit === 'degree') {
