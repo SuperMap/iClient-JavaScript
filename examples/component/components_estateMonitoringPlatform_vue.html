@@ -207,15 +207,13 @@
                     );
                     return { ...mergeData, showMap: false };
                 },
-                mounted() {
-                    console.log(this.showMap);
+                beforeMount() {
                     let screenWidth = document.body.clientWidth;
                     if (screenWidth <= 540) {
                         this.showMap = false;
                     } else {
                         this.showMap = true;
                     }
-                    console.log(this.showMap);
                     SuperMap.Components.setTheme({
                         background: 'transparent',
                         textColor: '#fff',
