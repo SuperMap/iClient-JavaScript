@@ -1,3 +1,152 @@
+# 10.1.1 #
+
+## 新特性
+
+### 组件库更新
+
+#### 上线Storybook 组件故事，优化、统一组件样式，新增统一样式的基础组件(基于Ant Design Vue)
+
+#### 视频组件新增支持 rtmp, flv, m3u8 视频流格式
+
+#### 地图组件支持显示经纬网，单值专题图支持显示自定义样式，数据流图层支持墨卡托坐标系
+
+![1011-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/whatsNew1011_1.png)
+
+### iClient for Leaflet 更新
+
+#### 引入SuperMap mapbox-gl-enhance.js库，优化Leaflet对MVT矢量瓦片的渲染效果，并支持常用坐标系：Web Mercator，WGS84，CGCS2000，北京54，西安80
+
+![1011-11](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/whatsNew1011_2.png)
+
+### iClient for OpenLayers 更新
+
+#### WebMap 支持显示经纬网，单值专题图支持显示自定义样式，数据流图层支持墨卡托坐标系
+
+![1011-7](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/whatsNew1011_3.png)
+
+### iClient for MapboxGL 更新
+
+#### 新增GraticuleLayer经纬网图层
+
+![1011-8](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/whatsNew1011_4.png)
+
+### 申明
+
+#### 由于MapboxGL V2版本授权协议变更，SuperMap iClient for MapboxGL 依旧会基于 V1版本进行后续版本的维护与升级，协议无变化
+
+![1011-9](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/whatsNew1011_5.png)
+
+## API changes
+
+### for OpenLayers
+
+- `ol.supermap.WebMap`
+
+  - `options` 新增 `tileFormat` 参数，支持指定地图瓦片出图格式
+
+  - 支持显示经纬网
+  
+  - 单值专题图支持显示自定义样式
+
+  - 数据流图层支持墨卡托坐标系
+
+  - 地图弹窗内容支持显示图片、视频、文本
+  
+### for MapboxGL
+
+- 新增 `mapboxgl.supermap.GraticuleLayer` 类，支持显示经纬网图层
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 视频(sm-video-player)组件新增支持 rtmp, flv, m3u8 视频流格式
+
+  - 地图(sm-web-map)组件
+
+    - 支持显示经纬网
+  
+    - 单值专题图支持显示自定义样式
+
+    - 数据流图层支持墨卡托坐标系
+
+  - 优化、统一组件样式
+
+  - 新增组件 Storybook
+
+  - 新增统一样式的基础组件(基于Ant Design Vue)
+    头像 sm-avatar
+    面包屑 sm-breadcrumb
+    按钮 sm-button
+    多选框 sm-checkbox
+    日期选择框 sm-date-picker 、
+    空状态 sm-empty
+    输入框 sm-input
+    布局 sm-layout
+    对话框 sm-modal
+    单选框 sm-radio
+    选择器 sm-select
+    步骤条 sm-steps
+    开关 sm-switch
+    标签页 sm-tabs
+    文字提示 sm-tooltip
+    穿梭框 sm-transfer
+    分页 sm-pagination
+    卡片 sm-card
+    折叠面板 sm-collpase
+    滑动输入条 sm-slider
+    加载中 sm-spin
+    表格 sm-table
+    树形控件 sm-tree
+
+
+  - 新增多个主题配置变量
+
+## Fixed
+
+### for Leaflet
+
+- 动态标绘
+  
+  - 修复 标绘不支持自定义请求头 问题
+
+  - 修复 标绘触屏模式和Leaflet.Draw.js冲突 问题
+  
+  - 修复 触屏模式下第一次无法绘制点标号 问题
+  
+  - 基本图元注记和线面标号的对象标注支持设置随图缩放和固定大小
+
+### for OpenLayers
+
+- 修复不同图层设置不同的掩膜，掩膜有相交时错乱的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+ - 修复 `sm-animate-marker-layer` 组件移除时报错的问题
+
+ - 修复 `sm-web-map` 组件显示数据流热力图图层失败的问题
+
+
+## Examples
+
+### for Leaflet
+
+- 可视化 - 矢量瓦片
+
+  - 增加 ‘MVT (叠加 MapboxGL)’ 例子
+
+### for MapboxGL
+
+- 增加 ‘可视化-经纬网’ 分类及例子
+
+- 多坐标系 - 地图
+
+  - 增加 ‘经纬网_WGS84’ 例子
+
+
+
 # 10.1.0 #
 ## 新特性
 
