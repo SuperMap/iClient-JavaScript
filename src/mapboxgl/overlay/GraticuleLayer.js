@@ -244,15 +244,13 @@ export class GraticuleLayer {
 
     _initialize(map = this.map, options = this.options) {
         options = options || {};
-        options.strokeStyle = { ...defaultStrokeStyle, ...(options.strokeStyle || {}) };
-        options.lngLabelStyle = { ...defaultTextStyle, ...(options.lngLabelStyle || {}) };
-        options.latLabelStyle = { ...defaultTextStyle, ...(options.latLabelStyle || {}) };
-        this.options = {
-            ...defaultOptions,
-            ...options,
+        options.strokeStyle = Object.assign({}, defaultStrokeStyle, options.strokeStyle || {});
+        options.lngLabelStyle = Object.assign({}, defaultTextStyle, options.lngLabelStyle || {});
+        options.latLabelStyle = Object.assign({}, defaultTextStyle, options.latLabelStyle || {});
+        this.options = Object.assign({}, defaultOptions, options, {
             extent: this._getDefaultExtent(options.extent, map),
             wrapX: typeof options.wrapX === 'boolean' ? options.wrapX : map.getRenderWorldCopies()
-        };
+        });
         this.oldExtent = this.options.extent;
         this._calcInterval();
         this.isRotate = false;
@@ -711,12 +709,11 @@ export class GraticuleLayer {
         }
 
         if (!this.map.getLayer(this.sourceId)) {
-            this.map.addLayer({
-                id: this.sourceId,
-                type: 'line',
-                source: this.sourceId,
-                ...this._transformStrokeStyle()
-            });
+            const layer = Object.assign(
+                { id: this.sourceId, type: 'line', source: this.sourceId },
+                this._transformStrokeStyle()
+            );
+            this.map.addLayer(layer);
         }
     }
 
@@ -793,7 +790,11 @@ export class GraticuleLayer {
             const intNumber = Math.floor(extent[2] / this._currLngInterval);
             extent[2] = intNumber * this._currLngInterval;
         }
-        return { latRange: [extent[1], extent[3]], lngRange: [extent[0], extent[2]], extent, ...realExtent };
+        const result = Object.assign(
+            { latRange: [extent[1], extent[3]], lngRange: [extent[0], extent[2]], extent },
+            realExtent
+        );
+        return result;
     }
 
     _makeLineCoords(fixedDegree, range = [-90, 90], first, last, type = 'lng') {
