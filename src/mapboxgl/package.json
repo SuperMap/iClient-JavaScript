@@ -21,7 +21,7 @@
     "xlsx": "0.16.8",
     "@supermap/iclient-common": "10.1.1",
     "canvg": "3.0.7",
-    "xml-js": "1.6.11"
+    "xml-js": "1.6.11",
     "canvg": "3.0.7",
     "xml-js": "1.6.8"
   }
