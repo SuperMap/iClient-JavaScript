@@ -4,7 +4,7 @@
   "version": "10.1.1",
   "keywords": [
     "SuperMap",
-    "MapboxGL"
+    "MapboxGL v1"
   ],
   "homepage": "https://iclient.supermap.io",
   "repository": {
@@ -20,7 +20,9 @@
     "three": "0.121.1",
     "xlsx": "0.16.8",
     "@supermap/iclient-common": "10.1.1",
-    "canvg": "3.0.6",
+    "canvg": "3.0.7",
     "xml-js": "1.6.11"
+    "canvg": "3.0.7",
+    "xml-js": "1.6.8"
   }
 }

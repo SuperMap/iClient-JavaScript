@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -18,14 +18,14 @@
                 @click="mapClicked"
             ></sm-web-map>
             <div id="group">
-                <a-radio-group class="radio-group" v-model="type" default-value="world-confirmedIncrement" size="large">
-                    <a-radio-button
+                <sm-radio-group class="radio-group" v-model="type" default-value="world-confirmedIncrement" size="large">
+                    <sm-radio-button
                         value="world-confirmedIncrement"
                         data-i18n="resources.text_ncp_incrementConfirmed"
-                    ></a-radio-button>
-                    <a-radio-button value="world-confirmed" data-i18n="resources.text_ncp_confirmed"></a-radio-button>
-                    <a-radio-button value="world-incidence" data-i18n="resources.text_ncp_incidence"></a-radio-button>
-                </a-radio-group>
+                    ></sm-radio-button>
+                    <sm-radio-button value="world-confirmed" data-i18n="resources.text_ncp_confirmed"></sm-radio-button>
+                    <sm-radio-button value="world-incidence" data-i18n="resources.text_ncp_incidence"></sm-radio-button>
+                </sm-radio-group>
                 <br />
                 <sm-indicator :title="title" unit="" mode="horizontal" :num="num" font-size="44px" font-weight="400">
                 </sm-indicator>
@@ -44,7 +44,7 @@
         </div>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
         <script
-            include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            include="iclient-mapboxgl-vue,mapbox-gl-enhance"
             src="../../dist/mapboxgl/include-mapboxgl.js"
         ></script>
         <script src="../data/ncp/Country_Region.js"></script>
@@ -62,9 +62,15 @@
                 top: 10px;
                 z-index: 1000;
             }
-            .ant-radio-button-wrapper {
+            .sm-component-radio-button-wrapper {
                 color: #fff;
                 background: #333333;
+            }
+            .sm-component-radio-button-wrapper-checked {
+                color: #0081e2 !important;
+                border-color: #0081e2 !important;
+                box-shadow: -1px 0 0 0 #0081e2 !important;
+                background: #333333 !important;
             }
             .mapboxgl-popup-content {
                 border: solid 1px #464646;
@@ -80,9 +86,6 @@
             .mapboxgl-popup-tip {
                 display: none;
             }
-            .ant-radio-button-wrapper-checked:first-child {
-                color: #1890ff;
-            }
             @media screen and (max-width: 768px) {
                 .sm-component-count-to__numItem {
                     font-size: 32px !important;
@@ -96,7 +99,7 @@
                 .sm-component-text {
                     font-size: 16px !important;
                 }
-                .ant-radio-group-large .ant-radio-button-wrapper {
+                .sm-component-radio-group-large .sm-component-radio-button-wrapper {
                     height: 32px;
                     line-height: 30px;
                     font-size: 14px;

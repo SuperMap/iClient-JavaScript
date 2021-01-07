@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
@@ -620,7 +620,7 @@ window.examplesResources = {
         "title_mask":'图层掩膜',
         "title_objectdetection":"机器学习结果叠加（目标检测）",
         "title_binaryclassification":"机器学习结果叠加（二元分类）",
-        "title_mvt_mapboxgl":"MVT (叠加 MapboxGL)",
+        "title_mvt_mapboxgl":"MVT WGS84 (叠加 MapboxGL)",
 
         "text_service_name":"名称",
         "text_service_type":"类型",

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -102,7 +102,7 @@
                         filter: ['==', '$type', 'Polygon']
                     });
                 });
-                map.addControl(new mapboxgl.NavigationControl());
+                map.addControl(new mapboxgl.NavigationControl(), 'top-left');
             });
         </script>
     </body>

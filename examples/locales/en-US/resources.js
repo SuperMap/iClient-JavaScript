@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
@@ -669,7 +669,7 @@ window.examplesResources = {
         "title_mask":'Layer Mask',
         "title_objectdetection":"Machinelearning Result Overlay(Objectdetection)",
         "title_binaryclassification":"Machinelearning Result Overlay(Binaryclassification)",
-        "title_mvt_mapboxgl":"MVT (via MapboxGL)",
+        "title_mvt_mapboxgl":"MVT WGS84 (via MapboxGL)",
 
         "text_service_name":"Name",
         "text_service_type":"Type",

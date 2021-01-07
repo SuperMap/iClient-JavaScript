@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import proj4 from "proj4";
@@ -119,7 +119,7 @@ export class WebMap extends Observable {
         this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.webMap = options.webMap;
-        this.tileFormat = options.tileFormat;
+        this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
         this.createMap(options.mapSetting);
         if (this.webMap) {
             // webmap有可能是url地址，有可能是webmap对象
@@ -315,7 +315,7 @@ export class WebMap extends Observable {
         if (handleResult.action === "BrowseMap") {
             that.createSpecLayer(mapInfo);
         } else if (handleResult.action === "OpenMap") {
-            that.baseProjection = handleResult.newCrs ||mapInfo.projection;
+            that.baseProjection = handleResult.newCrs || mapInfo.projection;
             that.webMapVersion = mapInfo.version;
             that.baseLayer = mapInfo.baseLayer;
             // that.mapParams = {
@@ -352,7 +352,7 @@ export class WebMap extends Observable {
     }
 
     /**
-    * 处理坐标系
+    * 处理坐标系(底图)
     * @private
     * @param {string} crs 必传参数，值是webmap2中定义的坐标系，可能是 1、EGSG:xxx 2、WKT string
     * @param {string} baseLayerUrl  可选参数，地图的服务地址；用于EPSG：-1 的时候，用于请求iServer提供的wkt
@@ -1068,8 +1068,8 @@ export class WebMap extends Observable {
             });
             options.tileGrid = tileGrid;
         }
-        //主机名相同时不添加代理
-        if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
+        //主机名相同时不添加代理,iportal geturlResource不支持webp代理
+        if (layerInfo.url && !this.isSameDomain(layerInfo.url) && layerInfo.format !== 'webp') {
             options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new TileSuperMapRest(options);
@@ -1262,7 +1262,7 @@ export class WebMap extends Observable {
                 return result
             }
             let format = 'png';
-            if(that.tileFormat === 'WebP') {
+            if(that.tileFormat === 'webp') {
                 const isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
                 format = isSupportWebp ? 'webp' : 'png';
             }
@@ -1318,7 +1318,7 @@ export class WebMap extends Observable {
             let token = layerInfo.credential ? layerInfo.credential.token : undefined;
             layerInfo.format = 'png';
             // china_dark为默认底图，还是用png出图
-            if(that.tileFormat === 'WebP' && layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark') {
+            if(that.tileFormat === 'webp' && layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark') {
                 const isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
                 layerInfo.format = isSupprtWebp ? 'webp' : 'png';
             }
@@ -1518,7 +1518,7 @@ export class WebMap extends Observable {
     getReslutionsFromScales(scales, dpi, unit, datumAxis) {
         unit = (unit && unit.toLowerCase()) || 'degrees';
         dpi = dpi || dpiConfig.iServerWMTS;
-        datumAxis = datumAxis || 6370997;
+        datumAxis = datumAxis || 6378137;
         let res = [],
             matrixIds = [];
         //给个默认的
@@ -1715,7 +1715,7 @@ export class WebMap extends Observable {
                         that.sendMapToUser(len);
                         that.errorCallback && that.errorCallback(e, 'getLayerFaild', that.map);
                     })
-                }else if (layer.layerType === 'SUPERMAP_REST' ||
+                } else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "WMS" ||
                     layer.layerType === "WMTS") {
                     if (layer.layerType === "WMTS") {
@@ -1961,13 +1961,20 @@ export class WebMap extends Observable {
         if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
         }
+        if(['EPSG:-1', 'EPSG:0', 'EPSG:-1000'].includes(layer.projection)) {
+            // 不支持动态投影restData服务
+            that.layerAdded++;
+            that.sendMapToUser(layerLength);
+            that.errorCallback && that.errorCallback({}, 'getFeatureFaild', that.map);
+            return;
+        }
         //因为itest上使用的https，iserver是http，所以要加上代理
         Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
             let features = that.parseGeoJsonData2Feature({
                 allDatas: {
                     features: result.result.features.features
                 },
-                fileCode: layer.projection,
+                fileCode: that.baseProjection, //因为获取restData用了动态投影，不需要再进行坐标转换。所以此处filecode和底图坐标系一致
                 featureProjection: that.baseProjection
             });
             that.addLayer(layer, features, layerIndex);
@@ -1977,7 +1984,7 @@ export class WebMap extends Observable {
             that.layerAdded++;
             that.sendMapToUser(layerLength);
             that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
-        });
+        }, that.baseProjection.split("EPSG:")[1]);
     }
 
     /**

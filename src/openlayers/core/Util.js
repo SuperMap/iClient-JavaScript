@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -349,8 +349,9 @@ export class Util {
      * @param {object} serviceOptions - 服务类需要的参数
      * @param {function} processCompleted - 成功请求的回调函数
      * @param {function} processFaild - 失败请求的回调函数
+     * @param {string | number} targetEpsgCode - 动态投影的目标坐标系对应的 EPSG Code
      */
-    static getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild) {
+    static getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode) {
         let getFeatureParam = new FilterParameter({
                 name: datasetNames.join().replace(':', '@')
                 // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131
@@ -361,7 +362,8 @@ export class Util {
                 fromIndex: 0,
                 toIndex: 100000,
                 maxFeatures: 100000,
-                returnContent: true
+                returnContent: true,
+                targetEpsgCode
             }),
             callback = (serviceResult) => {
                 if (serviceResult.type === 'processCompleted') {
