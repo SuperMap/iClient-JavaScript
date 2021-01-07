@@ -16,7 +16,7 @@
     "elasticsearch": "16.7.1",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
-    "promise-polyfill": "8.1.3",
+    "promise-polyfill": "8.2.0",
     "lodash.topairs": "4.3.0"
   }
 }
