@@ -16,7 +16,7 @@
   "dependencies": {
     "@turf/turf": "5.1.6",
     "echarts": "4.9.0",
-    "mapv": "2.0.56",
+    "mapv": "2.0.62",
     "ol": "6.4.3",
     "@supermap/iclient-common": "10.1.1",
     "proj4": "2.6.3",
