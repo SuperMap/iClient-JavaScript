@@ -38,4 +38,9 @@ jobs:
       uses: docker://github/super-linter:v3
       env:
         VALIDATE_ALL_CODEBASE: false
+        PATH_REGEX_INCLUDE: src
         DEFAULT_BRANCH: master
+        LINTER_RULES_PATH: ./
+        JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VALIDATE_JAVASCRIPT_ES: true

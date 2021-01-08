@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import proj4 from "proj4";
@@ -85,6 +85,7 @@ const dpiConfig = {
  * @param {Object} [options.serviceProxy] - iportal内置代理信息, 仅矢量瓦片图层上图才会使用
  * @param {string} [options.tiandituKey] - 天地图的key
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
+ * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @param {function} [options.mapSetting.overlays] - 地图的overlayer
  * @param {function} [options.mapSetting.controls] - 地图的控件
@@ -118,6 +119,7 @@ export class WebMap extends Observable {
         this.layers = [];
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.webMap = options.webMap;
+        this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
         this.createMap(options.mapSetting);
         if (this.webMap) {
             // webmap有可能是url地址，有可能是webmap对象
@@ -313,13 +315,14 @@ export class WebMap extends Observable {
         if (handleResult.action === "BrowseMap") {
             that.createSpecLayer(mapInfo);
         } else if (handleResult.action === "OpenMap") {
-            that.baseProjection = handleResult.newCrs ||mapInfo.projection;
+            that.baseProjection = handleResult.newCrs || mapInfo.projection;
             that.webMapVersion = mapInfo.version;
             that.baseLayer = mapInfo.baseLayer;
             // that.mapParams = {
             //     title: mapInfo.title,
             //     description: mapInfo.description
             // }; //存储地图的名称以及描述等信息，返回给用户
+            that.isHaveGraticule = mapInfo.grid && mapInfo.grid.graticule;
 
             if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
                 // 添加矢量瓦片服务作为底图
@@ -330,6 +333,7 @@ export class WebMap extends Observable {
                     } else {
                         that.addLayers(mapInfo);
                     }
+                    that.addGraticule(mapInfo);
                 });
             } else {
                 await that.addBaseMap(mapInfo);
@@ -338,6 +342,7 @@ export class WebMap extends Observable {
                 } else {
                     that.addLayers(mapInfo);
                 }
+                that.addGraticule(mapInfo);
             }
         } else {
             // 不支持的坐标系
@@ -347,7 +352,7 @@ export class WebMap extends Observable {
     }
 
     /**
-    * 处理坐标系
+    * 处理坐标系(底图)
     * @private
     * @param {string} crs 必传参数，值是webmap2中定义的坐标系，可能是 1、EGSG:xxx 2、WKT string
     * @param {string} baseLayerUrl  可选参数，地图的服务地址；用于EPSG：-1 的时候，用于请求iServer提供的wkt
@@ -723,11 +728,11 @@ export class WebMap extends Observable {
 
         // 计算当前最大分辨率
         let baseLayer = options.baseLayer;
-        let maxResolution, minResolution;
+        let maxResolution;
         if ((baseLayer.visibleScales && baseLayer.visibleScales.length > 0) || (baseLayer.scales && baseLayer.scales.length > 0)) {
             //底图有固定比例尺，就直接获取。不用view计算
             this.getScales(baseLayer);
-        } else if (options.baseLayer && ['TILE', 'VECTOR_TILE'].indexOf(options.baseLayer.layerType) > -1 && extent && extent.length === 4) {
+        } else if (options.baseLayer && extent && extent.length === 4) {
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width / 512;
@@ -739,21 +744,16 @@ export class WebMap extends Observable {
         //     maxZoom = options.baseLayer.visibleScales.length;
         // }
         let viewOptions = {};
-        if (baseLayer.layerType === "WMTS") {
-            if (baseLayer.scales && baseLayer.scales.length > 0) {
-                //因为新版extent超出，不可见。所以将extent去除
-                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
-            } else {
-                viewOptions = {zoom, center, projection, maxZoom};
-                this.getScales(baseLayer);
-            }
+
+        if (baseLayer.scales && baseLayer.scales.length > 0 && baseLayer.layerType === "WMTS" ||
+            this.resolutionArray && this.resolutionArray.length > 0) {
+            viewOptions = { zoom, center, projection, resolutions: this.resolutionArray, maxZoom };
+        } else if (baseLayer.layerType === "WMTS") {
+            viewOptions = { zoom, center, projection, maxZoom };
+            this.getScales(baseLayer);
         } else {
-            if (this.resolutionArray && this.resolutionArray.length > 0) {
-                viewOptions = {zoom, center, projection, resolutions: this.resolutionArray, maxZoom};
-            } else {
-                viewOptions = {zoom, center, projection, maxResolution, minResolution, maxZoom};
-                this.getScales(baseLayer);
-            }
+            viewOptions = { zoom, center, projection, maxResolution, maxZoom };
+            this.getScales(baseLayer);
         }
         if (['4', '5'].indexOf(Util.getOlVersion()) < 0) { // 兼容 ol 4，5，6
             viewOptions.multiWorld = true;
@@ -762,7 +762,7 @@ export class WebMap extends Observable {
             viewOptions.constrainResolution = true; //设置此参数，是因为需要显示整数级别。为了可视比例尺中包含当前比例尺
         }
         this.map.setView(new View(viewOptions));
-        
+
         if (options.visibleExtent) {
             const view = this.map.getView();
             const resolution = view.getResolutionForExtent(options.visibleExtent, this.map.getSize());
@@ -1068,8 +1068,8 @@ export class WebMap extends Observable {
             });
             options.tileGrid = tileGrid;
         }
-        //主机名相同时不添加代理
-        if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
+        //主机名相同时不添加代理,iportal geturlResource不支持webp代理
+        if (layerInfo.url && !this.isSameDomain(layerInfo.url) && layerInfo.format !== 'webp') {
             options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new TileSuperMapRest(options);
@@ -1235,7 +1235,7 @@ export class WebMap extends Observable {
      */
     getTileLayerExtentInfo(layerInfo, isDynamic = true) {
         let that = this,
-            // token,
+            token,
             url = layerInfo.url.trim(),
             credential = layerInfo.credential,
             options = {
@@ -1253,7 +1253,7 @@ export class WebMap extends Observable {
         }
         if (credential) {
             url = `${url}&token=${encodeURI(credential.token)}`;
-            // token = credential.token;
+            token = credential.token;
         }
         return FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
             return response.json();
@@ -1261,14 +1261,18 @@ export class WebMap extends Observable {
             if (result.succeed === false) {
                 return result
             }
-            // let isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
+            let format = 'png';
+            if(that.tileFormat === 'webp') {
+                const isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
+                format = isSupportWebp ? 'webp' : 'png';
+            }
             return {
                 units: result.coordUnit && result.coordUnit.toLowerCase(),
                 coordUnit: result.coordUnit,
                 visibleScales: result.visibleScales,
                 extent: [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top],
                 projection: `EPSG:${result.prjCoordSys.epsgCode}`,
-                format: 'png'
+                format
             }
         }).catch((error) => {
             return {
@@ -1298,7 +1302,7 @@ export class WebMap extends Observable {
         }
         return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
-        }).then(function (result) {
+        }).then(async function (result) {
             // layerInfo.projection = mapInfo.projection;
             // layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
             // 比例尺 单位
@@ -1311,11 +1315,13 @@ export class WebMap extends Observable {
             }
             layerInfo.maxZoom = result.maxZoom;
             layerInfo.maxZoom = result.minZoom;
-            // let token = layerInfo.credential ? layerInfo.credential.token : undefined;
-            // let isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
-            // eslint-disable-next-line require-atomic-updates
-            // layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            let token = layerInfo.credential ? layerInfo.credential.token : undefined;
             layerInfo.format = 'png';
+            // china_dark为默认底图，还是用png出图
+            if(that.tileFormat === 'webp' && layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark') {
+                const isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+                layerInfo.format = isSupprtWebp ? 'webp' : 'png';
+            }
             // 请求结果完成 继续添加图层
             if (mapInfo) {
                 //todo 这个貌似没有用到，下次优化
@@ -1512,7 +1518,7 @@ export class WebMap extends Observable {
     getReslutionsFromScales(scales, dpi, unit, datumAxis) {
         unit = (unit && unit.toLowerCase()) || 'degrees';
         dpi = dpi || dpiConfig.iServerWMTS;
-        datumAxis = datumAxis || 6370997;
+        datumAxis = datumAxis || 6378137;
         let res = [],
             matrixIds = [];
         //给个默认的
@@ -1709,7 +1715,7 @@ export class WebMap extends Observable {
                         that.sendMapToUser(len);
                         that.errorCallback && that.errorCallback(e, 'getLayerFaild', that.map);
                     })
-                }else if (layer.layerType === 'SUPERMAP_REST' ||
+                } else if (layer.layerType === 'SUPERMAP_REST' ||
                     layer.layerType === "WMS" ||
                     layer.layerType === "WMTS") {
                     if (layer.layerType === "WMTS") {
@@ -1951,8 +1957,16 @@ export class WebMap extends Observable {
             url = layer.dataSource.url,
             dataSourceName = dataSource.dataSourceName || layer.name;
         let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
+        serviceOptions.withCredentials = this.withCredentials;
         if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
+        }
+        if(['EPSG:-1', 'EPSG:0', 'EPSG:-1000'].includes(layer.projection)) {
+            // 不支持动态投影restData服务
+            that.layerAdded++;
+            that.sendMapToUser(layerLength);
+            that.errorCallback && that.errorCallback({}, 'getFeatureFaild', that.map);
+            return;
         }
         //因为itest上使用的https，iserver是http，所以要加上代理
         Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
@@ -1960,7 +1974,7 @@ export class WebMap extends Observable {
                 allDatas: {
                     features: result.result.features.features
                 },
-                fileCode: layer.projection,
+                fileCode: that.baseProjection, //因为获取restData用了动态投影，不需要再进行坐标转换。所以此处filecode和底图坐标系一致
                 featureProjection: that.baseProjection
             });
             that.addLayer(layer, features, layerIndex);
@@ -1970,7 +1984,7 @@ export class WebMap extends Observable {
             that.layerAdded++;
             that.sendMapToUser(layerLength);
             that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
-        });
+        }, that.baseProjection.split("EPSG:")[1]);
     }
 
     /**
@@ -2010,7 +2024,8 @@ export class WebMap extends Observable {
      * @param {number} layersLen - 叠加图层总数
      */
     sendMapToUser(layersLen) {
-        if (this.layerAdded === layersLen && this.successCallback) {
+        const lens = this.isHaveGraticule ? layersLen + 1 : layersLen;
+        if (this.layerAdded === lens && this.successCallback) {
             this.successCallback(this.map, this.mapParams, this.layers, this.baseLayer);
         }
     }
@@ -2046,7 +2061,7 @@ export class WebMap extends Observable {
             try {
                 if (dataSource.type === 'PORTAL_DATA') {
                     const {dataMetaInfo} = await FetchRequest.get(`${this.server}web/datas/${dataSource.serverId}.json`, null, {
-                        withCredentials: true
+                        withCredentials: this.withCredentials
                     }).then(res => res.json());
                     // eslint-disable-next-line require-atomic-updates
                     layerInfo.xyField = {
@@ -2180,13 +2195,12 @@ export class WebMap extends Observable {
             rows = datas.slice(1),
             fieldIndex = titles.findIndex(title => title === divisionField);
         rows.forEach(row => {
-            let feature = features.find(item => {
-                if (divisionType === 'GB-T_2260') {
-                    return item.properties.GB === row[fieldIndex];
-                } else {
-                    return Util.isMatchAdministrativeName(item.properties.Name, row[fieldIndex]);
-                }
-            })
+            let feature;
+            if (divisionType === 'GB-T_2260') {
+                feature = features.find(item => item.properties.GB === row[fieldIndex])
+            } else {
+                feature = Util.getHighestMatchAdministration(features, row[fieldIndex]);
+            }
             //todo 需提示忽略无效数据
             if (feature) {
                 let newFeature = window.cloneDeep(feature);
@@ -2315,7 +2329,10 @@ export class WebMap extends Observable {
                 featureProjection: metaData.featureProjection || this.baseProjection || 'EPSG:4326'
             });
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
-            let coordinate = feature.getGeometry().getCoordinates();
+            let geometry = feature.getGeometry();
+            // 如果不存在geometry，也不需要组装feature
+            if(!geometry) {continue;}
+            let coordinate = geometry.getCoordinates();
             if (allFeatures[i].geometry.type === 'Point') {
                 properties.lon = coordinate[0];
                 properties.lat = coordinate[1];
@@ -2432,6 +2449,7 @@ export class WebMap extends Observable {
             that.addGeojsonFromUrl(layerInfo, null, layerIndex)
         } else {
             let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
+            serviceOptions.withCredentials = this.withCredentials;
             if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
                 serviceOptions.proxy = this.getProxy();
             }
@@ -2944,8 +2962,7 @@ export class WebMap extends Observable {
         let featureType = parameters.featureType,
             style = parameters.style,
             themeSetting = parameters.themeSetting;
-        let fieldName = themeSetting.themeField,
-            colors = themeSetting.colors;
+        let fieldName = themeSetting.themeField;
 
         let names = [],
             customSettings = themeSetting.customSettings;
@@ -2964,35 +2981,55 @@ export class WebMap extends Observable {
             }
         }
 
-        //获取一定量的颜色
-        let curentColors = colors;
-        curentColors = ColorsPickerUtil.getGradientColors(curentColors, names.length);
 
         //生成styleGroup
         let styleGroup = [];
         names.forEach(function (name, index) {
             //兼容之前自定义是用key，现在因为数据支持编辑，需要用属性值。
             let key = this.webMapVersion === "1.0" ? index : name;
-            let color = curentColors[key];
-            if (key in customSettings) {
-                color = customSettings[key];
-            }
-
-            if (featureType === "LINE") {
-                style.strokeColor = color;
-            } else {
-                style.fillColor = color;
-            }
+            let custom = customSettings[key];
+            if(Util.isString(custom)) {
+                //兼容之前自定义只存储一个color
+                custom = this.getCustomSetting(style, custom, featureType); 
+                customSettings[key] = custom; 
+            } 
+            
             // 转化成 ol 样式
-            let olStyle = StyleUtils.toOpenLayersStyle(style, featureType);
+            let olStyle, type = custom.type;
+            if(type === 'SYMBOL_POINT') {
+                olStyle = StyleUtils.getSymbolStyle(custom);  
+            } else if(type === 'SVG_POINT') {
+                olStyle = StyleUtils.getSVGStyle(custom);
+            } else if(type === 'IMAGE_POINT') {
+                olStyle = StyleUtils.getImageStyle(custom);
+            } else {
+                olStyle = StyleUtils.toOpenLayersStyle(custom, featureType);
+            }
             styleGroup.push({
                 olStyle: olStyle,
-                color: color,
+                style: customSettings[key],
                 value: name
             });
         }, this);
 
         return styleGroup;
+    }
+
+    /**
+     * 获取单值专题图自定义样式对象
+     * @param {*} style 图层上的样式
+     * @param {*} color 单值对应的颜色
+     * @param {*} featureType 要素类型
+     */
+    getCustomSetting(style, color, featureType) {
+        let newProps = {};
+        if (featureType === "LINE") {
+            newProps.strokeColor = color;
+        } else {
+            newProps.fillColor = color;
+        }
+        let customSetting = Object.assign(style, newProps)
+        return customSetting;
     }
 
     /**
@@ -3457,7 +3494,7 @@ export class WebMap extends Observable {
         dataflowService.on('messageSucceeded', function (e) {
             let geojson = JSON.parse(e.value.data);
             let feature = transformTools.readFeature(geojson, {
-                dataProjection: "EPSG:4326", // todo 坐标系
+                dataProjection: layerInfo.projection || "EPSG:4326",
                 featureProjection: that.baseProjection || 'EPSG:4326'
             });
             feature.setProperties({attributes: geojson.properties});
@@ -4597,36 +4634,36 @@ export class WebMap extends Observable {
      * @param {*} token 服务token
      * @returns {boolean}
      */
-    // isSupportWebp(url, token) {
-    //     // 还需要判断浏览器
-    //     let isIE = this.isIE();
-    //     if (isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
-    //         (this.isChrome() && this.getChromeVersion() < 32)) {
-    //         return false;
-    //     }
-    //     url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
-    //     let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
-    //     if (isSameDomain && !token) {
-    //         // online上服务域名一直，要用token值
-    //         excledeCreditial = false;
-    //     } else {
-    //         excledeCreditial = true;
-    //     }
-    //     url = this.getRequestUrl(url, excledeCreditial);
-    //     return FetchRequest.get(url, null, {
-    //         withCredentials: this.withCredentials,
-    //         withoutFormatSuffix: true
-    //     }).then(function (response) {
-    //         if (response.status !== 200) {
-    //             throw response.status;
-    //         }
-    //         return response;
-    //     }).then(() => {
-    //         return true;
-    //     }).catch(() => {
-    //         return false;
-    //     })
-    // }
+    isSupportWebp(url, token) {
+        // 还需要判断浏览器
+        let isIE = this.isIE();
+        if (isIE || (this.isFirefox() && this.getFirefoxVersion() < 65) ||
+            (this.isChrome() && this.getChromeVersion() < 32)) {
+            return false;
+        }
+        url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
+        let isSameDomain = CommonUtil.isInTheSameDomain(url), excledeCreditial;
+        if (isSameDomain && !token) {
+            // online上服务域名一直，要用token值
+            excledeCreditial = false;
+        } else {
+            excledeCreditial = true;
+        }
+        url = this.getRequestUrl(url, excledeCreditial);
+        return FetchRequest.get(url, null, {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true
+        }).then(function (response) {
+            if (response.status !== 200) {
+                throw response.status;
+            }
+            return response;
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        })
+    }
     /**
     * @private
     * @function ol.supermap.WebMap.prototype.isIE
@@ -4684,5 +4721,76 @@ export class WebMap extends Observable {
         let userAgent = navigator.userAgent.toLowerCase(),
             version = userAgent.match(/chrome\/([\d.]+)/);
         return +version[1];
+    }
+    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.addGraticule
+     * @description 创建经纬网
+     * @param {object} mapInfo - 地图信息
+     */
+    addGraticule(mapInfo) {
+        if(this.isHaveGraticule) {
+            this.createGraticuleLayer(mapInfo.grid.graticule);
+            this.layerAdded++;
+            const lens = mapInfo.layers ? mapInfo.layers.length : 0;
+            this.sendMapToUser(lens);
+        }
+    }
+    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createGraticuleLayer
+     * @description 创建经纬网图层
+     * @param {object} layerInfo - 图层信息
+     * @returns {ol/layer/Vector} 矢量图层
+     */
+    createGraticuleLayer(layerInfo) {
+        const { strokeColor, strokeWidth, lineDash, extent, visible, interval, lonLabelStyle, latLabelStyle } = layerInfo;
+        const epsgCode = this.baseProjection;
+        // 添加经纬网需要设置extent、worldExtent
+        let projection = new olProj.get(epsgCode);
+        projection.setExtent(extent);
+        projection.setWorldExtent(olProj.transformExtent(extent, epsgCode, 'EPSG:4326'));
+
+        let graticuleOptions = {
+            layerID: 'graticule_layer',
+            strokeStyle: new StrokeStyle({
+                color: strokeColor,
+                width: strokeWidth,
+                lineDash
+            }),
+            extent,
+            visible: visible,
+            intervals: interval,
+            showLabels: true,
+            zIndex: 9999,
+            wrapX: false,
+            targetSize: 0
+        };
+        lonLabelStyle && (graticuleOptions.lonLabelStyle = new Text({
+            font: `${lonLabelStyle.fontSize} ${lonLabelStyle.fontFamily}`,
+            textBaseline: lonLabelStyle.textBaseline,
+            fill: new FillStyle({
+                color: lonLabelStyle.fill
+            }),
+            stroke: new StrokeStyle({
+                color: lonLabelStyle.outlineColor,
+                width: lonLabelStyle.outlineWidth
+            })
+        }))
+        latLabelStyle && (graticuleOptions.latLabelStyle = new Text({
+            font: `${latLabelStyle.fontSize} ${latLabelStyle.fontFamily}`,
+            textBaseline: latLabelStyle.textBaseline,
+            fill: new FillStyle({
+                color: latLabelStyle.fill
+            }),
+            stroke: new StrokeStyle({
+                color: latLabelStyle.outlineColor,
+                width: latLabelStyle.outlineWidth
+            })
+        }))
+        const layer = new olLayer.Graticule(graticuleOptions);
+        this.map.addLayer(layer);
     }
 }

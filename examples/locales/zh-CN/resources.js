@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
@@ -294,6 +294,8 @@ window.examplesResources = {
         "title_measureDistance": "距离测量",
         "title_tiledMapLayer": "3857底图",
         "title_tiledMapLayer_4326": "4326底图",
+        "title_graticuleLayer_3857": "经纬网",
+        "title_graticuleLayer_4326": "经纬网_WGS84",
         "title_tiledMapLayer_4326WGS84": "地图_WGS84",
         "title_tiledMapLayer_China2000": "地图_China2000",
         "title_tiledMapLayer_Beijing54": "地图_Beijing54",
@@ -618,6 +620,7 @@ window.examplesResources = {
         "title_mask":'图层掩膜',
         "title_objectdetection":"机器学习结果叠加（目标检测）",
         "title_binaryclassification":"机器学习结果叠加（二元分类）",
+        "title_mvt_mapboxgl":"MVT WGS84 (叠加 MapboxGL)",
 
         "text_service_name":"名称",
         "text_service_type":"类型",

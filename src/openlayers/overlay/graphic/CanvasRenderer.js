@@ -1,23 +1,12 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    CommonUtil
-} from "@supermap/iclient-common";
-import {
-    Util
-} from '../../core/Util';
+import { CommonUtil } from '@supermap/iclient-common';
+import { Util } from '../../core/Util';
 import olObject from 'ol/Object';
 import * as olStyle from 'ol/style';
 import Point from 'ol/geom/Point';
 import * as olRender from 'ol/render';
-
-//获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-function rotate(pixelP, rotation, center) {
-    let x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
-    let y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
-    return [x, y];
-}
 
 //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
 function scale(pixelP, center, scaleRatio) {
@@ -66,8 +55,8 @@ export class GraphicCanvasRenderer extends olObject {
         this.context = Util.createCanvasContext2D(this.mapWidth, this.mapHeight);
         this.context.scale(this.pixelRatio, this.pixelRatio);
         this.canvas = this.context.canvas;
-        this.canvas.style.width = this.width + "px";
-        this.canvas.style.height = this.height + "px";
+        this.canvas.style.width = this.width + 'px';
+        this.canvas.style.height = this.height + 'px';
         this._registerEvents();
     }
 
@@ -93,8 +82,8 @@ export class GraphicCanvasRenderer extends olObject {
 
         this.canvas.width = this.mapWidth;
         this.canvas.height = this.mapHeight;
-        this.canvas.style.width = this.width + "px";
-        this.canvas.style.height = this.height + "px";
+        this.canvas.style.width = this.width + 'px';
+        this.canvas.style.height = this.height + 'px';
     }
 
     _clearAndRedraw() {
@@ -107,7 +96,6 @@ export class GraphicCanvasRenderer extends olObject {
     }
 
     _clearBuffer() {}
-
 
     /**
      * @private
@@ -126,13 +114,9 @@ export class GraphicCanvasRenderer extends olObject {
      */
     drawGraphics(graphics) {
         this.graphics_ = graphics || [];
-
         let mapWidth = this.mapWidth / this.pixelRatio;
         let mapHeight = this.mapHeight / this.pixelRatio;
-        let width = this.width;
-        let height = this.height;
 
-        let offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
         let vectorContext = olRender.toContext(this.context, {
             size: [mapWidth, mapHeight],
             pixelRatio: this.pixelRatio
@@ -141,7 +125,7 @@ export class GraphicCanvasRenderer extends olObject {
         let me = this,
             layer = me.layer,
             map = layer.map;
-        graphics.map(function (graphic) {
+        graphics.map(function(graphic) {
             let style = graphic.getStyle() || defaultStyle;
             if (me.selected === graphic) {
                 let defaultHighLightStyle = style;
@@ -171,22 +155,25 @@ export class GraphicCanvasRenderer extends olObject {
                 }
                 style = me.highLightStyle || defaultHighLightStyle;
             }
-            vectorContext.setStyle(new olStyle.Style({
-                image: style
-            }));
+            vectorContext.setStyle(
+                new olStyle.Style({
+                    image: style
+                })
+            );
             let geometry = graphic.getGeometry();
             let coordinate = geometry.getCoordinates();
-            let pixelP = map.getPixelFromCoordinate(coordinate);
-            let rotation = -map.getView().getRotation();
-            let center = map.getPixelFromCoordinate(map.getView().getCenter());
-            let scaledP = scale(pixelP, center, 1);
-            let rotatedP = rotate(scaledP, rotation, center);
-            let result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
+            let center = map.getView().getCenter();
+            let mapCenterPx = map.getPixelFromCoordinate(center);
+            let resolution = map.getView().getResolution();
+            let x = (coordinate[0] - center[0]) / resolution;
+            let y = (center[1] - coordinate[1]) / resolution;
+            let scaledP = [x + mapCenterPx[0], y + mapCenterPx[1]];
+            scaledP = scale(scaledP, mapCenterPx, 1);
+            //处理放大或缩小级别*/
+            let result = [scaledP[0] + me.offset[0], scaledP[1] + me.offset[1]];
             let pixelGeometry = new Point(result);
             vectorContext.drawGeometry(pixelGeometry);
             return graphic;
         });
     }
-
-
 }

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsTianditu_home_Vue"></title>
     <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-    <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       .container {
         margin: 0 auto;
@@ -61,6 +61,10 @@
         width: 100%;
         height: calc(100% - 63px);
       }
+
+      .mapboxgl-ctrl button:not(:disabled):hover {
+        background-color: #269ff0;
+      }
     </style>
   </head>
 
@@ -83,7 +87,7 @@
       <div id="main">
         <sm-web-map :map-options="mapOptions">
           <!-- 天地图路线查询组件: sm-tdt-route
-          天地图搜索组件：sm-tdt-search 
+          天地图搜索组件：sm-tdt-search
           天地图切换组件：sm-tdt-map-switcher-->
           <sm-tdt-route position="top-right" :data="{tk:tk}" :collapsed="true"></sm-tdt-route>
           <sm-tdt-search position="top-right" :data="{tk:tk}" :collapsed="true"></sm-tdt-search>

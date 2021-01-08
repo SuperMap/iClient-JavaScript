@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
@@ -353,6 +353,8 @@ window.examplesResources = {
         "title_measureDistance": "Distance Measurement Service",
         "title_tiledMapLayer": "3857 Coordinate System",
         "title_tiledMapLayer_4326": "4326Map",
+        "title_graticuleLayer_3857": "Graticule",
+        "title_graticuleLayer_4326": "Graticule_WGS84",
         "title_tiledMapLayer_4326WGS84": "Map WGS84",
         "title_tiledMapLayer_China2000": "Map China2000",
         "title_tiledMapLayer_Beijing54": "Map Beijing54",
@@ -667,6 +669,7 @@ window.examplesResources = {
         "title_mask":'Layer Mask',
         "title_objectdetection":"Machinelearning Result Overlay(Objectdetection)",
         "title_binaryclassification":"Machinelearning Result Overlay(Binaryclassification)",
+        "title_mvt_mapboxgl":"MVT WGS84 (via MapboxGL)",
 
         "text_service_name":"Name",
         "text_service_type":"Type",

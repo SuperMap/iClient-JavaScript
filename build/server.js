@@ -21,7 +21,7 @@ if (product) {
     }
     config.mode = 'development';
     config.entry = entry;
-    config.devtool = 'cheap-module-eval-source-map';
+    config.devtool = 'inline-cheap-module-source-map';
 
     const compiler = webpack(config);
     const instance = webpackDevMiddleware(compiler, {

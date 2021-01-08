@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from "mapbox-gl";
@@ -45,7 +45,7 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.toSuperMapPolygon
      * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
-     * @param {Mapboxgl.LngLatbounds} lnglatBounds - Mapbox GL LngLatbounds对象。
+     * @param {Mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
      * @returns {SuperMap.Geometry.Polygon}
      */
     static toSuperMapPolygon(lnglatBounds) {

@@ -21,7 +21,7 @@ module.exports = {
         //禁止不必要的分号
         "no-extra-semi": "warn",
         //强制使用一致的换行风格
-        "linebreak-style": ["warn", "windows"],
+        "linebreak-style": "off",
         //if while function 后面的{必须与if在同一行，java风格。
         "brace-style": ["warn", "1tbs", {"allowSingleLine": true}],
         //数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号

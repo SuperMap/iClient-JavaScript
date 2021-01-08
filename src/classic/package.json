@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-classic",
   "description": "",
-  "version": "10.1.0",
+  "version": "10.1.1",
   "keywords": [
     "SuperMap"
   ],
@@ -13,8 +13,8 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "mapv": "2.0.56",
-    "xlsx": "0.16.7",
-    "@supermap/iclient-common": "10.1.0"
+    "mapv": "2.0.62",
+    "xlsx": "0.16.8",
+    "@supermap/iclient-common": "10.1.1"
   }
 }

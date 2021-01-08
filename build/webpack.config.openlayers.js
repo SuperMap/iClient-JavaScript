@@ -31,6 +31,7 @@ var externals = [
 ];
 
 module.exports = {
+    target: configBase.target,
     mode: configBase.mode,
     //页面入口文件配置
     entry: configBase.entry,
@@ -48,7 +49,6 @@ module.exports = {
         rules: (function() {
             let moduleRules = [];
             moduleRules.push(configBase.module.rules.img);
-            moduleRules.push(configBase.module.rules.eslint);
             if (configBase.moduleVersion === 'es5') {
                 //打包为es5相关配置
                 moduleRules.push({

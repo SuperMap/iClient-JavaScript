@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 (function() {
@@ -138,13 +138,13 @@
             inputCSS('../../dist/leaflet/iclient-leaflet.min.css');
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS('https://iclient.supermap.io/web/libs/plotting/leaflet/10.1.0/iclient-plot-leaflet.css');
+            inputCSS('https://iclient.supermap.io/web/libs/plotting/leaflet/10.1.1/iclient-plot-leaflet.css');
             if (supportES6()) {
                 inputScript(
-                    'https://iclient.supermap.io/web/libs/plotting/leaflet/10.1.0/iclient-plot-leaflet-es6.min.js'
+                    'https://iclient.supermap.io/web/libs/plotting/leaflet/10.1.1/iclient-plot-leaflet-es6.min.js'
                 );
             } else {
-                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/10.1.0/iclient-plot-leaflet.min.js');
+                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/10.1.1/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
@@ -161,6 +161,10 @@
             inputCSS('../../dist/leaflet/iclient-leaflet-vue.css');
             inputScript('../../dist/leaflet/iclient-leaflet-vue.min.js');
         }
+        if (inArray(includes, 'leaflet-mapbox-gl')) {
+            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl-leaflet@0.0.14/leaflet-mapbox-gl.js');
+        }
+        
     }
 
     load();

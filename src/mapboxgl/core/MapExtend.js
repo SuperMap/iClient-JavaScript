@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -12,22 +12,25 @@ import '../core/Base';
 export var MapExtend = function () {
 
     mapboxgl.Map.prototype.overlayLayersManager = {};
-    mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
-    mapboxgl.Map.prototype.addLayer = function (layer, before) {
-        if (layer.source || layer.type === 'custom' || layer.type === "background") {
-            this.addLayerBak(layer, before);
+    if (mapboxgl.Map.prototype.addLayerBak === undefined) {
+        mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
+        mapboxgl.Map.prototype.addLayer = function (layer, before) {
+            if (layer.source || layer.type === 'custom' || layer.type === 'background') {
+                this.addLayerBak(layer, before);
+                return this;
+            }
+            if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
+                this.fire('error', {
+                    error: new Error('A layer with this id already exists.')
+                });
+                return;
+            }
+            addLayer(layer, this);
+            this.overlayLayersManager[layer.id] = layer;
             return this;
-        }
-        if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
-            this.fire('error', {
-                error: new Error('A layer with this id already exists.')
-            });
-            return;
-        }
-        addLayer(layer, this);
-        this.overlayLayersManager[layer.id] = layer;
-        return this;
-    };
+        };
+    }
+    
     mapboxgl.Map.prototype.getLayer = function (id) {
         if (this.overlayLayersManager[id]) {
             return this.overlayLayersManager[id];
@@ -78,8 +81,6 @@ export var MapExtend = function () {
     };
     mapboxgl.Map.prototype.updateTransform = function (units, originX, originY, centerX, centerY, width, height) {
         this.transform.units = units;
-        this.transform.latRange = [this._tileExtent[1], this._tileExtent[3]];
-        this.transform.lngRange = [this._tileExtent[0], this._tileExtent[2]];
         var mercatorZfromAltitude = this.mercatorZfromAltitude;
         mapboxgl.MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
             altitude = altitude || 0;

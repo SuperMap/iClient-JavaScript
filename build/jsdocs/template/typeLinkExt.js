@@ -64,7 +64,7 @@ var typeLinks = {
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
     "mapboxgl.Map": mbglapi + '#map',
-    "mapboxgl.LngLatbounds": mbglapi + '#lnglatbounds',
+    "mapboxgl.LngLatBounds": mbglapi + '#lnglatbounds',
     "mapboxgl.LngLat": mbglapi + '#lnglat',
     "mapboxgl.Point": mbglapi + '#point',
     //mapv

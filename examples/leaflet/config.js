@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * Leaflet 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -942,6 +942,12 @@ var exampleConfig = {
                         name_en: "natural style",
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
+                    }, {
+                        name: "MVT (叠加 MapboxGL)",
+                        name_en: "MVT (via MapboxGL)",
+                        version: '10.1.1',
+                        thumbnail: "l_mvt_mapboxgl.png",
+                        fileName: "mvt_mapboxgl"
                     }
                     // , {
                     //     name: "默认风格(MVT)",

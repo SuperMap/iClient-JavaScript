@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -349,8 +349,9 @@ export class Util {
      * @param {object} serviceOptions - 服务类需要的参数
      * @param {function} processCompleted - 成功请求的回调函数
      * @param {function} processFaild - 失败请求的回调函数
+     * @param {string | number} targetEpsgCode - 动态投影的目标坐标系对应的 EPSG Code
      */
-    static getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild) {
+    static getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode) {
         let getFeatureParam = new FilterParameter({
                 name: datasetNames.join().replace(':', '@')
                 // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131
@@ -361,7 +362,8 @@ export class Util {
                 fromIndex: 0,
                 toIndex: 100000,
                 maxFeatures: 100000,
-                returnContent: true
+                returnContent: true,
+                targetEpsgCode
             }),
             callback = (serviceResult) => {
                 if (serviceResult.type === 'processCompleted') {
@@ -446,6 +448,34 @@ export class Util {
         }
         return false;
     }
+
+    /**
+     * @function ol.supermap.Util.getHighestMatchAdministration
+     * @param {string} featureName 初始匹配的要素数组
+     * @param {string} fieldName 要匹配的地名
+     * @returns {boolean} 是否匹配
+     */
+    static getHighestMatchAdministration(features, fieldName) {
+        let filterFeatures = features.filter(item => {
+            return Util.isMatchAdministrativeName(item.properties.Name, fieldName);
+        })
+
+        let maxMatchPercent = 0, maxMatchFeature = null;
+        filterFeatures.forEach(feature => {
+            let count = 0;
+            Array.from(new Set(feature.properties.Name.split(''))).forEach((char) => {
+                if (fieldName.includes(char)) {
+                    count++;
+                }
+            });
+            if (count > maxMatchPercent) {
+                maxMatchPercent = count;
+                maxMatchFeature = feature;
+            }
+        });
+        return maxMatchFeature;
+    }
+
     /**
      * @function ol.supermap.Util.setMask
      * @description 为图层设置掩膜。
@@ -487,7 +517,7 @@ export class Util {
         Util.unsetMask(todoLayers);
         todoLayers.forEach((layer) => {
             layer.classNameBak_ = layer.className_;
-            layer.className_ = 'ol_mask_layer';
+            layer.className_ = `ol_mask_layer_${layer.ol_uid}`;
             layer.clipRender = clipRender;
             layer.extentBak_ = layer.getExtent();
             layer.setExtent(clipLayer.getSource().getExtent());
@@ -496,7 +526,7 @@ export class Util {
         });
     }
     /**
-     * @function ol.supermap.Util.setMask
+     * @function ol.supermap.Util.unsetMask
      * @description 取消图层掩膜。
      * @version 10.1.0
      * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层

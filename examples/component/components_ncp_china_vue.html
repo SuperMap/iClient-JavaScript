@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -12,18 +12,18 @@
         <div id="main">
             <sm-web-map :map-options="mapOptions" @load="mapLoaded" @click="mapClicked"></sm-web-map>
             <div id="group">
-                <a-radio-group class="radio-group" v-model="type" default-value="china-riskLevel" size="large">
-                    <a-radio-button value="china-riskLevel" data-i18n="resources.text_ncp_riskLevel"></a-radio-button>
-                    <a-radio-button
+                <sm-radio-group class="radio-group" v-model="type" default-value="china-riskLevel" size="large">
+                    <sm-radio-button value="china-riskLevel" data-i18n="resources.text_ncp_riskLevel"></sm-radio-button>
+                    <sm-radio-button
                         value="china-incrementConfirmed"
                         data-i18n="resources.text_ncp_incrementConfirmed"
-                    ></a-radio-button>
-                    <a-radio-button
+                    ></sm-radio-button>
+                    <sm-radio-button
                         value="china-nowConfirmed"
                         data-i18n="resources.text_ncp_nowConfirmed"
-                    ></a-radio-button>
-                    <a-radio-button value="china-incidence" data-i18n="resources.text_ncp_incidence"></a-radio-button>
-                </a-radio-group>
+                    ></sm-radio-button>
+                    <sm-radio-button value="china-incidence" data-i18n="resources.text_ncp_incidence"></sm-radio-button>
+                </sm-radio-group>
                 <br />
                 <sm-indicator :title="title" unit="" mode="horizontal" :num="num" font-size="44px" font-weight="400">
                 </sm-indicator>
@@ -42,7 +42,7 @@
         </div>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
         <script
-            include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            include="iclient-mapboxgl-vue,mapbox-gl-enhance"
             src="../../dist/mapboxgl/include-mapboxgl.js"
         ></script>
         <script src="../data/ncp/ProvinceData1M.js"></script>
@@ -59,7 +59,7 @@
                 top: 10px;
                 z-index: 1000;
             }
-            .ant-radio-button-wrapper {
+            .sm-component-radio-button-wrapper {
                 color: #fff;
                 background: #333333;
                 padding: 0px 10px;
@@ -78,8 +78,14 @@
             .mapboxgl-popup-tip {
                 display: none;
             }
-            .ant-radio-button-wrapper-checked:first-child {
-                color: #1890ff;
+            .sm-component-radio-button-wrapper-checked {
+                color: #0081e2 !important;
+                border-color: #0081e2 !important;
+                box-shadow: -1px 0 0 0 #0081e2 !important;
+                background: #333333 !important;
+            }
+            .sm-component-radio-button-wrapper:hover {
+                color: #0081e2;
             }
             @media screen and (max-width: 768px) {
                 .sm-component-count-to__numItem {
@@ -97,7 +103,7 @@
                 #group {
                     margin-top: 28px;
                 }
-                .ant-radio-group-large .ant-radio-button-wrapper {
+                .sm-component-radio-group-large .sm-component-radio-button-wrapper {
                     height: 32px;
                     line-height: 30px;
                     font-size: 14px;
@@ -312,7 +318,7 @@
                 created() {
                     SuperMap.Components.setTheme({
                         textColor: 'rgba(255, 255, 255, 0.85)',
-                        background: 'rgba(0, 0, 0,0)',
+                        background: 'rgba(0, 0, 0, 0)',
                         colorGroup: ['rgb(225, 2, 0)']
                     });
                     $.get(
@@ -372,8 +378,7 @@
                                                 [3, true]
                                             ]
                                         },
-                                        'text-letter-spacing': 0,
-                                        'text-max-width': 0
+                                        'text-letter-spacing': 0
                                     },
                                     paint: {
                                         'text-color': 'white',
