@@ -374,6 +374,14 @@ var exampleConfig = {
             thumbnail: 'components_border_vue.png',
             fileName: 'components_border_vue',
             localIgnore: true
+          },
+          {
+              name: '时间轴组件',
+              name_en: 'TimeLine Component',
+              version: '11.0.0',
+              thumbnail: 'components_time_line_vue.png',
+              fileName: 'components_time_line_vue',
+              localIgnore: true
           }
         ]
       },
