@@ -69,7 +69,7 @@
               <sm-text :title="chartTitle" :font-style='{ fontSize: "16px", textAlign: "center"}' text-color="#e9e9e9"></sm-text>
               <sm-chart icon-class="" v-bind="options" :dataset="dataset"  background="rgba(255, 255, 255, 0)"></sm-chart>
             </div>
-            <sm-time-line :data="data" :control-style="controlStyle" :checkpoint-style="controlStyle" :label="controlStyle"  @timelinechanged="timelineChanged" background="rgba(255, 255, 255, 0)"></sm-time-line>
+            <sm-time-line :data="data" :play-interval="2000" :control-style="controlStyle" :checkpoint-style="controlStyle" :label="controlStyle"  @timelinechanged="timelineChanged" background="rgba(255, 255, 255, 0)"></sm-time-line>
         </div>
 
         <script>
