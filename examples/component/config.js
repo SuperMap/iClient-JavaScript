@@ -152,6 +152,20 @@ var exampleConfig = {
             version: '10.0.1',
             thumbnail: 'components_layerManager_vue.png',
             fileName: 'components_layerManager_vue'
+          },
+          {
+            name: '指南针',
+            name_en: 'Compass',
+            version: '11.0.0',
+            thumbnail: 'components_compass_vue.png',
+            fileName: 'components_compass_vue'
+          },
+          {
+            name: '绘制',
+            name_en: 'Draw',
+            version: '11.0.0',
+            thumbnail: 'components_draw_vue.png',
+            fileName: 'components_draw_vue'
           }
         ]
       },

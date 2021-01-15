@@ -566,6 +566,8 @@ window.examplesResources = {
         "title_componentsMeasure_Vue": '量算组件',
         "title_componentsQuery_Vue": '查询组件',
         "title_componentsSearch_Vue": '搜索组件',
+        "title_componentsCompass_Vue": '指南针组件',
+        "title_componentsDraw_Vue": '绘制组件',
         "title_componentsTheme_Vue": '主题切换',
         "title_componentsDemo_Vue": '土地利用示例',
         "title_componentsEstateMonitoringPlatform_Vue": '房产项目可视化监控平台示例',

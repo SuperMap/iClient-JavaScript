@@ -620,6 +620,8 @@ window.examplesResources = {
         "title_componentsMeasure_Vue": 'Measure component(Vue)',
         "title_componentsQuery_Vue": 'Query component(Vue)',
         "title_componentsSearch_Vue": 'Search component(Vue)',
+        "title_componentsCompass_Vue": 'Compass component(Vue)',
+        "title_componentsDraw_Vue": 'Draw component(Vue)',
         "title_componentsTheme_Vue": 'Theme component',
         "title_componentsDemo_Vue": 'Landuse demo',
         "title_componentsEstateMonitoringPlatform_Vue": 'Estate project visual monitoring platform demo',
