@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,7 +22,6 @@
             left: 250px;
             right: 0px;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #plottingPanel {
@@ -43,10 +42,10 @@
 </div>
 <div id="map"></div>
 <script type="text/javascript" include="bootstrap-css,plottingPanel" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript" include="StylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
@@ -80,12 +79,12 @@
         var polygonPoints = [];
         polygonPoints.push(new L.latLng(-11.232812197819818,-52.28812080668847));
         polygonPoints.push(new L.latLng(18.852702842151643,-3.3455361848108325));
-        plottingLayer.createSymbol(22, 1003, polygonPoints,{symbolType:SuperMap.Plot.SymbolType.ALGOSYMBOL});
+        plottingLayer.createSymbol(22, 1003, polygonPoints);
 
         //标绘点标号
         var dotPoints = [];
         dotPoints.push(new L.latLng(19.86325625,6.679675));
-        plottingLayer.createSymbol(421, 9, dotPoints,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
+        plottingLayer.createSymbol(421, 9, dotPoints,{dScale:3});
     }
     function clearMap(){
         plottingLayer.removeAllFeatures();

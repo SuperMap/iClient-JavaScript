@@ -1,24 +1,17 @@
 import {TransferPathService} from '../../../src/common/iServer/TransferPathService';
 import {TransferPathParameters} from '../../../src/common/iServer/TransferPathParameters';
+import {FetchRequest} from "@supermap/iclient-common";
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
-var succeed = (event) => {
-    analystEventArgsSystem = event;
+var initTransferPathService = (url,succeed,failed) => {
+    return new TransferPathService(trafficTransferURL, {
+        eventListeners: {
+            "processCompleted": succeed,
+            "processFailed": failed
+        }
+    });
 };
-var failed = (event) => {
-    serviceFailedEventArgsSystem = event;
-};
-var options = {
-    eventListeners: {
-        "processCompleted": succeed,
-        "processFailed": failed
-    }
-};
-var initTransferPathService = () => {
-    return new TransferPathService(trafficTransferURL, options);
-};
-
 describe('TransferPathService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -27,6 +20,21 @@ describe('TransferPathService', () => {
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var transferPathService = new TransferPathService(trafficTransferURL, { headers: myHeaders });
+        expect(transferPathService).not.toBeNull();
+        expect(transferPathService.headers).not.toBeNull();
+        transferPathService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var transferPathService = new TransferPathService(trafficTransferURL, { crossOrigin: false });
+        expect(transferPathService).not.toBeNull();
+        expect(transferPathService.crossOrigin).toBeFalsy();
+        transferPathService.destroy();
     });
 
     it('processAsync_noParams', (done) => {
@@ -47,24 +55,15 @@ describe('TransferPathService', () => {
     });
 
     it('success:processAsync', (done) => {
-        var service = initTransferPathService();
-        var params = new TransferPathParameters({
-            transferLines: [
-                {"lineID": 27, "startStopIndex": 3, "endStopIndex": 4},
-                {"lineID": 12, "startStopIndex": 5, "endStopIndex": 9}
-            ],
-            points: [175, 164]
-        });
-        service.processAsync(params);
-
-        setTimeout(() => {
+        var succeed = (event) => {
+            analystEventArgsSystem = event;
             try {
                 var result = analystEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 expect(result.succeed).toBeTruthy();
                 expect(result.items.length).toBeGreaterThan(0);
-                expect(result.count).toEqual(4);
-                expect(result.totalDistance).toEqual(3732.3529872895324);
+                expect(result.count).toEqual(1);
+                expect(result.totalDistance).toBeCloseTo(3732.3529872895324);
                 service.destroy();
                 expect(service.events).toBeNull();
                 expect(service.eventListeners).toBeNull();
@@ -77,6 +76,23 @@ describe('TransferPathService', () => {
                 params.destroy();
                 done();
             }
-        }, 1500);
+        };
+        var failed = (event) => {
+            serviceFailedEventArgsSystem = event;
+        };
+        var service = initTransferPathService(trafficTransferURL,succeed,failed);
+        var params = new TransferPathParameters({
+            transferLines: [
+                {"lineID": 27, "startStopIndex": 3, "endStopIndex": 4},
+                {"lineID": 12, "startStopIndex": 5, "endStopIndex": 9}
+            ],
+            points: [175, 164]
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(trafficTransferURL+"/path");
+            return Promise.resolve(new Response(JSON.stringify(transferPathServiceResult)));
+        });
+        service.processAsync(params);
     })
 });

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -67,7 +67,7 @@ export class Logo {
                 styleSize = "";
             }
         }
-        var link = this.link || "http://iclient.supermap.io";
+        var link = this.link || "https://iclient.supermap.io";
         this._container.innerHTML = "<a href='" + link + "' target='_blank'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
         this._createStyleSheet();

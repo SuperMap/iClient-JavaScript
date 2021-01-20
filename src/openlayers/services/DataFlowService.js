@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {ServiceBase} from './ServiceBase';
 import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 
@@ -18,9 +17,11 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {string} url - 与客户端交互的数据流服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  */
 export class DataFlowService extends ServiceBase {
@@ -36,11 +37,11 @@ export class DataFlowService extends ServiceBase {
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
             "broadcastFailed": this._defaultEvent,
-            "broadcastSuccessed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
             "subscribeSocketConnected": this._defaultEvent,
             "subscribeSocketError": this._defaultEvent,
-            "messageSuccessed": this._defaultEvent,
-            "setFilterParamSuccessed": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
             scope: this
         });
     }
@@ -87,7 +88,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -115,4 +116,3 @@ export class DataFlowService extends ServiceBase {
         this.dispatchEvent({type: e.eventType || e.type, value: e});
     }
 }
-ol.supermap.DataFlowService = DataFlowService;

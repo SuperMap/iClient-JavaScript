@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
-import {FacilityAnalystStreamParameters} from './FacilityAnalystStreamParameters';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
+import { FacilityAnalystStreamParameters } from './FacilityAnalystStreamParameters';
 
 /**
  * @class SuperMap.FacilityAnalystStreamService
@@ -15,6 +16,8 @@ import {FacilityAnalystStreamParameters} from './FacilityAnalystStreamParameters
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 
@@ -42,16 +45,13 @@ export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
         if (!(params instanceof FacilityAnalystStreamParameters)) {
             return;
         }
-        var me = this, jsonObject;
-        var end = me.url.substr(me.url.length - 1, 1);
-
+        var me = this,
+            jsonObject;
         //URL 通过参数类型来判断是 上游 还是下游 查询
         if (params.queryType === 0) {
-            me.url = me.url + ((end === "/") ? "upstreamcirticalfaclilities" :
-                "/upstreamcirticalfaclilities") + ".json?";
+            me.url = Util.urlPathAppend(me.url, 'upstreamcirticalfaclilities');
         } else if (params.queryType === 1) {
-            me.url = me.url + ((end === "/") ? "downstreamcirticalfaclilities" :
-                "/downstreamcirticalfaclilities") + ".json?";
+            me.url = Util.urlPathAppend(me.url, 'downstreamcirticalfaclilities');
         } else {
             return;
         }

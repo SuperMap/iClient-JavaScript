@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
@@ -11,7 +11,8 @@ import {
     SetLayerStatusService,
     SetLayerStatusParameters,
     SetLayerInfoParameters,
-    SetLayersInfoParameters
+    SetLayersInfoParameters,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -26,8 +27,10 @@ import {
  * @param {string} url - 与服务端交互的地图服务地址。请求地图服务 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export var LayerInfoService = ServiceBase.extend({
 
@@ -36,7 +39,7 @@ export var LayerInfoService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.layerInfoService.prototype.getLayerInfo
+     * @function L.supermap.layerInfoService.prototype.getLayersInfo
      * @description 获取图层信息。
      * @param {RequestCallback} callback - 获取信息完成后的回调函数。
      */
@@ -45,6 +48,8 @@ export var LayerInfoService = ServiceBase.extend({
         var getLayersInfoService = new GetLayersInfoService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -71,12 +76,13 @@ export var LayerInfoService = ServiceBase.extend({
         if (!resourceID || !tempLayerName) {
             return;
         }
-        var url = me.url.concat();
-        url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
+        var url = CommonUtil.urlPathAppend(me.url,`tempLayersSet/${resourceID}/${tempLayerName}`);
 
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -108,6 +114,8 @@ export var LayerInfoService = ServiceBase.extend({
         var setLayersInfoService = new SetLayersInfoService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -135,6 +143,8 @@ export var LayerInfoService = ServiceBase.extend({
         var setLayerStatusService = new SetLayerStatusService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

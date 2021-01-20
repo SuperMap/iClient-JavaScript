@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -15,9 +15,11 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
  * @classdesc 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
  * 表面分析结果通过该类支持的事件的监听函数参数获取
+ * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -72,25 +74,23 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
      * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {
-        var jsonParameters = "";
+        var jsonParameters = '';
         var parameterObject = {};
-        var me = this, end;
+        var me = this;
         if (params instanceof DatasetSurfaceAnalystParameters) {
-            end = me.url.substr(me.url.length - 1, 1);
-            me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
-                params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
+            me.url = Util.urlPathAppend(
+                me.url,
+                'datasets/' + params.dataset + '/' + params.surfaceAnalystMethod.toLowerCase()
+            );
             DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
             jsonParameters = Util.toJSON(parameterObject);
         } else if (params instanceof GeometrySurfaceAnalystParameters) {
-            end = me.url.substr(me.url.length - 1, 1);
-            me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true";
+            me.url = Util.urlPathAppend(me.url, 'geometry/' + params.surfaceAnalystMethod.toLowerCase());
             jsonParameters = Util.toJSON(params);
         } else {
             return;
         }
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         return jsonParameters;
     }
 }

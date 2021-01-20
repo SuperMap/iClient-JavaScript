@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -20,6 +20,7 @@ export class SecurityManager {
 
     /**
      * @description 从服务器获取一个token,在此之前要注册服务器信息。
+     * @function SuperMap.SecurityManager.generateToken
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @param {SuperMap.TokenServiceParameter} tokenParam - token 申请参数。
      * @returns {Promise} 返回包含 token 信息的 Promise 对象。
@@ -37,6 +38,7 @@ export class SecurityManager {
 
     /**
      * @description 注册安全服务器相关信息。
+     * @function SuperMap.SecurityManager.registerServers
      * @param {SuperMap.ServerInfo} serverInfos - 服务器信息。
      */
     static registerServers(serverInfos) {
@@ -52,6 +54,7 @@ export class SecurityManager {
 
     /**
      * @description 服务请求都会自动带上这个 token。
+     * @function SuperMap.SecurityManager.registerToken
      * @param {string} url -服务器域名+端口：如http://localhost:8090。
      * @param {string} token - token
      */
@@ -66,6 +69,7 @@ export class SecurityManager {
 
     /**
      * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
+     * @function SuperMap.SecurityManager.registerKey
      * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
      * @param {string} key - key
      */
@@ -84,6 +88,7 @@ export class SecurityManager {
 
     /**
      * @description 获取服务器信息。
+     * @function SuperMap.SecurityManager.getServerInfo
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @returns {SuperMap.ServerInfo} 服务器信息。
      */
@@ -94,6 +99,7 @@ export class SecurityManager {
 
     /**
      * @description 根据 Url 获取token。
+     * @function SuperMap.SecurityManager.getToken
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @returns {string} token
      */
@@ -108,6 +114,7 @@ export class SecurityManager {
 
     /**
      * @description 根据 Url 获取 key。
+     * @function SuperMap.SecurityManager.getKey
      * @param {string} id - id
      * @returns {string} key
      */
@@ -119,6 +126,7 @@ export class SecurityManager {
 
     /**
      * @description iServer 登录验证。
+     * @function SuperMap.SecurityManager.loginiServer
      * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
@@ -126,8 +134,7 @@ export class SecurityManager {
      * @returns {Promise} 返回包含 iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
+        url = Util.urlPathAppend(url, 'services/security/login');
         var loginInfo = {
             username: username && username.toString(),
             password: password && password.toString(),
@@ -147,13 +154,12 @@ export class SecurityManager {
 
     /**
      * @description iServer登出。
+     * @function SuperMap.SecurityManager.logoutiServer
      * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
      * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/logout" : "/services/security/logout";
-
+        url = Util.urlPathAppend(url, 'services/security/logout');
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -170,6 +176,7 @@ export class SecurityManager {
 
     /**
      * @description Online 登录验证。
+     * @function SuperMap.SecurityManager.loginOnline
      * @param {string} callbackLocation - 跳转位置。
      * @param {boolean} [newTab=true] - 是否新窗口打开。
      */
@@ -180,14 +187,14 @@ export class SecurityManager {
 
     /**
      * @description iPortal登录验证。
-     * @param {string} url - iportal 首页地址。
+     * @function SuperMap.SecurityManager.loginiPortal
+     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login.json" : "/web/login.json";
+        url = Util.urlPathAppend(url, 'web/login');
         var loginInfo = {
             username: username && username.toString(),
             password: password && password.toString()
@@ -207,13 +214,12 @@ export class SecurityManager {
 
     /**
      * @description iPortal 登出。
-     * @param {string} url - iportal 首页地址。
+     * @function SuperMap.SecurityManager.logoutiPortal
+     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/logout" : "/services/security/logout";
-
+        url = Util.urlPathAppend(url, 'services/security/logout');
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -231,6 +237,7 @@ export class SecurityManager {
 
     /**
      * @description iManager 登录验证。
+     * @function SuperMap.SecurityManager.loginManager
      * @param {string} url - iManager 地址。地址参数为 iManager 首页地址，如： http://localhost:8390/imanager。
      * @param {Object} [loginInfoParams] - iManager 登录参数。
      * @param {string} loginInfoParams.userName - 用户名。
@@ -245,8 +252,7 @@ export class SecurityManager {
             this._open(url, isNewTab);
             return;
         }
-        var end = url.substr(url.length - 1, 1);
-        var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
+        var requestUrl = Util.urlPathAppend(url, 'icloud/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),
@@ -270,6 +276,7 @@ export class SecurityManager {
 
     /**
      * @description 清空全部验证信息。
+     * @function SuperMap.SecurityManager.destroyAllCredentials
      */
     static destroyAllCredentials() {
         this.keys = null;
@@ -279,6 +286,8 @@ export class SecurityManager {
 
     /**
      * @description 清空令牌信息。
+     * @function SuperMap.SecurityManager.destroyToken
+     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
      */
     static destroyToken(url) {
         if (!url) {
@@ -293,13 +302,15 @@ export class SecurityManager {
 
     /**
      * @description 清空服务授权码。
+     * @function SuperMap.SecurityManager.destroyKey
+     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
      */
-    static destroyKey(id) {
-        if (!id) {
+    static destroyKey(url) {
+        if (!url) {
             return;
         }
         this.keys = this.keys || {};
-        var key = this._getUrlRestString(id) || id;
+        var key = this._getUrlRestString(url) || url;
         if (this.keys[key]) {
             delete this.keys[key];
         }
@@ -333,7 +344,8 @@ export class SecurityManager {
         if (!url) {
             return url;
         }
-        var patten = /http:\/\/(.*\/rest)/i;
+        // var patten = /http:\/\/(.*\/rest)/i;
+        var patten = /(http|https):\/\/(.*\/rest)/i;
         var result = url.match(patten);
         if (!result) {
             return url;
@@ -344,6 +356,6 @@ export class SecurityManager {
 SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager;
 

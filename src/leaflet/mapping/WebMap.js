@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -68,12 +68,12 @@ import Attributions from '../core/Attributions'
  * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 可选参数。
  * @param {string} [options.map='map'] - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
  * @fires L.supermap.webmap#mapLoaded
  * @fires L.supermap.webmap#coordconvertsuccess
  * @fires L.supermap.webmap#coordconvertfailed
@@ -85,7 +85,7 @@ export var WebMap = L.LayerGroup.extend({
 
     options: {
         map: 'map',
-        server: 'http://www.supermapol.com',
+        server: 'https://www.supermapol.com',
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
@@ -504,7 +504,7 @@ export var WebMap = L.LayerGroup.extend({
                 coordsToLatLng: coordsToLatLng,
                 style: function (geoJsonFeature) {
                     let lStyle = me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
-                    if (lStyle.dashArray && lStyle.dashArray.length == 0) {
+                    if (lStyle && lStyle.dashArray && lStyle.dashArray.length == 0) {
                         lStyle.dashArray = null;
                     }
                     return lStyle;
@@ -906,7 +906,7 @@ export var WebMap = L.LayerGroup.extend({
                 }
                 layer.setLatLngs(heatPoints);
             } else if (layer instanceof L.GeoJSON) {
-                layer.addData(JSON.parse(new GeoJSONFormat().write(features)));
+                layer.addData(new GeoJSONFormat().toGeoJSON(features));
             } else {
                 layer.addFeatures(features);
             }

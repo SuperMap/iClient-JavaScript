@@ -1,0 +1,20 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html style="  width: 100%;height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_iportalWebMap_range"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include='convert,jsonsql,canvg,geostats,mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height: 100%">
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript">
+    new mapboxgl.supermap.WebMap(491609698 ,{
+		target:'map',
+		server:'https://iportal.supermap.io/iportal'
+    });
+</script>
+</body>

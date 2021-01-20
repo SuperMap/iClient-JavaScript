@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -27,9 +27,9 @@
 <div id="map"></div>
 <script>
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
         var dataUrl = host + "/iserver/services/data-world/rest/data";
 
@@ -87,7 +87,7 @@
             });
             map.on('click', 'queryDatas', function (e) {
                 new mapboxgl.Popup()
-                    .setLngLat(e.features[0].geometry.center)
+                    .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.SMID + "<br>" + resources.text_country + "：" + e.features[0].properties.COUNTRY)
                     .addTo(map);
             });

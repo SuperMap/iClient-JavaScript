@@ -2,45 +2,51 @@ import mapboxgl from 'mapbox-gl';
 import {
     DataFlowService
 } from '../../../src/mapboxgl/services/DataFlowService';
-import {
-    SecurityManager
-} from '../../../src/common/security/SecurityManager';
 
-var wsHost = "ws:\//" + "54.223.164.155:8800";
-var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
+
+import { Server } from 'mock-socket';
+var urlDataFlow = "ws:\//localhost:8003/";
 describe('mapboxgl_DataFlowService', () => {
     var originalTimeout;
-    var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
+    var service;
+    var mockServer = new Server(urlDataFlow);
     beforeAll(() => {
-        SecurityManager.registerToken(urlDataFlow, token);
+        var e = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [0, 0]
+            },
+            "properties": {
+                "id": 1
+            }
+        };
+        mockServer.on('connection', socket => {
+            socket.on('message', () => {
+                console.log("onmessage");
+            });
+            socket.on('close', () => { });
+            socket.send(JSON.stringify(e));
+            socket.close();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        service = null;
 
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        if (service) {
+            service.unSubscribe();
+            service.unBroadcast();
+        }
     });
-
-    /* it('initSubscribe', (done) => {
-        var initSubscribeMsg;
-        var service = new DataFlowService(urlDataFlow);
-        service.initSubscribe();
-        service.on('messageSuccessed', (msg) => {
-            initSubscribeMsg = msg;
-            try {
-                expect(service).not.toBeNull();
-                expect(initSubscribeMsg).not.toBeNull();
-                done();
-            } catch (e) {
-                console.log("'initSubscribe'案例失败" + e.name + ":" + e.message);
-                expect(false).toBeTruthy();
-                done();
-            }
-        })
-    }); */
-
+    afterAll(() => {
+        mockServer.stop();
+        mockServer = null;
+    });
 
     it('broadcast_Point', (done) => {
         var broadcast_Point = (flowService) => {
@@ -50,7 +56,7 @@ describe('mapboxgl_DataFlowService', () => {
                     type: "Point"
                 },
                 id: 1,
-                type: "Featur\e",
+                type: "Feature",
                 properties: {
                     id: 1,
                     time: new Date()
@@ -58,7 +64,7 @@ describe('mapboxgl_DataFlowService', () => {
             };
             flowService.broadcast(feature);
         }
-        var service;
+
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -68,7 +74,7 @@ describe('mapboxgl_DataFlowService', () => {
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
                 expect(dataFlow.EVENT_TYPES.length).toEqual(8);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
-                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
+                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "broadcast");
                 timer = window.setInterval(broadcast_Point(service), 1000);
             });
             setTimeout(() => {
@@ -78,10 +84,6 @@ describe('mapboxgl_DataFlowService', () => {
         } finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
             }
         }
     });
@@ -107,7 +109,7 @@ describe('mapboxgl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
-        var service;
+
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -123,10 +125,7 @@ describe('mapboxgl_DataFlowService', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
+
         }
     });
 
@@ -154,7 +153,7 @@ describe('mapboxgl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
-        var service;
+
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -171,10 +170,6 @@ describe('mapboxgl_DataFlowService', () => {
         } finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
             }
         }
     });
@@ -212,7 +207,7 @@ describe('mapboxgl_DataFlowService', () => {
             };
             flowService.broadcast(feature);
         }
-        var service;
+
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -230,28 +225,23 @@ describe('mapboxgl_DataFlowService', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
         }
     });
 
     // 设置设置排除字段。
-    /* it('setExcludeField', (done) => {
+    it('initSubscribe,setExcludeField', (done) => {
+        var socket = new WebSocket(urlDataFlow);
         var service = new DataFlowService(urlDataFlow);
-        service.setExcludeField("id"); 
-        service.on('subscribeSuccessed', (e) => {
-            service.setExcludeField("id"); 
-            try {
-                expect(service).not.toBeNull();
-                expect(service.options.excludeField).not.toBeNull();
-                done();
-            } catch(e) {
-                console.log("'setExcludeField'案例失败" + e.name + ":" + e.message);
-                expect(false).toBeTruthy();
-                done();
-            }
+        spyOn(service.dataFlow, '_connect').and.callFake(() => {
+            return socket;
         });
-    }); */
+        spyOn(socket, "send").and.callFake(() => {
+        });
+        service.initSubscribe();
+        setTimeout(() => {
+            service.setExcludeField("id");
+            expect(service).not.toBeNull();
+            done();
+        }, 4000)
+});
 });

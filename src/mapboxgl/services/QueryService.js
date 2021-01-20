@@ -1,12 +1,15 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {Util} from '../core/Util';
-import {ServiceBase} from './ServiceBase';
+import { Util } from '../core/Util';
+import { ServiceBase } from './ServiceBase';
 import {
-    Bounds, Geometry, GeometryPoint, DataFormat,
+    Bounds,
+    Geometry,
+    GeometryPoint,
+    DataFormat,
     QueryByBoundsService,
     QueryByDistanceService,
     QueryBySQLService,
@@ -19,11 +22,13 @@ import {
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
  * @extends {mapboxgl.supermap.ServiceBase}
- * @param {string} url - 地图查询服务访问地址。 
- * @param {Object} options - 服务交互时所需的可选参数。 
+ * @param {string} url - 地图查询服务访问地址。
+ * @param {Object} options - 服务交互时所需的可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @example
  * new mapboxgl.supermap.QueryService(url)
  * .queryByBounds(param,function(result){
@@ -31,7 +36,6 @@ import {
  * })
  */
 export class QueryService extends ServiceBase {
-
     constructor(url, options) {
         super(url, options);
     }
@@ -48,6 +52,8 @@ export class QueryService extends ServiceBase {
         var queryService = new QueryByBoundsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73,6 +79,8 @@ export class QueryService extends ServiceBase {
         var queryByDistanceService = new QueryByDistanceService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -97,6 +105,8 @@ export class QueryService extends ServiceBase {
         var queryBySQLService = new QueryBySQLService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -121,6 +131,8 @@ export class QueryService extends ServiceBase {
         var queryByGeometryService = new QueryByGeometryService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -133,24 +145,17 @@ export class QueryService extends ServiceBase {
         queryByGeometryService.processAsync(me._processParams(params));
     }
 
-
     _processParams(params) {
-
         if (!params) {
             return {};
         }
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        params.returnContent = params.returnContent == null ? true : params.returnContent;
         if (params.queryParams && !Util.isArray(params.queryParams)) {
             params.queryParams = [params.queryParams];
         }
         if (params.bounds) {
             if (params.bounds instanceof Array) {
-                params.bounds = new Bounds(
-                    params.bounds[0],
-                    params.bounds[1],
-                    params.bounds[2],
-                    params.bounds[3]
-                );
+                params.bounds = new Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
             }
             if (params.bounds instanceof mapboxgl.LngLatBounds) {
                 params.bounds = new Bounds(
@@ -160,11 +165,9 @@ export class QueryService extends ServiceBase {
                     params.bounds.getNorthEast().lat
                 );
             }
-
         }
 
         if (params.geometry) {
-
             if (params.geometry instanceof mapboxgl.LngLat) {
                 params.geometry = new GeometryPoint(params.geometry.lng, params.geometry.lat);
             }
@@ -173,8 +176,11 @@ export class QueryService extends ServiceBase {
                 params.geometry = new GeometryPoint(params.geometry.x, params.geometry.y);
             }
 
-            if (!(params.geometry instanceof Geometry)) {
+            if (params.geometry instanceof mapboxgl.LngLatBounds) {
+                params.geometry = Util.toSuperMapPolygon(params.geometry);
+            }
 
+            if (!(params.geometry instanceof Geometry)) {
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
         }
@@ -182,7 +188,7 @@ export class QueryService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 }
 

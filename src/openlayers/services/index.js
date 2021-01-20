@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 export {AddressMatchService} from './AddressMatchService';
@@ -7,6 +7,7 @@ export {DataFlowService} from './DataFlowService';
 export {FeatureService} from './FeatureService';
 export {FieldService} from './FieldService';
 export {GridCellInfosService} from './GridCellInfosService';
+export {GeoprocessingService} from './GeoprocessingService';
 export {LayerInfoService} from './LayerInfoService';
 export {MapService} from './MapService';
 export {MeasureService} from './MeasureService';
@@ -18,3 +19,4 @@ export {ServiceBase} from './ServiceBase';
 export {SpatialAnalystService} from './SpatialAnalystService';
 export {ThemeService} from './ThemeService';
 export {TrafficTransferAnalystService} from './TrafficTransferAnalystService';
+export {WebPrintingJobService} from './WebPrintingJobService';

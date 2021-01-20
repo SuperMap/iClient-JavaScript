@@ -1,0 +1,55 @@
+
+[
+    {
+        "id": "SalesJan2009",
+        "fileName": "SalesJan2009",
+        "xField": "Longitude",
+        "yField": "Latitude",
+        "type": "POINT"
+    },
+    {
+        "id": "Sacramentorealestatetransactions",
+        "fileName": "Ealestate transactions",
+        "xField": "longitude",
+        "yField": "latitude",
+        "type": "POINT"
+    },
+    {
+        "id": "BeijingResidentialDistrict",
+        "fileName": "北京市住宅小区",
+        "xField": "SmX",
+        "yField": "SmY",
+        "type": "POINT"
+    },
+    {
+        "id": "GlobalRecordOfOver7Earthquakes",
+        "fileName": "全球历史7级以上地震记录",
+        "xField": "经度",
+        "yField": "纬度",
+        "type": "POINT"
+    },
+    {
+        "id": "ChinaRecordOfOver6Earthquakes",
+        "fileName": "中国历史6级以上地震记录",
+        "xField": "经度",
+        "yField": "纬度",
+        "type": "POINT"
+    },
+    {
+        "id": "ChinaMeteorologicalObservationStation",
+        "fileName": "中国气象观测站",
+        "xField": "经度",
+        "yField": "纬度",
+        "type": "POINT"
+    },
+    {
+        "id": "BeijingSubwayLine",
+        "fileName": "北京市地铁交通线路",
+        "type": "LINE"
+    },
+    {
+        "id": "ChinaEarthquakeIntensityZone",
+        "fileName": "中国地震烈度区划面",
+        "type": "POLYGON"
+    }
+]

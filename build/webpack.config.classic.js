@@ -6,6 +6,7 @@ const productName = "iclient-classic";
 
 
 module.exports = {
+    target: configBase.target,
     mode: configBase.mode,
     //页面入口文件配置
     entry: configBase.entry,
@@ -17,18 +18,22 @@ module.exports = {
     performance: configBase.performance,
     //其它解决方案配置
     resolve: configBase.resolve,
-    externals: Object.assign({}, configBase.externals),
+    externals: Object.assign({}, configBase.externals, {
+        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()",
+        'canvg': "function(){try{return canvg}catch(e){return {}}}()",
+        'jsonsql': "function(){try{return jsonsql}catch(e){return {}}}()",
+        'xml-js': "function(){try{return convert}catch(e){return {}}}()"
+    }),
     module: {
         rules: (function () {
             let moduleRules = [];
-            moduleRules.push(configBase.module.rules.eslint);
             if (configBase.moduleVersion === "es5") {
                 //打包为es5相关配置
                 moduleRules.push({
                     test: /\.js/,
                     loader: 'babel-loader',
-                    query: {
-                        presets: ['es2015']
+                    options: {
+                        presets: ['@babel/preset-env']
                     }
                 });
 

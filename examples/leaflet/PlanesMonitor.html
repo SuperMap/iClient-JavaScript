@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,9 @@
         .bootstrap-select {
             width: 168px !important;
         }
-
+        .form-control.input-sm {
+            width: 166px;
+        }
         .form-group label {
             width: 100px;
         }
@@ -24,7 +26,7 @@
     </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;"></div>
 <script type="text/javascript" include="mapv,elasticsearch" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var map;
@@ -37,7 +39,7 @@
         liveDataSet,//渲染用实时点数据集
         planeStyles,
         planeLabels,//航班信息提示框集合
-        dataUrl = "http://iclsvr.supermap.io/es";
+        dataUrl = "https://iclient.supermap.io/es";
 
     var flightIdens = [
         'CCA4189', 'CCA4187', 'CBJ5531', 'CSC8747', 'TBA9879',
@@ -280,14 +282,15 @@
         $.ajaxSetup({
             async: false
         });
-        flightIdens.map(function (ident, key) {
-            var svgUrl = "data:image/svg+xml;utf8,";
+        var count = flightIdens.length;
+        
             $.get('../data/plane.svg', function (svg) {
-                $(svg).children('svg').children('path').attr('fill', colors[key]);
-                svgUrl += $(svg).children('svg')[0].outerHTML;
-                var img = new Image();
-                img.src = svgUrl;
-                planes[ident] = {color: colors[key], img: img};
+                flightIdens.map(function (ident, key) {
+                    $(svg).children('svg').css("fill",colors[key]);
+                    var svgUrl= "data:image/svg+xml;utf8,"+$(svg).children('svg')[0].outerHTML;
+                    var img = new Image();
+                    img.src = svgUrl;
+                    planes[ident] = {color: colors[key], img: img};
             });
         });
         return planes;
@@ -352,7 +355,7 @@
                 zoom: 7
             });
             var attr = 'Data © <a href="https://www.elastic.co/products/elasticsearch" target="_blank">Elasticsearch</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span>';
-            var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+            var host = window.isLocal ? window.server : "https://iserver.supermap.io";
             var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
             L.supermap.tiledMapLayer(url, {attribution: attr}).addTo(map);
         }

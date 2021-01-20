@@ -7,29 +7,17 @@ import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
 import {GeometryType} from '../../../src/common/REST';
 import {QueryOption} from '../../../src/common/REST';
 import {SpatialQueryMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+var initQueryByGeometryService = (url,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted) => {
+    return new QueryByGeometryService(url,{
+        eventListeners: {
+            'processFailed': QueryByGeometryServiceFailed,
+            'processCompleted': QueryByGeometryServiceCompleted
+        }
+    });
 };
-var initQueryByGeometryService = () => {
-    return new QueryByGeometryService(worldMapURL);
-};
-var options = {
-    eventListeners: {
-        'processFailed': QueryByGeometryServiceFailed,
-        'processCompleted': QueryByGeometryServiceCompleted
-    }
-};
-//服务初始化时注册事件监听函数
-var initQueryByGeometryService_RegisterListener = () => {
-    return new QueryByGeometryService(worldMapURL, options);
-};
-
 describe('QueryByGeometryService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -42,10 +30,34 @@ describe('QueryByGeometryService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', () => {
-        var queryByGeometryService = initQueryByGeometryService();
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var queryByGeometryService = new QueryByGeometryService(GlobeParameter.mapServiceURL + "World Map", { headers: myHeaders });
         expect(queryByGeometryService).not.toBeNull();
-        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults.json?");
+        expect(queryByGeometryService.headers).not.toBeNull();
+        queryByGeometryService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var queryByGeometryService = new QueryByGeometryService(GlobeParameter.mapServiceURL + "World Map", { crossOrigin: false });
+        expect(queryByGeometryService).not.toBeNull();
+        expect(queryByGeometryService.crossOrigin).toBeFalsy();
+        queryByGeometryService.destroy();
+    });
+
+    it('constructor, destroy', () => {
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+        };
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
+        expect(queryByGeometryService).not.toBeNull();
+        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults");
+        expect(queryByGeometryService).not.toBeNull();
+        expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults");
         queryByGeometryService.destroy();
         expect(queryByGeometryService.EVENT_TYPES).toBeNull();
         expect(queryByGeometryService.events).toBeNull();
@@ -53,7 +65,31 @@ describe('QueryByGeometryService', () => {
     });
 
     it('processAsync_returnContent:false', (done) => {
-        var queryByGeometryService = initQueryByGeometryService_RegisterListener();
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+            try {
+                var queryResult = serviceCompletedEventArgsSystem.result;
+                expect(queryResult).not.toBeNull();
+                expect(queryResult.succeed).toBeTruthy();
+                expect(queryResult.newResourceLocation).not.toBeNull();
+                expect(queryResult.newResourceLocation.length).toBeGreaterThan(0);
+                expect(queryResult.newResourceID).not.toBeNull();
+                queryByGeometryService.destroy();
+                queryByGeometryParameters.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("QueryByGeometryService_" + exception.name + ":" + exception.message);
+                queryByGeometryService.destroy();
+                queryByGeometryParameters.destroy();
+                done();
+            }
+        };
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
         var points = [new Point(-90, -45),
             new Point(90, -45),
             new Point(90, 45),
@@ -76,16 +112,31 @@ describe('QueryByGeometryService', () => {
         });
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;20");
+            expect(paramsObj.queryParameters.expectCount).toEqual(3);
+            expect(paramsObj.queryParameters.customParams).toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6.json"}`));
+        });
         queryByGeometryService.processAsync(queryByGeometryParameters);
+    });
 
-        setTimeout(() => {
+    it('processAsync_returnContent:true', (done) => {
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
             try {
-                var queryResult = serviceCompletedEventArgsSystem.result;
+                var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
-                expect(queryResult.succeed).toBeTruthy();
-                expect(queryResult.newResourceLocation).not.toBeNull();
-                expect(queryResult.newResourceLocation.length).toBeGreaterThan(0);
-                expect(queryResult.newResourceID).not.toBeNull();
+                expect(queryResult.type).toBe("FeatureCollection");
+                expect(queryResult.features.length).toEqual(1);
                 queryByGeometryService.destroy();
                 queryByGeometryParameters.destroy();
                 done();
@@ -96,11 +147,8 @@ describe('QueryByGeometryService', () => {
                 queryByGeometryParameters.destroy();
                 done();
             }
-        }, 2000);
-    });
-
-    it('processAsync_returnContent:true', (done) => {
-        var queryByGeometryService = initQueryByGeometryService_RegisterListener();
+        };
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
         var points = [
             new Point(-90, -45),
             new Point(90, -45),
@@ -125,48 +173,24 @@ describe('QueryByGeometryService', () => {
         });
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;20");
+            expect(paramsObj.queryParameters.expectCount).toEqual(10);
+            expect(paramsObj.queryParameters.customParams).toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
         queryByGeometryService.processAsync(queryByGeometryParameters);
-        setTimeout(() => {
-            try {
-                var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
-                expect(queryResult).not.toBeNull();
-                expect(queryResult.type).toBe("FeatureCollection");
-                expect(queryResult.features.length).toEqual(10);
-                queryByGeometryService.destroy();
-                queryByGeometryParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("QueryByGeometryService_" + exception.name + ":" + exception.message);
-                queryByGeometryService.destroy();
-                queryByGeometryParameters.destroy();
-                done();
-            }
-        }, 2000);
     });
 
     //查询参数为空
     it('fail:processAsync', (done) => {
-        var queryByGeometryService = initQueryByGeometryService_RegisterListener();
-        var queryByGeometryParameters = new QueryByGeometryParameters({
-            customParams: null,
-            expectCount: 100,
-            networkType: GeometryType.POINT,
-            queryOption: QueryOption.ATTRIBUTE,
-            spatialQueryMode: SpatialQueryMode.OVERLAP,
-            queryParams: new Array(),
-            geometry: new Point(-50, -20)
-        });
-        queryByGeometryParameters.startRecord = 0;
-        queryByGeometryParameters.holdTime = 10;
-        queryByGeometryService.events.on({'processFailed': queryFailed});
-        queryByGeometryService.processAsync(queryByGeometryParameters);
-
-        var queryFailed = (e) => {
-            failedResult = e;
-        }
-
-        setTimeout(() => {
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -182,7 +206,33 @@ describe('QueryByGeometryService', () => {
                 queryByGeometryParameters.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+        };
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
+        var queryByGeometryParameters = new QueryByGeometryParameters({
+            customParams: null,
+            expectCount: 100,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            spatialQueryMode: SpatialQueryMode.OVERLAP,
+            queryParams: new Array(),
+            geometry: new Point(-50, -20)
+        });
+        queryByGeometryParameters.startRecord = 0;
+        queryByGeometryParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(100);
+            expect(paramsObj.queryParameters.customParams).toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
+        });
+        queryByGeometryService.processAsync(queryByGeometryParameters);
+
     })
 });
 

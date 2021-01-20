@@ -1,24 +1,32 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ServerType} from '../REST';
-import {SecurityManager} from '../security/SecurityManager';
-import {Credential} from '../commontypes/Credential';
-import {FetchRequest} from '../util/FetchRequest';
+import { SuperMap } from '../SuperMap';
+import { ServerType } from '../REST';
+import { SecurityManager } from '../security/SecurityManager';
+import { Credential } from '../commontypes/Credential';
+import { FetchRequest } from '../util/FetchRequest';
 
 /**
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal 服务基类（有权限限制的类需要实现此类）。
  * @category iPortal/Online
  * @param {string} url - iPortal 服务地址。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class IPortalServiceBase {
 
-    constructor(url) {
+    constructor(url, options) {
+        options = options || {};
         this.serviceUrl = url;
         this.serverType = ServerType.iPortal;
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
+        this.withCredentials = options.withCredentials || false;
+        this.crossOrigin = options.crossOrigin
+        this.headers = options.headers
     }
 
     /**
@@ -31,7 +39,7 @@ export class IPortalServiceBase {
      * @returns {Promise} 返回包含请求结果的 Promise 对象。
      */
 
-    request(method, url, param, requestOptions) {
+    request(method, url, param, requestOptions = {headers: this.headers, crossOrigin: this.crossOrigin, withCredentials: this.withCredentials }) {
         url = this.createCredentialUrl(url);
         return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();

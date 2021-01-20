@@ -1,7 +1,7 @@
 var program = require('commander');
 var shell = require("shelljs");
 require("./deps");
-program.description('Customized pack iClient9.');
+program.description('Customized pack iClient.');
 
 var excludeFields = ['title', 'description', 'description_en'];
 

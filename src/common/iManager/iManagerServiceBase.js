@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -10,14 +10,18 @@ import {FetchRequest} from '../util/FetchRequest';
  * @classdesc iManager 服务基类（有权限限制的类需要实现此类）。
  * @category iManager
  * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
+ * @param {Object} options - 服务参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class IManagerServiceBase {
 
-    constructor(url) {
+    constructor(url,options) {
         if (url) {
             var end = url.substr(url.length - 1, 1);
             this.serviceUrl = end === "/" ? url.substr(0, url.length - 2) : url;
         }
+        this.options = options || {};
         this.CLASS_NAME = "SuperMap.iManagerServiceBase";
     }
 
@@ -41,6 +45,8 @@ export class IManagerServiceBase {
         if (!requestOptions.hasOwnProperty("withCredentials")) {
             requestOptions['withCredentials'] = true;
         }
+        requestOptions['crossOrigin'] = this.options.crossOrigin;
+        requestOptions['headers'] = this.options.headers;
         var token = SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {

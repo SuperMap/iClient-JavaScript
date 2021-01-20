@@ -1,0 +1,139 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="resources.title_componentsChart_Vue"></title>
+  <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="echarts-vue,iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
+  <style>
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sm-component-chart {
+      z-index: 500;
+    }
+
+    .sm-component-chart .sm-component-collapse-card__content {
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+  <div id="main">
+    <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284">
+    </sm-web-map>
+    <sm-chart icon-class="" :style="chartStyle" :options="echartOptions" :dataset="dataset"
+      :dataset-options="datasetOptions" background="rgba(255,255,255,0.5)"></sm-chart>
+    <sm-chart icon-class="" :style="chartStyle1" :options="echartOptions1" :dataset="dataset"
+      :dataset-options="datasetOptions1" background="rgba(255,255,255,0.5)"></sm-chart>
+    <sm-chart icon-class="" :style="chartStyle2" :options="echartOptions2" :dataset="dataset"
+      :dataset-options="datasetOptions2" background="rgba(255,255,255,0.5)"></sm-chart>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#main',
+      data() {
+        return {
+          chartStyle: {
+            position: "absolute",
+            bottom: "10px",
+            right: "10px"
+          },
+          chartStyle1: {
+            position: "absolute",
+            bottom: "10px",
+            right: "420px"
+          },
+          chartStyle2: {
+            position: "absolute",
+            bottom: "10px",
+            right: "830px"
+          },
+          dataset: new SuperMap.Components.commontypes.iPortalDataParameter({
+            url: "https://iportal.supermap.io/iportal/web/datas/676516522",
+            maxFeatures: 20
+          }),
+          // echarts中涉及到超图数据series和坐标轴的字段的配置
+          datasetOptions: [
+            {
+              seriesType: "bar", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              isStack: true, //是否堆叠, 默认不堆叠
+              xField: "机场", //x坐标轴数据字段
+              yField: "2016起降架次（架次）" //统计的数据，legned默认名字
+            },
+            {
+              seriesType: "bar",
+              isStastic: true,
+              isStack: true,
+              xField: "机场",
+              yField: "2017起降架次（架次）",
+            }
+          ],
+          datasetOptions1: [
+            {
+              seriesType: "line", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              isStack: true, //是否堆叠, 默认不堆叠
+              xField: "机场", //x坐标轴数据字段
+              yField: "2016旅客吞吐量（人次）" //统计的数据，legned默认名字
+            },
+            {
+              seriesType: "line",
+              isStastic: true,
+              isStack: true,
+              xField: "机场",
+              yField: "2017旅客吞吐量（人次）"
+            }
+          ],
+          datasetOptions2: [
+            {
+              seriesType: "scatter", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              isStack: false, //是否堆叠, 默认不堆叠
+              xField: "机场", //x坐标轴数据字段
+              yField: "同比增速%" //统计的数据，legned默认名字
+            }
+          ],
+          // 和echarts一样的配置
+          echartOptions: {
+            legend: { data: ['2016起降架次（架次）', '2017起降架次（架次）'] }, //与yField数据一致
+            tooltip: { formatter: "{b0}: {c0}" },
+            grid: {
+              top: 30,
+              bottom: 60,
+              left: 60,
+              right: 30
+            }
+          },
+          echartOptions1: {
+            legend: { data: ['2016旅客吞吐量（人次）', '2017旅客吞吐量（人次）'] }, //与yField数据一致
+            tooltip: { formatter: "{b0}: {c0}" },
+            grid: {
+              top: 30,
+              bottom: 60,
+              left: 60,
+              right: 30
+            }
+          },
+          echartOptions2: {
+            legend: { data: ['同比增速%'] },//与yField数据一致
+            tooltip: { formatter: "{b0}: {c0}" },
+          }
+
+        };
+      }
+    })
+  </script>
+</body>
+
+</html>

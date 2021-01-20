@@ -1,0 +1,61 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_componentsPopup_Vue"></title>
+        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+        <script include="iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
+        <style>
+            #main {
+                position: relative;
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+            .message {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+            }
+        </style>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="1329428269" @click="mapClick">
+                <!-- 弹窗组件 -->
+                <sm-popup>
+                    <sm-table :columns="columns" :data-source="data" :pagination="false" />
+                </sm-popup>
+            </sm-web-map>
+        </div>
+
+        <script>
+            new Vue({
+                el: '#main',
+                data() {
+                    return {
+                        // table的props
+                        columns: [
+                            { key: 1, title: '经度', dataIndex: 'lng' },
+                            { key: 2, title: '纬度', dataIndex: 'lat' }
+                        ],
+                        data: []
+                    };
+                },
+                mounted(){
+                    this.$message.info(resources.msg_clickToPopup);
+                },
+                methods: {
+                    mapClick(e) {
+                        let latLng = e.map.layerPointToLatLng(e.mapboxEvent.layerPoint);
+                        this.data = [{ key: 1, lng: latLng.lng.toFixed(2), lat: latLng.lat.toFixed(2) }];
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

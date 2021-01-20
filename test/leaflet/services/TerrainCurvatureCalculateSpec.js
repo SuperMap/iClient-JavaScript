@@ -1,6 +1,7 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {TerrainCurvatureCalculationParameters} from '../../../src/common/iServer/TerrainCurvatureCalculationParameters';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -27,6 +28,14 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', ()=> {
             deleteExistResultDataset: true
         });
         var terrainCurvatureCalculationService = spatialAnalystService(spatialAnalystURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.zFactor).toBe(1);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_leafletTest@Jingjin"}}`));
+        });
         terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParams, (result)=> {
             serviceResult = result;
             try {
@@ -47,12 +56,5 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', ()=> {
                 done();
             }
         });
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done)=> {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });

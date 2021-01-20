@@ -1,0 +1,322 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsLabelTheme_React"></title>
+    <script type="text/javascript" include="react" src="../js/include-web.js"></script>
+    <script include="antd,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" src="../data/themeLableData.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #main {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+    <script type="text/babel">
+      var SmWebMap = SuperMap.Components.SmWebMap;
+      var SmLabelThemeLayer = SuperMap.Components.SmLabelThemeLayer;
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var features = [];
+      var feat, popup, map;
+      for (var i = 0; i < themeData.length; i++) {
+        var lonlat = themeData[i].lonLat.split(',');
+        var lng = parseFloat(lonlat[0]);
+        var lat = parseFloat(lonlat[1]);
+        var text = themeData[i].aqi;
+        feat = new mapboxgl.supermap.ThemeFeature([lng, lat, text], themeData[i]);
+        features.push(feat);
+      }
+
+      var mapOptions = {
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tiles: [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [116.4, 39.79],
+        zoom: 3
+      };
+
+      var themeOptions = {
+        //                map: map,//该可选参数将在下个版本遗弃
+        style: new SuperMap.ThemeStyle({
+          labelRect: true,
+          fontColor: '#000000',
+          fontWeight: 'bolder',
+          fontSize: '18px',
+          fill: true,
+          fillColor: '#FFFFFF',
+          fillOpacity: 1,
+          stroke: false,
+          strokeColor: '#8B7B8B'
+        }),
+        themeField: 'aqi',
+        styleGroups: [
+          {
+            start: 0,
+            end: 51,
+            style: {
+              fillColor: '#6ACD06',
+              fontSize: '17px'
+            }
+          },
+          {
+            start: 51,
+            end: 101,
+            style: {
+              fillColor: '#FBD12A',
+              fontSize: '19px'
+            }
+          },
+          {
+            start: 101,
+            end: 151,
+            style: {
+              fillColor: '#FE8800',
+              fontSize: '22px'
+            }
+          },
+          {
+            start: 151,
+            end: 201,
+            style: {
+              fillColor: '#FF0000',
+              fontSize: '24px'
+            }
+          },
+          {
+            start: 201,
+            end: 301,
+            style: {
+              fillColor: '#CC0000',
+              fontSize: '26px'
+            }
+          },
+          {
+            start: 301,
+            end: 601,
+            style: {
+              fillColor: '#960453',
+              fontSize: '28px'
+            }
+          }
+        ]
+      };
+      function updateInfoView(feature, themeLayer) {
+        if (!feature && popup) {
+          removePopup();
+          return;
+        }
+
+        if (!popup) {
+          popup = new mapboxgl.Popup(({ maxWidth: 600 }));
+        }
+
+        var statisticsData = getStatisticsData();
+        var contentHTML =
+          '<table><tbody><tr>' +
+          '<td><div>' +
+          '<table><tbody><tr>' +
+          "<td><div id='contentID' style='margin-top: 2px;margin-bottom: 2px;width:65px;height:60px;line-height:60px;text-align: center;font-size:35px;color: #ffffff;'>" +
+          feature.attributes.aqi +
+          '</div></td>' +
+          "<td style='padding-right: 20px;'></td>" +
+          '<td>' +
+          "<div id='textID' style='text-align: left;font-size: 19px;text-shadow: 1px 1px 0 #ffffff;'>" +
+          feature.attributes.quality +
+          '</div>' +
+          "<div style='font-size:10px;width:150px;'>" +
+          feature.attributes.time_point +
+          '</div>' +
+          "<div style=' font-weight:lighter; font-size:14px;'>" +
+          resources.text_currentCity +
+          '：' +
+          feature.attributes.area +
+          '</div>' +
+          '</td>' +
+          '</tr> </tbody></table>' +
+          "<table style='width:100%;font-size: 10px;border: 0 solid black;padding: 0;margin: 0;border-spacing: 0;'>" +
+          '<tbody>' +
+          '<tr>' +
+          "<td style='font-weight:bold;width:45px;'></td><td style='font-weight:bold;width:51px;' align='center' nowrap='true'>Current</td>" +
+          "<td  style=' font-weight:bold;width:49px;' align='center' nowrap='true'>Min</td>" +
+          "<td style='font-weight:bold;width:49px;' align='center' nowrap='true'>Max</td> " +
+          '</tr>' +
+          "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>PM2.5</span></div></td>" +
+          "<td style='font-size:11px;' align='center'>" +
+          feature.attributes.pm2_5 +
+          '</td>' +
+          "<td style='color:#0086c8;font-size:11px;' align='center'>" +
+          statisticsData.minNum +
+          '</td>' +
+          "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" +
+          statisticsData.maxNum +
+          '</td>' +
+          '</tr>' +
+          "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>PM10</span></div></td>" +
+          "<td style='font-size:11px;' align='center'>" +
+          feature.attributes.pm10 +
+          '</td>' +
+          "<td style='color:#0086c8;font-size:11px;' align='center'>" +
+          statisticsData.minpm10 +
+          '</td>' +
+          "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" +
+          statisticsData.maxpm10 +
+          '</td>' +
+          '</tr>' +
+          "<tr style='height:23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>O3</span></div></td>" +
+          "<td style='font-size:11px;' align='center'>" +
+          feature.attributes.o3 +
+          '</td>' +
+          "<td style='color:#0086c8;font-size:11px;' align='center'>" +
+          statisticsData.minO3 +
+          '</td>' +
+          "<td style='color:#ce3c3a;font-size:11px;' align='center'>" +
+          statisticsData.maxO3 +
+          '</td></td>' +
+          '</tr>' +
+          "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>SO2</span></div></td>" +
+          "<td style='font-size:11px;' align='center'>" +
+          feature.attributes.so2 +
+          '</td>' +
+          "<td style='color:#0086c8;font-size:11px;' align='center'>" +
+          statisticsData.minSO2 +
+          '</td>' +
+          "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" +
+          statisticsData.maxSO2 +
+          '</td></td>' +
+          '</tr>' +
+          "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>NO2</span></div></td>" +
+          "<td style='font-size:11px;' align='center'>" +
+          feature.attributes.no2 +
+          '</td>' +
+          "<td style='color:#0086c8;font-size:11px;' align='center'>" +
+          statisticsData.minNO2 +
+          '</td>' +
+          "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" +
+          statisticsData.maxNO2 +
+          '</td></td>' +
+          '</tr></tbody> </table></div></td></tr></tbody> </table>';
+
+        var latLng = getLatLng(feature.attributes.lonLat);
+        popup
+          .setLngLat(latLng)
+          .setHTML(contentHTML)
+          .addTo(map);
+
+        //设置弹框内容颜色
+        var groups = themeLayer.styleGroups;
+        for (var i = 0; i < groups.length; i++) {
+          if (feature.attributes.aqi >= groups[0].start && feature.attributes.aqi < groups[0].end) {
+            setColor('#6ACD06');
+          } else if (feature.attributes.aqi >= groups[1].start && feature.attributes.aqi < groups[1].end) {
+            setColor('#FBD12A');
+          } else if (feature.attributes.aqi >= groups[2].start && feature.attributes.aqi < groups[2].end) {
+            setColor('#FE8800');
+          } else if (feature.attributes.aqi >= groups[3].start && feature.attributes.aqi < groups[3].end) {
+            setColor('#FF0000');
+          } else if (feature.attributes.aqi >= groups[4].start && feature.attributes.aqi < groups[4].end) {
+            setColor('#CC0000');
+          } else if (feature.attributes.aqi >= groups[5].start && feature.attributes.aqi < groups[5].end) {
+            setColor('#960453');
+          }
+        }
+      }
+      function getStatisticsData() {
+        if (statisticsData) {
+          return statisticsData;
+        }
+        //遍历数组，获取单个属性。组成新的数组
+        var pm25 = [],
+          pm10s = [],
+          o3s = [],
+          so2s = [],
+          no2s = [];
+        for (var i = 0; i < themeData.length; i++) {
+          pm10s.push(themeData[i].pm2_5);
+          pm25.push(themeData[i].pm10);
+          o3s.push(themeData[i].o3);
+          so2s.push(themeData[i].so2);
+          no2s.push(themeData[i].no2);
+        }
+        //获取单个属性的最大最小值
+        var statisticsData = {
+          maxNum: Math.max.apply(Math, pm25),
+          minNum: Math.min.apply(Math, pm25),
+          maxpm10: Math.max.apply(Math, pm10s),
+          minpm10: Math.min.apply(Math, pm10s),
+          maxO3: Math.max.apply(Math, o3s),
+          minO3: Math.min.apply(Math, o3s),
+          maxSO2: Math.max.apply(Math, so2s),
+          minSO2: Math.min.apply(Math, so2s),
+          maxNO2: Math.max.apply(Math, no2s),
+          minNO2: Math.min.apply(Math, no2s)
+        };
+        return statisticsData;
+      }
+      function setColor(color) {
+        document.getElementById('contentID').style.backgroundColor = color;
+        document.getElementById('textID').style.color = color;
+      }
+      function getLatLng(latLng) {
+        var latLng = latLng.split(',');
+        return [parseFloat(latLng[0]), parseFloat(latLng[1])];
+      }
+      function handleMouseOver(params) {
+        var e = params.mapboxEvent;
+        map = params.map;
+        var themeLayer = map.getLayer(params.layerId);
+        if (e.target && e.target.refDataID) {
+          var fid = e.target.refDataID;
+          var fea = themeLayer.getFeatureById(fid);
+          if (fea) {
+            updateInfoView(fea, themeLayer);
+          }
+        } else {
+          removePopup();
+        }
+      }
+      function removePopup() {
+        popup && popup.remove(map);
+      }
+
+      ReactDOM.render(
+        <SmWebMap mapOptions={mapOptions}>
+          <SmLabelThemeLayer
+            options={themeOptions}
+            layerName={'LabelThemeLayer'}
+            data={features}
+            onMousemove={handleMouseOver}
+          />
+        </SmWebMap>,
+        document.getElementById('main')
+      );
+    </script>
+  </body>
+</html>

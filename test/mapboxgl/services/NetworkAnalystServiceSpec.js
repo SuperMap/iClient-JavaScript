@@ -15,6 +15,7 @@ import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/Fac
 import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
 import { SupplyCenterType } from '../../../src/common/REST';
 import mapboxgl from 'mapbox-gl';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
@@ -41,11 +42,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             isUncertainDirectionValid: false
         });
         var service = new NetworkAnalystService(url, options);
-        // spyOn(service,'burstPipelineAnalyst').and.callFake();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/burstAnalyse");
+            return Promise.resolve(new Response(JSON.stringify(burstPipelineAnalyst)));
+        });
         service.burstPipelineAnalyst(burstPipelineAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -53,15 +56,15 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(serviceResult.type).toEqual("processCompleted");
                 var result = serviceResult.result;
                 expect(result.succeed).toBe(true);
-                expect(result.criticalNodes[0]).toEqual(84);
-                expect(result.edges.length).toEqual(12);
+                expect(result.criticalNodes).not.toBeNull();
+                expect(result.edges.length).toEqual(2);
                 done();
             } catch (exception) {
                 console.log("'burstPipelineAnalyst'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
 
     //耗费矩阵分析服务
@@ -72,10 +75,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             nodes: [84, 85],
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/weightmatrix");
+            return Promise.resolve(new Response(`[[0,42],[42,0]]`));
+        });
         service.computeWeightMatrix(computeWeightMatrixParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -91,7 +97,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //选址分区分析服务
@@ -119,10 +125,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             weightName: "length"
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/location");
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
         service.findLocation(findLocationParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -150,7 +159,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //最佳路径分析服务
@@ -176,10 +185,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/path");
+            return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
+        });
         service.findPath(findPathParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -233,7 +245,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //旅行商分析服务
@@ -262,10 +274,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/tsppath");
+            return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
+        });
         service.findTSPPaths(findTSPPathsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -305,7 +320,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     // 多旅行商分析服务
@@ -317,19 +332,21 @@ describe('mapboxgl_NetworkAnalystService', () => {
             hasLeastTotalCost: true,
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/mtsppath");
+            return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)));
+        });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.pathList[0].center.x).toEqual(6000);
-                expect(serviceResult.result.pathList[0].center.y).toEqual(-5500);
-                expect(serviceResult.result.pathList[0].nodesVisited[0].x).toEqual(5000);
-                expect(serviceResult.result.pathList[0].nodesVisited[0].y).toEqual(-5000);
+                expect(serviceResult.result.pathList.length).toEqual(2);
+                var path = serviceResult.result.pathList["0"];
+                expect(path.center).not.toBeNull();
                 expect(serviceResult.result.pathList[0].stopWeights).not.toBeNull();
                 expect(serviceResult.result.pathList[0].weight).not.toBeNull();
                 done();
@@ -338,7 +355,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //服务区分析服务
@@ -360,10 +377,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         parameter.weights = [400 + Math.random() * 100];
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/servicearea");
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)));
+        });
         service.findServiceAreas(parameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -391,7 +411,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //更新边的耗费权重服务
@@ -404,10 +424,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             weightField: "time"
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(url + "/edgeweight/20/fromnode/26/tonode/109/weightfield/time");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.updateEdgeWeight(updateEdgeWeightParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -419,7 +442,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //转向耗费权重更新服务
@@ -437,10 +460,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             weightField: "TurnCost"
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(url + "/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -452,7 +478,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //最近设施分析服务
@@ -484,10 +510,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/closestfacility");
+            return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_False)));
+        });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -548,7 +577,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
     // 上游/下游 关键设施查找资源服务
     it('streamFacilityAnalyst', (done) => {
@@ -561,10 +590,13 @@ describe('mapboxgl_NetworkAnalystService', () => {
             queryType: 1
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/downstreamcirticalfaclilities");
+            return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
+        });
         service.streamFacilityAnalyst(facilityAnalystStreamParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -576,8 +608,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
-
+    });
     });
 });
 

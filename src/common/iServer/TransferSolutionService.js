@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -15,6 +15,8 @@ import {TransferSolutionParameters} from './TransferSolutionParameters';
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
@@ -51,13 +53,9 @@ export class TransferSolutionService extends CommonServiceBase {
         }
         var me = this,
             method = "GET",
-            jsonParameters,
-            end;
+            jsonParameters;
 
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? '' : '/';
-        me.url += "solutions.json?";
-
+        me.url = Util.urlPathAppend(me.url, 'solutions');
         jsonParameters = {
             points: Util.toJSON(params.points),
             walkingRatio: params['walkingRatio'],

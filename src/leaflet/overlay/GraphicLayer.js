@@ -1,21 +1,13 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L from 'leaflet';
 import '../core/Base';
-import {
-    Detector
-} from "../core/Detector";
-import {
-    CommonUtil
-} from '@supermap/iclient-common';
-import {
-    GraphicCanvasRenderer,
-    GraphicWebGLRenderer,
-    CircleStyle
-} from './graphic';
+import { Detector } from '../core/Detector';
+import { CommonUtil } from '@supermap/iclient-common';
+import { GraphicCanvasRenderer, GraphicWebGLRenderer, CircleStyle } from './graphic';
 
-const Renderer = ["canvas", "webgl"];
+const Renderer = ['canvas', 'webgl'];
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -27,6 +19,7 @@ const defaultProps = {
     strokeWidth: 1,
     outline: false
 };
+
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
@@ -48,16 +41,20 @@ const defaultProps = {
  * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
 export var GraphicLayer = L.Path.extend({
-
     initialize: function (graphics, options) {
         this.graphics = [].concat(graphics);
         let opt = options || {};
+        // 由于是canvas实现所以不能更改pane
+        opt.pane = 'overlayPane';
         L.Util.setOptions(this, opt);
         //因为跟基类的renderer冲突，所以采用render这个名字
         this.options.render = this.options.render || Renderer[0];
         //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
         if (!Detector.supportWebGL2()) {
             this.options.render = Renderer[0];
+        }
+        if (this.options.interactive) {
+            this.on('click mousemove dblclick mousedown mouseup mouseout contextmenu', this._handleClick, this);
         }
     },
 
@@ -68,11 +65,11 @@ export var GraphicLayer = L.Path.extend({
      * @returns {Object} 返回该图层支持的事件对象。
      */
     getEvents: function () {
-        return {
-            click: this._handleClick.bind(this),
+        const events = {
             resize: this._resize.bind(this),
             moveend: this._moveEnd.bind(this)
         };
+        return events;
     },
 
     /**
@@ -85,8 +82,8 @@ export var GraphicLayer = L.Path.extend({
         this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
+        // this.addInteractiveTarget(this._container);
         L.Path.prototype.onAdd.call(this);
-
     },
 
     /**
@@ -96,6 +93,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 移除图层。
      */
     onRemove: function () {
+        this.off('click mousemove dblclick mousedown mouseup contextmenu', this._handleClick, this);
         this._renderer._removePath(this);
     },
 
@@ -127,8 +125,8 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {String} property - graphic 的某个属性名称。
-     * @param {String} value - property 所对应的值。
+     * @param {string} property - graphic 的某个属性名称。
+     * @param {string} value - property 所对应的值。
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
@@ -145,18 +143,18 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性 id。
+     * @param {string} graphicId - 矢量要素的属性 id。
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
-        return this.getGraphicBy("id", graphicId);
+        return this.getGraphicBy('id', graphicId);
     },
 
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic 的某个属性名称。
-     * @param {String} attrValue - property 所对应的值。
+     * @param {string} attrName - graphic 的某个属性名称。
+     * @param {string} attrValue - property 所对应的值。
      * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
@@ -185,7 +183,7 @@ export var GraphicLayer = L.Path.extend({
             this.update();
             return;
         }
-        if (!(CommonUtil.isArray(graphics))) {
+        if (!CommonUtil.isArray(graphics)) {
             graphics = [graphics];
         }
 
@@ -310,8 +308,8 @@ export var GraphicLayer = L.Path.extend({
         let size = this._map.getSize();
         this._container.width = size.x;
         this._container.height = size.y;
-        this._container.style.width = size.x + "px";
-        this._container.style.height = size.y + "px";
+        this._container.style.width = size.x + 'px';
+        this._container.style.height = size.y + 'px';
 
         let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
         L.DomUtil.setPosition(this._container, mapOffset);
@@ -336,11 +334,14 @@ export var GraphicLayer = L.Path.extend({
             });
         } else {
             let optDefault = L.Util.setOptions({}, defaultProps);
-            let opt = L.Util.setOptions({
-                options: optDefault
-            }, this.options);
+            let opt = L.Util.setOptions(
+                {
+                    options: optDefault
+                },
+                this.options
+            );
             opt = L.Util.setOptions(this, opt);
-            opt.container = map.getPane("overlayPane");
+            opt.container = map.getPane('overlayPane');
             opt.width = width;
             opt.height = height;
 
@@ -407,7 +408,6 @@ export var GraphicLayer = L.Path.extend({
             target.stroke = options.outline;
         }
         return new CircleStyle(target).getStyle();
-
     },
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
@@ -425,7 +425,6 @@ export var GraphicLayer = L.Path.extend({
         return graphicsInBounds;
     },
 
-
     _handleClick: function (evt) {
         this._layerRenderer._handleClick(evt);
     },
@@ -439,8 +438,9 @@ export var GraphicLayer = L.Path.extend({
      * @private
      * @override
      */
-    _containsPoint: L.Util.falseFn
-
+    _containsPoint: function (p) {
+        return this._layerRenderer.containsPoint(p);
+    }
 });
 
 export let graphicLayer = function (graphics, options) {

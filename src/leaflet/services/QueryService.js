@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -27,8 +27,10 @@ import {
  * @param {string} url -  地图查询服务访问地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * L.supermap.queryService(url).queryByBounds(param,function(result){
  *   //doSomething
@@ -51,6 +53,8 @@ export var QueryService = ServiceBase.extend({
         var queryService = new QueryByBoundsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75,6 +79,8 @@ export var QueryService = ServiceBase.extend({
         var queryByDistanceService = new QueryByDistanceService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -99,6 +105,8 @@ export var QueryService = ServiceBase.extend({
         var queryBySQLService = new QueryBySQLService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -123,6 +131,8 @@ export var QueryService = ServiceBase.extend({
         var queryByGeometryService = new QueryByGeometryService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

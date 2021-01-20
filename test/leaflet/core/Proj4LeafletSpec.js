@@ -17,10 +17,6 @@ describe("leaflet_crs", () => {
         expect(src4328).not.toBeNull();
         expect(src4328.options.dpi).toEqual(80);
     });
-    it("initialize", () => {
-        expect(src4328).not.toBeNull();
-        expect(src4328.options.dpi).toEqual(80);
-    });
     it("scale", () => {
         const scale = src4328.scale(2);
         expect(scale.toFixed(4)).toBe('701225.1389');

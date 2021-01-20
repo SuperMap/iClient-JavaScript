@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -28,6 +28,8 @@ import {GeoJSON} from '../format/GeoJSON';
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class FindServiceAreasService extends NetworkAnalystServiceBase {
 
@@ -54,9 +56,8 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
         if (!(params instanceof FindServiceAreasParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "servicearea" : "/servicearea") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'servicearea');
         jsonObject = {
             isFromCenter: params.isFromCenter,
             isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
@@ -91,7 +92,7 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -115,16 +116,16 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
         var geoJSONFormat = new GeoJSON();
         result.serviceAreaList.map(function (serviceArea) {
             if (serviceArea.serviceRegion) {
-                serviceArea.serviceRegion = JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion));
+                serviceArea.serviceRegion = geoJSONFormat.toGeoJSON(serviceArea.serviceRegion);
             }
             if (serviceArea.edgeFeatures) {
-                serviceArea.edgeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.edgeFeatures));
+                serviceArea.edgeFeatures = geoJSONFormat.toGeoJSON(serviceArea.edgeFeatures);
             }
             if (serviceArea.nodeFeatures) {
-                serviceArea.nodeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.nodeFeatures));
+                serviceArea.nodeFeatures = geoJSONFormat.toGeoJSON(serviceArea.nodeFeatures);
             }
             if (serviceArea.routes) {
-                serviceArea.routes = JSON.parse(geoJSONFormat.write(serviceArea.routes));
+                serviceArea.routes = geoJSONFormat.toGeoJSON(serviceArea.routes);
             }
             return serviceArea;
         });

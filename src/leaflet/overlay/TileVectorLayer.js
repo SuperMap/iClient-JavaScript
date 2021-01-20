@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -14,7 +14,8 @@ import {
     Unit,
     ServerType,
     Credential,
-    SecurityManager
+    SecurityManager,
+    CommonUtil
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
 import Attributions from '../core/Attributions'
@@ -97,7 +98,7 @@ export var TileVectorLayer = VectorGrid.extend({
         }
         this.cartoCSSToLeaflet = new CartoCSSToLeaflet(me.url);
         me.initLayersInfo();
-        if (!me.options.serverCartoCSSStyle && me.options) {
+        if (!me.options.serverCartoCSSStyle && me.options.cartoCSS) {
             me.setClientCartoCSS(me.options.cartoCSS);
         }
     },
@@ -124,7 +125,7 @@ export var TileVectorLayer = VectorGrid.extend({
      */
     initLayersInfo: function () {
         var me = this;
-        var layersUrl = me.url + "/layers.json";
+        var layersUrl = CommonUtil.urlPathAppend(me.url, "layers");
         FetchRequest.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
@@ -144,6 +145,7 @@ export var TileVectorLayer = VectorGrid.extend({
                 }
             }
             me.layersInfo = layersInfo;
+            me.cartoCSSToLeaflet.layersInfo = layersInfo;
             if (me.options.serverCartoCSSStyle) {
                 me.getVectorStylesFromServer();
             }
@@ -208,7 +210,7 @@ export var TileVectorLayer = VectorGrid.extend({
      */
     getVectorStylesFromServer: function () {
         var me = this;
-        var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
+        var vectorStyleUrl = CommonUtil.urlPathAppend(me.url, "tileFeature/vectorstyles");
         FetchRequest.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
@@ -265,7 +267,7 @@ export var TileVectorLayer = VectorGrid.extend({
             layerStyleInfo = me.getLayerStyleInfo(layerName);
 
         //处理标签图层
-        if (layerStyleInfo.textField) {
+        if (layerStyleInfo && layerStyleInfo.textField) {
             var textField = layerStyleInfo.textField;
             if (textField && textField.indexOf('.')) {
                 var arr = textField.split('.');
@@ -290,7 +292,7 @@ export var TileVectorLayer = VectorGrid.extend({
         for (var itemKey in shaders) {
             var shader = shaders[itemKey];
             for (var j = 0; j < shader.length; j++) {
-                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature,this.options.serverCartoCSSStyle);
                 if (serverStyle) {
                     style.push(serverStyle);
                 }
@@ -445,8 +447,8 @@ export var TileVectorLayer = VectorGrid.extend({
             return;
         }
         var format = options.format.toString().toLowerCase();
-        this._tileUrl = this.url + "/tileFeature." + format + "?";
-        this._tileUrl += encodeURI(this._createURLParam(options));
+        this._tileUrl = CommonUtil.urlPathAppend(this.url, "tileFeature." + format );
+        this._tileUrl = CommonUtil.urlAppend(this._tileUrl, encodeURI(this._createURLParam(options)));
     },
 
     _createURLParam: function (options) {

@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
-import {UpdateTurnNodeWeightParameters} from './UpdateTurnNodeWeightParameters';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
+import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
@@ -21,6 +22,8 @@ import {UpdateTurnNodeWeightParameters} from './UpdateTurnNodeWeightParameters';
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
@@ -56,13 +59,9 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
         if (!(params instanceof UpdateTurnNodeWeightParameters)) {
             return;
         }
-
-        var me = this, end = me.url.substr(me.url.length - 1, 1);
+        var me = this;
         var paramStr = me.parse(params);
-        if (end === "/") {
-            me.url.splice(me.url.length - 1, 1);
-        }
-        me.url = me.url + paramStr + ".json?";
+        me.url = Util.urlPathAppend(me.url, paramStr);
         var data = params.turnNodeWeight ? params.turnNodeWeight : null;
         me.request({
             method: "PUT",

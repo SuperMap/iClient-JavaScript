@@ -1,7 +1,8 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {TerrainCurvatureCalculationParameters} from './TerrainCurvatureCalculationParameters';
 
@@ -13,6 +14,8 @@ import {TerrainCurvatureCalculationParameters} from './TerrainCurvatureCalculati
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example 例如：
  * (start code)
  * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
@@ -45,21 +48,15 @@ export class TerrainCurvatureCalculationService extends SpatialAnalystBase {
      */
     processAsync(parameter) {
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         var parameterObject = {};
 
         if (parameter instanceof TerrainCurvatureCalculationParameters) {
-            me.url += 'datasets/' + parameter.dataset + '/terraincalculation/curvature';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/terraincalculation/curvature');
         }
 
         TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
-        me.url += '.json?returnContent=true';
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         me.request({
             method: "POST",
             data: jsonParameters,

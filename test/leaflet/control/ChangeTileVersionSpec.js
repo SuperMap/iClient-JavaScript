@@ -1,5 +1,6 @@
 import {changeTileVersion} from '../../../src/leaflet/control/ChangeTileVersion';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.ChinaProvincesURL;
 describe('leaflet_ChangeTileVersion', () => {
@@ -19,12 +20,19 @@ describe('leaflet_ChangeTileVersion', () => {
             center: [33.03, 104.79],
             zoom: 3,
         });
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
+            if(testUrl.indexOf('ChinaProvinces/tilesets')>-1){
+                return Promise.resolve(new Response(tilesetsEscapedJson));
+            }
+            return Promise.resolve();
+        });
         var baseLayer = tiledMapLayer(url).addTo(map);
         tileVersion = changeTileVersion({
             layer: baseLayer,
             position: "topleft",
             orientation: "horizontal"
         }).addTo(map);
+       
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;

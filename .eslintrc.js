@@ -21,7 +21,7 @@ module.exports = {
         //禁止不必要的分号
         "no-extra-semi": "warn",
         //强制使用一致的换行风格
-        "linebreak-style": ["warn", "windows"],
+        "linebreak-style": "off",
         //if while function 后面的{必须与if在同一行，java风格。
         "brace-style": ["warn", "1tbs", {"allowSingleLine": true}],
         //数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号
@@ -52,6 +52,8 @@ module.exports = {
         "no-fallthrough": "warn",
         //禁止直接调用eval()
         "no-eval": ["error", {"allowIndirect": true}],
+        "no-prototype-builtins":"off",
+        "no-useless-catch":"off",
         //Ensure imports point to a file/module that can be resolved
         "import/no-unresolved": [2, {commonjs: true, amd: true}],
         //Ensure named imports correspond to a named export in the remote file

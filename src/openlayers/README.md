@@ -1,45 +1,48 @@
-# @supermap/iclient-openlayers
+# @supermap/iclient-ol
 
-@supermap/iclient-openlayers 是一套基于 OpenLayers 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
+@supermap/iclient-ol 是一套基于 OpenLayers 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
-* 官网：[http://iclient.supermap.io](http://iclient.supermap.io)
+* 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
 * 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers)
 
 ## 安装
 
 ```
- npm install @supermap/iclient-openlayers
+ npm install @supermap/iclient-ol
 ```
+如果您使用的是 OpenLayers 4，请参考此[文档](https://www.npmjs.com/package/@supermap/iclient-openlayers/v/10.0.0)安装 SuperMap iClient for OpenLayers。
 
 ## 开发
 
 在 HTML 文件中引入 CSS  文件
 
-```
-<link href='https://openlayers.org/en/v4.6.5/css/ol.css' rel='stylesheet' />
+```html
+<link href='https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css' rel='stylesheet' />
 
-<link href='http://iclient.supermap.io/dist/openlayers/iclient9-openlayers.min.css' rel='stylesheet' />
-
+<link href='https://iclient.supermap.io/dist/ol/iclient-ol.min.css' rel='stylesheet' />
 ```
 在 JS 文件中加入如下代码
 
-```
-import ol from 'openlayers';
-import {Logo, TileSuperMapRest} from '@supermap/iclient-openlayers';
+```js
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import * as control from 'ol/control';    
+import { Logo, TileSuperMapRest } from '@supermap/iclient-ol';
 
-var url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
-var map = new ol.Map({
+var url = "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
+var map = new Map({
     target: 'map',
-    controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+    controls: control.defaults({attributionOptions: {collapsed: false}})
         .extend([new Logo()]),
-    view: new ol.View({
+    view: new View({
         center: [0, 0],
         zoom: 2,
         projection: 'EPSG:4326'
     })
 });
-var layer = new ol.layer.Tile({
+var layer = new TileLayer({
     source: new TileSuperMapRest({
         url: url,
         wrapX: true

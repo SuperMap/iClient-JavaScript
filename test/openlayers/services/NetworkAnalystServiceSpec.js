@@ -1,18 +1,50 @@
-import ol from 'openlayers';
-import { NetworkAnalystService } from '../../../src/openlayers/services/NetworkAnalystService';
-import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
-import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
-import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
-import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
-import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
-import { FindPathParameters } from '../../../src/common/iServer/FindPathParameters';
-import { FindTSPPathsParameters } from '../../../src/common/iServer/FindTSPPathsParameters';
-import { FindMTSPPathsParameters } from '../../../src/common/iServer/FindMTSPPathsParameters';
-import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
-import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
-import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
-import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import {
+    NetworkAnalystService
+} from '../../../src/openlayers/services/NetworkAnalystService';
+import {
+    BurstPipelineAnalystParameters
+} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import {
+    ComputeWeightMatrixParameters
+} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import {
+    TransportationAnalystResultSetting
+} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {
+    TransportationAnalystParameter
+} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {
+    FindClosestFacilitiesParameters
+} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import {
+    FindLocationParameters
+} from '../../../src/common/iServer/FindLocationParameters';
+import {
+    FindPathParameters
+} from '../../../src/common/iServer/FindPathParameters';
+import {
+    FindTSPPathsParameters
+} from '../../../src/common/iServer/FindTSPPathsParameters';
+import {
+    FindMTSPPathsParameters
+} from '../../../src/common/iServer/FindMTSPPathsParameters';
+import {
+    FindServiceAreasParameters
+} from '../../../src/common/iServer/FindServiceAreasParameters';
+import {
+    UpdateEdgeWeightParameters
+} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import {
+    UpdateTurnNodeWeightParameters
+} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import {
+    FacilityAnalystStreamParameters
+} from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
+
+import Point from 'ol/geom/Point';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
@@ -43,10 +75,13 @@ describe('openlayers_NetworkAnalystService', () => {
             isUncertainDirectionValid: false
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/burstAnalyse");
+            return Promise.resolve(new Response(JSON.stringify(burstPipelineAnalyst)));
+        });
         service.burstPipelineAnalyst(burstPipelineAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -54,15 +89,15 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(serviceResult.type).toEqual("processCompleted");
                 var result = serviceResult.result;
                 expect(result.succeed).toBe(true);
-                expect(result.criticalNodes[0]).toEqual(84);
-                expect(result.edges.length).toEqual(12);
+                expect(result.criticalNodes).not.toBeNull();
+                expect(result.edges.length).toEqual(2);
                 done();
             } catch (exception) {
                 console.log("'burstPipelineAnalyst'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //耗费矩阵分析服务
@@ -73,10 +108,13 @@ describe('openlayers_NetworkAnalystService', () => {
             nodes: [84, 85],
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/weightmatrix");
+            return Promise.resolve(new Response(`[[0,42],[42,0]]`));
+        });
         service.computeWeightMatrix(computeWeightMatrixParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -92,7 +130,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //最近设施分析服务
@@ -111,23 +149,26 @@ describe('openlayers_NetworkAnalystService', () => {
         var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             turnWeightField: "TurnCost",
-            weightFieldName: "length"  //length,time
+            weightFieldName: "length" //length,time
         });
         var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
             //事件点,必设参数
-            event: new ol.geom.Point([5000, -3700]),
+            event: new Point([5000, -3700]),
             //要查找的设施点数量。默认值为1
             expectFacilityCount: 1,
             //设施点集合,必设
-            facilities: [new ol.geom.Point([2500, -3500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([7000, -4000])],
+            facilities: [new Point([2500, -3500]), new Point([5500, -2500]), new Point([7000, -4000])],
             isAnalyzeById: false,
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/closestfacility");
+            return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_False)));
+        });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -188,7 +229,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
 
     });
 
@@ -203,10 +244,13 @@ describe('openlayers_NetworkAnalystService', () => {
             queryType: 1
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/downstreamcirticalfaclilities");
+            return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
+        });
         service.streamFacilityAnalyst(facilityAnalystStreamParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -218,7 +262,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
 
     });
 
@@ -247,10 +291,13 @@ describe('openlayers_NetworkAnalystService', () => {
             weightName: "length"
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/location");
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
         service.findLocation(findLocationParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -278,7 +325,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //最佳路径分析服务
@@ -299,15 +346,18 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         var findPathParameters = new FindPathParameters({
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
+            nodes: [new Point([4000, -3000]), new Point([5500, -2500]), new Point([6900, -4000])],
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/path");
+            return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
+        });
         service.findPath(findPathParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -361,7 +411,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //旅行商分析服务
@@ -386,14 +436,17 @@ describe('openlayers_NetworkAnalystService', () => {
             endNodeAssigned: false,
             isAnalyzeById: false,
             //旅行商分析途经点数组，必设字段
-            nodes: [new ol.geom.Point([3000, -1000]), new ol.geom.Point([3760, -4850]), new ol.geom.Point([8000, -2700])],
+            nodes: [new Point([3000, -1000]), new Point([3760, -4850]), new Point([8000, -2700])],
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/tsppath");
+            return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
+        });
         service.findTSPPaths(findTSPPathsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -433,32 +486,34 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
 
     });
 
     // 多旅行商分析服务
     it('findMTSPPaths', (done) => {
         var findMTSPPathsParameter = new FindMTSPPathsParameters({
-            centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
+            centers: [new Point([6000, -5500]), new Point([5500, -2500]), new Point([2500, -3500])],
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([6500, -3200])],
+            nodes: [new Point([5000, -5000]), new Point([6500, -3200])],
             hasLeastTotalCost: true,
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/mtsppath");
+            return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)));
+        });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.pathList[0].center.x).toEqual(6000);
-                expect(serviceResult.result.pathList[0].center.y).toEqual(-5500);
-                expect(serviceResult.result.pathList[0].nodesVisited[0].x).toEqual(5000);
-                expect(serviceResult.result.pathList[0].nodesVisited[0].y).toEqual(-5000);
+                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.pathList.length).toEqual(2);
+                var path = serviceResult.result.pathList["0"];
+                expect(path.center).not.toBeNull();
                 expect(serviceResult.result.pathList[0].stopWeights).not.toBeNull();
                 expect(serviceResult.result.pathList[0].weight).not.toBeNull();
                 done();
@@ -467,12 +522,12 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //服务区分析服务
     it('findServiceAreas', (done) => {
-        var point = new ol.geom.Point([5605, -3375]);
+        var point = new Point([5605, -3375]);
         var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
@@ -489,10 +544,13 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         parameter.weights = [400 + Math.random() * 100];
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/servicearea");
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)));
+        });
         service.findServiceAreas(parameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -520,7 +578,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
 
     });
 
@@ -534,10 +592,13 @@ describe('openlayers_NetworkAnalystService', () => {
             weightField: "time"
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(url + "/edgeweight/20/fromnode/26/tonode/109/weightfield/time");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.updateEdgeWeight(updateEdgeWeightParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -549,7 +610,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //转向耗费权重更新服务
@@ -567,10 +628,13 @@ describe('openlayers_NetworkAnalystService', () => {
             weightField: "TurnCost"
         });
         var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(url + "/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -582,6 +646,6 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });

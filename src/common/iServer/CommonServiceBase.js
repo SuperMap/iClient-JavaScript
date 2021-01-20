@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -23,7 +23,7 @@ import {
     ServerType
 } from '../REST';
 import {
-    JSONFormat as JSON
+    JSONFormat
 } from '../format/JSON';
 import {
     FunctionExt
@@ -34,11 +34,13 @@ import {
  * @category  iServer
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class CommonServiceBase {
 
@@ -76,6 +78,8 @@ export class CommonServiceBase {
         this.isInTheSameDomain = null;
 
         this.withCredentials = false;
+        
+        
 
         if (Util.isArray(url)) {
             me.urls = url;
@@ -96,11 +100,12 @@ export class CommonServiceBase {
             me.url = url[0];
             me.totalTimes = 1;
         }
-
+        
         me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
-
+        this.crossOrigin = options.crossOrigin;
+        this.headers = options.headers;
         Util.extend(this, options);
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
@@ -145,36 +150,30 @@ export class CommonServiceBase {
      * @function  SuperMap.CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
-     * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
-     * @param {string} [options.url] - 发送请求的地址。 
-     * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-     * @param {String} [options.data] - 发送到服务器的数据。 
-     * @param {function} options.success - 请求成功后的回调函数。 
-     * @param {function} options.failure - 请求失败后的回调函数。 
-     * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 
-     * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。 
-     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。 
+     * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
+     * @param {string} [options.url] - 发送请求的地址。
+     * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。
+     * @param {string} [options.data] - 发送到服务器的数据。
+     * @param {function} options.success - 请求成功后的回调函数。
+     * @param {function} options.failure - 请求失败后的回调函数。
+     * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
+     * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
+     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+     * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+     * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
         let me = this;
         options.url = options.url || me.url;
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
+        options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
+        options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);
         if (credential) {
-            //当url中含有?，并且?在url末尾的时候直接添加token *网络分析等服务请求url会出现末尾是?的情况*
-            //当url中含有?，并且?不在url末尾的时候添加&token
-            //当url中不含有?，在url末尾添加?token
-            let endStr = options.url.substring(options.url.length - 1, options.url.length);
-            if (options.url.indexOf("?") > -1 && endStr === "?") {
-                options.url += credential.getUrlParameters();
-            } else if (options.url.indexOf("?") > -1 && endStr !== "?") {
-                options.url += "&" + credential.getUrlParameters();
-            } else {
-                options.url += "?" + credential.getUrlParameters();
-            }
+            options.url = Util.urlAppend(options.url, credential.getUrlParameters());
         }
 
         me.calculatePollingTimes();
@@ -338,6 +337,7 @@ export class CommonServiceBase {
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
+            crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
             proxy: options.proxy
         }).then(function (response) {
@@ -351,7 +351,7 @@ export class CommonServiceBase {
         }).then(function (text) {
             var result = text;
             if (typeof text === "string") {
-                result = new JSON().read(text);
+                result = new JSONFormat().read(text);
             }
             if (!result || result.error || result.code >= 300 && result.code !== 304) {
                 if (result && result.error) {
@@ -372,7 +372,9 @@ export class CommonServiceBase {
                 var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
-
+        }).catch(function (e) {
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+            failure(e);
         })
     }
 }

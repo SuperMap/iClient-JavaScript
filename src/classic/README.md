@@ -3,7 +3,7 @@
 @supermap/iclient-classic 是一套基于 SuperMap iClient 8C(2017) for JavaScript 的 GIS 客户端应用程序开发工具，通过它用户可以在 SuperMap iClient 8C(2017) for JavaScript 的基础上使用最新的 SuperMap 服务功能。
 
 ## 简介
-* 官网：[http://iclient.supermap.io](http://iclient.supermap.io)
+* 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
 * 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/classic](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/classic)
 
 ## 安装
@@ -16,7 +16,7 @@
 在 HTML 文件中引入 SuperMap iClient 8C(2017) 库
 
 ```
-<script src="http://iclient.supermap.io/libs/iclient8c/libs/SuperMap.Include.js"></script>
+<script src="https://iclient.supermap.io/web/libs/iclient8c/libs/SuperMap.Include.js"></script>
 
 ```
 
@@ -27,7 +27,7 @@ import {MapVLayer} from '@supermap/iclient-classic';
 import {utilCityCenter, DataSet} from 'mapv';
 
 var map, baseLayer, mapvLayer,
-    url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
+    url = "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4326";
 
 init();
 

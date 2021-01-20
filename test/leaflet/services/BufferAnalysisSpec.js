@@ -76,17 +76,16 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/geometry/buffer.json?returnContent=true");
-            // var expectParams = "{'analystParameter':{'endType':\"ROUND\",'leftDistance':{'exp':null,'value':250},'rightDistance':{'exp':null,'value':250},'semicircleLineSegment':10,'radiusUnit':\"METER\"},'sourceGeometry':{'id':0,'style':null,'parts':[33],'points':[{'id':\"SuperMap.Geometry_38\",'bounds':null,'SRID':null,'x':2823.94,'y':-4690,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_39\",'bounds':null,'SRID':null,'x':3448.94,'y':-4690.301,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_40\",'bounds':null,'SRID':null,'x':3816.561,'y':-3810.125,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_41\",'bounds':null,'SRID':null,'x':3917.383,'y':-3609.158,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_42\",'bounds':null,'SRID':null,'x':3976.983,'y':-3490.291,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_43\",'bounds':null,'SRID':null,'x':4020.004,'y':-4377.027,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_44\",'bounds':null,'SRID':null,'x':4076.265,'y':-4382.939,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_45\",'bounds':null,'SRID':null,'x':4215.049,'y':-4382.333,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_46\",'bounds':null,'SRID':null,'x':4428.156,'y':-4382.285,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_47\",'bounds':null,'SRID':null,'x':4647.579,'y':-4383.017,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_48\",'bounds':null,'SRID':null,'x':4679.707,'y':-4382.898,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_49\",'bounds':null,'SRID':null,'x':4917.462,'y':-4382.635,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_50\",'bounds':null,'SRID':null,'x':5074.019,'y':-4381.833,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_51\",'bounds':null,'SRID':null,'x':5257.042,'y':-4381.031,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_52\",'bounds':null,'SRID':null,'x':5363.785,'y':-4380.717,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_53\",'bounds':null,'SRID':null,'x':5671.717,'y':-4378.794,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_54\",'bounds':null,'SRID':null,'x':5847.521,'y':-4377.97,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_55\",'bounds':null,'SRID':null,'x':5990.637,'y':-4303.528,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_56\",'bounds':null,'SRID':null,'x':6055.343,'y':-4270.072,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_57\",'bounds':null,'SRID':null,'x':6168.913,'y':-4382.389,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_58\",'bounds':null,'SRID':null,'x':6214.183,'y':-4209.927,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_59\",'bounds':null,'SRID':null,'x':6377.789,'y':-4209.142,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_60\",'bounds':null,'SRID':null,'x':6393.692,'y':-4210.142,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_61\",'bounds':null,'SRID':null,'x':6693.989,'y':-4207.45,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_62\",'bounds':null,'SRID':null,'x':6788.392,'y':-4208.45,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_63\",'bounds':null,'SRID':null,'x':6984.304,'y':-4207.21,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_64\",'bounds':null,'SRID':null,'x':7189.183,'y':-4208.296,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_65\",'bounds':null,'SRID':null,'x':7300.505,'y':-4208.296,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_66\",'bounds':null,'SRID':null,'x':7573.056,'y':-4208.803,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_67\",'bounds':null,'SRID':null,'x':7680.977,'y':-4208.804,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_68\",'bounds':null,'SRID':null,'x':7850.593,'y':-4208.393,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_69\",'bounds':null,'SRID':null,'x':8182.656,'y':-4210.533,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_70\",'bounds':null,'SRID':null,'x':8554.893,'y':-4261.485,'tag':null,'type':\"Point\"}],'type':\"LINE\",'prjCoordSys':{'epsgCode':null}},'sourceGeometrySRID':null}";
-            expect(params).toContain("analystParameter");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/buffer?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.analystParameter.endType).toBe("ROUND");
+            expect(paramsObj.analystParameter.leftDistance.value).toEqual(250);
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(bufferAnalysisByGeometryLEscapedJson));
-        }); 
-
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
+        });
         bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(bufferAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -111,7 +110,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     var resultDataset = "bufferAnalystByDatasets_leafletTest";
@@ -119,7 +118,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
             filterQueryParameter: new FilterParameter({
-                attributeFilter: "NAME='团结路'"
+                attributeFilter: 'NAME="团结路"'
             }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
@@ -135,26 +134,31 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var bufferAnalystService = spatialAnalystService(spatialAnalystURL);
-
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
-            var expectParams = "{'bufferAnalystParameter':{'endType':\"ROUND\",'leftDistance':{'value':10},'rightDistance':{'value':10},'semicircleLineSegment':10,'radiusUnit':\"METER\"},'filterQueryParameter':{'attributeFilter':\"NAME='团结路'\",'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'dataReturnOption':{'expectCount':2000,'dataset':\"bufferAnalystByDatasets_leafletTest\",'dataReturnMode':\"DATASET_ONLY\",'deleteExistResultDataset':true},'isAttributeRetained':true,'isUnion':false}";
-            expect(params).toBe(expectParams);
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
+            expect(paramsObj.bufferAnalystParameter.leftDistance.value).toEqual(10);
+            expect(paramsObj.dataReturnOption.expectCount).toEqual(2000);
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(bufferAnalysisByDatasetLEscapedJson));
-        }); 
-
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
+        });
         bufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
+            try {
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toBe('processCompleted');
+                expect(serviceResult.result.succeed).toBeTruthy();
+                done();
+            }catch (exception) {
+                console.log("'bufferAnalysis_byDatasets'案例失败" + exception.name + ":" + exception.message);
+                bufferAnalystService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
         });
-        setTimeout(() => {
-            expect(serviceResult).not.toBeNull();
-            expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.result.succeed).toBeTruthy();
-            expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
-            done();
-        }, 5000);
     });
 
 });

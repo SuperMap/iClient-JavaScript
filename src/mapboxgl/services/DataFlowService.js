@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -18,15 +18,17 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * })
  * @param {string} url - 与客户端交互的实时数据服务地址。
  * @param {Object} options - 加载实时数据可选参数。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
  * @fires mapboxgl.supermap.DataFlowService#broadcastFailed
- * @fires mapboxgl.supermap.DataFlowService#broadcastSuccessed
+ * @fires mapboxgl.supermap.DataFlowService#broadcastSucceeded
  * @fires mapboxgl.supermap.DataFlowService#subscribeSocketError
- * @fires mapboxgl.supermap.DataFlowService#messageSuccessed
- * @fires mapboxgl.supermap.DataFlowService#setFilterParamSuccessed
+ * @fires mapboxgl.supermap.DataFlowService#messageSucceeded
+ * @fires mapboxgl.supermap.DataFlowService#setFilterParamSucceeded
  */
 export class DataFlowService extends ServiceBase {
 
@@ -51,7 +53,7 @@ export class DataFlowService extends ServiceBase {
          * @description 广播失败。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#broadcastSuccessed
+         * @event mapboxgl.supermap.DataFlowService#broadcastSucceeded
          * @description 广播成功。
          */
         /**
@@ -63,11 +65,11 @@ export class DataFlowService extends ServiceBase {
          * @description 订阅数据连接失败。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#messageSuccessed
+         * @event mapboxgl.supermap.DataFlowService#messageSucceeded
          * @description 获取信息成功。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#setFilterParamSuccessed
+         * @event mapboxgl.supermap.DataFlowService#setFilterParamSucceeded
          * @description 设置过滤参数成功。
          */
 
@@ -75,21 +77,21 @@ export class DataFlowService extends ServiceBase {
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
             "broadcastFailed": this._defaultEvent,
-            "broadcastSuccessed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
             "subscribeSocketConnected": this._defaultEvent,
             "subscribeSocketError": this._defaultEvent,
-            "messageSuccessed": this._defaultEvent,
-            "setFilterParamSuccessed": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
             scope: this
         });
         var me = this;
         me.on('subscribeSocketConnected', function (e) {
             /**
-             * @event mapboxgl.supermap.DataFlowService#subscribeSuccessed
+             * @event mapboxgl.supermap.DataFlowService#subscribesucceeded
              * @description 数据流服务订阅成功后触发。
              * @property {Object} e - 事件对象。
              */
-            me.fire('subscribeSuccessed', e);
+            me.fire('subscribesucceeded', e);
         })
 
     }
@@ -138,7 +140,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

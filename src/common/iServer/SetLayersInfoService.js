@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -19,8 +19,10 @@ import './SetLayersInfoParameters';
  * @param {string} options.resourceID - 图层资源ID，临时图层的资源ID标记。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
+ * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SetLayersInfoService extends CommonServiceBase {
 
@@ -66,21 +68,17 @@ export class SetLayersInfoService extends CommonServiceBase {
         var jsonParams,
             subLayers = [],
             me = this,
-            method = "",
-            end;
+            method = "";
 
 
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? '' : '/';
         //创建临时图层和设置修改临时图层信息对应不同的资源URL
         if (me.isTempLayers) {
-            me.url += "tempLayersSet/" + me.resourceID;
+            me.url = Util.urlPathAppend(me.url, "tempLayersSet/" + me.resourceID);
             method = "PUT";
         } else {
-            me.url += "tempLayersSet";
+            me.url = Util.urlPathAppend(me.url, "tempLayersSet");
             method = "POST";
         }
-        me.url += ".json?";
         if (!params.subLayers) {
             params.subLayers = {layers: []}
         }

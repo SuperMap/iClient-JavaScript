@@ -1,18 +1,35 @@
-import {WebMap} from '../../../src/openlayers/mapping/WebMap';
-import {FetchRequest} from '../../../src/common/util/FetchRequest';
-import '../../resources/WebMap.js';
+import {
+    WebMap
+} from '../../../src/openlayers/mapping/WebMap';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
+import '../../resources/WebMapV5.js';
+import {
+    ArrayStatistic
+} from "../../../src/common/util/ArrayStatistic";
+import {
+    Util
+} from '../../../src/openlayers/core/Util';
+import {
+    StyleUtils
+} from "../../../src/openlayers/core/StyleUtils";
+
+
+import Overlay from 'ol/Overlay';
+import * as olControl from 'ol/control';
+import Feature from 'ol/Feature';
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
-    var server = "http://supermapiserver";
+    var server = "http://127.0.0.1:8090/iportal/";
+    var defaultServer = "https://www.supermapol.com/";
+    var defaultServeRequest = 'https://www.supermapol.com/web/maps/1788054202/map';
+    var proxy = `${server}apps/viewer/getUrlResource.json?url=`;
+    var id = 1788054202;
     beforeEach(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
-        testDiv.style.styleFloat = "left";
-        testDiv.style.marginLeft = "8px";
-        testDiv.style.marginTop = "50px";
-        testDiv.style.width = "500px";
-        testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -23,659 +40,996 @@ describe('openlayers_WebMap', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('initialize_SUPERMAP_REST', (done) => {
-        var id = 55;
+    it('initialize_TIANDITU_VEC', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_SUPERMAP_REST;
-                return Promise.resolve(new Response(escapedJson));
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_TIANDITU_VEC;
+                return Promise.resolve(new Response(mapJson));
             }
             return Promise.resolve();
         });
-        webMap = new WebMap(id, {server: server});
+        var datavizWebmap = new WebMap(id, {
+            server: server
+        });
+
         setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(3);
-            expect(mapInfo.center.x).toEqual(12947612.637209);
-            expect(mapInfo.center.y).toEqual(4849929.4446858);
-            expect(mapInfo.centerString).toBe("{\"x\":1.2947612637209E7,\"y\":4849929.4446858}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(3857);
-            expect(mapInfo.extent.bottom).toEqual(4820577.6258243);
-            expect(mapInfo.extent.left).toEqual(12886539.451609);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: 12886539.451609, y: 4820577.6258243}));
-            expect(mapInfo.extent.right).toEqual(13008685.822809);
-            expect(mapInfo.extent.top).toEqual(4879281.2635473);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 13008685.822809, y: 4879281.2635473}));
-            expect(mapInfo.extentString).toBe("{\"top\":4879281.2635473,\"left\":1.2886539451609E7,\"bottom\":4820577.6258243,\"leftBottom\":{\"x\":1.2886539451609E7,\"y\":4820577.6258243},\"right\":1.3008685822809E7,\"rightTop\":{\"x\":1.3008685822809E7,\"y\":4879281.2635473}}");
-            expect(mapInfo.id).toEqual(55);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("China");
-            expect(mapInfo.layers[0].id).toEqual(466);
-            expect(mapInfo.layers[0].type).toBe("SUPERMAP_REST");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China");
-            expect(mapInfo.level).toEqual(11);
-            expect(mapInfo.nickname).toBe("test");
-            expect(mapInfo.sourceType).toBe("SUPERMAP_REST");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags[0]).toBe("系统地图");
-            expect(mapInfo.thumbnail).toBe("http://supermapiserver:8092/services/../resources/thumbnail/map55.png");
-            expect(mapInfo.title).toBe("China");
-            expect(mapInfo.userName).toBe("testH");
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.callBack).toBeUndefined();
+            expect(datavizWebmap.errorCallback).toBeUndefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
+            expect(datavizWebmap.mapParams.title).toBe('tianditu');
+            expect(datavizWebmap.mapParams.description).toBe('');
             done();
         }, 1000)
     });
 
-    it('initialize_TIANDITU_VEC', (done) => {
-        var id = 568205813;
+    it('initialize_TIANDITU_IMAGE', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_TIANDITU_VEC;
-                return Promise.resolve(new Response(escapedJson));
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_TIANDITU_IMAGE;
+                return Promise.resolve(new Response(mapJson));
             }
             return Promise.resolve();
         });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(1.1691682145618E7);
-            expect(mapInfo.center.y).toEqual(4191132.2395179);
-            expect(mapInfo.centerString).toBe("{\"x\":1.1691682145618E7,\"y\":4191132.2395179}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(3857);
-            expect(mapInfo.extent.bottom).toEqual(957540.19552102);
-            expect(mapInfo.extent.left).toEqual(6701872.9400555);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: 6701872.9400555, y: 957540.19552102}));
-            expect(mapInfo.extent.right).toEqual(1.668149135118E7);
-            expect(mapInfo.extent.top).toEqual(7424724.2835148);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 1.668149135118E7, y: 7424724.2835148}));
-            expect(mapInfo.extentString).toBe("{\"top\":7424724.2835148,\"left\":6701872.9400555,\"bottom\":957540.19552102,\"leftBottom\":{\"x\":6701872.9400555,\"y\":957540.19552102},\"right\":1.668149135118E7,\"rightTop\":{\"x\":1.668149135118E7,\"y\":7424724.2835148}}");
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("天地图");
-            expect(mapInfo.layers[0].id).toEqual(14020);
-            expect(mapInfo.layers[0].type).toBe("TIANDITU_VEC");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://tianditutest");
-            expect(mapInfo.level).toEqual(3);
-            expect(mapInfo.nickname).toBe("OnlineUser");
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(3);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map568205813.png");
-            expect(mapInfo.title).toBe("天地图-地图");
-            expect(mapInfo.userName).toBe("361143");
-            done();
-        }, 1000);
-    });
+        var overlayDiv = window.document.createElement("div");
+        overlayDiv.setAttribute("id", "marker-pop");
+        window.document.body.appendChild(overlayDiv);
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {},
+            mapSetting: {
+                overlays: [
+                    new Overlay({
+                        id: 'marker-pop',
+                        positioning: 'bottom-center'
+                    })
+                ],
+                controls: olControl.defaults({
+                    attributionOptions: {
+                        collapsed: false
+                    },
+                    zoom: true,
+                    attribution: false
+                }),
+                mapClickCallback: function (evt) {}
+            }
+        };
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
 
-    it('initialize_TIANDITU_IMG', (done) => {
-        var id = 567946816;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_TIANDITU_IMG;
-                return Promise.resolve(new Response(escapedJson));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
         setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(1.2091862266267E7);
-            expect(mapInfo.center.y).toEqual(4204912.9392719);
-            expect(mapInfo.centerString).toBe("{\"x\":1.2091862266267E7,\"y\":4204912.9392719}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(3857);
-            expect(mapInfo.extent.bottom).toEqual(971320.89527502);
-            expect(mapInfo.extent.left).toEqual(7102053.0607045);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: 7102053.0607045, y: 971320.89527502}));
-            expect(mapInfo.extent.right).toEqual(1.708167147183E7);
-            expect(mapInfo.extent.top).toEqual(7438504.9832688);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 1.708167147183E7, y: 7438504.9832688}));
-            expect(mapInfo.extentString).toBe("{\"top\":7438504.9832688,\"left\":7102053.0607045,\"bottom\":971320.89527502,\"leftBottom\":{\"x\":7102053.0607045,\"y\":971320.89527502},\"right\":1.708167147183E7,\"rightTop\":{\"x\":1.708167147183E7,\"y\":7438504.9832688}}");
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("天地图影像");
-            expect(mapInfo.layers[0].id).toEqual(14010);
-            expect(mapInfo.layers[0].type).toBe("TIANDITU_IMG");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://tianditutest");
-            expect(mapInfo.level).toEqual(3);
-            expect(mapInfo.nickname).toBe("OnlineUser");
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(5);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map567946816.png");
-            expect(mapInfo.title).toBe("天地图-影像");
-            expect(mapInfo.userName).toBe("361143");
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
+            expect(datavizWebmap.mapParams.description).toBe('This is a image');
+            expect(options.successCallback).toHaveBeenCalled();
+
+            /*spyOn(options.mapSetting, 'mapClickCallback');
+            datavizWebmap.map.trigger('click');
+            expect(options.mapSetting.mapClickCallback).toHaveBeenCalled();*/
             done();
-        }, 1000);
+        }, 1000)
     });
 
     it('initialize_TIANDITU_TER', (done) => {
-        var id = 2048499925;
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {},
+            credentialKey: 'key',
+            credentialValue: 'keyValue'
+        };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_TIANDITU_TER;
-                return Promise.resolve(new Response(escapedJson));
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_TIANDITU_TER;
+                return Promise.resolve(new Response(mapJson));
             }
             return Promise.resolve();
         });
-        webMap = new WebMap(id, {server: server});
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
         setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(1.1964671051224E7);
-            expect(mapInfo.center.y).toEqual(4322320.2146969);
-            expect(mapInfo.centerString).toBe("{\"x\":1.1964671051224E7,\"y\":4322320.2146969}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(3857);
-            expect(mapInfo.extent.bottom).toEqual(-2.0037508342789E7);
-            expect(mapInfo.extent.left).toEqual(-2.0037508342789E7);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: -2.0037508342789E7, y: -2.0037508342789E7}));
-            expect(mapInfo.extent.right).toEqual(2.0037508342789E7);
-            expect(mapInfo.extent.top).toEqual(2.0037508342789E7);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 2.0037508342789E7, y: 2.0037508342789E7}));
-            expect(mapInfo.extentString).toBe("{\"top\":2.0037508342789E7,\"left\":-2.0037508342789E7,\"bottom\":-2.0037508342789E7,\"leftBottom\":{\"x\":-2.0037508342789E7,\"y\":-2.0037508342789E7},\"right\":2.0037508342789E7,\"rightTop\":{\"x\":2.0037508342789E7,\"y\":2.0037508342789E7}}");
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("天地图地形");
-            expect(mapInfo.layers[0].id).toEqual(14018);
-            expect(mapInfo.layers[0].type).toBe("TIANDITU_TER");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://tianditutest");
-            expect(mapInfo.level).toEqual(3);
-            expect(mapInfo.nickname).toBe("OnlineUser");
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(4);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map2048499925.png");
-            expect(mapInfo.title).toBe("天地图-地形");
-            expect(mapInfo.userName).toBe("361143");
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBe('key');
+            expect(datavizWebmap.credentialValue).toBe('keyValue');
+
+            var view = datavizWebmap.map.getView();
+            expect(datavizWebmap.mapParams.title).toBe('ter');
+            expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
+            expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000);
+        }, 1000)
     });
 
     it('initialize_BAIDU', (done) => {
-        var id = 1123771109;
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_BAIDU;
-                return Promise.resolve(new Response(escapedJson));
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_BAIDU;
+                return Promise.resolve(new Response(mapJson));
             }
             return Promise.resolve();
         });
-        webMap = new WebMap(id, {server: server});
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
         setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(1.2094541100772E7);
-            expect(mapInfo.center.y).toEqual(4430210.0261344);
-            expect(mapInfo.centerString).toBe("{\"x\":1.2094541100772E7,\"y\":4430210.0261344}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(910112);
-            expect(mapInfo.extent.bottom).toEqual(1722754.0261344);
-            expect(mapInfo.extent.left).toEqual(7916621.100772);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: 7916621.100772, y: 1722754.0261344}));
-            expect(mapInfo.extent.right).toEqual(1.6272461100772E7);
-            expect(mapInfo.extent.top).toEqual(7137666.0261344);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 1.6272461100772E7, y: 7137666.0261344}));
-            expect(mapInfo.extentString).toBe("{\"top\":7137666.0261344,\"left\":7916621.100772,\"bottom\":1722754.0261344,\"leftBottom\":{\"x\":7916621.100772,\"y\":1722754.0261344},\"right\":1.6272461100772E7,\"rightTop\":{\"x\":1.6272461100772E7,\"y\":7137666.0261344}}");
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("百度地图");
-            expect(mapInfo.layers[0].id).toEqual(14008);
-            expect(mapInfo.layers[0].type).toBe("BAIDU");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://online1.map.bdimg.com");
-            expect(mapInfo.level).toEqual(2);
-            expect(mapInfo.nickname).toBe("OnlineUser");
-            expect(mapInfo.sourceType).toBe("BAIDU");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(3);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map1123771109.png");
-            expect(mapInfo.title).toBe("百度地图");
-            expect(mapInfo.userName).toBe("361143");
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(datavizWebmap.mapParams.title).toBe('百度');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000);
+        }, 1000)
+    });
+    it('initialize_OPENSTREET', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_OPENSTREET;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.mapParams.title).toBe('openstreet');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            done();
+        }, 1000)
     });
 
-    it('initialize_WMS', (done) => {
-        var id = 419;
+    it('initialize_FAILD', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_WMS;
-                return Promise.resolve(new Response(escapedJson));
-            }
-            return Promise.resolve();
+            return Promise.reject();
         });
-        webMap = new WebMap(id, {server: server});
+        spyOn(options, 'successCallback');
+        spyOn(options, 'errorCallback');
+        var datavizWebmap = new WebMap(id, options);
+
         setTimeout(() => {
-            expect(webMap.id).toEqual(419);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(3.5001335163543E-11);
-            expect(mapInfo.center.y).toEqual(-1.7998047496803E-11);
-            expect(mapInfo.centerString).toBe("{\"x\":3.5001335163543E-11,\"y\":-1.7998047496803E-11}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(4326);
-            expect(mapInfo.extent.bottom).toEqual(-276.67968750002);
-            expect(mapInfo.extent.left).toEqual(-304.45312499996);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: -304.45312499996, y: -276.67968750002}));
-            expect(mapInfo.extent.right).toEqual(304.45312500004);
-            expect(mapInfo.extent.top).toEqual(276.67968749998);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 304.45312500004, y: 276.67968749998}));
-            expect(mapInfo.extentString).toBe("{\"top\":276.67968749998,\"left\":-304.45312499996,\"bottom\":-276.67968750002,\"leftBottom\":{\"x\":-304.45312499996,\"y\":-276.67968750002},\"right\":304.45312500004,\"rightTop\":{\"x\":304.45312500004,\"y\":276.67968749998}}");
-            expect(mapInfo.id).toEqual(419);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("世界地图_Day_wms");
-            expect(mapInfo.layers[0].id).toEqual(1358);
-            expect(mapInfo.layers[0].type).toBe("WMS");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapiserver:8090/iserver/services/maps/wms130/世界地图_Day");
-            expect(mapInfo.level).toEqual(1);
-            expect(mapInfo.nickname).toBe("supermap");
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags[0]).toBe("系统地图");
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map419.png");
-            expect(mapInfo.title).toBe("world-wms");
-            expect(mapInfo.userName).toBe("48372");
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(options.successCallback).not.toHaveBeenCalled();
+            expect(options.errorCallback).toHaveBeenCalled();
             done();
         }, 1000)
     });
 
     it('initialize_CLOUD', (done) => {
-        var id = 359319824;
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_CLOUD;
-                return Promise.resolve(new Response(escapedJson));
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_CLOUD;
+                return Promise.resolve(new Response(mapJson));
             }
             return Promise.resolve();
         });
-        webMap = new WebMap(id, {server: server});
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
         setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(1.2375596515534E7);
-            expect(mapInfo.center.y).toEqual(4341888.0939903);
-            expect(mapInfo.centerString).toBe("{\"x\":1.2375596515534E7,\"y\":4341888.0939903}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(910111);
-            expect(mapInfo.extent.bottom).toEqual(1108296.0494142);
-            expect(mapInfo.extent.left).toEqual(7385787.3090777);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: 7385787.3090777, y: 1108296.0494142}));
-            expect(mapInfo.extent.right).toEqual(1.736540572199E7);
-            expect(mapInfo.extent.top).toEqual(7575480.1385664);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 1.736540572199E7, y: 7575480.1385664}));
-            expect(mapInfo.extentString).toBe("{\"top\":7575480.1385664,\"left\":7385787.3090777,\"bottom\":1108296.0494142,\"leftBottom\":{\"x\":7385787.3090777,\"y\":1108296.0494142},\"right\":1.736540572199E7,\"rightTop\":{\"x\":1.736540572199E7,\"y\":7575480.1385664}}");
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("高德地图");
-            expect(mapInfo.layers[0].id).toEqual(14007);
-            expect(mapInfo.layers[0].type).toBe("CLOUD");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapcloudtest/FileService/image");
-            expect(mapInfo.level).toEqual(1);
-            expect(mapInfo.nickname).toBe("OnlineUser");
-            expect(mapInfo.sourceType).toBe("CLOUD");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(4);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map359319824.png");
-            expect(mapInfo.title).toBe("高德地图");
-            expect(mapInfo.userName).toBe("361143");
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(datavizWebmap.mapParams.title).toBe('GAOD');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
             done();
         }, 1000)
     });
 
-    it('CLOUD add FEATURE_LAYER', (done) => {
-        var id = 840;
+    it('initialize_UNDEFIED', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_FEATURE_LAYER;
-                return Promise.resolve(new Response(escapedJson));
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_UNDEFIED;
+                return Promise.resolve(new Response(mapJson));
             }
             return Promise.resolve();
         });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(13372201.86498);
-            expect(mapInfo.center.y).toEqual(3541144.0539951);
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(3857);
-            expect(mapInfo.extent.bottom).toEqual(3529315.423868);
-            expect(mapInfo.extent.left).toEqual(13353379.246765);
-            expect(mapInfo.extent.right).toEqual(13391024.483195);
-            expect(mapInfo.extent.top).toEqual(3552972.6841222);
-            expect(mapInfo.layers.length).toEqual(2);
-            expect(mapInfo.layers[1].title).toBe("标注图层名称");
-            expect(mapInfo.layers[1].id).toEqual(3035);
-            expect(mapInfo.layers[1].type).toBeNull();
-            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[1].url).toBeNull();
-            expect(mapInfo.layers[1].features.length).toBeGreaterThan(0);
-            expect(mapInfo.level).toEqual(12);
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map840.png");
-            expect(mapInfo.title).toBe("DEMO1-副本");
-            expect(mapInfo.userName).toBe("328215");
-            done();
-        }, 2000)
-    });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
 
-    it('SUPERMAP_REST add MARKER_LAYER', (done) => {
-        var id = 370;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_MARKER_LAYER;
-                return Promise.resolve(new Response(escapedJson));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
         setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(121.48414689911492);
-            expect(mapInfo.center.y).toEqual(31.240839876776977);
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(4326);
-            expect(mapInfo.extent.bottom).toEqual(31.22854463065271);
-            expect(mapInfo.extent.left).toEqual(121.4764292897094);
-            expect(mapInfo.extent.right).toEqual(121.49186450852044);
-            expect(mapInfo.extent.top).toEqual(31.253135122901245);
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(2);
-            expect(mapInfo.layers[1].title).toBe("标注图层名称");
-            expect(mapInfo.layers[1].id).toEqual(1170);
-            expect(mapInfo.layers[1].type).toBeNull();
-            expect(mapInfo.layers[1].layerType).toBe("MARKER_LAYER");
-            expect(mapInfo.layers[1].url).toBeNull();
-            expect(mapInfo.layers[1].markers.length).toBeGreaterThan(0);
-            expect(mapInfo.level).toEqual(1);
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map370.png");
-            expect(mapInfo.title).toBe("未命名地图");
-            expect(mapInfo.userName).toBe("10235");
-            done();
-        }, 2000)
-    });
-
-    it('createThemeLayer_VectorThemeLayer', (done) => {
-        var id = 2489;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_VectorThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(12964847.348465);
-            expect(mapInfo.center.y).toEqual(4890489.673789);
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(910111);
-            expect(mapInfo.extent.bottom).toEqual(4769107.6728721);
-            expect(mapInfo.extent.left).toEqual(12771920.289073);
-            expect(mapInfo.extent.right).toEqual(13157774.407857);
-            expect(mapInfo.extent.top).toEqual(5011871.6747059);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("北京市高等院校(1)");
-            expect(mapInfo.layers[0].id).toEqual(14249);
-            expect(mapInfo.layers[0].type).toBeNull();
-            expect(mapInfo.layers[0].identifier).toBe("THEME");
-            expect(mapInfo.layers[0].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("https://supermapol/iserver/services/map_ShiLiShuJu/rest/maps/北京市高等院校@公众数据")
-            expect(mapInfo.layers[0].themeSettings).not.toBeNull();
-            expect(mapInfo.level).toEqual(6);
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1765.png");
-            expect(mapInfo.title).toBe("北京高校分布热点图");
-            expect(mapInfo.userName).toBe("48372");
-            done();
-        }, 2000)
-    });
-
-    it('createThemeLayer_LabelLayer', (done) => {
-        var id = 2489;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_LabelThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap.id).toBe(id);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(4);
-            expect(mapInfo.center.x).toEqual(11556632.936703);
-            expect(mapInfo.center.y).toEqual(3923218.8401182);
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(3857);
-            expect(mapInfo.extent.bottom).toEqual(3893408.3990923);
-            expect(mapInfo.extent.left).toEqual(11501598.276348);
-            expect(mapInfo.extent.right).toEqual(11611667.597058);
-            expect(mapInfo.extent.top).toEqual(3953029.2811441);
-            expect(mapInfo.id).toBe(id);
-            expect(mapInfo.layers.length).toEqual(6);
-            for (var i = 2; i < mapInfo.layers.length; i++) {
-                expect(mapInfo.layers[i].identifier).toBe("THEME");
-                expect(mapInfo.layers[i].layerType).toBe("FEATURE_LAYER");
-                expect(mapInfo.layers[i].themeSettings).not.toBeNull();
-            }
-            expect(mapInfo.level).toEqual(10);
-            expect(mapInfo.sourceType).toBe("MAPVIEWER");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map2489.png");
-            expect(mapInfo.title).toBe("九寨沟地震分布");
-            expect(mapInfo.userName).toBe("599184");
-            done();
-        }, 2000)
-    });
-    
-    it('getResolutionsFromScales', () => {
-        webMap = new WebMap();
-        var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7],
-            units = "meter";
-        var resolutions = webMap.getResolutionsFromScales(scales, 96, units);
-        expect(resolutions.length).toEqual(5);
-        expect(resolutions[0]).toEqual(78271.5169628125);
-        expect(resolutions[1]).toEqual(39135.75848140625);
-        expect(resolutions[2]).toEqual(19567.879240703125);
-        expect(resolutions[3]).toEqual(9783.939620351563);
-        expect(resolutions[4]).toEqual(4891.969810175781);
-    });
-
-    //songym在看 PS  验证语句要验证 wmts layer的 source里面的一些东西是正确的
-    xit('initialize_WMTS', (done) => {
-        var id = 612;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_WMTS;
-                return Promise.resolve(new Response(escapedJson));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap.id).toEqual(612);
-            expect(webMap.credentialKey).toBe("key");
-            expect(webMap.credentialValue).toBeUndefined();
-            expect(webMap.server).toBe(server);
-            expect(webMap.target).toBe("map");
-            var mapInfo = webMap.mapInfo;
-            // expect(mapInfo.authorizeSetting.length).toEqual(2);
-            expect(mapInfo.center.x).toEqual(0);
-            expect(mapInfo.center.y).toEqual(-4.9737991503207e-13);
-            expect(mapInfo.centerString).toBe("{\"x\":0,\"y\":-4.9737991503207E-13}");
-            expect(mapInfo.checkStatus).toBe("SUCCESSFUL");
-            expect(mapInfo.epsgCode).toEqual(4326);
-            expect(mapInfo.extent.bottom).toEqual(-118.4765625);
-            expect(mapInfo.extent.left).toEqual(-180.3515625);
-            expect(mapInfo.extent.leftBottom).toEqual(Object({x: -180.3515625, y: -118.4765625}));
-            expect(mapInfo.extent.right).toEqual(180.3515625);
-            expect(mapInfo.extent.top).toEqual(118.4765625);
-            expect(mapInfo.extent.rightTop).toEqual(Object({x: 180.3515625, y: 118.4765625}));
-            expect(mapInfo.extentString).toBe("{\"top\":118.4765625,\"left\":-180.3515625,\"bottom\":-118.4765625,\"leftBottom\":{\"x\":-180.3515625,\"y\":-118.4765625},\"right\":180.3515625,\"rightTop\":{\"x\":180.3515625,\"y\":118.4765625}}");
-            expect(mapInfo.id).toEqual(612);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("ChinaWMTS");
-            expect(mapInfo.layers[0].id).toEqual(2423);
-            expect(mapInfo.layers[0].type).toBe("WMTS");
-            expect(mapInfo.layers[0].layerType).toBe("BASE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapiserver:8090/iserver/services/map-china400/wmts-china");
-            expect(mapInfo.level).toEqual(1);
-            expect(mapInfo.nickname).toBe("hua_zi");
-            expect(mapInfo.sourceType).toBe("WMTS");
-            expect(mapInfo.resolution).toEqual(0);
-            expect(mapInfo.tags[0]).toBe("wmts-rest");
-            expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map612.png");
-            expect(mapInfo.title).toBe("wmts-china");
-            expect(mapInfo.userName).toBe("180065");
-            webMap = null;
-            done();
-        }, 2000)
-    });
-  
-    it('createThemeLayer_HeatLayer', (done) => {
-        var id = 1765;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_HeatThemeLayer;
-                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap).not.toBeNull();
-            var mapInfo = webMap.mapInfo;
-            expect(mapInfo.layers.length).toEqual(2);
-            expect(mapInfo.layers[1].id).toEqual(14248);
-            expect(mapInfo.layers[1].themeSettings['type']).toBe("HEAT");
-            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[1].url).toContain("北京市高等院校@公众数据");
-            webMap = null;
-            done();
-        }, 5000)
-    });
- 
-    it('createThemeLayer_UniqueLayer', (done) => {
-        var id = 1765;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            console.log(url);
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_UniqueThemeLayer;
-                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap).not.toBeNull();
-            var mapInfo = webMap.mapInfo;
-            expect(mapInfo.layers.length).toEqual(2);
-            expect(mapInfo.layers[1].id).toEqual(14247);
-            expect(mapInfo.layers[1].themeSettings['type']).toBe("UNIQUE");
-            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[1].url).toContain("北京_县级行政区划图@公众数据");
-            webMap = null;
-            done();
-        }, 5000)
-    });
-
-    it('createThemeLayer_RangeLayer', (done) => {
-        var id = 1959;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + "/web/maps/" + id + ".json") {
-                var escapedJson = webMap_RangeThemeLayer;
-                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
-            }
-            return Promise.resolve();
-        });
-        webMap = new WebMap(id, {server: server});
-        setTimeout(() => {
-            expect(webMap).not.toBeNull();
-            var mapInfo = webMap.mapInfo;
-            expect(mapInfo.layers.length).toEqual(2);
-            expect(mapInfo.layers[1].id).toEqual(8179);
-            expect(mapInfo.layers[1].themeSettings['type']).toBe("RANGE");
-            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[1].url).toContain("北京市三级综合医院@公众数据");
-            webMap = null;
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
             done();
         }, 1000)
     });
 
+    it('createThemeLayer_Vector_Basis', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Theme_base;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(csvData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(7);
+            expect(view.getCenter()).toEqual([13428717.554131005, 3553719.2183414707]);
+            expect(datavizWebmap.mapParams.title).toBe('theme_base');
+            expect(datavizWebmap.mapParams.description).toBe('base style');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_Vector_Basis_Line', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Theme_base_Line;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(10);
+            expect(view.getCenter()).toEqual([12957099.912590493, 4857107.635483593]);
+            expect(datavizWebmap.mapParams.title).toBe('Line_basis');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路');
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_Vector_IMAGE', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Image;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            expect(datavizWebmap.mapParams.title).toBe('Image');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
+            done();
+        }, 1000)
+    });
+    it('createThemeLayer_Vector_SVG', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1782454383/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_SVG;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+        spyOn(datavizWebmap, 'createGraphicLayer');
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            expect(datavizWebmap.mapParams.title).toBe("无标题");
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(datavizWebmap.createGraphicLayer).toHaveBeenCalled();
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_Unique', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Unique;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(xlsData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(12);
+            expect(view.getCenter()).toEqual([12949175.717869252, 4864340.473197712]);
+            expect(datavizWebmap.mapParams.title).toBe('Unique');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('住宅_Lite(10)');
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_Range', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Range;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(10);
+            expect(view.getCenter()).toEqual([12957697.597143793, 4851476.112683487]);
+            expect(datavizWebmap.mapParams.title).toBe('RANGE_LABEL');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路(2)');
+            expect(datavizWebmap.map.getLayers().getArray().length).toBe(3);
+            done();
+        }, 1000)
+    });
+    it('createThemeLayer_Heat', (done) => {
+        //插件里面i未定义报错
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Heat;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(csvData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(7);
+            expect(view.getCenter()).toEqual([13428717.554131005, 3553719.2183414707]);
+            expect(datavizWebmap.mapParams.title).toBe('Heat');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_Marker', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`)}`;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Marker;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === requestUrl) {
+                return Promise.resolve(new Response(markerData));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(Math.floor(view.getZoom())).toBe(2);
+            expect(datavizWebmap.mapParams.title).toBe('标注图层');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('未命名标注图层1');
+            expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_SUPERMAP_MAP', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_RestMap;
+                return Promise.resolve(new Response(mapJson));
+            } else {
+                return Promise.resolve(new Response(jinJingMap))
+            }
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(7);
+            expect(view.getCenter()).toEqual([13010199.082679197, 4882852.518868368]);
+            expect(datavizWebmap.mapParams.title).toBe('RestMap');
+            expect(datavizWebmap.mapParams.description).toBe('restMap from jingjin');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('京津地区土地利用现状图');
+            expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+        }, 1000)
+    });
+
+    it('createThemeLayer_SUPERMAPREST_DATA', (done) => {
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_RestData;
+                return Promise.resolve(new Response(mapJson));
+            } else if(ur === 'https://www.supermapol.com/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图.json') {
+                return Promise.resolve(new Response(jingjinData));
+            } 
+            return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'post').and.callFake((url) => {
+            return Promise.resolve(new Response(supermapData));
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getZoom()).toBe(9);
+            expect(view.getCenter()).toEqual([13013201.402643811, 4822518.728777889]);
+            expect(datavizWebmap.mapParams.title).toBe('RestData');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('Jingjin:BaseMap_P');
+            expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+            datavizWebmap.map = null;
+            datavizWebmap = null;
+        }, 1000)
+    });
+
+    it('WMS', (done) => {
+        //插件里面i未定义报错
+        let options = {
+            server: server,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+        // let requestUrl = `${proxy}${encodeURIComponent('http://support.supermap.com:8090/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMS;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('GetCapabilities')) {
+                return Promise.resolve(new Response(wmtsData));
+            }
+            return Promise.resolve();
+        });
+        // spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(id, options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            var view = datavizWebmap.map.getView();
+            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
+            expect(datavizWebmap.mapParams.title).toBe('wms');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            // expect(options.successCallback).toHaveBeenCalled();
+
+            // expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            // expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('World');
+            // expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+        }, 1000)
+    });
+
+    /*    it('WMTS', (done) => {
+            //第二次请求wmts参数值太大
+            let options = {
+                target:'map',
+                server: server,
+                errorCallback: function () {},
+                callback: function () {}
+            };
+            let wmtsData ='<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+
+            spyOn(FetchRequest, 'get').and.callFake((url) => {
+                if (url.indexOf('map.json')>-1) {
+                    var mapJson = datavizWebMap_WMTS;
+                    return Promise.resolve(new Response(mapJson));
+                } else if(url === 'http://support.supermap.com:8090/iserver/services/maps/wmts100?') {
+                    return Promise.resolve(new Response(wmtsData));
+                }
+                return Promise.resolve();
+            });
+            spyOn(options, 'callback');
+            var datavizWebmap = new WebMap(id, options);
+
+            setTimeout(() => {
+                expect(datavizWebmap.server).toBe(server);
+                expect(datavizWebmap.errorCallback).toBeDefined();
+                expect(datavizWebmap.credentialKey).toBeUndefined();
+                expect(datavizWebmap.credentialValue).toBeUndefined();
+
+                var view = datavizWebmap.map.getView();
+                expect(view.getZoom()).toBe(1);
+                expect(view.getCenter()).toEqual([0, 0]);
+                expect(datavizWebmap.mapParams.title).toBe('wmts');
+                expect(datavizWebmap.mapParams.description).toBe('');
+                expect(options.callback).toHaveBeenCalled();
+                expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+                expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('World_AirLine_Part');
+                expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+                done();
+            }, 1000)
+        });*/
+
+    it('createWMTSSource', (done) => {
+        //第二次请求wmts参数值太大
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {});
+        var layerInfo = JSON.parse(wmtsInfo);
+        datavizWebmap.baseProjection = "EPSG:4326";
+        datavizWebmap.createWMTSSource(layerInfo);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(defaultServer);
+            done();
+        }, 1000)
+    });
+
+    it('createWMTSSource1', (done) => {
+        //第二次请求wmts参数值太大
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {});
+        var layerInfo = JSON.parse(wmtsInfo1);
+        datavizWebmap.baseProjection = "EPSG:4326";
+        datavizWebmap.createWMTSSource(layerInfo);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(defaultServer);
+            done();
+        }, 1000)
+    });
+
+    // 被写在styleUtils
+    // it('setColorToCanvas', (done) => {
+    //     spyOn(FetchRequest, 'get').and.callFake((url) => {
+    //         if (url.indexOf('map.json')>-1) {
+    //             var mapJson = datavizWebMap_WMTS;
+    //             return Promise.resolve(new Response(mapJson));
+    //         }
+    //         return Promise.resolve();
+    //     });
+    //     var datavizWebmap = new WebMap(id, {});
+    //     var canvas = document.createElement('canvas');
+    //     var params = {
+    //         fillColor: '#0083cb',
+    //         fillOpacity: '1',
+    //         strokeColor: '#56b781',
+    //         strokeOpacity: '0.2',
+    //         strokeWidth: '6'
+    //     };
+    //     setTimeout(() => {
+    //         expect(datavizWebmap.setColorToCanvas(canvas, params)).toBeDefined();
+    //         done();
+    //     }, 1000)
+    // });
+
+    // it('getSymbolStyle', (done) => {
+    //     spyOn(FetchRequest, 'get').and.callFake((url) => {
+    //         if (url.indexOf('map.json')>-1) {
+    //             var mapJson = datavizWebMap_WMTS;
+    //             return Promise.resolve(new Response(mapJson));
+    //         }
+    //         return Promise.resolve();
+    //     });
+    //     var datavizWebmap = new WebMap(id, {});
+    //     var params = {
+    //         unicode: "&#xe694",
+    //         fillColor: '#ffffff',
+    //         fillOpacity: '1',
+    //         strokeColor: '#56b781',
+    //         strokeOpacity: '0.2',
+    //         strokeWidth: '6'
+    //     };
+    //     setTimeout(() => {
+    //         expect(datavizWebmap.getSymbolStyle(params)).toBeDefined();
+    //         done();
+    //     }, 1000)
+    // });
+
+    it('changeWeight', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {});
+        var features = [];
+        var feature = new Feature();
+        feature.setProperties({
+            field: '10'
+        });
+        features.push(feature);
+        setTimeout(() => {
+            datavizWebmap.fieldMaxValue = {
+                field: 10
+            };
+            datavizWebmap.changeWeight(features, 'field');
+            // expect(feature.get('weight')).toBe(1);
+            done();
+        }, 1000)
+    });
+
+    it('createBaseLayer-wmts', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url === "http://support.supermap.com:8090/iserver/services/maps/wmts100?") {
+                return Promise.resolve(new Response(wmtsInfo2));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {});
+        setTimeout(() => {
+            var layerInfo = {
+                layerType: 'WMTS',
+                zIndex: 1,
+                visible: true,
+                projection: "EPSG:4326",
+                tileMatrixSet: "c"
+            }
+            spyOn(datavizWebmap, "createWMTSSource");
+            datavizWebmap.createBaseLayer(layerInfo);
+            expect(datavizWebmap.createWMTSSource).toHaveBeenCalled();
+            done();
+        }, 1000)
+    });
+
+    it('getWmtsInfo', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            let requestUrl = `https://www.supermapol.com/apps/viewer/getUrlResource.json?url=${encodeURIComponent(`${defaultServeRequest}.json`)}`;
+            if (url === requestUrl) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            } else {
+                let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+                return Promise.resolve(new Response(wmtsData));
+            }
+        });
+        var datavizWebmap = new WebMap(id, {});
+        spyOn(datavizWebmap, "isValidResponse").and.callFake(() => {
+            return true;
+        });
+        setTimeout(() => {
+            var layerInfo = {
+                url: 'http://support.supermap.com:8090/iserver/services/maps/wmts100'
+            };
+            var successCallback = function () {};
+            datavizWebmap.getWmtsInfo(layerInfo, successCallback);
+            expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
+            done();
+        }, 1000)
+    });
+
+    it('isValidResponse', (done) => {
+        var datavizWebmap = new WebMap(id, {webMap: JSON.parse(datavizWebMap_BAIDU)});
+        setTimeout(() => {
+            var response = {};
+            expect(datavizWebmap.isValidResponse(response)).toBe(false);
+            done();
+        }, 1000)
+    });
+
+    it('getReslutionsFromScales', (done) => {
+        var datavizWebmap = new WebMap({webMap: JSON.parse(datavizWebMap_BAIDU)});
+        setTimeout(() => {
+            var scales = {
+                TileMatrix: [{
+                    Identifier: ''
+                }]
+            };
+            expect(datavizWebmap.getReslutionsFromScales(scales, 96, 'degrees', 1000)).toBeDefined();
+            done();
+        }, 1000)
+    });
+
+    it('getRangeStyleGroup', (done) => {
+        let webMapObj = JSON.parse(datavizWebMap_BAIDU);
+        var datavizWebmap = new WebMap({webMap: webMapObj});
+        setTimeout(() => {
+            var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
+            var features = [];
+            var feature = new Feature();
+            feature.set("Properties", {
+                field: 10
+            });
+            features.push(feature);
+            spyOn(ArrayStatistic, "getArraySegments").and.callFake(() => {
+                return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
+            });
+            datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
+            expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
+            done();
+        }, 1000);
+    });
+
+    it('getRangeStyleGroup1', (done) => {
+        spyOn(ArrayStatistic, "getArraySegments").and.callFake(() => {
+            return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
+        });
+        let webMapObj = JSON.parse(datavizWebMap_BAIDU);
+        var datavizWebmap = new WebMap({webMap: webMapObj});
+        setTimeout(() => {
+            var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
+            var features = [];
+            var feature = new Feature();
+            feature.set("field", 10);
+            features.push(feature);
+            datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
+            expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
+            done();
+        }, 1000)
+    });
+
+    it('refresh', (done) => {
+        let refresh = false;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = refresh ? datavizWebMap_BAIDU : datavizWebMap_TIANDITU_VEC;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {
+            server: server
+        });
+
+        setTimeout(() => {
+            expect(datavizWebmap.baseLayer.name).toEqual('天地图');
+            refresh = true;
+            datavizWebmap.refresh();
+            setTimeout(() => {
+                expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
+                done();
+            }, 1000);            
+        }, 1000)
+    })
+    it('webMapUrl', (done) => {
+        let options = {
+            server: server,
+            webMap: defaultServeRequest,
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_BAIDU;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+
+            expect(datavizWebmap.mapParams.title).toBe('百度');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            expect(options.successCallback).toHaveBeenCalled();
+            done();
+        }, 1000)
+    })
+    it('webMapObject', (done) => {
+        let options = {
+            server: server,
+            webMap: JSON.parse(datavizWebMap_BAIDU),
+            successCallback: function () {},
+            errorCallback: function () {}
+        };
+        spyOn(options, 'successCallback');
+        var datavizWebmap = new WebMap(options);
+
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(options.successCallback).toHaveBeenCalled();
+            done();
+        }, 1000)
+    })
 });

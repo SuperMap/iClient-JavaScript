@@ -1,7 +1,7 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L from 'leaflet';
 
 const emptyFunc = L.Util.falseFn;
 export var GraphicCanvasRenderer = L.Class.extend({
@@ -27,39 +27,59 @@ export var GraphicCanvasRenderer = L.Class.extend({
      * @description  更新图层，数据或者样式改变后调用。
      */
     update: function () {
-        this.getRenderer()._clear();
+        this.getRenderer()._clear(); 
         this.getRenderer()._draw();
     },
+    _getGraphicAtPoint: function (p) {
+        const layer = this.layer;
+        const map = layer._map;
 
-    _handleClick: function (evt) {
-        let me = this,
-            layer = me.layer,
-            map = layer._map;
-        if (!layer.options.onClick) {
-            return;
-        }
-        this.layer._renderer._ctx.canvas.style.cursor = "pointer";
         let graphics = layer._getGraphicsInBounds();
-        for (let i = 0; i < graphics.length; i++) {
+        for (let i = graphics.length - 1; i >= 0; i--) {
             let p1, p2, bounds;
-            let center = map.latLngToLayerPoint(graphics[i].getLatLng());
+            const center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
             if (!style && this.defaultStyle) {
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor || [style.img.width / 2, style.img.height / 2];
+                let imgWidth = style.img.width;
+                let imgHeight = style.img.height;
+                if (style.size && style.size[0] && style.size[1]) {
+                    imgWidth = style.size[0];
+                    imgHeight = style.size[1];
+                }
+                const anchor = style.anchor || [imgWidth / 2, imgHeight / 2];
                 p1 = L.point(center.x - anchor[0], center.y - anchor[1]);
-                p2 = L.point(p1.x + style.img.width, p1.y + style.img.height);
+                p2 = L.point(p1.x + imgWidth, p1.y + imgHeight);
             } else {
                 p1 = L.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = L.bounds(p1, p2);
-            if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                return layer.options.onClick.call(layer, graphics[i],evt);
+            if (bounds.contains(p)) {
+                return graphics[i];
             }
         }
+        return null;
+    },
+    containsPoint: function (p) {
+        return !!this._getGraphicAtPoint(p);
+    },
+    _handleClick: function (evt) {
+        evt.target = null;
+        const layer = this.layer;
+        const map = layer._map;
+        const graphic = this._getGraphicAtPoint(map.latLngToLayerPoint(evt.latlng));
+        if (graphic) {
+            this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
+            evt.target = graphic;
+            if (evt.type === 'click' && layer.options.onClick) {
+                layer.options.onClick.call(layer, graphic, evt);
+            }
+            return;
+        }
+        this.layer._renderer._ctx.canvas.style.cursor = 'auto';
     },
 
     //跟GraphicWebGLRenderer保持一致
@@ -67,7 +87,6 @@ export var GraphicCanvasRenderer = L.Class.extend({
 });
 
 L.Canvas.include({
-
     drawGraphics: function (graphics, defaultStyle) {
         var me = this;
         if (!me._drawing) {
@@ -79,16 +98,17 @@ L.Canvas.include({
             if (!style && defaultStyle) {
                 style = defaultStyle;
             }
-            if (style.img) { //绘制图片
+            if (style.img) {
+                //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else { //绘制canvas
+            } else {
+                //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
-        })
+        });
     },
 
     _drawCanvas: function (ctx, style, latLng) {
-
         var canvas = style;
         var pt = this._map.latLngToLayerPoint(latLng);
         var p0 = pt.x - canvas.width / 2;
@@ -135,5 +155,4 @@ L.Canvas.include({
         var point = this._map.latLngToLayerPoint(latLng);
         return [point.x, point.y];
     }
-
 });

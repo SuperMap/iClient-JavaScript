@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from './CommonServiceBase';
-import {FacilityAnalystSources3DParameters} from './FacilityAnalystSources3DParameters';
+import { SuperMap } from '../SuperMap';
+import { CommonServiceBase } from './CommonServiceBase';
+import { Util } from '../commontypes/Util';
+import { FacilityAnalystSources3DParameters } from './FacilityAnalystSources3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystSources3DService
@@ -19,6 +20,8 @@ import {FacilityAnalystSources3DParameters} from './FacilityAnalystSources3DPara
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class FacilityAnalystSources3DService extends CommonServiceBase {
 
@@ -47,9 +50,8 @@ export class FacilityAnalystSources3DService extends CommonServiceBase {
         if (!(params instanceof FacilityAnalystSources3DParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "sources" : "/sources") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'sources');
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

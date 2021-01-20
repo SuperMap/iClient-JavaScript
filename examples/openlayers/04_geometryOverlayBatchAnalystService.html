@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_geometryOverlayBatchAnalystService"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -53,7 +53,7 @@
     <div id="popup-content"></div>
 </div>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map,
         baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
@@ -78,7 +78,7 @@
                 center: [116.85, 39.79],
                 zoom: 9,
                 projection: "EPSG:4326",
-                extent: extent
+                multiWorld: true
             }),
             overlays: [overlay]
         });

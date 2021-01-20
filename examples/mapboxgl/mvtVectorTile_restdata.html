@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <title data-i18n="resources.title_mvtVectorLayer_restdata"></title>
+        <script type="text/javascript" src="../js/include-web.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map" style="width: 100%; height: 100%; z-index: 0; position: absolute"></div>
+        <script
+            type="text/javascript"
+            include="mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <script type="text/javascript">
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var attribution =
+                "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+            var tile1 =
+                host +
+                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/railways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
+                encodeURIComponent('{x:-180,y:90}');
+            var tile2 =
+                host +
+                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/waterways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
+                encodeURIComponent('{x:-180,y:90}');
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            attribution: attribution,
+                            type: 'raster',
+                            tiles: [
+                                host +
+                                    '/iserver/services/map-china400/rest/maps/ChinaDark/tileImage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&prjCoordSys=' +
+                                    encodeURIComponent('{epsgCode:4326}') +
+                                    '&origin=' +
+                                    encodeURIComponent('{x:-180,y:90}')
+                            ],
+                            tileSize: 256
+                        },
+                        railways: {
+                            attribution: attribution,
+                            type: 'vector',
+                            tiles: [tile1]
+                        },
+                        waterways: {
+                            attribution: attribution,
+                            type: 'vector',
+                            tiles: [tile2]
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'simple-tiles',
+                            type: 'raster',
+                            source: 'raster-tiles',
+                            minzoom: 0,
+                            maxzoom: 22
+                        },
+                        {
+                            id: 'waterwaysLayer',
+                            type: 'line',
+                            source: 'waterways',
+                            'source-layer': 'waterways@osm-line',
+                            paint: {
+                                'line-width': 1,
+                                'line-color': 'rgb(37, 140, 249)',
+                                'line-opacity': 0.6
+                            }
+                        },
+                        {
+                            id: 'railwaysLayer',
+                            type: 'line',
+                            source: 'railways',
+                            'source-layer': 'railways@osm-line',
+                            paint: {
+                                'line-width': 1,
+                                'line-blur': 2,
+                                'line-color': 'orange',
+                                'line-opacity': 0.6
+                            }
+                        }
+                    ]
+                },
+                crs: 'EPSG:4326',
+                center: [120.91740589709298, 31.519742618586378],
+                zoom: 8
+            });
+        </script>
+    </body>
+</html>

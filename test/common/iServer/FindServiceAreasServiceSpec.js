@@ -1,8 +1,9 @@
-﻿﻿import {FindServiceAreasService} from '../../../src/common/iServer/FindServiceAreasService';
-import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
-import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
-import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import {Point} from '../../../src/common/commontypes/geometry/Point';
+﻿import { FindServiceAreasService } from '../../../src/common/iServer/FindServiceAreasService';
+import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
+import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
+import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { Point } from '../../../src/common/commontypes/geometry/Point';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 //服务初始化时注册事件监听函数
@@ -36,7 +37,7 @@ describe('FindServiceAreasService', () => {
     //基本测试
     it('processAsync:default', (done) => {
         var centerArray = [new Point(119.6100397551, -122.6278394459),
-            new Point(171.9035599945, -113.2491141857)
+        new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
         var resultSetting = new TransportationAnalystResultSetting({
@@ -61,14 +62,12 @@ describe('FindServiceAreasService', () => {
             isFromCenter: false,
             parameter: analystParameter
         });
-        var findServiceAreasService = initFindServiceAreasService();
-        findServiceAreasService.processAsync(parameter);
-        setTimeout(() => {
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgsSystem) => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].edgeFeatures != null).toBeTruthy();
-                expect(analystResult.serviceAreaList[0].edgeIDs[0]).toEqual(8366);
+                expect(analystResult.serviceAreaList[0].edgeIDs[0]).toEqual(48);
                 expect(analystResult.serviceAreaList[0].nodeFeatures != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].routes != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].serviceRegion != null).toBeTruthy();
@@ -82,13 +81,28 @@ describe('FindServiceAreasService', () => {
                 findServiceAreasService.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': findServiceAreasServiceFailed,
+                'processCompleted': findServiceAreasServiceCompleted
+            }
+        };
+        var findServiceAreasService = new FindServiceAreasService(url, options);
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/servicearea");
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)))
+        });
+        findServiceAreasService.processAsync(parameter);
     });
 
     //设置返回信息的有效性
     it('processAsync_returnInformationInvalid', (done) => {
         var centerArray = [new Point(119.6100397551, -122.6278394459),
-            new Point(171.9035599945, -113.2491141857)
+        new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
         var resultSetting = new TransportationAnalystResultSetting({
@@ -113,18 +127,15 @@ describe('FindServiceAreasService', () => {
             isFromCenter: false,
             parameter: analystParameter
         });
-        var findServiceAreasService = initFindServiceAreasService();
-        findServiceAreasService.processAsync(parameter);
-
-        setTimeout(() => {
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgsSystem) => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList).not.toBeNull();
-                expect(analystResult.serviceAreaList[0].edgeFeatures).toBeNull();
-                expect(analystResult.serviceAreaList[0].edgeIDs.length).toEqual(0);
-                expect(analystResult.serviceAreaList[0].nodeFeatures).toBeNull();
-                expect(analystResult.serviceAreaList[0].nodeIDs.length).toEqual(0);
-                expect(analystResult.serviceAreaList[0].routes).toBeNull();
+                expect(analystResult.serviceAreaList[0].edgeFeatures).not.toBeNull();
+                expect(analystResult.serviceAreaList[0].edgeIDs.length).toEqual(2);
+                expect(analystResult.serviceAreaList[0].nodeFeatures).not.toBeNull();
+                expect(analystResult.serviceAreaList[0].nodeIDs.length).toEqual(2);
+                expect(analystResult.serviceAreaList[0].routes).not.toBeNull();
                 expect(analystResult.serviceAreaList[0].serviceRegion).not.toBeNull();
                 findServiceAreasService.destroy();
                 expect(findServiceAreasService.EVENT_TYPES).toBeNull();
@@ -138,13 +149,28 @@ describe('FindServiceAreasService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': findServiceAreasServiceFailed,
+                'processCompleted': findServiceAreasServiceCompleted
+            }
+        };
+        var findServiceAreasService = new FindServiceAreasService(url, options);;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/servicearea");
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)))
+        });
+        findServiceAreasService.processAsync(parameter);
     });
 
     //id为空
     it('processAsync_isAnalystById', (done) => {
         var centerArray = [new Point(119.6100397551, -122.6278394459),
-            new Point(171.9035599945, -113.2491141857)
+        new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
         var resultSetting = new TransportationAnalystResultSetting({
@@ -169,10 +195,10 @@ describe('FindServiceAreasService', () => {
             isFromCenter: false,
             parameter: analystParameter
         });
-        var findServiceAreasService = initFindServiceAreasService();
-        findServiceAreasService.processAsync(parameter);
-
-        setTimeout(() => {
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -188,13 +214,25 @@ describe('FindServiceAreasService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': findServiceAreasServiceFailed,
+                'processCompleted': findServiceAreasServiceCompleted
+            }
+        };
+        var findServiceAreasService = new FindServiceAreasService(url, options);;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/servicearea");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数centers 不是有效的JSON 字符串对象"}}`))
+        });
+        findServiceAreasService.processAsync(parameter);
     });
 
     //参数错误
     it('processAsync_paramsWrong', (done) => {
         var centerArray = [new Point(119.6100397551, -122.6278394459),
-            new Point(171.9035599945, -113.2491141857)
+        new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
         var resultSetting = new TransportationAnalystResultSetting({
@@ -219,10 +257,22 @@ describe('FindServiceAreasService', () => {
             isFromCenter: false,
             parameter: analystParameter
         });
-        var findServiceAreasService = initFindServiceAreasService();
-        findServiceAreasService.processAsync(parameter);
-
-        setTimeout(() => {
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': findServiceAreasServiceFailed,
+                'processCompleted': findServiceAreasServiceCompleted
+            }
+        };
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -238,35 +288,39 @@ describe('FindServiceAreasService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': findServiceAreasServiceFailed,
+                'processCompleted': findServiceAreasServiceCompleted
+            }
+        };
+        var findServiceAreasService = new FindServiceAreasService(url, options);;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/servicearea");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findServiceAreas 操作时出错,原因是：权重字段TurnCost1不存在。"}}`))
+        });
+        findServiceAreasService.processAsync(parameter);
     });
 
     //参数为空
-    it('processAsync_parameterNull', (done) => {
-        var findServiceAreasService = initFindServiceAreasService();
+    it('processAsync_parameterNull', () => {
+        var flag = false;
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgs) => {
+            flag = true;
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgsSystem) => {
+            flag = true;
+        }
+        var findServiceAreasService = new FindServiceAreasService(url, options);
         findServiceAreasService.processAsync();
-
-        setTimeout(() => {
-            try {
-                expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
-                expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
-                findServiceAreasService.destroy();
-                expect(findServiceAreasService.EVENT_TYPES).toBeNull();
-                expect(findServiceAreasService.events).toBeNull();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
-                findServiceAreasService.destroy();
-                done();
-            }
-        }, 2000)
+        expect(flag).toBeFalsy;
     });
 
     //AnalyzeById_null
     it('processAsync_AnalyzeById_wrong', (done) => {
         var centerArray = [new Point(119.6100397551, -122.6278394459),
-            new Point(171.9035599945, -113.2491141857)
+        new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
         var resultSetting = new TransportationAnalystResultSetting({
@@ -291,9 +345,10 @@ describe('FindServiceAreasService', () => {
             isFromCenter: false,
             parameter: analystParameter
         });
-        var findServiceAreasService = initFindServiceAreasService();
-        findServiceAreasService.processAsync(parameter);
-        setTimeout(() => {
+        var findServiceAreasServiceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+        };
+        var findServiceAreasServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -309,6 +364,18 @@ describe('FindServiceAreasService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': findServiceAreasServiceFailed,
+                'processCompleted': findServiceAreasServiceCompleted
+            }
+        };
+        var findServiceAreasService = new FindServiceAreasService(url, options);;
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/servicearea");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findServiceAreas 操作时出错,原因是：权重字段TurnCost1不存在。"}}`))
+        });
+        findServiceAreasService.processAsync(parameter);
     })
 });

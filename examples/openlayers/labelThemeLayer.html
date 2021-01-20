@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -112,12 +112,12 @@
     <div id="popup-content"></div>
 </div>
 <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript" src="../data/themeLableData.js"></script>
 <script type="text/javascript">
 
     var map, themeSource,
-        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        host = window.isLocal ? window.server : "https://iserver.supermap.io",
         baseUrl = host + "/iserver/services/map-china400/rest/maps/China_4326";
 
 
@@ -144,7 +144,8 @@
             view: new ol.View({
                 center: [110.85, 39.79],
                 zoom: 4,
-                projection: "EPSG:4326"
+                projection: "EPSG:4326",
+                multiWorld: true
             }),
             overlays: [popup]
         });

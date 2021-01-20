@@ -1,7 +1,8 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import { Util } from '../commontypes/Util';
 import {ProcessingServiceBase} from './ProcessingServiceBase';
 import {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
 
@@ -12,12 +13,14 @@ import {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SummaryAttributesJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/summaryattributes";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/summaryattributes');
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
     }
 
@@ -42,7 +45,7 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id
      */
     getSummaryAttributesJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**

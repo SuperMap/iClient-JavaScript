@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -9,21 +9,22 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style="  position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
-    <div class='panel-heading'>
+    <div class='panel-heading' id="panelheading">
         <h5 class='panel-title text-center' data-i18n="resources.title_drawGeoGraphicObject"></h5></div>
-    <div class='panel-body content'>
+    <div class='panel-body content' id="panelbodycontent">
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_drawPoint" onclick="draw_dot()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_drawLine" onclick="draw_line()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_drawPolygon" onclick="draw_polygon()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawText" onclick="draw_text()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawImage" onclick="draw_Image()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayers()"/>
     </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
@@ -47,7 +48,7 @@
     function draw_dot(){
         clearLayers();
         var latlngs = [new L.latLng(34,105)];
-        plottingLayer.createSymbol(421, 10100,latlngs,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
+        plottingLayer.createSymbol(421, 10100, latlngs);
     }
 
     function draw_line() {
@@ -73,9 +74,22 @@
     function draw_text() {
         clearLayers();
         var latlngs = [new L.latLng(34,105)];
-        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.TEXTSYMBOL,latlngs,null,{fontSize:30});
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.TEXTSYMBOL, latlngs, null, {fontSize:30});
     }
 
+    function draw_Image(){
+        clearLayers();
+        var latlngs = [new L.latLng(34,105)];
+        //var path ="https://www.supermap.com/cn/cn2019/images/logo.png";
+        var path ="../img/marker.png";
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.PICTURE,latlngs,null,{graphicWidth:44,graphicHeight:33},{path:path}, function(evt){},{});
+    }
+
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+        });
+    });
 
 </script>
 </body>

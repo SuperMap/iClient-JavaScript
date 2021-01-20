@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Area} from './Area';
@@ -9,7 +9,7 @@ import {Env} from './Env';
 import {Event} from './Event';
 import {Http} from './Http';
 import {Log} from './Log';
-import {Math as SMath} from './Math';
+import {MathTool as SMath} from './Math';
 import {Matrix} from './Matrix';
 import {Util} from './Util';
 import {Vector} from './Vector';

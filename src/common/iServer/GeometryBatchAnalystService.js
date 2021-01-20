@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -20,6 +20,8 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myOverlayAnalystService = new SuperMap.REST.GeometryBatchAnalystService(url, {
  *     eventListeners: {
@@ -48,13 +50,8 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
      */
     processAsync(parameters) {
         var me = this;
-
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-        me.url += 'geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true';
-
+        me.url = Util.urlPathAppend(me.url, 'geometry/batchanalyst');
+        me.url = Util.urlAppend(me.url, 'returnContent=true&ignoreAnalystParam=true');
         var parameterObjects = me._processParams(parameters);
         var jsonParameters = Util.toJSON(parameterObjects);
 

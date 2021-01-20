@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -12,8 +12,55 @@ import {
     GeometryPoint as Point,
     GeoText
 } from '@supermap/iclient-common';
-import Attributions from '../core/Attributions'
+import Attributions from '../core/Attributions';
 
+/**
+ * @class L.supermap.heatMapFeature
+ * @category Visualization HeatMap
+ * @classdesc 客户端专题图要素类。
+ *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
+ * @extends {L.Class}
+ * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形。
+ * @param {Object} attributes - 要素属性。
+ */
+export var HeatMapFeature = L.Class.extend({
+    initialize: function (geometry, attributes) {
+        this.geometry = geometry;
+        this.attributes = attributes;
+    },
+
+    /**
+     * @function L.supermap.themeFeature.prototype.toFeature
+     * @description 转为内部矢量要素。
+     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
+     */
+    toFeature: function () {
+        var geometry = this.geometry;
+        var points = [];
+        if (geometry instanceof L.LatLng) {
+            points = [geometry.lng, geometry.lat];
+        } else if (geometry instanceof L.Point) {
+            points = [geometry.x, geometry.y];
+        } else if (geometry instanceof L.CircleMarker) {
+            var latLng = geometry.getLatLng();
+            points = [latLng.lng, latLng.lat];
+        } else {
+            points = geometry;
+        }
+        if (points.length === 2) {
+            geometry = new GeometryPoint(points[0], points[1]);
+        }
+
+        return new Vector(geometry, this.attributes);
+    }
+
+});
+
+export var heatMapFeature = function (geometry, attributes) {
+    return new HeatMapFeature(geometry, attributes);
+};
+
+L.supermap.heatMapFeature = heatMapFeature;
 /**
  * @class L.supermap.heatMapLayer
  * @classdesc 热力图层类。
@@ -29,6 +76,7 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
+ * @param {number} [options.blur] - 模糊量，，单位为 px。默认值为半径的二分之一。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  *
  * @extends {L.Layer}
@@ -78,6 +126,7 @@ export var HeatMapLayer = L.Layer.extend({
         this.useGeoUnit = this.options.useGeoUnit;
         this.opacity = this.options.opacity;
         this.radius = this.options.radius;
+        this.blur = this.options.blur;
         this.movingOffset = [0, 0];
     },
 
@@ -295,7 +344,7 @@ export var HeatMapLayer = L.Layer.extend({
      * @private
      */
     drawCircle: function (r) {
-        var blur = r / 2;
+        var blur = this.blur || r / 2;
 
         var circle = this.circle = document.createElement('canvas'),
             ctx = circle.getContext("2d");
@@ -578,51 +627,3 @@ export var heatMapLayer = function (name, options) {
     return new HeatMapLayer(name, options);
 };
 L.supermap.heatMapLayer = heatMapLayer;
-
-/**
- * @class L.supermap.heatMapFeature
- * @category Visualization HeatMap
- * @classdesc 客户端专题图要素类。
- *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
- * @extends {L.Class}
- * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形。
- * @param {Object} attributes - 要素属性。
- */
-export var HeatMapFeature = L.Class.extend({
-    initialize: function (geometry, attributes) {
-        this.geometry = geometry;
-        this.attributes = attributes;
-    },
-
-    /**
-     * @function L.supermap.themeFeature.prototype.toFeature
-     * @description 转为内部矢量要素。
-     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
-     */
-    toFeature: function () {
-        var geometry = this.geometry;
-        var points = [];
-        if (geometry instanceof L.LatLng) {
-            points = [geometry.lng, geometry.lat];
-        } else if (geometry instanceof L.Point) {
-            points = [geometry.x, geometry.y];
-        } else if (geometry instanceof L.CircleMarker) {
-            var latLng = geometry.getLatLng();
-            points = [latLng.lng, latLng.lat];
-        } else {
-            points = geometry;
-        }
-        if (points.length === 2) {
-            geometry = new GeometryPoint(points[0], points[1]);
-        }
-
-        return new Vector(geometry, this.attributes);
-    }
-
-});
-
-export var heatMapFeature = function (geometry, attributes) {
-    return new HeatMapFeature(geometry, attributes);
-};
-
-L.supermap.heatMapFeature = heatMapFeature;

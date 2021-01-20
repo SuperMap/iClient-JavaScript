@@ -1,0 +1,35 @@
+/**组件通用外界面样式**/
+.component-container {
+    position: absolute;
+    top: 30px;
+    right: 56px;
+    background: #F1F3F3;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26);
+    z-index: 999;
+}
+
+.component-title {
+    padding: 0 18px;
+    height: 34px;
+    color: #108EE9;
+    line-height: 36px;
+    font-weight: bold;
+    font-size: 15px;
+    border-top: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+    background: #ffffff;
+}
+
+.component-content {
+    /*min-width: 314px;*/
+    /*padding: 10px;*/
+    color: #595959;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.component-title div {
+    height: 33px;
+    width: fit-content;
+    border-bottom: 2px solid #108EE9;;
+}

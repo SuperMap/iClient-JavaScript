@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -69,8 +69,9 @@ export const EchartsLayer = L.Layer.extend({
         this._map = map;
         this._initEchartsContainer();
         this._ec = echarts.init(this._echartsContainer);
-        echarts.leafletMap = map;
+        this._ec.leafletMap= map;
         const me = this;
+
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
@@ -81,8 +82,7 @@ export const EchartsLayer = L.Layer.extend({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
-        }, function (payload, ecModel) { // eslint-disable-line no-unused-vars
-
+        }, function (payload ) { // eslint-disable-line no-unused-vars
         });
         echarts.registerCoordinateSystem(
             'leaflet', LeafletMapCoordSys
@@ -100,7 +100,7 @@ export const EchartsLayer = L.Layer.extend({
             type: 'LeafletMap',
             render: function (LeafletMapModel, ecModel, api) {
                 let rendering = true;
-                const leafletMap = echarts.leafletMap;
+                let leafletMap = ecModel.scheduler.ecInstance.leafletMap;
                 const viewportRoot = api.getZr().painter.getViewportRoot();
 
                 const animated = leafletMap.options.zoomAnimation && L.Browser.any3d;
@@ -208,7 +208,7 @@ export const EchartsLayer = L.Layer.extend({
         _div.style.zIndex = 10;
         this._echartsContainer = _div;
 
-        this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
+        this.getPane().appendChild(this._echartsContainer);
         const me = this;
 
         function _resizeHandler(e) {
@@ -322,10 +322,10 @@ LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions;
 
 LeafletMapCoordSys.create = function (ecModel) {
     let coordSys;
-
+    let leafletMap = ecModel.scheduler.ecInstance.leafletMap;
     ecModel.eachComponent('LeafletMap', function (leafletMapModel) {
         if (!coordSys) {
-            coordSys = new LeafletMapCoordSys(echarts.leafletMap);
+            coordSys = new LeafletMapCoordSys(leafletMap);
         }
         leafletMapModel.coordinateSystem = coordSys;
         leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || [0, 0]);
@@ -333,7 +333,7 @@ LeafletMapCoordSys.create = function (ecModel) {
     ecModel.eachSeries(function (seriesModel) {
         if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
             if (!coordSys) {
-                coordSys = new LeafletMapCoordSys(echarts.leafletMap);
+                coordSys = new LeafletMapCoordSys(leafletMap);
             }
             seriesModel.coordinateSystem = coordSys;
             seriesModel.animation = seriesModel.animation === true;

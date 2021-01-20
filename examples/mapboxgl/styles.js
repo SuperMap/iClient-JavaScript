@@ -1,8 +1,8 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
-var host = window.isLocal ? window.server : "http://iclsvr.supermap.io";
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-    "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+    "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
     "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
 var mapStyles = {
@@ -16,7 +16,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/street/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -27,18 +27,18 @@ var mapStyles = {
                         "background-color": "#75CFF0"
                     }
                 }, {
-                    "id": "单值专题图#2",
+                    "id": "面区界R@北京",
                     "type": "fill",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#2",
+                    "source-layer": "面区界R@北京",
                     "paint": {
                         "fill-color": "#EFE9E1"
                     }
                 }, {
-                    "id": "单值专题图#1",
+                    "id": "界线@北京",
                     "type": "line",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#1",
+                    "source-layer": "界线@北京",
                     "paint": {
                         "line-color": "hsl(240, 8%, 51%)",
                         "line-width": 0.5
@@ -311,10 +311,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -347,10 +347,10 @@ var mapStyles = {
                     }
 
                 }, {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -1000,7 +1000,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/dark/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/dark/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -1012,19 +1012,19 @@ var mapStyles = {
                     }
                 },
                 {
-                    "id": "单值专题图#2",
+                    "id": "面区界R@北京",
                     "type": "fill",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#2",
+                    "source-layer": "面区界R@北京",
                     "paint": {
                         "fill-color": "hsl(55, 1%, 20%)"
                     }
                 },
                 {
-                    "id": "单值专题图#1",
+                    "id": "界线@北京",
                     "type": "line",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#1",
+                    "source-layer": "界线@北京",
                     "paint": {
                         "line-color": "hsl(0, 0%, 35%)",
                         "line-width": 0.5
@@ -1180,10 +1180,10 @@ var mapStyles = {
 
 //区划
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -1237,10 +1237,10 @@ var mapStyles = {
                 },
 //地标
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -1901,7 +1901,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/osm/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -2245,10 +2245,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -2282,10 +2282,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -3204,10 +3204,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -3241,10 +3241,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -3994,7 +3994,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/osm/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -4006,10 +4006,10 @@ var mapStyles = {
                     }
                 },
                 {
-                    "id": "单值专题图#1",
+                    "id": "界线@北京",
                     "type": "line",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#1",
+                    "source-layer": "界线@北京",
                     "layout": {
                         "line-join": "round"
                     },
@@ -4442,10 +4442,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -4479,10 +4479,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -5635,10 +5635,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -5672,10 +5672,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",

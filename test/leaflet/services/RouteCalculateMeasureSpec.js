@@ -1,5 +1,6 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -38,18 +39,26 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
             "isIgnoreGap": false
         });
         var routeCalculateMeasureService = spatialAnalystService(spatialAnalystURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/calculatemeasure?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
+        });
         routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+
             try {
                 expect(routeCalculateMeasureService).not.toBeNull();
                 expect(routeCalculateMeasureService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
-                expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.measure).toBe(195.39962171759203);
+                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.measure).toBe(627.9307113458588);
                 routeCalculateMeasureService.destroy();
                 done();
             } catch (exception) {
@@ -58,6 +67,6 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

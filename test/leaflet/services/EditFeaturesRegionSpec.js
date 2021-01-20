@@ -1,6 +1,7 @@
-import {featureService} from '../../../src/leaflet/services/FeatureService';
-import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
-import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { featureService } from '../../../src/leaflet/services/FeatureService';
+import { EditFeaturesParameters } from '../../../src/common/iServer/EditFeaturesParameters';
+import { GetFeaturesByIDsParameters } from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1, id2;
@@ -29,10 +30,16 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             isUseBatch: false
         });
         var addFeaturesService = featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult_REGION = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("REGION");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[115]`));
         });
-        setTimeout(() => {
+        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
+            addFeatureResult_REGION = result;
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_REGION.type).toBe("processCompleted");
@@ -52,7 +59,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     // 增加REGION要素，returnContent为false
@@ -68,10 +75,16 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             isUseBatch: false
         });
         var addFeaturesService = featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("REGION");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_78a67b1809614341b9314f311a47c1d4","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-jingjin/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_78a67b1809614341b9314f311a47c1d4.json"}`));
         });
-        setTimeout(() => {
+        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
+            addFeatureResult = result;
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult.type).toBe("processCompleted");
@@ -93,7 +106,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     //  批量删除要素
@@ -106,10 +119,14 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             editType: "delete"
         });
         var deleteFeaturesService = featureService(editServiceURL);
-        deleteFeaturesService.editFeatures(deleteFeaturesParams, (result) => {
-            deleteFeatureResult = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features?ids=[115,116]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        setTimeout(() => {
+        deleteFeaturesService.editFeatures(deleteFeaturesParams, (result) => {
+            deleteFeatureResult = result;
             try {
                 expect(deleteFeaturesService).not.toBeNull();
                 expect(deleteFeatureResult).not.toBeNull();
@@ -126,7 +143,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 deleteFeaturesService.destroy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     // 更新要素
@@ -139,10 +156,16 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             IDs: [1]
         });
         var getFeaturesByIDsService = featureService(editServiceURL);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
-            getFeatureResult = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toContain("Jingjin:Landuse_R");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeatureResultJson)));
         });
-        setTimeout(() => {
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
+            getFeatureResult = result;
             if (getFeatureResult != null) {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeatureResult.type).toBe("processCompleted");
@@ -157,8 +180,9 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 getFeaturesByIDsService.destroy();
                 done();
             }
-        }, 4000)
+        });
     });
+
     // 将上面获取的要素update
     it('successEvent:update', (done) => {
         var updateFeatureResult = null;
@@ -172,13 +196,19 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 editType: "update"
             });
             var updateFeaturesService = featureService(editServiceURL);
+            spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+                expect(method).toBe("PUT");
+                expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features");
+                var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+                expect(paramsObj[0].geometry.type).toBe("REGION");
+                expect(options).not.toBeNull();
+                return Promise.resolve(new Response(`{"succeed":true}`));
+            });
             updateFeaturesService.editFeatures(updateFeaturesParams, (result) => {
                 updateFeatureResult = result
-            });
-            setTimeout(() => {
+
                 if (updateFeatureResult != null) {
                     try {
-                        console.log(updateFeatureResult);
                         expect(updateFeaturesService).not.toBeNull();
                         expect(updateFeatureResult).not.toBeNull();
                         expect(updateFeatureResult.type).toBe("processCompleted");
@@ -196,11 +226,12 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                     console.log("'updateFeature'在设置的延时时间内未完成要素更新");
                     done();
                 }
-            }, 5000);
+            })
         }
         else {
             console.log("'updateFeature'未获取到数据");
             done();
+
         }
     });
 });

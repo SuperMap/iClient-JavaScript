@@ -1,7 +1,10 @@
-import ol from 'openlayers';
 import {ThemeFeature} from '../../../../src/openlayers/overlay/theme/ThemeFeature';
 import {TileSuperMapRest} from '../../../../src/openlayers/mapping/TileSuperMapRest';
 import {Vector} from '../../../../src/common/commontypes/Vector';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import Point from 'ol/geom/Point';
 
 describe('openlayers_ThemeFeature', () => {
     var originalTimeout, map, testDiv;
@@ -16,16 +19,16 @@ describe('openlayers_ThemeFeature', () => {
         window.document.body.appendChild(testDiv);
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [116.85, 39.79],
                 zoom: 8,
                 projection: "EPSG:4326",
                 extent: extent
             })
         });
-        var layer = new ol.layer.Tile({
+        var layer = new TileLayer({
             source: new TileSuperMapRest({
                 url: baseUrl
             })
@@ -44,7 +47,7 @@ describe('openlayers_ThemeFeature', () => {
     });
 
     it("toFeature", () => {
-        var geo = new ol.geom.Point([116.407283, 39.904557]);
+        var geo = new Point([116.407283, 39.904557]);
         var attrs = {};
         attrs.NAME = "北京市";
         attrs.CON2009 = 22023;

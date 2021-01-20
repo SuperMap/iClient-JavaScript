@@ -1,30 +1,30 @@
-﻿﻿import ol from 'openlayers';
-import {
-    TileSuperMapRest
-} from '../../../src/openlayers/mapping/TileSuperMapRest';
-import {
+﻿﻿import {
     DataFlowService
 } from '../../../src/openlayers/services/DataFlowService';
 import {
     DataFlow
 } from '../../../src/openlayers/overlay/DataFlow';
-import {
-    SecurityManager
-} from '../../../src/common/security/SecurityManager';
-import {
-    TiledMapLayer
-} from '../../../src/leaflet/mapping/TiledMapLayer';
 
-var wsHost = "ws:\//" + "54.223.164.155:8800";
-var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
-var urlMap = "http://54.223.164.155:8090/iserver/services/map-china400/rest/maps/China";
+import { Server } from 'mock-socket';
+import Fill from 'ol/style/Fill';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import * as olProj from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+import Style from 'ol/style/Style';
+import CircleStyle from 'ol/style/Circle';
+
+var urlDataFlow = "ws:\//localhost:8004/";
+var server;
+
 describe('ol_DataFlow', () => {
     var originalTimeout;
     var testDiv, map;
-    var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
-    var fill = new ol.style.Fill({
+    var fill = new Fill({
         color: 'rgba(255,0,0,0.9)'
     });
+    var layer, service;
+    var mockServer = new Server(urlDataFlow);
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -34,30 +34,54 @@ describe('ol_DataFlow', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
-        SecurityManager.registerToken(urlDataFlow, token);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
-                center: ol.proj.transform([116.42, 39.88], 'EPSG:4326', 'EPSG:3857'),
+            view: new View({
+                center: olProj.transform([116.42, 39.88], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 12,
                 projection: 'EPSG:3857'
             })
         });
-        // map.addLayer(new ol.layer.Tile({
-        //     source: new TileSuperMapRest({
-        //         urlMap: urlMap
-        //     })
-        // }));
+        var e = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [0, 0]
+            },
+            "properties": {
+                "id": 1
+            }
+        };
+        mockServer.on('connection', socket => {
+            socket.on('message', () => {
+                console.log("onmessage");
+            });
+            socket.on('close', () => { });
+            socket.send(JSON.stringify(e));
+            socket.close();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        layer = null;
+        service = null;
 
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        if (service) {
+            service.unSubscribe();
+            service.unBroadcast();
+        }
+        if (layer) {
+            map.removeLayer(layer);
+        }
     });
     afterAll(() => {
+        mockServer.stop();
+        mockServer = null;
+        map = null;
         window.document.body.removeChild(testDiv);
     });
 
@@ -66,7 +90,7 @@ describe('ol_DataFlow', () => {
         var broadcast_Point = (flowService) => {
             var feature = {
                 geometry: {
-                    coordinates: ol.proj.transform([116.69801217000008, 39.86826211908377], 'EPSG:4326', 'EPSG:3857'),
+                    coordinates: olProj.transform([116.69801217000008, 39.86826211908377], 'EPSG:4326', 'EPSG:3857'),
                     type: "Point"
                 },
                 id: 1,
@@ -79,16 +103,14 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
-        var service;
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -103,7 +125,7 @@ describe('ol_DataFlow', () => {
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
                 expect(dataFlow.EVENT_TYPES.length).toEqual(8);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
-                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
+                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "broadcast");
                 timer = window.setInterval(broadcast_Point(service), 1000);
             });
 
@@ -115,13 +137,7 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
-            }
+
         }
     });
 
@@ -145,17 +161,14 @@ describe('ol_DataFlow', () => {
             };
             flowService.broadcast(feature);
         }
-
-        var layer;
-        var service;
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -176,14 +189,6 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
         }
     });
 
@@ -211,16 +216,16 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
-        var service;
+
+
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -242,13 +247,6 @@ describe('ol_DataFlow', () => {
         } finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
             }
 
         }
@@ -287,17 +285,14 @@ describe('ol_DataFlow', () => {
             };
             flowService.broadcast(feature);
         }
-
-        var layer;
-        var service;
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -320,95 +315,67 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
         }
     });
 
     it('setExcludeField', (done) => {
-        var layer;
-        try {
-            var source = new ol.source.DataFlow({
-                ws: urlDataFlow
-            });
-            source.on('subscribeSuccessed',(e) => {
-                source.setExcludeField("id");
-            });
-            
-            var layer = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: fill,
-                        radius: 6
-                    }),
-                    fill: fill,
-                })
-            });
-            map.addLayer(layer);
+        var source = new DataFlow({
+            ws: urlDataFlow
+        });
+        var socket = new WebSocket(urlDataFlow);
+        var service = new DataFlowService(urlDataFlow)
+        source.dataService = service;
+        spyOn(socket, "send").and.callFake(() => {
+            console.log("fakesend");
+        });
+        spyOn(source.dataService.dataFlow, '_connect').and.callFake(() => {
+            return socket;
+        });
+       
+        source.dataService.initSubscribe();
+        setTimeout(() => {
+            source.setExcludeField("id");
+            expect(source.excludeField).toBe("id");
+            done();
+        }, 4000)
 
-            setTimeout(() => {
-                expect(layer).not.toBeNull();
-                done();
-            }, 4000)
-        } finally {
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
-        }
     });
 
     it('setGeometry', (done) => {
-        var layer;
-        try {
-            var source = new ol.source.DataFlow({
-                ws: urlDataFlow
-            });
-            var geometry = {
-                coordinates: [
-                    [
-                        [116.381741960923, 39.8765100055449],
-                        [116.414681699817, 39.8765100055449],
-                        [116.414681699817, 39.8415115329708],
-                        [116.381741960923, 39.8415115329708],
-                        [116.381741960923, 39.8765100055449]
-                    ]
-                ],
-                type: "Polygon"
-            };
-            source.on('subscribeSuccessed',(e) => {
-                source.setGeometry(geometry);
-            });
-            
-            var layer = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: fill,
-                        radius: 6
-                    }),
-                    fill: fill,
-                })
-            });
-            map.addLayer(layer);
+        var source = new DataFlow({
+            ws: urlDataFlow
+        });
+        var socket = new WebSocket(urlDataFlow);
+        var service = new DataFlowService(urlDataFlow)
+        source.dataService = service;
+        spyOn(socket, "send").and.callFake(() => {
+            console.log("fakesend");
+        });
+        spyOn(source.dataService.dataFlow, '_connect').and.callFake(() => {
+            return socket;
+        });
+       
+        source.dataService.initSubscribe();
+        // spyOn(source.service.dataFlow.subscribeWebSocket, "send").and.callFake(() => {
+        //     console.log("fakesend");
+        // });
+        var geometry = {
+            coordinates: [
+                [
+                    [116.381741960923, 39.8765100055449],
+                    [116.414681699817, 39.8765100055449],
+                    [116.414681699817, 39.8415115329708],
+                    [116.381741960923, 39.8415115329708],
+                    [116.381741960923, 39.8765100055449]
+                ]
+            ],
+            type: "Polygon"
+        };
 
-            setTimeout(() => {
-                expect(layer).not.toBeNull();
-                done();
-            }, 4000)
-        } finally {
-
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
-        }
+        setTimeout(() => {
+            source.setGeometry(geometry);
+            expect(source.geometry).not.toBeNull();
+            done();
+        }, 4000)
     });
 });

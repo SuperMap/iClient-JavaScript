@@ -1,7 +1,7 @@
-import {SummaryAttributesJobsParameter} from '../../../src/common/iServer/SummaryAttributesJobsParameter';
-import {DatasourceConnectionInfo} from '../../../src/common/iServer/DatasourceConnectionInfo';
-import {OutputSetting} from '../../../src/common/iServer/OutputSetting';
-import {OutputType} from '../../../src/common/REST';
+import { SummaryAttributesJobsParameter } from '../../../src/common/iServer/SummaryAttributesJobsParameter';
+import { DatasourceConnectionInfo } from '../../../src/common/iServer/DatasourceConnectionInfo';
+import { OutputSetting } from '../../../src/common/iServer/OutputSetting';
+import { OutputType } from '../../../src/common/REST';
 
 describe('SummaryAttributesJobsParameter', () => {
     it('constructor, destroy', () => {
@@ -9,13 +9,13 @@ describe('SummaryAttributesJobsParameter', () => {
             datasetName: 'testDatasetName',
             groupField: 'testField',
             attributeField: 'testAttrField',
-            statisticModes: 'testType',
+            statisticModes: 'testType'
         };
         var datasourceConnectionInfo = new DatasourceConnectionInfo({
-            alias: "dataSourceName",
-            connect: "false",
-            dataBase: "testDataBase",
-            driver: "WMTS"
+            alias: 'dataSourceName',
+            connect: 'false',
+            dataBase: 'testDataBase',
+            driver: 'WMTS'
         });
         var parametersNull = new SummaryAttributesJobsParameter();
         expect(parametersNull).not.toBeNull();
@@ -45,7 +45,7 @@ describe('SummaryAttributesJobsParameter', () => {
             datasetName: 'testDatasetName',
             groupField: 'testField',
             attributeField: 'testAttrField',
-            statisticModes: 'testType',
+            statisticModes: 'testType'
         };
         var parameters = new SummaryAttributesJobsParameter(options);
         parameters.output = new OutputSetting({
@@ -56,12 +56,40 @@ describe('SummaryAttributesJobsParameter', () => {
         });
         var tempObj = new SummaryAttributesJobsParameter(options);
         new SummaryAttributesJobsParameter.toObject(parameters, tempObj);
-        expect(tempObj.output.CLASS_NAME).toEqual("SuperMap.OutputSetting");
-        expect(tempObj.output.datasetName).toEqual("testAnalystResult");
-        expect(tempObj.output.type).toEqual("UDB");
-        expect(tempObj.output.datasourceInfo).toEqual("testInfo");
-        expect(tempObj.output.outputPath).toEqual("testpath");
+        expect(tempObj.output.CLASS_NAME).toEqual('SuperMap.OutputSetting');
+        expect(tempObj.output.datasetName).toEqual('testAnalystResult');
+        expect(tempObj.output.type).toEqual('UDB');
+        expect(tempObj.output.datasourceInfo).toEqual('testInfo');
+        expect(tempObj.output.outputPath).toEqual('testpath');
         tempObj.destroy();
         parameters.destroy();
+    });
+
+    it('datasetName', () => {
+        var param = new SummaryAttributesJobsParameter({ datasetName: 'testDatasetName' });
+        expect(param).not.toBeNull();
+        expect(param.datasetName).toEqual('testDatasetName');
+        param.destroy();
+    });
+
+    it('groupField', () => {
+        var param = new SummaryAttributesJobsParameter({ groupField: 'testField' });
+        expect(param).not.toBeNull();
+        expect(param.groupField).toEqual('testField');
+        param.destroy();
+    });
+
+    it('attributeField', () => {
+        var param = new SummaryAttributesJobsParameter({ attributeField: 'testAttrField' });
+        expect(param).not.toBeNull();
+        expect(param.attributeField).toEqual('testAttrField');
+        param.destroy();
+    });
+
+    it('statisticModes', () => {
+        var param = new SummaryAttributesJobsParameter({ statisticModes: 'testType' });
+        expect(param).not.toBeNull();
+        expect(param.statisticModes).toEqual('testType');
+        param.destroy();
     });
 });

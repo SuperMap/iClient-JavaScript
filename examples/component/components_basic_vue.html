@@ -1,0 +1,125 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n='resources.title_componentsBasic_Vue'></title>
+  <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="echarts,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #fff;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+    }
+
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    .box-card {
+      width: 280px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .sm-progress-wrap {
+      height: 100px;
+    }
+    .sm-progress-wrap, .sm-component-liquidFill {
+      width: 110px;
+      height: 110px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .sm-component-indicator {
+      padding-left: 0px;
+    }
+    .sm-component-indicator .sm-component-indicator__head{
+      padding-left: 0px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="main">
+    <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" ref="map" @load.once='load'></sm-web-map>
+    <sm-card class="box-card">
+      <!-- 图标组件 -->
+      <sm-icon icon-class="marker-layer" size="18px" text-color='rgb(63, 177, 227)' :style="{float: 'left'}">
+      </sm-icon>
+      <!-- 文本组件 -->
+      <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px"}' text-color="#333">
+      </sm-text>
+      <sm-text title="机场" :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}' text-color="rgb(51,51,51)">
+      </sm-text>
+      <sm-text :title="name" :font-style='{ fontSize: "18px", fontWeight: "700" ,display: "block"}' text-color="#333">
+      </sm-text>
+      <!-- 指标组件 -->
+      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" text-color="#333"></sm-indicator>
+      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" text-color="#333"></sm-indicator>
+      <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}' text-color="rgb(51,51,51)"></sm-text>
+      <!-- 水球组件 -->
+      <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true">
+      </sm-liquid-fill>
+      <!-- 进度条组件 -->
+      <div class="sm-progress-wrap">
+        <sm-progress type="circle" :percent="speedIncrease">
+        </sm-progress>
+      </div>
+      <!-- 时间组件 -->
+      <sm-time-text :font-style='{ fontSize: "12px"}' text-color="#333" time-type="date+second" style="float:right">
+      </sm-time-text>
+    </sm-card>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#main',
+      data() {
+        return {
+          name: "北京/首都",
+          passengerNumber: 95786296,
+          goodsNumber: 94393454,
+          speedIncrease: 5
+        }
+      },
+      computed: {
+        speedIncreaseValue() {
+          return this.speedIncrease / 100.0;
+        }
+      },
+      methods: {
+        load(obj) {
+          var vm = this;
+          map = obj.map;
+          map.on('click', function(e) {
+            var bbox = [[e.point.x - 2, e.point.y - 2], [e.point.x + 2, e.point.y + 2]];
+            var features = map.queryRenderedFeatures(bbox);
+            if (features.length > 0) {
+              var properties = features[0].properties;
+              vm.name = properties['机场'];
+              vm.passengerNumber = properties['2017旅客吞吐量（人次）'] || 0;
+              vm.goodsNumber = properties['2017货邮吞吐量（吨）'] || 0;
+              vm.speedIncrease = properties['同比增速%'] || 0;
+            }
+          });
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

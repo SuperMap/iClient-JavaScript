@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -16,6 +16,8 @@ import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParamete
  * @param {string} url - 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
@@ -63,26 +65,22 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         var parameterObject = {};
         var me = this;
 
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-
         if (parameter instanceof DatasetOverlayAnalystParameters) {
             me.mode = "datasets";
-            me.url += 'datasets/' + parameter.sourceDataset + '/overlay.json?returnContent=true';
+            me.url = Util.urlPathAppend(me.url, 'datasets/' + parameter.sourceDataset + '/overlay');
             DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
         } else if (parameter instanceof GeometryOverlayAnalystParameters) {
             me.mode = "geometry";
             //支持传入多个几何要素进行叠加分析
             if(parameter.operateGeometries && parameter.sourceGeometries){
-                me.url += 'geometry/overlay/batch.json?returnContent=true&ignoreAnalystParam=true';
+                me.url = Util.urlPathAppend(me.url, 'geometry/overlay/batch');
+                me.url = Util.urlAppend(me.url, 'ignoreAnalystParam=true');
             }else {
-                me.url += 'geometry/overlay.json?returnContent=true';
+                me.url = Util.urlPathAppend(me.url, 'geometry/overlay');
             }
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-
+        me.url = Util.urlAppend(me.url, 'returnContent=true');
         var jsonParameters = Util.toJSON(parameterObject);
         me.request({
             method: "POST",

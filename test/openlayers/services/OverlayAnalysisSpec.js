@@ -1,6 +1,7 @@
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {DatasetOverlayAnalystParameters} from '../../../src/common/iServer/DatasetOverlayAnalystParameters';
 import {OverlayOperationType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
@@ -23,6 +24,15 @@ describe('openlayers_SpatialAnalystService_overlayAnalysis', () => {
             operation: OverlayOperationType.UNION
         });
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/BaseMap_R@Jingjin/overlay?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.operateDataset).toBe("Neighbor_R@Jingjin");
+            expect(paramsObj.operation).toBe("UNION");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(overlayEscapedJson));
+        });
         spatialAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
             expect(serviceResults).not.toBeNull();

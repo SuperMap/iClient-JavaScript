@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -29,7 +29,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  *      // 设置关联的外部数据库信息,alias表示数据库别名
  *      var dc = new SuperMap.DatasourceConnectionInfo({
  *          dataBase: "RelQuery",
- *          server: "192.168.168.39",
+ *          server: "{ip}:{port}",
  *          user: "sa",
  *          password: "map",
  *          driver: "SQL Server",

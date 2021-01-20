@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html style="height: 100%; margin: 0;">
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_pixiOverlay_taxi"></title>
+        <script type="text/javascript" include="jquery,bootstrap,papaparse,widgets" src="../js/include-web.js"></script>
+    </head>
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="map" style="margin:0 auto;width: 100%;height: 100%" class="cartes"></div>
+        <!-- 引入 pixi.js 、L.PixiOverlay.js等相关js -->
+        <script type="text/javascript" include="pixi" src="../../dist/leaflet/include-leaflet.js"></script>
+        <script>
+            let host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var url = host + '/iserver/services/map-china400/rest/maps/China';
+            var map = L.map('map', {
+                center: [40.7594, -73.91426],
+                maxZoom: 18,
+                zoom: 11
+            });
+            // iclient-leaflet添加tilelayer
+            L.supermap
+                .tiledMapLayer(url, {
+                    attribution:
+                        "<a href='https://github.com/manubb/Leaflet.PixiOverlay' target='_blank' >© Leaflet.PixiOverlay</a>"
+                })
+                .addTo(map);
+            widgets.loader.showLoader('data loading...');
+
+            // pixi构建多marker图层
+            var easing = BezierEasing(0, 0, 0.25, 1);
+            var loader = new PIXI.loaders.Loader();
+            loader.add('marker', 'img/marker-icon.png');
+            document.addEventListener('DOMContentLoaded', function() {
+                loader.load(function(loader, resources) {
+                    var texture = resources.marker.texture;
+                    // 请求纽约出租车上车点的数据
+                    $.get('../data/nyc-taxi.csv', function(csvstr) {
+                        widgets.loader.removeLoader();
+                        var nycData = Papa.parse(csvstr, { skipEmptyLines: true, header: true });
+                        var data = nycData.data;
+                        // 构建pixiLayer
+                        var pixiLayer = (function() {
+                            var zoomChangeTs = null;
+                            var pixiContainer = new PIXI.Container();
+                            var innerContainer = new PIXI.particles.ParticleContainer(data.length, { vertices: true });
+                            // add properties for our patched particleRenderer:
+                            innerContainer.texture = texture;
+                            innerContainer.baseTexture = texture.baseTexture;
+                            innerContainer.anchor = { x: 0.5, y: 1 };
+
+                            pixiContainer.addChild(innerContainer);
+                            var doubleBuffering = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                            var initialScale;
+                            return L.pixiOverlay(
+                                function(utils, event) {
+                                    var zoom = utils.getMap().getZoom();
+                                    var container = utils.getContainer();
+                                    var renderer = utils.getRenderer();
+                                    var project = utils.latLngToLayerPoint;
+                                    var getScale = utils.getScale;
+                                    var invScale = 1 / getScale();
+
+                                    if (event.type === 'add') {
+                                        var origin = project([(48.7 + 49) / 2, (2.2 + 2.8) / 2]);
+                                        innerContainer.x = origin.x;
+                                        innerContainer.y = origin.y;
+                                        initialScale = invScale / 8;
+                                        innerContainer.localScale = initialScale;
+
+                                        for (var i = 0; i < data.length; i++) {
+                                            var coords = project([data[i].lat, data[i].lng]);
+                                            // our patched particleContainer accepts simple {x: ..., y: ...} objects as children:
+                                            innerContainer.addChild({
+                                                x: coords.x - origin.x,
+                                                y: coords.y - origin.y
+                                            });
+                                        }
+                                    }
+
+                                    if (event.type === 'zoomanim') {
+                                        var targetZoom = event.zoom;
+                                        if (targetZoom >= 18 || zoom >= 18) {
+                                            zoomChangeTs = 0;
+                                            var targetScale =
+                                                targetZoom >= 18 ? 1 / getScale(event.zoom) : initialScale;
+                                            innerContainer.currentScale = innerContainer.localScale;
+                                            innerContainer.targetScale = targetScale;
+                                        }
+                                        return;
+                                    }
+
+                                    if (event.type === 'redraw') {
+                                        var delta = event.delta;
+                                        if (zoomChangeTs !== null) {
+                                            var duration = 17;
+                                            zoomChangeTs += delta;
+                                            var lambda = zoomChangeTs / duration;
+                                            if (lambda > 1) {
+                                                lambda = 1;
+                                                zoomChangeTs = null;
+                                            }
+                                            lambda = easing(lambda);
+                                            innerContainer.localScale =
+                                                innerContainer.currentScale +
+                                                lambda * (innerContainer.targetScale - innerContainer.currentScale);
+                                        } else {
+                                            return;
+                                        }
+                                    }
+
+                                    renderer.render(container);
+                                },
+                                pixiContainer,
+                                {
+                                    doubleBuffering: doubleBuffering,
+                                    destroyInteractionManager: true
+                                }
+                            );
+                        })();
+                        pixiLayer.addTo(map);
+                        var ticker = new PIXI.ticker.Ticker();
+                        ticker.add(function(delta) {
+                            pixiLayer.redraw({ type: 'redraw', delta: delta });
+                        });
+                        map.on('zoomstart', function() {
+                            ticker.start();
+                        });
+                        map.on('zoomend', function() {
+                            ticker.stop();
+                        });
+                        map.on('zoomanim', pixiLayer.redraw, pixiLayer);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

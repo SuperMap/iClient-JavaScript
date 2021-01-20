@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -14,7 +14,8 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 网络分析服务地址。
  * @param {Object} options - 参数。
- *
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class NetworkAnalystServiceBase extends CommonServiceBase {
 

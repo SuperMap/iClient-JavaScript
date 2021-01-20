@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import request from 'request';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
@@ -9,6 +8,9 @@ import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/Geome
 import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
 import {BufferEndType} from '../../../src/common/REST';
 import {DataReturnMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
+import LineString from 'ol/geom/LineString';
 
 var originalTimeout, serviceResult;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -29,7 +31,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
         var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
             filterQueryParameter: new FilterParameter({
-                attributeFilter: "NAME='团结路'"
+                attributeFilter: 'NAME="团结路"'
             }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
@@ -45,16 +47,25 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
+            expect(paramsObj.bufferAnalystParameter.leftDistance.value).toEqual(10);
+            expect(paramsObj.dataReturnOption.expectCount).toEqual(2000);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"BufferAnalystByDatasets_olTest@Changchun"}`));
+        });
         spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe('processCompleted');
             expect(serviceResult.result.succeed).toBeTruthy();
             expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
             done();
-        }, 8000);
+        });
     });
 
     //缓冲区分析
@@ -62,7 +73,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
         var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
             filterQueryParameter: new FilterParameter({
-                attributeFilter: "NAME='团结路'"
+                attributeFilter: 'NAME="团结路"'
             }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
@@ -72,15 +83,23 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
+            expect(paramsObj.bufferAnalystParameter.leftDistance.value).toEqual(10);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byDatasetResultJson)));
+        });
         spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe('processCompleted');
             expect(serviceResult.result.recordset.features).not.toBeNull();
             done();
-        }, 8000);
+        });
     });
 
     it('bufferAnalysis_byGeometry', (done) => {
@@ -119,7 +138,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             [8182.656, -4210.533],
             [8554.893, -4261.485]
         ];
-        var roadLine = new ol.geom.LineString(pointsList);
+        var roadLine = new LineString(pointsList);
         var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
             bufferSetting: new BufferSetting({
@@ -130,10 +149,18 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var bufferAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(changchunServiceUrl + "/geometry/buffer?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.analystParameter.endType).toBe("ROUND");
+            expect(paramsObj.analystParameter.leftDistance.value).toEqual(250);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
+        });
         bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(bufferAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -156,12 +183,6 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
-    });
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
+        });
     });
 });

@@ -1,0 +1,99 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_mvtVectorLayer_vectortilerest"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include='ol-mapbox-style' src="../../dist/ol/include-ol.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: rgba(0, 60, 136, 0.7);
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            bottom: 20px;
+            left: 10px;
+            opacity: 0;
+            transition: opacity 100ms ease-in;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%;"></div>
+    <div id="popup" class="ol-popup">
+        <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript">
+        var styleURL = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/map-china400/restjsr/v1/vectortile/maps/China_4326/style.json";
+        //MVT 矢量瓦片第0级分辨率为全球范围宽度除以瓦片宽度512.
+        //常见坐标系第0级分辨率   WebMercator(3857):2*6378137*Math.PI/512    WGS84(4326):360.0/512    China2000(4490):360.0/512    Beijing54(4214):360.0/512     Xian80(4610):360.0/512
+        var topResolution = 360.0 / 512;
+        var resolutions = [];
+        for (var zoom = 0; zoom < 22; zoom++) {
+            resolutions.push(topResolution / Math.pow(2, zoom));
+        }
+        var vectorLayer;
+        var map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [116, 39],
+                zoom: 6,
+                projection: 'EPSG:4326',
+                resolutions: resolutions
+            })
+        });
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        info = new ol.control.Control({
+            element: container
+        });
+        info.setMap(map);
+        map.addControl(info);
+        var format = new ol.format.MVT({
+            featureClass: ol.Feature
+
+        });
+        var style = new ol.supermap.MapboxStyles({
+            style: styleURL,
+            // source: 'China_4326',
+            map: map
+        })
+        style.on('styleloaded', function () {
+            vectorLayer = new ol.layer.VectorTile({
+                declutter: true,
+                source: new ol.source.VectorTileSuperMapRest({
+                    style: styleURL,
+                    projection: 'EPSG:4326',
+                    // source: 'China_4326',
+                    format: format
+                }),
+                style: style.getStyleFunction()
+            });
+            map.addLayer(vectorLayer);
+        })
+
+        map.on('pointermove', function (e) {
+            var features = map.getFeaturesAtPixel(e.pixel);
+            if (!features || features.length === 0) {
+                content.innerHTML = '';
+                container.style.opacity = 0;
+                return;
+            }
+            content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" + (features[0].get(
+                    'NAME') ?
+                "Name:  " + features[0].get('NAME') : "");
+            container.style.opacity = 1;
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -12,7 +12,7 @@ import Attributions from '../core/Attributions'
  * @category Visualization Turf
  * @extends {L.Layer}
  * @param {Object} options - 可选参数。
- * @param {string} [options.attribution='<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
  */
 export var TurfLayer = L.GeoJSON.extend({
 

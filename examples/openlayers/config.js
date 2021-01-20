@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * OpenLayers 示例配置文件：包括示例的分类、名称、缩略图、文件路径
  */
@@ -35,6 +35,12 @@ var exampleConfig = {
                     name_en: "planar coordinate system",
                     thumbnail: "ol_tiledMapLayerNoProj.png",
                     fileName: "01_tiledMapLayerNoProj"
+                }, {
+                    name: "地图-栅格分析",
+                    name_en: "map rasterFunction",
+                    version: "10.0.0",
+                    thumbnail: "ol_tiledMapLayerRasterfunction.png",
+                    fileName: "01_tiledmaplayer_rasterfunction"
                 }, {
                     name: "地图信息",
                     name_en: "map query service",
@@ -398,6 +404,19 @@ var exampleConfig = {
                     fileName: "dataFlowService"
                 }]
             },
+            "webPrinting": {
+                name: "Web 打印",
+                name_en: "Web Printing",
+                content: [
+                    {
+                        name: "Web 地图打印",
+                        name_en: "Web Map Print",
+                        version: "10.1.0",
+                        thumbnail: "webPrintingJob.png",
+                        fileName: "webPrintingJob"
+                    }
+                ]
+            },
             "security": {
                 name: "安全",
                 name_en: "Security",
@@ -418,9 +437,9 @@ var exampleConfig = {
                 name: "地图",
                 name_en: "Web map",
                 content: [{
-                    name: "举办过奥运会的城市",
-                    name_en: "city hosted the Olympic Games",
-                    thumbnail: "ol_iPortalWebMap.png",
+                    name: "分段专题图",
+                    name_en: "Range",
+                    thumbnail: "iPortalWebmap_range.png",
                     fileName: "iportalWebMap"
                 }]
             },
@@ -434,14 +453,70 @@ var exampleConfig = {
                     fileName: "iPortalSecurity"
                 }]
             },
-            "ip_querymaps": {
-                name: "地图列表",
-                name_en: "Web map list",
+            "ip_queryresources": {
+                name: "资源中心",
+                name_en: "Resources Center",
                 content: [{
-                    name: "地图列表",
-                    name_en: "web map list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMaps"
+                    name: "资源中心",
+                    name_en: "Resources Center",
+                    version: "10.0.1",
+                    thumbnail: "ol_iPortalQueryResources.png",
+                    fileName: "iPortalQueryResources"
+                }]
+            },
+            "ip_querymyresources": {
+                name: "我的资源",
+                name_en: "My Resource",
+                content: [{
+                    name: "我的资源",
+                    name_en: "My Resource",
+                    version: "10.0.1",
+                    thumbnail: "ol_iPortalQueryMyResources.png",
+                    fileName: "iPortalQueryMyResources"
+                }]
+            },
+            "ip_batchaddresource": {
+                name: "添加地图/场景",
+                name_en: "Batch Add Map/Scene",
+                content: [{
+                    name: "添加地图/场景",
+                    name_en: "Batch Add Map/Scene",
+                    version: "10.1.0",
+                    thumbnail: "ol_iPortalAddResource.png",
+                    fileName: "iPortalBatchAddResource"
+                }]
+            },
+            "ip_uploaddata": {
+                name: "上传数据",
+                name_en: "Upload Data",
+                content: [{
+                    name: "上传数据",
+                    name_en: "Upload Data",
+                    version: "10.1.0",
+                    thumbnail: "ol_iPortalUploadData.png",
+                    fileName: "iPortalUploadData"
+                }]
+            },
+            "ip_registerdata": {
+                name: "注册数据",
+                name_en: "Register Data",
+                content: [{
+                    name: "注册数据",
+                    name_en: "Register Data",
+                    version: "10.1.0",
+                    thumbnail: "ol_iPortalRegisterData.png",
+                    fileName: "iPortalRegisterData"
+                }]
+            },
+            "ip_publishdata": {
+                name: "发布数据",
+                name_en: "Publish Data",
+                content: [{
+                    name: "发布数据",
+                    name_en: "Publish Data",
+                    version: "10.1.0",
+                    thumbnail: "ol_iportalPublishData.png",
+                    fileName: "iPortalPublishData"
                 }]
             }
         }
@@ -534,10 +609,10 @@ var exampleConfig = {
                     thumbnail: "graphiclayer_canvas.png",
                     fileName: "07_graphiclayer_canvas"
                 }, {
-                    name: "纽约出租车18万点-webgl渲染",
-                    name_en: "webgl rendering",
+                    name: "纽约出租车18万点-canvas渲染",
+                    name_en: "canvas rendering",
                     thumbnail: "graphiclayer_webgl.png",
-                    fileName: "07_graphiclayer_webgl"
+                    fileName: "07_graphiclayer_circle"
                 }, {
                     name: "纽约145万出租车-webgl",
                     name_en: "picture drawing of 1.45 million NY taxis",
@@ -775,54 +850,54 @@ var exampleConfig = {
                 name: "矢量瓦片",
                 name_en: "Vector tile layer",
                 content: [
-                    {
-                        name: "默认风格",
-                        name_en: "normal style",
-                        thumbnail: "tiledVectorLayer.png",
-                        fileName: "tiledVectorLayer"
-                    },
-                    {
-                        name: "月夜风格",
-                        name_en: "normal style",
-                        thumbnail: "cartoCSS_nightStyle.png",
-                        fileName: "cartoCSS_nightStyle"
-                    },
-                    {
-                        name: "强边界风格",
-                        name_en: "boundray style",
-                        thumbnail: "cartoCSS_boundryStyle.png",
-                        fileName: "cartoCSS_boundryStyle"
-                    },
-                    {
-                        name: "深夜蓝黑风格",
-                        name_en: "dark-blue style",
-                        thumbnail: "cartoCSS_darkBlue.png",
-                        fileName: "cartoCSS_darkBlue"
-                    },
-                    {
-                        name: "HelloKitty风格",
-                        name_en: "hellokitty style",
-                        thumbnail: "cartoCSS_helloKitty.png",
-                        fileName: "cartoCSS_helloKitty"
-                    },
-                    {
-                        name: "淡雅绿风格",
-                        name_en: "natural style",
-                        thumbnail: "cartoCSS_naturalStyle.png",
-                        fileName: "cartoCSS_naturalStyle"
-                    },
-                    {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "mvtVectorLayer.png",
-                        fileName: "mvtVectorLayer"
-                    },
-                    {
-                        name: "默认风格(MVT WGS84)",
-                        name_en: "normal(MVT WGS84)",
-                        thumbnail: "mvtVectorLayer4326.png",
-                        fileName: "mvtVectorLayer4326"
-                    },
+                    // {
+                    //     name: "默认风格",
+                    //     name_en: "normal style",
+                    //     thumbnail: "tiledVectorLayer.png",
+                    //     fileName: "tiledVectorLayer"
+                    // },
+                    // {
+                    //     name: "月夜风格",
+                    //     name_en: "normal style",
+                    //     thumbnail: "cartoCSS_nightStyle.png",
+                    //     fileName: "cartoCSS_nightStyle"
+                    // },
+                    // {
+                    //     name: "强边界风格",
+                    //     name_en: "boundray style",
+                    //     thumbnail: "cartoCSS_boundryStyle.png",
+                    //     fileName: "cartoCSS_boundryStyle"
+                    // },
+                    // {
+                    //     name: "深夜蓝黑风格",
+                    //     name_en: "dark-blue style",
+                    //     thumbnail: "cartoCSS_darkBlue.png",
+                    //     fileName: "cartoCSS_darkBlue"
+                    // },
+                    // {
+                    //     name: "HelloKitty风格",
+                    //     name_en: "hellokitty style",
+                    //     thumbnail: "cartoCSS_helloKitty.png",
+                    //     fileName: "cartoCSS_helloKitty"
+                    // },
+                    // {
+                    //     name: "淡雅绿风格",
+                    //     name_en: "natural style",
+                    //     thumbnail: "cartoCSS_naturalStyle.png",
+                    //     fileName: "cartoCSS_naturalStyle"
+                    // },
+                    // {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "mvtVectorLayer.png",
+                    //     fileName: "mvtVectorLayer"
+                    // },
+                    // {
+                    //     name: "默认风格(MVT WGS84)",
+                    //     name_en: "normal(MVT WGS84)",
+                    //     thumbnail: "mvtVectorLayer4326.png",
+                    //     fileName: "mvtVectorLayer4326"
+                    // },
                     {
                         name: "OSM风格(MVT WGS84)",
                         name_en: "OSM Style(MVT WGS84)",
@@ -854,6 +929,13 @@ var exampleConfig = {
                         localIgnore: true,
                         thumbnail: "mvtvectorlayer_mbstyle_landuse.png",
                         fileName: "mvtvectorlayer_mbstyle_landuse"
+                    },
+                    {
+                        name: "iServer 矢量瓦片服务",
+                        name_en: "iServer REST Vectortile",
+                        version: "9.1.1",
+                        thumbnail: "mvtvectorlayer_vectortilerest.png",
+                        fileName: "mvtvectorlayer_vectortilerest"
                     }
 
 
@@ -888,7 +970,19 @@ var exampleConfig = {
                     thumbnail: "ol_graphThemeLayer.png",
                     fileName: "graphThemeLayer"
                 }]
-            }
+            },
+            "mask": {
+                name: "掩膜",
+                name_en: "Mask",
+                version: "10.1.0",
+                content: [{
+                    name: "图层掩膜",
+                    name_en: "Layer Mask",
+                    version: "10.1.0",
+                    thumbnail: "mask.png",
+                    fileName: "mask"
+                }]
+            },
         }
     },
     "plot": {

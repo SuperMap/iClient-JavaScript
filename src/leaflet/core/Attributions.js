@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -7,15 +7,15 @@
 
 let Attributions = {
 
-    Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
-                with <span>© <a href='http://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+    Prefix: `<a href='https://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
+                with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
         attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`
     },
 
     Online: {
-        attribution: `Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
+        attribution: `Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
     },
 
     ECharts: {
@@ -27,7 +27,7 @@ let Attributions = {
     },
 
     Turf: {
-        attribution: `<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
+        attribution: `<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
     },
 
     Baidu: {
@@ -39,7 +39,7 @@ let Attributions = {
     },
 
     Tianditu: {
-        attribution: `Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
+        attribution: `Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
     }
 };
 

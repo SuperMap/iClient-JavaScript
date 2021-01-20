@@ -1,165 +1,180 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_SummaryMeshJobService"></title>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var layer,
-        processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        map = L.map('map', {
-            crs: L.CRS.EPSG4326,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        info = L.control({position: 'topright'});
-    L.supermap.tiledMapLayer(mapURL).addTo(map);
+    <div id="map" style="width: 100%;height:100%"></div>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var layer,
+            processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            info = L.control({
+                position: 'topright'
+            });
+        L.supermap.tiledMapLayer(mapURL).addTo(map);
 
-    info.onAdd = function () {
-        var popup = L.DomUtil.create('div');
-        popup.style.width = '350px';
-        popup.innerHTML = "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>" +
-            "<h3 class='panel-title'>" + resources.title_SummaryMeshJobService + "</h3>" +
-            "</div><div class='panel-body'>" +
-            "<div class='input-group'><span class='input-group-addon'>" + resources.text_inputData + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
-            "<input id='datasetName' type='text' class='form-control' value='samples_newyork_taxi_2013-01_14k'/>" +
-            "</div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_polymerizationType + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
-            "<select class='form-control' id='type' name='clientType'>" +
-            "<option value='SUMMARYMESH' selected='selected'>" + resources.text_polymerizationMesh + "</option>" +
-            "<option value='SUMMARYREGION'>" + resources.text_polymerizationRegion + "</option>" +
-            "</select></div><p><div id='summarymeshS'>" +
-            "<div class='input-group'><span class='input-group-addon'>" + resources.text_meshSurfaceType + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span></span>" +
-            "<select class='form-control' id='meshType' name='clientType'>" +
-            "<option value='0' selected='selected'>" + resources.text_4grid + "</option>" +
-            "<option value='1'>" + resources.text_6grid + "</option></select></div><p>" +
-            "<div class='input-group'> <span class='input-group-addon'>" + resources.text_analysisRange + "</span>" +
-            "<input id='query' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950'/>" +
-            "</div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_resolution + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　</span>" +
-            "<input id='resolution' type='text' class='form-control' value='100'/>" +
-            "</div><p></div>" +
-            "<div id='summaryregionS' style='display: none'>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_regionDataset + "</span>" +
-            "<select class='form-control' id='regionDataset' name='clientType'>" +
-            "<option value='samples_processing_newyorkZone_R' selected='selected'>samples_processing_newyorkZone_R</option>" +
-            "<option value='samples_processing_singleRegion_R'>samples_processing_singleRegion_R</option>" +
-            "</select></div><p></div><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_statisticModes + "</span>" +
-            "<input id='statisticModes' type='text' class='form-control' value='max'/>" +
-            "</div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_weightField + "</span>" +
-            "<input id='fields' type='text' class='form-control' value='col7'/>" +
-            "</div><p><div align='right'>" +
-            "<input type='button' id='btn' class='btn btn-primary' value='" + resources.btn_polymerization + "'/>" +
-            "</div></div>";
-        handleMapEvent(popup, this._map);
-        return popup;
-    };
-    info.addTo(map);
-    $("#type").change(function (e) {
-        if (e.target.selectedIndex === 0) {
-            $("#summarymeshS").show();
-            $("#summaryregionS").hide();
-            return;
-        }
-        $("#summarymeshS").hide();
-        $("#summaryregionS").show();
-    });
-    var processingService = new L.supermap.processingService(processingUrl,{withCredentials:window.isLocal});
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingUrl, token);
-    }
-
-
-    function getQuery() {
-        if ($('#query').val() === "") {
-            return "";
-        }
-        var query = [];
-        $('#query').val().split(',').map(function (el) {
-            query.push(parseFloat(el));
-        });
-        return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
-    }
-
-    $('#btn').on('click', function () {
-        if ($('#msg_container')[0]) {
-            $('#msg_container').remove();
-        }
-        widgets.loader.showLoader();
-        if (map && layer) {
-            map.removeLayer(layer);
-        }
-        var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
-            datasetName: $('#datasetName').val(),
-            resolution: $('#resolution').val(),
-            meshType: $('#meshType option:selected').attr('value'),
-            fields: $('#fields').val(),
-            query: getQuery(),
-            statisticModes: $('#statisticModes').val(),
-            type: $('#type option:selected').attr('value'),
-            regionDataset: $('#regionDataset option:selected').attr('value')
-        });
-        processingService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+        info.onAdd = function () {
+            var popup = L.DomUtil.create('div');
+            popup.style.width = '350px';
+            popup.innerHTML = "<div class='panel panel-default'>" +
+                "<div class='panel-heading'>" +
+                "<h3 class='panel-title'>" + resources.title_SummaryMeshJobService + "</h3>" +
+                "</div><div class='panel-body'>" +
+                "<div class='input-group'><span class='input-group-addon'>" + resources.text_inputData +
+                "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
+                "<input id='datasetName' type='text' class='form-control' value='samples_newyork_taxi_2013-01_14k'/>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_polymerizationType + "<span title='" +
+                resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
+                "<select class='form-control' id='type' name='clientType'>" +
+                "<option value='SUMMARYMESH' selected='selected'>" + resources.text_polymerizationMesh +
+                "</option>" +
+                "<option value='SUMMARYREGION'>" + resources.text_polymerizationRegion + "</option>" +
+                "</select></div><p><div id='summarymeshS'>" +
+                "<div class='input-group'><span class='input-group-addon'>" + resources.text_meshSurfaceType +
+                "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span></span>" +
+                "<select class='form-control' id='meshType' name='clientType'>" +
+                "<option value='0' selected='selected'>" + resources.text_4grid + "</option>" +
+                "<option value='1'>" + resources.text_6grid + "</option></select></div><p>" +
+                "<div class='input-group'> <span class='input-group-addon'>" + resources.text_analysisRange +
+                "</span>" +
+                "<input id='query' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950'/>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_resolution + "<span title='" + resources.text_requiredField +
+                "' style='color: red;'> * </span>　　</span>" +
+                "<input id='resolution' type='text' class='form-control' value='100'/>" +
+                "</div><p></div>" +
+                "<div id='summaryregionS' style='display: none'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_regionDataset + "</span>" +
+                "<select class='form-control' id='regionDataset' name='clientType'>" +
+                "<option value='samples_processing_newyorkZone_R' selected='selected'>samples_processing_newyorkZone_R</option>" +
+                "<option value='samples_processing_singleRegion_R'>samples_processing_singleRegion_R</option>" +
+                "</select></div><p></div><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_statisticModes + "</span>" +
+                "<input id='statisticModes' type='text' class='form-control' value='max'/>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_weightField + "</span>" +
+                "<input id='fields' type='text' class='form-control' value='col7'/>" +
+                "</div><p><div align='right'>" +
+                "<input type='button' id='btn' class='btn btn-primary' value='" + resources.btn_polymerization +
+                "'/>" +
+                "</div></div>";
+            handleMapEvent(popup, this._map);
+            return popup;
+        };
+        info.addTo(map);
+        $("#type").change(function (e) {
+            if (e.target.selectedIndex === 0) {
+                $("#summarymeshS").show();
+                $("#summaryregionS").hide();
                 return;
             }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
-                        layer.addTo(map);
-                        widgets.loader.removeLoader();
-                    });
+            $("#summarymeshS").hide();
+            $("#summaryregionS").show();
+        });
+        var processingService = new L.supermap.processingService(processingUrl, {
+            withCredentials: window.isLocal
+        });
+        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+
+
+        function getQuery() {
+            if ($('#query').val() === "") {
+                return "";
+            }
+            var query = [];
+            $('#query').val().split(',').map(function (el) {
+                query.push(parseFloat(el));
+            });
+            return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
+        }
+
+        $('#btn').on('click', function () {
+            if ($('#msg_container')[0]) {
+                $('#msg_container').remove();
+            }
+            widgets.loader.showLoader();
+            if (map && layer) {
+                map.removeLayer(layer);
+            }
+            var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
+                datasetName: $('#datasetName').val(),
+                resolution: $('#resolution').val(),
+                meshType: $('#meshType option:selected').attr('value'),
+                fields: $('#fields').val(),
+                query: getQuery(),
+                statisticModes: $('#statisticModes').val(),
+                type: $('#type option:selected').attr('value'),
+                regionDataset: $('#regionDataset option:selected').attr('value')
+            });
+            processingService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
                 }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                                noWrap: true,
+                                transparent: true
+                            });
+                            layer.addTo(map);
+                            widgets.loader.removeLoader();
+                        });
+                    }
+                });
             });
         });
-    });
 
-    function handleMapEvent(div, map) {
-        if (!div || !map) {
-            return;
+        function handleMapEvent(div, map) {
+            if (!div || !map) {
+                return;
+            }
+            div.addEventListener('mouseover', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            div.addEventListener('mouseout', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            });
+            $("#model").on('shown.bs.modal', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            $("#model").on('hidden.bs.modal', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            })
         }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
-        $("#model").on('shown.bs.modal', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        $("#model").on('hidden.bs.modal', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        })
-    }
-</script>
+    </script>
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 var ThreeApplication = {
     data: null,
     buildingMesh: null,
@@ -70,8 +70,8 @@ var SceneBuilder = {
 
         function loadBuildingModel() {
 
-            var loader = new THREE.JSONLoader(manager);
-            loader.setTexturePath('./js/obj/building/maps/');
+            var loader = new THREE.LegacyJSONLoader(manager);
+            // loader.setResourcePath()('./js/obj/building/maps/');
             loader.load('./js/obj/building/building.js', function (geometry, materials) {
                     var material = new THREE.MultiMaterial(materials);
                     for (var i = 0; i < materials.length; i++) {
@@ -90,7 +90,7 @@ var SceneBuilder = {
                 }
             );
 
-            var loader = new THREE.JSONLoader(manager);
+            var loader = new THREE.LegacyJSONLoader(manager);
             loader.load('./js/obj/building/building-roof.js', function (geometry, materials) {
                 var material = new THREE.MultiMaterial(materials);
                 for (var i = 0; i < materials.length; i++) {
@@ -118,7 +118,7 @@ var SceneBuilder = {
             function loadRoom(data) {
                 var name = data.name,
                     slug = data.slug,
-                    loader = new THREE.JSONLoader(manager);
+                    loader = new THREE.LegacyJSONLoader(manager);
 
                 loader.load("./js/" + data.objRoom, function (geometry, materials) {
                     var material = new THREE.MeshPhongMaterial({

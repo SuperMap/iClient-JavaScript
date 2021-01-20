@@ -1,8 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_singleObjectQueryJobService"></title>
@@ -14,203 +15,208 @@
         }
     </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="mb-popup" style='width:350px'>
-    <div class="panel panel-default">
-        <div class='panel-heading'>
-            <h3 class='panel-title' data-i18n="resources.title_singleObjectQueryJobService"></h3>
-        </div>
-        <div class='panel-body'>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
-                <input id='datasetName' type='text' class='form-control'
-                       value='samples_processing_newyorkZone_R'/></div>
-            <p></p>
-
-            <div class='input-group'>
-                <span class='input-group-addon'><sapn data-i18n="resources.text_queryObjectMode"></sapn><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <select class='form-control' id='queryMode' name='queryMode'>
-                    <option value='DATASET' selected data-i18n="resources.text_dataset"></option>
-                    <option value='GEOJSON'>Geojson</option>
-                </select>
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="mb-popup" style='width:350px'>
+        <div class="panel panel-default">
+            <div class='panel-heading'>
+                <h3 class='panel-title' data-i18n="resources.title_singleObjectQueryJobService"></h3>
             </div>
-            <p></p>
+            <div class='panel-body'>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
+                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R' /></div>
+                <p></p>
 
-            <div class='input-group' id='datasetDiv'>
-                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectDataset"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <input id='datasetQuery' type='text' class='form-control'
-                       value='samples_processing_singleRegion_R'/>
-            </div>
-            <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon'>
+                        <sapn data-i18n="resources.text_queryObjectMode"></sapn><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span>
+                    </span>
+                    <select class='form-control' id='queryMode' name='queryMode'>
+                        <option value='DATASET' selected data-i18n="resources.text_dataset"></option>
+                        <option value='GEOJSON'>Geojson</option>
+                    </select>
+                </div>
+                <p></p>
 
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <select class='form-control' id='mode' name='mode'>
-                    <option value='CONTAIN' data-i18n="resources.text_contain"></option>
-                    <option value='CROSS' data-i18n="resources.text_cross"></option>
-                    <option value='DISJOINT' data-i18n="resources.text_disjoint"></option>
-                    <option value='IDENTITY' data-i18n="resources.text_Identity"></option>
-                    <option value='INTERSECT' selected data-i18n="resources.text_intersect"></option>
-                    <option value='OVERLAP' data-i18n="resources.text_overlap"></option>
-                    <option value='TOUCH' data-i18n="resources.text_touch"></option>
-                    <option value='WITHIN' data-i18n="resources.text_within"></option>
-                </select>
-            </div>
-            <p></p>
+                <div class='input-group' id='datasetDiv'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_queryObjectDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <input id='datasetQuery' type='text' class='form-control' value='samples_processing_singleRegion_R' />
+                </div>
+                <p></p>
 
-            <div align='right'>
-                <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_query"/>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <select class='form-control' id='mode' name='mode'>
+                        <option value='CONTAIN' data-i18n="resources.text_contain"></option>
+                        <option value='CROSS' data-i18n="resources.text_cross"></option>
+                        <option value='DISJOINT' data-i18n="resources.text_disjoint"></option>
+                        <option value='IDENTITY' data-i18n="resources.text_Identity"></option>
+                        <option value='INTERSECT' selected data-i18n="resources.text_intersect"></option>
+                        <option value='OVERLAP' data-i18n="resources.text_overlap"></option>
+                        <option value='TOUCH' data-i18n="resources.text_touch"></option>
+                        <option value='WITHIN' data-i18n="resources.text_within"></option>
+                    </select>
+                </div>
+                <p></p>
+
+                <div align='right'>
+                    <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_query" />
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript" include="draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
-<script>
-    var map,
-            baseUrl = (window.isLocal ? window.server : "http://iclsvr.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script>
+        var map,
+            baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/map-world/rest/maps/World",
             mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-            processingsUrl = (window.isLocal ? window.server : "http://114.115.213.31:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
-            token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..';
-    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            processingsUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/distributedanalyst/rest/v1/jobs";
+        var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
-    map = new mapboxgl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [mapUrl],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
                     "type": "raster",
-                    "tiles": [mapUrl],
-                    "tileSize": 256
-                }
+                    "source": "raster-tiles",
+                }]
             },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-            }]
-        },
-        center: [-73.95, 40.75],
-        zoom: 11
-    });
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
-    var draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-            polygon: true,
-            trash: true
-        }
-    });
-    $("#queryMode").change(function () {
-        var queryMode = $(this).val();
-        if (queryMode === "DATASET") {
-            map.removeControl(draw, "top-left");
-            $('#datasetDiv').show();
-        }
-        if (queryMode === "GEOJSON") {
-            map.addControl(draw, "top-left");
-            $('#datasetDiv').hide();
-        }
-    });
-
-    bindClick();
-
-    function bindClick() {
-        $('#btn').on('click', function () {
-            if ($('#msg_container')[0]) {
-                $('#msg_container').remove();
-            }
-            widgets.loader.showLoader();
-            if (map.getLayer("singleLayer")) {
-                map.removeLayer("singleLayer");
-                map.removeSource("singleSource");
-            }
-            queryJobs();
+            center: [-73.95, 40.75],
+            zoom: 11
         });
-    }
-
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingsUrl, token);
-    }
-
-    var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
-
-    function getFeatureGeo() {
-        var result = draw.getAll();
-        if (result.features.length > 1) {
-            for (var i = 0; i < result.features.length - 1; i++) {
-                draw.delete(result.features[i].id);
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+        var draw = new MapboxDraw({
+            displayControlsDefault: false,
+            controls: {
+                polygon: true,
+                trash: true
             }
-        }
-    }
-
-    map.on('draw.create', getFeatureGeo);
-
-    function queryJobs() {
-        var queryParam, points;
-        if ($("#queryMode").val() === "DATASET") {
-            queryParam = $('#datasetQuery').val();
-            points = [];
-        }
-        if ($("#queryMode").val() === "GEOJSON") {
-            var result = draw.getAll();
-            if (result.features.length < 1) {
-                widgets.loader.removeLoader();
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + resources.msg_drawQueryBounds, false);
-                return;
-            } else {
-                points = result.features[0].geometry.coordinates[0];
-                queryParam = "";
-            }
-        }
-        var singleObjectQueryJobsParameter = new SuperMap.SingleObjectQueryJobsParameter({
-            datasetName: $('#datasetName').val(),
-            datasetQuery: queryParam,
-            geometryQuery: points,
-            mode: $('#mode option:selected').attr('value')
         });
-        processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
-                return;
+        $("#queryMode").change(function () {
+            var queryMode = $(this).val();
+            if (queryMode === "DATASET") {
+                map.removeControl(draw, "top-left");
+                $('#datasetDiv').show();
             }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path + "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                        map.addSource("singleSource", {
-                            "type": "raster",
-                            "tiles": [mapUrl],
-                            "tileSize": 256
-                        });
-                        map.addLayer({
-                            "id": "singleLayer",
-                            "type": "raster",
-                            "source": "singleSource",
-                            "minzoom": 0,
-                            "maxzoom": 22
-                        });
-                        widgets.loader.removeLoader();
-                    });
+            if (queryMode === "GEOJSON") {
+                map.addControl(draw, "top-left");
+                $('#datasetDiv').hide();
+            }
+        });
+
+        bindClick();
+
+        function bindClick() {
+            $('#btn').on('click', function () {
+                if ($('#msg_container')[0]) {
+                    $('#msg_container').remove();
                 }
+                widgets.loader.showLoader();
+                if (map.getLayer("singleLayer")) {
+                    map.removeLayer("singleLayer");
+                    map.removeSource("singleSource");
+                }
+                queryJobs();
             });
+        }
+
+        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+        var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
         });
-    }
-</script>
+
+        function getFeatureGeo() {
+            var result = draw.getAll();
+            if (result.features.length > 1) {
+                for (var i = 0; i < result.features.length - 1; i++) {
+                    draw.delete(result.features[i].id);
+                }
+            }
+        }
+
+        map.on('draw.create', getFeatureGeo);
+
+        function queryJobs() {
+            var queryParam, points;
+            if ($("#queryMode").val() === "DATASET") {
+                queryParam = $('#datasetQuery').val();
+                points = [];
+            }
+            if ($("#queryMode").val() === "GEOJSON") {
+                var result = draw.getAll();
+                if (result.features.length < 1) {
+                    widgets.loader.removeLoader();
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + resources.msg_drawQueryBounds, false);
+                    return;
+                } else {
+                    points = result.features[0].geometry.coordinates[0];
+                    queryParam = "";
+                }
+            }
+            var singleObjectQueryJobsParameter = new SuperMap.SingleObjectQueryJobsParameter({
+                datasetName: $('#datasetName').val(),
+                datasetQuery: queryParam,
+                geometryQuery: points,
+                mode: $('#mode option:selected').attr('value')
+            });
+            processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path +
+                                "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
+                            map.addSource("singleSource", {
+                                "type": "raster",
+                                "tiles": [mapUrl],
+                                "tileSize": 256
+                            });
+                            map.addLayer({
+                                "id": "singleLayer",
+                                "type": "raster",
+                                "source": "singleSource",
+                                "minzoom": 0,
+                                "maxzoom": 22
+                            });
+                            widgets.loader.removeLoader();
+                        });
+                    }
+                });
+            });
+        }
+    </script>
 
 </body>
+
 </html>

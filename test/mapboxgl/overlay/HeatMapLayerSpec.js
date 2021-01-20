@@ -1,65 +1,67 @@
-import {HeatMapLayer} from '../../../src/mapboxgl/overlay/HeatMapLayer';
+import { HeatMapLayer } from '../../../src/mapboxgl/overlay/HeatMapLayer';
 import mapboxgl from 'mapbox-gl';
+import { truncate } from '@turf/turf';
 
 var url = GlobeParameter.worldMapURL;
 describe('mapboxgl_HeatMapLayer', () => {
     var originalTimeout;
     var testDiv, map, heatLayer;
     beforeAll(() => {
-        testDiv = window.document.createElement("div");
-        testDiv.setAttribute("id", "map");
-        testDiv.style.styleFloat = "left";
-        testDiv.style.marginLeft = "8px";
-        testDiv.style.marginTop = "50px";
-        testDiv.style.width = "500px";
-        testDiv.style.height = "500px";
+        testDiv = window.document.createElement('div');
+        testDiv.setAttribute('id', 'map');
+        testDiv.style.styleFloat = 'left';
+        testDiv.style.marginLeft = '8px';
+        testDiv.style.marginTop = '50px';
+        testDiv.style.width = '500px';
+        testDiv.style.height = '500px';
         window.document.body.appendChild(testDiv);
 
         map = new mapboxgl.Map({
             container: 'map',
             style: {
-                "version": 8,
-                "sources": {
-                    "raster-tiles": {
-                        "type": "raster",
-                        "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
-                        "tileSize": 256,
-                    },
+                version: 8,
+                sources: {
+                    'raster-tiles': {
+                        type: 'raster',
+                        tiles: [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                        tileSize: 256
+                    }
                 },
-                "layers": [{
-                    "id": "simple-tiles",
-                    "type": "raster",
-                    "source": "raster-tiles",
-                    "minzoom": 0,
-                    "maxzoom": 9
-                }]
+                layers: [
+                    {
+                        id: 'simple-tiles',
+                        type: 'raster',
+                        source: 'raster-tiles',
+                        minzoom: 0,
+                        maxzoom: 9
+                    }
+                ]
             },
             center: [0, 0],
             zoom: 1
         });
 
-        heatLayer = new HeatMapLayer(
-            "heatMap",
-            {
-                "map": map,
-                "id": "heatmap",
-                "radius": 45,
-                "featureWeight": "value",
-            }
-        );
+        heatLayer = new HeatMapLayer('heatMap', {
+            map: map,
+            id: 'heatmap',
+            radius: 45,
+            featureWeight: 'value'
+        });
         var heatPoints = {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [0, 0]
-                },
-                "properties": {
-                    "value": Math.random() * 9,
-                    "geoRadius": null
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [0, 0]
+                    },
+                    properties: {
+                        value: Math.random() * 9,
+                        geoRadius: null
+                    }
                 }
-            }]
+            ]
         };
         heatLayer.addFeatures(heatPoints);
         map.addLayer(heatLayer);
@@ -73,73 +75,79 @@ describe('mapboxgl_HeatMapLayer', () => {
     });
     afterAll(() => {
         window.document.body.removeChild(testDiv);
-        map.removeLayer("heatmap");
-        map.removeLayer("heatmap_2");
+        map.removeLayer('heatmap');
+        map.removeLayer('heatmap_2');
     });
 
     it('initialize', () => {
         expect(heatLayer).not.toBeNull();
-        expect(heatLayer.id).toBe("heatmap");
+        expect(heatLayer.id).toBe('heatmap');
         expect(heatLayer.radius).toEqual(45);
-        expect(heatLayer.featureWeight).toBe("value");
+        expect(heatLayer.featureWeight).toBe('value');
         expect(heatLayer.features.length).toEqual(1);
         expect(heatLayer.colors.length).toEqual(5);
         expect(heatLayer.opacity).toEqual(1);
         expect(heatLayer.useGeoUnit).toBeFalsy();
     });
 
-    it("toiClientFeature", () => {
+    it('toiClientFeature', () => {
         var heatPoints = {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [0, 0]
-                },
-                "properties": {
-                    "value": 2,
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [0, 0]
+                    },
+                    properties: {
+                        value: 2
+                    }
                 }
-            }]
+            ]
         };
 
         var toiClientFeature = heatLayer.toiClientFeature(heatPoints);
         expect(toiClientFeature).not.toBeNull();
         expect(toiClientFeature.length).toEqual(1);
-        expect(toiClientFeature[0].CLASS_NAME).toBe("SuperMap.Feature.Vector");
+        expect(toiClientFeature[0].CLASS_NAME).toBe('SuperMap.Feature.Vector');
     });
 
-    it("addFeatures, removeFeatures, removeAllFeatures", () => {
+    it('addFeatures, removeFeatures, removeAllFeatures', () => {
         var heatPoints = {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [0, 0]
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [0, 0]
+                    },
+                    properties: {
+                        value: 2
+                    }
                 },
-                "properties": {
-                    "value": 2,
-                }
-            }, {
-                "type": "feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [1, 1]
+                {
+                    type: 'feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1, 1]
+                    },
+                    properties: {
+                        value: 4
+                    }
                 },
-                "properties": {
-                    "value": 4,
+                {
+                    type: 'feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [2, 1]
+                    },
+                    properties: {
+                        value: 8
+                    }
                 }
-            }, {
-                "type": "feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [2, 1]
-                },
-                "properties": {
-                    "value": 8,
-                }
-            }]
+            ]
         };
         //测试addFeatures
         heatLayer.addFeatures(heatPoints);
@@ -165,39 +173,36 @@ describe('mapboxgl_HeatMapLayer', () => {
         heatLayer.addFeatures(heatPoints);
         heatLayer.removeFeatures(heatLayer.features);
         expect(heatLayer.features.length).toEqual(0);
-
     });
 
-    it("setOpacity", () => {
+    it('setOpacity', () => {
         heatLayer.setOpacity(0.5);
         var opacity = heatLayer.rootCanvas.style.opacity;
         expect(opacity).toBe('0.5');
     });
 
-
-    it("moveTo", () => {
-        var heatMapLayer2 = new HeatMapLayer(
-            "heatMap",
-            {
-                "map": map,
-                "id": "heatmap_2",
-                "radius": 45,
-                "featureWeight": "value",
-            }
-        );
+    it('moveTo', () => {
+        var heatMapLayer2 = new HeatMapLayer('heatMap', {
+            map: map,
+            id: 'heatmap_2',
+            radius: 45,
+            featureWeight: 'value'
+        });
         var heatPoints = {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [1, 1]
-                },
-                "properties": {
-                    "value": Math.random() * 9,
-                    "geoRadius": null
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1, 1]
+                    },
+                    properties: {
+                        value: Math.random() * 9,
+                        geoRadius: null
+                    }
                 }
-            }]
+            ]
         };
         heatMapLayer2.addFeatures(heatPoints);
         map.addLayer(heatMapLayer2);
@@ -210,7 +215,7 @@ describe('mapboxgl_HeatMapLayer', () => {
             }
         }
 
-        heatLayer.moveTo("heatmap_2");
+        heatLayer.moveTo('heatmap_2');
 
         for (var i = 0; i < children.length; i++) {
             if (heatLayer.rootCanvas === children[i]) {
@@ -219,7 +224,7 @@ describe('mapboxgl_HeatMapLayer', () => {
         }
 
         expect(heatMapLayerIndexBefore).toEqual(heatMapLayerIndexAfter);
-        heatLayer.moveTo("heatmap_2", false);
+        heatLayer.moveTo('heatmap_2', false);
         for (var i = 0; i < children.length; i++) {
             if (heatLayer.rootCanvas === children[i]) {
                 heatMapLayerIndexAfter = i;
@@ -228,13 +233,41 @@ describe('mapboxgl_HeatMapLayer', () => {
         expect(heatMapLayerIndexBefore).not.toEqual(heatMapLayerIndexAfter);
     });
 
-    it("setVisibility", () => {
+    it('setVisibility', (done) => {
         heatLayer.setVisibility(false);
         expect(heatLayer.visibility).toBeFalsy();
+        setTimeout(() => {
+            expect(heatLayer.rootCanvas.style.display).toBe('none');
+            heatLayer.setVisibility(true);
+            done();
+        }, 2000);
     });
 
-    it("removeFeatures", () => {
+    it('removeFeatures', () => {
         heatLayer.removeFeatures(heatLayer.features);
         expect(heatLayer.features.length).toBeFalsy();
+    });
+    it('mapMove', (done) => {
+        heatLayer.loadWhileAnimating = false;
+        map.panBy([1, 1]);
+        setTimeout(() => {
+            expect(heatLayer.rootCanvas.style.transform).not.toBeNull()
+            done();
+        }, 2000);
+    });
+    it('mapResize', (done) => {
+        testDiv.style.width = '1000px'
+        map.resize();
+        setTimeout(() => {
+            expect(heatLayer.rootCanvas.width).toBe(1000 * window.devicePixelRatio);
+            done();
+        }, 2000);
+    });
+    it('mapZoom', (done) => {
+        map.setZoom(3);
+        setTimeout(() => {
+            expect(heatLayer.rootCanvas.style.display).toBe('block');
+            done();
+        }, 2000);
     });
 });

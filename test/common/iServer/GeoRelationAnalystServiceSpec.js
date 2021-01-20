@@ -1,25 +1,20 @@
-﻿﻿import {GeoRelationAnalystService} from '../../../src/common/iServer/GeoRelationAnalystService';
+﻿import {GeoRelationAnalystService} from '../../../src/common/iServer/GeoRelationAnalystService';
 import {GeoRelationAnalystParameters} from '../../../src/common/iServer/GeoRelationAnalystParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {SpatialRelationType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var completedEventArgsSystem, failedEventArgsSystem;
-var initGeoRelationAnalystService = () => {
-    return new GeoRelationAnalystService(url, options);
+var initGeoRelationAnalystService = (generateSpatialDataCompleted,generateSpatialDataFailed) => {
+    return new GeoRelationAnalystService(url,{
+        eventListeners: {
+            processCompleted: generateSpatialDataCompleted,
+            processFailed: generateSpatialDataFailed
+        }
+    });
 };
-var generateSpatialDataCompleted = (completedEventArgs) => {
-    completedEventArgsSystem = completedEventArgs;
-};
-var generateSpatialDataFailed = (failedEventArgs) => {
-    failedEventArgsSystem = failedEventArgs;
-};
-var options = {
-    eventListeners: {
-        processCompleted: generateSpatialDataCompleted,
-        processFailed: generateSpatialDataFailed
-    }
-};
+
 
 describe('GeoRelationAnalystService', () => {
     var originalTimeout;
@@ -51,13 +46,13 @@ describe('GeoRelationAnalystService', () => {
             returnFeature: true,
             returnGeoRelatedOnly: true
         });
-        var datasetRelationService = initGeoRelationAnalystService();
-        datasetRelationService.processAsync(datasetGeoRelationParameters);
-        setTimeout(() => {
+
+        var generateSpatialDataCompleted = (completedEventArgs) => {
+            completedEventArgsSystem = completedEventArgs;
             try {
                 expect(datasetRelationService).not.toBeNull();
                 expect(completedEventArgsSystem.result).not.toBeNull();
-                expect(completedEventArgsSystem.result.length).toEqual(7);
+                expect(completedEventArgsSystem.result.length).toEqual(1);
                 datasetRelationService.destroy();
                 expect(datasetRelationService.EVENT_TYPES).toBeNull();
                 expect(datasetRelationService.events).toBeNull();
@@ -71,7 +66,25 @@ describe('GeoRelationAnalystService', () => {
                 datasetGeoRelationParameters.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var generateSpatialDataFailed = (failedEventArgs) => {
+            failedEventArgsSystem = failedEventArgs;
+        };
+
+        var datasetRelationService =initGeoRelationAnalystService(generateSpatialDataCompleted,generateSpatialDataFailed);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.spatialRelationType).toBe("INTERSECT");
+            expect(paramsObj.expectCount).toBe(20);
+
+            // expect(params).toContain("'expectCount':20");
+            // expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(geoRelationAnalystCommonResultJson)));
+        });
+        datasetRelationService.processAsync(datasetGeoRelationParameters);
     });
 
     //空间关系分析服务，比较返回结果
@@ -91,9 +104,8 @@ describe('GeoRelationAnalystService', () => {
             returnFeature: false,
             returnGeoRelatedOnly: true
         });
-        var datasetRelationService = initGeoRelationAnalystService();
-        datasetRelationService.processAsync(datasetGeoRelationParameters);
-        setTimeout(() => {
+        var generateSpatialDataCompleted = (completedEventArgs) => {
+            completedEventArgsSystem = completedEventArgs;
             try {
                 expect(datasetRelationService).not.toBeNull();
                 expect(completedEventArgsSystem.result).not.toBeNull();
@@ -111,7 +123,24 @@ describe('GeoRelationAnalystService', () => {
                 datasetGeoRelationParameters.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var generateSpatialDataFailed = (failedEventArgs) => {
+            failedEventArgsSystem = failedEventArgs;
+        };
+        var datasetRelationService =initGeoRelationAnalystService(generateSpatialDataCompleted,generateSpatialDataFailed);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
+            // expect(params).toContain("'expectCount':5");
+            // expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.spatialRelationType).toBe("INTERSECT");
+            expect(paramsObj.expectCount).toBe(5);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[{"result":[1],"count":1,"source":1},{"result":[1],"count":1,"source":2},{"result":[1],"count":1,"source":3},{"result":[1],"count":1,"source":4},{"result":[1],"count":1,"source":5}]`));
+        });
+        datasetRelationService.processAsync(datasetGeoRelationParameters);
+
     });
 
     //空间关系分析服务，比较返回结果
@@ -129,14 +158,16 @@ describe('GeoRelationAnalystService', () => {
             returnFeature: false,
             returnGeoRelatedOnly: true
         });
-        var datasetRelationService = initGeoRelationAnalystService();
-        datasetRelationService.processAsync(datasetGeoRelationParameters);
-        setTimeout(() => {
+        var generateSpatialDataCompleted = (completedEventArgs) => {
+            completedEventArgsSystem = completedEventArgs;
+        };
+        var generateSpatialDataFailed = (failedEventArgs) => {
+            failedEventArgsSystem = failedEventArgs;
             try {
                 expect(failedEventArgsSystem).not.toBeNull();
                 expect(failedEventArgsSystem.error).not.toBeNull();
-                //  expect(failedEventArgsSystem.error.code).toEqual(400);
-                // expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
+                expect(failedEventArgsSystem.error.code).toEqual(400);
+                expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
                 datasetRelationService.destroy();
                 expect(datasetRelationService.EVENT_TYPES).toBeNull();
                 expect(datasetRelationService.events).toBeNull();
@@ -150,7 +181,17 @@ describe('GeoRelationAnalystService', () => {
                 datasetGeoRelationParameters.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var datasetRelationService =initGeoRelationAnalystService(generateSpatialDataCompleted,generateSpatialDataFailed);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.spatialRelationType).toBe("INTERSECT");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集标识为null。"}}`));
+        });
+        datasetRelationService.processAsync(datasetGeoRelationParameters);
     });
 });
 

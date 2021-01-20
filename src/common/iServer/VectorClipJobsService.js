@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ProcessingServiceBase} from './ProcessingServiceBase';
-import {VectorClipJobsParameter} from './VectorClipJobsParameter';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { ProcessingServiceBase } from './ProcessingServiceBase';
+import { VectorClipJobsParameter } from './VectorClipJobsParameter';
 
 /**
  * @class SuperMap.VectorClipJobsService
@@ -12,13 +13,14 @@ import {VectorClipJobsParameter} from './VectorClipJobsParameter';
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class VectorClipJobsService extends ProcessingServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/vectorclip";
-        this.CLASS_NAME = "SuperMap.VectorClipJobsService";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/vectorclip');
+        this.CLASS_NAME = 'SuperMap.VectorClipJobsService';
     }
 
     /**
@@ -42,7 +44,7 @@ export class VectorClipJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id
      */
     getVectorClipJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**
@@ -54,7 +56,6 @@ export class VectorClipJobsService extends ProcessingServiceBase {
     addVectorClipJob(params, seconds) {
         super.addJob(this.url, params, VectorClipJobsParameter, seconds);
     }
-
 }
 
 SuperMap.VectorClipJobsService = VectorClipJobsService;

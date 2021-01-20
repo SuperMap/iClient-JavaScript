@@ -6,8 +6,9 @@ import './openlayers/core/StyleUtilsSpec.js';
 import './openlayers/core/UtilSpec.js';
 import './openlayers/core/MapExtendSpec.js';
 
-/*openlayers -- mapping*/
+// /*openlayers -- mapping*/
 import './openlayers/mapping/ImageSuperMapRestSpec.js';
+import './openlayers/mapping/TileSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
@@ -17,11 +18,12 @@ import './openlayers/overlay/GraphicSpec.js';
 
 import './openlayers/overlay/GraphSpec.js';
 import './openlayers/overlay/HeatMapSpec.js';
-import './openlayers/overlay/LabelSpec';
+import './openlayers/overlay/LabelSpec.js';
 import './openlayers/overlay/MapvSpec.js';
 import './openlayers/overlay/RangeSpec.js';
 import './openlayers/overlay/RankSymbolSpec.js';
 import './openlayers/overlay/UniqueSpec.js';
+import './openlayers/overlay/VectorTileSuperMapRestMapboxstyleSpec.js';
 import './openlayers/overlay/VectorTileSuperMapRestSpec.js';
 import './openlayers/overlay/theme/GeoFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeFeatureSpec.js';
@@ -30,7 +32,7 @@ import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
 
-/**openlayers --services**/
+// /**openlayers --services**/
 import './openlayers/services/BufferAnalysisSpec.js';
 import './openlayers/services/DensityAnalysisSpec.js';
 import './openlayers/services/EditFeaturesSpec.js';
@@ -43,6 +45,8 @@ import './openlayers/services/GetFeaturesByBufferSpec.js';
 import './openlayers/services/GetFeaturesByGeometrySpec.js';
 import './openlayers/services/GetFeaturesByIDsSpec.js';
 import './openlayers/services/GetFeaturesBySQLSpec.js';
+import './openlayers/services/GeoprocessingServiceSpec.js';
+
 import './openlayers/services/InterpolationAnalysisSpec.js';
 import './openlayers/services/LayerInfoServiceSpec.js';
 import './openlayers/services/MathExpressionAnalysisSpec.js';
@@ -60,3 +64,4 @@ import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 import './openlayers/services/AddressMatchServiceSpec.js';
 import './openlayers/services/GridCellInfosServiceSpec.js';
+import './openlayers/services/WebPrintingJobServiceSpec.js';

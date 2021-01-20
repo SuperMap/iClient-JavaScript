@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ProcessingServiceBase} from './ProcessingServiceBase';
-import {SummaryRegionJobParameter} from './SummaryRegionJobParameter';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { ProcessingServiceBase } from './ProcessingServiceBase';
+import { SummaryRegionJobParameter } from './SummaryRegionJobParameter';
 
 /**
  * @class SuperMap.SummaryRegionJobsService
@@ -12,13 +13,14 @@ import {SummaryRegionJobParameter} from './SummaryRegionJobParameter';
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SummaryRegionJobsService extends ProcessingServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/summaryregion";
-        this.CLASS_NAME = "SuperMap.SummaryRegionJobsService";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/summaryregion');
+        this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
     }
 
     /**
@@ -42,7 +44,7 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
      * @param {string} id -要获取区域汇总分析任务的id
      */
     getSummaryRegionJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**
@@ -54,7 +56,6 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     addSummaryRegionJob(params, seconds) {
         super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
     }
-
 }
 
 SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;

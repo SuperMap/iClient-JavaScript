@@ -1,10 +1,13 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
+ import {
     baiduMapLayer
-} from "mapv";
+} from 'mapv';
 import mapboxgl from 'mapbox-gl';
+import {
+    getMeterPerMapUnit
+} from '@supermap/iclient-common';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -36,17 +39,7 @@ export class MapvRenderer extends BaseLayer {
         this.animation = options.animation;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
-        this.map.on('resize', this.resizeEvent.bind(this));
-        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
-        this.map.on('zoomend', this.zoomEndEvent.bind(this));
-        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
-        this.map.on('rotate', this.rotateEvent.bind(this));
-        this.map.on('rotateend', this.rotateEndEvent.bind(this));
-        // this.map.on('dragend', this.dragEndEvent.bind(this));
-        this.map.on('movestart', this.moveStartEvent.bind(this));
-        this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('moveend', this.moveEndEvent.bind(this));
-        this.map.on('remove', this.removeEvent.bind(this));
+        this.bindMapEvent();
         this.bindEvent();
         this._expectShow = true;
     }
@@ -93,7 +86,6 @@ export class MapvRenderer extends BaseLayer {
      */
     unbindEvent() {
         var map = this.map;
-
         if (this.options.methods) {
             if (this.options.methods.click) {
                 map.off('click', this.clickEvent);
@@ -169,7 +161,7 @@ export class MapvRenderer extends BaseLayer {
         }
         var newData = this.dataSet.get({
             filter: function (data) {
-                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+                return filter != null && typeof filter === 'function' ? !filter(data) : true;
             }
         });
         this.dataSet.set(newData);
@@ -239,7 +231,10 @@ export class MapvRenderer extends BaseLayer {
             context.clear(context.COLOR_BUFFER_BIT);
         }
 
-        if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
+        if (
+            (self.options.minZoom && map.getZoom() < self.options.minZoom) ||
+            (self.options.maxZoom && map.getZoom() > self.options.maxZoom)
+        ) {
             return;
         }
 
@@ -248,13 +243,14 @@ export class MapvRenderer extends BaseLayer {
             dh = bounds.getNorth() - bounds.getSouth();
         var resolutionX = dw / this.canvasLayer.canvas.width,
             resolutionY = dh / this.canvasLayer.canvas.height;
-
+        // 一个像素是多少米
+        var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
                 if (map.transform.rotationMatrix || self.context === '2d') {
-                    var worldPoint = map.project((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
+                    var worldPoint = map.project(new mapboxgl.LngLat(coordinate[0], coordinate[1]));
                     return [worldPoint.x, worldPoint.y];
                 }
                 var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
@@ -265,24 +261,39 @@ export class MapvRenderer extends BaseLayer {
         if (time !== undefined) {
             dataGetOptions.filter = function (item) {
                 var trails = animationOptions.trails || 10;
-                return (time && item.time > (time - trails) && item.time < time);
-            }
+                return time && item.time > time - trails && item.time < time;
+            };
         }
 
         var data = self.dataSet.get(dataGetOptions);
 
         this.processData(data);
 
-        self.options._size = self.options.size;
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
 
         var worldPoint = map.project(new mapboxgl.LngLat(0, 0));
         this.drawContext(context, data, self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);
+
     }
 
     init(options) {
-
         var self = this;
 
         self.options = options;
@@ -290,21 +301,77 @@ export class MapvRenderer extends BaseLayer {
         this.initDataRange(options);
 
         this.context = self.options.context || '2d';
-
         if (self.options.zIndex) {
             this.canvasLayer && this.canvasLayer.setZIndex(self.options.zIndex);
         }
-
         this.initAnimator();
     }
+    /**
+     * @function L.supermap.MapVRenderer.prototype.bindMapEvent
+     * @description 绑定鼠标移动事件。
+     */
+    bindMapEvent() {
+        this.mapEvent = {
+            resizeEvent: this.resizeEvent.bind(this),
+            zoomStartEvent: this.zoomStartEvent.bind(this),
+            zoomEndEvent: this.zoomEndEvent.bind(this),
+            rotateStartEvent: this.rotateStartEvent.bind(this),
+            rotateEvent: this.rotateEvent.bind(this),
+            moveStartEvent: this.moveStartEvent.bind(this),
+            rotateEndEvent: this.rotateEndEvent.bind(this),
+            moveEvent: this.moveEvent.bind(this),
+            moveEndEvent: this.moveEndEvent.bind(this),
+            removeEvent: this.removeEvent.bind(this)
+        }
+        this.map.on('resize', this.mapEvent.resizeEvent);
+        this.map.on('zoomstart', this.mapEvent.zoomStartEvent);
+        this.map.on('zoomend', this.mapEvent.zoomEndEvent);
+        this.map.on('rotatestart', this.mapEvent.rotateStartEvent);
+        this.map.on('rotate', this.mapEvent.rotateEvent);
+        this.map.on('rotateend', this.mapEvent.rotateEndEvent);
+        // this.map.on('dragend', this.dragEndEvent.bind(this));
+        this.map.on('movestart', this.mapEvent.moveStartEvent);
+        this.map.on('move', this.mapEvent.moveEvent);
+        this.map.on('moveend', this.mapEvent.moveEndEvent);
+        this.map.on('remove', this.mapEvent.removeEvent);
+    }
+
+    /**
+     * @function L.supermap.MapVRenderer.prototype.unbindMapEvent
+     * @description 解绑鼠标移动事件。
+     */
+    unbindMapEvent() {
+        this.map.off('resize', this.mapEvent.resizeEvent);
+        this.map.off('zoomstart', this.mapEvent.zoomStartEvent);
+        this.map.off('zoomend', this.mapEvent.zoomEndEvent);
+        this.map.off('rotatestart', this.mapEvent.rotateStartEvent);
+        this.map.off('rotate', this.mapEvent.rotateEvent);
+        this.map.off('rotateend', this.mapEvent.rotateEndEvent);
+        this.map.off('movestart', this.mapEvent.moveStartEvent);
+        this.map.off('move', this.mapEvent.moveEvent);
+        this.map.off('moveend', this.mapEvent.moveEndEvent);
+        this.map.off('remove', this.mapEvent.removeEvent);
+    }
+
+    /**
+     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @description 释放资源。
+     */
+    destroy() {
+        this.unbindMapEvent();
+        this.unbindEvent();
+        this.clearData();
+        this.animator && this.animator.stop();
+        this.animator = null;
+        this.canvasLayer = null;
+    }
+
 
     /**
      * @function MapvRenderer.prototype.addAnimatorEvent
      * @description 添加动画事件。
      */
-    addAnimatorEvent() {
-
-    }
+    addAnimatorEvent() {}
 
     /**
      * @function MapvRenderer.prototype.removeEvent
@@ -322,13 +389,13 @@ export class MapvRenderer extends BaseLayer {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var canvas = this.canvasLayer.canvas;
         canvas.style.position = 'absolute';
-        canvas.style.top = 0 + "px";
-        canvas.style.left = 0 + "px";
+        canvas.style.top = 0 + 'px';
+        canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio || 1;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
-        if (this.canvasLayer.mapVOptions.context == '2d') {
+        if (!this.canvasLayer.mapVOptions.context || this.canvasLayer.mapVOptions.context == '2d') {
             canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         canvas.style.width = this.map.getCanvas().style.width;
@@ -371,7 +438,18 @@ export class MapvRenderer extends BaseLayer {
         var tMoveX = endMovePoint.x - this.startMoveX;
         var tMoveY = endMovePoint.y - this.startMoveY;
         var canvas = this.getContext().canvas;
-        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
+        canvas.style.transform =
+            'rotateX(' +
+            tPitch +
+            'deg)' +
+            ' rotateZ(' +
+            tBearing +
+            'deg)' +
+            ' translate3d(' +
+            tMoveX +
+            'px, ' +
+            tMoveY +
+            'px, 0px)';
     }
 
     zoomStartEvent() {
@@ -382,7 +460,6 @@ export class MapvRenderer extends BaseLayer {
     zoomEndEvent() {
         this.zooming = false;
     }
-
 
     rotateStartEvent() {
         this.rotating = true;
@@ -396,7 +473,7 @@ export class MapvRenderer extends BaseLayer {
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
         var canvas = this.getContext().canvas;
-        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)'
+        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)';
     }
 
     rotateEndEvent() {
@@ -404,11 +481,18 @@ export class MapvRenderer extends BaseLayer {
     }
     /**
      * @function MapvRenderer.prototype.clear
-     * @param {object} context - 当前环境。
+     * @param {Object} context - 当前环境。
      * @description 清除环境。
      */
     clear(context) {
-        context && context.clearRect && context.clearRect(0, 0, parseInt(this.map.getCanvas().style.width), parseInt(this.map.getCanvas().style.height));
+        context &&
+            context.clearRect &&
+            context.clearRect(
+                0,
+                0,
+                parseInt(this.map.getCanvas().style.width),
+                parseInt(this.map.getCanvas().style.height)
+            );
     }
 
     /**
@@ -426,7 +510,4 @@ export class MapvRenderer extends BaseLayer {
     _show() {
         this.canvasLayer.canvas.style.display = 'block';
     }
-
-
-
 }

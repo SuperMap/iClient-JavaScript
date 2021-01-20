@@ -1,0 +1,221 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_componentsTheme_Vue"></title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script
+      include="echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+
+      #main {
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+      }
+
+      .sm-chart .sm-card__content {
+        width: 400px;
+        height: 300px;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+      }
+
+      .box-card {
+        width: 280px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        overflow: hidden;
+      }
+
+      .radio-group {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        text-align: center;
+        z-index: 1000;
+      }
+      .sm-progress-wrap {
+        height: 110px;
+      }
+      .sm-progress-wrap,
+      .sm-component-liquidFill {
+        width: 110px;
+        height: 110px;
+        display: inline-block;
+      }
+      .sm-component-indicator {
+        padding-left: 0px;
+      }
+      .sm-component-indicator .sm-component-indicator__head {
+        padding-left: 0px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <!-- WebMap组件 -->
+      <sm-web-map
+        server-url="https://iportal.supermap.io/iportal"
+        map-id="801571284"
+        ref="map"
+        @load.once="load"
+      ></sm-web-map>
+      <!-- 切换主题按钮组 -->
+      <sm-radio-group class="radio-group" v-model="theme" @change="changeTheme">
+        <sm-radio-button value="light">{{ resources.btn_lightTheme }}</sm-radio-button>
+        <sm-radio-button value="dark">{{ resources.btn_darkTheme }}</sm-radio-button>
+        <sm-radio-button value="custom">{{ resources.btn_customTheme }}</sm-radio-button>
+      </sm-radio-group>
+      <div class="box-card">
+        <!-- 图标组件 -->
+        <sm-icon icon-class="marker-layer" background="unset" size="18px" :style="{float: 'left'}"> </sm-icon>
+        <!-- 文本组件 -->
+        <sm-text
+          title="点击图上点切换显示机场数据"
+          :font-style='{ fontSize: "14px",display: "block"}'
+          text-color="#333"
+        ></sm-text>
+        <sm-text
+          title="机场"
+          :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}'
+          text-color="rgb(51,51,51)"
+          style="width: 280px"
+        >
+        </sm-text>
+        <sm-text
+          :title="name"
+          :font-style='{ fontSize: "18px", color:"#73b9ac", fontWeight: "700" ,display: "block"}'
+          style="width: 100%"
+        >
+        </sm-text>
+        <!-- 指标组件 -->
+        <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" style="width: 100%"> </sm-indicator>
+        <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" style="width: 100%"></sm-indicator>
+        <sm-text
+          title="同比增速"
+          :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}'
+          text-color="rgb(51,51,51)"
+        ></sm-text>
+
+        <div :style="divStyle">
+          <!-- 水球组件 -->
+          <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true" style="width:100%"> </sm-liquid-fill>
+        </div>
+
+        <!-- 时间组件 -->
+        <sm-time-text
+          :font-style='{ fontSize: "12px"}'
+          text-color="#333"
+          time-type="date+second"
+          style="float:right;width:100%"
+        >
+        </sm-time-text>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#main',
+        data() {
+          return {
+            theme: 'light',
+            name: '北京/首都',
+            passengerNumber: 95786296,
+            goodsNumber: 94393454,
+            speedIncrease: 35,
+            divStyle: {
+              background: 'rgba(255, 255, 255)'
+            }
+          };
+        },
+        computed: {
+          speedIncreaseValue() {
+            return this.speedIncrease / 100.0;
+          }
+        },
+        methods: {
+          changeTheme: function(e) {
+            var themeList = {
+              dark: {
+                background: 'rgba(255, 255, 255, 0.04)', //例子中布局div的背景色,
+                themeInfo: 'dark'
+              },
+              light: {
+                background: 'rgba(255, 255, 255)', //例子中布局div的背景色,
+                themeInfo: 'light'
+              },
+              other: {
+                background: 'rgb(91, 92, 110)', //例子中布局div的背景色
+                themeInfo: {
+                  textColor: '#eee',
+                  background: 'rgb(91, 92, 110)',
+                  componentBackground: 'rgb(91, 92, 110)',
+                  colorGroup: [
+                    'rgb(138, 124, 168)',
+                    'rgb(224, 152, 199)',
+                    'rgb(143, 211, 232)',
+                    'rgb(113, 102, 158)',
+                    'rgb(204, 112, 175)'
+                  ]
+                }
+              }
+            };
+            var theme = themeList[e.target.value];
+            if(!theme) {
+              theme = themeList['other'];
+            }
+            this.divStyle.background = theme.background;
+            SuperMap.Components.setTheme(theme.themeInfo);
+            // if (theme === 'dark') {
+            //   this.divStyle.background = 'rgba(0, 0, 0, 0.6)'; //例子中布局div的背景色
+            //   //切换组件主题为内置主题dark
+            //   SuperMap.Components.setTheme(theme);
+            // } else if (theme === 'light') {
+            //   this.divStyle.background = 'rgba(255, 255, 255, 0.6)'; //例子中布局div的背景色
+            //   //切换组件主题为内置主题light
+            //   SuperMap.Components.setTheme(theme);
+            // } else {
+            //   this.divStyle.background = 'rgb(91, 92, 110)'; //例子中布局div的背景色
+            //   //切换组件主题为自定义主题
+            //   SuperMap.Components.setTheme();
+            // }
+          },
+          load(obj) {
+            var vm = this;
+            map = obj.map;
+            map.on('click', function(e) {
+              var bbox = [[e.point.x - 2, e.point.y - 2], [e.point.x + 2, e.point.y + 2]];
+              var features = map.queryRenderedFeatures(bbox);
+              if (features.length > 0) {
+                var properties = features[0].properties;
+                vm.name = properties['机场'];
+                vm.passengerNumber = properties['2017旅客吞吐量（人次）'] || 0;
+                vm.goodsNumber = properties['2017货邮吞吐量（吨）'] || 0;
+                vm.speedIncrease = properties['同比增速%'] || 0;
+              }
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

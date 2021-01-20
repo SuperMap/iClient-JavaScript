@@ -1,49 +1,48 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <nav class="navbar navbar-static-top lite">
     <div class="nav-header">
         <div class="navbar-header">
             <div class="navbar-title">
                 <a class="navbar-brand" target="_blank" href="../../web/index.html">
-                    <span class="project-title vm" id="title">SuperMap iClient 9D(2019)</span>
-                    <span style="vertical-align:super; font-size:14px; color:#ffffff; margin-left:5px;" id="version">{{nav.version}}</span>
+                    <span class="project-title vm" id="title">SuperMap iClient 10i(2020)</span>
+                    <span style="vertical-align:super; font-size:14px; color:#ffffff; margin-left:5px;" id="version">{{
+                        nav.version
+                    }}</span>
                 </a>
                 <div id="suffix-title"></div>
             </div>
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
-                    aria-expanded="false">
+            <button
+                type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar-collapse"
+                aria-expanded="false"
+            >
                 <i class="fa fa-bars"></i>
             </button>
         </div>
 
         <div class="collapse navbar-collapse navbar-custom-menu" id="navbar-collapse">
-
-
             <ul class="nav navbar-nav nav-header-example">
-
                 <li class="navbar-menu" id="leaflet-menu">
-                    <a class="center" target="_self"
-                       href="../leaflet/examples.html">for Leaflet</a>
+                    <a class="center" target="_self" href="../leaflet/examples.html">for Leaflet</a>
                 </li>
                 <li class="navbar-menu" id="openlayers-menu">
-                    <a class="center" target="_self"
-                       href="../openlayers/examples.html">for OpenLayers</a>
-
+                    <a class="center" target="_self" href="../openlayers/examples.html">for OpenLayers</a>
                 </li>
                 <li class="navbar-menu" id="mapboxgl-menu">
-                    <a class="center" target="_self"
-                       href="../mapboxgl/examples.html">for MapboxGL</a>
+                    <a class="center" target="_self" href="../mapboxgl/examples.html">for MapboxGL</a>
                 </li>
                 <li class="navbar-menu" id="classic-menu">
-                    <a class="center" target="_self"
-                       href="../classic/examples.html">Classic</a>
-
+                    <a class="center" target="_self" href="../classic/examples.html">Classic</a>
                 </li>
                 <li class="navbar-menu" id="3dwebgl-menu">
-                    <a class="center" target="_self"
-                       href="../3dwebgl/examples.html">3D WebGL</a>
-
+                    <a class="center" target="_self" href="http://support.supermap.com.cn:8090/webgl/index.html">3D WebGL</a>
+                </li>
+                <li class="navbar-menu" id="component-menu">
+                    <a class="center" target="_self" href="../component/examples.html">组件</a>
                 </li>
                 <li class="dropdown nav-dropdown-menu download-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -57,16 +56,15 @@
                 </li>
             </ul>
         </div>
-
     </div>
 </nav>
 <script type="text/javascript">
     var notFor = ['iClient Classic', '3D-WebGL'];
     var identification = identification != null ? identification : undefined;
-    $(document).ready(function () {
+    $(document).ready(function() {
         if (identification && identification.name) {
-            var suffixHeader = document.getElementById("suffix-title");
-            suffixHeader.innerText = (notFor.indexOf(identification.name) < 0 ? "for " : "") + identification.name;
+            var suffixHeader = document.getElementById('suffix-title');
+            suffixHeader.innerText = (notFor.indexOf(identification.name) < 0 ? 'for ' : '') + identification.name;
         }
     });
 </script>

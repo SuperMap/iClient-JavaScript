@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Util} from '../../core/Util';
 import {
     CommonUtil,
@@ -14,6 +13,9 @@ import {
     LevelRenderer
 } from '@supermap/iclient-common';
 import {ThemeFeature} from './ThemeFeature';
+import ImageCanvasSource from 'ol/source/ImageCanvas';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.source.Theme
@@ -21,27 +23,25 @@ import {ThemeFeature} from './ThemeFeature';
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。
- * @param {ol.Map} opt_option.map - 当前 openlayers 的 Map 对象。
+ * @param {ol/Map} opt_option.map - 当前 openlayers 的 Map 对象。
  * @param {string} [opt_option.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_option.opacity=1] - 图层透明度。
- * @param {string} [opt_option.logo] - Logo。
- * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
+ * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {ol/proj/Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
- * @param {ol.source.State} [opt_option.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.ImageCanvas}
+ * @param {ol/source/State} [opt_option.state] - 资源状态。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @extends {ol/source/ImageCanvas}
  */
-export class Theme extends ol.source.ImageCanvas {
+export class Theme extends ImageCanvasSource {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            }),
+            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             canvasFunction: canvasFunctionInternal_,
-            logo: options.logo,
+            logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
             ratio: options.ratio,
             resolutions: options.resolutions,
@@ -93,8 +93,8 @@ export class Theme extends ol.source.ImageCanvas {
             canvas.height = mapHeight;
             canvas.style.width = mapWidth + "px";
             canvas.style.height = mapHeight + "px";
-            this.context.drawImage(this.themeCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
-            this.context.drawImage(copyHighLightContext.canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            this.context.drawImage(this.themeCanvas, 0, 0);
+            this.context.drawImage(copyHighLightContext.canvas, 0, 0);
             return this.context.canvas;
         }
 
@@ -177,7 +177,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -500,7 +500,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
@@ -515,9 +515,9 @@ export class Theme extends ol.source.ImageCanvas {
                 //ol.supermap.ThemeFeature 类型
                 featuresTemp.push(features[i].toFeature());
                 continue;
-            } else if (features[i] instanceof ol.Feature) {
-                //ol.Feature 数据类型
-                //_toFeature 统一处理 ol.Feature 所有 geometry 类型
+            } else if (features[i] instanceof Feature) {
+                //ol/Feature 数据类型
+                //_toFeature 统一处理 ol/Feature 所有 geometry 类型
                 featuresTemp.push(this._toFeature(features[i]));
                 continue;
             } else if (features[i] instanceof GeometryVector) {
@@ -543,19 +543,17 @@ export class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);
     }
 
-    //统一处理 ol.feature所有 geometry 类型
+    //统一处理 ol/feature所有 geometry 类型
     _toFeature(feature) {
-        let geoFeature = (new ol.format.GeoJSON()).writeFeature(feature);
+        let geoFeature = (new GeoJSON()).writeFeature(feature);
         return new GeoJSONFormat().read(geoFeature, "Feature");
     }
 
 }
-
-ol.source.Theme = Theme;

@@ -1,249 +1,257 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
     <title data-i18n="resources.title_mb_deckglLayer_sfcontour"></title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: #fff;
-            width: 100%;
-            height: 100%
-        }
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+      }
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
 
-        #title {
-            position: absolute;
-            color: white;
-            left: 40%;
-            top: 30px;
-            text-align: center;
-            width: 500px;
-            z-index: 2;
-        }
+      #title {
+        position: absolute;
+        color: white;
+        left: 40%;
+        top: 30px;
+        text-align: center;
+        width: 500px;
+        z-index: 2;
+      }
 
-        #title > h3 {
-            margin: 10px 0;
-            letter-spacing: 0.1em;
-        }
+      #title > h3 {
+        margin: 10px 0;
+        letter-spacing: 0.1em;
+      }
 
-        #title > h6 {
-            margin: 0;
-            font-weight: normal;
-        }
+      #title > h6 {
+        margin: 0;
+        font-weight: normal;
+      }
 
-        .whiteBackground {
-            background-color: rgba(225, 225, 225, 0.1);
-            border-top: 1px dotted;
-            border-image: linear-gradient(to right, rgba(114, 159, 207, 1), rgba(104, 104, 104, 1) 200px, rgba(104, 104, 104, 0) 75%) 30;
-        }
+      .whiteBackground {
+        background-color: rgba(225, 225, 225, 0.1);
+        border-top: 1px dotted;
+        border-image: linear-gradient(
+            to right,
+            rgba(114, 159, 207, 1),
+            rgba(104, 104, 104, 1) 200px,
+            rgba(104, 104, 104, 0) 75%
+          )
+          30;
+      }
 
-        .legendContainer {
-            position: absolute;
-            bottom: 25px;
-            right: 25px;
-            color: white;
-            padding: 10px 10px 0px 10px;
-            z-index: 1000;
-        }
+      .legendContainer {
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        color: white;
+        padding: 10px 10px 0px 10px;
+        z-index: 1000;
+      }
 
-        .legendHead {
-            align-self: flex-end;
-        }
+      .legendHead {
+        align-self: flex-end;
+      }
 
-        .legendBody {
-            padding-top: 10px;
-        }
-
+      .legendBody {
+        padding-top: 10px;
+      }
     </style>
-</head>
-<body>
-<div id="title">
-    <h3 data-i18n="resources.title_mb_deckglLayer_sfcontour"></h3>
-    <h6 data-i18n="resources.text_mb_deckglLayer_sfcontour"></h6>
-</div>
-<div class="legendContainer whiteBackground">
-    <div class="legendHead _flex">
+  </head>
+  <body>
+    <div id="title">
+      <h3 data-i18n="resources.title_mb_deckglLayer_sfcontour"></h3>
+      <h6 data-i18n="resources.text_mb_deckglLayer_sfcontour"></h6>
+    </div>
+    <div class="legendContainer whiteBackground">
+      <div class="legendHead _flex">
         <div>sf_contour.geo</div>
         <div>Polygon color</div>
         <div>by elevation</div>
-    </div>
-    <div class="legendBody _flex">
+      </div>
+      <div class="legendBody _flex">
         <svg width="132" height="200">
-            <g transform="translate(0, 0)">
-                <rect width="30" height="20" style="fill: rgb(55, 83, 94);"></rect>
-                <text x="38" y="14" fill="white">[ -40, 79.4 ]</text>
-            </g>
-            <g transform="translate(0, 24)">
-                <rect width="30" height="20" style="fill: rgb(58, 116, 138);"></rect>
-                <text x="38" y="14" fill="white">( 79.4, 198.8]</text>
-            </g>
-            <g transform="translate(0, 48)">
-                <rect width="30" height="20" style="fill: rgb(75, 154, 149);"></rect>
-                <text x="38" y="14" fill="white">( 198.8, 318.1]</text>
-            </g>
-            <g transform="translate(0, 72)">
-                <rect width="30" height="20" style="fill: rgb(94, 171, 139);"></rect>
-                <text x="38" y="14" fill="white">( 318.1, 437.5]</text>
-            </g>
-            <g transform="translate(0, 96)">
-                <rect width="30" height="20" style="fill: rgb(115, 188, 132);"></rect>
-                <text x="38" y="14" fill="white">( 437.5, 556.9 ]</text>
-            </g>
-            <g transform="translate(0, 120)">
-                <rect width="30" height="20" style="fill: rgb(146, 204, 139);"></rect>
-                <text x="38" y="14" fill="white">( 556.9, 676.3 ]</text>
-            </g>
-            <g transform="translate(0, 144)">
-                <rect width="30" height="20" style="fill: rgb(190, 221, 165);"></rect>
-                <text x="38" y="14" fill="white">( 676.3, 795.6 ]</text>
-            </g>
-            <g transform="translate(0, 168)">
-                <rect width="30" height="20" style="fill: rgb(229, 238, 193);"></rect>
-                <text x="38" y="14" fill="white">( 795.6, 915.0 ]</text>
-            </g>
+          <g transform="translate(0, 0)">
+            <rect width="30" height="20" style="fill: rgb(55, 83, 94);"></rect>
+            <text x="38" y="14" fill="white">[ -40, 79.4 ]</text>
+          </g>
+          <g transform="translate(0, 24)">
+            <rect width="30" height="20" style="fill: rgb(58, 116, 138);"></rect>
+            <text x="38" y="14" fill="white">( 79.4, 198.8]</text>
+          </g>
+          <g transform="translate(0, 48)">
+            <rect width="30" height="20" style="fill: rgb(75, 154, 149);"></rect>
+            <text x="38" y="14" fill="white">( 198.8, 318.1]</text>
+          </g>
+          <g transform="translate(0, 72)">
+            <rect width="30" height="20" style="fill: rgb(94, 171, 139);"></rect>
+            <text x="38" y="14" fill="white">( 318.1, 437.5]</text>
+          </g>
+          <g transform="translate(0, 96)">
+            <rect width="30" height="20" style="fill: rgb(115, 188, 132);"></rect>
+            <text x="38" y="14" fill="white">( 437.5, 556.9 ]</text>
+          </g>
+          <g transform="translate(0, 120)">
+            <rect width="30" height="20" style="fill: rgb(146, 204, 139);"></rect>
+            <text x="38" y="14" fill="white">( 556.9, 676.3 ]</text>
+          </g>
+          <g transform="translate(0, 144)">
+            <rect width="30" height="20" style="fill: rgb(190, 221, 165);"></rect>
+            <text x="38" y="14" fill="white">( 676.3, 795.6 ]</text>
+          </g>
+          <g transform="translate(0, 168)">
+            <rect width="30" height="20" style="fill: rgb(229, 238, 193);"></rect>
+            <text x="38" y="14" fill="white">( 795.6, 915.0 ]</text>
+          </g>
         </svg>
+      </div>
     </div>
-</div>
-<div id="map"></div>
-<script type="text/javascript" include="widgets,bootstrap" src="../js/include-web.js"></script>
-<script type="text/javascript" include="deck" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
-        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
-    var map, deckglLayer, popup;
-    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-            " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
-    map = new mapboxgl.Map({
+    <div id="map"></div>
+    <script type="text/javascript" include="widgets,bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="deck" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
+        url = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+      var map, deckglLayer, popup;
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
+      map = new mapboxgl.Map({
         container: 'map',
         style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
-                    "tileSize": 256,
-                },
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 22
-            }]
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
         },
         center: [-122.4629751, 37.73956691],
         zoom: 13,
         pitch: 60,
         bearing: 30
-    });
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      });
+      map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    widgets.loader.showLoader("data loading...");
+      widgets.loader.showLoader('data loading...');
 
-    $.get('http://iclient.supermap.io/web/data/deck.gl/sfcontour_data.json', function (features) {
+      $.get('https://iclient.supermap.io/web/data/deck.gl/sfcontour_data.json', function(features) {
         widgets.loader.removeLoader();
         addLayer(features.features);
-    });
+      });
 
-    function addLayer(features) {
-
-        deckglLayer = new mapboxgl.supermap.DeckglLayer("path-layer", {
-            data: features,
-            props: {
-                widthScale: 20,
-                widthMinPixels: 2,
-                onHover: function(feature) {
-                    if (!popup) {
-                        popup = new mapboxgl.Popup({
-                            anchor: 'bottom',
-                            closeButton: false,
-                            offset: {
-                                'bottom': [0, -10],
-                            }
-                        });
-                    }
-                    if (!feature.object) {
-                        popup.remove();
-                        return;
-                    }
-                    popup.setHTML("海拔： " + feature.object.properties.elevation + "米");
-                    popup.setLngLat(map.unproject([feature.x, feature.y]));
-                    popup.addTo(map);
-                }
-            },
-            callback: {
-                getPath: function(feature) {
-                    if (!feature.geometry || !feature.geometry.coordinates) {
-                        return [0, 0]
-                    }
-                    return feature.geometry.coordinates;
-                },
-                getColor: function(feature) {
-                    if (feature.properties.elevation >= -40 && feature.properties.elevation < 79.4) {
-                        return [55, 83, 94];
-                    } else if (feature.properties.elevation >= 79.4 && feature.properties.elevation < 198.8) {
-                        return [58, 116, 138];
-                    } else if (feature.properties.elevation >= 198.8 && feature.properties.elevation < 318.1) {
-                        return [75, 154, 149];
-                    } else if (feature.properties.elevation >= 318.1 && feature.properties.elevation < 437.5) {
-                        return [94, 171, 139];
-                    } else if (feature.properties.elevation >= 437.5 && feature.properties.elevation < 556.9) {
-                        return [115, 188, 132];
-                    } else if (feature.properties.elevation >= 556.9 && feature.properties.elevation < 676.3) {
-                        return [146, 204, 139];
-                    } else if (feature.properties.elevation >= 676.3 && feature.properties.elevation < 795.6) {
-                        return [190, 221, 165];
-                    } else if (feature.properties.elevation >= 795.6) {
-                        return [229, 238, 193];
-                    }
-
-                    return [0, 0, 0, 0]
-                },
-                getWidth: d => 0.05,
+      function addLayer(features) {
+        deckglLayer = new mapboxgl.supermap.DeckglLayer('path-layer', {
+          data: features,
+          props: {
+            widthScale: 20,
+            widthMinPixels: 2,
+            onHover: function(feature) {
+              if (!popup) {
+                popup = new mapboxgl.Popup({
+                  anchor: 'bottom',
+                  closeButton: false,
+                  offset: {
+                    bottom: [0, -10]
+                  }
+                });
+              }
+              if (!feature.object) {
+                popup.remove();
+                return;
+              }
+              popup.setHTML('海拔： ' + feature.object.properties.elevation + '米');
+              popup.setLngLat(map.unproject([feature.x, feature.y]));
+              popup.addTo(map);
             }
+          },
+          callback: {
+            getPath: function(feature) {
+              if (!feature.geometry || !feature.geometry.coordinates) {
+                return [0, 0];
+              }
+              return feature.geometry.coordinates;
+            },
+            getColor: function(feature) {
+              if (feature.properties.elevation >= -40 && feature.properties.elevation < 79.4) {
+                return [55, 83, 94];
+              } else if (feature.properties.elevation >= 79.4 && feature.properties.elevation < 198.8) {
+                return [58, 116, 138];
+              } else if (feature.properties.elevation >= 198.8 && feature.properties.elevation < 318.1) {
+                return [75, 154, 149];
+              } else if (feature.properties.elevation >= 318.1 && feature.properties.elevation < 437.5) {
+                return [94, 171, 139];
+              } else if (feature.properties.elevation >= 437.5 && feature.properties.elevation < 556.9) {
+                return [115, 188, 132];
+              } else if (feature.properties.elevation >= 556.9 && feature.properties.elevation < 676.3) {
+                return [146, 204, 139];
+              } else if (feature.properties.elevation >= 676.3 && feature.properties.elevation < 795.6) {
+                return [190, 221, 165];
+              } else if (feature.properties.elevation >= 795.6) {
+                return [229, 238, 193];
+              }
+
+              return [0, 0, 0, 0];
+            },
+            getWidth: function(d) {
+              return 0.05;
+            }
+          }
         });
         map.addLayer(deckglLayer);
-    }
+      }
 
-    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
-    /*16进制颜色转为RGB格式*/
-    String.prototype.colorRgb = function () {
+      var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+      /*16进制颜色转为RGB格式*/
+      String.prototype.colorRgb = function() {
         var sColor = this.toLowerCase();
         if (sColor && reg.test(sColor)) {
-            if (sColor.length === 4) {
-                var sColorNew = "#";
-                for (var i = 1; i < 4; i += 1) {
-                    sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
-                }
-                sColor = sColorNew;
+          if (sColor.length === 4) {
+            var sColorNew = '#';
+            for (var i = 1; i < 4; i += 1) {
+              sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
             }
-            //处理六位的颜色值
-            var sColorChange = [];
-            for (var i = 1; i < 7; i += 2) {
-                sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
-            }
-            return sColorChange;
+            sColor = sColorNew;
+          }
+          //处理六位的颜色值
+          var sColorChange = [];
+          for (var i = 1; i < 7; i += 2) {
+            sColorChange.push(parseInt('0x' + sColor.slice(i, i + 2)));
+          }
+          return sColorChange;
         } else {
-            return sColor;
+          return sColor;
         }
-    }
-
-</script>
-</body>
+      };
+    </script>
+  </body>
 </html>

@@ -1,13 +1,24 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Format} from './Format';
+import {
+    SuperMap
+} from '../SuperMap';
+import {
+    Format
+} from './Format';
 
 /**
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link SuperMap.Format.JSON} 构造函数创建新实例。
  * @category BaseTypes Format
+ * @param {Object} [options] - 参数。
+ * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
+ * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
+ * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
+ * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @extends {SuperMap.Format}
  */
 export class JSONFormat extends Format {
@@ -15,25 +26,25 @@ export class JSONFormat extends Format {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.indent
+         * @member {string} [SuperMap.Format.JSON.prototype.indent="    "]
          * @description 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
          */
         this.indent = "    ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.space
+         * @member {string} [SuperMap.Format.JSON.prototype.space=" "]
          * @description 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
          */
         this.space = " ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.newline
+         * @member {string} [SuperMap.Format.JSON.prototype.newline="\n"]
          * @description 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
          */
         this.newline = "\n";
 
         /**
-         * @member {integer} SuperMap.Format.JSON.prototype.level 
+         * @member {integer} [SuperMap.Format.JSON.prototype.level=0] 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         this.level = 0;
@@ -260,6 +271,7 @@ export class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
+     * @private
      * @returns {string} 一个适当的缩进字符串。
      */
     writeIndent() {
@@ -275,6 +287,7 @@ export class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
+     * @private
      * @returns {string} 代表新的一行的字符串。
      */
     writeNewline() {
@@ -283,6 +296,7 @@ export class JSONFormat extends Format {
 
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
+     * @private
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
      * @returns {string} 一个空格。
      */

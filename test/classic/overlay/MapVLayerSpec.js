@@ -52,7 +52,8 @@ describe('classic_MapVLayer', () => {
             shadowColor: 'rgba(255, 250, 50, 1)',
             shadowBlur: 20,
             max: 100,
-            size: 50,
+            size: 500,
+            unit: 'm',
             label: {
                 show: true,
                 fillStyle: 'white',
@@ -177,13 +178,13 @@ describe('classic_MapVLayer', () => {
     });
 
 
-    xit('setMap', () => {
+    it('setMap', () => {
         mapvLayer.setMap(map);
         expect(mapvLayer).not.toBeNull();
         expect(mapvLayer.dataSet._data.length).toEqual(1000);
     });
 
-    xit('moveTo', () => {
+    it('moveTo', () => {
         var bounds = new Bounds(-180, -90, 180, 90);
         mapvLayer.moveTo(bounds, false, true);
         expect(mapvLayer).not.toBeNull();
@@ -194,9 +195,13 @@ describe('classic_MapVLayer', () => {
         expect(mapvLayer.maxExtent.top).toEqual(90);
     });
 
-    xit('transferToMapLatLng', () => {
+    it('transferToMapLatLng', () => {
         var latlng = new LonLat(104, 34.7);
         mapvLayer.transferToMapLatLng(latlng);
         expect(mapvLayer).not.toBeNull();
+    });
+
+    it('_canvasUpdate', () => {
+        expect(mapvLayer.options._size).toEqual(0.024953202336653373);
     });
 });

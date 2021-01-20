@@ -1,157 +1,3 @@
-var queryEscapedJson = {
-    "recordsets": [
-        {
-            "datasetName": "Countries@World",
-            "features": [
-                {
-                    "fieldNames": [
-                        "SmID",
-                        "SmSdriW",
-                        "SmSdriN",
-                        "SmSdriE",
-                        "SmSdriS",
-                        "SmUserID",
-                        "SmArea",
-                        "SmPerimeter",
-                        "SmGeometrySize",
-                        "SQKM",
-                        "SQMI",
-                        "COLOR_MAP",
-                        "CAPITAL",
-                        "COUNTRY",
-                        "POP_1994",
-                        "ColorID",
-                        "CONTINENT"
-                    ],
-                    "ID": 1,
-                    "fieldValues": [
-                        "1",
-                        "-180.0",
-                        "81.85193",
-                        "180.0",
-                        "41.19658",
-                        "1",
-                        "1.7005229542876414E13",
-                        "2.6624681347891757E8",
-                        "386848",
-                        "1.6911282E7",
-                        "6529445.0",
-                        "4",
-                        "莫斯科",
-                        "俄罗斯",
-                        "1.518276E8",
-                        "1",
-                        "亚洲"
-                    ],
-                    "geometry": null
-                },
-                {
-                    "fieldNames": [
-                        "SmID",
-                        "SmSdriW",
-                        "SmSdriN",
-                        "SmSdriE",
-                        "SmSdriS",
-                        "SmUserID",
-                        "SmArea",
-                        "SmPerimeter",
-                        "SmGeometrySize",
-                        "SQKM",
-                        "SQMI",
-                        "COLOR_MAP",
-                        "CAPITAL",
-                        "COUNTRY",
-                        "POP_1994",
-                        "ColorID",
-                        "CONTINENT"
-                    ],
-                    "ID": 2,
-                    "fieldValues": [
-                        "2",
-                        "10.487914",
-                        "80.76416",
-                        "33.637497",
-                        "74.34305",
-                        "2",
-                        "6.243427603572511E10",
-                        "8114259.248833748",
-                        "35812",
-                        "61909.1",
-                        "23903.1",
-                        "1",
-                        " ",
-                        " 北极地区",
-                        "3148.0",
-                        "1",
-                        "欧洲"
-                    ],
-                    "geometry": null
-                }
-            ],
-            "fieldCaptions": [
-                "SmID",
-                "SmSdriW",
-                "SmSdriN",
-                "SmSdriE",
-                "SmSdriS",
-                "SmUserID",
-                "SmArea",
-                "SmPerimeter",
-                "SmGeometrySize",
-                "SQKM",
-                "SQMI",
-                "COLOR_MAP",
-                "Capital",
-                "Country",
-                "Pop_1994",
-                "ColorIDtest",
-                "CONTINENT"
-            ],
-            "fieldTypes": [
-                "INT32",
-                "SINGLE",
-                "SINGLE",
-                "SINGLE",
-                "SINGLE",
-                "INT32",
-                "DOUBLE",
-                "DOUBLE",
-                "INT32",
-                "DOUBLE",
-                "DOUBLE",
-                "TEXT",
-                "TEXT",
-                "TEXT",
-                "DOUBLE",
-                "INT32",
-                "TEXT"
-            ],
-            "fields": [
-                "SmID",
-                "SmSdriW",
-                "SmSdriN",
-                "SmSdriE",
-                "SmSdriS",
-                "SmUserID",
-                "SmArea",
-                "SmPerimeter",
-                "SmGeometrySize",
-                "SQKM",
-                "SQMI",
-                "COLOR_MAP",
-                "CAPITAL",
-                "COUNTRY",
-                "POP_1994",
-                "ColorID",
-                "CONTINENT"
-            ]
-        }
-    ],
-    "totalCount": 247,
-    "currentCount": 2,
-    "customResponse": null
-};
-
 var clientComputationViewJson={
     "recordsets": [
         {
@@ -900,5 +746,55 @@ var capitals={
     ],
     "totalCount": 229,
     "currentCount": 229,
+    "customResponse": null
+};
+
+var queryResultJson = {
+    "recordsets": [{
+        "datasetName": "Capitals@World",
+        "features": [{
+            "fieldNames": [
+                "SmID",
+                "CAPITAL"
+            ],
+            "ID": 59,
+            "fieldValues": [
+                "59",
+                "拉巴斯"
+            ],
+            "geometry": {
+                "id": 59,
+                "center": {
+                    "y": -16.4990069929844,
+                    "x": -68.1462446098307
+                },
+                "style": null,
+                "parts": [
+                    1
+                ],
+                "partTopo": [],
+                "points": [{
+                    "y": -16.4990069929844,
+                    "x": -68.1462446098307
+                }],
+                "type": "POINT"
+            }
+        }
+        ],
+        "fieldCaptions": [
+            "SmID",
+            "CAPITAL"
+        ],
+        "fieldTypes": [
+            "INT32",
+            "WTEXT"
+        ],
+        "fields": [
+            "SmID",
+            "CAPITAL"
+        ]
+    }],
+    "totalCount": 1,
+    "currentCount": 1,
     "customResponse": null
 };

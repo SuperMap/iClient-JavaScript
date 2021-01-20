@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -7,12 +7,12 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_AnimationFeature"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China_4326";
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China_4326";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         var map = new ol.Map({
@@ -22,7 +22,8 @@
             view: new ol.View({
                 center: [103, 30],
                 zoom: 4,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             })
         });
         var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
@@ -43,7 +44,8 @@
 
             function animate(event) {
                 var duration = 3000;
-                var vectorContext = event.vectorContext;
+                // ol6 废除了 event.vectorContext 接口，通过 ol.render.getVectorContext 来获取 vectorContext
+                var vectorContext = new ol.render.getVectorContext(event);
                 var frameState = event.frameState;
                 var flashGeom = feature.getGeometry().clone();
                 var elapsed = frameState.time - start;
@@ -53,7 +55,6 @@
                 var style = new ol.style.Style({
                     image: new ol.style.Circle({
                         radius: radius,
-                        snapToPixel: false,
                         stroke: new ol.style.Stroke({
                             color: 'rgba(255, 0, 0, ' + opacity + ')',
                             width: 0.25 + opacity
@@ -69,7 +70,7 @@
                 map.render();
             }
 
-            listenerKey = map.on('postcompose', animate);
+            listenerKey = vector.on('postrender', animate);
         }
 
         var source = new ol.source.Vector({

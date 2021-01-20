@@ -1,12 +1,12 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_snapDrawFeatures"></title>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -41,7 +41,7 @@
 <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, draw, snap,
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China";
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -49,7 +49,8 @@
         view: new ol.View({
             center: [12957388, 4853991],
             zoom: 4,
-            projection: 'EPSG:3857'
+            projection: 'EPSG:3857',
+            multiWorld: true
         })
     });
     var layer = new ol.layer.Tile({

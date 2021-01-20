@@ -1,0 +1,40 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_openFile"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="iclient-leaflet-css,xlsx"
+            src="../../dist/leaflet/include-leaflet.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+
+<div id="loading">....</div>
+<script type="text/javascript">
+    var map = L.map('map', {
+        center: [38, 110],
+        zoom: 5,
+    });
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var url = host + '/iserver/services/map-china400/rest/maps/China';
+
+    var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
+    var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
+    var openFileComponents = L.supermap.components.openFile().addTo(map);
+    //将成功返回的数据加载到地图
+    openFileComponents.on("openfilesucceeded", function (e) {
+        var layer = L.geoJSON(e.result).addTo(map);
+        map.flyToBounds(layer.getBounds());
+        layersControl.addOverlay(layer, e.layerName);
+    });
+
+    //避免与"源码"控件重叠
+    openFileComponents.rootContainer.style.margin = "40px 4px 0px 0px";
+
+</script>
+</body>
+</html>

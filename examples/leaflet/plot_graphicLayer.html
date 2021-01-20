@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -10,10 +10,10 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <div id="toolbar" class="panel panel-primary" style="  position: absolute;top: 10px;right: 10px;text-align: center;z-index: 2000;border-radius: 4px;">
-    <div class="panel-heading">
+    <div class="panel-heading" id="panelheading">
         <h5 class="panel-title text-center" data-i18n="resources.title_plotSymbolPerformance" style=" font-size: 16px;color: #ffffff;"></h5>
     </div>
-    <div class="panel-body content">
+    <div class="panel-body content" id="panelbodycontent">
         <div class="input-group" style="margin-top:15px; margin-left: 10px; margin-bottom: 10px;">
             <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addSamePlot" onclick="sameDotSymbol()">&nbsp;&nbsp;
             <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addDifferentPlot" onclick="differentDotSymbol()">&nbsp;&nbsp;
@@ -21,9 +21,9 @@
     </div>
 </div>
 <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
@@ -93,6 +93,11 @@
         });
         L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
     }
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+        });
+    });
 </script>
 </body>
 </html>

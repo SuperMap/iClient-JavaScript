@@ -1,13 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from "openlayers";
-import {
-    CommonUtil
-} from "@supermap/iclient-common";
-import {
-    Util
-} from "../../core/Util";
+import {CommonUtil,Unit} from "@supermap/iclient-common";
+import {Util} from "../../core/Util";
+import BaseObject from 'ol/Object';
+import * as olProj from 'ol/proj';
 
 const emptyFunc = () => false;
 const CSS_TRANSFORM = (function () {
@@ -34,7 +31,7 @@ const CSS_TRANSFORM = (function () {
  * @class GraphicWebGLRenderer
  * @classdesc 高效率点图层 webgl 渲染器。
  * @category Visualization Graphic
- * @extends {ol.Object}
+ * @extends {ol/Object}
  * @param {ol.source.Graphic} layer - 高效率点图层。
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度。
@@ -52,7 +49,7 @@ const CSS_TRANSFORM = (function () {
  * @param {function} [options.onClick] - 点击事件。
  * @param {function} [options.onHover] - 悬停事件。
  */
-export class GraphicWebGLRenderer extends ol.Object {
+export class GraphicWebGLRenderer extends BaseObject {
     constructor(layer, options) {
         super();
         this.layer = layer;
@@ -294,7 +291,7 @@ export class GraphicWebGLRenderer extends ol.Object {
         let state = this.layer.getLayerState();
         let view = this.map.getView();
         let projection = view.getProjection().getCode();
-        let center = ol.proj.transform([state.longitude, state.latitude], projection, 'EPSG:4326')
+        let center = olProj.transform([state.longitude, state.latitude], projection, 'EPSG:4326')
         state.longitude = center[0];
         state.latitude = center[1];
         state.zoom = state.zoom - 1;
@@ -346,11 +343,26 @@ export class GraphicWebGLRenderer extends ol.Object {
         if ("EPSG:4326" === projection) {
             return coordinates;
         }
-        return ol.proj.transform(coordinates, projection, 'EPSG:4326');
+        return olProj.transform(coordinates, projection, 'EPSG:4326');
     }
     _pixelToMeter(pixel) {
-        const meterRes = this.map.getView().getResolution();
-        return pixel * meterRes;
+        let view = this.map.getView();
+        let projection = view.getProjection();
+
+        let unit = projection.getUnits() || 'degrees';
+        if (unit === 'degrees') {
+            unit = Unit.DEGREE;
+        }
+        if (unit === 'm') {
+            unit = Unit.METER;
+        }
+        const res = view.getResolution();
+        if (unit === Unit.DEGREE) {
+            let meterRes= res*(Math.PI * 6378137 / 180);
+            return pixel * meterRes;
+        }else{
+            return pixel * res;
+        }
     }
 
 }

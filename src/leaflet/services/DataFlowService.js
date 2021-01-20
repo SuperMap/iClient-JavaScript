@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -13,18 +13,20 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @extends {L.supermap.ServiceBase}
  * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {Function} [options.style] - 设置数据加载样式。
  * @param {Function} [options.onEachFeature] -  设置每个数据加载 popup 等。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @fires L.supermap.dataFlowService#broadcastSocketConnected
  * @fires L.supermap.dataFlowService#broadcastSocketError
  * @fires L.supermap.dataFlowService#broadcastFailed
- * @fires L.supermap.dataFlowService#broadcastSuccessed
+ * @fires L.supermap.dataFlowService#broadcastSucceeded
  * @fires L.supermap.dataFlowService#subscribeSocketError
- * @fires L.supermap.dataFlowService#messageSuccessed
- * @fires L.supermap.dataFlowService#setFilterParamSuccessed
+ * @fires L.supermap.dataFlowService#messageSucceeded
+ * @fires L.supermap.dataFlowService#setFilterParamSucceeded
  */
 export var DataFlowService = ServiceBase.extend({
 
@@ -55,7 +57,7 @@ export var DataFlowService = ServiceBase.extend({
          * @description 广播失败。
          */
         /**
-         * @event L.supermap.dataFlowService#broadcastSuccessed
+         * @event L.supermap.dataFlowService#broadcastSucceeded
          * @description 广播成功。
          */
         /**
@@ -67,22 +69,22 @@ export var DataFlowService = ServiceBase.extend({
          * @description 订阅数据连接失败。
          */
         /**
-         * @event L.supermap.dataFlowService#messageSuccessed
+         * @event L.supermap.dataFlowService#messageSucceeded
          * @description 获取信息成功。
          */
         /**
-         * @event L.supermap.dataFlowService#setFilterParamSuccessed
+         * @event L.supermap.dataFlowService#setFilterParamSucceeded
          * @description 设置过滤参数成功。
          */
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
             "broadcastFailed": this._defaultEvent,
-            "broadcastSuccessed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
             "subscribeSocketConnected": this._defaultEvent,
             "subscribeSocketError": this._defaultEvent,
-            "messageSuccessed": this._defaultEvent,
-            "setFilterParamSuccessed": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
             scope: this
         })
     },
@@ -129,7 +131,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的 GeoJSON 几何要素数据。
-     * @param {Array.<GeoJSONObject>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);

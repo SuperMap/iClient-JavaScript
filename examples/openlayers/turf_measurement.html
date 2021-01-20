@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -86,9 +86,9 @@
 </div>
 </body>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" include="turf" src="../../dist/openlayers/include-openlayers.js"></script>
+<script type="text/javascript" include="turf" src="../../dist/ol/include-ol.js"></script>
 <script>
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         urlWorld = host + "/iserver/services/map-world/rest/maps/World",
         container = document.getElementById('info'), distance, geo, coordinate,
@@ -128,9 +128,7 @@
     //初始化的图层
     var turfSource = new ol.source.Turf({
         wrapX: false,
-        attributions: new ol.Attribution({
-            html: "© <a href='http://turfjs.org/' target='_blank'>turfjs<span></a> with"
-        }),
+        attributions: "© <a href='https://turfjs.org/' target='_blank'>turfjs<span></a> with"
     });
 
     map.addLayer(new ol.layer.Vector({
@@ -154,9 +152,7 @@
     //结果图层
     var resultSource = new ol.source.Turf({
         wrapX: false,
-        attributions: new ol.Attribution({
-            html: ""
-        }),
+        attributions: ""
     });
 
     map.addLayer(new ol.layer.Vector({

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from './Util';
@@ -247,7 +247,7 @@ export class Storage {
      * @function SuperMap.LevelRenderer.Storage.prototype.mod
      * @description 修改图形(Shape)或者组(Group)。
      * 
-     * @param {String} elId - 唯一标识。
+     * @param {string} elId - 唯一标识。
      * @param {Object} params - 参数。
      * @return {SuperMap.LevelRenderer.Storage} this。
      */

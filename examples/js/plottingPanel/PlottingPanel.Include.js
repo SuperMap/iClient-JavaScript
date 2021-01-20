@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(PlottingPanel.Include\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -42,10 +42,14 @@
         }
         if (inArray(includes, 'StylePanel')) {
             inputScript("../js/plottingPanel/customEditor/ColorpickerEditor.js");
+            inputScript("../js/plottingPanel/PublicStyleFunction.js");
             inputScript("../js/plottingPanel/StylePanel.js");
         }
         if (inArray(includes, 'SMLInfosPanel')) {
             inputScript("../js/plottingPanel/SMLInfosPanel.js");
+        }
+        if (inArray(includes, 'iPortalStylePanel')) {
+            inputScript("../js/plottingPanel/iPortalStylePanel.js");
         }
     }
 

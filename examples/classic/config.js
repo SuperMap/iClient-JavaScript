@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * classic 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -70,7 +70,7 @@ var exampleConfig = {
                     fileName: "map_3baidu"
 
                 }, {
-                    name: "google layer",
+                    name: "谷歌地图",
                     name_en: "google layer",
                     thumbnail: "map_3googlelayer.png",
                     fileName: "map_3googlelayer"
@@ -82,7 +82,7 @@ var exampleConfig = {
                     fileName: "map_3bing"
 
                 }, {
-                    name: "OSM",
+                    name: "OSM地图",
                     name_en: "OSM layer",
                     thumbnail: "map_3osm.png",
                     fileName: "map_3osm"
@@ -132,7 +132,7 @@ var exampleConfig = {
         content: {
             "vectorLayer": {
                 name: "矢量图层",
-                name_en: "Vector_layer",
+                name_en: "Vector layer",
                 content: [{
                     name: "矢量图形数据",
                     name_en: "vector layer data",
@@ -231,7 +231,7 @@ var exampleConfig = {
                     thumbnail: "controler_navigation.png",
                     fileName: "controler_navigation"
                 }, {
-                    name: "layerswitcher",
+                    name: "图层管理器",
                     name_en: "layer switch control",
                     thumbnail: "controler_layerswitcher.png",
                     fileName: "controler_layerswitcher"
@@ -797,7 +797,7 @@ var exampleConfig = {
                     thumbnail: "vizLayer_gois.png",
                     fileName: "vizLayer_gois"
                 }, {
-                    name: "Elements Layer 扩展",
+                    name: "要素图层扩展",
                     name_en: "elements layer extension",
                     thumbnail: "vizLayer_elements.png",
                     fileName: "vizLayer_elements"
@@ -979,7 +979,7 @@ var exampleConfig = {
                     thumbnail: "OGC_GeoJSON.png",
                     fileName: "OGC_GeoJSON"
                 }, {
-                    name: "WFS 查询",
+                    name: "WFS查询",
                     name_en: "WFS query",
                     thumbnail: "OGC_queryByWFS.png",
                     fileName: "OGC_queryByWFS"

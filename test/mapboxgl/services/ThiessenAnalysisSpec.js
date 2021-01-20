@@ -1,6 +1,7 @@
 import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
 import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
 import {GeometryThiessenAnalystParameters} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -24,10 +25,18 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
             dataset: "Town_P@Jingjin"
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Town_P@Jingjin/thiessenpolygon?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.dataset).toBe("Town_P@Jingjin");
+            // expect(params).toContain("'dataset':\"Town_P@Jingjin\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(thiessenAnalysisDatasetsEscapedJson)));
+        });
         service.thiessenAnalysis(datasetThiessenAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -51,7 +60,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //泰森多边形分析 几何泰森多边形
@@ -91,10 +100,18 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
             points: pointsList
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/geometry/thiessenpolygon?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.points[0].type).toBe("Point");
+            // expect(params).toContain("'type':\"Point\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(thiessenAnalysisGeometryEscapedJson));
+        });
         service.thiessenAnalysis(gThiessenAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -102,7 +119,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
                 expect(serviceResult.result.succeed).toEqual(true);
                 expect(serviceResult.result.regions.type).toEqual("FeatureCollection");
                 var features = serviceResult.result.regions.features;
-                expect(features.length).toEqual(5);
+                expect(features.length).toEqual(10);
                 for (var i = 0; i < features.length; i++) {
                     expect(features[i].type).toEqual("Feature");
                     expect(features[i].geometry.type).toEqual("MultiPolygon");
@@ -117,6 +134,6 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 });

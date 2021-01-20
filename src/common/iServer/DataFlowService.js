@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -14,9 +14,11 @@ import {SecurityManager} from '../security/SecurityManager';
  * @param {string} url - 数据流服务地址
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
- * @param {function} options.onEachFeature - 设置每个数据加载popup等。
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
- * @param {Object} options.excludeField - -排除字段。
+ * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {Object} [options.excludeField] - -排除字段。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class DataFlowService extends CommonServiceBase {
 
@@ -28,12 +30,12 @@ export class DataFlowService extends CommonServiceBase {
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
-         * @member {Array.<Object>} SuperMap.DataFlowService.prototype.geometry
-         * @description 设置增添的几何要素对象数组。
+         * @member {GeoJSONObject} SuperMap.DataFlowService.prototype.geometry
+         * @description 指定几何范围，该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -49,12 +51,7 @@ export class DataFlowService extends CommonServiceBase {
          */
         this.excludeField = null;
 
-        var me = this;
-        var end = me.url.substr(me.url.length - 1, 1);
-        if (end !== '/') {
-            me.url += "/";
-        }
-        Util.extend(me, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -66,7 +63,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     initBroadcast() {
         var me = this;
-        this.broadcastWebSocket = this._connect(me.url + 'broadcast');
+        this.broadcastWebSocket = this._connect(Util.urlPathAppend(me.url, 'broadcast'));
         this.broadcastWebSocket.onopen = function (e) {
             me.broadcastWebSocket.isOpen = true;
             e.eventType = 'broadcastSocketConnected';
@@ -95,7 +92,7 @@ export class DataFlowService extends CommonServiceBase {
             return;
         }
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
-        this.events.triggerEvent('broadcastSuccessed');
+        this.events.triggerEvent('broadcastSucceeded');
 
     }
 
@@ -106,7 +103,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     initSubscribe() {
         var me = this;
-        this.subscribeWebSocket = this._connect(this.url + 'subscribe');
+        this.subscribeWebSocket = this._connect(Util.urlPathAppend(me.url, 'subscribe'));
         this.subscribeWebSocket.onopen = function (e) {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
@@ -138,7 +135,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {this} this
      */
     setGeometry(geometry) {
@@ -203,14 +200,14 @@ export class DataFlowService extends CommonServiceBase {
         if (e.data && e.data.indexOf("filterParam") >= 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
-            e.eventType = 'setFilterParamSuccessed';
-            this.events.triggerEvent('setFilterParamSuccessed', e);
+            e.eventType = 'setFilterParamSucceeded';
+            this.events.triggerEvent('setFilterParamSucceeded', e);
             return;
         }
         var feature = JSON.parse(e.data);
         e.featureResult = feature;
-        e.eventType = 'messageSuccessed';
-        this.events.triggerEvent('messageSuccessed', e);
+        e.eventType = 'messageSucceeded';
+        this.events.triggerEvent('messageSucceeded', e);
     }
 
 
@@ -230,8 +227,9 @@ export class DataFlowService extends CommonServiceBase {
     _appendCredentials(url) {
         var token = SecurityManager.getToken(url);
         if (token) {
-            url += "?token=" + token;
+            url = Util.urlAppend(url, "token=" + token);
         }
+       
         return url;
     }
 

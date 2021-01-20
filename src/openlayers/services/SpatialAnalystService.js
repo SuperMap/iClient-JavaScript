@@ -1,8 +1,7 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
-import {Util} from '../core/Util';
+ import {Util} from '../core/Util';
 import {
     GeometryPoint,
     DataFormat,
@@ -22,6 +21,8 @@ import {
     GeometryBatchAnalystService
 } from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
+import LineString from 'ol/geom/LineString';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.supermap.SpatialAnalystService
@@ -34,10 +35,12 @@ import {ServiceBase} from './ServiceBase';
  *          //doSomething
  *      })
  * @param {string} url - 服务的访问地址。
- * @param {object} options - 参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SpatialAnalystService extends ServiceBase {
 
@@ -57,6 +60,8 @@ export class SpatialAnalystService extends ServiceBase {
         var areaSolarRadiationService = new AreaSolarRadiationService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -80,6 +85,8 @@ export class SpatialAnalystService extends ServiceBase {
         var bufferAnalystService = new BufferAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -103,6 +110,8 @@ export class SpatialAnalystService extends ServiceBase {
         var densityAnalystService = new DensityAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -126,6 +135,8 @@ export class SpatialAnalystService extends ServiceBase {
         var generateSpatialDataService = new GenerateSpatialDataService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -149,6 +160,8 @@ export class SpatialAnalystService extends ServiceBase {
         var geoRelationAnalystService = new GeoRelationAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -172,6 +185,8 @@ export class SpatialAnalystService extends ServiceBase {
         var interpolationAnalystService = new InterpolationAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -195,6 +210,8 @@ export class SpatialAnalystService extends ServiceBase {
         var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -218,6 +235,8 @@ export class SpatialAnalystService extends ServiceBase {
         var overlayAnalystService = new OverlayAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -241,6 +260,8 @@ export class SpatialAnalystService extends ServiceBase {
         var routeCalculateMeasureService = new RouteCalculateMeasureService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -264,6 +285,8 @@ export class SpatialAnalystService extends ServiceBase {
         var routeLocatorService = new RouteLocatorService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -287,6 +310,8 @@ export class SpatialAnalystService extends ServiceBase {
         var surfaceAnalystService = new SurfaceAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -310,6 +335,8 @@ export class SpatialAnalystService extends ServiceBase {
         var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -333,6 +360,8 @@ export class SpatialAnalystService extends ServiceBase {
         var thiessenAnalystService = new ThiessenAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -427,6 +456,9 @@ export class SpatialAnalystService extends ServiceBase {
         if (params.extractParameter && params.extractParameter.clipRegion) {
             params.extractParameter.clipRegion = this.convertGeometry(params.extractParameter.clipRegion);
         }
+        if (params.clipParam && params.clipParam.clipRegion) {
+            params.clipParam.clipRegion = this.convertGeometry(params.clipParam.clipRegion);
+        }
         //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
             var SRID = null;
@@ -460,7 +492,7 @@ export class SpatialAnalystService extends ServiceBase {
         }
 
         if (params.sourceRoute) {
-            if (params.sourceRoute instanceof ol.geom.LineString && params.sourceRoute.getCoordinates()) {
+            if (params.sourceRoute instanceof LineString && params.sourceRoute.getCoordinates()) {
                 var target = {};
                 target.type = "LINEM";
                 target.parts = [params.sourceRoute.getCoordinates()[0].length];
@@ -505,8 +537,6 @@ export class SpatialAnalystService extends ServiceBase {
         if(["FeatureCollection", "Feature", "Geometry"].indexOf(ol3Geometry.type) != -1){
             return Util.toSuperMapGeometry(ol3Geometry);
         }
-        return Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
+        return Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(ol3Geometry)));
     }
 }
-
-ol.supermap.SpatialAnalystService = SpatialAnalystService;

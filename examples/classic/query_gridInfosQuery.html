@@ -1,8 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title data-i18n="resources.title_gridInfosQuery"></title>
@@ -19,7 +20,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #queryresult {
@@ -35,95 +35,98 @@
         }
     </style>
 </head>
+
 <body>
-<div id="map"></div>
-<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" exclude="iclient-classic" src="../../dist/classic/include-classic.js"></script>
-<div id="queryresult"></div>
-<script>
-    var featuresOrigin = [];
-    var map, layer, pointLayer, drawPoint,
-        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
-        url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-        url1 = host + "/iserver/services/data-jingjin/rest/data";
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/classic/include-classic.js"></script>
+    <div id="queryresult"></div>
+    <script>
+        var featuresOrigin = [];
+        var map, layer, pointLayer, drawPoint,
+            host = window.isLocal ? window.server : "https://iserver.supermap.io",
+            url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url1 = host + "/iserver/services/data-jingjin/rest/data";
 
-    init();
+        init();
 
-    function init() {
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.LayerSwitcher()]
-        });
-
-        map.events.on({
-            "click": mapClicked
-        });
-
-        //新建点矢量图层
-        pointLayer = new SuperMap.Layer.Vector("pointLayer");
-
-        layer = new SuperMap.Layer.TiledDynamicRESTLayer("china", url, {transparent: true, cacheEnabled: true});
-        layer.events.on({"layerInitialized": addLayer});
-    }
-
-    function addLayer() {
-        map.addLayers([layer, pointLayer]);
-        map.setCenter(new SuperMap.LonLat(116.85, 39.79), 2);
-    }
-
-    function query(lonlat) {
-        if (!!lonlat) {
-            var gridCellQueryParam = new SuperMap.REST.GetGridCellInfosParameter({
-                datasetName: 'JingjinTerrain',
-                dataSourceName: "Jingjin",
-                X: lonlat.lon,
-                Y: lonlat.lat
+        function init() {
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.LayerSwitcher()]
             });
-            var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(url1, {
-                'eventListeners': {
-                    'processCompleted': querySuccess,
-                    'processFailed': queryFailed
-                }
+
+            map.events.on({
+                "click": mapClicked
             });
-            gridCellQueryService.processAsync(gridCellQueryParam);
-        } else {
-            widgets.alert.showAlert(resources.msg_geographicPosition, false, 240);
+
+            //新建点矢量图层
+            pointLayer = new SuperMap.Layer.Vector("pointLayer");
+
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("china", url, { transparent: true, cacheEnabled: true });
+            layer.events.on({ "layerInitialized": addLayer });
         }
-    }
 
-    function mapClicked(evt) {
-        var pixel = new SuperMap.Pixel(evt.clientX, evt.clientY),
-            lonlat = map.getLonLatFromPixel(pixel);
-        addFeature(lonlat);
-        query(lonlat);
-    }
+        function addLayer() {
+            map.addLayers([layer, pointLayer]);
+            map.setCenter(new SuperMap.LonLat(116.85, 39.79), 2);
+        }
 
-    function addFeature(lonlat) {
-        pointLayer.removeAllFeatures();
-        var point = new SuperMap.Geometry.Point(lonlat.lon, lonlat.lat);
-        var feature = new SuperMap.Feature.Vector(point);
-        pointLayer.addFeatures([feature]);
-    }
-
-    function querySuccess(evt) {
-        var str = resources.text_gridQueryResult,
-            result = evt.result;
-        for (var objName in result) {
-            if (result.hasOwnProperty(objName)) {
-                str += "<span>" + objName + ":" + result[objName] + "</span> ";
+        function query(lonlat) {
+            if (!!lonlat) {
+                var gridCellQueryParam = new SuperMap.REST.GetGridCellInfosParameter({
+                    datasetName: 'JingjinTerrain',
+                    dataSourceName: "Jingjin",
+                    X: lonlat.lon,
+                    Y: lonlat.lat
+                });
+                var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(url1, {
+                    'eventListeners': {
+                        'processCompleted': querySuccess,
+                        'processFailed': queryFailed
+                    }
+                });
+                gridCellQueryService.processAsync(gridCellQueryParam);
+            } else {
+                widgets.alert.showAlert(resources.msg_geographicPosition, false, 240);
             }
         }
-        document.getElementById("queryresult").innerHTML = str;
-    }
 
-    function queryFailed(evt) {
-        console.log(evt);
-        document.getElementById("queryresult").innerHTML = evt.originResult.error.errorMsg;
-    }
+        function mapClicked(evt) {
+            var pixel = new SuperMap.Pixel(evt.clientX, evt.clientY),
+                lonlat = map.getLonLatFromPixel(pixel);
+            addFeature(lonlat);
+            query(lonlat);
+        }
 
-    widgets.alert.showAlert(resources.msg_gridQueryNote, true, 400);
+        function addFeature(lonlat) {
+            pointLayer.removeAllFeatures();
+            var point = new SuperMap.Geometry.Point(lonlat.lon, lonlat.lat);
+            var feature = new SuperMap.Feature.Vector(point);
+            pointLayer.addFeatures([feature]);
+        }
 
-</script>
+        function querySuccess(evt) {
+            var str = resources.text_gridQueryResult,
+                result = evt.result;
+
+            for (var objName in result) {
+                if (result.hasOwnProperty(objName)) {
+
+                    str += `<span>${objName}:${(result[objName] instanceof Object ? [result[objName].x, result[objName].y] : result[objName])}</span>`;
+                }
+            }
+            document.getElementById("queryresult").innerHTML = str;
+        }
+
+        function queryFailed(evt) {
+            document.getElementById("queryresult").innerHTML = evt.originResult.error.errorMsg;
+        }
+
+        widgets.alert.showAlert(resources.msg_gridQueryNote, true, 400);
+
+    </script>
 
 </body>
+
 </html>

@@ -1,10 +1,9 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
-import {
-    baiduMapLayer
-} from "mapv";
+import { baiduMapLayer } from 'mapv';
+import { getMeterPerMapUnit } from '../../core/Util';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -49,7 +48,7 @@ export class MapVRenderer extends BaseLayer {
      */
     clickEvent(e) {
         var offset = this.map.containerPointToLayerPoint([0, 0]);
-        var devicePixelRatio = this.devicePixelRatio = this.canvasLayer.devicePixelRatio = window.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = this.canvasLayer.devicePixelRatio = window.devicePixelRatio || 1 ;
         var pixel = e.layerPoint;
         super.clickEvent(L.point((pixel.x - offset.x) / devicePixelRatio, (pixel.y - offset.y) / devicePixelRatio), e);
     }
@@ -248,6 +247,8 @@ export class MapVRenderer extends BaseLayer {
 
         var resolutionX = dw / mapCanvas.x,
             resolutionY = dh / mapCanvas.y;
+        // 一个像素是多少米
+        var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
         //var centerPx = map.latLngToLayerPoint(map.getCenter());
 
         //获取屏幕左上角的地理坐标坐标
@@ -269,7 +270,7 @@ export class MapVRenderer extends BaseLayer {
                 }
                 var pixel = {
                     x: offset.x - topLeftPX.x,
-                    y: offset.y - topLeftPX.x
+                    y: offset.y - topLeftPX.y
                 };
                 return [pixel.x, pixel.y];
             }
@@ -286,13 +287,29 @@ export class MapVRenderer extends BaseLayer {
 
         this.processData(data);
 
-        self.options._size = self.options.size;
-
         var worldPoint = map.latLngToContainerPoint(L.latLng(0, 0));
         var pixel = {
             x: worldPoint.x - topLeftPX.x,
             y: worldPoint.y - topLeftPX.y
         };
+
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
+
         this.drawContext(context, data, self.options, pixel);
 
         self.options.updateCallback && self.options.updateCallback(time);

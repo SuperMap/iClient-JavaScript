@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -27,8 +27,8 @@ const {
  * @classdesc Three 图层。
  * @param {string} id - 图层 ID。
  * @param {string} [renderer="gl"] - 图层渲染方式( canvas 或 WebGL )。取值："gl","canvas"。
- * @param {object} options - 初始化参数。
- * @param {object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
+ * @param {Object} options - 初始化参数。
+ * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
  *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}
  *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
  *

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title data-i18n="resources.title_ChinaEarthquakeHeatWGS84"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type="text/javascript" include="jquery,papaparse" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script>
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var map = new mapboxgl.Map({
+            container: 'map', 
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
+                        "tileSize": 256
+                    }
+                },
+
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            crs: mapboxgl.CRS.EPSG4326,
+            center: [112, 37.94],
+            zoom: 3 
+        });
+
+        map.on('load', function () {
+            $.get("../data/chinaEarthquake.csv", function (response) {
+                var dataObj = Papa.parse(response, {
+                    skipEmptyLines: true,
+                    header: true
+                });
+
+                var data = dataObj.data;
+                var geojson = {
+                    "type": "FeatureCollection",
+                    "features": []
+                };
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    var date = new Date(item.date);
+                    var year = date.getFullYear();
+
+                    //2w+地震数据
+                    if (year > 2000 && year < 2015) {
+                        var feature = {
+                            "type": "feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": []
+                            },
+                            "properties": {
+                                "value": parseFloat(item.level)
+                            }
+                        };
+                        feature.geometry.coordinates = [parseFloat(item.X), parseFloat(item.Y)];
+                        geojson.features.push(feature);
+                    }
+                }
+              
+                map.addSource('earthquakes', {
+                    "type": "geojson",
+                    "data": geojson
+                });
+
+                map.addLayer({
+                    "id": "earthquakes-heat",
+                    "type": "heatmap",
+                    "source": "earthquakes",
+                    "maxzoom": 9,
+                    "paint": {
+                        "heatmap-weight": [
+                            "interpolate",
+                            ["linear"],
+                            ["get", "level"],
+                            0, 0,
+                            6, 1
+                        ],
+                        "heatmap-intensity": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            0, 1,
+                            9, 3
+                        ],
+                        "heatmap-color": [
+                            "interpolate",
+                            ["linear"],
+                            ["heatmap-density"],
+                            0, "rgba(33,102,172,0)",
+                            0.2, "rgb(103,169,207)",
+                            0.4, "rgb(209,229,240)",
+                            0.6, "rgb(253,219,199)",
+                            0.8, "rgb(239,138,98)",
+                            1, "rgb(178,24,43)"
+                        ],
+                        "heatmap-radius": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            0, 2,
+                            9, 20
+                        ],
+                        "heatmap-opacity": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            7, 1,
+                            9, 0
+                        ],
+                    }
+                });
+
+                map.addLayer({
+                    "id": "earthquakes-point",
+                    "type": "circle",
+                    "source": "earthquakes",
+                    "minzoom": 7,
+                    "paint": {
+                        "circle-radius": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            7, [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "level"],
+                                1, 1,
+                                6, 4
+                            ],
+                            16, [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "level"],
+                                1, 5,
+                                6, 50
+                            ]
+                        ],
+                        "circle-color": [
+                            "interpolate",
+                            ["linear"],
+                            ["get", "level"],
+                            1, "rgba(33,102,172,0)",
+                            2, "rgb(103,169,207)",
+                            3, "rgb(209,229,240)",
+                            4, "rgb(253,219,199)",
+                            5, "rgb(239,138,98)",
+                            6, "rgb(178,24,43)"
+                        ],
+                        "circle-stroke-color": "white",
+                        "circle-stroke-width": 1,
+                        "circle-opacity": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            7, 0,
+                            8, 1
+                        ]
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

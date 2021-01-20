@@ -1,26 +1,19 @@
 import {SetLayerInfoService} from '../../../src/common/iServer/SetLayerInfoService';
 import {SetLayersInfoService} from '../../../src/common/iServer/SetLayersInfoService';
 import '../../resources/LayersInfo';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var setLayerFailedEventArgsSystem = null, setLayerEventArgsSystem = null;
 var id;
-var setLayerInfoCompleted = (result) => {
-    setLayerEventArgsSystem = result;
+var initSetLayerInfoService = (url,setLayerFailed,setLayerInfoCompleted) => {
+    return new SetLayerInfoService(url, {
+        eventListeners: {
+            "processCompleted": setLayerInfoCompleted,
+            'processFailed': setLayerFailed
+        }
+    });
 };
-var setLayerFailed = (result) => {
-    setLayerFailedEventArgsSystem = result;
-};
-var options = {
-    eventListeners: {
-        "processCompleted": setLayerInfoCompleted,
-        'processFailed': setLayerFailed
-    }
-};
-var initSetLayerInfoService = (url) => {
-    return new SetLayerInfoService(url, options);
-};
-
 describe('SetLayerInfoService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -33,21 +26,26 @@ describe('SetLayerInfoService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var setLayerInfoService = new SetLayerInfoService(url, { headers: myHeaders });
+        expect(setLayerInfoService).not.toBeNull();
+        expect(setLayerInfoService.headers).not.toBeNull();
+        setLayerInfoService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var setLayerInfoService = new SetLayerInfoService(url, { crossOrigin: false });
+        expect(setLayerInfoService).not.toBeNull();
+        expect(setLayerInfoService.crossOrigin).toBeFalsy();
+        setLayerInfoService.destroy();
+    });
+
     //新建临时图层
     it('setNewTempLayer', (done) => {
         var layersInformation = layersInfo;
-        var setLayersInfoService = new SetLayersInfoService(url, {
-            eventListeners: {
-                "processCompleted": setLayerInfoCompleted,
-                'processFailed': setLayerFailed
-            },
-            isTempLayers: false
-        });
-        expect(setLayersInfoService).not.toBeNull();
-        expect(setLayersInfoService.url).toEqual(url);
-        setLayersInfoService.events.on({"processCompleted": setLayerInfoCompleted});
-        setLayersInfoService.processAsync(layersInformation);
-        setTimeout(() => {
+        var setLayerInfoCompleted = (result) => {
+            setLayerEventArgsSystem = result;
             try {
                 expect(setLayerEventArgsSystem.type).toEqual("processCompleted");
                 var serviceResult = setLayerEventArgsSystem.result;
@@ -65,7 +63,29 @@ describe('SetLayerInfoService', () => {
                 setLayersInfoService.destroy();
                 done();
             }
-        }, 5000)
+        };
+        var setLayerFailed = (result) => {
+            setLayerFailedEventArgsSystem = result;
+        };
+        var setLayersInfoService = new SetLayersInfoService(url, {
+            eventListeners: {
+                "processCompleted": setLayerInfoCompleted,
+                'processFailed': setLayerFailed
+            },
+            isTempLayers: false
+        });
+        expect(setLayersInfoService).not.toBeNull();
+        expect(setLayersInfoService.url).toEqual(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url+"/tempLayersSet");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_4b85e5ba2d65456c82e430c7636fba8d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/f701028a2b7144b19b582f55c1902b18_4b85e5ba2d65456c82e430c7636fba8d.json"}`));
+        });
+        setLayersInfoService.events.on({"processCompleted": setLayerInfoCompleted});
+        setLayersInfoService.processAsync(layersInformation);
     });
 
     //使用的临时图层id，为上一个it新建的图层
@@ -76,12 +96,8 @@ describe('SetLayerInfoService', () => {
             var layerInformation = layerInfo;
             layerInformation.description = "this is a test";
             var url1 = url + "/tempLayersSet/" + id + "/continent_T@World.1@@World";
-            var setLayerInfoService = initSetLayerInfoService(url1);
-            expect(setLayerInfoService).not.toBeNull();
-            expect(setLayerInfoService.url).toEqual(url1);
-            setLayerInfoService.events.on({"processCompleted": setLayerInfoCompleted});
-            setLayerInfoService.processAsync(layerInformation);
-            setTimeout(() => {
+            var setLayerInfoCompleted = (result) => {
+                setLayerEventArgsSystem = result;
                 try {
                     expect(setLayerEventArgsSystem.type).toEqual("processCompleted");
                     var serviceResult = setLayerEventArgsSystem.result;
@@ -95,7 +111,23 @@ describe('SetLayerInfoService', () => {
                     setLayerInfoService.destroy();
                     done();
                 }
-            }, 4000)
+            };
+            var setLayerFailed = (result) => {
+                setLayerFailedEventArgsSystem = result;
+            };
+            var setLayerInfoService = initSetLayerInfoService(url1,setLayerFailed,setLayerInfoCompleted);
+            expect(setLayerInfoService).not.toBeNull();
+            expect(setLayerInfoService.url).toEqual(url1);
+            spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,params) => {
+                expect(method).toBe("PUT");
+                expect(testUrl).toBe(url1);
+                var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+                expect(paramsObj.datasetInfo.dataSourceName).toBe("World");
+                expect(paramsObj.datasetInfo.type).toBe("TEXT");
+                return Promise.resolve(new Response(`{"succeed":true}`));
+            });
+            setLayerInfoService.events.on({"processCompleted": setLayerInfoCompleted});
+            setLayerInfoService.processAsync(layerInformation);
         }
     });
 });

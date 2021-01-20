@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -18,11 +18,10 @@
 
         #map {
             position: absolute;
-            left: 200px;
+            left: 250px;
             right: 0px;
             width: 100%;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #toolbar {
@@ -42,7 +41,7 @@
         #menu {
             position: absolute;
             background: #ffffff;
-            width: 200px;
+            width: 250px;
             height: 100%;
             border: 1px solid #3473b7;
             z-index: 100;
@@ -128,12 +127,12 @@
     </div>
 </div>
 <script type="text/javascript" include="bootstrap,responsive,sticklr,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" exclude="iclient-classic" include="bevInclude,PlottingPanel"
+<script type="text/javascript" exclude="iclient-classic" include="iclient8c-plot,bevInclude,PlottingPanel"
         src="../../dist/classic/include-classic.js"></script>
 <script>
     var map, plottingLayer, layer;
     var plotPanel, stylePanel;
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var mapurl = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var plotting;

@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {ProcessingServiceBase} from './ProcessingServiceBase';
-import {SingleObjectQueryJobsParameter} from './SingleObjectQueryJobsParameter';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { ProcessingServiceBase } from './ProcessingServiceBase';
+import { SingleObjectQueryJobsParameter } from './SingleObjectQueryJobsParameter';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
@@ -12,13 +13,14 @@ import {SingleObjectQueryJobsParameter} from './SingleObjectQueryJobsParameter';
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SingleObjectQueryJobsService extends ProcessingServiceBase {
-
     constructor(url, options) {
         super(url, options);
-        this.url += "/spatialanalyst/query";
-        this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsService";
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/query');
+        this.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
     }
 
     /**
@@ -42,7 +44,7 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
      * @param {string} id - 指定要获取数据的id
      */
     getQueryJob(id) {
-        super.getJobs(this.url + '/' + id);
+        super.getJobs(Util.urlPathAppend(this.url, id));
     }
 
     /**
@@ -54,7 +56,6 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
     addQueryJob(params, seconds) {
         super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
     }
-
 }
 
 SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 export {
@@ -59,6 +59,7 @@ export {
     OutputType,
     AggregationQueryBuilderType,
     AggregationType,
+    GetFeatureMode,
     //control
     TimeFlowControl,
     //iManager
@@ -67,11 +68,19 @@ export {
     IManagerCreateNodeParam,
     //iPortal
     IPortal,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalService,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalServiceBase,
-    IPortalServicesQueryParam,
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam,
     //Online
     Online,
     OnlineData,
@@ -90,6 +99,8 @@ export {
     ElasticSearch,
     //util
     FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
     //iServer
     AreaSolarRadiationParameters,
     AggregationParameter,
@@ -235,10 +246,42 @@ export {
     UpdateEdgeWeightParameters,
     UpdateTurnNodeWeightParameters,
     Vector,
-    VectorClipJobsParameter
-} from '@supermap/iclient-common';
+    VectorClipJobsParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService,
+    //components
+    FileTypes,
+    FileConfig,
+    FileModel,
+    MessageBox,
+    CommonContainer,
+    DropDownBox,
+    Select,
+    AttributesPopContainer,
+    PopContainer,
+    IndexTabsPageContainer,
+    CityTabsPage,
+    NavTabsPage,
+    PaginationContainer,
+    ComponentsUtil,
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
+}
+from '@supermap/iclient-common';
 
 export * from './control';
 export * from './core';
 export * from './overlay';
 export * from './services';
+export * from './mapping';

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -12,7 +12,7 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, interpolationAnalystService, interpolationAnalystParameters, interpolationAnalystResult, points,
         themeService, themeGridRange, themeParameters, themeLayer,
         baseUrl = host + "/iserver/services/map-temperature/rest/maps/全国温度变化图",
@@ -78,7 +78,7 @@
                     searchMode: "KDTREE_FIXED_RADIUS",
                     // 查找半径,与点数据单位相同
                     searchRadius: 200,
-                    resolution: 3000,
+                    resolution: 9000,
                     bounds: L.bounds([-2640403.63, 1873792.1], [3247669.39, 5921501.4])
                 });
                 interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (interpolationServiceResult) {

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -18,10 +18,11 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {string} [options.attributeFilter] - 几何查询属性过滤条件。  
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。  
  * @param {SuperMap.SpatialQueryMode} [options.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式常量。  
- * @param {SuperMap.FilterParameter} [options.queryParameter] - 查询过滤条件参数。  
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
@@ -38,7 +39,7 @@ export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
         /**
          * @member {Object} SuperMap.GetFeaturesByGeometryParameters.prototype.geometry
          * @description 用于查询的几何对象。 </br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
          * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>  
          * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。  
          */
@@ -119,6 +120,12 @@ export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByGeometry.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            parasByGeometry.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByGeometry.targetPrj = params.targetPrj;
         }
 
         return Util.toJSON(parasByGeometry);

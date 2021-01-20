@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -13,7 +13,8 @@ import {
     GetFeaturesByBoundsService,
     GetFeaturesByBufferService,
     GetFeaturesByGeometryService,
-    EditFeaturesService
+    EditFeaturesService,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -29,8 +30,10 @@ import {
  * @param {string} url - 要素数据集服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export var FeatureService = ServiceBase.extend({
 
@@ -50,6 +53,8 @@ export var FeatureService = ServiceBase.extend({
         var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73,6 +78,8 @@ export var FeatureService = ServiceBase.extend({
         var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -95,6 +102,8 @@ export var FeatureService = ServiceBase.extend({
         var getFeatureService = new GetFeaturesByBufferService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -117,6 +126,8 @@ export var FeatureService = ServiceBase.extend({
         var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -139,6 +150,8 @@ export var FeatureService = ServiceBase.extend({
         var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -166,10 +179,12 @@ export var FeatureService = ServiceBase.extend({
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin:me.options.crossOrigin,
+            headers:me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

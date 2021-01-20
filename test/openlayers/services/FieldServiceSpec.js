@@ -2,6 +2,7 @@ import {FieldService} from '../../../src/openlayers/services/FieldService';
 import {FieldParameters} from '../../../src/common/iServer/FieldParameters';
 import {FieldStatisticsParameters} from '../../../src/common/iServer/FieldStatisticsParameters';
 import {StatisticMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {
@@ -26,10 +27,15 @@ describe('openlayers_FieldService', () => {
             dataset: "continent_T"
         });
         var service = new FieldService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url+"/datasources/World/datasets/continent_T/fields");
+            expect(options).not.toBeNull();
+            var getFieldsEscapedJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmGeometrySize"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmGeometrySize"]}`;
+            return Promise.resolve(new Response(getFieldsEscapedJson));
+        });
         service.getFields(fieldParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -46,7 +52,7 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段查询服务失败事件
@@ -56,10 +62,14 @@ describe('openlayers_FieldService', () => {
             dataset: "continent_T"
         });
         var service = new FieldService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url+"/datasources/World1/datasets/continent_T/fields");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+        });
         service.getFields(fieldParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -76,7 +86,7 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段统计服务成功事件
@@ -96,27 +106,42 @@ describe('openlayers_FieldService', () => {
             ]
         });
         var service = new FieldService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+            expect(method).toBe("GET");
+            if (url.indexOf("/AVERAGE") > -1) {
+                return Promise.resolve(new Response(`{"result":4,"mode":"AVERAGE"}`));
+            }else if(url.indexOf("/MAX")>-1){
+                return Promise.resolve(new Response(`{"result":7,"mode":"MAX"}`));
+            }else if(url.indexOf("/MIN")>-1){
+                return Promise.resolve(new Response(`{"result":1,"mode":"MIN"}`));
+            }else if(url.indexOf("/STDDEVIATION")>-1){
+                return Promise.resolve(new Response(`{"result":2.160246899469287,"mode":"STDDEVIATION"}`));
+            }else if(url.indexOf("/SUM")>-1){
+                return Promise.resolve(new Response(`{"result":28,"mode":"SUM"}`));
+            }else if(url.indexOf("/VARIANCE")>-1){
+                return Promise.resolve(new Response(`{"result":4.666666666666667,"mode":"VARIANCE"}`));
+            }
+            return Promise.resolve();
+        });
         service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();
-                expect(service.currentStatisticResult.AVERAGE).toEqual(124);
-                expect(service.currentStatisticResult.MAX).toEqual(247);
+                expect(service.currentStatisticResult.AVERAGE).toEqual(4);
+                expect(service.currentStatisticResult.MAX).toEqual(7);
                 expect(service.currentStatisticResult.MIN).toEqual(1);
-                expect(service.currentStatisticResult.STDDEVIATION).toEqual(71.44695001654492);
-                expect(service.currentStatisticResult.SUM).toEqual(30628);
-                expect(service.currentStatisticResult.VARIANCE).toEqual(5104.666666666667);
+                expect(service.currentStatisticResult.STDDEVIATION).toEqual(2.160246899469287);
+                expect(service.currentStatisticResult.SUM).toEqual(28);
+                expect(service.currentStatisticResult.VARIANCE).toEqual(4.666666666666667);
                 expect(service.currentStatisticResult.fieldName).toEqual("SmID");
                 expect(serviceResult).not.toBeNull();
-                expect(serviceResult.result.AVERAGE).toEqual(124);
-                expect(serviceResult.result.MAX).toEqual(247);
+                expect(serviceResult.result.AVERAGE).toEqual(4);
+                expect(serviceResult.result.MAX).toEqual(7);
                 expect(serviceResult.result.MIN).toEqual(1);
-                expect(serviceResult.result.STDDEVIATION).toEqual(71.44695001654492);
-                expect(serviceResult.result.SUM).toEqual(30628);
-                expect(serviceResult.result.VARIANCE).toEqual(5104.666666666667);
+                expect(serviceResult.result.STDDEVIATION).toEqual(2.160246899469287);
+                expect(serviceResult.result.SUM).toEqual(28);
+                expect(serviceResult.result.VARIANCE).toEqual(4.666666666666667);
                 expect(serviceResult.result.fieldName).toEqual("SmID");
                 done();
             } catch (e) {
@@ -124,7 +149,7 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段统计服务失败事件
@@ -144,6 +169,23 @@ describe('openlayers_FieldService', () => {
             ]
         });
         var service = new FieldService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+            expect(method).toBe("GET");
+            if (url.indexOf("/AVERAGE") > -1) {
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/MAX")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/MIN")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/STDDEVIATION")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/SUM")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/VARIANCE")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }
+            return Promise.resolve();
+        });
         service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
         });

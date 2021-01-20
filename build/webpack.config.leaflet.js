@@ -3,9 +3,10 @@ let configBase = require("./webpack.config.base");
 //端名
 const libName = "leaflet";
 //产品包名
-const productName = "iclient9-leaflet";
+const productName = "iclient-leaflet";
 
 module.exports = {
+    target: configBase.target,
     mode: configBase.mode,
     //页面入口文件配置
     entry: configBase.entry,
@@ -31,7 +32,6 @@ module.exports = {
         rules: (function () {
             let moduleRules = [];
             moduleRules.push(configBase.module.rules.img);
-            moduleRules.push(configBase.module.rules.eslint);
             if (configBase.moduleVersion === "es5") {
                 //打包为es5相关配置
                 moduleRules.push({
@@ -39,15 +39,15 @@ module.exports = {
                     exclude: /setImmediate|webgl-debug/,
                     loader: 'babel-loader',
                     options: {
-                        presets: ['es2015']
+                        presets: ['@babel/preset-env']
                     }
                 });
                 //兼容es3相关配置
-                moduleRules.push({
-                    test: /\.js$/,
-                    enforce: "post",
-                    loaders: ['es3ify-loader']
-                });
+                // moduleRules.push({
+                //     test: /\.js$/,
+                //     enforce: "post",
+                //     loaders: ['es3ify-loader']
+                // });
             }
             moduleRules.push(configBase.module.rules.css);
             return moduleRules

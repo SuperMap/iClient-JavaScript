@@ -1,7 +1,8 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DParameters';
 
@@ -15,6 +16,8 @@ import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DPara
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class FacilityAnalystTraceup3DService extends CommonServiceBase {
 
@@ -49,9 +52,8 @@ export class FacilityAnalystTraceup3DService extends CommonServiceBase {
         if (!(params instanceof FacilityAnalystTraceup3DParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "traceupresult" : "/traceupresult") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'traceupresult');
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

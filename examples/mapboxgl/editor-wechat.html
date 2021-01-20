@@ -1,0 +1,63 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_editorMBGL"></title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../web/img/favicon.ico" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <script
+      type="text/javascript"
+      include="jquery,bootstrap,template,admin-lte,ace,i18n"
+      src="../js/include-web.js"
+    ></script>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/sideBar.css" />
+    <link rel="stylesheet" href="../css/editor.css" />
+    <script type="text/javascript" src="../js/utils.js"></script>
+    <style>
+      /* 删除头部和侧边栏 */
+      header {
+        display: none;
+      }
+      aside {
+        display: none;
+      }
+      .content-wrapper {
+        margin: 0px !important;
+      }
+      .ace_layer .ace_gutter-layer {
+        width: 40px !important;
+      }
+      .ace_gutter-cell {
+        padding-left: 0px;
+      }
+    </style>
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+    <!-- ./wrapper -->
+    <div class="wrapper"></div>
+    <script>
+      $('.wrapper').load('../template/editor.html', function() {
+        var navigation = {
+          nav: {
+            title: 'SuperMap iClient 10i(2020)',
+            path: '../../web/',
+            isLocal: window.isLocal
+          }
+        };
+        utils.loadTemplate('.icl-header', '../template/header.html', navigation);
+        $body = $('body');
+        $body.append("<script type='text/javascript' src='./config.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/localization.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
+      });
+    </script>
+    <!-- ./wrapper end-->
+  </body>
+</html>

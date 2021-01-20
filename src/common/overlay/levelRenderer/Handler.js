@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Eventful} from './Eventful';
@@ -556,7 +556,7 @@ export class Handler extends Eventful {
          * y - {number} 鼠标 y。
          *
          * Returns:
-         * {Boolean} 是否找到图形。
+         * {boolean} 是否找到图形。
          *
          */
         function findHover(shape, x, y) {
@@ -1067,7 +1067,7 @@ export class Handler extends Eventful {
      *
      * Parameters:
      * event - {Object} 事件。
-     * isTouch - {Boolean} 是否触摸。
+     * isTouch - {boolean} 是否触摸。
      *
      */
     _zrenderEventFixed(event, isTouch) {

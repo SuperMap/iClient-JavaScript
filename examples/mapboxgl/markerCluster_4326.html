@@ -1,0 +1,193 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title data-i18n="resources.title_markerClusterWGS84"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type="text/javascript" include="jquery,papaparse" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .mapboxgl-marker {
+            width: 10px;
+            height: 10px;
+            background: red;
+            margin-top: -5px;
+            margin-left: -5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        $.get("../data/chinaEarthquake.csv", function (response) {
+                var dataObj = Papa.parse(response, {
+                    skipEmptyLines: true,
+                    header: true
+                });
+
+                var data = dataObj.data;
+
+                var geojson = {
+                    "type": "FeatureCollection",
+                    "features": []
+                };
+
+
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    var date = new Date(item.date);
+                    var year = date.getFullYear();
+
+                    //2w+地震数据
+                    if (year > 2000 && year < 2015) {
+                        var feature = {
+                            "type": "feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": []
+                            },
+                            "properties": {
+                                "value": parseFloat(item.level)
+                            }
+                        };
+                        feature.geometry.coordinates = [parseFloat(item.X), parseFloat(item.Y)];
+
+                        geojson.features.push(feature);
+                    }
+                }
+            map = new mapboxgl.Map({
+                container: 'map', 
+                style: {
+                    "version": 8,
+                    "glyphs": host + "/iserver/services/map-world/rest/maps/World/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+                    "sources": {
+                        "raster-tiles": {
+                            "type": "raster",
+                            "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                            "rasterSource":"iserver",
+                            "tileSize": 256
+                        }
+                    },
+
+                    "layers": [{
+                        "id": "simple-tiles",
+                        "type": "raster",
+                        "source": "raster-tiles",
+                        "minzoom": 0,
+                        "maxzoom": 22
+                    }]
+                },
+                crs: 'EPSG:4326',
+                center: [112, 37.94],
+                zoom: 3
+            });
+            map.on('load', function () {
+                map.addSource("earthquakes", {
+                    type: "geojson",
+                    data: geojson,
+                    cluster: true,
+                    clusterMaxZoom: 14, 
+                    clusterRadius: 100 
+                });
+
+                map.addLayer({
+                    id: "clusters",
+                    type: "circle",
+                    source: "earthquakes",
+                    filter: ["has", "point_count"],
+                    paint: {
+                        "circle-color": [
+                            "step",
+                            ["get", "point_count"],
+                            "#51bbd6",
+                            100,
+                            "#f1f075",
+                            750,
+                            "#f28cb1"
+                        ],
+                        "circle-radius": [
+                            "step",
+                            ["get", "point_count"],
+                            20,
+                            100,
+                            30,
+                            750,
+                            40
+                        ]
+                    }
+                });
+
+                map.addLayer({
+                    id: "cluster-count",
+                    type: "symbol",
+                    source: "earthquakes",
+                    filter: ["has", "point_count"],
+                    layout: {
+                        "text-field": "{point_count_abbreviated}",
+                        "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                        "text-size": 12
+                    }
+                });
+
+                map.addLayer({
+                    id: "unclustered-point",
+                    type: "circle",
+                    source: "earthquakes",
+                    filter: ["!", ["has", "point_count"]],
+                    paint: {
+                        "circle-color": "#11b4da",
+                        "circle-radius": 4,
+                        "circle-stroke-width": 1,
+                        "circle-stroke-color": "#fff"
+                    }
+                });
+
+                map.on('click', 'clusters', function (e) {
+                    var features = map.queryRenderedFeatures(e.point, {
+                        layers: ['clusters']
+                    });
+                    var clusterId = features[0].properties.cluster_id;
+                    map.getSource('earthquakes').getClusterExpansionZoom(clusterId, function (
+                        err, zoom) {
+                        if (err)
+                            return;
+                        map.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom
+                        });
+                    });
+                });
+
+                map.on('mouseenter', 'clusters', function () {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+                map.on('mouseleave', 'clusters', function () {
+                    map.getCanvas().style.cursor = '';
+                });
+            });
+        })
+
+    </script>
+
+</body>
+
+</html>

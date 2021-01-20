@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 //左侧层级是否包含示例
 var containExample = false;
 var sideBarIconConfig = sideBarIconConfig || {};
@@ -124,6 +124,9 @@ function createSideBarSecondMenu(config, name) {
     var ul = $("<ul class='treeview-menu second-menu '></ul>");
     for (var key in config) {
         var configItem = config[key];
+        if (window.isLocal && configItem.localIgnore) {
+            continue;
+        }
         var title = utils.getLocalPairs(configItem, "name") || "【empty title】";
         var li = $("<li class='menuTitle ' id='" + key + "' title='" + title + "'></li>");
         li.appendTo(ul);
@@ -171,7 +174,7 @@ function createSideBarMenuTitle(id, title, collapse, hasNewExamples) {
     var titleBar = $("<span class='sidebar-title-bar'></span>");
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
     }
     var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + newIcon + "</span>");
     titleBar.append(firstMenuTitle);
@@ -192,7 +195,7 @@ function createSideBarMenuSecondTitle(id, title, collapse, hasNewExamples) {
     }
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
     }
     var div = $(
         "<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon +
@@ -214,7 +217,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
     }
     var newIcon="";
     if(window.version===version){
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
     }
 
     var div = $(

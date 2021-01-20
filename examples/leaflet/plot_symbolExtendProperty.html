@@ -1,184 +1,185 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_symbolExtendProperty"></title>
 </head>
-
-<body style=" overflow: hidden;width: 100%;height:100%;position: absolute;top: 0;">
-    <div id="toolbar" class="panel panel-primary" style="position: absolute;top: 15px;right: 10px;width: 220px;text-align: center;z-index: 9999;border-radius: 4px;">
-        <div class='panel-heading'>
-            <h5 class='panel-title text-center' data-i18n="resources.title_symbolExtendProperty"></h5>
-        </div>
-        <div class='panel-body content'>
-            <div class='panel'>
-                <div class='input-group' style="margin-bottom: 15px;">
-                    <span class='input-group-addon' data-i18n="resources.text_propertyName"></span>
-                    <input class='form-control' id='propertyName' value='' />
-                </div>
-                <div class='input-group' style="margin-bottom: 15px;">
-                    <span class='input-group-addon' data-i18n="resources.text_propertyValue"></span>
-                    <input class='form-control' id='propertyValue' value='' />
-                </div>
+<body  style=" overflow: hidden;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style="position: absolute;top: 15px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'id="panelheading">
+        <h5 class='panel-title text-center' data-i18n="resources.title_symbolExtendProperty"></h5>
+    </div>
+    <div class='panel-body content' id="panelbodycontent">
+        <div class='panel'>
+            <div class='input-group' style="margin-bottom: 15px;width: 185px;">
+                <span class='input-group-addon' data-i18n="resources.text_propertyName"></span>
+                <input class='form-control' id='propertyName' value=''/>
             </div>
-            <input id="btn" type="button" class="btn  btn-default" data-i18n="[value]resources.btn_addProperty" onclick="addExtendProperty()" />
+            <div class='input-group' style="margin-bottom: 15px;width: 185px;">
+                <span class='input-group-addon' data-i18n="resources.text_propertyValue"></span>
+                <input class='form-control' id='propertyValue' value=''/>
+            </div>
         </div>
+        <input id="btn" type="button" class="btn  btn-default" data-i18n="[value]resources.btn_addProperty" onclick="addExtendProperty()"/>
     </div>
-    <div id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 247px;width: 220px;background: #FFF;z-index: 9999;display: block;">
-        <div class="winTitle" style=" background: #1E90FF;">
-            <span class="title_left" data-i18n="resources.title_symbolExtendProperty"></span>
-        </div>
-        <div id="extendProperty" class="winContent" style="  padding: 5px;overflow-y: auto;height: 300px;"></div>
+</div>
+<div id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 247px;width: 220px;background: #FFF;z-index: 9999;display: block;">
+    <div class="winTitle" style=" background: #1E90FF;">
+        <span class="title_left" data-i18n="resources.title_symbolExtendProperty"></span>
     </div>
-    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-    <script type="text/javascript" include="bootstrap,widgets.alert,jquery" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
-    <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-        var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
-        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
-        var map;
-        map = L.map('map', {
-            preferCanvas: true,
-            crs: L.CRS.EPSG4326,
-            center: [0, 0],
-            zoom: 2,
-            maxZoom: 18
-        });
-        L.supermap.tiledMapLayer(url).addTo(map);
-        var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
-        plottingLayer.addTo(map);
-        var drawControl = L.supermap.plotting.drawControl(plottingLayer);
-        drawControl.addTo(map);
-        var editControl = L.supermap.plotting.editControl();
-        editControl.addTo(map);
-        var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    <div id="extendProperty" class="winContent" style="  padding: 5px;overflow-y: auto;height: 300px;"></div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert,jquery" src="../js/include-web.js"></script>
+<script type="text/javascript" include="iclient-leaflet-css,iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0, 0],
+        zoom: 2,
+        maxZoom: 18
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    function plotSymbol(){
+        //标绘多边形
+        var polygonPoints = [];
+        polygonPoints.push(L.latLng(0,-20));
+        polygonPoints.push(L.latLng(20,-10));
+        polygonPoints.push(L.latLng(40,-30));
+        polygonPoints.push(L.latLng(10,-60));
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, polygonPoints);
 
-        function plotSymbol() {
-            //标绘多边形
-            var polygonPoints = [];
-            polygonPoints.push(L.latLng(0, -20));
-            polygonPoints.push(L.latLng(20, -10));
-            polygonPoints.push(L.latLng(40, -30));
-            polygonPoints.push(L.latLng(10, -60));
-            plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, polygonPoints);
+        //标绘折线
+        var linePoints = [];
+        linePoints.push(L.latLng(0, 0));
+        linePoints.push(L.latLng(20, 0));
+        linePoints.push(L.latLng(10,20));
+        linePoints.push(L.latLng(30,10));
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, linePoints);
 
-            //标绘折线
-            var linePoints = [];
-            linePoints.push(L.latLng(0, 0));
-            linePoints.push(L.latLng(20, 0));
-            linePoints.push(L.latLng(10, 20));
-            linePoints.push(L.latLng(30, 10));
-            plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, linePoints);
+        //标绘点
+        var dotPoints = [];
+        dotPoints.push(L.latLng(8.3515625,-75.96875));
+        plottingLayer.createSymbol(421, 9, dotPoints,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL});
+    }
 
-            //标绘点
-            var dotPoints = [];
-            dotPoints.push(L.latLng(8.3515625, -75.96875));
-            plottingLayer.createSymbol(421, 9, dotPoints, {
-                symbolType: SuperMap.Plot.SymbolType.DOTSYMBOL
-            });
+    editControl.on(SuperMap.Plot.Event.featuresselected, function(event){
+        showExtendProperty(event);
+    });
+    editControl.on(SuperMap.Plot.Event.featuresunselected, function(event){
+        showExtendProperty(event);
+    });
+
+    function addExtendProperty() {
+        widgets.alert.clearAlert();
+        var key = document.getElementById("propertyName").value;
+        var value = document.getElementById("propertyValue").value;
+        if ("" === key || "" === value) {
+            return;
         }
 
-        editControl.on(SuperMap.Plot.Event.featuresselected, function (event) {
-            showExtendProperty(event);
-        });
-        editControl.on(SuperMap.Plot.Event.featuresunselected, function (event) {
-            showExtendProperty(event);
-        });
-
-        function addExtendProperty() {
-            widgets.alert.clearAlert();
-            var key = document.getElementById("propertyName").value;
-            var value = document.getElementById("propertyValue").value;
-            if ("" === key || "" === value) {
-                return;
-            }
-
-            var layers = editControl.getSelectedFeatures();
-            if (0 === layers.length) {
-                widgets.alert.showAlert("请选择您要编辑的标号！", true);
-                return;
-            }
-
-            var extendProperty = layers[0].getExtendProperty();
-            extendProperty.addProperty(key, value);
-
-            showExtendProperty();
+        var layers = editControl.getSelectedFeatures();
+        if (0 === layers.length) {
+            widgets.alert.showAlert("请选择您要编辑的标号！",true);
+            return;
         }
 
-        function showExtendProperty() {
-            document.all.extendProperty.innerHTML = "";
+        var extendProperty = layers[0].getExtendProperty();
+        extendProperty.addProperty(key, value);
 
-            //获取选中的对象
-            var layers = editControl.getSelectedFeatures();
-            if (0 === layers.length) {
-                return;
+        showExtendProperty();
+    }
+
+    function showExtendProperty() {
+        document.all.extendProperty.innerHTML = "";
+
+        //获取选中的对象
+        var layers = editControl.getSelectedFeatures();
+        if (0 === layers.length) {
+            return;
+        }
+        var extendProperty = layers[0].getExtendProperty();
+
+        var nPropertyCount = extendProperty.getPropertyCount();
+        if (0 === nPropertyCount) {
+            return;
+        }
+
+        var container = document.getElementById("extendProperty");
+        var table = document.createElement("table");
+        var body = document.createElement("tbody");
+        table.setAttribute("border", "1");
+        table.setAttribute("borderColor", "black");
+        table.setAttribute("width", "100%");
+
+        var tr = document.createElement("tr");
+
+        //添加属性名
+        var td_Name = document.createElement("th");
+        var text_Name = document.createTextNode("属性名");
+        td_Name.appendChild(text_Name);
+        tr.appendChild(td_Name);
+
+        //添加属性值
+        var td_Value = document.createElement("th");
+        var text_Value = document.createTextNode("属性值");
+        td_Value.appendChild(text_Value);
+        tr.appendChild(td_Value);
+        body.appendChild(tr);
+
+        for (var i = 0; i < nPropertyCount; i++) {
+            var property = extendProperty.getPropertyByIndex(i);
+            if (null === property) {
+                continue;
             }
-            var extendProperty = layers[0].getExtendProperty();
 
-            var nPropertyCount = extendProperty.getPropertyCount();
-            if (0 === nPropertyCount) {
-                return;
-            }
-
-            var container = document.getElementById("extendProperty");
-            var table = document.createElement("table");
-            var body = document.createElement("tbody");
-            table.setAttribute("border", "1");
-            table.setAttribute("borderColor", "black");
-            table.setAttribute("width", "100%");
-
-            var tr = document.createElement("tr");
+            var _tr = document.createElement("tr");
 
             //添加属性名
-            var td_Name = document.createElement("th");
-            var text_Name = document.createTextNode("属性名");
-            td_Name.appendChild(text_Name);
-            tr.appendChild(td_Name);
+            var td_PropertyName = document.createElement("td");
+            var text_propertyName = document.createTextNode(property.getKey());
+            td_PropertyName.appendChild(text_propertyName);
+            _tr.appendChild(td_PropertyName);
 
             //添加属性值
-            var td_Value = document.createElement("th");
-            var text_Value = document.createTextNode("属性值");
-            td_Value.appendChild(text_Value);
-            tr.appendChild(td_Value);
-            body.appendChild(tr);
-
-            for (var i = 0; i < nPropertyCount; i++) {
-                var property = extendProperty.getPropertyByIndex(i);
-                if (null === property) {
-                    continue;
-                }
-
-                var _tr = document.createElement("tr");
-
-                //添加属性名
-                var td_PropertyName = document.createElement("td");
-                var text_propertyName = document.createTextNode(property.getKey());
-                td_PropertyName.appendChild(text_propertyName);
-                _tr.appendChild(td_PropertyName);
-
-                //添加属性值
-                var td_PropertyValue = document.createElement("td");
-                var text_propertyValue = document.createTextNode(property.getValue());
-                td_PropertyValue.appendChild(text_propertyValue);
-                _tr.appendChild(td_PropertyValue);
+            var td_PropertyValue = document.createElement("td");
+            var text_propertyValue = document.createTextNode(property.getValue());
+            td_PropertyValue.appendChild(text_propertyValue);
+            _tr.appendChild(td_PropertyValue);
 
 
-                body.appendChild(_tr);
-            }
-
-            table.appendChild(body);
-            container.appendChild(table);
+            body.appendChild(_tr);
         }
 
-        window.onload = function () {
-            plotSymbol();
-        };
-    </script>
-</body>
+        table.appendChild(body);
+        container.appendChild(table);
+    }
 
+    window.onload = function(){
+        plotSymbol();
+    };
+
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+            $('#popupWin').toggle();
+        });
+    });
+</script>
+</body>
 </html>

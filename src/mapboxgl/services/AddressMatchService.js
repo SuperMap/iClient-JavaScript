@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
+import {AddressMatchService as CommonAddressMatchService, CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.AddressMatchService
@@ -19,7 +19,9 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @param {Object} options - 交互时所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
 export class AddressMatchService extends ServiceBase {
@@ -38,6 +40,8 @@ export class AddressMatchService extends ServiceBase {
         var addressMatchService = new CommonAddressMatchService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -45,7 +49,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
     }
 
     /**
@@ -59,6 +63,8 @@ export class AddressMatchService extends ServiceBase {
         var addressMatchService = new CommonAddressMatchService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -66,7 +72,7 @@ export class AddressMatchService extends ServiceBase {
                 processFailed: callback
             }
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
     }
 
 }

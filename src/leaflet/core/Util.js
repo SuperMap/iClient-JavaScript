@@ -1,30 +1,32 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {GeoJSON as GeoJSONFormat, Unit} from '@supermap/iclient-common';
+import L from 'leaflet';
+import { GeoJSON as GeoJSONFormat, getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common';
+
 /**
  * @namespace L.Util
  * @category BaseTypes Util
  */
 export var supermap_callbacks = {};
 L.Util.supermap_callbacks = supermap_callbacks;
-export var toGeoJSON = function (feature) {
+export var toGeoJSON = function(feature) {
     if (!feature) {
         return feature;
     }
-    return JSON.parse(new GeoJSONFormat().write(feature));
+    return new GeoJSONFormat().toGeoJSON(feature);
 };
-export var toSuperMapGeometry = function (geometry) {
+export var toSuperMapGeometry = function(geometry) {
     if (!geometry) {
         return geometry;
     }
-    var result, format = new GeoJSONFormat();
-    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+    var result,
+        format = new GeoJSONFormat();
+    if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) != -1) {
         result = format.read(geometry, geometry.type);
-    } else if (typeof geometry.toGeoJSON === "function") {
+    } else if (typeof geometry.toGeoJSON === 'function') {
         var geojson = geometry.toGeoJSON();
-        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
+        result = geojson ? format.read(geojson, geojson.type) : geometry;
     }
 
     var serverResult = result;
@@ -33,38 +35,18 @@ export var toSuperMapGeometry = function (geometry) {
             serverResult = result[0];
         } else if (result.length > 1) {
             serverResult = [];
-            result.map(function (item) {
+            result.map(function(item) {
                 serverResult.push(item.geometry);
                 return item;
             });
         }
     }
 
-    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
-
+    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
 };
+export var getMeterPerMapUnit = MeterPerMapUnit;
 
-export var getMeterPerMapUnit = function (mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-
-export var resolutionToScale = function (resolution, dpi, mapUnit) {
+export var resolutionToScale = function(resolution, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     // 地球半径。
     var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
@@ -72,7 +54,7 @@ export var resolutionToScale = function (resolution, dpi, mapUnit) {
     scale = 1 / scale;
     return scale;
 };
-export var scaleToResolution = function (scale, dpi, mapUnit) {
+export var scaleToResolution = function(scale, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
     var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
@@ -80,27 +62,31 @@ export var scaleToResolution = function (scale, dpi, mapUnit) {
     return resolution;
 };
 
-export var GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
     //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
     datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
+    coordUnit = coordUnit || '';
     if (scale > 0 && dpi > 0) {
         scale = L.Util.NormalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+        if (
+            coordUnit.toLowerCase() === 'degree' ||
+            coordUnit.toLowerCase() === 'degrees' ||
+            coordUnit.toLowerCase() === 'dd'
+        ) {
             //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+            resolution = (0.0254 * ratio) / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
             return resolution;
         } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            resolution = (0.0254 * ratio) / dpi / scale / ratio;
             return resolution;
         }
     }
     return -1;
 };
-export var NormalizeScale = function (scale) {
-    return (scale > 1.0) ? (1.0 / scale) : scale;
+export var NormalizeScale = function(scale) {
+    return scale > 1.0 ? 1.0 / scale : scale;
 };
 
 L.Util.toGeoJSON = toGeoJSON;

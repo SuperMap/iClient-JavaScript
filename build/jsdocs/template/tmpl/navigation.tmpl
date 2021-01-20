@@ -110,7 +110,7 @@ function buildLi(obj){
 
                 obj.methods.forEach(function (v) {
             ?>
-                <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                <li data-version= "<?js= v.version||obj.version  ?>" data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
                 });
             }

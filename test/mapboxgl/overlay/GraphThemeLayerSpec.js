@@ -1,5 +1,5 @@
-import {Graph} from '../../../src/mapboxgl/overlay/GraphThemeLayer';
-import {ThemeFeature} from '../../../src/mapboxgl/overlay/theme/ThemeFeature';
+import { Graph } from '../../../src/mapboxgl/overlay/GraphThemeLayer';
+import { ThemeFeature } from '../../../src/mapboxgl/overlay/theme/ThemeFeature';
 import '../../resources/chinaConsumptionLevel';
 import mapboxgl from 'mapbox-gl';
 
@@ -64,13 +64,13 @@ describe('mapboxgl_GraphThemeLayer', () => {
                     width: 240,
                     height: 100,
                     codomain: [0, 40000],               // 允许图表展示的值域范围，此范围外的数据将不制作图表
-                    barStyle: {fillOpacity: 0.7},       // 柱状图中柱条的（表示字段值的图形）样式
-                    barHoverStyle: {fillOpacity: 1},    //  柱条 hover 样式
+                    barStyle: { fillOpacity: 0.7 },       // 柱状图中柱条的（表示字段值的图形）样式
+                    barHoverStyle: { fillOpacity: 1 },    //  柱条 hover 样式
                     xShapeBlank: [10, 10, 10],          // 水平方向上的空白间距参数
                     axisYTick: 4,                       // y 轴刻度数量
                     axisYLabels: ["4万", "3万", "2万", "1万", "0"],          // y 轴标签内容
                     axisXLabels: ["09年", "10年", "11年", "12年", "13年"],   // x 轴标签内容
-                    backgroundStyle: {fillColor: "#CCE8CF"},                // 背景样式
+                    backgroundStyle: { fillColor: "#CCE8CF" },                // 背景样式
                     backgroundRadius: [5, 5, 5, 5],      // 背景框圆角参数
                     //阴影开关 默认是打开
                     showShadow: true,
@@ -151,13 +151,13 @@ describe('mapboxgl_GraphThemeLayer', () => {
                     width: 240,
                     height: 100,
                     codomain: [0, 40000],
-                    barStyle: {fillOpacity: 0.7},
-                    barHoverStyle: {fillOpacity: 1},
+                    barStyle: { fillOpacity: 0.7 },
+                    barHoverStyle: { fillOpacity: 1 },
                     xShapeBlank: [10, 10, 10],
                     axisYTick: 4,
                     axisYLabels: ["4万", "3万", "2万", "1万", "0"],
                     axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
-                    backgroundStyle: {fillColor: "#CCE8CF"},
+                    backgroundStyle: { fillColor: "#CCE8CF" },
                     backgroundRadius: [5, 5, 5, 5],
                     showShadow: true,
                     barShadowStyle: {
@@ -223,12 +223,12 @@ describe('mapboxgl_GraphThemeLayer', () => {
                 }
             });
         var quadrilateral, quadrilateral2;
-        quadrilateral = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
-        quadrilateral2 = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
+        quadrilateral = [{ "x": 1, "y": 1 }, { "x": 3, "y": 1 }, { "x": 6, "y": 4 }, { "x": 2, "y": 10 }, { "x": 1, "y": 1 }];
+        quadrilateral2 = [{ "x": 1, "y": 1 }, { "x": 3, "y": 1 }, { "x": 6, "y": 4 }, { "x": 2, "y": 10 }, { "x": 1, "y": 1 }];
         var isQuadrilateralOverLap = graphThemeLayer.isQuadrilateralOverLap(quadrilateral, quadrilateral2);
         expect(isQuadrilateralOverLap).toBeTruthy();
-        var point = {"x": 2, "y": 5};
-        var polygon = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
+        var point = { "x": 2, "y": 5 };
+        var polygon = [{ "x": 1, "y": 1 }, { "x": 3, "y": 1 }, { "x": 6, "y": 4 }, { "x": 2, "y": 10 }, { "x": 1, "y": 1 }];
         var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
         expect(isPointInPoly).toBeTruthy();
         graphThemeLayer.clear();
@@ -245,13 +245,13 @@ describe('mapboxgl_GraphThemeLayer', () => {
                 width: 240,
                 height: 100,
                 codomain: [0, 40000],
-                barStyle: {fillOpacity: 0.7},
-                barHoverStyle: {fillOpacity: 1},
+                barStyle: { fillOpacity: 0.7 },
+                barHoverStyle: { fillOpacity: 1 },
                 xShapeBlank: [10, 10, 10],
                 axisYTick: 4,
                 axisYLabels: ["4万", "3万", "2万", "1万", "0"],
                 axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
-                backgroundStyle: {fillColor: "#CCE8CF"},
+                backgroundStyle: { fillColor: "#CCE8CF" },
                 backgroundRadius: [5, 5, 5, 5],
                 showShadow: true,
                 barShadowStyle: {
@@ -279,7 +279,7 @@ describe('mapboxgl_GraphThemeLayer', () => {
                 codomain: [0, 40000]
             },
             charts: [1, 2, 3],
-            cache: {'name': 'ONETWO'}
+            cache: { 'name': 'ONETWO' }
         });
         expect(graphThemeLayer.charts.length).toEqual(3);
         expect(graphThemeLayer.cache).toEqual(Object({
@@ -302,13 +302,14 @@ describe('mapboxgl_GraphThemeLayer', () => {
                 codomain: [0, 40000]
             },
             charts: [1, 2, 3],
-            cache: {'name': 'ONETWO'}
+            cache: { 'name': 'ONETWO' }
         });
         expect(graphThemeLayer.visibility).toBeTruthy();
         graphThemeLayer.setVisibility(false);
         expect(graphThemeLayer.visibility).toBeFalsy();
     });
-    xit('moveTo', () => {
+
+    it('moveTo', () => {
         const graphThemeLayer = new Graph("GraphThemeLayer", "Bar", {
             map: map,
             isOverLay: false,
@@ -319,9 +320,11 @@ describe('mapboxgl_GraphThemeLayer', () => {
                 codomain: [0, 40000]
             },
             charts: [1, 2, 3],
-            cache: {'name': 'ONETWO'}
+            cache: { 'name': 'ONETWO' }
         });
-        map.addLayer(graphThemeLayer);
+        var length1 = graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer").length;
+        //ThemeLayer 75行已经添加过一次了
+        // map.addLayer(graphThemeLayer);
         const graphThemeLayer2 = new Graph("GraphThemeLayer2", "Bar", {
             map: map,
             isOverLay: false,
@@ -332,13 +335,13 @@ describe('mapboxgl_GraphThemeLayer', () => {
                 codomain: [0, 40000]
             },
             charts: [1, 2, 3],
-            cache: {'name': 'ONETWO'}
+            cache: { 'name': 'ONETWO' }
         });
-        map.addLayer(graphThemeLayer2);
-        const zIndex = graphThemeLayer.div.style.zIndex;
-        const zIndex2 = graphThemeLayer2.div.style.zIndex;
-        expect(zIndex2).toBeGreaterThan(zIndex);
-        graphThemeLayer.moveTo("graphThemeLayer2");
-        expect(zIndex).toBeGreaterThan(zIndex2);
+        //ThemeLayer 75行已经添加过一次了
+        // map.addLayer(graphThemeLayer2);
+        //移动前，第一个layer是倒数第二个
+        expect(graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer")[length1-1].id).toEqual(graphThemeLayer.id);
+        graphThemeLayer2.moveTo(graphThemeLayer.id);
+        expect(graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer")[length1-1].id).toEqual(graphThemeLayer2.id);
     });
 });

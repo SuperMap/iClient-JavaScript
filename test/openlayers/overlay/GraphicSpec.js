@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import {
     CloverShape
@@ -17,6 +16,15 @@ import {
 import {
     FetchRequest
 } from '../../../src/common/util/FetchRequest';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import CircleStyle from 'ol/style/Circle';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Point from 'ol/geom/Point';
+import ImageLayer from 'ol/layer/Image';
+import RegularShape from 'ol/style/RegularShape';
+
 
 var url = "http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China_4326";
 describe('openlayers_GraphicLayer', () => {
@@ -53,15 +61,15 @@ describe('openlayers_GraphicLayer', () => {
     afterAll(() => {
         document.body.removeChild(testDiv);
     });
-    it('constructor_canvas', (done) => {
+   it('constructor_canvas', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
         var count = 5; //矢量点的个数
         var graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -69,17 +77,17 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         map.once('postrender', function () {
-            var randomCircleStyles = new ol.style.Circle({
+            var randomCircleStyles = new CircleStyle({
                 radius: 5,
-                fill: new ol.style.Fill({
+                fill: new Fill({
                     color: '#000000'
                 }),
-                stroke: new ol.style.Stroke({
+                stroke: new Stroke({
                     color: '#000000'
                 })
             });
             for (var j = 0; j < count; ++j) {
-                graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+                graphics[j] = new GraphicObj(new Point(coors[j]));
                 graphics[j].setStyle(randomCircleStyles);
             }
             var clone = graphics[0].clone();
@@ -87,16 +95,16 @@ describe('openlayers_GraphicLayer', () => {
             expect(clone.getGeometry()).toEqual(graphics[0].getGeometry());
             expect(clone.getStyle()).toEqual(graphics[0].getStyle());
             clone.destroy();
-            graphicLayer = new ol.layer.Image({
+            graphicLayer = new ImageLayer({
                 source: new GraphicSource({
                     graphics: graphics,
                     map: map,
-                    highLightStyle: new ol.style.Circle({
+                    highLightStyle: new CircleStyle({
                         radius: 5,
-                        fill: new ol.style.Fill({
+                        fill: new Fill({
                             color: '#000000'
                         }),
-                        stroke: new ol.style.Stroke({
+                        stroke: new Stroke({
                             color: '#000000'
                         })
                     })
@@ -113,45 +121,45 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-    xit('constructor_webgl', (done) => {
+   xit('constructor_webgl', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
         var count = 5; //矢量点的个数
         var graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
             }),
             renderer: ['webgl']
         });
-        var randomCircleStyles = new ol.style.RegularShape({
+        var randomCircleStyles = new RegularShape({
             radius: 5,
-            fill: new ol.style.Fill({
+            fill: new Fill({
                 color: '#000000'
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new Stroke({
                 color: '#000000'
             }),
             points: 3
         });
         for (var j = 0; j < count; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setStyle(randomCircleStyles);
         }
-        graphicLayer = new ol.layer.Image({
+        graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map,
-                highLightStyle: new ol.style.RegularShape({
+                highLightStyle: new RegularShape({
                     radius: 5,
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: '#000000'
                     }),
-                    stroke: new ol.style.Stroke({
+                    stroke: new Stroke({
                         color: '#000000'
                     }),
                     points: 3
@@ -162,15 +170,15 @@ describe('openlayers_GraphicLayer', () => {
         done();
     });
 
-    it('CloverShape', (done) => {
+   it('CloverShape', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
         var count = 5; //矢量点的个数
         var graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -181,25 +189,25 @@ describe('openlayers_GraphicLayer', () => {
                 radius: 20,
                 angle: 30,
                 count: 3,
-                stroke: new ol.style.Stroke({
+                stroke: new Stroke({
                     color: "rgba(0,166,0,1)",
                 }),
-                fill: new ol.style.Fill({
+                fill: new Fill({
                     color: "rgba(0,166,0,1)",
                 }),
             })
             expect(cloverShapeStyle.getCount()).toEqual(3);
             for (var j = 0; j < count; ++j) {
-                graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+                graphics[j] = new GraphicObj(new Point(coors[j]));
                 graphics[j].setStyle(cloverShapeStyle);
             }
             var hitCloverShape = new HitCloverShape({
                 radius: 20,
                 angle: 30,
-                stroke: new ol.style.Stroke({
+                stroke: new Stroke({
                     color: "rgba(255,166,0,1)",
                 }),
-                fill: new ol.style.Fill({
+                fill: new Fill({
                     color: "rgba(255,166,0,1)",
                 }),
                 sAngle: 30,
@@ -207,7 +215,7 @@ describe('openlayers_GraphicLayer', () => {
             })
             expect(hitCloverShape.getSAngle()).toEqual(30);
             expect(hitCloverShape.getEAngle()).toEqual(60);
-            graphicLayer = new ol.layer.Image({
+            graphicLayer = new ImageLayer({
                 source: new GraphicSource({
                     graphics: graphics,
                     map: map,
@@ -239,11 +247,11 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-    it("addGraphics", (done) => {
+   it("addGraphics", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -251,13 +259,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -283,11 +291,11 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("getGraphicBy add getGraphicById", (done) => {
+   it("getGraphicBy add getGraphicById", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -295,13 +303,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -323,11 +331,11 @@ describe('openlayers_GraphicLayer', () => {
 
 
     });
-    it("getGraphicsByAttribute", (done) => {
+   it("getGraphicsByAttribute", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -335,13 +343,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -358,11 +366,11 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("removeGraphics", (done) => {
+   it("removeGraphics", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -370,13 +378,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -403,11 +411,11 @@ describe('openlayers_GraphicLayer', () => {
             done();
         }, 4000);
     });
-    it("getLayerState", (done) => {
+   it("getLayerState", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -415,13 +423,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map,
@@ -438,11 +446,11 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("setGraphics", (done) => {
+   it("setGraphics", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -450,13 +458,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -469,7 +477,7 @@ describe('openlayers_GraphicLayer', () => {
             expect(graphicLayer.getSource().graphics.length).toEqual(0);
             let graphics = [];
             for (let j = 0; j < coors.length; ++j) {
-                graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+                graphics[j] = new GraphicObj(new Point(coors[j]));
                 graphics[j].setId(j);
                 graphics[j].setAttributes({
                     name: "graphic_" + j
@@ -482,11 +490,11 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("setStyle", (done) => {
+   it("setStyle", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -494,13 +502,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map,
@@ -519,11 +527,11 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("clear", (done) => {
+   it("clear", (done) => {
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -531,13 +539,13 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coors.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j] = new GraphicObj(new Point(coors[j]));
             graphics[j].setId(j);
             graphics[j].setAttributes({
                 name: "graphic_" + j
             });
         }
-        const graphicLayer = new ol.layer.Image({
+        const graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map
@@ -553,15 +561,15 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
+   it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
         //三叶草的生成坐标
         var coordinate = [
             [50.154958667070076, -0.89592969754775]
         ];
         let graphics = [];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
@@ -569,18 +577,18 @@ describe('openlayers_GraphicLayer', () => {
             renderer: ['canvas']
         });
         for (let j = 0; j < coordinate.length; ++j) {
-            graphics[j] = new GraphicObj(new ol.geom.Point(coordinate[j]));
+            graphics[j] = new GraphicObj(new Point(coordinate[j]));
         }
-        graphicLayer = new ol.layer.Image({
+        graphicLayer = new ImageLayer({
             source: new GraphicSource({
                 graphics: graphics,
                 map: map,
-                highLightStyle: new ol.style.Circle({
+                highLightStyle: new CircleStyle({
                     radius: 5,
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: '#000000'
                     }),
-                    stroke: new ol.style.Stroke({
+                    stroke: new Stroke({
                         color: '#000000'
                     })
                 })
@@ -591,11 +599,11 @@ describe('openlayers_GraphicLayer', () => {
             radius: 20,
             angle: 30,
             count: 1,
-            stroke: new ol.style.Stroke({
+            stroke: new Stroke({
                 color: "rgba(0,166,0,1)",
                 width: 1
             }),
-            fill: new ol.style.Fill({
+            fill: new Fill({
                 color: "rgba(0,166,0,1)",
             }),
         });

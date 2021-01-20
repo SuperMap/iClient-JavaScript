@@ -1,38 +1,40 @@
-var olapi = "https://openlayers.org/en/v4.6.5/apidoc/";
-var lfapi = "http://leafletjs.com/reference-1.3.1.html";
+var olapi = "https://openlayers.org/en/v6.4.3/apidoc/";
+var lfapi = "https://leafletjs.com/reference-1.7.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
-var classicapi="http://iclient.supermap.io/libs/iclient8c/apidoc/files/SuperMap"
-var geojsonapi = "http://geojson.org";
+var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
+var geojsonapi = "https://geojson.org";
+var helpDocApi = "https://iportal.supermap.io/iportal/help/html/zh/index.htm";
 var typeLinks = {
     //openlayers
-    "ol.Map": olapi + "ol.Map.html",
-    "ol.View": olapi + "ol.View.html",
-    "ol.extent": olapi + "ol.extent.html",
-    "ol.feature": olapi + "ol.feature.html",
-    "ol.geom.Polygon": olapi + "ol.geom.Polygon.html",
-    "ol.geom.LineString": olapi + "ol.geom.LineString.html",
-    "ol.geom.Point": olapi + "ol.geom.Point.html",
-    "ol.geom.Geometry":olapi + "ol.geom.Geometry.html",
-    "ol.format.GeoJSON": olapi + "ol.format.GeoJSON.html",
-    "ol.proj.Projection": olapi + "ol.proj.Projection",
-    "ol.Observable": olapi + "ol.Observable",
-    "ol.style.Image": olapi + "ol.style.Image",
-    "ol.style.Fill": olapi + "ol.style.Fill",
-    "ol.style.Stroke": olapi + "ol.style.Stroke",
-    "ol.Object": olapi + "ol.Object",
-    "ol.source.ImageCanvas": olapi + "ol.source.ImageCanvas",
-    "ol.source.TileImage": olapi + "ol.source.TileImage",
-    "ol.source.WMTS": olapi + "ol.source.WMTS",
-    "ol.source.XYZ": olapi + "ol.source.XYZ",
-    "ol.source.Vector": olapi + "ol.source.Vector",
-    "ol.source.VectorTile": olapi + "ol.source.VectorTile",
-    "ol.Pixel": olapi + "ol.html#.Pixel",
-    "ol.source.State": olapi + "ol.source.html#.State",
-    "ol.layer.Layer": olapi + "ol.layer.Layer.html",
-    "ol.FeatureStyleFunction": olapi + "ol.html#.FeatureStyleFunction",
-    "ol.StyleFunction": olapi + "ol.html#.StyleFunction",
-   
+    "ol/Map": olapi + "module-ol_Map-Map",
+    "ol/View": olapi + "module-ol_View-View",
+    "ol/extent": olapi + "module-ol_extent.html",
+    "ol/feature": olapi + "module-ol_Feature-Feature.html",
+    "ol/geom/Polygon": olapi + "module-ol_geom_Polygon-Polygon.html",
+    "ol/geom/LineString": olapi + "module-ol_geom_LineString-LineString.html",
+    "ol/geom/Point": olapi + "module-ol_geom_Point-Point.html",
+    "ol/geom/Geometry":olapi + "module-ol_geom_Geometry-Geometry.html",
+    "ol/format/GeoJSON": olapi + "module-ol_format_GeoJSON-GeoJSON.html",
+    "ol/proj/Projection": olapi + "module-ol_proj_Projection-Projection.html",
+    "ol/Observable": olapi + "module-ol_Observable-Observable.html",
+    "ol/style/Image": olapi + "module-ol_style_Image-ImageStyle.html",
+    "ol/style/Fill": olapi + "module-ol_style_Fill-Fill.html",
+    "ol/style/Stroke": olapi + "module-ol_style_Stroke-Stroke.html",
+    "ol/Object": olapi + "module-ol_Object-BaseObject.html",
+    "ol/source/ImageCanvas": olapi + "module-ol_source_ImageCanvas-ImageCanvasSource.html",
+    "ol/source/TileImage": olapi + "module-ol_source_TileImage-TileImage.html",
+    "ol/source/WMTS": olapi + "module-ol_source_WMTS-WMTS.html",
+    "ol/source/XYZ": olapi + "module-ol_source_XYZ-XYZ.html",
+    "ol/source/Vector": olapi + "module-ol_source_Vector-VectorSource.html",
+    "ol/source/VectorTile": olapi + "module-ol_source_VectorTile-VectorTile.html",
+    "ol/Pixel": olapi + "module-ol_pixel.html",
+    "ol/source/State": olapi + "module-ol_source_State.html",
+    "ol/layer/Layer": olapi + "module-ol_layer_Layer-Layer.html",
+    "ol/StyleFunction": olapi + "module-ol_style_Style.html#~StyleFunction",
+    "ol/control/ScaleLine": olapi + "module-ol_control_ScaleLine-ScaleLine.html",
+    "ol/control/Control": olapi + "module-ol_control_Control-Control.html",
+
 
     //leaflet
     "L.Marker": lfapi + '#marker',
@@ -52,14 +54,19 @@ var typeLinks = {
     "L.LayerGroup": lfapi + '#layergroup',
     "L.TileLayer": lfapi + '#tilelayer',
     "L.CircleMarker": lfapi + '#circlemarker',
+    "L.Circle": lfapi + '#circle',
     "L.Path-option": lfapi + '#path-option',
     "L.Rectangle": lfapi + '#rectangle',
     'L.LatLngBounds': lfapi+ '#latlngbounds',
     'L.Map': lfapi + '#map-example',
+    'L.Evented':lfapi +'#evented',
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
     "mapboxgl.Map": mbglapi + '#map',
+    "mapboxgl.LngLatBounds": mbglapi + '#lnglatbounds',
+    "mapboxgl.LngLat": mbglapi + '#lnglat',
+    "mapboxgl.Point": mbglapi + '#point',
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
     "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md',
@@ -67,9 +74,12 @@ var typeLinks = {
     //classic
     "SuperMap.Layer":classicapi + '/Layer-js.html',
     "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
-    
+
 	//GeoJSON
-    "GeoJSONObject": geojsonapi
-    
+    "GeoJSONObject": geojsonapi,
+
+    // WebMap 结构
+    "WebMapSummaryObject": helpDocApi + '#iP/Appendix/WebMap/WebMapSummary.htm'
+
 }
 exports.typeLinks = typeLinks;

@@ -1,9 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
-import {BurstPipelineAnalystParameters} from './BurstPipelineAnalystParameters';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
+import { BurstPipelineAnalystParameters } from './BurstPipelineAnalystParameters';
 
 /**
  * @class SuperMap.BurstPipelineAnalystService
@@ -15,6 +16,8 @@ import {BurstPipelineAnalystParameters} from './BurstPipelineAnalystParameters';
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 
@@ -41,9 +44,7 @@ export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
             return null;
         }
         var me = this, jsonObject;
-        var end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "burstAnalyse" : "/burstAnalyse") + ".json?";
-
+        me.url = Util.urlPathAppend(me.url, 'burstAnalyse');
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,
             isUncertainDirectionValid: params.isUncertainDirectionValid

@@ -1,24 +1,17 @@
-﻿﻿import {GetFieldsService} from '../../../src/common/iServer/GetFieldsService';
+﻿import { GetFieldsService } from '../../../src/common/iServer/GetFieldsService';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFieldsEventArgsSystem = null;
-var initGetFieldsService = () => {
-    return new GetFieldsService(dataServiceURL, options);
-}
-var getFieldsFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-var getFieldsCompleted = (getFieldsEventArgs) => {
-    getFieldsEventArgsSystem = getFieldsEventArgs;
-}
-var options = {
-    eventListeners: {
-        processCompleted: getFieldsCompleted,
-        processFailed: getFieldsFailed
-    }
+var initGetFieldsService = (getFieldsCompleted, getFieldsFailed) => {
+    return new GetFieldsService(dataServiceURL, {
+        eventListeners: {
+            processCompleted: getFieldsCompleted,
+            processFailed: getFieldsFailed
+        }
+    });
 };
-
 describe('GetFieldsService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -29,15 +22,27 @@ describe('GetFieldsService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    //存在对应数据源数据集返回查询结果
-    it('success:processAsync', (done) => {
-        var getFieldsService = initGetFieldsService();
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var getFieldsService = new GetFieldsService(dataServiceURL, { headers: myHeaders });
         expect(getFieldsService).not.toBeNull();
-        getFieldsService.dataset = "Countries";
-        getFieldsService.datasource = "World";
-        getFieldsService.events.on({'processCompleted': getFieldsCompleted});
-        getFieldsService.processAsync();
-        setTimeout(() => {
+        expect(getFieldsService.headers).not.toBeNull();
+        getFieldsService.destroy();
+    });
+
+    it('crossOrigin', () => {
+        var getFieldsService = new GetFieldsService(dataServiceURL, { crossOrigin: false });
+        expect(getFieldsService).not.toBeNull();
+        expect(getFieldsService.crossOrigin).toBeFalsy();
+        getFieldsService.destroy();
+    });
+
+    //存在对应数据源数据集返回查询结果
+    it('success:processAsync', done => {
+        var getFieldsFailed = serviceFailedEventArgs => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var getFieldsCompleted = getFieldsEventArgsSystem => {
             try {
                 var getFieldsResult = getFieldsEventArgsSystem.result;
                 expect(getFieldsEventArgsSystem).not.toBeNull();
@@ -53,21 +58,28 @@ describe('GetFieldsService', () => {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("GetFieldsService_" + exception.name + ":" + exception.message);
+                console.log('GetFieldsService_' + exception.name + ':' + exception.message);
                 getFieldsService.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var getFieldsService = initGetFieldsService(getFieldsCompleted, getFieldsFailed);
+        expect(getFieldsService).not.toBeNull();
+        getFieldsService.dataset = 'Countries';
+        getFieldsService.datasource = 'World';
+        getFieldsService.events.on({ processCompleted: getFieldsCompleted });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/Countries/fields');
+            var resultJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmArea","SmPerimeter","SmGeometrySize","SQKM","SQMI","COLOR_MAP","CAPITAL","COUNTRY","POP_1994","ColorID","CONTINENT"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmArea","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmPerimeter","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmGeometrySize","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SQKM","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SQMI","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/COLOR_MAP","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/CAPITAL","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/COUNTRY","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/POP_1994","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/ColorID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/CONTINENT"]}`;
+            return Promise.resolve(new Response(resultJson));
+        });
+        getFieldsService.processAsync();
     });
 
     //错误数据集，查询错误
-    it('processAsync_wrongDataset', (done) => {
-        var getFieldsService = initGetFieldsService();
-        getFieldsService.dataset = "NoDataset";
-        getFieldsService.datasource = "World";
-        getFieldsService.events.on({'processFailed': getFieldsFailed});
-        getFieldsService.processAsync();
-        setTimeout(() => {
+    it('processAsync_wrongDataset', done => {
+        var getFieldsFailed = serviceFailedEventArgsSystem => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(404);
@@ -76,10 +88,25 @@ describe('GetFieldsService', () => {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("GetFieldsService_" + exception.name + ":" + exception.message);
+                console.log('GetFieldsService_' + exception.name + ':' + exception.message);
                 getFieldsService.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var getFieldsCompleted = getFieldsEventArgs => {
+            getFieldsEventArgsSystem = getFieldsEventArgs;
+        };
+
+        var getFieldsService = initGetFieldsService(getFieldsCompleted, getFieldsFailed);
+        getFieldsService.dataset = 'NoDataset';
+        getFieldsService.datasource = 'World';
+        getFieldsService.events.on({ processFailed: getFieldsFailed });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/NoDataset/fields');
+            var resultJson = `{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`;
+            return Promise.resolve(new Response(resultJson));
+        });
+        getFieldsService.processAsync();
     });
 });

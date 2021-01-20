@@ -1,8 +1,9 @@
-import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
-import {GenerateSpatialDataParameters} from '../../../src/common/iServer/GenerateSpatialDataParameters';
-import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
-import {DataReturnMode} from '../../../src/common/REST';
+import { SpatialAnalystService } from '../../../src/mapboxgl/services/SpatialAnalystService';
+import { GenerateSpatialDataParameters } from '../../../src/common/iServer/GenerateSpatialDataParameters';
+import { DataReturnOption } from '../../../src/common/iServer/DataReturnOption';
+import { DataReturnMode } from '../../../src/common/REST';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -42,10 +43,17 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
             })
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.routeIDField).toBe("RouteID");
+            expect(options).not.toBeNull();
+            var resultJSON = `{"succeed":true,"recordset":null,"message":null,"dataset":"GenerateSpatialData_mapboxglTest@Changchun"}`;
+            return Promise.resolve(new Response(resultJSON));
+        });
         service.generateSpatialData(generateSpatialDataParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -57,13 +65,6 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
+        });
     });
 });

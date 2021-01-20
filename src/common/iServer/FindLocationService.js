@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -28,6 +28,8 @@ import {GeoJSON} from '../format/GeoJSON';
  *                       如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class FindLocationService extends NetworkAnalystServiceBase {
 
@@ -54,9 +56,9 @@ export class FindLocationService extends NetworkAnalystServiceBase {
         if (!(params instanceof FindLocationParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "location" : "/location") + ".json?";
+        var me = this,
+            jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'location');
         jsonObject = {
             isFromCenter: params.isFromCenter,
             expectedSupplyCenterCount: params.expectedSupplyCenterCount,
@@ -107,10 +109,10 @@ export class FindLocationService extends NetworkAnalystServiceBase {
         }
         var geoJSONFormat = new GeoJSON();
         if (result.demandResults) {
-            result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
+            result.demandResults = geoJSONFormat.toGeoJSON(result.demandResults);
         }
         if (result.supplyResults) {
-            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults));
+            result.supplyResults = geoJSONFormat.toGeoJSON(result.supplyResults);
         }
 
         return result;

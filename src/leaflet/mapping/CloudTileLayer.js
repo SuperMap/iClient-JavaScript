@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -10,7 +10,7 @@ import Attributions from '../core/Attributions'
  * @classdesc 超图云服务图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
- * @param {string} [url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
+ * @param {string} [url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {Object} options - 图层可选参数。
  * @param {string} [options.type='web'] - type。
  * @param {number} [options.minZoom=3] - 最小缩放级别。
@@ -20,16 +20,16 @@ import Attributions from '../core/Attributions'
  */
 export var CloudTileLayer = L.TileLayer.extend({
 
-    defaultURL: 'http://t2.supermapcloud.com/FileService/image',
+    defaultURL: 'http://t2.dituhui.com/FileService/image',
 
     options: {
         /**
-         * @member {String} [L.supermap.cloudTileLayer.prototype.options='quanguo']
+         * @member {string} [L.supermap.cloudTileLayer.prototype.options='quanguo']
          * @description 地图名称。
          */
         mapName: "quanguo",
         /**
-         * @member {String} L.supermap.cloudTileLayer.prototype.type
+         * @member {string} L.supermap.cloudTileLayer.prototype.type
          * @description 地图投影。
          */
         type: "web",

@@ -2,7 +2,7 @@ import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalys
 import {GeoRelationAnalystParameters} from '../../../src/common/iServer/GeoRelationAnalystParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {SpatialRelationType} from '../../../src/common/REST';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 
@@ -36,17 +36,16 @@ describe('leaflet_SpatialAnalystService_geoRelationAnalysis', () => {
         var service = spatialAnalystService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
-            var expectParams = `{'dataset':"Park@Changchun",'sourceFilter':{'attributeFilter':"SMID%26gt;0",'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'referenceFilter':{'attributeFilter':"SMID%26gt;0",'name':"Frame_R@Changchun",'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'spatialRelationType':"INTERSECT",'isBorderInside':true,'returnFeature':false,'returnGeoRelatedOnly':true,'startRecord':0,'expectCount':5}`;
-            expect(params).toBe(expectParams);
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.spatialRelationType).toBe("INTERSECT");
+            // expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
             expect(options).not.toBeNull();
             var geoRelationAnalystEscapedJson = `[{"result":[1],"count":1,"source":1},{"result":[1],"count":1,"source":2},{"result":[1],"count":1,"source":3},{"result":[1],"count":1,"source":4},{"result":[1],"count":1,"source":5}]`;
             return Promise.resolve(new Response(geoRelationAnalystEscapedJson));
         });
         service.geoRelationAnalysis(geoRelationAnalystParameters, (result) => {
             serviceResults = result;
-        });
-        setTimeout(() => {
             expect(service).not.toBeNull();
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toEqual("processCompleted");
@@ -58,6 +57,6 @@ describe('leaflet_SpatialAnalystService_geoRelationAnalysis', () => {
                 expect(serviceResults.result[i].result.length).toEqual(1);
             }
             done();
-        }, 5000)
+        });
     });
 });

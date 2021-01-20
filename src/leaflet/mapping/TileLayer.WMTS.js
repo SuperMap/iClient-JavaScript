@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -12,14 +12,21 @@ import "../core/Base";
  * @param {string} url - wmts 图层地址。
  * @param {Object} options - wmts 图层可选参数。
  * @param {string} options.layer - 需要显示的图层。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] - 代理地址。
  * @param {Object} [options.style] - 图层样式。
  * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
  * @param {(number|L.Point)} [options.tileSize='256'] - 瓦片大小。
  * @param {string} [options.requestEncoding='KVP'] - KVP 或者 REST 的请求方式。
- * @param {Object} [options.tilematrixSet] - 瓦片矩阵集。
+ * @param {string} [options.tilematrixSet] - 瓦片矩阵集。
+ * @param {Array.<L.supermap.wmtsLayer.matrix>} [options.matrixIds] - 瓦片矩阵对象。不设置时，默认为获取当前级别为tilematrix参数。
  * @param {string} [options.version='1.0.0'] - 版本。
  * @param {string} [options.attribution] - 版权信息。
+ * @param {string} [options.noWrap=true] - 图层是否X方向平铺。
+ */
+/**
+ * @typedef {Object} L.supermap.wmtsLayer.matrix
+ * @description 瓦片矩阵。
+ * @property {string} identifier - 瓦片矩阵标识符。
  */
 export var WMTSLayer = L.TileLayer.extend({
 
@@ -32,7 +39,8 @@ export var WMTSLayer = L.TileLayer.extend({
         matrixIds: null,
         layer: '',
         requestEncoding: 'KVP',
-        attribution: ''
+        attribution: '',
+        noWrap: true
     },
 
     //todo 自动获取Capabilities
@@ -59,6 +67,7 @@ export var WMTSLayer = L.TileLayer.extend({
 
             opt.requestEncoding = "KVP";
         }
+        
     },
 
     /**

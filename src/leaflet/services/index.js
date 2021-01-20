@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {AddressMatchService, addressMatchService} from './AddressMatchService';
@@ -7,6 +7,7 @@ import {DataFlowService, dataFlowService} from './DataFlowService';
 import {FeatureService, featureService} from './FeatureService';
 import {FieldService, fieldService} from './FieldService';
 import {GridCellInfosService, gridCellInfosService} from './GridCellInfosService';
+import {GeoprocessingService, geoprocessingService} from './GeoprocessingService';
 import {LayerInfoService, layerInfoService} from './LayerInfoService';
 import {MapService, mapService} from './MapService';
 import {MeasureService, measureService} from './MeasureService';
@@ -18,6 +19,7 @@ import {ServiceBase} from './ServiceBase';
 import {SpatialAnalystService, spatialAnalystService} from './SpatialAnalystService';
 import {ThemeService, themeService} from './ThemeService';
 import {TrafficTransferAnalystService, trafficTransferAnalystService} from './TrafficTransferAnalystService';
+import {WebPrintingJobService, webPrintingJobService} from './WebPrintingJobService';
 
 
 export {AddressMatchService, addressMatchService};
@@ -26,6 +28,7 @@ export {DataFlowService, dataFlowService};
 export {FeatureService, featureService};
 export {FieldService, fieldService};
 export {GridCellInfosService, gridCellInfosService};
+export {GeoprocessingService, geoprocessingService};
 export {LayerInfoService, layerInfoService};
 export {MapService, mapService};
 export {MeasureService, measureService};
@@ -37,3 +40,4 @@ export {ServiceBase};
 export {SpatialAnalystService, spatialAnalystService};
 export {ThemeService, themeService};
 export {TrafficTransferAnalystService, trafficTransferAnalystService};
+export {WebPrintingJobService, webPrintingJobService};

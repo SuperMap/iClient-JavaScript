@@ -1,25 +1,31 @@
 .navbar {
-    font-size: 16px;
+  font-size: 14px;
 }
 
 /*logo的样式*/
 #logo {
-    width: 28px;
-    height: 28px;
+  width: 24px;
+  height: 24px;
+  margin-top: 10px;
+  display: inline-block;
+  margin-right: 6px;
 }
 
 .navbar .project-title {
-    text-decoration: none;
-    vertical-align: middle;
-    font-size: 24px;
-    color: #FFFFFF;
-    letter-spacing: -0.16px;
+  text-decoration: none;
+  vertical-align: middle;
+  color:rgba(255,255,255,1);
+  opacity:0.85;
+  /* letter-spacing: -0.16px; */
+  font-weight: 400;
 }
 
 #title {
-    font-size: 24px;
-    color: #FFFFFF;
-}
+  font-size: 20px;
+  color: #FFFFFF;
+  font-family: "Microsoft Yahei";
+  }
+
 
 .pre-release {
     font-size: 18px;
@@ -35,6 +41,7 @@
     line-height: 60px;
     padding: 5px;
     float: left;
+    color:rgba(255,255,255,0.85);
 }
 
 .main-header .sidebar-toggle {
@@ -55,13 +62,12 @@
 .skin-blue .main-header .navbar .nav > li > a:focus,
 .skin-blue .main-header .navbar .nav .open > a,
 .skin-blue .main-header .navbar .nav .open > a:hover,
-.skin-blue .main-header .navbar .nav .open > a:focus,
-.skin-blue .main-header .navbar .nav > .active > a {
+.skin-blue .main-header .navbar .nav .open > a:focus{
     background: #C30022;
 }
 
 .skin-blue .main-header .navbar .nav > li > a:hover {
-    background: rgba(0, 0, 0, 0.1);
+  background: rgba(255,255,255,0.12)
 }
 
 .navbar-toggle {
@@ -84,6 +90,10 @@
     padding: 0;
 }
 
+.nav-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+}
+
 .navbar-nav > li {
     height: 60px;
     display: table;
@@ -94,12 +104,11 @@
     vertical-align: middle;
 }
 
-.navbar-menu .menu-sub-warp {
+.menu-sub-warp {
     max-height: 0;
 }
 
-.navbar-menu:hover .menu-sub-warp,
-.navbar-menu.active .menu-sub-warp {
+.show_menu-sub-warp {
     max-height: 660px;
     transform-origin: 50% 0;
     -webkit-transform-origin: 50% 0;
@@ -107,6 +116,11 @@
     transition: all .5s ease-out 0.2s;
     -webkit-transition: all .5s ease-out 0.2s;
     -moz-transition: all .5s ease-out 0.2s;
+}
+
+.navbar .project-log-container{
+  vertical-align: middle;
+  margin-right: 6px;
 }
 
 .lang-option {
@@ -184,39 +198,42 @@ ul.icl-nav-menu-box {
 }
 
 li.navbar-menu > a {
-    padding: 10px;
+  padding: 12.5px;
+}
+
+li.navbar-menu {
+  font-family: "Microsoft Yahei";
 }
 
 li.navbar-menu > a:hover, li.navbar-menu > a:focus {
     outline: none;
 }
 
-li.navbar-menu > a::before {
-    position: absolute;
+li.navbar-menu>a::after {
+  position: absolute;
     left: 0;
     width: 100%;
-    height: 4px;
-    background: #F09243;
+    height: 3px;
+    background: #E14D57;
     content: '';
     opacity: 0;
     -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
     -moz-transition: opacity 0.3s, -moz-transform 0.3s;
     transition: opacity 0.3s, transform 0.3s;
-    -webkit-transform: translateY(-10px);
-    -moz-transform: translateY(-10px);
-    transform: translateY(-10px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    transform: translateY(0px);
 }
 
-li.navbar-menu > a::before {
-    top: 0;
-    -webkit-transform: translateY(-10px);
-    -moz-transform: translateY(-10px);
-    transform: translateY(-10px);
+li.navbar-menu>a::after {
+  bottom: 0px;
+  -webkit-transform: translateY(0px);
+  -moz-transform: translateY(0px);
+  transform: translateY(0px);
 }
 
-li.navbar-menu > a:hover::before,
-li.navbar-menu > a:focus::before,
-li.navbar-menu.active > a::before {
+li.navbar-menu.active>a::after {
+    bottom: 0px;
     opacity: 1;
     -webkit-transform: translateY(0px);
     -moz-transform: translateY(0px);
@@ -245,14 +262,14 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
 .icl-nav-menu-box li a:not(.disabled):hover,
 .icl-nav-menu-box li a:not(.disabled):focus {
-    color: #F09243;
+  color: #e14d57;
 }
 
 .icl-nav-menu-sub {
     font-size: 1.4rem;
     max-height: 600px;
     margin-bottom: 10px;
-    overflow: auto;
+    /* overflow: auto; */
     color: #d7d7d7;
 }
 
@@ -266,6 +283,17 @@ ul.icl-nav-menu-sub:nth-child(1) {
     line-height: 30px;
 }
 
+.icl-nav-menu-sub .red-circle{
+    display: inline-block; 
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    position: absolute; 
+    right: -10px; 
+    top: 7px;
+    background:#e14d57; 
+} 
+
 .icl-nav-menu-sub::-webkit-scrollbar {
     width: 3px;
 }
@@ -276,7 +304,11 @@ ul.icl-nav-menu-sub:nth-child(1) {
 }
 
 .icl-nav-menu-item:not(.icl-nav-menu-overivew) > li:last-child {
-    width: 120px;
+    width: 130px;
+}
+.navbar-toggle>img {
+    width: 30px;
+    height: 30px;
 }
 
 @media screen and (max-width: 1220px) {
@@ -297,9 +329,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
         float: none;
     }
 
-    .menu-box {
-        top: 120px;
-    }
 }
 
 @media screen and (max-width: 1030px) {
@@ -320,9 +349,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
         float: none;
     }
 
-    .menu-box {
-        top: 120px;
-    }
 }
 
 @media screen and (max-width: 992px) {
@@ -429,11 +455,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 }
 
-@media screen and (max-width: 659px) {
-    .menu-box {
-        top: 180px;
-    }
-}
 
 @media screen and (max-width: 540px) {
     .navbar-custom-menu > .navbar-nav > li {
@@ -464,7 +485,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 
     #title {
-        font-size: 14px;
+        font-size: 18px;
     }
 
     .pre-release {
@@ -479,6 +500,29 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
     .skin-blue .main-header .navbar .nav > li > a {
         font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .navbar-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-brand {
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .navbar-header #suffix-title {
+        line-height: 14px;
+        height: auto;
+        font-size: 12px;
+        margin-left: 32px;
+    }
+
+    #logo {
+        margin-top: 20px;
     }
 }
 
@@ -501,17 +545,13 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
 /*尺寸小于410px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone6等移动端的浏览器*/
 @media screen and (max-width: 410px) {
-    #logo {
-        width: 20px;
-        height: 20px;
-    }
 
     #suffix-title {
         font-size: 8px;
     }
 
     #title {
-        font-size: 11px;
+        font-size: 12px;
     }
 
     .pre-release {
@@ -523,6 +563,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 }
 
+
 /*尺寸小于376px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone5等移动端的浏览器*/
 @media screen and (max-width: 356px) {
     .navbar-toggle {
@@ -530,13 +571,19 @@ ul.icl-nav-menu-sub:nth-child(1) {
         padding-right: 6px;
     }
 
-    .menu-box {
-        top: 240px;
+    .navbar-header #suffix-title {
+        margin-left: 22px;
     }
+
+        #logo {
+            width: 22px;
+            height: 28px;
+            margin: 15px 0 0 0;
+        }
+
+        .navbar-toggle>img {
+            width: 22px;
+            height: 30px;
+        }
 }
 
-@media screen and (max-height: 640px) {
-    .navbar-menu:hover .menu-sub-warp {
-        max-height: 400px;
-    }
-}

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -18,8 +18,10 @@ import {SetLayerStatusParameters} from './SetLayerStatusParameters';
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
+ * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SetLayerStatusService extends CommonServiceBase {
 
@@ -58,13 +60,9 @@ export class SetLayerStatusService extends CommonServiceBase {
         var me = this,
             method = "POST";
         me.url = me.mapUrl;
-        var end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? '' : '/';
 
         if (params.resourceID == null) {
-            me.url += "tempLayersSet";
-            me.url += ".json?";
-
+            me.url = Util.urlPathAppend(me.url, 'tempLayersSet');
             me.lastparams = params;
 
             me.request({
@@ -74,10 +72,8 @@ export class SetLayerStatusService extends CommonServiceBase {
                 failure: me.serviceProcessFailed
             });
         } else {
-            me.url += "tempLayersSet/" + params.resourceID;
-            me.url += ".json?";
-
-            me.url += "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString();
+            me.url = Util.urlPathAppend(me.url, "tempLayersSet/" + params.resourceID);
+            me.url = Util.urlAppend(me.url, "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString());
 
             var jsonParameters = '[{';
 

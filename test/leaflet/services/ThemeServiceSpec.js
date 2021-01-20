@@ -23,6 +23,7 @@ import {ThemeRange} from '../../../src/common/iServer/ThemeRange';
 import {ThemeUniqueItem} from '../../../src/common/iServer/ThemeUniqueItem';
 import {ThemeUnique} from '../../../src/common/iServer/ThemeUnique';
 import {RangeMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var WorldURL = GlobeParameter.WorldURL;      //ThemeDotDensity, ThemeLable
 var ChinaURL = GlobeParameter.ChinaURL;      //ThemeGraduatedSymbol, ThemeRange, ThemeUnique
@@ -42,6 +43,41 @@ describe('leaflet_ThemeService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('proxy', () => {
+        var service = themeService(WorldURL, { proxy: 'testProxy' });
+        expect(service).not.toBeNull();
+        expect(service.options.proxy).toEqual('testProxy');
+        service.destroy();
+    });
+
+    it('serverType', () => {
+        var service = themeService(WorldURL, { serverType: 'iPortal' });
+        expect(service).not.toBeNull();
+        expect(service.options.serverType).toEqual('iPortal');
+        service.destroy();
+    });
+
+    it('withCredentials', () => {
+        var service = themeService(WorldURL, { withCredentials: true });
+        expect(service).not.toBeNull();
+        expect(service.options.withCredentials).toBeTruthy();
+        service.destroy();
+    });
+
+    it('crossOrigin', () => {
+        var service = themeService(WorldURL, { crossOrigin: true });
+        expect(service).not.toBeNull();
+        expect(service.options.crossOrigin).toBeTruthy();
+        service.destroy();
+    });
+
+    it('headers', () => {
+        var service = themeService(WorldURL, { headers: {} });
+        expect(service).not.toBeNull();
+        expect(service.options.headers).not.toBeNull();
+        service.destroy();
+    });
+
     // 点密度专题图
     it('successEvent:ThemeDotDensity', (done) => {
         var themeDot = new ThemeDotDensity({
@@ -58,10 +94,18 @@ describe('leaflet_ThemeService', () => {
             dataSourceNames: ['World']
         });
         var themeDotDensityService = themeService(WorldURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(WorldURL + "/tempLayersSet");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe("DOTDENSITY");
+            expect(paramsObj[0].subLayers.layers[0].theme.dotExpression).toBe("Pop_1994");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bf6200f253a42d1bd7b44637e07225f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_3bf6200f253a42d1bd7b44637e07225f.json"}`));
+        });
         themeDotDensityService.getThemeInfo(themeDotDensityParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+       
             try {
                 expect(themeDotDensityService).not.toBeNull();
                 expect(themeDotDensityService.options.serverType).toBe("iServer");
@@ -85,7 +129,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 等级符号专题图
@@ -112,10 +156,15 @@ describe('leaflet_ThemeService', () => {
             dataSourceNames: ['China']
         });
         var themeGraduatedSymbolService = themeService(ChinaURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_53ac9e8fb44b4fee92cc0bd0d503e00c","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_53ac9e8fb44b4fee92cc0bd0d503e00c.json"}`));
+        });
         themeGraduatedSymbolService.getThemeInfo(themeGraduatedSymbolParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeGraduatedSymbolService).not.toBeNull();
                 expect(themeGraduatedSymbolService.options.serverType).toBe("iServer");
@@ -139,7 +188,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 统计专题图
@@ -189,10 +238,15 @@ describe('leaflet_ThemeService', () => {
             datasetNames: ["BaseMap_R"]
         });
         var themeGraphService = themeService(jingjinPopulationURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_7042d3977d3440b2a02375d7bde4a640","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_7042d3977d3440b2a02375d7bde4a640.json"}`));
+        });
         themeGraphService.getThemeInfo(themeGraphParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+       
             try {
                 expect(themeGraphService).not.toBeNull();
                 expect(themeGraphService.options.serverType).toBe("iServer");
@@ -216,7 +270,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 栅格分段专题图
@@ -267,10 +321,15 @@ describe('leaflet_ThemeService', () => {
             themes: [themeGridRange]
         });
         var themeGridRangeService = themeService(jingjinPopulationURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496.json"}`));
+        });
         themeGridRangeService.getThemeInfo(themeGridRangeParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeGridRangeService).not.toBeNull();
                 expect(themeGridRangeService.options.serverType).toBe("iServer");
@@ -293,7 +352,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 6000)
+        });
     });
 
     // 标签专题图
@@ -355,10 +414,15 @@ describe('leaflet_ThemeService', () => {
             dataSourceNames: ["World"]
         });
         var themeLableService = themeService(WorldURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(WorldURL + "/tempLayersSet");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_aaffb9a238aa4ab88cca495fbca6991b","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_aaffb9a238aa4ab88cca495fbca6991b.json"}`));
+        });
         themeLableService.getThemeInfo(themeLableParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeLableService).not.toBeNull();
                 expect(themeLableService.options.serverType).toBe("iServer");
@@ -381,7 +445,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 范围分段专题图
@@ -416,10 +480,15 @@ describe('leaflet_ThemeService', () => {
             themes: [themeRange]
         });
         var themeRangeService = themeService(ChinaURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_689a8864220f484ea694c6f7d60ca3cb","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_689a8864220f484ea694c6f7d60ca3cb.json"}`));
+        });
         themeRangeService.getThemeInfo(themeRangeParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+        
             try {
                 expect(themeRangeService).not.toBeNull();
                 expect(themeRangeService.options.serverType).toBe("iServer");
@@ -442,7 +511,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     it('successEvent:ThemeUnique', (done) => {
@@ -476,10 +545,15 @@ describe('leaflet_ThemeService', () => {
             themes: [themeUnique]
         });
         var themeUniqueService = themeService(ChinaURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7.json"}`));
+        });
         themeUniqueService.getThemeInfo(themeUniqueParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeUniqueService).not.toBeNull();
                 expect(themeUniqueService.options.serverType).toBe("iServer");
@@ -502,7 +576,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 });
 

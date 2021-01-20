@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Vector} from './Vector';
@@ -48,14 +48,14 @@ export class Curve {
      * Method: evalCubicCoeff
      *
      * Parameters:
-     * a - {Number} 值。
-     * b - {Number} 值。
-     * c - {Number} 值。
-     * d - {Number} 值。
-     * t - {Number} 值。
+     * a - {number} 值。
+     * b - {number} 值。
+     * c - {number} 值。
+     * d - {number} 值。
+     * t - {number} 值。
      *
      * Returns:
-     * {Number}
+     * {number}
      */
 
     /*

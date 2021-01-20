@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -7,7 +7,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.ClipParameter
- * @category iServer SpatialAnalyst Interpolation
+ * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param {Object} options - 参数。 
@@ -79,37 +79,13 @@ export class ClipParameter {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        if (this.isClipInRegion == false) {
-            return null;
-        }
-        var strClipParameter = "";
-        var me = this;
-
-        strClipParameter += "'isClipInRegion':" + Util.toJSON(me.isClipInRegion);
-
-        if (me.clipDatasetName != null) {
-            strClipParameter += "," + "'clipDatasetName':" + Util.toJSON(me.clipDatasetName);
-        }
-
-        if (me.clipDatasourceName != null) {
-            strClipParameter += "," + "'clipDatasourceName':" + Util.toJSON(me.clipDatasourceName);
-        }
-
-        if (me.isExactClip != null) {
-            strClipParameter += "," + "'isExactClip':" + Util.toJSON(me.isExactClip);
-        }
-
-        if (me.clipRegion != null) {
-            var serverGeometry = ServerGeometry.fromGeometry(me.clipRegion);
-            if (serverGeometry) {
-                var pointsCount = serverGeometry.parts[0];
-                var point2ds = serverGeometry.points.splice(0, pointsCount);
-                strClipParameter += "," + "'clipRegion':" + "{\"point2Ds\":";
-                strClipParameter += Util.toJSON(point2ds);
-                strClipParameter += "}";
-            }
-        }
-        return "{" + strClipParameter + "}";
+        return Util.toJSON({
+            isClipInRegion: this.isClipInRegion,
+            clipDatasetName: this.clipDatasetName,
+            clipDatasourceName: this.clipDatasourceName,
+            isExactClip: this.isExactClip,
+            clipRegion: ServerGeometry.fromGeometry(this.clipRegion)
+        });
     }
 
 }

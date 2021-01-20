@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -8,9 +8,9 @@
     <title data-i18n="resources.text_editor"></title>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
-    <div class='panel-heading'>
+    <div class='panel-heading' id="panelheading">
         <h5 class='panel-title text-center' data-i18n="resources.text_editor"></h5></div>
-    <div class='panel-body content'>
+    <div class='panel-body content' id="panelbodycontent">
         <input id="btn_Copy" type="button" class="btn btn-default" data-i18n="[value]resources.btn_copy" onclick="copySymbol()" />
         <input id="btn_Cut" type="button" class="btn btn-default" data-i18n="[value]resources.btn_cut" onclick="cutSymbol()" />
         <input id="btn_Paste" type="button" class="btn btn-default" data-i18n="[value]resources.btn_paste" onclick="pasteSymbol()" />
@@ -22,9 +22,9 @@
     <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;">粘贴此处</a>
 </div>
 <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host+"/iserver/services/plot-jingyong/rest/plot/";
     var map;
@@ -95,6 +95,11 @@
     window.onload = function(){
         plotSymbol();
     };
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+        });
+    });
 </script>
 </body>
 </html>

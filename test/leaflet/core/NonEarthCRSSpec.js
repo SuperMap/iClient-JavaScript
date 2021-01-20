@@ -1,5 +1,5 @@
-import {nonEarthCRS} from '../../../src/leaflet/core/NonEarthCRS';
-import {nonProjection} from '../../../src/leaflet/core/NonEarthCRS';
+import { nonEarthCRS } from '../../../src/leaflet/core/NonEarthCRS';
+import { nonProjection } from '../../../src/leaflet/core/NonEarthCRS';
 
 describe('leaflet_NonEarthCRS', () => {
     it('initialize', () => {
@@ -29,7 +29,7 @@ describe('leaflet_NonEarthCRS', () => {
 
     it('CRS_initialize', () => {
         var options = {
-            origin: {x: 30, y: 50},
+            origin: { x: 30, y: 50 },
             bounds: L.bounds([-180, -90], [180, 90]),
             resolutions: [1000, 100000]
         };
@@ -46,52 +46,44 @@ describe('leaflet_NonEarthCRS', () => {
 
     it('CRS_scale', () => {
         var options = {
-            origin: {x: 30, y: 50},
+            origin: { x: 30, y: 50 },
             bounds: L.bounds([-180, -90], [180, 90]),
-            resolutions: [100, 100000]
+            resolutions: [1, 0.5]
         };
         var nonEarthCRSObject = nonEarthCRS(options);
-        var scale1 = nonEarthCRSObject.scale(0);
-        expect(scale1).toEqual(0.01);
+        expect(nonEarthCRSObject.scale(0)).toEqual(1);
+        expect(nonEarthCRSObject.scale(1)).toEqual(2);
+        expect(nonEarthCRSObject.scale(0.5)).toBeCloseTo(1.414, 0.001);
         nonEarthCRSObject.resolutions = [];
-        var scale2 = nonEarthCRSObject.scale(1);
-        expect(scale2).not.toBeNaN();
+        expect(nonEarthCRSObject.scale(1)).toBeCloseTo(1.422, 0.001);
     });
 
     it('CRS_zoom', () => {
         var options1 = {
-            origin: {x: 30, y: 50},
+            origin: { x: 30, y: 50 },
             bounds: L.bounds([-180, -90], [180, 90]),
-            resolutions: [100, 100000]
+            resolutions: [1, 0.5]
         };
         var nonEarthCRS1 = nonEarthCRS(options1);
-        var bound1 = nonEarthCRS1.zoom(0.1);
-        expect(bound1).toEqual(-1);
-
-        //此处待开发修改后打开
-        // var options2 = {
-        //     origin: {x: 30, y: 50},
-        //     bounds: L.bounds([-180, -90], [180, 90]),
-        //     resolutions: [100, 100000]
-        // };
-        // var nonEarthCRS2 = nonEarthCRS(options2);
-        // var bound2 = nonEarthCRS2.zoom(0.01);
-        // expect(bound2).toEqual(0);
+        expect(nonEarthCRS1.zoom(0.1)).toBeLessThan(0);
+        expect(nonEarthCRS1.zoom(1)).toEqual(0);
+        expect(nonEarthCRS1.zoom(2)).toEqual(1);
+        expect(nonEarthCRS1.zoom(1.5)).toBeCloseTo(0.5849, 0.0001);
 
         var options3 = {
-            origin: {x: 30, y: 50},
-            bounds: L.bounds([-128, -90], [128, 90]),
+            origin: { x: 30, y: 50 },
+            bounds: L.bounds([-128, -90], [128, 90])
         };
         var nonEarthCRS3 = nonEarthCRS(options3);
-        var bound3 = nonEarthCRS3.zoom(10);
-        expect(bound3).toEqual(10);
+        var zoom3 = nonEarthCRS3.zoom(16);
+        expect(zoom3).toEqual(4);
     });
 
     it('CRS_distance', () => {
         var latlng1 = L.latLng(50.5, 30.5);
         var latlng2 = L.latLng(40, 60.5);
         var options = {
-            origin: {x: 30, y: 50},
+            origin: { x: 30, y: 50 },
             bounds: L.bounds([-180, -90], [180, 90]),
             resolutions: [100, 100000]
         };

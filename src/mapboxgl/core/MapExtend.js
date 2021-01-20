@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -12,21 +12,25 @@ import '../core/Base';
 export var MapExtend = function () {
 
     mapboxgl.Map.prototype.overlayLayersManager = {};
-
-    mapboxgl.Map.prototype.addLayer = function (layer, before) {
-        if (layer.source) {
-            this.style.addLayer(layer, before);
-            this._update(true);
+    if (mapboxgl.Map.prototype.addLayerBak === undefined) {
+        mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
+        mapboxgl.Map.prototype.addLayer = function (layer, before) {
+            if (layer.source || layer.type === 'custom' || layer.type === 'background') {
+                this.addLayerBak(layer, before);
+                return this;
+            }
+            if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
+                this.fire('error', {
+                    error: new Error('A layer with this id already exists.')
+                });
+                return;
+            }
+            addLayer(layer, this);
+            this.overlayLayersManager[layer.id] = layer;
             return this;
-        }
-        if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
-            this.fire('error', {error: new Error('A layer with this id already exists.')});
-            return;
-        }
-        addLayer(layer, this);
-        this.overlayLayersManager[layer.id] = layer;
-        return this;
-    };
+        };
+    }
+    
     mapboxgl.Map.prototype.getLayer = function (id) {
         if (this.overlayLayersManager[id]) {
             return this.overlayLayersManager[id];
@@ -61,12 +65,13 @@ export var MapExtend = function () {
     mapboxgl.Map.prototype.setLayoutProperty = function (layerID, name, value) {
         if (this.overlayLayersManager[layerID]) {
             if (name === "visibility") {
-                if (value === "block") {
+                if (value === "visible") {
                     value = true;
                 } else {
                     value = false;
                 }
                 setVisibility(this.overlayLayersManager[layerID], value);
+                this.style.fire('data', {dataType: 'style'});
             }
             return this;
         }
@@ -74,9 +79,28 @@ export var MapExtend = function () {
         this._update(true);
         return this;
     };
+    mapboxgl.Map.prototype.updateTransform = function (units, originX, originY, centerX, centerY, width, height) {
+        this.transform.units = units;
+        var mercatorZfromAltitude = this.mercatorZfromAltitude;
+        mapboxgl.MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
+            altitude = altitude || 0;
+            const lngLat = mapboxgl.LngLat.convert(lngLatLike);
+            return new mapboxgl.MercatorCoordinate(
+                (lngLat.lng - originX) / width,
+                (originY - lngLat.lat) / height,
+                mercatorZfromAltitude(altitude, lngLat.lat));
+        };
+        mapboxgl.MercatorCoordinate.prototype.toLngLat = function () {
+            return new mapboxgl.LngLat(
+                this.x * width + originX,
+                originY - this.y * height);
+        };
+        this.customConvertPoint = window.URL.createObjectURL(new Blob(['customConvertPoint = {projectX:function(x){return (x - ' + centerX + ') / ' + width + ' + 0.5},projectY:function(y){y = 0.5 - ((y - ' + centerY + ') / ' + height + ');return y < 0 ? 0 : y > 1 ? 1 : y;},toY:function(y){return (0.5-y)*' + height + '+' + centerY + ';}}'],{type:"text/javascript"}));
+    }
+
 
     function addLayer(layer, map) {
-        layer.onAdd(map);
+        layer.onAdd && layer.onAdd(map);
     }
 
     /**
@@ -84,7 +108,7 @@ export var MapExtend = function () {
      * @description  移除事件。
      */
     function removeLayer(layer) {
-        layer.removeFromMap();
+        layer.removeFromMap && layer.removeFromMap();
     }
 
     /**
@@ -93,7 +117,7 @@ export var MapExtend = function () {
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     function setVisibility(layer, visibility) {
-        layer.setVisibility(visibility);
+        layer.setVisibility && layer.setVisibility(visibility);
     }
 
     /**
@@ -108,7 +132,9 @@ export var MapExtend = function () {
         if (beforeLayerID) {
             var beforeLayer = document.getElementById(beforeLayerID);
             if (!beforeLayer) {
-                mapboxgl.Evented.prototype.fire("error", {error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)});
+                mapboxgl.Evented.prototype.fire("error", {
+                    error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)
+                });
             }
         }
         if (layer && beforeLayer) {

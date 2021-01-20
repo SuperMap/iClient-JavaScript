@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
@@ -9,13 +9,13 @@ import Attributions from '../core/Attributions'
  * @classdesc 百度地图图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
- * @param {string} [url='http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
+ * @param {string} [url='https://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
  * @param {Object} options - 切片参数。
  * @param {number} [options.minZoom=3] - 最小缩放级别。 
  * @param {number} [options.maxZoom=19] - 最大缩放级别。
  * @param {L.LatLngBounds} [options.bounds=L.latLngBounds([-85.0511287798, -180],[85.0511287798, 180])] - 显示范围。
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
  */
 export var BaiduTileLayer = L.TileLayer.extend({

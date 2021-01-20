@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -37,16 +37,16 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     options: {
 
-        // {Number} 节点抽稀像素距离，默认值 2。
+        // {number} 节点抽稀像素距离，默认值 2。
         nodesClipPixel: 2,
 
-        //{Boolean} 图形是否在 hover 时高亮 ，默认值：false。
+        //{boolean} 图形是否在 hover 时高亮 ，默认值：false。
         isHoverAble: false,
 
-        //{Boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。
+        //{boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。
         isMultiHover: false,
 
-        // {Boolean} 图形是否可点击，默认 true
+        // {boolean} 图形是否可点击，默认 true
         isClickAble: true,
         //是否允许 feature 样式（style） 中的有效属性应用到专题图层。
         //默认值为： false，禁止对专题要素使用数据（feature）的 style。

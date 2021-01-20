@@ -1,0 +1,163 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title data-i18n="resources.title_scatterWeiboWGS84"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script type="text/javascript" include='mapbox-gl-enhance,echarts' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
+                        "tileSize": 256,
+                    },
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            crs: mapboxgl.CRS.EPSG4326,
+            center: [112, 37.94],
+            zoom: 3
+        });
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+        $.get('../data/weibo.json', function (weiboData) {
+            weiboData = weiboData.map(function (serieData, idx) {
+                var px = serieData[0] / 1000;
+                var py = serieData[1] / 1000;
+                var res = [
+                    [px, py]
+                ];
+
+                for (var i = 2; i < serieData.length; i += 2) {
+                    var dx = serieData[i] / 1000;
+                    var dy = serieData[i + 1] / 1000;
+                    var x = px + dx;
+                    var y = py + dy;
+                    res.push([x.toFixed(2), y.toFixed(2), 1]);
+
+                    px = x;
+                    py = y;
+                }
+                return res;
+            });
+
+            var echartslayer = new EchartsLayer(map);
+            echartslayer.chart.setOption(option = {
+
+                GLMap: {
+                    roam: true
+                },
+                coordinateSystem: 'GLMap',
+                tooltip: {},
+                legend: {
+                    left: 'left',
+                    top: 'bottom',
+                    data: ['强', '中', '弱'],
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+                geo: {
+                    name: '强',
+                    type: 'scatter',
+                    map: 'GLMap',
+                    label: {
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#323c48',
+                            borderColor: '#111'
+                        },
+                        emphasis: {
+                            areaColor: '#2a333d'
+                        }
+                    }
+                },
+                series: [{
+                    name: '弱',
+                    type: 'scatter',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 1,
+                    large: true,
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 2,
+                            shadowColor: 'rgba(37, 140, 249, 0.8)',
+                            color: 'rgba(37, 140, 249, 0.8)'
+                        }
+                    },
+                    data: weiboData[0]
+                }, {
+                    name: '中',
+                    type: 'scatter',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 1,
+                    large: true,
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 2,
+                            shadowColor: 'rgba(14, 241, 242, 0.8)',
+                            color: 'rgba(14, 241, 242, 0.8)'
+                        }
+                    },
+                    data: weiboData[1]
+                }, {
+                    name: '强',
+                    type: 'scatter',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 1,
+                    large: true,
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 2,
+                            shadowColor: 'rgba(255, 255, 255, 0.8)',
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    },
+                    data: weiboData[2]
+                }]
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,14 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    MapvRenderer
-} from "./mapv/MapvRenderer";
-import {
-    CommonUtil
-} from '@supermap/iclient-common';
+import { MapvRenderer } from './mapv/MapvRenderer';
+import { CommonUtil } from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.MapvLayer
@@ -20,11 +16,10 @@ import {
  * @param {string} [mapVOptions.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("mapvLayer_") 创建专题图层 ID。
  */
 export class MapvLayer {
-
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
-        this.id = mapVOptions.layerID ? mapVOptions.layerID : CommonUtil.createUniqueID("mapvLayer_");
-        delete mapVOptions["layerID"];
+        this.id = mapVOptions.layerID ? mapVOptions.layerID : CommonUtil.createUniqueID('mapvLayer_');
+        delete mapVOptions['layerID'];
 
         this.mapVOptions = mapVOptions;
         this.dataSet = dataSet;
@@ -34,7 +29,6 @@ export class MapvLayer {
         if (this.map) {
             this.map.addLayer(this);
         }
-
     }
 
     onAdd(map) {
@@ -53,7 +47,7 @@ export class MapvLayer {
      */
     removeFromMap() {
         this.mapContainer.removeChild(this.canvas);
-        this.clearData();
+        this.renderer.destroy();
     }
 
     /**
@@ -97,7 +91,6 @@ export class MapvLayer {
             nextLayer.parentNode.appendChild(layer);
         }
     }
-
 
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
@@ -188,14 +181,14 @@ export class MapvLayer {
         var canvas = document.createElement('canvas');
         canvas.id = this.id;
         canvas.style.position = 'absolute';
-        canvas.style.top = 0 + "px";
-        canvas.style.left = 0 + "px";
+        canvas.style.top = 0 + 'px';
+        canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
-        if (this.mapVOptions.context == '2d') {
-            canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
+        if (!this.mapVOptions.context || this.mapVOptions.context == '2d') {
+            canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
@@ -210,7 +203,6 @@ export class MapvLayer {
     setZIndex(z) {
         this.canvas.style.zIndex = z;
     }
-
 }
 
 mapboxgl.supermap.MapvLayer = MapvLayer;

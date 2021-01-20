@@ -544,73 +544,81 @@ deps = {
                     "des": "Logo 控件",
                     "des_en": "Logo control"
                 }]
-            },
+            }
+        },
+
+        "Components": {
+            "title": "组件",
+            "description": "组件模块",
+            "description_en": "Component module",
+
             "OpenFile": {
-                "name": "打开文件微件",
+                "name": "打开文件组件",
                 "src": [
-                    "./src/leaflet/widgets/openfile/OpenFileView.js"
+                    "./src/leaflet/components/openfile/OpenFileView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.openFile",
-                    "des": "打开文件微件",
-                    "des_en": "Open file widgets"
+                    "name": "L.supermap.components.openFile",
+                    "des": "打开文件组件",
+                    "des_en": "Open file components"
                 }]
             },
             "ClientComputation ": {
-                "name": "客户端计算微件",
+                "name": "客户端计算组件",
                 "src": [
-                    "./src/leaflet/widgets/clientcomputation/ClientComputationView.js"
+                    "./src/leaflet/components/clientcomputation/ClientComputationView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.clientComputation",
-                    "des": "客户端计算微件",
-                    "des_en": "Client computation widget"
+                    "name": "L.supermap.components.clientComputation",
+                    "des": "客户端计算组件",
+                    "des_en": "Client computation component"
                 }]
             },
             "DistributedAnalysis": {
-                "name": "分布式分析微件",
+                "name": "分布式分析组件",
                 "src": [
-                    "./src/leaflet/widgets/distributedanalysis/DistributedAnalysisView.js"
+                    "./src/leaflet/components/distributedanalysis/DistributedAnalysisView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.distributedAnalysis",
-                    "des": "分布式分析微件",
-                    "des_en": "Distributed analysis widget"
+                    "name": "L.supermap.components.distributedAnalysis",
+                    "des": "分布式分析组件",
+                    "des_en": "Distributed analysis component"
                 }]
             },
             "Search": {
-                "name": "图层查询微件",
+                "name": "图层查询组件",
                 "src": [
-                    "./src/leaflet/widgets/search/SearchView.js"
+                    "./src/leaflet/components/search/SearchView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.search",
-                    "des": "图层查询微件",
+                    "name": "L.supermap.components.search",
+                    "des": "图层查询组件",
                     "des_en": "Search"
                 }]
             },
             "DataFlow": {
-                "name": "数据流微件",
+                "name": "数据流组件",
                 "src": [
-                    "./src/leaflet/widgets/dataflow/DataFlowView.js"
+                    "./src/leaflet/components/dataflow/DataFlowView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.dataFlow",
-                    "des": "数据流微件",
+                    "name": "L.supermap.components.dataFlow",
+                    "des": "数据流组件",
                     "des_en": "Data flow"
                 }]
             },
             "DataServiceQuery": {
-                "name": "数据服务查询微件",
+                "name": "数据服务查询组件",
                 "src": [
-                    "./src/leaflet/widgets/dataservicequery/DataServiceQueryView.js"
+                    "./src/leaflet/components/dataservicequery/DataServiceQueryView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.dataServiceQuery",
-                    "des": "数据服务查询微件",
+                    "name": "L.supermap.components.dataServiceQuery",
+                    "des": "数据服务查询组件",
                     "des_en": "Data service query"
                 }]
-            },
+            }
+
         }
 
     },
@@ -896,7 +904,7 @@ deps = {
                     "name": "ol.source.Graphic",
                     "des": "高效率点图层源",
                     "des_en": "High efficiency point source"
-                },{
+                }, {
                     "name": "ol.style.CloverShape ",
                     "des": "高效率点图层源三叶草风格",
                     "des_en": "Clover style of graphic source"
@@ -913,11 +921,11 @@ deps = {
                     "name": "ol.source.VectorTileSuperMapRest",
                     "des": "矢量瓦片图层源",
                     "des_en": "Vector tile source"
-                },{
+                }, {
                     "name": "ol.supermap.MapboxStyles",
                     "des": "Mapbox 矢量瓦片风格",
                     "des_en": "Mapbox vector tile style"
-                },{
+                }, {
                     "name": "ol.supermap.VectorTileStyles",
                     "des": "矢量瓦片风格",
                     "des_en": "Vector tile style"
@@ -1008,6 +1016,20 @@ deps = {
     },
 
     "mapboxgl": {
+        "Mapping": {
+            "title": "地图",
+            "description": "基础地图模块",
+            "description_en": "Basic map module",
+            "iPortal": {
+                "name": "iPortal webmap",
+                "src": ["./src/mapboxgl/mapping/WebMap.js"],
+                "modules": [{
+                    "name": "mapboxgl.supermap.WebMap",
+                    "des": "iPortal、Online 地图",
+                    "des_en": "SuperMap iPortal and Online tile layer"
+                }]
+            }
+        },
         "Services": {
             "title": "服务",
             "description": "服务模块",
@@ -1198,7 +1220,7 @@ deps = {
             "MapV": {
                 "name": "MapV",
                 "src": [
-                    "./src/mapboxgl/overlay/MapvLayer.js",
+                    "./src/mapboxgl/overlay/MapvLayer.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",

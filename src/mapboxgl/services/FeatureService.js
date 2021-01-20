@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {Util} from '../core/Util';
-import {ServiceBase} from './ServiceBase';
+import { Util } from '../core/Util';
+import { ServiceBase } from './ServiceBase';
 import {
     DataFormat,
     GetFeaturesByIDsService,
@@ -12,7 +12,8 @@ import {
     GetFeaturesByBoundsService,
     GetFeaturesByBufferService,
     GetFeaturesByGeometryService,
-    EditFeaturesService
+    EditFeaturesService,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -29,7 +30,9 @@ import {
  * @param {Object} options - 创建要素数据集服务类可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 export class FeatureService extends ServiceBase {
     constructor(url, options) {
@@ -48,6 +51,8 @@ export class FeatureService extends ServiceBase {
         var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -70,6 +75,8 @@ export class FeatureService extends ServiceBase {
         var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -92,6 +99,8 @@ export class FeatureService extends ServiceBase {
         var getFeatureService = new GetFeaturesByBufferService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -114,6 +123,8 @@ export class FeatureService extends ServiceBase {
         var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -137,6 +148,8 @@ export class FeatureService extends ServiceBase {
         var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -162,10 +175,12 @@ export class FeatureService extends ServiceBase {
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -178,17 +193,17 @@ export class FeatureService extends ServiceBase {
     /**
      * @private
      * @description 参数类型转换。
-     * @param {object} params - 服务参数 。
-     * @returns {object} params - 转换后的对接 SuperMap 服务的参数。
+     * @param {Object} params - 服务参数 。
+     * @returns {Object} params - 转换后的对接 SuperMap 服务的参数。
      */
     _processParams(params) {
         if (!params) {
             return {};
         }
         var me = this;
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        params.returnContent = params.returnContent == null ? true : params.returnContent;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
-        params.toIndex = params.toIndex ? params.toIndex : -1;
+        params.toIndex = params.toIndex === 0 ? 0 : params.toIndex ? params.toIndex : -1;
         if (params.bounds) {
             params.bounds = Util.toSuperMapBounds(params.bounds);
         }
@@ -198,13 +213,17 @@ export class FeatureService extends ServiceBase {
 
         //mapboxgl geojson要素对象转 SuperMap Geometry 对象
         if (params.geometry) {
-            params.geometry = Util.toSuperMapGeometry(params.geometry);
+            if (params.geometry instanceof mapboxgl.LngLatBounds) {
+                params.geometry = Util.toSuperMapPolygon(params.geometry);
+            } else {
+                params.geometry = Util.toSuperMapGeometry(params.geometry);
+            }
         }
         //editFeature服务参数转换,传入单独得对象或对象数组
         if (params.features) {
             var features = [];
             if (Util.isArray(params.features)) {
-                params.features.map(function (feature) {
+                params.features.map(function(feature) {
                     features.push(me._createServerFeature(feature));
                     return features;
                 });
@@ -218,7 +237,9 @@ export class FeatureService extends ServiceBase {
 
     //geoFeature严格按照 mapboxgl geojson的结构
     _createServerFeature(geoFeature) {
-        var feature = {}, fieldNames = [], fieldValues = [];
+        var feature = {},
+            fieldNames = [],
+            fieldValues = [];
         var properties = geoFeature.properties;
         for (var key in properties) {
             fieldNames.push(key);
@@ -234,7 +255,7 @@ export class FeatureService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 }
 

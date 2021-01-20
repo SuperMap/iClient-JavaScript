@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -278,17 +278,8 @@ SuperMap.Util.getParameterString = function (params) {
         var value = params[key];
         if ((value != null) && (typeof value !== 'function')) {
             var encodedValue;
-            if (typeof value === 'object' && value.constructor === Array) {
-                /* value is an array; encode items and separate with "," */
-                var encodedItemArray = [];
-                var item;
-                for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                    item = value[itemIndex];
-                    encodedItemArray.push(encodeURIComponent(
-                        (item === null || item === undefined) ? "" : item)
-                    );
-                }
-                encodedValue = encodedItemArray.join(",");
+            if (Array.isArray(value) || value.toString() === '[object Object]') {
+                encodedValue = encodeURIComponent(JSON.stringify(value));
             } else {
                 /* value is a string; simply encode */
                 encodedValue = encodeURIComponent(value);
@@ -301,19 +292,44 @@ SuperMap.Util.getParameterString = function (params) {
 };
 
 /**
- * @description 给 URL 追加参数。
+ * @description 给 URL 追加查询参数。
  * @param {string} url - 待追加参数的 URL 字符串。
- * @param {string} paramStr - 待追加的参数。
+ * @param {string} paramStr - 待追加的查询参数。
  * @returns {string} 新的 URL。
  */
 SuperMap.Util.urlAppend = function (url, paramStr) {
     var newUrl = url;
     if (paramStr) {
+        if(paramStr.indexOf('?') === 0){
+            paramStr = paramStr.substring(1);
+        }
         var parts = (url + " ").split(/[?&]/);
         newUrl += (parts.pop() === " " ?
             paramStr :
             parts.length ? "&" + paramStr : "?" + paramStr);
     }
+    return newUrl;
+};
+
+/**
+ * @description 给 URL 追加 path 参数。
+ * @param {string} url - 待追加参数的 URL 字符串。
+ * @param {string} paramStr - 待追加的path参数。
+ * @returns {string} 新的 URL。
+ */
+SuperMap.Util.urlPathAppend = function (url, pathStr) {
+    let newUrl = url;
+    if (!pathStr) {
+        return newUrl;
+    }
+    if (pathStr.indexOf('/') === 0) {
+        pathStr = pathStr.substring(1);
+    }
+    const parts = url.split('?');
+    if(parts[0].indexOf('/', parts[0].length - 1) < 0){
+        parts[0] += '/'
+    }
+    newUrl = `${parts[0]}${pathStr}${parts.length > 1 ? `?${parts[1]}` : ''}`;
     return newUrl;
 };
 

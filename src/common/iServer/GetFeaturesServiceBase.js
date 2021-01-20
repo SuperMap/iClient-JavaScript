@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -17,8 +17,10 @@ import {GeoJSON} from '../format/GeoJSON';
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。 
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。 
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myService = new SuperMap.GetFeaturesServiceBase(url, {
  *     eventListeners: {
@@ -68,19 +70,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         this.format = DataFormat.GEOJSON;
 
         Util.extend(this, options);
-        var me = this, end;
-        if (options.format) {
-            me.format = options.format.toUpperCase();
-        }
-
-        end = me.url.substr(me.url.length - 1, 1);
-        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (me.format==="geojson" ) {
-        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-        // } else {
-        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-        // }
-        me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
+        this.url = Util.urlPathAppend(this.url, 'featureResults');
 
         this.CLASS_NAME = "SuperMap.GetFeaturesServiceBase";
     }
@@ -117,16 +107,16 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
         if (me.returnContent) {
-            me.url += "returnContent=" + me.returnContent;
+            me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
             firstPara = false;
         }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
-            me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
+            me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
         }
 
         if (params.returnCountOnly) {
-            me.url += "&returnCountOnly=" + params.returnContent;
+            me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnContent)
         }
         jsonParameters = me.getJsonParameters(params);
         me.request({
@@ -148,7 +138,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         result = Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON();
-            result.features = JSON.parse(geoJSONFormat.write(result.features));
+            result.features = geoJSONFormat.toGeoJSON(result.features);
         }
         me.events.triggerEvent("processCompleted", {result: result});
     }

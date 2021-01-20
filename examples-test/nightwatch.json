@@ -1,8 +1,8 @@
 {
   "src_folders": ["./examples-test/leaflet","./examples-test/openlayers"],
   "output_folder": "./examples-test/reports",
-  "exclude" : [],
-  "filter" : "",
+  "exclude": ["./examples-test/leaflet/tiandituLayer_llIT.js","./examples-test/leaflet/tiandituLayer_mercatorIT.js"],
+  "filter": "",
   "custom_commands_path": "",
   "custom_assertions_path": "",
   "page_objects_path": "",
@@ -10,10 +10,10 @@
 
   "selenium": {
     "start_process": true,
-    "server_path": "./node_modules/selenium-server/lib/runner/selenium-server-standalone-2.53.1.jar",
+    "server_path": "./node_modules/selenium-server/lib/runner/selenium-server-standalone-3.141.59.jar",
     "log_path": false,
     "host": "127.0.0.1",
-    "port": 4444,
+    "port": 4445,
     "cli_args": {
       "webdriver.chrome.driver": "./node_modules/chromedriver/lib/chromedriver/chromedriver.exe"
     }
@@ -22,27 +22,33 @@
   "test_settings": {
     "default": {
       "launch_url": "http://localhost",
-      "selenium_port": 4444,
+      "selenium_port": 4445,
       "selenium_host": "localhost",
       "silent": true,
       "screenshots": {
         "enabled": false,
-        "on_failure":false,
-        "on_error":false,
+        "on_failure": false,
+        "on_error": false,
         "path": ""
       },
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
-        "acceptSslCerts": true
+        "acceptSslCerts": true,
+        "chromeOptions": {
+          "w3c": false
+        }
       }
     },
 
-    "chrome" : {
+    "chrome": {
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
-        "acceptSslCerts": true
+        "acceptSslCerts": true,
+        "chromeOptions": {
+          "w3c": false
+        }
       }
     }
   }

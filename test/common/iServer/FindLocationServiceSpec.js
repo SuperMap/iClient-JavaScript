@@ -1,26 +1,22 @@
-﻿﻿import {FindLocationService} from '../../../src/common/iServer/FindLocationService';
-import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
-import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
-import {SupplyCenterType} from '../../../src/common/REST';
+﻿import { FindLocationService } from '../../../src/common/iServer/FindLocationService';
+import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
+import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
+import { SupplyCenterType } from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 //服务初始化时注册事件监听函数
 var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
-var initFindLocationService_RegisterListener = () => {
-    return new FindLocationService(url, options);
+var initFindLocationService_RegisterListener = (findLocationServiceCompleted, findLocationServiceFailed) => {
+    return new FindLocationService(url, {
+        eventListeners: {
+            'processFailed': findLocationServiceFailed,
+            'processCompleted': findLocationServiceCompleted
+        }
+    });
 };
-var findLocationServiceCompleted = (serviceSucceedEventArgs) => {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-};
-var findLocationServiceFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var options = {
-    eventListeners: {
-        'processFailed': findLocationServiceFailed,
-        'processCompleted': findLocationServiceCompleted
-    }
-};
+
+
 
 describe('FindLocationService', () => {
     var originalTimeout;
@@ -59,9 +55,8 @@ describe('FindLocationService', () => {
             turnWeightField: turnWeightField,
             weightName: weightName
         });
-        var findLocationService = initFindLocationService_RegisterListener();
-        findLocationService.processAsync(parameter);
-        setTimeout(() => {
+        var findLocationServiceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.demandResults).not.toBeNull();
@@ -71,10 +66,10 @@ describe('FindLocationService', () => {
                 expect(analystResult.demandResults.features[0].geometry).not.toBeNull();
                 expect(analystResult.demandResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.demandResults.features[0].geometry.coordinates.length).toEqual(2);
-                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(470);
-                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(885);
+                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(161);
+                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(124);
                 expect(analystResult.demandResults.features[0].properties.isEdge).toBeFalsy();
-                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(1358);
+                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(139);
                 expect(analystResult.supplyResults).not.toBeNull();
                 expect(analystResult.supplyResults.type).toEqual("FeatureCollection");
                 expect(analystResult.supplyResults.features).not.toBeNull();
@@ -83,11 +78,11 @@ describe('FindLocationService', () => {
                 expect(analystResult.supplyResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.supplyResults.features[0].geometry.coordinates.length).toEqual(2);
                 expect(analystResult.supplyResults.features[0].properties.actualResourceValue).toEqual(0);
-                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(289.6734693877551);
-                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(49);
+                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(79.5);
+                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(6);
                 expect(analystResult.supplyResults.features[0].properties.maxWeight).toEqual(500);
-                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(1358);
-                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(14194);
+                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(139);
+                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(477);
                 expect(analystResult.supplyResults.features[0].properties.type).toEqual("OPTIONALCENTER");
                 findLocationService.destroy();
                 expect(findLocationService.EVENT_TYPES).toBeNull();
@@ -101,7 +96,17 @@ describe('FindLocationService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var findLocationServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var findLocationService = initFindLocationService_RegisterListener(findLocationServiceCompleted, findLocationServiceFailed);
+
+
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
+        findLocationService.processAsync(parameter);
     });
 
     //isFromCenter为true的情况
@@ -132,9 +137,8 @@ describe('FindLocationService', () => {
             turnWeightField: turnWeightField,
             weightName: weightName
         });
-        var findLocationService = initFindLocationService_RegisterListener();
-        findLocationService.processAsync(parameter);
-        setTimeout(() => {
+
+        var findLocationServiceCompleted = (serviceSucceedEventArgsSystem) => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.demandResults).not.toBeNull();
@@ -144,10 +148,10 @@ describe('FindLocationService', () => {
                 expect(analystResult.demandResults.features[0].geometry).not.toBeNull();
                 expect(analystResult.demandResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.demandResults.features[0].geometry.coordinates.length).toEqual(2);
-                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(470);
-                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(885);
+                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(161);
+                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(124);
                 expect(analystResult.demandResults.features[0].properties.isEdge).toBeFalsy();
-                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(1358);
+                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(139);
                 expect(analystResult.supplyResults).not.toBeNull();
                 expect(analystResult.supplyResults.type).toEqual("FeatureCollection");
                 expect(analystResult.supplyResults.features).not.toBeNull();
@@ -156,11 +160,11 @@ describe('FindLocationService', () => {
                 expect(analystResult.supplyResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.supplyResults.features[0].geometry.coordinates.length).toEqual(2);
                 expect(analystResult.supplyResults.features[0].properties.actualResourceValue).toEqual(0);
-                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(289.6734693877551);
-                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(49);
+                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(79.5);
+                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(6);
                 expect(analystResult.supplyResults.features[0].properties.maxWeight).toEqual(500);
-                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(1358);
-                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(14194);
+                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(139);
+                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(477);
                 expect(analystResult.supplyResults.features[0].properties.type).toEqual("OPTIONALCENTER");
                 findLocationService.destroy();
                 expect(findLocationService.EVENT_TYPES).toBeNull();
@@ -174,7 +178,16 @@ describe('FindLocationService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var findLocationServiceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+
+        var findLocationService = initFindLocationService_RegisterListener(findLocationServiceCompleted, findLocationServiceFailed);
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
+        findLocationService.processAsync(parameter);
     });
 
     //参数错误
@@ -204,9 +217,10 @@ describe('FindLocationService', () => {
             turnWeightField: turnWeightField,
             weightName: weightName
         });
-        var findLocationService = initFindLocationService_RegisterListener();
-        findLocationService.processAsync(parameter);
-        setTimeout(() => {
+        var findLocationServiceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+        };
+        var findLocationServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -222,27 +236,28 @@ describe('FindLocationService', () => {
                 parameter.destroy();
                 done();
             }
-        }, 2000)
+        };
+
+        var findLocationService = initFindLocationService_RegisterListener(findLocationServiceCompleted, findLocationServiceFailed);
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"key(UGCTransportationAnalystProvider.checkField.turnWeightList.illegal) not found in resources."}}`));
+        });
+        findLocationService.processAsync(parameter);
     });
 
     //参数为空
-    it('processAsync_parameterNull', (done) => {
-        var findLocationService = initFindLocationService_RegisterListener();
+    it('processAsync_parameterNull', () => {
+        var flag = false;
+        var findLocationServiceCompleted = (serviceSucceedEventArgs) => {
+            flag = true;
+        };
+        var findLocationServiceFailed = (serviceFailedEventArgsSystem) => {
+            flag = true;
+        };
+        var findLocationService = initFindLocationService_RegisterListener(findLocationServiceCompleted, findLocationServiceFailed);
         findLocationService.processAsync();
-        setTimeout(() => {
-            try {
-                expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
-                findLocationService.destroy();
-                expect(findLocationService.EVENT_TYPES).toBeNull();
-                expect(findLocationService.events).toBeNull();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("FindLocationService_" + exception.name + ":" + exception.message);
-                findLocationService.destroy();
-                done();
-            }
-        })
+        //不会发送任何请求，在processAsync直接return 了 so 应为false
+        expect(flag).toBeFalsy;
     })
 });
 

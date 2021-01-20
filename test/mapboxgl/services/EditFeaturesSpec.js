@@ -1,5 +1,6 @@
 import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var id;
@@ -37,10 +38,13 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
             returnContent: true
         });
         var service = new FeatureService(url);
-        service.editFeatures(addFeatureParams, (result) => {
-            serviceResult = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features?returnContent=true");
+            return Promise.resolve(new Response(`[257]`));
         });
-        setTimeout(() => {
+        service.editFeatures(addFeatureParams, (result) => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -58,7 +62,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //删除要素
@@ -70,10 +74,13 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
             editType: "delete"
         });
         var service = new FeatureService(url);
-        service.editFeatures(deleteFeatureParams, (result) => {
-            serviceResult = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features?ids=[257]");
+            return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        setTimeout(() => {
+        service.editFeatures(deleteFeatureParams, (result) => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -88,6 +95,6 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

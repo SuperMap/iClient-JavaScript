@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -248,20 +248,20 @@ export class Vector extends Feature {
  * 大部分样式通过 SVG 标准定义属性。
  * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
  * - stroke properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
- * @property {Boolean} [fill] - 不需要填充则设置为 false。
+ * @property {boolean} [fill] - 不需要填充则设置为 false。
  * @property {string} [fillColor='#ee9900'] - 十六进制填充颜色。
  * @property {number} [fillOpacity=0.4] - 填充不透明度。
- * @property {Boolean} [stroke] - 不需要描边则设为 false。
+ * @property {boolean} [stroke] - 不需要描边则设为 false。
  * @property {string} [strokeColor='#ee9900'] - 十六进制描边颜色。
  * @property {number} [strokeOpacity=0.4] - 描边的不透明度(0-1)。
  * @property {number} [strokeWidth=1] - 像素描边宽度。
  * @property {string} [strokeLinecap='round'] - strokeLinecap 有三种类型 butt，round，square。
  * @property {string} [strokeDashstyle='solid'] - 有 dot，dash，dashdot，longdash，longdashdot，solid 几种样式。
- * @property {Boolean} [graphic] - 不需要则设置为 false。
+ * @property {boolean} [graphic] - 不需要则设置为 false。
  * @property {number} [pointRadius=6] - 像素点半径。
  * @property {string} [pointerEvents='visiblePainted'] - pointerEvents。
  * @property {string} [cursor] - cursor。
- * @property {Boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
+ * @property {boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
  * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
  * @property {number} [graphicWidth] - 外部图表的像素宽度。
  * @property {number} [graphicHeight] - 外部图表的高宽度。
@@ -278,7 +278,7 @@ export class Vector extends Feature {
  * @property {number} [backgroundYOffset] - 背景图在 y 轴的偏移量。
  * @property {number} [backgroundHeight] - 背景图的高度。如果没有设置，将用 graphicHeight。
  * @property {number} [backgroundWidth] - 背景图的宽度。如果没有设置，将用 graphicWidth。
- * @property {Boolean} [isUnicode=false] - 这个属性要配合 label 属性来用，当为 true时，label 就可以使用 unicode 编码，
+ * @property {boolean} [isUnicode=false] - 这个属性要配合 label 属性来用，当为 true时，label 就可以使用 unicode 编码，
  * 比如 "a" 的 unicode 十六进制编码为 61，则 label 属性可以为 "&#x61;",其中 "&#" 为前缀，标志这个为 unicode 编码，
  * "x" 是指 16 进制,这时页面显示的是 "a"；当此值为 false 的时候，label 的内容会被直接输出，
  * 比如，label 为 "&#x61;"，这时页面显示的也是 "&#x61;"。
@@ -288,7 +288,7 @@ export class Vector extends Feature {
  * 第二个字符代表垂直方向上的对齐，"t"=top, "m"=middle, "b"=bottom。
  * @property {number} [labelXOffset] - 标签在 x 轴方向的偏移量。
  * @property {number} [labelYOffset] - 标签在 y 轴方向的偏移量。
- * @property {Boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
+ * @property {boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
  * @property {string} [fontColor='#000000'] - 标签字体颜色。
  * @property {number} [fontOpacity] - 标签透明度 (0-1)。
  * @property {string} [fontFamily] - 标签的字体类型。

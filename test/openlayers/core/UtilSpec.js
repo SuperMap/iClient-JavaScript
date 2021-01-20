@@ -1,10 +1,10 @@
-import {Util} from '../../../src/openlayers/core/Util.js';
-import {MultiPolygon} from '../../../src/common/commontypes/geometry/MultiPolygon';
-import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
-import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
-import {Point} from '../../../src/common/commontypes/geometry/Point';
-import {Bounds} from '../../../src/common/commontypes/Bounds';
-
+import { Util } from '../../../src/openlayers/core/Util.js';
+import { MultiPolygon } from '../../../src/common/commontypes/geometry/MultiPolygon';
+import { Polygon } from '../../../src/common/commontypes/geometry/Polygon';
+import { LinearRing } from '../../../src/common/commontypes/geometry/LinearRing';
+import { Point } from '../../../src/common/commontypes/geometry/Point';
+import { Bounds } from '../../../src/common/commontypes/Bounds';
+import olPolygon from 'ol/geom/Polygon';
 describe('openlayers_Util', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -16,72 +16,92 @@ describe('openlayers_Util', () => {
     });
 
     it('toGeoJSON', () => {
-        var smObj = [{
-            attributes: {
-                SmArea: "1.6060069623493825E15",
-                SmGeoPosition: "65536",
-                SmID: "1",
-                SmUserID: "0"
-            },
-            geometry: {
-                coordinateType: null,
-                cutEdges: null,
-                parts: [3],
-                points: [{
-                    id: "SuperMap.Geometry.Point_5",
-                    type: "NONE",
-                    x: -2,
-                    y: 258
-                }, {
-                    id: "SuperMap.Geometry.Point_6",
-                    type: "NONE",
-                    x: 258,
-                    y: 258
-                }, {
-                    id: "SuperMap.Geometry.Point_7",
-                    type: "NONE",
-                    x: 258,
-                    y: -2
-                }],
-                type: "REGION"
-            },
-            id: 1,
-            layerName: "World_Division_pl@China",
-            searchValues: "",
-            type: "REGION"
-        }];
+        var smObj = [
+            {
+                attributes: {
+                    SmArea: '1.6060069623493825E15',
+                    SmGeoPosition: '65536',
+                    SmID: '1',
+                    SmUserID: '0'
+                },
+                geometry: {
+                    coordinateType: null,
+                    cutEdges: null,
+                    parts: [3],
+                    points: [
+                        {
+                            id: 'SuperMap.Geometry.Point_5',
+                            type: 'NONE',
+                            x: -2,
+                            y: 258
+                        },
+                        {
+                            id: 'SuperMap.Geometry.Point_6',
+                            type: 'NONE',
+                            x: 258,
+                            y: 258
+                        },
+                        {
+                            id: 'SuperMap.Geometry.Point_7',
+                            type: 'NONE',
+                            x: 258,
+                            y: -2
+                        }
+                    ],
+                    type: 'REGION'
+                },
+                id: 1,
+                layerName: 'World_Division_pl@China',
+                searchValues: '',
+                type: 'REGION'
+            }
+        ];
         var result = Util.toGeoJSON(smObj);
         expect(result).not.toBeNull();
         expect(typeof result).toBe('object');
         expect(result.type).not.toBeNull();
-        expect(result.type).toBe("FeatureCollection");
+        expect(result.type).toBe('FeatureCollection');
         expect(result.features).not.toBeNull();
         expect(result.features.length).toBe(1);
         expect(result.features[0].properties.id).toBe(1);
-        expect(result.features[0].properties.layerName).toBe("World_Division_pl@China");
-        expect(result.features[0].properties.searchValues).toBe("");
-        expect(result.features[0].properties.type).toBe("REGION");
+        expect(result.features[0].properties.layerName).toBe('World_Division_pl@China');
+        expect(result.features[0].properties.searchValues).toBe('');
+        expect(result.features[0].properties.type).toBe('REGION');
     });
 
     it('toSuperMapGeometry', () => {
         var geoJSON = {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "properties": {
-                    "attributes": {
-                        "SmArea": "1.6060069623493825E15",
-                        "SmGeoPosition": "65536",
-                        "SmID": "1",
-                        "SmPerimeter": "1.6030006674231339E8",
-                    }, "id": 1, "layerName": "World@China", "searchValues": "", "type": "REGION"
-                },
-                "geometry": {
-                    "type": "MultiPolygon", "coordinates": [[[
-                        [-2, 258], [258, 258], [-2, 258], [-2, 258]
-                    ]]]
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'Feature',
+                    properties: {
+                        attributes: {
+                            SmArea: '1.6060069623493825E15',
+                            SmGeoPosition: '65536',
+                            SmID: '1',
+                            SmPerimeter: '1.6030006674231339E8'
+                        },
+                        id: 1,
+                        layerName: 'World@China',
+                        searchValues: '',
+                        type: 'REGION'
+                    },
+                    geometry: {
+                        type: 'MultiPolygon',
+                        coordinates: [
+                            [
+                                [
+                                    [-2, 258],
+                                    [258, 258],
+                                    [-2, 258],
+                                    [-2, 258]
+                                ]
+                            ]
+                        ]
+                    }
                 }
-            }]
+            ]
         };
         var result = Util.toSuperMapGeometry(geoJSON);
         expect(result).not.toBeNull();
@@ -106,7 +126,7 @@ describe('openlayers_Util', () => {
     it('resolutionToScale', () => {
         var resolution = 76.43702828517625;
         var dpi = 96;
-        var mapUnit = "METER";
+        var mapUnit = 'METER';
         var result = Util.resolutionToScale(resolution, dpi, mapUnit);
         expect(result).toBe(0.000003461454994642238);
     });
@@ -122,37 +142,35 @@ describe('openlayers_Util', () => {
         expect(result.top).toBe(5921501.3955786);
     });
 
-
     it('scaleToResolution', () => {
         var scale = 0.000003461454994642238;
         var dpi = 96;
-        var mapUnit = "METER";
+        var mapUnit = 'METER';
         var result = Util.scaleToResolution(scale, dpi, mapUnit);
         expect(result).not.toBeNull();
         expect(result).toBe(76.43702828517624);
     });
 
-
     it('getMeterPerMapUnit', () => {
-        var mapUnit = "METER";
+        var mapUnit = 'METER';
         var result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(1);
-        mapUnit = "DEGREE";
+        mapUnit = 'DEGREE';
         result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(111319.49079327358);
-        mapUnit = "KILOMETER";
+        mapUnit = 'KILOMETER';
         result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(0.001);
-        mapUnit = "INCH";
+        mapUnit = 'INCH';
         result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(39.37007886725774);
-        mapUnit = "FOOT";
+        mapUnit = 'FOOT';
         result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(0.3048);
     });
 
     it('isArray', () => {
-        var obj = ["metaData", "-2107465189", "1.0"];
+        var obj = ['metaData', '-2107465189', '1.0'];
         var result = Util.isArray(obj);
         expect(result).toBeTruthy();
     });
@@ -175,7 +193,7 @@ describe('openlayers_Util', () => {
         };
         var result = Util.Csv2GeoJSON(csv, option);
         expect(typeof result).toBe('object');
-        expect(result.type).toBe("FeatureCollection");
+        expect(result.type).toBe('FeatureCollection');
         expect(result.features).not.toBeNull();
         expect(result.features.length).toBe(5);
         var feature = result.features[0];
@@ -187,7 +205,7 @@ describe('openlayers_Util', () => {
         expect(feature.geometry.type).toBe('Point');
         expect(feature.geometry.coordinates).not.toBeNull();
         expect(feature.geometry.coordinates.length).toBe(2);
-        expect(JSON.stringify(feature.geometry.coordinates)).toBe("[106.472739,29.561524]");
+        expect(JSON.stringify(feature.geometry.coordinates)).toBe('[106.472739,29.561524]');
     });
 
     it('createCanvasContext2D', () => {
@@ -199,5 +217,62 @@ describe('openlayers_Util', () => {
         expect(result.canvas).not.toBeNull();
         expect(result.canvas.width).toBe(360);
         expect(result.canvas.height).toBe(580);
+    });
+    it('setMask,unsetMask', () => {
+        const layer = {
+            setExtent: function (extent) {
+                this.extent = extent;
+            },
+            getExtent: function (extent) {
+                return this.extent;
+            },
+            changed: function (extent) {
+                return;
+            },
+            on: function (type, fun) {
+                this.listeners[type] = fun;
+            },
+            un: function (type, fun) {
+                delete this.listeners[type];
+            }
+        };
+        spyOnAllFunctions(layer);
+        layer.className_ = 'ol-layer';
+        // spyOnProperty(layer, 'className_', 'set').and.callFake((value) => {
+        //     this.className_ = value;
+        // });
+        const polygon = new olPolygon([
+            [
+                [0, 0],
+                [60, 0],
+                [60, 39],
+                [0, 39],
+                [0, 0]
+            ]
+        ]);
+        Util.setMask(layer, polygon);
+        expect(layer.classNameBak_).toBe('ol-layer');
+        expect(layer.className_).toContain('ol_mask_layer_');
+        expect(layer.clipRender).not.toBeNull;
+        expect(layer.setExtent).toHaveBeenCalled;
+        expect(layer.changed).toHaveBeenCalled;
+        expect(layer.on).toHaveBeenCalled;
+        layer.un.calls.reset();
+        layer.on.calls.reset();
+        layer.changed.calls.reset();
+        Util.setMask([layer], polygon);
+        expect(layer.un).toHaveBeenCalledBefore(layer.on);
+        expect(layer.on).toHaveBeenCalled;
+        expect(layer.changed).toHaveBeenCalledTimes(2);
+        layer.un.calls.reset();
+        layer.on.calls.reset();
+        layer.changed.calls.reset();
+        Util.unsetMask(layer);
+        expect(layer.un).toHaveBeenCalled;
+        expect(layer.changed).toHaveBeenCalledTimes(1);
+        expect(layer.className_).toBe('ol-layer');
+        expect(layer.classNameBak_).toBeUndefined;
+        expect(layer.clipRender).toBeUndefined;
+        expect(layer.extentBak_).toBeUndefined;
     });
 });

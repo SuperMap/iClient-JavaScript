@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -7,12 +7,13 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_Cluster"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="animatedclusterlayer" src="../../dist/openlayers/include-openlayers.js"></script>
+    <!-- 此范例基于 openlayers@4.6.5 版本 -->
+    <script type="text/javascript" include="animatedclusterlayer,ol@4.6.5" src="../../dist/ol/include-ol.js"></script>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China_4326";
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China_4326";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         var map = new ol.Map({

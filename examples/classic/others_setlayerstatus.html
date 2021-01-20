@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -38,7 +38,7 @@
         }
 
         .winContent {
-            padding: 5px;
+            padding-left: 25px;
             overflow-y: auto;
             height: 550px;
         }
@@ -47,8 +47,6 @@
             right: 20px;
             top: 170px;
             position: absolute;
-            width: 400px;
-            height: 600px;
             border: 2px solid #D6E3F1;
             background: #FFF;
             z-index: 9999;
@@ -86,7 +84,7 @@
     var map = null;
     var layer = null;
     var tempLayerID = null,
-        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        host = window.isLocal ? window.server : "https://iserver.supermap.io",
         url = host + "/iserver/services/map-world/rest/maps/World";
 
     getLayersInfo();
@@ -254,7 +252,7 @@
         str += winMessage;
         str += '</div>';
         $("#popupWin").html(str);
-        document.getElementById("popupWin").style.width = "250px";
+        document.getElementById("popupWin").style.width = "260px";
         document.getElementById("popupWin").style.height = "432px";
     }
 

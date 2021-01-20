@@ -1,19 +1,19 @@
-import {networkAnalystService} from '../../../src/leaflet/services/NetworkAnalystService';
-import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
-import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
-import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
-import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
-import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
-import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
-import {FindMTSPPathsParameters} from '../../../src/common/iServer/FindMTSPPathsParameters';
-import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
-import {UpdateEdgeWeightParameters} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
-import {UpdateTurnNodeWeightParameters} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
-import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
-import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
-import {SupplyCenterType} from '../../../src/common/REST';
-
+import { networkAnalystService } from '../../../src/leaflet/services/NetworkAnalystService';
+import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
+import { FindPathParameters } from '../../../src/common/iServer/FindPathParameters';
+import { FindTSPPathsParameters } from '../../../src/common/iServer/FindTSPPathsParameters';
+import { FindMTSPPathsParameters } from '../../../src/common/iServer/FindMTSPPathsParameters';
+import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
+import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
+import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
+import { SupplyCenterType } from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.networkAnalystURL;
 var options = {
     serverType: 'iServer'
@@ -38,10 +38,14 @@ describe('leaflet_NetworkAnalystService', () => {
             isUncertainDirectionValid: false
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/burstAnalyse");
+            return Promise.resolve(new Response(JSON.stringify(burstPipelineAnalyst)));
+        });
         service.burstPipelineAnalyst(burstPipelineAnalystParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -57,7 +61,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //耗费矩阵分析服务
@@ -68,10 +72,14 @@ describe('leaflet_NetworkAnalystService', () => {
             nodes: [84, 85],
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/weightmatrix");
+            return Promise.resolve(new Response(`[[0,42],[42,0]]`));
+        });
         service.computeWeightMatrix(computeWeightMatrixParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -88,9 +96,8 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
-
     //最近设施分析服务  isAnalyzeById 为 true,
     it('findClosestFacilities_isAnalyzeById:true', (done) => {
         var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
@@ -103,10 +110,14 @@ describe('leaflet_NetworkAnalystService', () => {
             isAnalyzeById: true,
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/closestfacility");
+            return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_True)));
+        });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -123,7 +134,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //最近设施分析服务  isAnalyzeById 为 false,
@@ -156,10 +167,14 @@ describe('leaflet_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/closestfacility");
+            return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_False)));
+        });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -216,11 +231,10 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
-
+        });
     });
 
-    //选址分区分析服务
+    // 选址分区分析服务
     it('findLocation', (done) => {
         var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER,
             supplyCenterType_NULL = SupplyCenterType.NULL,
@@ -231,48 +245,48 @@ describe('leaflet_NetworkAnalystService', () => {
             resourceValue: 100,         // 资源供给中心能提供的最大服务量或商品数量,必设参数
             type: supplyCenterType_OPTIONALCENTER      //选址分区中资源中心的类型包括固定中心和可选中心两种
         }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 1358,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 2972,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 5523,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 1161,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 4337,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 5732,
-                resourceValue: 100,
-                type: supplyCenterType_NULL
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 663,
-                resourceValue: 100,
-                type: supplyCenterType_FIXEDCENTER
-            })
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 1358,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 2972,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 5523,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 1161,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 4337,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 5732,
+            resourceValue: 100,
+            type: supplyCenterType_NULL
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 663,
+            resourceValue: 100,
+            type: supplyCenterType_FIXEDCENTER
+        })
         ];
         var findLocationParams = new FindLocationParameters({
             // 期望用于最终设施选址的资源供给中心数量,必设字段
@@ -288,10 +302,14 @@ describe('leaflet_NetworkAnalystService', () => {
             supplyCenters: supplyCenters
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/location");
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
         service.findLocation(findLocationParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -325,7 +343,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //最佳路径分析服务
@@ -351,15 +369,19 @@ describe('leaflet_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/path");
+            return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
+        });
         service.findPath(findPathParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBe(true);
+                expect(serviceResult.result.succeed).toBeTruthy();
                 var path = serviceResult.result.pathList[0];
                 expect(path.edgeFeatures.type).toEqual("FeatureCollection");
                 var edge_features = path.edgeFeatures.features;
@@ -406,7 +428,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //旅行商分析服务
@@ -435,10 +457,13 @@ describe('leaflet_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/tsppath");
+            return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
+        });
         service.findTSPPaths(findTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -479,7 +504,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 expect(tspPath.route.geometry.coordinates[0][0].length).toEqual(3);
                 expect(tspPath.stopIndexes.length).toEqual(3);
                 expect(tspPath.stopWeights).not.toBeNull();
-                expect(tspPath.weight).toEqual(10287.324455311546);
+                expect(tspPath.weight).toEqual(10287.3244553115);
                 service.destroy();
                 done();
             } catch (e) {
@@ -488,7 +513,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //多旅行商分析服务
@@ -515,10 +540,13 @@ describe('leaflet_NetworkAnalystService', () => {
             parameter: analystParameter
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/mtsppath");
+            return Promise.resolve(new Response(JSON.stringify(findMTSPPathsResultJson)));
+        });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -572,7 +600,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //服务区分析服务
@@ -599,10 +627,13 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         findServiceAreasParams.weights = [400 + Math.random() * 100];
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/servicearea");
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)));
+        });
         service.findServiceAreas(findServiceAreasParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -657,7 +688,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //更新边的耗费权重服务
@@ -670,10 +701,14 @@ describe('leaflet_NetworkAnalystService', () => {
             weightField: "time"
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(url + "/edgeweight/20/fromnode/26/tonode/109/weightfield/time");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.updateEdgeWeight(updateEdgeWeightParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+     
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -685,8 +720,8 @@ describe('leaflet_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
     });
+});
 
     //转向耗费权重更新服务
     it('updateTurnNodeWeight', (done) => {
@@ -703,10 +738,13 @@ describe('leaflet_NetworkAnalystService', () => {
             weightField: "TurnCost"
         });
         var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(url + "/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -720,6 +758,6 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
-    })
+    });
+    });
 });

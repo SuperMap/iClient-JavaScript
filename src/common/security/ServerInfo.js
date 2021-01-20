@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -51,20 +51,20 @@ export class ServerInfo {
         // var patten = /http:\/\/([^\/]+)/i;
         //this.server = this.server.match(patten)[0];
 
-        var tokenServiceSuffix = "/services/security/tokens.json";
+        var tokenServiceSuffix = "/services/security/tokens";
         if (this.type === ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
             tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
         }
 
         if (!this.tokenServiceUrl) {
-            this.tokenServiceUrl = this.server + tokenServiceSuffix;
+            this.tokenServiceUrl = Util.urlPathAppend(this.server, tokenServiceSuffix);
         }
 
         if (!this.keyServiceUrl) {
             if (this.type === ServerType.IPORTAL) {
-                this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
+                this.keyServiceUrl = Util.urlPathAppend(this.server, "/web/mycontent/keys/register");
             } else if (this.type === ServerType.ONLINE) {
-                this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
+                this.keyServiceUrl = Util.urlPathAppend(this.server, "/web/mycontent/keys");
             }
         }
     }

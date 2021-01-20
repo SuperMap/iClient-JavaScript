@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -19,7 +19,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #toolbar {
@@ -58,7 +57,7 @@
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/classic/include-classic.js"></script>
 <script>
-    var host = window.isLocal ? window.server : "http://iclsvr.supermap.io",
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
         url = host + "/iserver/services/map-temperature/rest/maps/全国温度变化图",
         url2 = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     var map, baseLayer, themeLayer, points = [];
@@ -144,7 +143,7 @@
             searchMode: "KDTREE_FIXED_RADIUS",
             // 查找半径,与点数据单位相同
             searchRadius: 200,
-            resolution: 3000,
+            resolution: 9000,
             bounds: new SuperMap.Bounds(-2640403.6321084504, 1873792.1034850003, 3247669.390292245, 5921501.395578556)
         });
         var interpolationService = new SuperMap.REST.InterpolationAnalystService(url2, {

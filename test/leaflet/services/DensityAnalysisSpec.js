@@ -1,7 +1,7 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
 import request from 'request';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -37,17 +37,17 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
         var densityAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
-            var expectParams = `{'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200,'centerLonLat':null},'fieldName':"SmLength",'resultGridDatasetResolution':null,'searchRadius':50,'targetDatasource':null,'resultGridName':"KernelDensity_leafletTest",'deleteExistResultDataset':true}`;
-            expect(params).toBe(expectParams);
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/Railway@Changchun/densityanalyst/kernel?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe("KernelDensity_leafletTest");
+            expect(paramsObj.searchRadius).toEqual(50);
             expect(options).not.toBeNull();
-            var resultJson=`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`;
-            return Promise.resolve(new Response(resultJson));
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`));
         });
         densityAnalystService.densityAnalysis(densityAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
@@ -61,7 +61,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
 });

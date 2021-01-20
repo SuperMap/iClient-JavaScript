@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <html>
 <head>
@@ -26,10 +26,10 @@
 <script type="text/javascript" include="echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
-        " <a href='http://echarts.baidu.com' target='_blank'>© 2018 " + resources.title_3baidu + " ECharts</a>";
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        " <a href='https://echarts.baidu.com' target='_blank'>© 2018 " + resources.title_3baidu + " ECharts</a>";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
 
     var map = new mapboxgl.Map({
@@ -73,7 +73,7 @@
         if (idx > CHUNK_COUNT) {
             return;
         }
-        var dataURL = "http://iclient.supermap.io/web/data/bigdata_water_10w/data_" + idx + ".bin";
+        var dataURL = "https://iclient.supermap.io/web/data/bigdata_water_10w/data_" + idx + ".bin";
         var xhr = new XMLHttpRequest();
         xhr.open('GET', dataURL, true);
         xhr.responseType = 'arraybuffer';

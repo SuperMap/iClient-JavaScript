@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * Leaflet 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -49,6 +49,12 @@ var exampleConfig = {
                     name_en: "custom scale",
                     thumbnail: "l_tiledMapLayerProj4.png",
                     fileName: "01_tiledMapLayerProj4"
+                }, {
+                    name: "地图-栅格分析",
+                    name_en: "map rasterFunction",
+                    version: "10.0.0",
+                    thumbnail: "l_tiledMapLayerRasterfunction.png",
+                    fileName: "01_tiledMapLayer_rasterfunction"
                 }, {
                     name: "地图信息",
                     name_en: "map query service",
@@ -446,16 +452,16 @@ var exampleConfig = {
         name: "iPortal",
         name_en: "iPortal",
         content: {
-            "ip_map": {
-                name: "地图",
-                name_en: "Web map",
-                content: [{
-                    name: "举办过奥运会的城市",
-                    name_en: "city hosted the Olympic Games",
-                    thumbnail: "l_iPortalWebmap.png",
-                    fileName: "iPortalWebmap"
-                }]
-            },
+            // "ip_map": {
+            //     name: "地图",
+            //     name_en: "Web map",
+            //     content: [{
+            //         name: "举办过奥运会的城市",
+            //         name_en: "city hosted the Olympic Games",
+            //         thumbnail: "l_iPortalWebmap.png",
+            //         fileName: "iPortalWebmap"
+            //     }]
+            // },
             "ip_security": {
                 name: "安全",
                 name_en: "Security",
@@ -466,14 +472,70 @@ var exampleConfig = {
                     fileName: "iPortalSecurity"
                 }]
             },
-            "ip_querymaps": {
-                name: "地图列表",
-                name_en: "Web map list",
+            "ip_queryresources": {
+                name: "资源中心",
+                name_en: "Resources Center",
                 content: [{
-                    name: "地图列表",
-                    name_en: "web map list",
-                    thumbnail: "l_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMaps"
+                    name: "资源中心",
+                    name_en: "Resources Center",
+                    version: "10.0.1",
+                    thumbnail: "l_iPortalQueryResources.png",
+                    fileName: "iPortalQueryResources"
+                }]
+            },
+            "ip_querymyresources": {
+                name: "我的资源",
+                name_en: "My Resource",
+                content: [{
+                    name: "我的资源",
+                    name_en: "My Resource",
+                    version: "10.0.1",
+                    thumbnail: "l_iPortalQueryMyResources.png",
+                    fileName: "iPortalQueryMyResources"
+                }]
+            },
+            "ip_batchaddresource": {
+                name: "添加地图/场景",
+                name_en: "Batch Add Map/Scene",
+                content: [{
+                    name: "添加地图/场景",
+                    name_en: "Batch Add Map/Scene",
+                    version: "10.1.0",
+                    thumbnail: "l_iPortalAddResource.png",
+                    fileName: "iPortalBatchAddResource"
+                }]
+            },
+            "ip_uploaddata": {
+                name: "上传数据",
+                name_en: "Upload Data",
+                content: [{
+                    name: "上传数据",
+                    name_en: "Upload Data",
+                    version: "10.1.0",
+                    thumbnail: "l_iPortalUploadData.png",
+                    fileName: "iPortalUploadData"
+                }]
+            },
+            "ip_registerdata": {
+                name: "注册数据",
+                name_en: "Register Data",
+                content: [{
+                    name: "注册数据",
+                    name_en: "Register Data",
+                    version: "10.1.0",
+                    thumbnail: "l_iPortalRegisterData.png",
+                    fileName: "iPortalRegisterData"
+                }]
+            },
+            "ip_publishdata": {
+                name: "发布数据",
+                name_en: "Publish Data",
+                content: [{
+                    name: "发布数据",
+                    name_en: "Publish Data",
+                    version: "10.1.0",
+                    thumbnail: "l_iportalPublishData.png",
+                    fileName: "iPortalPublishData"
                 }]
             }
         }
@@ -568,7 +630,7 @@ var exampleConfig = {
                     thumbnail: "l_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }, {
-                    name: "2000年到2015年地震热力图(Classic)",
+                    name: "2001年到2014年地震热力图(Classic)",
                     name_en: "Earthquake heat map (2000-2015)",
                     version: "9.1.0",
                     thumbnail: "l_earthquakeHeatMap.png",
@@ -600,7 +662,7 @@ var exampleConfig = {
                 name_en: "High efficiency point layer",
                 content: [
                     {
-                        name: "纽约出租车18万点",
+                        name: "纽约18万出租车点",
                         name_en: "points of 180K NY taxis",
                         thumbnail: "l_graphicLayer.png",
                         fileName: "12_graphicLayer"
@@ -881,18 +943,24 @@ var exampleConfig = {
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
                     }, {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "l_tileVectorLayer_normal.png",
-                        fileName: "vectorTileLayerMVT"
-
-                    }, {
-                        name: "默认风格(MVT 4326)",
-                        name_en: "normal(MVT 4326)",
-                        thumbnail: "l_tileVectorLayer_mvt4326.png",
-                        fileName: "vectorTileLayerMVT_4326"
-
+                        name: "MVT (叠加 MapboxGL)",
+                        name_en: "MVT (via MapboxGL)",
+                        version: '10.1.1',
+                        thumbnail: "l_mvt_mapboxgl.png",
+                        fileName: "mvt_mapboxgl"
                     }
+                    // , {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "l_tileVectorLayer_normal.png",
+                    //     fileName: "vectorTileLayerMVT"
+
+                    // }, {
+                    //     name: "默认风格(MVT 4326)",
+                    //     name_en: "normal(MVT 4326)",
+                    //     thumbnail: "l_tileVectorLayer_mvt4326.png",
+                    //     fileName: "vectorTileLayerMVT_4326"
+                    // }
                 ]
             },
             "themeLayer": {
@@ -924,6 +992,20 @@ var exampleConfig = {
                     thumbnail: "l_graphThemeLayer.png",
                     fileName: "graphThemeLayer"
                 }]
+            },
+            pixi: {
+                name: 'Pixi',
+                name_en: 'Pixi',
+                version: '10.0.1',
+                content: [
+                    {
+                        name: '纽约出租车上车点分布图（140万点数据绘制）',
+                        name_en: 'Use Pixi to draw 1.4 millions New York Taxi Points',
+                        version: '10.0.1',
+                        thumbnail: 'l_pixiOverlay_taxi.png',
+                        fileName: 'l_pixiOverlay_taxi'
+                    }
+                ]
             }
         }
     },
@@ -1064,6 +1146,12 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "plot_symbolAvoid.png",
                     fileName: "plot_symbolAvoid"
+                }, {
+                    name: "动态目标图层",
+                    name_en: "moving target layer",
+                    version: "10.1.0",
+                    thumbnail: "plot_movingTarget.gif",
+                    fileName: "plot_movingTarget"
                 }]
             }
         }
@@ -1169,66 +1257,81 @@ var exampleConfig = {
             }
         }
     },
-    "widgets": {
-        name: "微件",
-        name_en: "Widgets",
+    "components": {
+        name: "组件",
+        name_en: "Components",
         content: {
-            "widgetsSuperMap": {
+            "componentsSuperMap": {
                 name: "基础",
                 name_en: "Basic",
                 content: [{
                     name: "打开文件",
-                    name_en: "open file widget",
-                    version: "9.1.0",
-                    thumbnail: "openFileWidget.png",
-                    fileName: "widgets_openFileWidget"
+                    name_en: "open file component",
+                    version: "9.1.1",
+                    thumbnail: "components_openFile.png",
+                    fileName: "components_openFile"
                 }, {
                     name: "数据流服务",
                     name_en: "data flow service",
-                    version: "9.1.0",
-                    thumbnail: "widgets_dataFlow.png",
-                    fileName: "widgets_dataFlow"
+                    version: "9.1.1",
+                    thumbnail: "components_dataFlow.png",
+                    fileName: "components_dataFlow"
                 }, {
                     name: "地址匹配与图层要素查询",
                     name_en: "address match add features search",
-                    version: "9.1.0",
-                    thumbnail: "widgets_Search.png",
-                    fileName: "widgets_Search"
+                    version: "9.1.1",
+                    thumbnail: "components_Search.png",
+                    fileName: "components_Search"
                 },{
                     name: "客户端计算",
                     name_en: "client computation",
-                    version: "9.1.0",
-                    thumbnail: "widgets_clientComputation.png",
-                    fileName: "widgets_clientComputation"
+                    version: "9.1.1",
+                    thumbnail: "components_clientComputation.png",
+                    fileName: "components_clientComputation"
                 },{
                     name: "分布式分析",
                     name_en: "distribute analysis",
-                    version: "9.1.0",
-                    thumbnail: "widgets_distributedAnalysis.png",
-                    fileName: "widgets_distributedAnalysis"
+                    version: "9.1.1",
+                    thumbnail: "components_distributedAnalysis.png",
+                    fileName: "components_distributedAnalysis"
                 },{
                     name: "数据服务查询",
                     name_en: "data service query",
-                    version: "9.1.0",
-                    thumbnail: "widgets_dataServiceQuery.png",
-                    fileName: "widgets_dataServiceQuery"
-                }]
+                    version: "9.1.1",
+                    thumbnail: "components_dataServiceQuery.png",
+                    fileName: "components_dataServiceQuery"
+                },
+                {
+                    name: "图表_iServer",
+                    name_en: "chart_iServer",
+                    version: "9.1.2",
+                    thumbnail: "components_chart_isvr.png",
+                    fileName: "components_chart_isvr"
+                },{
+                    name: "图表_iPortal",
+                    name_en: "chart_iPortal",
+                    version: "9.1.2",
+                    thumbnail: "components_chart_iptl.png",
+                    fileName: "components_chart_iptl"
+                }
+
+            ]
             },
-            "widgetsAdvanced": {
+            "componentsAdvanced": {
                 name: "扩展",
                 name_en: "Advanced",
                 content: [{
                     name: "打开文件(React)",
-                    name_en: "open file widget(React)",
-                    version: "9.1.0",
-                    thumbnail: "openFileWidget_react.png",
-                    fileName: "widgets_openFileWidget_react"
+                    name_en: "open file component(React)",
+                    version: "9.1.1",
+                    thumbnail: "components_openFile_react.png",
+                    fileName: "components_openFile_react"
                 }, {
                     name: "打开文件(Vue)",
-                    name_en: "open file widget(Vue)",
-                    version: "9.1.0",
-                    thumbnail: "openFileWidget_vue.png",
-                    fileName: "widgets_openFileWidget_vue"
+                    name_en: "open file component(Vue)",
+                    version: "9.1.1",
+                    thumbnail: "components_openFile_vue.png",
+                    fileName: "components_openFile_vue"
                 }]
             }
         }
@@ -1319,7 +1422,7 @@ var sideBarIconConfig = {
     "plot": "fa-edit",
     "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
-    "widgets": "fa-window-restore",
+    "components": "fa-window-restore",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",
@@ -1340,7 +1443,7 @@ var exampleIconConfig = {
     "plot": "fa-edit",
     "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
-    "widgets": "fa-window-restore",
+    "components": "fa-window-restore",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",

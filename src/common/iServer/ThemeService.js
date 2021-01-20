@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -21,6 +21,8 @@ import {ThemeParameters} from './ThemeParameters';
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class ThemeService extends CommonServiceBase {
 
@@ -29,12 +31,8 @@ export class ThemeService extends CommonServiceBase {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        var end,
-            me = this;
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end === "/") ? "tempLayersSet.json?" : "/tempLayersSet.json?";
-
-        this.CLASS_NAME = "SuperMap.ThemeService";
+        this.url = Util.urlPathAppend(this.url, 'tempLayersSet');
+        this.CLASS_NAME = 'SuperMap.ThemeService';
     }
 
     /**

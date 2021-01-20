@@ -1,5 +1,6 @@
 import {queryService} from '../../../src/leaflet/services/QueryService';
 import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
@@ -25,10 +26,24 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
             bounds: polygon.getBounds()
         });
         var queryByBoundsService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("BoundsQuery");
+            expect(paramsObj.bounds.rightTop.y).toBe(39);
+            expect(paramsObj.bounds.rightTop.x).toBe(60);
+            expect(paramsObj.bounds.leftBottom.x).toBe(0);
+            expect(paramsObj.bounds.leftBottom.y).toBe(0);
+                // { rightTop: { y: 39, x: 60 }, leftBottom:{ y: 0, x: 0 }});
+            // expect(params).toContain("'queryMode':'BoundsQuery'");
+            // expect(params).toContain("'bounds': {'rightTop':{'y':39,'x':60},'leftBottom':{'y':0,'x':0}}");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -41,8 +56,8 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.currentCount);
                 expect(serviceResult.result.recordsets.length).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets[0].datasetName).toBe("Capitals@World");
-                expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(16);
-                expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(16);
+                expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(2);
+                expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(2);
                 expect(serviceResult.result.recordsets[0].features.type).toBe("FeatureCollection");
                 expect(serviceResult.result.recordsets[0].features.features.length).toEqual(serviceResult.result.totalCount);
                 for (var i = 0; i < serviceResult.result.recordsets[0].features.features.length; i++) {
@@ -51,23 +66,8 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
-                    CAPITAL: "圣多美",
-                    CAPITAL_CH: "圣多美",
-                    CAPITAL_EN: "Sao Tome",
-                    CAPITAL_LO: "São Tomé",
-                    CAP_POP: "53300.0",
-                    COUNTRY: "圣多美和普林西比",
-                    COUNTRY_CH: "圣多美和普林西比",
-                    COUNTRY_EN: "Sao Tome & Principe",
-                    ID: 19,
-                    POP: "53300.0",
-                    SmGeometrySize: "16",
-                    SmID: "19",
-                    SmLibTileID: "1",
-                    SmUserID: "0",
-                    SmX: "6.728004415891377",
-                    SmY: "0.33699598913014484",
-                    USERID: "0"
+                    CAPITAL: "拉巴斯",
+                    SmID: "59"
                 }));
                 queryByBoundsService.destroy();
                 done();
@@ -77,7 +77,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:queryByBounds_customsResult=true', (done)=> {
@@ -93,10 +93,18 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         queryByBoundsParams.holdTime = 10;
         queryByBoundsParams.returnCustomResult = true;
         var queryByBoundsService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnCustomResult=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("BoundsQuery");
+            expect(paramsObj.queryParameters.expectCount).toBe(100);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_74e108f826bb45e2be52a31c6d448486","succeed":true,"customResult":{"top":37.95041694606847,"left":1.2015454003744992,"bottom":0.32300103608403674,"leftBottom":{"x":1.2015454003744992,"y":0.32300103608403674},"right":58.588002445423115,"rightTop":{"x":58.588002445423115,"y":37.95041694606847}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_74e108f826bb45e2be52a31c6d448486.json"}`));
+        });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -116,7 +124,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
 
@@ -127,10 +135,14 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
             bounds: polygon.getBounds()
         });
         var queryByBoundsService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
+        });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -142,12 +154,12 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 queryByBoundsService.destroy();
                 done();
             } catch (exception) {
-                console.log("leaflet_queryByBounds_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
+                console.log("failEvent:queryByBounds_layerNotExist'案例失败：" + exception.name + ":" + exception.message);
                 queryByBoundsService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
 
@@ -158,10 +170,14 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
             bounds: polygon.getBounds()
         });
         var queryByBoundsService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults?returnContent=true");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
+        });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -174,11 +190,11 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("leaflet_queryByBounds_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
+                console.log("queryByBounds_queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
                 queryByBoundsService.destroy();
                 done();
             }
-        }, 2000);
+        })
     })
 });
 

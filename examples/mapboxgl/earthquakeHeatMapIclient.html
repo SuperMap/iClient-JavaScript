@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title data-i18n="resources.title_ChinaEarthquakeHeatClient"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type="text/javascript" include="jquery,papaparse" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script>
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var map = new mapboxgl.Map({
+            container: 'map', 
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
+                        "tileSize": 256
+                    }
+                },
+
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            crs:'EPSG:4326',
+            center: [112, 37.94],
+            zoom: 3 
+        });
+
+        map.on('load', function () {
+            var heatMapLayer = new mapboxgl.supermap.HeatMapLayer(
+                "heatMap", {
+                    "map": map,
+                    "id": "heatmap",
+                    "radius": 20
+                }
+            );
+            $.get("../data/chinaEarthquake.csv", function (response) {
+                var dataObj = Papa.parse(response, {
+                    skipEmptyLines: true,
+                    header: true
+                });
+
+                var data = dataObj.data;
+                var geojson = {
+                    "type": "FeatureCollection",
+                    "features": []
+                };
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    var date = new Date(item.date);
+                    var year = date.getFullYear();
+
+                    //2w+地震数据
+                    if (year > 2000 && year < 2015) {
+                        var feature = {
+                            "type": "feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": []
+                            },
+                            "properties": {
+                                "value": parseFloat(item.level)
+                            }
+                        };
+                        feature.geometry.coordinates = [parseFloat(item.X), parseFloat(item.Y)];
+                        geojson.features.push(feature);
+                    }
+                }
+                heatMapLayer.addFeatures(geojson);
+                map.addLayer(heatMapLayer)
+            })
+            
+        });
+
+    </script>
+
+</body>
+
+</html>

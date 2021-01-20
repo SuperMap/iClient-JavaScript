@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {LevelRenderer} from './LevelRenderer';
@@ -18,7 +18,7 @@ import {Group} from './Group';
 import {Handler} from './Handler';
 import {Http} from './Http';
 import {Log} from './Log';
-import {Math} from './Math';
+import {MathTool} from './Math';
 import {Matrix} from './Matrix';
 import {Painter, PaintLayer} from './Painter';
 import {Shape} from './Shape';
@@ -57,7 +57,7 @@ export {Group};
 export {Handler};
 export {Http};
 export {Log};
-export {Math};
+export {MathTool};
 export {Matrix};
 export {Painter, PaintLayer};
 export {Shape};

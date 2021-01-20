@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
 var utils = {
     //设置语言。参数："zh_CN"，"en-US"
     setLanguage: null,
@@ -26,13 +26,12 @@ var utils = {
     //获取当前语言。默认从cookie读取，没有则读取浏览器默认语言
     function getLanguage() {
         var lang = getCookie(cKey);
-        if (lang) {
-            return lang;
-        }
-        if (navigator.appName === 'Netscape') {
-            lang = navigator.language;
-        } else {
-            lang = navigator.browserLanguage;
+        if (!lang) {
+            if (navigator.appName === 'Netscape') {
+                lang = navigator.language;
+            } else {
+                lang = navigator.browserLanguage;
+            }
         }
         if (lang) {
             if (lang.indexOf('zh') === 0) {

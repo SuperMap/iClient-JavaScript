@@ -1,0 +1,95 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title data-i18n="resources.title_mvtVectorLayer4326"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+        $.get(
+            'https://iserver.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
+            function (style) {
+                var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+                style.layers[0].paint["background-color"] = "rgba(168,209,221,=00)";
+                map = new mapboxgl.Map({
+                    container: 'map', 
+                    renderWorldCopies: false,
+                    isConstrain: true,
+                    style: style,
+                    center: [-122.2543440112645, 38.236059513982674],
+                    zoom: 13,
+                    crs: mapboxgl.CRS.EPSG4326
+                });
+                map.on('load', function () {
+                    map.addLayer({
+                        "id": "simple-tiles",
+                        "type": "raster",
+                        "source": {
+                            "type": "raster",
+                            "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                            "rasterSource":"iserver",
+                            "tileSize": 256
+                        },
+                        "minzoom": 0,
+                        "maxzoom": 22
+                    }, 'background')
+                    //点选操作
+                    map.addLayer({
+                        "id": "line-highlighted",
+                        "type": "line",
+                        "source": "California",
+                        "source-layer": "Trunk_L@California",
+                        "paint": {
+                            "line-color": "#0000ff",
+                            "line-width": 10,
+                            "line-opacity": 0.75
+                        },
+                        "filter": ["in", "NAME", ""]
+                    }); 
+                    map.on('click', function (e) {
+                        var bbox = [
+                            [e.point.x - 5, e.point.y - 5],
+                            [e.point.x + 5, e.point.y + 5]
+                        ];
+                        var features = map.queryRenderedFeatures(bbox, {
+                            layers: ["Trunk_L@California#6_1"]
+                        });
+                        var filter = features.reduce(function (memo, feature) {
+                            if (feature.properties.NAME) {
+                                memo.push(feature.properties.NAME);
+                            }
+                            return memo;
+                        }, ['in', 'NAME']);
+
+                        map.setFilter("line-highlighted", filter);
+                    });
+                });
+            })
+
+    </script>
+
+</body>
+
+</html>

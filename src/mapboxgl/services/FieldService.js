@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -19,7 +19,9 @@ import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common'
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
 export class FieldService extends ServiceBase {
@@ -38,6 +40,8 @@ export class FieldService extends ServiceBase {
         var getFieldsService = new GetFieldsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -66,10 +70,10 @@ export class FieldService extends ServiceBase {
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
-        for (var mode in modes) {
-            me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-        }
+        modes.forEach(mode => {
+            me.currentStatisticResult[mode] = null;
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+        })
     }
 
     _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
@@ -83,7 +87,9 @@ export class FieldService extends ServiceBase {
             datasource: datasource,
             dataset: dataset,
             field: fieldName,
-            statisticMode: statisticMode
+            statisticMode: statisticMode,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers
         });
         statisticService.processAsync();
     }

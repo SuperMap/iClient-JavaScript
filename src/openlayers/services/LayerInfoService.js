@@ -1,13 +1,13 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {ServiceBase} from './ServiceBase';
 import {
     GetLayersInfoService,
     SetLayerInfoService,
     SetLayersInfoService,
-    SetLayerStatusService
+    SetLayerStatusService,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
@@ -23,8 +23,10 @@ import {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class LayerInfoService extends ServiceBase {
 
@@ -42,6 +44,8 @@ export class LayerInfoService extends ServiceBase {
         var getLayersInfoService = new GetLayersInfoService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -68,11 +72,12 @@ export class LayerInfoService extends ServiceBase {
         if (!resourceID || !tempLayerName) {
             return;
         }
-        var url = me.url.concat();
-        url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
+        var url = CommonUtil.urlPathAppend(me.url, "tempLayersSet/" + resourceID + "/" + tempLayerName);
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -102,6 +107,8 @@ export class LayerInfoService extends ServiceBase {
         var setLayersInfoService = new SetLayersInfoService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -127,6 +134,8 @@ export class LayerInfoService extends ServiceBase {
         var setLayerStatusService = new SetLayerStatusService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -136,4 +145,3 @@ export class LayerInfoService extends ServiceBase {
         setLayerStatusService.processAsync(params);
     }
 }
-ol.supermap.LayerInfoService = LayerInfoService;

@@ -18,7 +18,7 @@ describe('openlayers_GridCellInfosService', () => {
         expect(gridCellInfoService.url).toEqual(url);
     });
 
-    it('getGridCellInfos', () => {
+    it('getGridCellInfos', (done) => {
         var params = new GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
@@ -28,32 +28,38 @@ describe('openlayers_GridCellInfosService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
             expect(options).not.toBeNull();
-            if (testUrl.indexOf("WorldEarth.json") > 0) {
+            if (testUrl.indexOf("imageValue") > 0) {
+                return Promise.resolve(new Response(getGridCellInfosEcapedJson));
+            }
+            if (testUrl.indexOf("WorldEarth") > 0) {
                 return Promise.resolve(new Response(getDatasetInfoEcapedJson));
-            } else {
-                if (testUrl.indexOf("imageValue.json") > 0) {
-                    return Promise.resolve(new Response(getGridCellInfosEcapedJson));
-                }
-            };
+            }
             return null;
         });
         new GridCellInfosService(url).getGridCellInfos(params, (serviceResult) => {
-            expect(serviceResult).not.toBeNull();
-            expect(serviceResult.type).toBe("processCompleted");
-            expect(serviceResult.result.succeed).toBeTruthy();
-            expect(serviceResult.result.centerPoint).not.toBeUndefined();
-            expect(serviceResult.result.color).not.toBeUndefined();
-            expect(serviceResult.result.column).not.toBeUndefined();
-            expect(serviceResult.result.row).not.toBeUndefined();
-            expect(serviceResult.result.value).not.toBeUndefined();
-            expect(serviceResult.object.options.method).toBe("GET");
-            expect(serviceResult.object.X).toEqual(4);
-            expect(serviceResult.object.Y).toEqual(20);
-            expect(serviceResult.object.dataSourceName).toBe("World");
-            expect(serviceResult.object.datasetName).toBe("WorldEarth");
-            expect(serviceResult.object.datasetType).toBe("IMAGE");
-            expect(FetchRequest.commit.calls.count()).toEqual(2);
-            params.destroy();
+            try {
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toBe("processCompleted");
+                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.centerPoint).not.toBeUndefined();
+                expect(serviceResult.result.color).not.toBeUndefined();
+                expect(serviceResult.result.column).not.toBeUndefined();
+                expect(serviceResult.result.row).not.toBeUndefined();
+                expect(serviceResult.result.value).not.toBeUndefined();
+                expect(serviceResult.object.options.method).toBe("GET");
+                expect(serviceResult.object.X).toEqual(4);
+                expect(serviceResult.object.Y).toEqual(20);
+                expect(serviceResult.object.dataSourceName).toBe("World");
+                expect(serviceResult.object.datasetName).toBe("WorldEarth");
+                expect(serviceResult.object.datasetType).toBe("IMAGE");
+                expect(FetchRequest.commit.calls.count()).toEqual(2);
+                params.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("getGridCellInfos'案例失败：" + exception.name + ":" + exception.message);
+                done();
+            }
         });
     });
 });

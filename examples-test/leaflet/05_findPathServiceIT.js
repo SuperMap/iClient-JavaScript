@@ -12,7 +12,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g path', 10000);
         browser.pause(2000);
-        browser.elements('class name', 'leaflet-marker-icon', function (result) {
+        browser.elements('css selector', '.leaflet-marker-icon', function (result) {
             this.assert.equal(result.value.length, 34, "expect Number of marker to be 34, actual is " + result.value.length);
         });
         browser.elements('tag name', 'path', function (result) {

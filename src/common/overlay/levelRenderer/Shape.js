@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
@@ -98,7 +98,7 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
         /**
          * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.__dirty
-         * @description {Boolean}
+         * @description {boolean}
          */
         this.__dirty = true;
 
@@ -263,7 +263,7 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
      * @description 绘制图形。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
-     * @param {Boolean} isHighlight - 是否使用高亮属性。
+     * @param {boolean} isHighlight - 是否使用高亮属性。
      * @param {Function} updateCallback - 需要异步加载资源的 shape 可以通过这个 callback(e),让painter更新视图，base.brush 没用，需要的话重载 brush。
      */
     brush(ctx, isHighlight) {

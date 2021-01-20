@@ -1,7 +1,7 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from './SuperMap';
+import { SuperMap } from './SuperMap';
 import {
     DataFormat,
     ServerType,
@@ -59,7 +59,8 @@ import {
     OutputType,
     AggregationQueryBuilderType,
     AggregationType,
-    GetFeatureMode
+    GetFeatureMode,
+    RasterFunctionType
 } from './REST';
 import {
     Collection,
@@ -90,29 +91,25 @@ import {
     CommonUtil,
     GeometryVector
 } from './commontypes';
-import {
-    Format,
-    GeoJSON,
-    JSONFormat,
-    WKT
-} from './format';
+import { Format, GeoJSON, JSONFormat, WKT } from './format';
 
-import {
-    TimeControlBase,
-    TimeFlowControl
-} from './control';
-import {
-    IManager,
-    IManagerCreateNodeParam,
-    IManagerServiceBase
-} from './iManager';
+import { TimeControlBase, TimeFlowControl } from './control';
+import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
 import {
     IPortal,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalService,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalServiceBase,
-    IPortalServicesQueryParam
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam
 } from './iPortal';
 import {
     AddressMatchService,
@@ -333,7 +330,22 @@ import {
     UpdateTurnNodeWeightService,
     Vector,
     VectorClipJobsParameter,
-    VectorClipJobsService
+    VectorClipJobsService,
+    RasterFunctionParameter,
+    NDVIParameter,
+    HillshadeParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService
 } from './iServer';
 import {
     Online,
@@ -345,26 +357,21 @@ import {
     FilterField,
     OnlineServiceBase
 } from './online';
-import {
-    KeyServiceParameter,
-    SecurityManager,
-    ServerInfo,
-    TokenServiceParameter
-} from './security';
-import {
-    ElasticSearch
-} from './thirdparty';
+import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter } from './security';
+import { ElasticSearch } from './thirdparty';
 import {
     setCORS,
     isCORS,
     setRequestTimeout,
     getRequestTimeout,
-    FetchRequest
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
+    getMeterPerMapUnit,
+    getWrapNum,
+    conversionDegree
 } from './util';
-import {
-    CartoCSS,
-    ThemeStyle
-} from './style';
+import { CartoCSS, ThemeStyle } from './style';
 import {
     Bar,
     Bar3D,
@@ -389,7 +396,8 @@ import {
     FeatureTheme,
     LevelRenderer,
     Render,
-    Animation, Animator,
+    Animation,
+    Animator,
     Area,
     Clip,
     Color,
@@ -404,9 +412,10 @@ import {
     Handler,
     Http,
     Log,
-    Math,
+    MathTool,
     Matrix,
-    Painter, PaintLayer,
+    Painter,
+    PaintLayer,
     Shape,
     SmicBrokenLine,
     SmicCircle,
@@ -425,12 +434,11 @@ import {
     Util,
     LevelRendererVector,
     SUtil
-
 } from './overlay';
 import {
     FileTypes,
     FileConfig,
-    FileModel, 
+    FileModel,
     MessageBox,
     CommonContainer,
     DropDownBox,
@@ -441,14 +449,12 @@ import {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
-    FileReaderUtil
-} from './widgets';
-import {
-    Lang,
-    en,
-    zh
-} from './lang';
+    ComponentsUtil,
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
+} from './components';
+import { Lang, en, zh } from './lang';
 
 export {
     FileTypes,
@@ -464,10 +470,12 @@ export {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
-    FileReaderUtil
-}
-export {SuperMap};
+    ComponentsUtil,
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
+};
+export { SuperMap };
 export {
     DataFormat,
     ServerType,
@@ -525,7 +533,8 @@ export {
     OutputType,
     AggregationQueryBuilderType,
     AggregationType,
-    GetFeatureMode
+    GetFeatureMode,
+    RasterFunctionType
 };
 export {
     Collection,
@@ -556,35 +565,36 @@ export {
     CommonUtil,
     GeometryVector
 };
-export {
-    TimeControlBase,
-    TimeFlowControl
-};
-export {
-    Format,
-    GeoJSON,
-    JSONFormat,
-    WKT
-};
+export { TimeControlBase, TimeFlowControl };
+export { Format, GeoJSON, JSONFormat, WKT };
 export {
     setCORS,
     isCORS,
     setRequestTimeout,
     getRequestTimeout,
-    FetchRequest
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
+    getMeterPerMapUnit,
+    getWrapNum,
+    conversionDegree
 };
-export {
-    IManager,
-    IManagerCreateNodeParam,
-    IManagerServiceBase
-};
+export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {
     IPortal,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalService,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalServiceBase,
-    IPortalServicesQueryParam
+    IPortalUser,
+    IPortalAddResourceParam,
+    IPortalRegisterServiceParam,
+    IPortalAddDataParam,
+    IPortalDataMetaInfoParam,
+    IPortalDataStoreInfoParam,
+    IPortalDataConnectionInfoParam
 };
 export {
     AddressMatchService,
@@ -805,7 +815,22 @@ export {
     UpdateTurnNodeWeightService,
     Vector,
     VectorClipJobsParameter,
-    VectorClipJobsService
+    VectorClipJobsService,
+    RasterFunctionParameter,
+    NDVIParameter,
+    HillshadeParameter,
+    WebPrintingJobCustomItems,
+    WebPrintingJobImage,
+    WebPrintingJobLayers,
+    WebPrintingJobLegendOptions,
+    WebPrintingJobLittleMapOptions,
+    WebPrintingJobNorthArrowOptions,
+    WebPrintingJobScaleBarOptions,
+    WebPrintingJobContent,
+    WebPrintingJobLayoutOptions,
+    WebPrintingJobExportOptions,
+    WebPrintingJobParameters,
+    WebPrintingService
 };
 export {
     Online,
@@ -841,7 +866,8 @@ export {
     FeatureTheme,
     LevelRenderer,
     Render,
-    Animation, Animator,
+    Animation,
+    Animator,
     Area,
     Clip,
     Color,
@@ -856,9 +882,10 @@ export {
     Handler,
     Http,
     Log,
-    Math,
+    MathTool,
     Matrix,
-    Painter, PaintLayer,
+    Painter,
+    PaintLayer,
     Shape,
     SmicBrokenLine,
     SmicCircle,
@@ -878,21 +905,7 @@ export {
     LevelRendererVector,
     SUtil
 };
-export {
-    KeyServiceParameter,
-    SecurityManager,
-    ServerInfo,
-    TokenServiceParameter
-};
-export {
-    CartoCSS,
-    ThemeStyle
-};
-export {
-    ElasticSearch
-};
-export {
-    Lang,
-    en,
-    zh
-}
+export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
+export { CartoCSS, ThemeStyle };
+export { ElasticSearch };
+export { Lang, en, zh };

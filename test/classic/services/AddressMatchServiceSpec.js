@@ -1,6 +1,7 @@
 import {AddressMatchService} from '../../../src/classic/services/AddressMatchService';
 import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
 import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
 describe('classic_AddressMatchService', () => {
@@ -26,9 +27,18 @@ describe('classic_AddressMatchService', () => {
         expect(addressMatchService.url).toBeNull();
     });
 
-    it('code', (done) => {
-        var codingFailedEventArgs = null, codingSuccessEventArgs = null;
-        var codeCompleted = (analyseEventArgs) => {
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var addressMatchService = new AddressMatchService(addressMatchURL, { headers: myHeaders });
+        expect(addressMatchService).not.toBeNull();
+        expect(addressMatchService.headers).not.toBeNull();
+        addressMatchService.destroy();
+    });
+
+    it('code', done => {
+        var codingFailedEventArgs = null,
+            codingSuccessEventArgs = null;
+        var codeCompleted = analyseEventArgs => {
             codingSuccessEventArgs = analyseEventArgs;
         };
         var codeFailed = (serviceFailedEventArgs) => {
@@ -46,6 +56,14 @@ describe('classic_AddressMatchService', () => {
             maxReturn: -1
         });
         var addressCodeService = new AddressMatchService(addressMatchURL, options);
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL + "/geocoding");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(codeSuccessEscapedJson));
+        });
+
         addressCodeService.code(GeoCodingParams, codeCompleted);
         setTimeout(() => {
             try {
@@ -90,6 +108,12 @@ describe('classic_AddressMatchService', () => {
             geoDecodingRadius: 500
         });
         var addressDeCodeService = new AddressMatchService(addressMatchURL);
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(decodeSuccessEscapedJson));
+        });
         addressDeCodeService.decode(GeoDeCodingParams, decodeCompleted);
         setTimeout(() => {
             try {

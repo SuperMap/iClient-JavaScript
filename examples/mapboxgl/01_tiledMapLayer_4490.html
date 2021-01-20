@@ -1,0 +1,111 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <title data-i18n="resources.title_tiledMapLayer_China2000"></title>
+        <script type="text/javascript" src="../js/include-web.js"></script>
+        <script
+            type="text/javascript"
+            include="mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript">
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var url = host + '/iserver/services/map-china400/rest/maps/China_4490';
+            var map = new mapboxgl.Map({
+                container: 'map', // container id
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            type: 'raster',
+                            tileSize: 256,
+                            //xyz形式，原生支持
+                            //"tiles": ['https://t0.tianditu.gov.cn/DataServer?T=vec_c&x={x}&y={y}&l={z}'],
+
+                            //iserver image资源模板；扩展支持
+                            //"tiles": ['http://localhost:8090/iserver/services/map-World/rest/maps/World/image.png?viewBounds={viewBounds}&width={width}&height={height}'],
+
+                            //iserver tileimage资源模板；扩展支持
+                            //"tiles": ['https://iserver.supermap.io/iserver/services/map-jingjin/rest/maps/%E4%BA%AC%E6%B4%A5%E5%9C%B0%E5%8C%BA%E5%9C%B0%E5%9B%BE/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}'],
+
+                            //推荐；   iserver tileimage资源；扩展支持
+                            //参数列表：
+                            //地图服务地址（到地图名)必填 ；
+                            //rasterSource为"iserver"；必填；
+                            //transparent:可选，默认为true；
+                            //cacheEnabled: 是否使用缓存，默认为true；
+                            //redirect: 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流,默认为false；
+                            //layersID:要显示的图层id字符串；
+                            //tileversion: 切片版本名称，cacheEnabled 为 true 时有效；
+                            //rasterfunction: 栅格分析参数,类型为SuperMap.NDVIParameter或SuperMap.HillshadeParameter；
+                            //format:瓦片格式，默认为'png'；
+                            tiles: [url],
+                            rasterSource: 'iserver'
+                        }
+                    },
+
+                    layers: [
+                        {
+                            id: 'simple-tiles',
+                            type: 'raster',
+                            source: 'raster-tiles',
+                            minzoom: 0,
+                            maxzoom: 22
+                        }
+                    ]
+                },
+                crs: 'EPSG:4490',
+                center: [101.74721254733845, 32.5665352689922],
+                zoom: 3
+            });
+            map.on('load', function() {
+                //从 iServer 查询
+                var param = new SuperMap.QueryBySQLParameters({
+                    queryParams: {
+                        name: 'China_Province_pl@China',
+                        attributeFilter: 'SMID =14'
+                    }
+                });
+                new mapboxgl.supermap.QueryService(url).queryBySQL(param, function(serviceResult) {
+                    map.addSource('queryDatas', {
+                        type: 'geojson',
+                        data: serviceResult.result.recordsets[0].features
+                    });
+                    map.addLayer({
+                        id: 'queryDatas',
+                        type: 'fill',
+                        source: 'queryDatas',
+                        paint: {
+                            'fill-color': '#008080',
+                            'fill-opacity': 0.4
+                        },
+                        filter: ['==', '$type', 'Polygon']
+                    });
+                });
+                map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+            });
+        </script>
+    </body>
+</html>

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -17,11 +17,13 @@ import {GeoJSON} from '../format/GeoJSON';
  *      1.通过 AsyncResponder 类获取（推荐使用）；
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。
  * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
+ * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
+ * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -69,7 +71,7 @@ export class ChartQueryService extends CommonServiceBase {
         this.format = DataFormat.GEOJSON;
 
         Util.extend(this, options);
-        var me = this, end;
+        var me = this;
         if (options.format) {
             me.format = options.format.toUpperCase();
         }
@@ -77,15 +79,7 @@ export class ChartQueryService extends CommonServiceBase {
         if (!me.url) {
             return;
         }
-        end = me.url.substr(me.url.length - 1, 1);
-
-        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (me.format==="geojson") {
-        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-        // } else {
-        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-        // }
-        me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
+        me.url = Util.urlPathAppend(me.url, 'queryResults');
 
         this.CLASS_NAME = "SuperMap.ChartQueryService";
     }
@@ -117,7 +111,7 @@ export class ChartQueryService extends CommonServiceBase {
         me.returnContent = params.returnContent;
         jsonParameters = params.getVariablesJson();
         if (me.returnContent) {
-            me.url += "returnContent=" + me.returnContent;
+            me.url = Util.urlAppend(me.url, 'returnContent=true');
         }
         me.request({
             method: "POST",
@@ -141,7 +135,7 @@ export class ChartQueryService extends CommonServiceBase {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSON();
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                 }
             }
 

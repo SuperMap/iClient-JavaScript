@@ -40,16 +40,19 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/interpolation/density.json?returnContent=true");
-            var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':0,'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':3000,'filterQueryParameter':null,'outputDatasetName':\"Interpolation_density_mapboxglTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null}";
-            expect(params).toBe(expectParams);
+            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/interpolation/density?returnContent=true");
+            // var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1, 'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':0,'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':3000,'filterQueryParameter':null,'outputDatasetName':\"Interpolation_density_mapboxglTest\",'outputDatasourceName':\"Interpolation\", 'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null}";
+            // expect(params).toBe(expectParams);
+
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.resolution).toEqual(3000);
+            expect(paramsObj.zValueFieldName).toBe("AVG_TMP");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(interpolationDensityEscapedJson));
         }); 
         service.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
+       
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -63,8 +66,8 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 console.log("'interpolationAnalysis_density'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
-            }
-        }, 25000);
+            } 
+        });
     }); 
 
     var resultDataset_IDW_dataset = "Interpolation_IDW_dataset_mapboxglTest";
@@ -92,18 +95,19 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
 
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/interpolation/idw.json?returnContent=true");
-            var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':0,'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':7923.84989108,'filterQueryParameter':null,'outputDatasetName':\"Interpolation_IDW_dataset_mapboxglTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null,'searchMode':\"KDTREE_FIXED_COUNT\",'expectedCount':12,'power':2}";
-            expect(params).toBe(expectParams);
+            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/interpolation/idw?returnContent=true");
+            // var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':0,'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':7923.84989108,'filterQueryParameter':null,'outputDatasetName':\"Interpolation_IDW_dataset_mapboxglTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null,'searchMode':\"KDTREE_FIXED_COUNT\",'expectedCount':12,'power':2}";
+            // expect(params).toBe(expectParams);
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.zValueFieldName).toBe("AVG_TMP");
+
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(interpolationIDWsEcapedJson));
         }); 
 
         service.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
-            try {
+               try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -117,6 +121,6 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 25000);
+        });
     });
 });

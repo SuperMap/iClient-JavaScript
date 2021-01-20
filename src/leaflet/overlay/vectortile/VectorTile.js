@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -86,7 +86,7 @@ export var VectorTile = L.Class.extend({
                 }
 
                 //标签图层处理为文本
-                if (layerStyleInfo.type === VectorFeatureType.LABEL
+                if (layerStyleInfo && layerStyleInfo.type === VectorFeatureType.LABEL
                     && feat.type === VectorFeatureType.POINT
                     && feat.properties.attributes) {
                     feat.type = VectorFeatureType.TEXT;

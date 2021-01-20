@@ -2,13 +2,13 @@ var  vectorstylesEscapedJson={
     "sources": {
         "California": {
             "tiles": [
-                "http://54.223.164.155:8090/iserver/services/map-mvt-California/rest/maps/California/tileFeature.mvt?returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"
+                "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&z={z}"
             ],
             "type": "vector"
         }
     },
     "name": "California",
-    "sprite": "http://54.223.164.155:8090/iserver/services/map-mvt-California/rest/maps/California/tilefeature/mvtsprites/sprite@2x",
+    "sprite": "../../base/resources/img/sprite@2x",
     "layers": [
         {
             "paint": {
@@ -39,7 +39,8 @@ var  vectorstylesEscapedJson={
             "maxzoom": 16,
             "paint": {
                 "fill-color": "rgba(249,224,219,0.90)",
-                "fill-antialias": true
+                "fill-antialias": true,
+                "fill-outline-color":"rgba(249,224,219,0.90)"
             },
             "id": "Military_R@California#26",
             "source": "California",
@@ -51,7 +52,7 @@ var  vectorstylesEscapedJson={
     "glyphs": "http://54.223.164.155:8090/iserver/services/map-mvt-California/rest/maps/California/tileFeature/sdffonts/{fontstack}/{range}.pbf",
     "version": 8
 }
-var sprite={
+var spriteEscapedJson={
     "BGRR_ECCDD1_11_7": {
         "pixelRatio": 1,
         "x": 276,

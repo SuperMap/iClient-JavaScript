@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -8,10 +8,10 @@
     <title data-i18n="resources.title_loadSymbolLib"></title>
 </head>
 <body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;width: 300px;text-align: center;z-index: 9999;border-radius: 4px;">
-    <div class='panel-heading'>
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading' id="panelheading">
         <h5 class='panel-title text-center' data-i18n="resources.title_loadSymbolLib"></h5></div>
-    <div class='panel-body content'>
+    <div class='panel-body content' id="panelbodycontent">
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_plot" onclick="plotSymbol()"/>&nbsp; &nbsp;
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelMarker" onclick="PlottingDrawCancel()"/>&nbsp; &nbsp;
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clear" onclick="PlottingClear()"/>
@@ -24,15 +24,15 @@
                 </div>
             </div>
         </div>
-        <div id="symbolLibInfo" class="winContent" style="  padding: 5px;overflow-y: auto;height: 220px;overflow-y:auto;height:250px;">
+         <div id="symbolLibInfo" class="winContent" style="  padding: 5px;overflow-y: auto;height: 220px;overflow-y:auto;height:250px;">
         </div>
     </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="iclient-leaflet-css,iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map,symbolLibManager;
@@ -172,6 +172,12 @@
     window.onload = function(){
         loadSymbolLib();
     };
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+            $('#popupWin').toggle();
+        });
+    });
 </script>
 </body>
 </html>

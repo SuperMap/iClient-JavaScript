@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -17,8 +17,10 @@ import {EditFeaturesParameters} from './EditFeaturesParameters';
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} serverType - 服务器类型，iServer|iPortal|Online。
- * @param {SuperMap.DataFormat} format -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
+ * @param {SuperMap.DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
  *     "processCompleted": editFeatureCompleted,
@@ -49,9 +51,7 @@ export class EditFeaturesService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-        var me = this, end;
-        end = me.url.substr(me.url.length - 1, 1);
-        me.url += (end == "/") ? "features.json?" : "/features.json?";
+        this.url = Util.urlPathAppend(this.url, 'features');
 
         this.CLASS_NAME = "SuperMap.EditFeaturesService";
     }
@@ -91,18 +91,18 @@ export class EditFeaturesService extends CommonServiceBase {
         jsonParameters = EditFeaturesParameters.toJsonParameters(params);
         if (editType === EditType.DELETE) {
             ids = Util.toJSON(params.IDs);
-            me.url += "ids=" + ids;
+            me.url = Util.urlAppend(me.url, "ids=" + ids);
             method = "DELETE";
             jsonParameters = ids;
         } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
             if (me.isUseBatch) {
-                me.url += "isUseBatch=" + me.isUseBatch;
+                me.url = Util.urlAppend(me.url, `isUseBatch=${me.isUseBatch}`);
                 me.returnContent = false;
             }
             if (me.returnContent) {
-                me.url += "returnContent=" + me.returnContent;
+                me.url = Util.urlAppend(me.url, 'returnContent=true');
                 method = "POST";
             }
         }

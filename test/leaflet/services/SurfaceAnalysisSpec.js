@@ -2,7 +2,7 @@ import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalys
 import {DatasetSurfaceAnalystParameters} from '../../../src/common/iServer/DatasetSurfaceAnalystParameters';
 import {SurfaceAnalystParametersSetting} from '../../../src/common/iServer/SurfaceAnalystParametersSetting';
 import {SmoothMethod} from '../../../src/common/REST';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -43,17 +43,16 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', ()=> {
         var surfaceAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
-            //var expectParams = `{'resolution':3000,'extractParameter':{'datumValue':0,'interval':2,'resampleTolerance':0,'smoothMethod':"BSPLINE",'smoothness':3,'clipRegion':{'id':0,'style':null,'parts':[5],'points':[{'id':"SuperMap.Geometry_12",'bounds':null,'SRID':null,'x':0,'y':4010338,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_13",'bounds':null,'SRID':null,'x':1063524,'y':4010338,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_14",'bounds':null,'SRID':null,'x':1063524,'y':3150322,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_15",'bounds':null,'SRID':null,'x':0,'y':3150322,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_16",'bounds':null,'SRID':null,'x':0,'y':4010338,'tag':null,'type':"Point"}],'type':"REGION",'prjCoordSys':{'epsgCode':null}}},'resultSetting':{'expectCount':1000,'dataset':null,'dataReturnMode':"RECORDSET_ONLY",'deleteExistResultDataset':true},'zValueFieldName':"AVG_TMP",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}`;
-           // expect(params).toBe(expectParams);
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline?returnContent=true");
+            // expect(params).toContain("extractParameter");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.extractParameter.interval).toBe(2);
+            expect(paramsObj.extractParameter.smoothMethod).toBe(SmoothMethod.BSPLINE);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });
         surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, (result)=> {
             serviceResult = result;
-
-        });
-        setTimeout(()=> {
             try {
                 expect(surfaceAnalystService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -83,6 +82,6 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });

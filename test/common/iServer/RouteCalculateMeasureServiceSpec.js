@@ -1,19 +1,10 @@
 import {RouteCalculateMeasureService} from '../../../src/common/iServer/RouteCalculateMeasureService';
 import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var routeCalculateMeasureEventArgsSystem = null, serviceFailedEventArgsSystem = null;
-
-var routeCalculateMeasureCompleted = (routeCalculateMeasureEventArgs) => {
-    routeCalculateMeasureEventArgsSystem = routeCalculateMeasureEventArgs;
-}
-
-var routeCalculateMeasureFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-
-var initCalculateMeasureService = () => {
-    return new RouteCalculateMeasureService(spatialAnalystURL,
+var initCalculateMeasureService = (url,routeCalculateMeasureFailed,routeCalculateMeasureCompleted) => {
+    return new RouteCalculateMeasureService(url,
         {
             eventListeners: {
                 "processCompleted": routeCalculateMeasureCompleted,
@@ -21,7 +12,7 @@ var initCalculateMeasureService = () => {
             }
         }
     );
-}
+};
 
 describe('RouteCalculateMeasureService', () => {
     var originalTimeout;
@@ -35,7 +26,48 @@ describe('RouteCalculateMeasureService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var routeCalculateMeasureService = new RouteCalculateMeasureService(GlobeParameter.spatialAnalystURL, { headers: myHeaders });
+        expect(routeCalculateMeasureService).not.toBeNull();
+        expect(routeCalculateMeasureService.headers).not.toBeNull();
+        routeCalculateMeasureService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var routeCalculateMeasureService = new RouteCalculateMeasureService(GlobeParameter.spatialAnalystURL, { crossOrigin: false });
+        expect(routeCalculateMeasureService).not.toBeNull();
+        expect(routeCalculateMeasureService.crossOrigin).toBeFalsy();
+        routeCalculateMeasureService.destroy();
+    });
+
     it('processAsync', (done) => {
+        var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+        var routeCalculateMeasureEventArgsSystem = null, serviceFailedEventArgsSystem = null;
+        var routeCalculateMeasureCompleted = (routeCalculateMeasureEventArgs) => {
+            routeCalculateMeasureEventArgsSystem = routeCalculateMeasureEventArgs;
+            try {
+                var calculateMeasureResult = routeCalculateMeasureEventArgsSystem.result;
+                expect(calculateMeasureResult).not.toBeNull();
+                expect(calculateMeasureResult.succeed).toBeTruthy();
+                expect(calculateMeasureResult.measure).toEqual(532.1658053450747);
+                calculateMeasureService.destroy();
+                expect(calculateMeasureService.EVENT_TYPES == null).toBeTruthy();
+                expect(calculateMeasureResult.events == null).toBeTruthy();
+                expect(calculateMeasureResult.eventListeners == null).toBeTruthy();
+                parameters.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("RouteCalculateMeasureService_" + exception.name + ":" + exception.message);
+                calculateMeasureService.destroy();
+                parameters.destroy();
+                done();
+            }
+        };
+        var routeCalculateMeasureFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
         var parameters = new RouteCalculateMeasureParameters({
             "sourceRoute": {
                 "type": "LINEM",
@@ -70,29 +102,16 @@ describe('RouteCalculateMeasureService', () => {
             },
             "isIgnoreGap": false
         });
-        var calculateMeasureService = initCalculateMeasureService();
+        var calculateMeasureService = initCalculateMeasureService(spatialAnalystURL,routeCalculateMeasureFailed,routeCalculateMeasureCompleted);
+        spyOn(FetchRequest, 'post').and.callFake((url, params) => {
+            expect(url).toBe(spatialAnalystURL + "/geometry/calculatemeasure?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.sourceRoute.points.length).toEqual(4);
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
+            return Promise.resolve(new Response(`{"measure":532.1658053450747,"succeed":true,"message":null}`));
+        });
         calculateMeasureService.processAsync(parameters);
-
-        setTimeout(() => {
-            try {
-                var calculateMeasureResult = routeCalculateMeasureEventArgsSystem.result;
-                expect(calculateMeasureResult).not.toBeNull();
-                expect(calculateMeasureResult.succeed).toBeTruthy();
-                expect(calculateMeasureResult.measure).toEqual(532.1658053450747);
-                calculateMeasureService.destroy();
-                expect(calculateMeasureService.EVENT_TYPES == null).toBeTruthy();
-                expect(calculateMeasureResult.events == null).toBeTruthy();
-                expect(calculateMeasureResult.eventListeners == null).toBeTruthy();
-                parameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("RouteCalculateMeasureService_" + exception.name + ":" + exception.message);
-                calculateMeasureService.destroy();
-                parameters.destroy();
-                done();
-            }
-        }, 2000);
     });
 });
 

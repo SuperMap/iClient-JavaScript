@@ -1,6 +1,7 @@
 import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
 import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -30,10 +31,17 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
             deleteExistResultDataset: true
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe(resultDataset);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_mapboxglTest@Changchun"}`));
+        });
         service.densityAnalysis(densityKernelAnalystParameters, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -46,7 +54,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
+        });
     });
 
     //点密度分析, 不删除重复的数据集(默认), 本测试的resultGridName需要是一个已经存在的数据集
@@ -60,10 +68,17 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
             deleteExistResultDataset: false
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe(resultDataset);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集KernelDensity_mapboxglTest@Changchun已存在。"}}`));
+        });
         service.densityAnalysis(densityKernelAnalystParameters, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -76,13 +91,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done)=> {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
-    });
 });

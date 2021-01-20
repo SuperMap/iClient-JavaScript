@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -28,6 +28,8 @@ import {GeoJSON} from '../format/GeoJSON';
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class FindPathService extends NetworkAnalystServiceBase {
 
@@ -54,9 +56,8 @@ export class FindPathService extends NetworkAnalystServiceBase {
         if (!(params instanceof FindPathParameters)) {
             return;
         }
-        var me = this, jsonObject,
-            end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "path" : "/path") + ".json?";
+        var me = this, jsonObject;
+        me.url = Util.urlPathAppend(me.url, 'path');
         jsonObject = {
             hasLeastEdgeCount: params.hasLeastEdgeCount,
             parameter: Util.toJSON(params.parameter),
@@ -89,7 +90,7 @@ export class FindPathService extends NetworkAnalystServiceBase {
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -113,17 +114,17 @@ export class FindPathService extends NetworkAnalystServiceBase {
         var geoJSONFormat = new GeoJSON();
         result.pathList.forEach(function (path) {
             if (path.route) {
-                path.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = geoJSONFormat.toGeoJSON(path.route);
             }
             if (path.pathGuideItems) {
-                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = geoJSONFormat.toGeoJSON(path.pathGuideItems);
 
             }
             if (path.edgeFeatures) {
-                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = geoJSONFormat.toGeoJSON(path.edgeFeatures);
             }
             if (path.nodeFeatures) {
-                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = geoJSONFormat.toGeoJSON(path.nodeFeatures);
             }
         });
         return result;

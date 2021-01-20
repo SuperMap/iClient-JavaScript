@@ -1,6 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
-
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1;
 
@@ -13,7 +13,6 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     // 增加LINE要素，returnContent为true
     it('successEvent:add_LINE', (done) => {
         var addFeatureResult_LINE = null;
@@ -27,10 +26,15 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             isUseBatch: false
         });
         var addFeaturesService = featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult_LINE = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features?returnContent=true");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("LINE");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[98]`));
         });
-        setTimeout(() => {
+        addFeaturesService.editFeatures(addFeaturesParams, (addFeatureResult_LINE) => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_LINE.type).toBe("processCompleted");
@@ -50,7 +54,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     // 删除LINE要素
@@ -63,10 +67,13 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             editType: "delete"
         });
         var deleteLineService = featureService(editServiceURL);
-        deleteLineService.editFeatures(deleteFeaturesParams, (result) => {
-            deleteLineResult = result
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features?ids=[98]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        setTimeout(() => {
+        deleteLineService.editFeatures(deleteFeaturesParams, (deleteLineResult) => {
             try {
                 expect(deleteLineService).not.toBeNull();
                 expect(deleteLineResult).not.toBeNull();
@@ -83,6 +90,6 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
                 deleteLineService.destroy();
                 done();
             }
-        }, 2000);
+        });
     });
 });

@@ -1,5 +1,6 @@
 import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
 import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -54,22 +55,29 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', () => {
             "isIgnoreGap": false
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/geometry/calculatemeasure?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"measure":195.39962171759203,"succeed":true,"message":null}`));
+        });
         service.routeCalculateMeasure(routeCalculateMeasureParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toEqual(true);
-                expect(serviceResult.result.measure).toEqual(3103.167523778722);
+                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.measure).toEqual(195.39962171759203);
                 done();
             } catch (e) {
                 console.log("'routeCalculateMeasure'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 });
