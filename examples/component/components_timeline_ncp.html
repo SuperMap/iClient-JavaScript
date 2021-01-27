@@ -1,0 +1,742 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_componentsTimeLineNcp_Vue"></title>
+        <script type="text/javascript" include="vue,jquery,papaparse" src="../js/include-web.js"></script>
+        <script
+            include="moment,echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <style>
+            #main {
+                display: inline-flex;
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+            .sm-component-time-line {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+                z-index: 1000;
+            }
+            .sm-left-part {
+                display: inline-block;
+                width: 55%;
+                height: 100%;
+            }
+            .sm-right-part {
+                display: inline-block;
+                width: 44.5%;
+                height: 100%;
+                margin-left: 0.5%;
+            }
+            .sm-right-part__top {
+                position: relative;
+                height: 45%;
+                background: transparent;
+            }
+            .sm-right-part__bottom {
+                position: relative;
+                height: 54.5%;
+                margin-top: 0.5%;
+                background: transparent;
+            }
+            .sm-left-header {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+            }
+            .sm-left-header .sm-component-image {
+                position: absolute;
+            }
+            .sm-left-header__title {
+                width: 100%;
+            }
+            .sm-left-header__title .sm-component-text {
+                display: flex;
+                width: 100%;
+            }
+            .sm-left-content {
+                position: relative;
+                width: 100%;
+                height: calc(100% - 100px);
+                margin-top: 20px;
+            }
+            .sm-left-content .sm-component-text {
+                position: absolute;
+                top: 10px;
+                z-index: 1000;
+            }
+            .sm-right-part__top .sm-component-web-map,
+            .sm-component-chart {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: calc(100% - 130px);
+            }
+            .sm-component-chart .sm-component-collapse-card__content {
+                width: 100%;
+                height: 100%;
+            }
+            .sm-right-part__top .sm-component-time-text {
+                position: absolute;
+                top: 0;
+                right: 5px;
+                z-index: 1000;
+            }
+            .sm-total-indicators {
+                position: absolute;
+                top: 50px;
+                display: inline-flex;
+                justify-content: space-between;
+                width: 450px;
+                margin-top: 10px;
+                z-index: 1000;
+            }
+            .sm-total-indicator {
+                width: 140px;
+                height: 84px;
+            }
+            .sm-total-indicator .sm-component-indicator {
+                width: 100%;
+            }
+            .sm-total-indicator .sm-component-image__content {
+                background-size: 100% 100% !important;
+            }
+
+            .sm-indicators {
+                position: absolute;
+                left: 10px;
+                top: 50px;
+                display: inline-flex;
+                justify-content: space-between;
+                align-items: center;
+                width: calc(100% - 20px);
+                height: 70px;
+                z-index: 1000;
+            }
+            .sm-indicator {
+                display: inline-flex;
+                justify-content: space-around;
+                width: 180px;
+                height: 100%;
+                background: #1c2027;
+            }
+        </style>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #000000;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-border type="border6" class="sm-left-part">
+                <div>
+                    <div class="sm-left-header">
+                        <sm-image
+                            src="./img/ncp/superMap.png"
+                            repeat="center"
+                            style="width:140px;height:50px"
+                        ></sm-image>
+                        <div class="sm-left-header__title">
+                            <sm-text
+                                title="全国新型冠状病毒感染的肺炎疫情分布"
+                                :font-style='{ fontSize: "27px", fontWeight: 700, textAlign: "center"}'
+                            ></sm-text>
+                            <sm-text
+                                title="截至2020年4月2日24时（数据来源：国家与地方卫健委官网）"
+                                :font-style='{ textAlign: "center"}'
+                                text-color="#C8BFBF"
+                            ></sm-text>
+                        </div>
+                    </div>
+                    <div class="sm-left-content">
+                        <sm-web-map
+                            server-url="https://www.supermapol.com"
+                            :map-id="1312968431"
+                            target="map_1"
+                            :map-options="mapOptions"
+                            @load="load"
+                        ></sm-web-map>
+                        <sm-text :title="timeInfo" :font-style="{fontSize: '20px', fontWeight: 600}"></sm-text>
+                        <div class="sm-total-indicators">
+                            <div class="sm-total-indicator">
+                                <sm-image src="./img/ncp/red.png" style="width:140px;height:8px"></sm-image>
+                                <sm-indicator
+                                    title="新增确诊"
+                                    unit=""
+                                    :num="totalConfirmedAdd"
+                                    indicator-color="#79BC45"
+                                    text-font-size="14px"
+                                    font-size="30px"
+                                ></sm-indicator>
+                            </div>
+                            <div class="sm-total-indicator">
+                                <sm-image src="./img/ncp/yellow.png" style="width:140px;height:8px"></sm-image>
+                                <sm-indicator
+                                    title="现有确诊"
+                                    unit=""
+                                    :num="totalConfirmedNow"
+                                    indicator-color="#F24B3D"
+                                    text-font-size="14px"
+                                    font-size="30px"
+                                ></sm-indicator>
+                            </div>
+                            <div class="sm-total-indicator">
+                                <sm-image src="./img/ncp/green.png" style="width:140px;height:8px"></sm-image>
+                                <sm-indicator
+                                    title="疑似病例"
+                                    unit=""
+                                    :num="totalSuspected"
+                                    indicator-color="#79BC45"
+                                    text-font-size="14px"
+                                    font-size="30px"
+                                ></sm-indicator>
+                            </div>
+                        </div>
+                        <sm-time-line
+                            :data="data"
+                            :play-interval="1000"
+                            :label="label"
+                            :control-style="timeLineStyle"
+                            :checkpoint-style="timeLineStyle"
+                            @timelinechanged="timelineChanged"
+                        ></sm-time-line>
+                    </div>
+                </div>
+            </sm-border>
+            <div class="sm-right-part">
+                <sm-border type="border6" class="sm-right-part__top">
+                    <div>
+                        <sm-text
+                            title="全省疫情监控"
+                            :font-style='{ fontSize: "22px", fontWeight: 700}'
+                            text-color="#e9e9e9"
+                        ></sm-text>
+                        <sm-time-text :font-style='{ fontSize: "14px"}' time-type="date+second"> </sm-time-text>
+                        <div class="sm-indicators">
+                            <div class="sm-indicator">
+                                <sm-image src="./img/ncp/icon-red.png" style="width:40px;height:100%"></sm-image>
+                                <sm-indicator
+                                    title="新增确诊"
+                                    unit=""
+                                    :num="confirmedAdd"
+                                    indicator-color="#FB016D"
+                                    text-font-size="14px"
+                                    font-size="24px"
+                                ></sm-indicator>
+                            </div>
+                            <div class="sm-indicator">
+                                <sm-image src="./img/ncp/icon-yellow.png" style="width:40px;height:100%"></sm-image>
+                                <sm-indicator
+                                    title="现有确诊"
+                                    unit=""
+                                    :num="nowConfirmed"
+                                    indicator-color="#FEAD00"
+                                    text-font-size="14px"
+                                    font-size="24px"
+                                ></sm-indicator>
+                            </div>
+                            <div class="sm-indicator">
+                                <sm-image src="./img/ncp/icon-green.png" style="width:40px;height:100%"></sm-image>
+                                <sm-indicator
+                                    title="疑似病例"
+                                    unit=""
+                                    :num="suspectedAdd"
+                                    indicator-color="#5AFBAE"
+                                    text-font-size="14px"
+                                    font-size="24px"
+                                ></sm-indicator>
+                            </div>
+                        </div>
+                        <sm-web-map
+                            server-url="https://www.supermapol.com"
+                            :map-id="558388156"
+                            target="map_2"
+                            :map-options="mapOptions2"
+                            @load="load1"
+                        ></sm-web-map>
+                    </div>
+                </sm-border>
+                <sm-border type="border6" class="sm-right-part__bottom">
+                    <div>
+                        <sm-text
+                            title="市区疫情监控"
+                            :font-style='{ fontSize: "22px", fontWeight: 700}'
+                            text-color="#e9e9e9"
+                        ></sm-text>
+                        <div class="sm-indicators">
+                            <div class="sm-indicator">
+                                <sm-image src="./img/ncp/icon-red.png" style="width:40px;height:100%"></sm-image>
+                                <sm-indicator
+                                    title="新增确诊"
+                                    unit=""
+                                    :num="confirmedAdd"
+                                    indicator-color="#FB016D"
+                                    text-font-size="14px"
+                                    font-size="24px"
+                                ></sm-indicator>
+                            </div>
+                            <div class="sm-indicator">
+                                <sm-image src="./img/ncp/icon-yellow.png" style="width:40px;height:100%"></sm-image>
+                                <sm-indicator
+                                    title="现有确诊"
+                                    unit=""
+                                    :num="nowConfirmed"
+                                    indicator-color="#FEAD00"
+                                    text-font-size="14px"
+                                    font-size="24px"
+                                ></sm-indicator>
+                            </div>
+                            <div class="sm-indicator">
+                                <sm-image src="./img/ncp/icon-green.png" style="width:40px;height:100%"></sm-image>
+                                <sm-indicator
+                                    title="疑似病例"
+                                    unit=""
+                                    :num="suspectedAdd"
+                                    indicator-color="#5AFBAE"
+                                    text-font-size="14px"
+                                    font-size="24px"
+                                ></sm-indicator>
+                            </div>
+                        </div>
+                        <sm-chart
+                            icon-class=""
+                            v-bind="options"
+                            :dataset="dataset"
+                            :dataset-options="datasetOptions"
+                            :options="options"
+                            :color-group="colorGroup"
+                        ></sm-chart>
+                    </div>
+                </sm-border>
+            </div>
+        </div>
+
+        <script>
+            new Vue({
+                el: '#main',
+                data() {
+                    var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+                    var attribution =
+                        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+                    return {
+                        data: [],
+                        colorGroup: ['#d53e4f', '#fc8d59', '#fee08b', '#ffffbf', '#e6f598'],
+                        datasetOptions: [
+                            {
+                                seriesType: 'line',
+                                isStastic: false,
+                                isStack: false,
+                                xField: 'name',
+                                yField: 'confirmedAdd',
+                                sort: 'descending'
+                            }
+                        ],
+                        dataset: {
+                            maxFeatures: 20,
+                            url: '',
+                            type: 'geoJSON',
+                            geoJSON: {
+                                type: 'FeatureCollection',
+                                features: []
+                            }
+                        },
+                        options: {
+                            series: [
+                                {
+                                    data: ['3900', '3340', '3300', '2500', '2000', '520', '100'],
+                                    name: 'Y1',
+                                    emphasis: { itemStyle: {} },
+                                    stack: 0,
+                                    type: 'line',
+                                    smooth: true,
+                                    animationEasing: 'quadraticIn',
+                                    animationEasingUpdate: 'quadraticIn',
+                                    label: {
+                                        normal: {
+                                            position: 'top',
+                                            show: true,
+                                            textStyle: { color: '#d53e4f', fontSize: 12 },
+                                            smart: true
+                                        }
+                                    },
+                                    lineStyle: { color: '#d53e4f' },
+                                    itemStyle: { borderColor: '#d53e4f', color: '#d53e4f' },
+                                    symbol: 'circle',
+                                    areaStyle: { opacity: 0.7 }
+                                }
+                            ],
+                            yAxis: {
+                                axisLabel: {
+                                    rotate: 0,
+                                    fontFamily: 'MicrosoftYaHei',
+                                    show: true,
+                                    color: '#fff',
+                                    fontSize: 12
+                                },
+                                axisLine: { lineStyle: {} },
+                                name: '',
+                                show: true,
+                                splitLine: {
+                                    lineStyle: { width: 0.3, type: 'solid', color: '#ccc', opacity: 1 },
+                                    show: true
+                                },
+                                splitArea: { show: false },
+                                nameGap: 5,
+                                nameLocation: 'end',
+                                type: 'value',
+                                nameTextStyle: { padding: [0, 0, 5, 0] },
+                                axisTick: { show: true }
+                            },
+                            xAxis: {
+                                axisLabel: {
+                                    rotate: 47,
+                                    fontFamily: 'MicrosoftYaHei',
+                                    show: true,
+                                    color: '#fff',
+                                    fontSize: 12
+                                },
+                                data: ['Fri', 'Thu', 'Sat', 'Sun', 'Wed', 'Tue', 'Mon'],
+                                axisLine: { lineStyle: {} },
+                                show: true,
+                                name: '',
+                                axisTick: { alignWithLabel: true, show: true },
+                                splitLine: {
+                                    lineStyle: { type: 'solid', color: '#ccc', opacity: 1, width: 0.3 },
+                                    show: false
+                                },
+                                nameGap: 2,
+                                nameLocation: 'end',
+                                type: 'category',
+                                boundaryGap: false
+                            },
+                            grid: { top: 20, left: 43, bottom: 77, right: 20 },
+                            legend: {
+                                data: ['confirmedAdd'],
+                                show: false,
+                                textStyle: { color: '#fff', fontSize: 12 },
+                                type: 'scroll',
+                                top: 'top',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                axisPointer: { shadowStyle: {}, type: 'line' },
+                                trigger: 'axis',
+                                textStyle: { align: 'left' }
+                            },
+                            textStyle: { fontFamily: 'Microsoft YaHei Light' },
+                            title: {
+                                padding: [5, 0, 0, 20],
+                                x: 'left',
+                                text: '',
+                                textStyle: { fontFamily: 'Microsoft YaHei Light', fontWeight: '100' }
+                            },
+                            dataZoom: []
+                        },
+                        label: {
+                            color: '#EF6548',
+                            borderColor: '#EF6548',
+                            formatter: function(val, index) {
+                                var timestamp = val;
+                                return moment(timestamp * 1000).format('YYYY-MM-DD');
+                            }
+                        },
+                        timeLineStyle: {
+                            color: '#EF6548',
+                            borderColor: '#EF6548'
+                        },
+                        mapOptions: {
+                            style: { version: 8, sources: {}, layers: [] },
+                            center: [106.9163, 37.2424],
+                            zoom: 3,
+                            bearing: 0,
+                            pitch: 0
+                        },
+                        mapOptions2: {
+                            style: { version: 8, sources: {}, layers: [] },
+                            center: [112.7597, 31.1603],
+                            zoom: 4.63,
+                            bearing: 0,
+                            pitch: 0,
+                            preserveDrawingBuffer: true
+                        },
+                        layersIdField: { self_layers_ProviceDataWithNcp: 'provinceName' },
+                        timeInfo: '2020-04-02',
+                        totalConfirmedAdd: 399,
+                        totalConfirmedNow: 53371,
+                        totalSuspected: 1361,
+                        confirmedAdd: 366,
+                        nowConfirmed: 47547,
+                        suspectedAdd: 1125
+                    };
+                },
+                created() {
+                    SuperMap.Components.setTheme({ textColor: '#fff', background: 'rgb(0,0,0,0)' });
+                    var _this = this;
+                    this.requestData('../data/ncp/ncpTotal.json', function(res) {
+                        _this.ncpTotal = res;
+                    });
+                    this.requestData('../data/ncp/ncpProperties.json', function(res) {
+                        _this.ncpProperties = res;
+                        _this.data = _this.getTimeStamps(res);
+                        _this.timelineChanged({ currentIndex: 0 });
+                    });
+                    this.requestData('https://www.supermapol.com/web/maps/1312968431/map.json', function(res) {
+                        _this.layerInfo = res.layers[0];
+                    });
+                    this.requestData('https://www.supermapol.com/web/maps/558388156/map.json', function(res) {
+                        _this.layerInfo1 = res.layers[0];
+                    });
+                },
+                mounted() {},
+                methods: {
+                    load(e, vm) {
+                        this.map = e.map;
+                    },
+                    load1(e, vm) {
+                        this.map1 = e.map;
+                    },
+                    requestData(url = '../data/ncp/ncpTotal.json', cb) {
+                        var _this = this;
+                        $.get(url, function(res) {
+                            cb(res);
+                        });
+                    },
+                    timelineChanged(val) {
+                        var currentIndex = val.currentIndex;
+                        var timestamp = this.data[currentIndex];
+                        var geoJSON = this.getNcpFeatures(this.ncpProperties, timestamp);
+
+                        this.timeInfo = this.timestamp2Date(timestamp);
+                        this.dataset.geoJSON = geoJSON;
+                        this.setIndicatorNum(timestamp);
+                        this.updateSourceData(
+                            this.map,
+                            'ProviceDataWithNcp',
+                            this.layerInfo,
+                            geoJSON.features,
+                            'provinceName'
+                        );
+                        this.updateSourceData(
+                            this.map1,
+                            'ProviceDataWithNcp',
+                            this.layerInfo1,
+                            geoJSON.features,
+                            'provinceName'
+                        );
+                    },
+                    setIndicatorNum(timestamp) {
+                        var ncpProperties = this.ncpProperties[timestamp];
+                        var hubeiInfo = this.getProvinceInfo(ncpProperties, '湖北');
+                        this.confirmedAdd = hubeiInfo.properties.confirmedAdd;
+                        this.suspectedAdd = hubeiInfo.properties.suspectedAdd;
+                        this.nowConfirmed = hubeiInfo.properties.nowConfirmed;
+
+                        var ncpTotal = this.ncpTotal[timestamp][0];
+                        this.totalConfirmedAdd = ncpTotal.properties.confirmedAdd;
+                        this.totalSuspected = ncpTotal.properties.suspectedAdd;
+                        this.totalConfirmedNow = ncpTotal.properties.nowConfirmed;
+                    },
+                    getProvinceInfo(data, provinceName) {
+                        var hubeiInfo = data.find(function(item) {
+                            return item.properties.provinceName === provinceName;
+                        }) || { properties: {} };
+                        return hubeiInfo;
+                    },
+                    timestamp2Date(timestamp) {
+                        return timestamp ? moment(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss') : '';
+                    },
+                    date2Timestamp(date) {
+                        return moment(date, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000;
+                    },
+                    getTimeStamps(ncpData) {
+                        var data = [];
+                        for (var timestamp in ncpData) {
+                            data.push(timestamp);
+                        }
+                        return data;
+                    },
+                    getNcpFeatures(data, timestamp) {
+                        var features = data[timestamp];
+                        return {
+                            type: 'FeatureCollection',
+                            features: features
+                        };
+                    },
+                    updateSourceData(map, sourceId, layerInfo, features, mergeByField) {
+                        if (map && map.getSource(sourceId)) {
+                            var newFeatures = this.mergeFeatures(sourceId, features, mergeByField);
+                            map.getSource(sourceId).setData({
+                                type: 'FeatureCollection',
+                                features: newFeatures
+                            });
+                            var expression = this.getExpression(layerInfo, newFeatures);
+                            // 获取样式
+                            var layerStyle = {
+                                layout: {}
+                            };
+                            layerStyle.layout.visibility = layerInfo.visible;
+                            var featureType = layerInfo.featureType;
+                            var paint = this.transformStyleToMapBoxGl(layerInfo.style, featureType, expression);
+                            for (var key in paint) {
+                                map.setPaintProperty(sourceId, key, paint[key]);
+                            }
+                        }
+                    },
+                    mergeFeatures(layerId, features, mergeByField) {
+                        features = features.map(function(feature, index) {
+                            if (!feature.properties.hasOwnProperty('index')) {
+                                feature.properties.index = index;
+                            }
+                            return feature;
+                        });
+                        if (!mergeByField) {
+                            return features;
+                        }
+                        var source = this.map.getSource(layerId);
+                        if (!source || !source._data.features) {
+                            return features;
+                        }
+                        var prevFeatures = source._data.features;
+                        var nextFeatures = [];
+                        features.forEach(feature => {
+                            var prevFeature = prevFeatures.find(item => {
+                                if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
+                                    return (
+                                        JSON.stringify(item.properties[mergeByField] || '') ===
+                                        JSON.stringify(feature.properties[mergeByField] || '')
+                                    );
+                                } else {
+                                    return +item.properties[mergeByField] === +feature.properties[mergeByField];
+                                }
+                            });
+                            if (prevFeature) {
+                                nextFeatures.push({
+                                    ...prevFeature,
+                                    ...feature
+                                });
+                            } else if (feature.geometry) {
+                                nextFeatures.push(feature);
+                            }
+                        });
+                        return nextFeatures;
+                    },
+                    getExpression(layerInfo, features) {
+                        var fieldName = layerInfo.themeSetting.themeField;
+                        var featureType = layerInfo.featureType;
+                        var styleGroups = this.getRangeStyleGroup(layerInfo, features);
+                        var expression = ['match', ['get', 'index']];
+                        var datas = features.filter((row, index, arr) => {
+                            var tartget = parseFloat(row.properties[fieldName]);
+                            if (!tartget && tartget !== 0) {
+                                return false;
+                            }
+                            if (styleGroups) {
+                                for (var i = 0; i < styleGroups.length; i++) {
+                                    if (styleGroups[i].start <= tartget && tartget < styleGroups[i].end) {
+                                        expression.push(row.properties['index'], styleGroups[i].color);
+                                        break;
+                                    }
+                                }
+                            }
+                            return true;
+                        }, this);
+                        expression.push('rgba(255, 255, 255, 1)');
+                        return expression;
+                    },
+                    getRangeStyleGroup(layerInfo, features) {
+                        var featureType = layerInfo.featureType;
+                        var style = layerInfo.style;
+                        var themeSetting = layerInfo.themeSetting;
+                        var customSettings = themeSetting.customSettings;
+                        var themeField = themeSetting.themeField;
+                        var segmentMethod = themeSetting.segmentMethod;
+                        var colors = themeSetting.colors;
+                        var segmentCount = themeSetting.segmentCount;
+                        var values = [];
+                        var attributes;
+
+                        features.forEach(feature => {
+                            attributes = feature.properties;
+                            if (attributes) {
+                                var val = attributes[themeField];
+                                (val || val === 0) && Number(+val) && values.push(parseFloat(val));
+                            }
+                        }, this);
+
+                        var segements = SuperMap.ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
+                        if (segements) {
+                            var itemNum = segmentCount;
+                            if (attributes && segements[0] === segements[attributes.length - 1]) {
+                                itemNum = 1;
+                                segements.length = 2;
+                            }
+                            for (var i = 0; i < segements.length; i++) {
+                                var value = segements[i];
+                                value = i === 0 ? Math.floor(value * 100) / 100 : Math.ceil(value * 100) / 100 + 0.1; // 加0.1 解决最大值没有样式问题
+                                segements[i] = Number(value.toFixed(2));
+                            }
+
+                            var curentColors = colors;
+                            curentColors = SuperMap.ColorsPickerUtil.getGradientColors(curentColors, itemNum, 'RANGE');
+                            for (var index = 0; index < itemNum; index++) {
+                                if (index in customSettings) {
+                                    if (customSettings[index]['segment']['start']) {
+                                        segements[index] = customSettings[index]['segment']['start'];
+                                    }
+                                    if (customSettings[index]['segment']['end']) {
+                                        segements[index + 1] = customSettings[index]['segment']['end'];
+                                    }
+                                }
+                            }
+                            var styleGroups = [];
+                            for (var i = 0; i < itemNum; i++) {
+                                var color = curentColors[i];
+                                if (i in customSettings) {
+                                    if (customSettings[i].color) {
+                                        color = customSettings[i].color;
+                                    }
+                                }
+                                style.fillColor = color;
+                                var start = segements[i];
+                                var end = segements[i + 1];
+                                var styleObj = JSON.parse(JSON.stringify(style));
+                                styleGroups.push({
+                                    style: styleObj,
+                                    color: color,
+                                    start: start,
+                                    end: end
+                                });
+                            }
+                            return styleGroups;
+                        }
+                    },
+                    transformStyleToMapBoxGl(style, type, expression, expressionType) {
+                        var transTable = {};
+                        if (['REGION', 'POLYGON', 'MULTIPOLYGON'].includes(type)) {
+                            transTable = {
+                                fillColor: 'fill-color',
+                                fillOpacity: 'fill-opacity'
+                            };
+                        }
+                        var newObj = {};
+                        for (var item in style) {
+                            if (transTable[item]) {
+                                newObj[transTable[item]] = style[item];
+                            }
+                        }
+                        if (expression) {
+                            newObj['fill-color'] = expression;
+                        }
+                        return newObj;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

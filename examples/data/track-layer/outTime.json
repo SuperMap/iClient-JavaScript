@@ -1,0 +1,322 @@
+{
+  "1599810915": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.438320094935, 39.9451818142663] },
+    "properties": { "speed": 4, "acceleration": 0.5, "wheel_angle": -12 }
+  },
+  "1599810920": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.438320094935, 39.94338317353886] },
+    "properties": { "speed": 4.448, "acceleration": 0.823, "wheel_angle": -13.94 }
+  },
+  "1599810925": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.438320094935, 39.94158453281141] },
+    "properties": { "speed": 5.134, "acceleration": -0.397, "wheel_angle": 7.39 }
+  },
+  "1599810930": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.438320094935, 39.94023090621637] },
+    "properties": { "speed": 5.909, "acceleration": 0.155, "wheel_angle": -9.11 }
+  },
+  "1599810935": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4384489964095, 39.93996515179496] },
+    "properties": { "speed": 4.057, "acceleration": 0.729, "wheel_angle": 7.15 }
+  },
+  "1599810940": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4386585015782, 39.93989250433639] },
+    "properties": { "speed": 4.594, "acceleration": 0.222, "wheel_angle": -2.74 }
+  },
+  "1599810945": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4408050318418, 39.9398925043364] },
+    "properties": { "speed": 5.717, "acceleration": 0.747, "wheel_angle": 4.69 }
+  },
+  "1599810950": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4431509268121, 39.9398925043364] },
+    "properties": { "speed": 4.981, "acceleration": 0.966, "wheel_angle": -8.13 }
+  },
+  "1599810955": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4440253086278, 39.9398925043364] },
+    "properties": { "speed": 6.402, "acceleration": -0.294, "wheel_angle": 9.41 }
+  },
+  "1599810960": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4441636515865, 39.9398351960966] },
+    "properties": { "speed": 5.969, "acceleration": 0.956, "wheel_angle": 9.8 }
+  },
+  "1599810965": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444220954768, 39.93969685194881] },
+    "properties": { "speed": 4.029, "acceleration": -0.313, "wheel_angle": -11.92 }
+  },
+  "1599810970": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444220954768, 39.93891426743386] },
+    "properties": { "speed": 4.054, "acceleration": 0.558, "wheel_angle": -11.8 }
+  },
+  "1599810975": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444220954768, 39.93711562670642] },
+    "properties": { "speed": 4.22, "acceleration": 0.719, "wheel_angle": 2.66 }
+  },
+  "1599810980": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444220954768, 39.93531698597896] },
+    "properties": { "speed": 3.706, "acceleration": -0.27, "wheel_angle": 0.2 }
+  },
+  "1599810985": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444220954768, 39.93351834525151] },
+    "properties": { "speed": 3.508, "acceleration": -0.247, "wheel_angle": 10.11 }
+  },
+  "1599810990": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444220954768, 39.93252808219187] },
+    "properties": { "speed": 5.028, "acceleration": 0.076, "wheel_angle": 9.62 }
+  },
+  "1599810995": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4442795767306, 39.93240092299517] },
+    "properties": { "speed": 4.136, "acceleration": -0.003, "wheel_angle": -7.73 }
+  },
+  "1599811000": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4443427898069, 39.93236713591662] },
+    "properties": { "speed": 3.586, "acceleration": 0.376, "wheel_angle": -3.37 }
+  },
+  "1599811005": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4450570898265, 39.9323608808986] },
+    "properties": { "speed": 3.876, "acceleration": 0.611, "wheel_angle": 5.58 }
+  },
+  "1599811010": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4474027266408, 39.9323608808986] },
+    "properties": { "speed": 5.603, "acceleration": 0.181, "wheel_angle": -3.95 }
+  },
+  "1599811015": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4490849626547, 39.9323608808986] },
+    "properties": { "speed": 4.561, "acceleration": 0.634, "wheel_angle": 6.56 }
+  },
+  "1599811020": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4492263857779, 39.93241943558581] },
+    "properties": { "speed": 4.139, "acceleration": -0.024, "wheel_angle": -1.73 }
+  },
+  "1599811025": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.449269741033, 39.93248432059063] },
+    "properties": { "speed": 3.657, "acceleration": 0.494, "wheel_angle": -2.91 }
+  },
+  "1599811030": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.449284965388, 39.93451483080796] },
+    "properties": { "speed": 4.254, "acceleration": 0.532, "wheel_angle": -0.78 }
+  },
+  "1599811035": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.449284965388, 39.93645239315718] },
+    "properties": { "speed": 3.823, "acceleration": 0.618, "wheel_angle": 1.17 }
+  },
+  "1599811040": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4493435427738, 39.93659381325539] },
+    "properties": { "speed": 3.399, "acceleration": 0.261, "wheel_angle": -8.22 }
+  },
+  "1599811045": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4494849618298, 39.93665239315715] },
+    "properties": { "speed": 4.43, "acceleration": 0.181, "wheel_angle": -5.14 }
+  },
+  "1599811050": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4511887329773, 39.93665242346901] },
+    "properties": { "speed": 3.381, "acceleration": 0.715, "wheel_angle": -6.83 }
+  },
+  "1599811055": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4535345168775, 39.93665242238463] },
+    "properties": { "speed": 4.019, "acceleration": 0.835, "wheel_angle": 8.02 }
+  },
+  "1599811060": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4551306681587, 39.93665239324959] },
+    "properties": { "speed": 4.444, "acceleration": 0.453, "wheel_angle": 4.4 }
+  },
+  "1599811065": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4552720871549, 39.93659381331515] },
+    "properties": { "speed": 4.327, "acceleration": 0.164, "wheel_angle": -5.34 }
+  },
+  "1599811070": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.455330664508, 39.93645239324962] },
+    "properties": { "speed": 5.602, "acceleration": 0.384, "wheel_angle": -10.99 }
+  },
+  "1599811075": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.455330664508, 39.93443231270344] },
+    "properties": { "speed": 5.315, "acceleration": -0.251, "wheel_angle": 1.27 }
+  },
+  "1599811080": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.455330664508, 39.932633671976] },
+    "properties": { "speed": 5.815, "acceleration": -0.216, "wheel_angle": -4.09 }
+  },
+  "1599811085": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.455330664508, 39.93083503124855] },
+    "properties": { "speed": 5.32, "acceleration": 0.787, "wheel_angle": -9.27 }
+  },
+  "1599811090": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.455330664508, 39.92903639052109] },
+    "properties": { "speed": 4.344, "acceleration": 0.691, "wheel_angle": 5.02 }
+  },
+  "1599811095": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.455330664508, 39.92723774979364] },
+    "properties": { "speed": 5.769, "acceleration": 0.87, "wheel_angle": 4 }
+  },
+  "1599811100": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4553154400918, 39.92559104429421] },
+    "properties": { "speed": 3.766, "acceleration": 0.538, "wheel_angle": 2.15 }
+  },
+  "1599811105": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4552720846718, 39.92552615921099] },
+    "properties": { "speed": 3.76, "acceleration": 0.103, "wheel_angle": -13.1 }
+  },
+  "1599811110": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4551306611351, 39.92546758175973] },
+    "properties": { "speed": 4.655, "acceleration": -0.292, "wheel_angle": -3.04 }
+  },
+  "1599811115": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4529481408109, 39.92546761856647] },
+    "properties": { "speed": 6.101, "acceleration": 0.699, "wheel_angle": -5.33 }
+  },
+  "1599811120": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4508748173807, 39.92546786800934] },
+    "properties": { "speed": 4.088, "acceleration": 0.451, "wheel_angle": 5.93 }
+  },
+  "1599811125": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4505156868321, 39.9255840171967] },
+    "properties": { "speed": 3.722, "acceleration": 0.38, "wheel_angle": 3.72 }
+  },
+  "1599811130": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4489952868305, 39.9255840171967] },
+    "properties": { "speed": 3.915, "acceleration": 0.669, "wheel_angle": -2.04 }
+  },
+  "1599811135": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4482680684146, 39.9255840171967] },
+    "properties": { "speed": 3.933, "acceleration": 0.91, "wheel_angle": -13.73 }
+  },
+  "1599811140": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4482627039801, 39.92558401719666] },
+    "properties": { "speed": 5.97, "acceleration": -0.06, "wheel_angle": -1.31 }
+  },
+  "1599811145": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.445997334409, 39.92558401719666] },
+    "properties": { "speed": 3.592, "acceleration": 0.202, "wheel_angle": -11.81 }
+  },
+  "1599811150": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4458545354461, 39.92546682511643] },
+    "properties": { "speed": 3.746, "acceleration": 0.165, "wheel_angle": -0.07 }
+  },
+  "1599811155": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.445851737849, 39.9248560343515] },
+    "properties": { "speed": 3.989, "acceleration": 0.043, "wheel_angle": 10.32 }
+  },
+  "1599811160": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4456350153489, 39.923727274867] },
+    "properties": { "speed": 5.108, "acceleration": 0.545, "wheel_angle": 0.06 }
+  },
+  "1599811165": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.445594245784, 39.923514929844] },
+    "properties": { "speed": 3.689, "acceleration": -0.383, "wheel_angle": 0.48 }
+  },
+  "1599811170": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.445594245784, 39.9223133002054] },
+    "properties": { "speed": 5.615, "acceleration": 0.149, "wheel_angle": 3.38 }
+  },
+  "1599811175": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4450956554462, 39.92231330150414] },
+    "properties": { "speed": 5.902, "acceleration": -0.058, "wheel_angle": -4.13 }
+  },
+  "1599811180": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444489175669, 39.9223133002054] },
+    "properties": { "speed": 4.061, "acceleration": 0.291, "wheel_angle": 3.76 }
+  },
+  "1599811185": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.444489175669, 39.9216051970254] },
+    "properties": { "speed": 4.684, "acceleration": 0.889, "wheel_angle": -1.12 }
+  },
+  "1599811190": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.445218736521, 39.9216051970254] },
+    "properties": { "speed": 3.992, "acceleration": 0.96, "wheel_angle": 5.67 }
+  },
+  "1599811195": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4452925745238, 39.92163890617367] },
+    "properties": { "speed": 4.866, "acceleration": 0.338, "wheel_angle": 0.07 }
+  },
+  "1599811200": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.446205789439, 39.9220558081399] },
+    "properties": { "speed": 5.904, "acceleration": -0.108, "wheel_angle": 5.27 }
+  },
+  "1599811205": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.446763688914, 39.9220558081399] },
+    "properties": { "speed": 6.161, "acceleration": 0.409, "wheel_angle": -10.59 }
+  },
+  "1599811210": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.446763688914, 39.92150008643733] },
+    "properties": { "speed": 5.899, "acceleration": 0.067, "wheel_angle": 2.35 }
+  },
+  "1599811215": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.446763688914, 39.920274821354] },
+    "properties": { "speed": 5.227, "acceleration": -0.108, "wheel_angle": 5.01 }
+  },
+  "1599811220": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4474738234246, 39.92009555100189] },
+    "properties": { "speed": 6.113, "acceleration": 0.665, "wheel_angle": -3.31 }
+  },
+  "1599811225": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.4497014433666, 39.91953316389031] },
+    "properties": { "speed": 5.978, "acceleration": 0.493, "wheel_angle": -8.19 }
+  },
+  "1599811230": {
+    "type": "Feature",
+    "geometry": { "type": "Point", "coordinates": [116.450035983912, 39.9194487009775] },
+    "properties": { "speed": 5.633, "acceleration": 0.965, "wheel_angle": -2.87 }
+  }
+}

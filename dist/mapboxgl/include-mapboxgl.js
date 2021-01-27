@@ -61,12 +61,20 @@
             inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'draw')) {
-            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.css');
-            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.js');
+            inputCSS(
+                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.css'
+            );
+            inputScript(
+                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.js'
+            );
         }
         if (inArray(includes, 'compare')) {
-            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
-            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
+            inputCSS(
+                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css'
+            );
+            inputScript(
+                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js'
+            );
         }
         if (inArray(includes, 'mapv')) {
             inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.56/build/mapv.min.js');
@@ -119,10 +127,24 @@
             inputScript('https://iclient.supermap.io/web/libs/xml-js/1.6.8/xml-js.min.js');
         }
         if (inArray(includes, 'LegacyJSONLoader')) {
-            inputScript('https://cdn.jsdelivr.net/npm/three@0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
+            inputScript(
+                'https://cdn.jsdelivr.net/npm/three@0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js'
+            );
         }
         if (inArray(includes, 'OBJLoader')) {
             inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/OBJLoader.js');
+        }
+
+        if (inArray(includes, 'three92')) {
+            inputScript('https://cdn.bootcss.com/three.js/92/three.min.js');
+        }
+        if (inArray(includes, 'LoaderSupport')) {
+            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderCommons.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderBuilder.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderWorkerSupport.js');
+        }
+        if (inArray(includes, 'OBJLoader2')) {
+            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/OBJLoader2.js');
         }
         if (inArray(includes, 'MTLLoader')) {
             inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/MTLLoader.js');
@@ -136,6 +158,13 @@
         if (inArray(includes, 'mapbox-print-pdf')) {
             inputScript('https://iclient.supermap.io/web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
         }
+        if (inArray(includes, 'moment')) {
+            inputScript('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js');
+        }
+        if (inArray(includes, 'lodash')) {
+            inputScript('https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js');
+        }
+
         // dist
         if (!inArray(excludes, 'iclient-mapboxgl')) {
             if (supportES6()) {

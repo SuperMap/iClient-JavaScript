@@ -1,0 +1,857 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_componentsTimeLineTracklayer_Vue"></title>
+        <script type="text/javascript" include="vue,jquery,papaparse" src="../js/include-web.js"></script>
+        <script
+            include="lodash,moment,three92,LoaderSupport,OBJLoader2,echarts-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <style>
+            #main {
+                position: relative;
+                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+            }
+            .sm-left-part {
+                position: absolute;
+                width: 270px;
+                height: 100%;
+                z-index: 1000;
+                background: rgba(0, 0, 0, 0.73);
+            }
+            .sm-chart-wrapper .sm-component-chart {
+                display: flex;
+            }
+            .sm-component-time-slider {
+                position: absolute;
+                left: 270px;
+                bottom: 0px;
+                width: calc(100% - 270px);
+                z-index: 1000;
+            }
+            .sm-component-web-map {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+            .sm-gauge-wrapper {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+                margin: 0 auto;
+            }
+            .sm-gauge-item {
+                position: relative;
+            }
+            .sm-component-text {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            }
+            .sm-component-text span {
+                margin: 0 auto;
+            }
+            .sm-chart-wrapper .sm-component-chart,
+            .sm-chart-wrapper .sm-component-chart .sm-component-collapse-card__content {
+                width: 270px;
+                height: 160px;
+            }
+            .sm-gauge-wrapper .sm-component-chart,
+            .sm-gauge-wrapper .sm-component-chart .sm-component-collapse-card__content {
+                width: 130px;
+                height: 100px;
+            }
+        </style>
+    </head>
+
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="main">
+            <sm-web-map :map-options="mapOptions" :tianditu-key="tiandituKey">
+                <sm-track-layer v-bind="trackLayers" :position="position"></sm-track-layer>
+            </sm-web-map>
+            <div class="sm-left-part">
+                <div class="sm-chart-wrapper">
+                    <sm-chart icon-class="" v-bind="chart" :dataset="dataset"></sm-chart>
+                    <sm-chart icon-class="" v-bind="chart1" :dataset="dataset"></sm-chart>
+                    <sm-chart icon-class="" v-bind="chart2" :dataset="dataset"></sm-chart>
+                </div>
+                <div class="sm-gauge-wrapper">
+                    <div class="sm-gauge-item" style="width:100%">
+                        <sm-chart
+                            icon-class=""
+                            v-bind="gauge"
+                            :dataset="gaugeDataset"
+                            style="margin: 0 auto"
+                        ></sm-chart>
+                        <sm-text title="速度"></sm-text>
+                    </div>
+                    <div class="sm-gauge-item" style="display: inline-block;width:49%">
+                        <sm-chart icon-class="" v-bind="gauge1" :dataset="gaugeDataset"></sm-chart>
+                        <sm-text title="加速度"></sm-text>
+                    </div>
+                    <div class="sm-gauge-item" style="display: inline-block;width:49%">
+                        <sm-chart icon-class="" v-bind="gauge2" :dataset="gaugeDataset"></sm-chart>
+                        <sm-text title="方位角"></sm-text>
+                    </div>
+                </div>
+            </div>
+            <sm-time-slider
+                :data="data"
+                :play-interval="2000"
+                :theme-style="themeStyle"
+                :checkpoint-style="checkpointStyle"
+                :label="themeStyle"
+                :line-style="lineStyle"
+                @timeplayerchanged="timeplayerchanged"
+                background="rgba(0, 0, 0, 0.73)"
+            ></sm-time-slider>
+        </div>
+
+        <script>
+            new Vue({
+                el: '#main',
+                data() {
+                    var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+                    var attribution =
+                        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+                        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+                    return {
+                        tiandituKey: 'f16b023603de8ae8fdd09a2c0feb1ec2',
+                        dataset: {
+                            maxFeatures: '',
+                            type: 'geoJSON',
+                            geoJSON: {
+                                type: 'FeatureCollection',
+                                features: []
+                            }
+                        },
+                        chart: {
+                            datasetOptions: [
+                                {
+                                    seriesType: 'line',
+                                    isStastic: false,
+                                    isStack: false,
+                                    xField: 'timestamp',
+                                    yField: 'speed',
+                                    sort: 'unsort'
+                                }
+                            ],
+                            options: {
+                                series: [
+                                    {
+                                        data: ['3900', '3340', '3300', '2500', '2000', '520', '100'],
+                                        name: 'Y1',
+                                        emphasis: { itemStyle: {} },
+                                        stack: 0,
+                                        type: 'line',
+                                        smooth: true,
+                                        animationEasing: 'quadraticIn',
+                                        animationEasingUpdate: 'quadraticIn',
+                                        label: {
+                                            normal: {
+                                                position: 'top',
+                                                show: false,
+                                                textStyle: { fontSize: 12 },
+                                                smart: false
+                                            }
+                                        },
+                                        showAllSymbol: 'auto',
+                                        symbol: 'emptyCircle',
+                                        symbolSize: 4,
+                                        itemStyle: { borderWidth: 2, color: '#F2F5F8', borderColor: '#F2F5F8' },
+                                        lineStyle: { color: '#F2F5F8' }
+                                    }
+                                ],
+                                yAxis: {
+                                    axisLabel: {
+                                        rotate: 0,
+                                        fontFamily: 'MicrosoftYaHei',
+                                        show: true,
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        align: 'right',
+                                        margin: 8
+                                    },
+                                    axisLine: { lineStyle: { color: '#fff' }, show: true },
+                                    name: '速度',
+                                    show: true,
+                                    splitLine: {
+                                        lineStyle: { width: 0.3, type: 'solid', color: '#ccc', opacity: 1 },
+                                        show: true
+                                    },
+                                    splitArea: { show: false },
+                                    nameGap: 5,
+                                    nameLocation: 'end',
+                                    type: 'value',
+                                    nameTextStyle: { padding: [0, 0, 5, 0] },
+                                    axisTick: { show: false }
+                                },
+                                xAxis: {
+                                    axisLabel: {
+                                        rotate: 0,
+                                        fontFamily: 'MicrosoftYaHei',
+                                        show: false,
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        margin: 8
+                                    },
+                                    data: ['Fri', 'Thu', 'Sat', 'Sun', 'Wed', 'Tue', 'Mon'],
+                                    axisLine: { lineStyle: { color: '#fff' }, show: false },
+                                    show: true,
+                                    name: '',
+                                    axisTick: { alignWithLabel: true, show: false },
+                                    splitLine: {
+                                        lineStyle: { type: 'solid', color: '#ccc', opacity: 1, width: 0.3 },
+                                        show: false
+                                    },
+                                    nameGap: 2,
+                                    nameLocation: 'end',
+                                    type: 'category',
+                                    boundaryGap: true
+                                },
+                                grid: { top: 35, left: 36, bottom: 35, right: 20 },
+                                legend: {
+                                    data: ['speed'],
+                                    show: false,
+                                    textStyle: { color: '#fff', fontSize: 12 },
+                                    type: 'scroll',
+                                    top: 'top',
+                                    left: 'center'
+                                },
+                                tooltip: {
+                                    axisPointer: { shadowStyle: {}, type: 'line' },
+                                    trigger: 'axis',
+                                    textStyle: { align: 'left' }
+                                },
+                                textStyle: { fontFamily: 'Microsoft YaHei Light' },
+                                title: {
+                                    padding: [5, 0, 0, 20],
+                                    x: 'left',
+                                    text: '',
+                                    textStyle: { fontFamily: 'Microsoft YaHei Light', fontWeight: '100' }
+                                },
+                                dataZoom: []
+                            }
+                        },
+                        chart1: {
+                            datasetOptions: [
+                                {
+                                    seriesType: 'line',
+                                    isStastic: false,
+                                    isStack: false,
+                                    xField: 'timestamp',
+                                    yField: 'acceleration',
+                                    sort: 'unsort'
+                                }
+                            ],
+                            options: {
+                                series: [
+                                    {
+                                        data: ['3900', '3340', '3300', '2500', '2000', '520', '100'],
+                                        name: 'Y1',
+                                        emphasis: { itemStyle: {} },
+                                        stack: 0,
+                                        type: 'line',
+                                        smooth: true,
+                                        animationEasing: 'quadraticIn',
+                                        animationEasingUpdate: 'quadraticIn',
+                                        label: {
+                                            normal: {
+                                                position: 'top',
+                                                show: false,
+                                                textStyle: { fontSize: 12 },
+                                                smart: false
+                                            }
+                                        },
+                                        showAllSymbol: 'auto',
+                                        symbol: 'emptyCircle',
+                                        symbolSize: 4,
+                                        itemStyle: { borderWidth: 2, color: '#F2F5F8', borderColor: '#F2F5F8' },
+                                        lineStyle: { color: '#F2F5F8' }
+                                    }
+                                ],
+                                yAxis: {
+                                    axisLabel: {
+                                        rotate: 0,
+                                        fontFamily: 'MicrosoftYaHei',
+                                        show: true,
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        align: 'right',
+                                        margin: 8
+                                    },
+                                    axisLine: { lineStyle: { color: '#fff' }, show: true },
+                                    name: '加速度',
+                                    show: true,
+                                    splitLine: {
+                                        lineStyle: { width: 0.3, type: 'solid', color: '#ccc', opacity: 1 },
+                                        show: true
+                                    },
+                                    splitArea: { show: false },
+                                    nameGap: 5,
+                                    nameLocation: 'end',
+                                    type: 'value',
+                                    nameTextStyle: { padding: [0, 0, 5, 0] },
+                                    axisTick: { show: false }
+                                },
+                                xAxis: {
+                                    axisLabel: {
+                                        rotate: 0,
+                                        fontFamily: 'MicrosoftYaHei',
+                                        show: false,
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        margin: 8
+                                    },
+                                    data: ['Fri', 'Thu', 'Sat', 'Sun', 'Wed', 'Tue', 'Mon'],
+                                    axisLine: { lineStyle: { color: '#fff' }, show: false },
+                                    show: true,
+                                    name: '',
+                                    axisTick: { alignWithLabel: true, show: false },
+                                    splitLine: {
+                                        lineStyle: { type: 'solid', color: '#ccc', opacity: 1, width: 0.3 },
+                                        show: false
+                                    },
+                                    nameGap: 2,
+                                    nameLocation: 'end',
+                                    type: 'category',
+                                    boundaryGap: true
+                                },
+                                grid: { top: 35, left: 36, bottom: 35, right: 20 },
+                                legend: {
+                                    data: ['acceleration'],
+                                    show: false,
+                                    textStyle: { color: '#fff', fontSize: 12 },
+                                    type: 'scroll',
+                                    top: 'top',
+                                    left: 'center'
+                                },
+                                tooltip: {
+                                    axisPointer: { shadowStyle: {}, type: 'line' },
+                                    trigger: 'axis',
+                                    textStyle: { align: 'left' }
+                                },
+                                textStyle: { fontFamily: 'Microsoft YaHei Light' },
+                                title: {
+                                    padding: [5, 0, 0, 20],
+                                    x: 'left',
+                                    text: '',
+                                    textStyle: { fontFamily: 'Microsoft YaHei Light', fontWeight: '100' }
+                                },
+                                dataZoom: []
+                            }
+                        },
+                        chart2: {
+                            datasetOptions: [
+                                {
+                                    seriesType: 'line',
+                                    isStastic: false,
+                                    isStack: false,
+                                    xField: 'timestamp',
+                                    yField: 'wheel_angle',
+                                    sort: 'unsort'
+                                }
+                            ],
+                            options: {
+                                series: [
+                                    {
+                                        data: ['3900', '3340', '3300', '2500', '2000', '520', '100'],
+                                        name: 'Y1',
+                                        emphasis: { itemStyle: {} },
+                                        stack: 0,
+                                        type: 'line',
+                                        smooth: true,
+                                        animationEasing: 'quadraticIn',
+                                        animationEasingUpdate: 'quadraticIn',
+                                        label: {
+                                            normal: {
+                                                position: 'top',
+                                                show: false,
+                                                textStyle: { fontSize: 12 },
+                                                smart: false
+                                            }
+                                        },
+                                        showAllSymbol: 'auto',
+                                        symbol: 'emptyCircle',
+                                        symbolSize: 4,
+                                        itemStyle: { borderWidth: 2, color: '#F2F5F8', borderColor: '#F2F5F8' },
+                                        lineStyle: { color: '#F2F5F8' }
+                                    }
+                                ],
+                                yAxis: {
+                                    axisLabel: {
+                                        rotate: 0,
+                                        fontFamily: 'MicrosoftYaHei',
+                                        show: true,
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        align: 'right',
+                                        margin: 8
+                                    },
+                                    axisLine: { lineStyle: { color: '#fff' }, show: true },
+                                    name: '方位角',
+                                    show: true,
+                                    splitLine: {
+                                        lineStyle: { width: 0.3, type: 'solid', color: '#ccc', opacity: 1 },
+                                        show: true
+                                    },
+                                    splitArea: { show: false },
+                                    nameGap: 5,
+                                    nameLocation: 'end',
+                                    type: 'value',
+                                    nameTextStyle: { padding: [0, 0, 5, 0] },
+                                    axisTick: { show: false }
+                                },
+                                xAxis: {
+                                    axisLabel: {
+                                        rotate: 0,
+                                        fontFamily: 'MicrosoftYaHei',
+                                        show: false,
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        margin: 8
+                                    },
+                                    data: ['Fri', 'Thu', 'Sat', 'Sun', 'Wed', 'Tue', 'Mon'],
+                                    axisLine: { lineStyle: { color: '#fff' }, show: false },
+                                    show: true,
+                                    name: '',
+                                    axisTick: { alignWithLabel: true, show: false },
+                                    splitLine: {
+                                        lineStyle: { type: 'solid', color: '#ccc', opacity: 1, width: 0.3 },
+                                        show: false
+                                    },
+                                    nameGap: 2,
+                                    nameLocation: 'end',
+                                    type: 'category',
+                                    boundaryGap: true
+                                },
+                                grid: { top: 35, left: 36, bottom: 35, right: 20 },
+                                legend: {
+                                    data: ['wheel_angle'],
+                                    show: false,
+                                    textStyle: { color: '#fff', fontSize: 12 },
+                                    type: 'scroll',
+                                    top: 'top',
+                                    left: 'center'
+                                },
+                                tooltip: {
+                                    axisPointer: { shadowStyle: {}, type: 'line' },
+                                    trigger: 'axis',
+                                    textStyle: { align: 'left' }
+                                },
+                                textStyle: { fontFamily: 'Microsoft YaHei Light' },
+                                title: {
+                                    padding: [5, 0, 0, 20],
+                                    x: 'left',
+                                    text: '',
+                                    textStyle: { fontFamily: 'Microsoft YaHei Light', fontWeight: '100' }
+                                },
+                                dataZoom: []
+                            }
+                        },
+                        gaugeDataset: { maxFeatures: 20, url: '', type: '', withCredentials: false },
+                        gauge: {
+                            datasetOptions: [{ seriesType: 'gauge' }],
+                            options: {
+                                series: [
+                                    {
+                                        name: 'inLoop',
+                                        type: 'gauge',
+                                        min: -15,
+                                        max: 15,
+                                        center: ['50%', '50%'],
+                                        startAngle: 180,
+                                        endAngle: 0,
+                                        splitNumber: 10,
+                                        radius: '70%',
+                                        data: [{ value: 0, name: '完成率' }],
+                                        title: { show: false, textStyle: { fontSize: 14, color: '#ffffff' } },
+                                        detail: { show: true, textStyle: { fontSize: 15, color: '#ffffff' } },
+                                        axisTick: { show: false, length: 13, lineStyle: { width: 1, color: '#fff' } },
+                                        splitLine: { show: false, length: 20, lineStyle: { width: 2, color: '#fff' } },
+                                        axisLabel: {
+                                            show: false,
+                                            fontSize: 12,
+                                            fontWeight: 'normal',
+                                            distance: 16,
+                                            color: '#fff'
+                                        },
+                                        axisLine: {
+                                            show: true,
+                                            lineStyle: {
+                                                color: [
+                                                    [0.36, '#F2F5F8'],
+                                                    [1, '#D3DDE8']
+                                                ],
+                                                width: 8
+                                            }
+                                        },
+                                        pointer: { show: true, length: '66%', width: 2 },
+                                        itemStyle: { show: false, color: 'auto' }
+                                    },
+                                    {
+                                        name: 'outLoop',
+                                        type: 'gauge',
+                                        min: -15,
+                                        max: 15,
+                                        center: ['50%', '50%'],
+                                        startAngle: 225,
+                                        endAngle: -45,
+                                        splitNumber: 10,
+                                        radius: '75%',
+                                        title: { show: false },
+                                        detail: { show: false },
+                                        axisTick: {
+                                            show: false,
+                                            length: -8,
+                                            lineStyle: { width: 1, color: '#F2F5F8' },
+                                            splitNumber: 7
+                                        },
+                                        splitLine: {
+                                            show: false,
+                                            length: -20,
+                                            lineStyle: { width: 2, color: '#D3DDE8' }
+                                        },
+                                        axisLabel: { show: false, fontSize: 12, fontWeight: 'normal', distance: 25 },
+                                        axisLine: { show: false },
+                                        pointer: { show: false },
+                                        itemStyle: { show: true, color: '' }
+                                    }
+                                ]
+                            }
+                        },
+                        gauge1: {
+                            datasetOptions: [{ seriesType: 'gauge' }],
+                            options: {
+                                series: [
+                                    {
+                                        name: 'inLoop',
+                                        type: 'gauge',
+                                        min: -0.6,
+                                        max: 1.2,
+                                        center: ['50%', '50%'],
+                                        startAngle: 180,
+                                        endAngle: 0,
+                                        splitNumber: 10,
+                                        radius: '70%',
+                                        data: [{ value: 0, name: '完成率' }],
+                                        title: { show: false, textStyle: { fontSize: 14, color: '#ffffff' } },
+                                        detail: { show: true, textStyle: { fontSize: 15, color: '#ffffff' } },
+                                        axisTick: { show: false, length: 13, lineStyle: { width: 1, color: '#fff' } },
+                                        splitLine: { show: false, length: 20, lineStyle: { width: 2, color: '#fff' } },
+                                        axisLabel: {
+                                            show: false,
+                                            fontSize: 12,
+                                            fontWeight: 'normal',
+                                            distance: 16,
+                                            color: '#fff'
+                                        },
+                                        axisLine: {
+                                            show: true,
+                                            lineStyle: {
+                                                color: [
+                                                    [0.36, '#F2F5F8'],
+                                                    [1, '#D3DDE8']
+                                                ],
+                                                width: 8
+                                            }
+                                        },
+                                        pointer: { show: true, length: '66%', width: 2 },
+                                        itemStyle: { show: false, color: 'auto' }
+                                    },
+                                    {
+                                        name: 'outLoop',
+                                        type: 'gauge',
+                                        min: -0.6,
+                                        max: 1.2,
+                                        center: ['50%', '50%'],
+                                        startAngle: 225,
+                                        endAngle: -45,
+                                        splitNumber: 10,
+                                        radius: '75%',
+                                        title: { show: false },
+                                        detail: { show: false },
+                                        axisTick: {
+                                            show: false,
+                                            length: -8,
+                                            lineStyle: { width: 1, color: '#F2F5F8' },
+                                            splitNumber: 7
+                                        },
+                                        splitLine: {
+                                            show: false,
+                                            length: -20,
+                                            lineStyle: { width: 2, color: '#D3DDE8' }
+                                        },
+                                        axisLabel: { show: false, fontSize: 12, fontWeight: 'normal', distance: 25 },
+                                        axisLine: { show: false },
+                                        pointer: { show: false },
+                                        itemStyle: { show: true, color: '' }
+                                    }
+                                ]
+                            }
+                        },
+                        gauge2: {
+                            datasetOptions: [{ seriesType: 'gauge' }],
+                            options: {
+                                series: [
+                                    {
+                                        name: 'inLoop',
+                                        type: 'gauge',
+                                        min: 0,
+                                        max: 7,
+                                        center: ['50%', '50%'],
+                                        startAngle: 180,
+                                        endAngle: 0,
+                                        splitNumber: 10,
+                                        radius: '70%',
+                                        data: [{ value: 0, name: '完成率' }],
+                                        title: { show: false, textStyle: { fontSize: 14, color: '#ffffff' } },
+                                        detail: { show: true, textStyle: { fontSize: 15, color: '#ffffff' } },
+                                        axisTick: { show: false, length: 13, lineStyle: { width: 1, color: '#fff' } },
+                                        splitLine: { show: false, length: 20, lineStyle: { width: 2, color: '#fff' } },
+                                        axisLabel: {
+                                            show: false,
+                                            fontSize: 12,
+                                            fontWeight: 'normal',
+                                            distance: 16,
+                                            color: '#fff'
+                                        },
+                                        axisLine: {
+                                            show: true,
+                                            lineStyle: {
+                                                color: [
+                                                    [0.36, '#F2F5F8'],
+                                                    [1, '#D3DDE8']
+                                                ],
+                                                width: 8
+                                            }
+                                        },
+                                        pointer: { show: true, length: '66%', width: 2 },
+                                        itemStyle: { show: false, color: 'auto' }
+                                    },
+                                    {
+                                        name: 'outLoop',
+                                        type: 'gauge',
+                                        min: 0,
+                                        max: 7,
+                                        center: ['50%', '50%'],
+                                        startAngle: 225,
+                                        endAngle: -45,
+                                        splitNumber: 10,
+                                        radius: '75%',
+                                        title: { show: false },
+                                        detail: { show: false },
+                                        axisTick: {
+                                            show: false,
+                                            length: -8,
+                                            lineStyle: { width: 1, color: '#F2F5F8' },
+                                            splitNumber: 7
+                                        },
+                                        splitLine: {
+                                            show: false,
+                                            length: -20,
+                                            lineStyle: { width: 2, color: '#D3DDE8' }
+                                        },
+                                        axisLabel: { show: false, fontSize: 12, fontWeight: 'normal', distance: 25 },
+                                        axisLine: { show: false },
+                                        pointer: { show: false },
+                                        itemStyle: { show: true, color: '' }
+                                    }
+                                ]
+                            }
+                        },
+                        data: [],
+                        checkpointStyle: { color: '#F2F5F8', background: '#F2F5F8' },
+                        themeStyle: { color: '#F2F5F8', borderColor: '#F2F5F8' },
+                        lineStyle: { background: '#515659', height: '5px', type: 'solid' },
+                        mapOptions: {
+                            pitch: 60,
+                            container: 'map',
+                            style: {
+                                version: 8,
+                                sources: {
+                                    buildings: {
+                                        type: 'geojson',
+                                        data: 'https://iclient.supermap.io/examples/data/buildings.json'
+                                    },
+                                    baseLayer: {
+                                        type: 'raster',
+                                        tiles: [
+                                            'https://t0.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t1.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t2.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t3.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t4.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t5.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t6.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                                            'https://t7.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}'
+                                        ],
+                                        tileSize: 256
+                                    }
+                                },
+                                layers: [
+                                    { id: 'baseLayer', type: 'raster', source: 'baseLayer' },
+                                    {
+                                        id: '3d-buildings',
+                                        source: 'buildings',
+                                        type: 'fill-extrusion',
+                                        paint: {
+                                            'fill-extrusion-color': '#484646',
+                                            'fill-extrusion-height': ['*', ['get', 'height'], 5],
+                                            'fill-extrusion-opacity': 1
+                                        }
+                                    }
+                                ]
+                            },
+                            center: [116.4553, 39.9313],
+                            zoom: 16.51,
+                            maxZoom: 17,
+                            bearing: 180,
+                            rasterTileSize: 256
+                        },
+                        trackLayers: {
+                            loaderType: 'OBJ2',
+                            url: '../data/track-layer/car.obj',
+                            obj2Url: '../data/track-layer/car.obj',
+                            gltfUrl: '',
+                            imgUrl: '',
+                            displayLine: 'All',
+                            layerStyle: {
+                                line: {
+                                    paint: { 'line-color': '#13FF13', 'line-width': 20, 'line-opacity': 0.8 }
+                                }
+                            },
+                            direction: { front: 'x', bottom: '-z' },
+
+                            unit: 'millimeter',
+                            scale: 5,
+                            followCamera: true,
+                            trackPoints: []
+                        },
+                        position: {
+                            prevTimestamp: null,
+                            currentTimestamp: 1599810915000,
+                            nextTimestamp: 1599810920000,
+                            step: 3000
+                        }
+                    };
+                },
+                created() {
+                    SuperMap.Components.setTheme({ textColor: '#fff', background: 'rgb(0,0,0,0)' });
+                    this.requestData();
+                },
+                methods: {
+                    requestData() {
+                        var _this = this;
+                        $.get('../data/track-layer/outTime.json', function(res) {
+                            _this.timeData = res;
+                            _this.setData(res);
+                            _this.trackLayers.trackPoints = _this.getAllDataFeatures(res);
+                            _this.timeplayerchanged({ currentTimestamp: 1599810915000, lastIndex: 0, nextIndex: 1 });
+                        });
+                    },
+                    setData(data) {
+                        var keys = [];
+                        for (var key in data) {
+                            keys.push(Number(key));
+                        }
+                        this.data = keys;
+                    },
+                    timeplayerchanged(val) {
+                        var currentIndex = val.lastIndex;
+                        var nextIndex = val.nextIndex;
+                        var currentTimeStamp = val.currentTimeStamp;
+                        if (currentIndex === -1) {
+                            return;
+                        }
+                        var timestamp = this.data[currentIndex] + '';
+                        var data = this.timeData[timestamp];
+
+                        this.gauge.options.series[0].data[0].value = data.properties.speed;
+                        this.gauge1.options.series[0].data[0].value = data.properties.acceleration;
+                        this.gauge2.options.series[0].data[0].value = data.properties.wheel_angle;
+
+                        var chartData = this.getDataByDates(this.timeData, Number(this.data[0]), Number(timestamp));
+                        var chartFeatures = this.createChartFeatures(chartData, [
+                            'speed',
+                            'acceleration',
+                            'wheel_angle'
+                        ]);
+                        this.dataset.geoJSON = {
+                            type: 'FeatureCollection',
+                            features: chartFeatures
+                        };
+                        this.position = {
+                            prevTimestamp: Number(this.data[currentIndex] + '000'),
+                            currentTimestamp: Number(currentTimeStamp),
+                            nextTimestamp: Number(this.data[nextIndex] + '000'),
+                            step: 3000
+                        };
+                    },
+                    getAllDataFeatures(data) {
+                        var features = [];
+                        for (var key in data) {
+                            data[key].properties.timestamp = Number(key + '000');
+                            features.push(data[key]);
+                        }
+                        return features;
+                    },
+                    createChartFeatures(data, yFields) {
+                        var results = [];
+                        for (var timestamp in data) {
+                            var result = {};
+                            result['timestamp'] = this.timestamp2Date(timestamp);
+                            var datas = data[timestamp];
+                            yFields.forEach(yField => {
+                                result[yField] = datas.properties[yField];
+                            });
+
+                            results.push(result);
+                        }
+                        results = results.map(val => {
+                            var feature = {};
+                            feature.properties = val;
+                            return feature;
+                        });
+                        return results;
+                    },
+                    getDataByDates(data, start, end) {
+                        var newdata = {};
+                        if (data && start && end) {
+                            if (start === end) {
+                                var timestamp = this.getNearestDataIndex(this.data, start);
+                                newdata[start] = data[timestamp + ''];
+                            }
+                            for (var timestamp in data) {
+                                if (timestamp >= start && timestamp <= end) {
+                                    newdata[timestamp] = data[timestamp + ''];
+                                }
+                            }
+                        }
+                        return newdata;
+                    },
+                    getNearestDataIndex(data, timestamp) {
+                        var keys = data;
+                        var index = _.findLastIndex(keys, function(val) {
+                            return val <= timestamp;
+                        });
+                        return keys[index];
+                    },
+                    timestamp2Date(timestamp) {
+                        return timestamp ? moment(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss') : '';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
