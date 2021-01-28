@@ -85,6 +85,7 @@ const dpiConfig = {
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
  * @param {Object} [options.serviceProxy] - iportal内置代理信息, 仅矢量瓦片图层上图才会使用
  * @param {string} [options.tiandituKey] - 天地图的key
+ * @param {string} [options.googleMapsAPIKey] - 谷歌底图需要的key
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
@@ -114,6 +115,7 @@ export class WebMap extends Observable {
         this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         this.serviceProxy = options.serviceProxy || null;
         this.tiandituKey = options.tiandituKey;
+        this.googleMapsAPIKey = options.googleMapsAPIKey || '';
         this.proxy = options.proxy;
         //计数叠加图层，处理过的数量（成功和失败都会计数）
         this.layerAdded = 0;
@@ -973,7 +975,7 @@ export class WebMap extends Observable {
                 baseLayerInfo.iserverUrl = 'https://www.openstreetmap.org';
                 break;
             case ('GOOGLE'):
-                baseLayerInfo.url = 'https://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0';
+                baseLayerInfo.url = `https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i540264686!3m12!2s${this.getLang()}!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!4e0&key=${this.googleMapsAPIKey}`;
                 baseLayerInfo.epsgCode = 'EPSG:3857';
                 baseLayerInfo.minZoom = 1;
                 baseLayerInfo.maxZoom = 22;
@@ -4855,5 +4857,162 @@ export class WebMap extends Observable {
         }))
         const layer = new olLayer.Graticule(graticuleOptions);
         this.map.addLayer(layer);
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getLang
+     * @description 检测当前cookie中的语言或者浏览器所用语言
+     * @returns {string} 语言名称，如zh-CN
+     */
+    getLang() {
+        if(this.getCookie('language')) {
+            const cookieLang = this.getCookie('language');
+            return this.formatCookieLang(cookieLang);
+        } else {
+            const browerLang = navigator.language || navigator.browserLanguage;
+            return browerLang;
+        }
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getCookie
+     * @description 获取cookie中某个key对应的值
+     * @returns {string} 某个key对应的值
+     */
+    getCookie(key) {
+        key = key.toLowerCase();
+        let value = null;
+        let cookies = document.cookie.split(';');
+        cookies.forEach(function (cookie) {
+            const arr = cookie.split('=');
+            if (arr[0].toLowerCase().trim() === key) {
+                value = arr[1].trim();
+                return;
+            }
+        });
+        return value;
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.formatCookieLang
+     * @description 将从cookie中获取的lang,转换成全称，如zh=>zh-CN
+     * @returns {string} 转换后的语言名称
+     */
+    formatCookieLang(cookieLang) {
+        let lang;
+        switch(cookieLang) {
+            case 'zh':
+                lang = 'zh-CN';
+                break;
+            case 'ar':
+                lang = 'ar-EG';
+                break;
+            case 'bg':
+                lang = 'bg-BG';
+                break;
+            case 'ca':
+                lang = 'ca-ES';
+                break;
+            case 'cs':
+                lang = 'cs-CZ';
+                break;
+            case 'da':
+                lang = 'da-DK';
+                break;
+            case 'de':
+                lang = 'de-DE';
+                break;
+            case 'el':
+                lang = 'el-GR';
+                break; 
+            case 'es':
+                lang = 'es-ES';
+                break;
+            case 'et':
+                lang = 'et-EE';
+                break;
+            case 'fa':
+                lang = 'fa-IR';
+                break;
+            case 'fl':
+                lang = 'fi-FI';
+                break;
+            case 'fr':
+                lang = 'fr-FR';
+                break;
+            case 'he':
+                lang = 'he-IL';
+                break;   
+            case 'hu':
+                lang = 'hu-HU';
+                break;
+            case 'id':
+                lang = 'id-ID';
+                break;
+            case 'is':
+                lang = 'is-IS';
+                break;
+            case 'it':
+                lang = 'it-IT';
+                break;
+            case 'ja':
+                lang = 'ja-JP';
+                break;
+            case 'ko':
+                lang = 'ko-KR';
+                break;
+            case 'ku':
+                lang = 'ku-IQ';
+                break; 
+            case 'mn':
+                lang = 'mn-MN';
+                break;
+            case 'nb':
+                lang = 'nb-NO';
+                break;
+            case 'ne':
+                lang = 'ne-NP';
+                break;
+            case 'nl':
+                lang = 'nl-NL';
+                break;
+            case 'pl':
+                lang = 'pl-PL';
+                break;
+            case 'pt':
+                lang = 'pt-PT';
+                break; 
+            case 'ru':
+                lang = 'ru-RU';
+                break; 
+            case 'sk':
+                lang = 'sk-SK';
+                break;
+            case 'sl':
+                lang = 'sl-SI';
+                break;
+            case 'sr':
+                lang = 'sr-RS';
+                break;
+            case 'sv':
+                lang = 'sv-SE';
+                break;
+            case 'th':
+                lang = 'th-TH';
+                break;
+            case 'tr':
+                lang = 'tr-TR';
+                break; 
+            case 'uk':
+                lang = 'uk-UA';
+                break;
+            case 'vi':
+                lang = 'vi-VN';
+                break;
+            default:
+                lang = 'en-US';
+                break;    
+        }
+        return lang;
     }
 }
