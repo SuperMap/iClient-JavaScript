@@ -166,6 +166,13 @@ var exampleConfig = {
             version: '11.0.0',
             thumbnail: 'components_draw_vue.png',
             fileName: 'components_draw_vue'
+          },
+          {
+            name: '坐标转换',
+            name_en: 'Coordinate Conversion',
+            version: '11.0.0',
+            thumbnail: 'components_coordinate_conversion_vue.png',
+            fileName: 'components_coordinate_conversion_vue'
           }
         ]
       },
@@ -396,7 +403,23 @@ var exampleConfig = {
               thumbnail: 'components_time_line_vue.png',
               fileName: 'components_time_line_vue',
               localIgnore: true
-          }
+          },
+          {
+            name: '超图大厦历史影像',
+            name_en: 'Historical image of Chaotu Building',
+            version: '11.0.0',
+            thumbnail: 'components_timeline_supermap.png',
+            fileName: 'components_timeline_supermap',
+            localIgnore: true
+        },
+        {
+            name: '气象卫星云图',
+            name_en: 'Meteorological satellite cloud image',
+            version: '11.0.0',
+            thumbnail: 'components_timeline_cloud.png',
+            fileName: 'components_timeline_cloud',
+            localIgnore: true
+        },
         ]
       },
       others_vue: {

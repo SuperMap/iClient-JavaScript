@@ -1,0 +1,882 @@
+{
+  "1579449600": [
+    {
+      "properties": {
+        "nowConfirmed": 291,
+        "confirmedAdd": 77,
+        "suspectedAdd": 27,
+        "confirmed": 291,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1579536000": [
+    {
+      "properties": {
+        "nowConfirmed": 431,
+        "confirmedAdd": 149,
+        "suspectedAdd": 26,
+        "confirmed": 440,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1579622400": [
+    {
+      "properties": {
+        "nowConfirmed": 557,
+        "confirmedAdd": 131,
+        "suspectedAdd": 257,
+        "confirmed": 571,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1579708800": [
+    {
+      "properties": {
+        "nowConfirmed": 776,
+        "confirmedAdd": 259,
+        "suspectedAdd": 680,
+        "confirmed": 830,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1579795200": [
+    {
+      "properties": {
+        "nowConfirmed": 1218,
+        "confirmedAdd": 444,
+        "suspectedAdd": 1118,
+        "confirmed": 1287,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1579881600": [
+    {
+      "properties": {
+        "nowConfirmed": 1880,
+        "confirmedAdd": 688,
+        "suspectedAdd": 1309,
+        "confirmed": 1975,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1579968000": [
+    {
+      "properties": {
+        "nowConfirmed": 2630,
+        "confirmedAdd": 769,
+        "suspectedAdd": 3806,
+        "confirmed": 2744,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580054400": [
+    {
+      "properties": {
+        "nowConfirmed": 4369,
+        "confirmedAdd": 1769,
+        "suspectedAdd": 2077,
+        "confirmed": 4535,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580140800": [
+    {
+      "properties": {
+        "nowConfirmed": 5762,
+        "confirmedAdd": 1459,
+        "suspectedAdd": 3248,
+        "confirmed": 5597,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580227200": [
+    {
+      "properties": {
+        "nowConfirmed": 7442,
+        "confirmedAdd": 1741,
+        "suspectedAdd": 4148,
+        "confirmed": 7736,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580313600": [
+    {
+      "properties": {
+        "nowConfirmed": 9336,
+        "confirmedAdd": 1985,
+        "suspectedAdd": 4812,
+        "confirmed": 9720,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580400000": [
+    {
+      "properties": {
+        "nowConfirmed": 11319,
+        "confirmedAdd": 2104,
+        "suspectedAdd": 5019,
+        "confirmed": 11821,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580486400": [
+    {
+      "properties": {
+        "nowConfirmed": 13779,
+        "confirmedAdd": 2591,
+        "suspectedAdd": 4562,
+        "confirmed": 14411,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580572800": [
+    {
+      "properties": {
+        "nowConfirmed": 16402,
+        "confirmedAdd": 2831,
+        "suspectedAdd": 5173,
+        "confirmed": 17238,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580659200": [
+    {
+      "properties": {
+        "nowConfirmed": 19414,
+        "confirmedAdd": 3235,
+        "suspectedAdd": 5072,
+        "confirmed": 20471,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580745600": [
+    {
+      "properties": {
+        "nowConfirmed": 22980,
+        "confirmedAdd": 3893,
+        "suspectedAdd": 3971,
+        "confirmed": 24363,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580832000": [
+    {
+      "properties": {
+        "nowConfirmed": 26343,
+        "confirmedAdd": 3697,
+        "suspectedAdd": 5328,
+        "confirmed": 28060,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1580918400": [
+    {
+      "properties": {
+        "nowConfirmed": 29032,
+        "confirmedAdd": 3151,
+        "suspectedAdd": 4833,
+        "confirmed": 31211,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581004800": [
+    {
+      "properties": {
+        "nowConfirmed": 31823,
+        "confirmedAdd": 3401,
+        "suspectedAdd": 4214,
+        "confirmed": 34598,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581091200": [
+    {
+      "properties": {
+        "nowConfirmed": 33788,
+        "confirmedAdd": 2657,
+        "suspectedAdd": 3916,
+        "confirmed": 37251,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581177600": [
+    {
+      "properties": {
+        "nowConfirmed": 36043,
+        "confirmedAdd": 3073,
+        "suspectedAdd": 4008,
+        "confirmed": 40235,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581264000": [
+    {
+      "properties": {
+        "nowConfirmed": 37693,
+        "confirmedAdd": 2484,
+        "suspectedAdd": 3536,
+        "confirmed": 42708,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581350400": [
+    {
+      "properties": {
+        "nowConfirmed": 38874,
+        "confirmedAdd": 2022,
+        "suspectedAdd": 3342,
+        "confirmed": 44730,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581436800": [
+    {
+      "properties": {
+        "nowConfirmed": 52599,
+        "confirmedAdd": 15153,
+        "suspectedAdd": 2807,
+        "confirmed": 59882,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581523200": [
+    {
+      "properties": {
+        "nowConfirmed": 55823,
+        "confirmedAdd": 5093,
+        "suspectedAdd": 2450,
+        "confirmed": 63932,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581609600": [
+    {
+      "properties": {
+        "nowConfirmed": 56951,
+        "confirmedAdd": 2644,
+        "suspectedAdd": 2277,
+        "confirmed": 66576,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581696000": [
+    {
+      "properties": {
+        "nowConfirmed": 57493,
+        "confirmedAdd": 2009,
+        "suspectedAdd": 1918,
+        "confirmed": 68584,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581782400": [
+    {
+      "properties": {
+        "nowConfirmed": 58010,
+        "confirmedAdd": 2051,
+        "suspectedAdd": 1563,
+        "confirmed": 70635,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581868800": [
+    {
+      "properties": {
+        "nowConfirmed": 58097,
+        "confirmedAdd": 1891,
+        "suspectedAdd": 1432,
+        "confirmed": 72528,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1581955200": [
+    {
+      "properties": {
+        "nowConfirmed": 57886,
+        "confirmedAdd": 1751,
+        "suspectedAdd": 1185,
+        "confirmed": 74279,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582041600": [
+    {
+      "properties": {
+        "nowConfirmed": 56812,
+        "confirmedAdd": 825,
+        "suspectedAdd": 1277,
+        "confirmed": 74675,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582128000": [
+    {
+      "properties": {
+        "nowConfirmed": 55475,
+        "confirmedAdd": 892,
+        "suspectedAdd": 1614,
+        "importedCasesIncrement": 0,
+        "DAYSNOCONFIRMEDADD": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582214400": [
+    {
+      "properties": {
+        "nowConfirmed": 53371,
+        "confirmedAdd": 399,
+        "suspectedAdd": 1361,
+        "importedCasesIncrement": 0,
+        "DAYSNOCONFIRMEDADD": 0,
+        "name": "全国",
+        "timestamp": "2020-02-21 00:00:00"
+      }
+    }
+  ],
+  "1582300800": [
+    {
+      "properties": {
+        "nowConfirmed": 51689,
+        "confirmedAdd": 649,
+        "suspectedAdd": 882,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582387200": [
+    {
+      "properties": {
+        "nowConfirmed": 49910,
+        "confirmedAdd": 416,
+        "suspectedAdd": 620,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582473600": [
+    {
+      "properties": {
+        "nowConfirmed": 47760,
+        "confirmedAdd": 517,
+        "suspectedAdd": 530,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582560000": [
+    {
+      "properties": {
+        "nowConfirmed": 45697,
+        "confirmedAdd": 411,
+        "suspectedAdd": 439,
+        "importedCasesIncrement": 0,
+        "name": "全国",
+        "timestamp": "2020-02-25 00:00:00"
+      }
+    }
+  ],
+  "1582646400": [
+    {
+      "properties": {
+        "nowConfirmed": 43352,
+        "confirmedAdd": 440,
+        "suspectedAdd": 508,
+        "importedCasesIncrement": 3,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582732800": [
+    {
+      "properties": {
+        "nowConfirmed": 40011,
+        "confirmedAdd": 329,
+        "suspectedAdd": 452,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582819200": [
+    {
+      "properties": {
+        "nowConfirmed": 37502,
+        "confirmedAdd": 430,
+        "suspectedAdd": 248,
+        "importedCasesIncrement": 3,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582905600": [
+    {
+      "properties": {
+        "nowConfirmed": 35420,
+        "confirmedAdd": 579,
+        "suspectedAdd": 132,
+        "importedCasesIncrement": 3,
+        "name": "全国"
+      }
+    }
+  ],
+  "1582992000": [
+    {
+      "properties": {
+        "nowConfirmed": 32741,
+        "confirmedAdd": 206,
+        "suspectedAdd": 141,
+        "importedCasesIncrement": 10,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583078400": [
+    {
+      "properties": {
+        "nowConfirmed": 30096,
+        "confirmedAdd": 128,
+        "suspectedAdd": 129,
+        "importedCasesIncrement": 7,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583164800": [
+    {
+      "properties": {
+        "nowConfirmed": 27524,
+        "confirmedAdd": 120,
+        "suspectedAdd": 143,
+        "importedCasesIncrement": 0,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583251200": [
+    {
+      "properties": {
+        "nowConfirmed": 25441,
+        "confirmedAdd": 143,
+        "suspectedAdd": 143,
+        "confirmed": 25352,
+        "importedCasesIncrement": 3,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583337600": [
+    {
+      "properties": {
+        "nowConfirmed": 23872,
+        "confirmedAdd": 145,
+        "suspectedAdd": 102,
+        "confirmed": 23784,
+        "importedCasesIncrement": 17,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583424000": [
+    {
+      "properties": {
+        "nowConfirmed": 22263,
+        "confirmedAdd": 103,
+        "suspectedAdd": 99,
+        "confirmed": 22177,
+        "importedCasesIncrement": 25,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583510400": [
+    {
+      "properties": {
+        "nowConfirmed": 20616,
+        "confirmedAdd": 46,
+        "suspectedAdd": 84,
+        "confirmed": 20533,
+        "importedCasesIncrement": 4,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583596800": [
+    {
+      "properties": {
+        "nowConfirmed": 19097,
+        "confirmedAdd": 45,
+        "suspectedAdd": 60,
+        "confirmed": 19016,
+        "importedCasesIncrement": 5,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583683200": [
+    {
+      "properties": {
+        "nowConfirmed": 17802,
+        "confirmedAdd": 20,
+        "suspectedAdd": 36,
+        "confirmed": -1,
+        "importedCasesIncrement": 2,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583769600": [
+    {
+      "properties": {
+        "nowConfirmed": 16226,
+        "confirmedAdd": 31,
+        "suspectedAdd": 31,
+        "confirmed": -1,
+        "importedCasesIncrement": 14,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583856000": [
+    {
+      "properties": {
+        "nowConfirmed": 14920,
+        "confirmedAdd": 25,
+        "suspectedAdd": 33,
+        "confirmed": 14831,
+        "importedCasesIncrement": 14,
+        "name": "全国"
+      }
+    }
+  ],
+  "1583942400": [
+    {
+      "properties": {
+        "nowConfirmed": 13607,
+        "confirmedAdd": 11,
+        "suspectedAdd": 33,
+        "confirmed": 13526,
+        "importedCasesIncrement": 5,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584028800": [
+    {
+      "properties": {
+        "nowConfirmed": 12178,
+        "confirmedAdd": 18,
+        "suspectedAdd": 17,
+        "confirmed": 12094,
+        "importedCasesIncrement": 8,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584115200": [
+    {
+      "properties": {
+        "nowConfirmed": 10822,
+        "confirmedAdd": 27,
+        "suspectedAdd": 39,
+        "confirmed": 10734,
+        "importedCasesIncrement": 22,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584201600": [
+    {
+      "properties": {
+        "nowConfirmed": 9997,
+        "confirmedAdd": 30,
+        "suspectedAdd": 41,
+        "confirmed": 9898,
+        "importedCasesIncrement": 25,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584288000": [
+    {
+      "properties": {
+        "nowConfirmed": 9087,
+        "confirmedAdd": 39,
+        "suspectedAdd": 45,
+        "confirmed": 8976,
+        "importedCasesIncrement": 35,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584374400": [
+    {
+      "properties": {
+        "nowConfirmed": 8184,
+        "confirmedAdd": 35,
+        "suspectedAdd": 21,
+        "confirmed": 8056,
+        "importedCasesIncrement": 29,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584460800": [
+    {
+      "properties": {
+        "nowConfirmed": 7438,
+        "confirmedAdd": 84,
+        "suspectedAdd": 23,
+        "confirmed": 81235,
+        "importedCasesIncrement": 69,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584547200": [
+    {
+      "properties": {
+        "nowConfirmed": 6763,
+        "confirmedAdd": 65,
+        "suspectedAdd": 31,
+        "confirmed": 81300,
+        "importedCasesIncrement": 57,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584633600": [
+    {
+      "properties": {
+        "nowConfirmed": 6279,
+        "confirmedAdd": 116,
+        "suspectedAdd": 36,
+        "confirmed": 81416,
+        "importedCasesIncrement": 91,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584720000": [
+    {
+      "properties": {
+        "nowConfirmed": 5849,
+        "confirmedAdd": 82,
+        "suspectedAdd": 45,
+        "confirmed": 81498,
+        "importedCasesIncrement": 70,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584806400": [
+    {
+      "properties": {
+        "nowConfirmed": 5483,
+        "confirmedAdd": 102,
+        "suspectedAdd": 47,
+        "confirmed": 81600,
+        "importedCasesIncrement": 84,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584892800": [
+    {
+      "properties": {
+        "nowConfirmed": 5165,
+        "confirmedAdd": 147,
+        "suspectedAdd": 35,
+        "confirmed": 81747,
+        "importedCasesIncrement": 133,
+        "name": "全国"
+      }
+    }
+  ],
+  "1584979200": [
+    {
+      "properties": {
+        "nowConfirmed": 4768,
+        "confirmedAdd": 99,
+        "suspectedAdd": 33,
+        "confirmed": 81846,
+        "importedCasesIncrement": 87,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585065600": [
+    {
+      "properties": {
+        "nowConfirmed": 4471,
+        "confirmedAdd": 114,
+        "suspectedAdd": 58,
+        "confirmed": 81960,
+        "importedCasesIncrement": 104,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585152000": [
+    {
+      "properties": {
+        "nowConfirmed": 4043,
+        "confirmedAdd": 118,
+        "suspectedAdd": 49,
+        "confirmed": 82078,
+        "importedCasesIncrement": 97,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585238400": [
+    {
+      "properties": {
+        "nowConfirmed": 3790,
+        "confirmedAdd": 135,
+        "suspectedAdd": 29,
+        "confirmed": 82213,
+        "importedCasesIncrement": 111,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585324800": [
+    {
+      "properties": {
+        "nowConfirmed": 3435,
+        "confirmedAdd": 128,
+        "suspectedAdd": 28,
+        "confirmed": 82341,
+        "importedCasesIncrement": 104,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585411200": [
+    {
+      "properties": {
+        "nowConfirmed": 3199,
+        "confirmedAdd": 106,
+        "suspectedAdd": 17,
+        "confirmed": 82447,
+        "importedCasesIncrement": 85,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585497600": [
+    {
+      "properties": {
+        "nowConfirmed": 3006,
+        "confirmedAdd": 98,
+        "suspectedAdd": 44,
+        "confirmed": 82545,
+        "importedCasesIncrement": 88,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585584000": [
+    {
+      "properties": {
+        "nowConfirmed": 2895,
+        "confirmedAdd": 86,
+        "suspectedAdd": 26,
+        "confirmed": 82631,
+        "importedCasesIncrement": 74,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585670400": [
+    {
+      "properties": {
+        "nowConfirmed": 2787,
+        "confirmedAdd": 93,
+        "suspectedAdd": 20,
+        "confirmed": 82724,
+        "importedCasesIncrement": 71,
+        "name": "全国"
+      }
+    }
+  ],
+  "1585756800": [
+    {
+      "properties": {
+        "nowConfirmed": 2686,
+        "confirmedAdd": 78,
+        "suspectedAdd": 12,
+        "confirmed": 82802,
+        "importedCasesIncrement": 67,
+        "name": "全国",
+        "timestamp": "2020-04-02 00:00:00"
+      }
+    }
+  ]
+}
