@@ -34,6 +34,7 @@ import * as olProj4 from 'ol/proj/proj4';
 import Units from 'ol/proj/Units';
 import * as olLayer from 'ol/layer';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+import WMSCapabilities from 'ol/format/WMSCapabilities';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import * as olGeometry from 'ol/geom';
@@ -638,6 +639,8 @@ export class WebMap extends Observable {
             await this.getWmtsInfo(baseLayer);
         } else if (layerType === 'TILE') {
             await this.getTileInfo(baseLayer);
+        } else if(layerType === 'WMS') {
+            await this.getWmsInfo(baseLayer);
         }
         baseLayer.projection = mapInfo.projection;
         if (!baseLayer.extent) {
@@ -1186,7 +1189,8 @@ export class WebMap extends Observable {
             wrapX: false,
             params: {
                 LAYERS: layerInfo.layers ? layerInfo.layers[0] : "0",
-                FORMAT: 'image/png'
+                FORMAT: 'image/png',
+                VERSION: layerInfo.version || "1.3.0"
             },
             projection: layerInfo.projection || that.baseProjection,
             tileLoadFunction: function (imageTile, src) {
@@ -1431,6 +1435,59 @@ export class WebMap extends Observable {
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getWmsInfo
+     * @description 获取wms的图层参数。
+     * @param {Object} layerInfo - 图层信息。
+     */
+    getWmsInfo(layerInfo) {
+        let that = this;
+        let url = layerInfo.url.trim();
+        url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
+        let options = {
+            withCredentials: that.withCredentials,
+            withoutFormatSuffix: true
+        };
+
+        let promise = new Promise(function (resolve) {
+            return FetchRequest.get(that.getRequestUrl(url, true), null, options).then(function (response) {
+                return response.text();
+            }).then(async function (capabilitiesText) {
+                const format = new WMSCapabilities();
+                let capabilities = format.read(capabilitiesText);
+                if (capabilities) {
+                    let layers = capabilities.Capability.Layer.Layer, proj = layerInfo.projection;
+                    layerInfo.subLayers = layerInfo.layers[0];
+                    layerInfo.version = capabilities.version;
+                    for (let i = 0; i < layers.length; i++) {
+                        // 图层名比对
+                        if (layerInfo.layers[0] === layers[i].name) {
+                            let layer = layers[i];
+                            if (layer.bbox[proj]) {
+                                let bbox = layer.bbox[proj].bbox;
+                                // wmts 130 坐标轴是否反向，目前还无法判断
+                                // 后续还需继续完善WKT 增加坐标轴方向值
+                                // 目前wkt信息 来自https://epsg.io/
+                                // 提供坐标方向值的网站  如：https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::4490
+                                if ((layerInfo.version === "1.3.0" && layerInfo.projection === "EPSG:4326") || (layerInfo.version === "1.3.0" && layerInfo.projection === "EPSG:4490")) {
+                                    layerInfo.extent = [bbox[1], bbox[0], bbox[3], bbox[2]];
+                                } else {
+                                    layerInfo.extent = bbox;
+                                }
+                                break;
+                            } 
+                        }
+                    }
+                }
+                resolve();
+            }).catch(function (error) {
+                that.errorCallback && that.errorCallback(error, 'getWMSFaild', that.map)
+                resolve();
+            })
+        });
+        return promise;
     }
     /**
      * @private
@@ -1721,6 +1778,12 @@ export class WebMap extends Observable {
                     if (layer.layerType === "WMTS") {
                         that.getWmtsInfo(layer, function (layerInfo) {
                             that.map.addLayer(that.createBaseLayer(layerInfo, layerIndex));
+                            that.layerAdded++;
+                            that.sendMapToUser(len);
+                        })
+                    } else if(layer.layerType === "WMS") {
+                        that.getWmsInfo(layer).then(() => {
+                            that.map.addLayer(that.createBaseLayer(layer, layerIndex));
                             that.layerAdded++;
                             that.sendMapToUser(len);
                         })
