@@ -1,0 +1,96 @@
+[
+  {
+    "title": "Changehai",
+    "subtitle": "Zechawagou Sites-Changehai",
+    "image": "../data/jiuzhai/changhai.jpg",
+    "coordinates": [
+      103.93424623295097,
+      33.03730377719067
+    ],
+    "description": "Located at the end of Ze Cha Wa Valley, the crescent-shaped Long Lake (Chang Hai) is over 100 meters deep, it is at the highest altitude and has the widest surface area of all Jiuzhai Valley’s lakes. This is the highest point visitors will reach in the park. Its water appears ink blue, and the surrounding peaks are snow-capped for much of the year. Surrounded by thick forests, it collects snow melt and rain flow from the surrounding peaks. In winter the frozen surface ice can be as thick as 60cm."
+  },
+  {
+    "title": "Five Coloured Pond",
+    "subtitle": "Zechawagou Sites-Five Coloured Pond",
+    "image": "../data/jiuzhai/wucaichi.jpg",
+    "coordinates": [
+      103.93303602365336,
+      33.04646925591396
+    ],
+    "description": "The Five Coloured Pond (Wu Cai Chi) is one of Jiuzhai Valley’s smallest but most impressive lakes. Its colours are a result of travertine sedimentation on the uneven lake bed, as well as various algae. However, legend has it that the pond was where Goddess Semo washed and combed her hair and God Dage came everyday to bring her water. The pond’s colours are said to come from Semo's rouge coming off her pretty face and colouring the water."
+  },
+  {
+    "title": "Upper Seasonal Lake",
+    "subtitle": "Zechawagou Sites-Upper Seasonal Lake",
+    "image": "../data/jiuzhai/shangjijiehai.jpg",
+    "coordinates": [103.92902077067332, 33.05970589470181],
+    "description": "The upper-seasonal lake neighbours the Five-Coloured Pond (Wu Cai Chi), with steep cliffs surrounding. This is said to be the place where fierce dragons hide themselves and is also called the “Tibetan Dragon Lake”. In the dry season, the Class 1, UN protected, “Ruswich” flower grows on the lakebed."
+  },
+  {
+    "title": "Lower Seasonal Lake",
+    "subtitle": "Zechawagou Sites-Lower Seasonal Lake",
+    "image": "../data/jiuzhai/xiajijiehai.jpg",
+    "coordinates": [103.91843444449766, 33.11997839989726],
+    "description": "There are two seasonal lakes in Ze Cha Wa Valley quite a distance from each other, with distinctive features. The lower seasonal lake is close to Ze Cha Wa Village, with a stretch of birches, wild strawberries, grass and fungi in between."
+  },
+  {
+    "title": "Wu Hua Hai",
+    "subtitle": "Rizegougou Sites-Wu Hua Hai",
+    "image": "../data/jiuzhai/wuhuahai.jpg",
+    "coordinates": [
+      103.88099726484862,
+      33.159143349891465
+    ],
+    "description": "The Five Flower Lake (Wu Hua Hai) is regarded as one of the wonders of Jiuzhai Valley due to its breathtaking colours which are a result of its lake-bottom travertine and colourful algae. The colours are formed by unevenly distributed submerged plants. Five Flower Lake’s autumn reflections are a spectacular display of nature. The intense colour combinations of the trees reflected on the waters surface are one reason why Jiuzhai Valley is often referred to as a photographer’s heaven and a painter’s nightmare!"
+  },
+  {
+    "title": "Pearl Shoals Waterfall",
+    "subtitle": "Rizegougou Sites—Pearl Shoals Waterfall",
+    "image": "../data/jiuzhai/zhenzhutan.jpg",
+    "coordinates": [
+      103.88723487431847,
+      33.16587890523388
+    ],
+    "description": "Water rushing from the Pearl Shoals (Zhen Zhu Tan) drops from top of the falls and forms a crescent waterfall. This is the most photographed waterfall in Jiuzhai Valley and along with many places in the park it is a very popular place for Chinese couples to have their wedding photos taken."
+  },
+  {
+    "title": "Nuo Ri Lang Waterfall",
+    "subtitle": "Rizegougou Sites—Nuo Ri Lang Waterfall",
+    "image": "../data/jiuzhai/nuorilang.jpg",
+    "coordinates": [
+      103.90771770744831,
+      33.163703206300525
+    ],
+    "description": "This is the widest travertine topped waterfall in the world and one of the signature pictures of Jiuzhai Valley. During the late summer when the water level is at its highest, the noise of Nou Ri Lang waterfall alone is impressive. During the winter the waterfall usually freezes creating an enormous ice curtain."
+  },
+  {
+    "title": "Shuzheng Qunhai",
+    "subtitle": "Shuzhenggou Sites-Shuzheng Qunhai",
+    "image": "../data/jiuzhai/shuzhengqunhai.jpg",
+    "coordinates": [
+      103.89731764184347,
+      33.19859679345478
+    ],
+    "description": "Shuzhengqun Seascape is the gateway to the beautiful scenery of Jiuzhaigou. The Shuzheng Group Trench is 13.8 kilometers long and has more than 40 lakes (Haizi), accounting for about 40% of all lakes in the Jiuzhaigou Scenic Area. The water from the upper part of Haizi crossed the lake bank and overflowed from the trees, arousing white splashes, jumping and sprinting in the green."
+  },
+  {
+    "title": "Lu Wei Lake",
+    "subtitle": "Shuzhenggou Sites-Lu Wei Lake",
+    "image": "../data/jiuzhai/luweihai.jpg",
+    "coordinates": [
+      103.9181730938379,
+      33.23129463237716
+    ],
+    "description": "The Reed (Lu Wei) Lake is a semi-swamp lake with thick reeds throughout, where the blue and green “Jade Ribbon” stream runs through the reed stems down towards the valley entrance. In spring and summer, transparent currents and reeds share the same green colour; in autumn and winter, reeds turn eye-striking golden yellow. Soft reed flakes float in the air, attracting herons and wild swans to the water side."
+  },
+  {
+    "title": "Zharu Temple",
+    "subtitle": "Zharugou Site-Zharu Temple",
+    "image": "../data/jiuzhai/zharusi.jpg",
+    "coordinates": [
+      103.93169934861643,
+      33.25624201104978
+    ],
+    "description": "Zharu Temple is located under the Baojing Rock in Zharugou. It is the largest Yongzhong Bon temple in Jiuzhaigou. It has a history of a thousand years. The full Tibetan name is \"Rewu Gongzhaxi Pengcuolin\" (Holy Land Auspicious Perfection Chau) . Zharu Temple is composed of a main hall, a Tibetan scripture building, auspicious multi-gate pagoda, etc. It is a building with a strong Tibetan temple color."
+  }
+]

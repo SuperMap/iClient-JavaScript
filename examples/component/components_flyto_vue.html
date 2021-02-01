@@ -1,0 +1,169 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n='resources.title_componentsFlyTo_Vue'></title>
+    <script type="text/javascript" include="vue, jquery" src="../js/include-web.js"></script>
+    <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+        #main {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        #features {
+            position: absolute;
+            width: 26%;
+            left: 73%;
+            top: 90px;
+            font-family: sans-serif;
+            background-color: #fafafa;
+            color: rgba(0, 0, 0, 0.65);
+        }
+
+        section {
+            padding: 25px 50px;
+            line-height: 25px;
+            opacity: 0.25;
+            font-size: 13px;
+        }
+
+        section.active {
+            opacity: 1;
+        }
+
+        .content-item img {
+            width: 100%;
+            height: 220px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="main">
+        <sm-web-map :map-id="567946816" server-url="https://www.supermapol.com"
+            tianditu-key="1d109683f4d84198e37a38c442d68311" @load="mapLoaded">
+            <sm-fly-to :data="data" :fly-options="flyOptions" :collapsed="false" :autoplay="false"
+                @change="handleFlyChange"></sm-fly-to>
+        </sm-web-map>
+        <div id="features" class="sm-component-fly-controller">
+            <section v-if="currentContent" :class="{ active: currentContent && currentContent.title === activeTitle }">
+                <h3>{{ currentContent.title }}</h3>
+                <h5>{{ currentContent.subtitle }}</h5>
+                <div class="content-item">
+                    <img :src="currentContent.image" />
+                    <span>{{ currentContent.description }}</span>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#main',
+            data() {
+                return {
+                    data: null,
+                    flyOptions: {
+                        duration: 1500,
+                        zoom: 15,
+                        pitch: 60
+                    },
+                    activeTitle: null,
+                    currentContent: null
+                }
+            },
+            created() {
+                this.setDataFn = this.setData.bind(this);
+                this.getData(this.setDataFn);
+            },
+            methods: {
+                getData(cb) {
+                    var jsonName = /en/.test(SuperMap.Lang.getCode()) ? 'jiuzhai-en' : 'jiuzhai';
+                    $.get(`../data/jiuzhai/${jsonName}.json`, function (res) {
+                        cb && cb(res);
+                    });
+                },
+                setData(res) {
+                    if (res) {
+                        this.data = res.map(item => {
+                            const nextItem = {
+                                location: item.coordinates
+                            };
+                            switch (item.title) {
+                                case '上季节海':
+                                case '五花海':
+                                case 'Upper Seasonal Lakes':
+                                case 'Wu Hua Hai':
+                                    nextItem.flyOptions = Object.assign({}, this.flyOptions, {
+                                        bearing: -8
+                                    });
+                                    break;
+                                case '下季节海':
+                                case 'Lower Seasonal Lake':
+                                    nextItem.flyOptions = Object.assign({}, this.flyOptions, {
+                                        bearing: -68
+                                    });
+                                    break;
+                                case '五彩池':
+                                case 'Five Coloured Pond':
+                                    nextItem.flyOptions = Object.assign({}, this.flyOptions, {
+                                        duration: 0,
+                                        bearing: 0
+                                    });
+                                    break;
+                                case '珍珠滩瀑布':
+                                case '"Pearl Shoals Waterfall':
+                                    nextItem.flyOptions = Object.assign({}, this.flyOptions, {
+                                        pitch: 17
+                                    });
+                                    break;
+                                case '扎如寺':
+                                case 'Zharu Temple':
+                                    nextItem.flyOptions = Object.assign({}, this.flyOptions, {
+                                        bearing: 16,
+                                        pitch: 37
+                                    });
+                                    break;
+                            }
+                            return nextItem;
+                        });
+                        this.contentList = [].concat(res);
+                        this.currentContent = this.contentList[0];
+                    }
+                },
+                handleFlyChange(data) {
+                    this.setActiveChapter(data.activeIndex);
+                },
+                setActiveChapter(activeIndex) {
+                    var activeItem = this.contentList[activeIndex];
+                    var chapterName = activeItem.title;
+                    if (chapterName === this.activeTitle) {
+                        return;
+                    }
+                    this.currentContent = activeItem;
+                    this.activeTitle = chapterName;
+                    if (!this.marker) {
+                        this.marker = new mapboxgl.Marker()
+                            .setLngLat(activeItem.coordinates)
+                            .addTo(this.map);
+                    } else {
+                        this.marker.setLngLat(activeItem.coordinates)
+                    }
+                },
+                mapLoaded(e) {
+                    this.map = e.map;
+                }
+            },
+        })
+
+    </script>
+</body>
+
+</html>

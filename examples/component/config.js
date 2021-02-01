@@ -173,6 +173,13 @@ var exampleConfig = {
             version: '11.0.0',
             thumbnail: 'components_coordinate_conversion_vue.png',
             fileName: 'components_coordinate_conversion_vue'
+          },
+          {
+            name: '飞行定位',
+            name_en: 'Fly To',
+            version: '11.0.0',
+            thumbnail: 'components_flyTo_vue.png',
+            fileName: 'components_flyTo_vue'
           }
         ]
       },
