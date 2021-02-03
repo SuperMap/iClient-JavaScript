@@ -427,6 +427,14 @@ var exampleConfig = {
             fileName: 'components_timeline_cloud',
             localIgnore: true
         },
+        {
+              name: '幻灯片组件',
+              name_en: 'Slideshow Component',
+              version: '11.0.0',
+              thumbnail: 'components_slideshow_vue.png',
+              fileName: 'components_slideshow_vue',
+              localIgnore: true
+          }
         ]
       },
       others_vue: {
