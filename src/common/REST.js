@@ -1253,33 +1253,36 @@ export {
 }
 
 /**
- * @enum AggregationType
+ * @enum BucketAggType
  * @memberOf SuperMap
- * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
+ * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
-var AggregationType = SuperMap.AggregationType = {
-    /** 格网聚合类型。 */
-    GEOHASH_GRID: "geohash_grid",
-    /** 过滤聚合类型。 */
-    FILTER: "filter"
+var BucketAggType = SuperMap.BucketAggType = {
+    /** 格网聚合类型 */
+    GEOHASH_GRID: "geohash_grid"
 };
 export {
-    AggregationType
+  BucketAggType
 }
-
 /**
- * @enum AggregationType
+ * @enum MetricsAggType
  * @memberOf SuperMap
- * @description  聚合查询中filter查询枚举类
+ * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
-var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
-    /** 范围查询。 */
-    GEO_BOUNDING_BOX: "geo_bounding_box"
-}
+var MetricsAggType = SuperMap.MetricsAggType = {
+  /** 平均值聚合类型 */
+  AVG:'avg',
+  /** 最大值聚合类型 */
+  MAX:'max',
+  /** 最小值聚合类型 */
+  MIN:'min',
+  /** 求和聚合类型 */
+  SUM:'sum'
+};
 export {
-    AggregationQueryBuilderType
+  MetricsAggType
 }
 
 /**

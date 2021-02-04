@@ -97,13 +97,14 @@
                 server-url="https://www.supermapol.com"
                 :map-id="235407763"
                 :tianditu-key="tiandituKey"
+                :map-options="mapOptions"
                 :loading="loading"
                 @load="load"
             ></sm-web-map>
             <sm-time-line
                 ref="timeLine"
                 :data="data"
-                :play-interval="1000"
+                :play-interval="800"
                 :next-enable="nextEnable"
                 :label="label"
                 @timelinechanged="timelineChanged"
@@ -207,7 +208,11 @@
                             'T202007210500',
                             'T202007210600',
                             'T202007210700'
-                        ]
+                        ],
+                        mapOptions: {
+                            style: { version: 8, sources: {}, layers: [] },
+                            zoom: 4.6
+                        }
                     };
                 },
                 computed: {

@@ -57,8 +57,8 @@ import {
     StatisticAnalystMode,
     TopologyValidatorRule,
     OutputType,
-    AggregationQueryBuilderType,
-    AggregationType,
+    MetricsAggType,
+    BucketAggType,
     GetFeatureMode,
     RasterFunctionType
 } from './REST';
@@ -114,7 +114,8 @@ import {
 import {
     AddressMatchService,
     AggregationParameter,
-    AggQueryBuilderParameter,
+    BucketAggParameter,
+    MetricsAggParameter,
     AreaSolarRadiationParameters,
     AreaSolarRadiationService,
     BufferAnalystParameters,
@@ -162,7 +163,6 @@ import {
     FieldParameters,
     FieldStatisticService,
     FieldStatisticsParameters,
-    FilterAggParameter,
     FilterParameter,
     FindClosestFacilitiesParameters,
     FindClosestFacilitiesService,
@@ -178,7 +178,6 @@ import {
     FindTSPPathsService,
     GenerateSpatialDataParameters,
     GenerateSpatialDataService,
-    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
     GeoHashGridAggParameter,
@@ -531,8 +530,8 @@ export {
     StatisticAnalystMode,
     TopologyValidatorRule,
     OutputType,
-    AggregationQueryBuilderType,
-    AggregationType,
+    MetricsAggType,
+    BucketAggType,
     GetFeatureMode,
     RasterFunctionType
 };
@@ -599,7 +598,8 @@ export {
 export {
     AddressMatchService,
     AggregationParameter,
-    AggQueryBuilderParameter,
+    BucketAggParameter,
+    MetricsAggParameter,
     AreaSolarRadiationParameters,
     AreaSolarRadiationService,
     BufferAnalystParameters,
@@ -647,7 +647,6 @@ export {
     FieldParameters,
     FieldStatisticService,
     FieldStatisticsParameters,
-    FilterAggParameter,
     FilterParameter,
     FindClosestFacilitiesParameters,
     FindClosestFacilitiesService,
@@ -663,7 +662,6 @@ export {
     FindTSPPathsService,
     GenerateSpatialDataParameters,
     GenerateSpatialDataService,
-    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
     GeoHashGridAggParameter,

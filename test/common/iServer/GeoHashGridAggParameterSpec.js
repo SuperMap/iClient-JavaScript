@@ -3,38 +3,26 @@ import { GeoHashGridAggParameter } from '../../../src/common/iServer';
 describe('GeoHashGridAggParameter', () => {
     it('constructor destroy', () => {
         var option = {
-            aggName: 'testname',
-            aggType: 'testtype',
-            aggFieldName: 'testFieldname',
-            subAgg: 'testsubAgg',
-            precision: 5
+            precision: 10
         };
         var parametersNull = new GeoHashGridAggParameter();
         expect(parametersNull).not.toBeNull();
         var parameter = new GeoHashGridAggParameter(option);
-        expect(parameter.aggName).toEqual('testname');
-        expect(parameter.aggType).toEqual('testtype');
-        expect(parameter.aggFieldName).toEqual('testFieldname');
-        expect(parameter.subAgg).toEqual('testsubAgg');
-        expect(parameter.precision).toBe(5);
+        expect(parameter.precision).toEqual(10);
         expect(parameter.CLASS_NAME).toEqual('SuperMap.GeoHashGridAggParameter');
         parameter.destroy();
-        expect(parameter.aggName).toBeNull();
-        expect(parameter.aggType).toBeNull();
-        expect(parameter.aggFieldName).toBeNull();
-        expect(parameter.subAgg).toBeNull();
+        expect(parameter.precision).toBeNull();
         expect(parameter.aggType).toBeNull();
     });
 
     it('precision', () => {
-        var parameter = new GeoHashGridAggParameter({ precision: 5 });
-        expect(parameter.precision).toEqual(5);
+        var parameter = new GeoHashGridAggParameter({ precision: 6 });
+        expect(parameter.precision).toEqual(6);
         parameter.destroy();
     });
 
-    it('aggType', () => {
-        var parameter = new GeoHashGridAggParameter({ aggType: 'testtype' });
-        expect(parameter.aggType).toEqual('testtype');
+    it('toJsonParameters', () => {
+        var parameter = new GeoHashGridAggParameter({ precision: 5 });
         parameter.destroy();
     });
 });

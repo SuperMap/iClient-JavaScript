@@ -2,8 +2,9 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { AddressMatchService } from './AddressMatchService';
-import { AggQueryBuilderParameter } from './AggQueryBuilderParameter';
 import { AggregationParameter } from './AggregationParameter';
+import { BucketAggParameter } from './BucketAggParameter';
+import { MetricsAggParameter } from './MetricsAggParameter';
 import { AreaSolarRadiationParameters } from './AreaSolarRadiationParameters';
 import { AreaSolarRadiationService } from './AreaSolarRadiationService';
 import { BufferAnalystParameters } from './BufferAnalystParameters';
@@ -48,7 +49,6 @@ import { FacilityAnalystTraceup3DParameters } from './FacilityAnalystTraceup3DPa
 import { FacilityAnalystTraceup3DService } from './FacilityAnalystTraceup3DService';
 import { FacilityAnalystUpstream3DParameters } from './FacilityAnalystUpstream3DParameters';
 import { FacilityAnalystUpstream3DService } from './FacilityAnalystUpstream3DService';
-import { FilterAggParameter } from './FilterAggParameter';
 import { FieldParameters } from './FieldParameters';
 import { FieldStatisticService } from './FieldStatisticService';
 import { FieldStatisticsParameters } from './FieldStatisticsParameters';
@@ -67,7 +67,6 @@ import { FindTSPPathsParameters } from './FindTSPPathsParameters';
 import { FindTSPPathsService } from './FindTSPPathsService';
 import { GenerateSpatialDataParameters } from './GenerateSpatialDataParameters';
 import { GenerateSpatialDataService } from './GenerateSpatialDataService';
-import { GeoBoundingBoxQueryBuilderParameter } from './GeoBoundingBoxQueryBuilderParameter';
 import { GeoCodingParameter } from './GeoCodingParameter';
 import { GeoDecodingParameter } from './GeoDecodingParameter';
 import { GeoHashGridAggParameter } from './GeoHashGridAggParameter';
@@ -239,8 +238,9 @@ import { WebPrintingJobParameters } from './WebPrintingJobParameters';
 import { WebPrintingService } from './WebPrintingService';
 
 export { AddressMatchService };
-export { AggQueryBuilderParameter };
 export { AggregationParameter };
+export { BucketAggParameter };
+export { MetricsAggParameter };
 export { AreaSolarRadiationParameters };
 export { AreaSolarRadiationService };
 export { BufferAnalystParameters };
@@ -286,7 +286,6 @@ export { FacilityAnalystTraceup3DParameters };
 export { FacilityAnalystTraceup3DService };
 export { FacilityAnalystUpstream3DParameters };
 export { FacilityAnalystUpstream3DService };
-export { FilterAggParameter };
 export { FieldParameters };
 export { FieldStatisticService };
 export { FieldStatisticsParameters };
@@ -305,7 +304,6 @@ export { FindTSPPathsParameters };
 export { FindTSPPathsService };
 export { GenerateSpatialDataParameters };
 export { GenerateSpatialDataService };
-export { GeoBoundingBoxQueryBuilderParameter };
 export { GeoCodingParameter };
 export { GeoprocessingService };
 export { GeoDecodingParameter };
@@ -472,5 +470,5 @@ export { WebPrintingJobScaleBarOptions };
 export { WebPrintingJobContent };
 export { WebPrintingJobLayoutOptions };
 export { WebPrintingJobExportOptions };
-export { WebPrintingJobParameters }
-export { WebPrintingService }
+export { WebPrintingJobParameters };
+export { WebPrintingService };

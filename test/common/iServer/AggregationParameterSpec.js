@@ -6,7 +6,6 @@ describe('AggregationParameter', () => {
             aggName: 'testname',
             aggType: 'testtype',
             aggFieldName: 'testFieldname',
-            subAgg: 'testsubAgg'
         };
         var parametersNull = new AggregationParameter();
         expect(parametersNull).not.toBeNull();
@@ -14,13 +13,11 @@ describe('AggregationParameter', () => {
         expect(parameter.aggName).toEqual('testname');
         expect(parameter.aggType).toEqual('testtype');
         expect(parameter.aggFieldName).toEqual('testFieldname');
-        expect(parameter.subAgg).toEqual('testsubAgg');
         expect(parameter.CLASS_NAME).toEqual('SuperMap.AggregationParameter');
         parameter.destroy();
         expect(parameter.aggName).toBeNull();
         expect(parameter.aggType).toBeNull();
         expect(parameter.aggFieldName).toBeNull();
-        expect(parameter.subAgg).toBeNull();
     });
 
     it('aggName', () => {
