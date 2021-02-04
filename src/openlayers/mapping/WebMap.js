@@ -337,6 +337,8 @@ export class WebMap extends Observable {
                         that.addLayers(mapInfo);
                     }
                     that.addGraticule(mapInfo);
+                }).catch(function (error) {
+                    that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
                 });
             } else {
                 await that.addBaseMap(mapInfo);
@@ -700,6 +702,8 @@ export class WebMap extends Observable {
 
                 this.map.addLayer(layer);
             });
+        }).catch(function (error){
+            throw error;
         });
     }
     /**
@@ -1667,6 +1671,10 @@ export class WebMap extends Observable {
                     that.addMVTMapLayer(mapInfo, layer, layerIndex).then(() => {
                         that.layerAdded++;
                         that.sendMapToUser(len);
+                    }).catch(function (error) {
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
+                        that.errorCallback && that.errorCallback(error, 'getLayerFaild', that.map);
                     });
                 } else if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
                     //数据存储到iportal上了
@@ -4384,7 +4392,7 @@ export class WebMap extends Observable {
             layerInfo.bounds = result.bounds;
             return layerInfo;
         }).catch(error => {
-            return error;
+            throw error;
         })
     }
 
