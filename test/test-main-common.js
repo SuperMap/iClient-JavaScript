@@ -78,6 +78,8 @@ import './common/iServer/TransferSolutionServiceSpec.js';
 import './common/iServer/UpdateEdgeWeightServiceSpec.js';
 import './common/iServer/UpdateTurnNodeWeightServiceSpec.js';
 import './common/iServer/WebPrintingServiceSpec.js';
+import './common/iServer/DatasetServiceSpec.js';
+import './common/iServer/DatasourceServiceSpec.js';
 // import './common/iServer/AreaSolarRadiationServiceSpec.js';       //iclient8注释掉
 // import './common/iServer/ChartFeatureInfoSpecsServiceSpec.js';    //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
 // import './common/iServer/ChartQueryServiceSpec.js';

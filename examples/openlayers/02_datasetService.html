@@ -1,0 +1,193 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_DatasetInfo"></title>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+
+    </style>
+</head>
+<body>
+    <div id="toolbar" class="panel panel-primary">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center' data-i18n="resources.title_DatasetInfo"></h5></div>
+        <div class='panel-body content'>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n ="resources.text_Datasources"></span>
+                    <select id='datasourcesSelect' class='form-control'></select>
+                </div>
+            </div>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n ="resources.text_dataset"></span>
+                    <select id='datasetsSelect' class='form-control'></select>
+                </div>
+            </div>
+            <input type="button" class="btn btn-default" data-i18n ="[value]resources.btn_query" 
+            onclick="datasetsPrint()"/>
+        </div>
+    </div>
+    <div id="map"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+<script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript">
+    let map, 
+        datasourcesSelect,
+        datasetsSelect,
+        datasourceName,
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-world/rest/maps/World",
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/data-world/rest/data";
+    let container = document.getElementById('popup');
+    let content = document.getElementById('popup-content');
+    let closer = document.getElementById('popup-closer');
+    let overlay = new ol.Overlay(({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+    map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 3,
+            projection: 'EPSG:4326',
+            multiWorld: true
+        }),
+        overlays: [overlay]
+    });
+    let layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: baseUrl,
+        }),
+        projection: 'EPSG:4326'
+    });
+    map.addLayer(layer);
+    dataSetService();
+
+    function dataSetService() {
+        new ol.supermap.DatasourceService(url).getDatasources(function (serviceResult) {
+        datasourcesSelect = document.getElementById("datasourcesSelect");
+        const datasourceNames = serviceResult.result.datasourceNames;
+        for (let i = 0,len = datasourceNames.length; i < len; i++) {
+            datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
+        }
+        datasourceName = datasourcesSelect.value;
+        datasetsService(datasourceName)
+        })
+    }
+    //数据集信息
+    function datasetsService(datasourceName){
+         new ol.supermap.DatasetService(url).getDatasets(datasourceName,function (serviceResult) {
+            const datasetNames = serviceResult.result.datasetNames;
+            datasetsSelect = document.getElementById("datasetsSelect");
+        for (let i = 0,len = datasetNames.length; i < len; i++) {
+            datasetsSelect.options[i] = new Option(datasetNames[i], datasetNames[i]);
+            }
+        }); 
+    }
+
+    function datasetsPrint(){
+        datasourceName = datasourcesSelect.value;
+        const datasetName = datasetsSelect.value;
+        new ol.supermap.DatasetService(url).getDataset(datasourceName, datasetName, function (serviceResult) {
+            let innerHTML = "(" + resources.text_datasetInfoPrint + ")" + "<br><br>";
+            innerHTML += "dataSourceName：" + JSON.stringify(serviceResult.result.datasetInfo.dataSourceName, null, 2) + "<br>";
+            innerHTML += "description:" + JSON.stringify(serviceResult.result.datasetInfo.description, null, 2) + "<br>";
+            innerHTML += "isFileCache:" + JSON.stringify(serviceResult.result.datasetInfo.isFileCache, null, 2) + "<br>";
+            innerHTML += "name:" + JSON.stringify(serviceResult.result.datasetInfo.name, null, 2) + "<br>";
+            innerHTML += "prjCoordSys:" + "(...)" + "<br>";
+            content.innerHTML = innerHTML;
+            overlay.setPosition([0, 0])
+    });
+}
+    //关闭弹窗
+    closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
+</script>
+</body>
+</html>

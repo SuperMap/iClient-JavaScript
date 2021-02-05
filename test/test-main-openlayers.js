@@ -65,3 +65,5 @@ import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 import './openlayers/services/AddressMatchServiceSpec.js';
 import './openlayers/services/GridCellInfosServiceSpec.js';
 import './openlayers/services/WebPrintingJobServiceSpec.js';
+import './openlayers/services/DatasetServiceSpec.js';
+import './openlayers/services/DatasourceServiceSpec.js';

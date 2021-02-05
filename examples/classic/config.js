@@ -413,7 +413,19 @@ var exampleConfig = {
                     name_en: "data gridcell query",
                     thumbnail: "query_gridInfosQuery.png",
                     fileName: "query_gridInfosQuery"
-                }]
+                }, {
+                    name: "数据源信息查询",
+                    name_en: "datasource information service",
+                    thumbnail: "query_datasourceInfo.png",
+                    fileName: "query_datasourceInfo"
+                },
+                {
+                    name: "数据集信息查询",
+                    name_en: "dataset information service",
+                    thumbnail: "query_datasetInfo.png",
+                    fileName: "query_datasetInfo"
+                }
+            ]
             }
 
         }

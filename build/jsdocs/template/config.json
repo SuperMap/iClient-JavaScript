@@ -55,6 +55,14 @@
           "FeatureResults": {
             "name": "数据查询",
             "name_en": "FeatureResults"
+          },
+          "Datasource": {
+            "name": "数据源",
+            "name_en": "Datasource"
+          },
+          "Dataset": {
+            "name": "数据集",
+            "name_en": "Dataset"
           }
         }
       },

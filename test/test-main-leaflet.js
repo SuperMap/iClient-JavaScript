@@ -70,6 +70,8 @@ import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
 import './leaflet/services/WebPrintingJobServiceSpec.js';
+import './leaflet/services/DatasetServiceSpec.js';
+import './leaflet/services/DatasourceServiceSpec.js';
 
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';

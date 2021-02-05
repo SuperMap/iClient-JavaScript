@@ -39,6 +39,8 @@ import {
     AddressMatchService,
     ChartService,
     DataFlowService,
+    DatasetService,
+    DatasourceService,
     FeatureService,
     FieldService,
     GridCellInfosService,
@@ -99,6 +101,8 @@ if (window && window.ol) {
     ol.supermap.AddressMatchService = AddressMatchService;
     ol.supermap.ChartService = ChartService;
     ol.supermap.DataFlowService = DataFlowService;
+    ol.supermap.DatasetService = DatasetService;
+    ol.supermap.DatasourceService = DatasourceService;
     ol.supermap.FeatureService = FeatureService;
     ol.supermap.FieldService = FieldService;
     ol.supermap.GridCellInfosService = GridCellInfosService;

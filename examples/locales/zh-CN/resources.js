@@ -215,6 +215,8 @@ window.examplesResources = {
         "title_simplePopup": "简易信息框",
         "title_editFeature": "地物编辑",
         "title_fieldStatistic": "字段查询统计",
+        "title_DatasourceInfo": "数据源信息查询",
+        "title_DatasetInfo": "数据集信息查询",
         "title_getFeatureByBounds": "范围查询",
         "title_getFeatureByBuffer": "缓冲区查询",
         "title_getFeatureByGeometry": "几何查询",
@@ -977,6 +979,7 @@ window.examplesResources = {
         "text_gridQueryResult": "栅格查询结果：",
         "text_queryObjectMode": "查询对象模式",
         "text_dataset": "数据集",
+        "text_Datasources": "数据源",
         "text_queryObjectDataset": "查询对象数据集",
         "text_boundsQueryMode": "空间查询模式",
         "text_contain": "包含",
@@ -1368,6 +1371,8 @@ window.examplesResources = {
         "text_input_value_addMask": "添加掩膜",
         "text_input_value_removeMask": "移除掩膜",
         "text_add_sicahun_plygon":"正在加载四川省区划数据...",
+        "text_datasourceInfoPrint":"数据源信息太多,只打印一部分",
+        "text_datasetInfoPrint":"数据集信息太多,只打印一部分",
 
 
         "btn_previous":"上一步",

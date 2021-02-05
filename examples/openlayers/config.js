@@ -132,6 +132,18 @@ var exampleConfig = {
                     name_en: "data editing",
                     thumbnail: "ol_editFeatures.png",
                     fileName: "02_editFeatures"
+                },                    
+                {
+                    name: "数据源信息查询",
+                    name_en: "datasource information service",
+                    thumbnail: "02_datasourceService.png",
+                    fileName: "02_datasourceService"
+                },
+                {
+                    name: "数据集信息查询",
+                    name_en: "dataset information service",
+                    thumbnail: "02_datasetService.png",
+                    fileName: "02_datasetService"
                 }]
             },
             "theme": {

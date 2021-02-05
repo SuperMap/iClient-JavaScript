@@ -54,6 +54,8 @@ import './mapboxgl/services/ThemeServiceSpec.js';
 import './mapboxgl/services/ThiessenAnalysisSpec.js';
 import './mapboxgl/services/TrafficTransferAnalystServiceSpec.js';
 import './mapboxgl/services/WebPrintingJobServiceSpec.js';
+import './mapboxgl/services/DatasetServiceSpec.js';
+import './mapboxgl/services/DatasourceServiceSpec.js';
 
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';

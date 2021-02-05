@@ -4,6 +4,8 @@
 import {AddressMatchService, addressMatchService} from './AddressMatchService';
 import {ChartService, chartService} from './ChartService';
 import {DataFlowService, dataFlowService} from './DataFlowService';
+import {DatasetService, datasetService} from './DatasetService';
+import {DatasourceService, datasourceService} from './DatasourceService';
 import {FeatureService, featureService} from './FeatureService';
 import {FieldService, fieldService} from './FieldService';
 import {GridCellInfosService, gridCellInfosService} from './GridCellInfosService';
@@ -25,6 +27,8 @@ import {WebPrintingJobService, webPrintingJobService} from './WebPrintingJobServ
 export {AddressMatchService, addressMatchService};
 export {ChartService, chartService};
 export {DataFlowService, dataFlowService};
+export {DatasetService, datasetService};
+export {DatasourceService, datasourceService};
 export {FeatureService, featureService};
 export {FieldService, fieldService};
 export {GridCellInfosService, gridCellInfosService};

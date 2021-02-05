@@ -274,6 +274,8 @@ window.examplesResources = {
         "title_simplePopup": "Simple Popup",
         "title_editFeature": "Edit Feature",
         "title_fieldStatistic": "Statistic of Field Query",
+        "title_DatasourceInfo": "Datasource Information of Query",
+        "title_DatasetInfo": "DatasetInfo Information of Query",
         "title_getFeatureByBounds": "Get Feature by Bounds Query",
         "title_getFeatureByBuffer": "Get Feature by Buffer Query",
         "title_getFeatureByGeometry": "Get Feature by Geometry Query",
@@ -1026,6 +1028,7 @@ window.examplesResources = {
         "text_gridQueryResult": "Grid query result: ",
         "text_queryObjectMode": "Query object mode",
         "text_dataset": "Dataset",
+        "text_Datasources": "Datasource",
         "text_queryObjectDataset": "Query object dataset",
         "text_boundsQueryMode": "Spatial query mode",
         "text_contain": "Contain",
@@ -1422,7 +1425,8 @@ window.examplesResources = {
         "text_input_value_addMask": "Add mask",
         "text_input_value_removeMask": "Remove mask",
         "text_add_sicahun_plygon":"Loading Sichuan Province Regional Data...",
-
+        "text_datasourceInfoPrint":"Loading Datasource Information Data...",
+        "text_datasetInfoPrint":"Loading Dataset Information Data...",
 
         "btn_previous":"Previous",
         "btn_next":"Next",
