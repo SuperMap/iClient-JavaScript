@@ -4,11 +4,9 @@
 import { SuperMap } from '../SuperMap';
 import { CommonServiceBase } from '@supermap/iclient-common/iServer/CommonServiceBase';
 import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
-import {
-    CreateDatasetParameters,
-    UpdateDatasetParameters,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
+import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class SuperMap.REST.DatasetService
@@ -101,13 +99,15 @@ export class DatasetService extends CommonServiceBase {
     setDataset(params, callback) {
         if (!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)) {
             return;
-        } else if (params instanceof CreateDatasetParameters) {
-            var datasetParams = {
+        } 
+        let datasetParams;
+        if (params instanceof CreateDatasetParameters) {
+            datasetParams = {
                 "datasetType": params.datasetType,
                 "datasetName": params.datasetName
             }
         } else if (params instanceof UpdateDatasetParameters) {
-            var datasetParams = {
+            datasetParams = {
                 "datasetName": params.datasetName,
                 "isFileCache": params.isFileCache,
                 "description": params.description,

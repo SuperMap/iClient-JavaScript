@@ -4,9 +4,8 @@
 import {SuperMap} from '../SuperMap';
 import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
 import {DatasourceService as CommonDatasourceService} from '@supermap/iclient-common/iServer/DatasourceService';
-import {SetDatasourceParameters,
-        CommonUtil
-} from '@supermap/iclient-common';
+import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class SuperMap.REST.DatasourceService

@@ -19,7 +19,6 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
- * @example
  */
 
 export class DatasourceService extends CommonServiceBase {
