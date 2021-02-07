@@ -178,8 +178,8 @@ var exampleConfig = {
             name: '飞行定位',
             name_en: 'Fly To',
             version: '11.0.0',
-            thumbnail: 'components_flyTo_vue.png',
-            fileName: 'components_flyTo_vue'
+            thumbnail: 'components_flyto_vue.png',
+            fileName: 'components_flyto_vue'
           }
         ]
       },
