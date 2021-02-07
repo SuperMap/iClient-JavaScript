@@ -88,6 +88,9 @@
                 justify-content: center;
                 width: 100%;
             }
+            .sm-component-spin {
+                background: transparent !important;
+            }
         </style>
     </head>
 
@@ -346,7 +349,7 @@
                                 }
                                 return true;
                             });
-
+                            _this.nextEnable = false;
                             if (loaded && _this.mapStatus) {
                                 clearInterval(_this.timer);
                                 _this.timer = null;
