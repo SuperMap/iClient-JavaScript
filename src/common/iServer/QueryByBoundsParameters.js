@@ -27,9 +27,7 @@ import {QueryParameters} from './QueryParameters';
 export class QueryByBoundsParameters extends QueryParameters {
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+        options = options || {};
         super(options);
         /**
          * @member {boolean} [SuperMap.QueryByBoundsParameters.prototype.returnContent=true]

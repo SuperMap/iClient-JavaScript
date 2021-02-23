@@ -35,9 +35,6 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  */
 export class ImageSuperMapRest extends TileImage {
   constructor(options) {
-    if (options.url === undefined) {
-      return;
-    }
     options.attributions =
       options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>"
 

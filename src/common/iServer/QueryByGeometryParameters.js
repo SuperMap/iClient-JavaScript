@@ -32,9 +32,7 @@ export class QueryByGeometryParameters extends QueryParameters {
 
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+        options = options || {};
         super(options);
 
         /**

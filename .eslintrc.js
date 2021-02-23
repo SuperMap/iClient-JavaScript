@@ -36,8 +36,6 @@ module.exports = {
         "no-redeclare": "warn",
         //允许出现未使用过的变量
         "no-unused-vars": "warn",
-        //不要求在构造函数中有 super() 的调用
-        "constructor-super": "off",
         //允许在嵌套的块中出现function声明
         "no-inner-declarations": "off",
         //强制数组方法的回调函数中有 return 语句

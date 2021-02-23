@@ -27,9 +27,7 @@ import {QueryParameters} from './QueryParameters';
 export class QueryBySQLParameters extends QueryParameters {
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+        options = options || {};
         super(options);
         /**
          * @member {boolean} [SuperMap.QueryBySQLParameters.prototype.returnContent=true]

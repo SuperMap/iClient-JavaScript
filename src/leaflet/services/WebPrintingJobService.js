@@ -41,7 +41,6 @@ export var WebPrintingJobService = ServiceBase.extend({
             return;
         }
         var me = this;
-        console.log(me.url);
         var webPrintingService = new WebPrintingService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
