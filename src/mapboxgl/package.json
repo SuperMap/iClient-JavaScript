@@ -17,7 +17,7 @@
     "echarts": "4.9.0",
     "mapv": "2.0.62",
     "mapbox-gl": "1.12.0",
-    "three": "0.121.1",
+    "three": "0.126.1",
     "xlsx": "0.16.9",
     "@supermap/iclient-common": "10.1.1",
     "canvg": "3.0.7",
