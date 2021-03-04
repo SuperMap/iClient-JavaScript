@@ -52,6 +52,7 @@ export class MapVLayer extends SuperMap.Layer {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
+        
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
@@ -67,7 +68,7 @@ export class MapVLayer extends SuperMap.Layer {
         this.canvasContext = this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
-        if (context == '2d') {
+        if (context === '2d') {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
         this.attribution =
@@ -162,6 +163,7 @@ export class MapVLayer extends SuperMap.Layer {
     setMap(map) {
         super.setMap(map);
         this.renderer = new MapVRenderer(map, this, this.dataSet, this.options);
+        this.renderer.devicePixelRatio = this.devicePixelRatio;
         if (!this.supported) {
             this.map.removeLayer(this);
         } else {
@@ -192,8 +194,14 @@ export class MapVLayer extends SuperMap.Layer {
             var size = this.map.getSize();
             this.div.style.width = parseInt(size.w) + 'px';
             this.div.style.height = parseInt(size.h) + 'px';
-            this.canvas.width = parseInt(size.w);
-            this.canvas.height = parseInt(size.h);
+            if (this.options.draw === 'heatmap') {
+                this.canvas.width = parseInt(size.w) * this.devicePixelRatio;
+                this.canvas.height = parseInt(size.h) * this.devicePixelRatio;
+            } else {
+                this.canvas.width = parseInt(size.w);
+                this.canvas.height = parseInt(size.h);
+            }
+           
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;

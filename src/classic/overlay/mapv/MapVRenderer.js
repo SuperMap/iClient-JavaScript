@@ -42,7 +42,8 @@ export class MapVRenderer extends MapVBaseLayer {
      */
     clickEvent(e) {
         var pixel = e.xy;
-        super.clickEvent(pixel, e);
+        var devicePixelRatio = this.devicePixelRatio || 1;
+        super.clickEvent({ x: pixel.x / devicePixelRatio, y: pixel.y / devicePixelRatio }, e);
     }
 
     /**
@@ -64,10 +65,10 @@ export class MapVRenderer extends MapVBaseLayer {
 
         if (this.options.methods) {
             if (this.options.methods.click) {
-                map.events.on({'click': this.clickEvent});
+                map.events.on({ click: this.clickEvent });
             }
             if (this.options.methods.mousemove) {
-                map.events.on({'mousemove': this.mousemoveEvent});
+                map.events.on({ mousemove: this.mousemoveEvent });
             }
         }
     }
@@ -81,10 +82,10 @@ export class MapVRenderer extends MapVBaseLayer {
 
         if (this.options.methods) {
             if (this.options.methods.click) {
-                map.events.un({'click': this.clickEvent});
+                map.events.un({ click: this.clickEvent });
             }
             if (this.options.methods.mousemove) {
-                map.events.un({'mousemove': this.mousemoveEvent});
+                map.events.un({ mousemove: this.mousemoveEvent });
             }
         }
     }
@@ -109,7 +110,7 @@ export class MapVRenderer extends MapVBaseLayer {
             _data = data.get();
         }
         this.dataSet.add(_data);
-        this.update({options: options});
+        this.update({ options: options });
     }
 
     /**
@@ -125,7 +126,7 @@ export class MapVRenderer extends MapVBaseLayer {
         }
         this.dataSet = this.dataSet || new DataSet();
         this.dataSet.set(_data);
-        this.update({options: options});
+        this.update({ options: options });
     }
 
     /**
@@ -147,11 +148,11 @@ export class MapVRenderer extends MapVBaseLayer {
         }
         var newData = this.dataSet.get({
             filter: function (data) {
-                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+                return filter != null && typeof filter === 'function' ? !filter(data) : true;
             }
         });
         this.dataSet.set(newData);
-        this.update({options: null});
+        this.update({ options: null });
     }
 
     /**
@@ -160,7 +161,7 @@ export class MapVRenderer extends MapVBaseLayer {
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
-        this.update({options: null});
+        this.update({ options: null });
     }
 
     /**
@@ -178,15 +179,24 @@ export class MapVRenderer extends MapVBaseLayer {
      * @deprecated
      */
     transferToMercator() {
-        if (this.options.coordType && ["bd09mc", "coordinates_mercator"].indexOf(this.options.coordType) > -1) {
+        if (this.options.coordType && ['bd09mc', 'coordinates_mercator'].indexOf(this.options.coordType) > -1) {
             var data = this.dataSet.get();
-            data = this.dataSet.transferCoordinate(data, function (coordinates) {
-                var pixel = SuperMap.Projection.transform({
-                    x: coordinates[0],
-                    y: coordinates[1]
-                }, "EPSG:3857", "EPSG:4326");
-                return [pixel.x, pixel.y];
-            }, 'coordinates', 'coordinates');
+            data = this.dataSet.transferCoordinate(
+                data,
+                function (coordinates) {
+                    var pixel = SuperMap.Projection.transform(
+                        {
+                            x: coordinates[0],
+                            y: coordinates[1]
+                        },
+                        'EPSG:3857',
+                        'EPSG:4326'
+                    );
+                    return [pixel.x, pixel.y];
+                },
+                'coordinates',
+                'coordinates'
+            );
             this.dataSet._set(data);
         }
     }
@@ -226,15 +236,18 @@ export class MapVRenderer extends MapVBaseLayer {
             context.clear(context.COLOR_BUFFER_BIT);
         }
 
-        if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
+        if (
+            (self.options.minZoom && map.getZoom() < self.options.minZoom) ||
+            (self.options.maxZoom && map.getZoom() > self.options.maxZoom)
+        ) {
             return;
         }
         var layer = self.canvasLayer;
+
         var dataGetOptions = {
             fromColumn: 'coordinates',
             transferCoordinate: function (coordinate) {
-                // var coord = layer.transferToMapLatLng({lon: coordinate[0], lat: coordinate[1]});
-                var coord = {lon: coordinate[0], lat: coordinate[1]};
+                var coord = { lon: coordinate[0], lat: coordinate[1] };
                 var worldPoint = map.getViewPortPxFromLonLat(coord);
                 return [worldPoint.x, worldPoint.y];
             }
@@ -243,8 +256,8 @@ export class MapVRenderer extends MapVBaseLayer {
         if (time !== undefined) {
             dataGetOptions.filter = function (item) {
                 var trails = animationOptions.trails || 10;
-                return (time && item.time > (time - trails) && item.time < time);
-            }
+                return time && item.time > time - trails && item.time < time;
+            };
         }
 
         var data = self.dataSet.get(dataGetOptions);
@@ -276,9 +289,7 @@ export class MapVRenderer extends MapVBaseLayer {
         self.options.updateCallback && self.options.updateCallback(time);
     }
 
-
     init(options) {
-
         var self = this;
 
         self.options = options;
@@ -299,8 +310,8 @@ export class MapVRenderer extends MapVBaseLayer {
      * @description 添加动画事件。
      */
     addAnimatorEvent() {
-        this.map.events.on({'movestart': this.animatorMovestartEvent.bind(this)});
-        this.map.events.on({'moveend': this.animatorMoveendEvent.bind(this)});
+        this.map.events.on({ movestart: this.animatorMovestartEvent.bind(this) });
+        this.map.events.on({ moveend: this.animatorMoveendEvent.bind(this) });
     }
 
     /**
@@ -327,7 +338,6 @@ export class MapVRenderer extends MapVBaseLayer {
     hide() {
         this.map.removeLayer(this.canvasLayer);
     }
-
 
     /**
      * @function MapvRenderer.prototype.draw

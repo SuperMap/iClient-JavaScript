@@ -1420,6 +1420,18 @@ export class WebMap extends Observable {
                 }
                 let name = layerInfo.name, extent;
                 if (layerBounds) {
+                    if (layerBounds[0] < -180) {
+                        layerBounds[0] = -180;
+                    }
+                    if (layerBounds[1] < -90) {
+                        layerBounds[1] = -90;
+                    }
+                    if (layerBounds[2] > 180) {
+                        layerBounds[2] = 180;
+                    }
+                    if (layerBounds[3] > 90) {
+                        layerBounds[3] = 90;
+                    }
                     extent = olProj.transformExtent(layerBounds, 'EPSG:4326', that.baseProjection);
                 } else {
                     extent = olProj.get(that.baseProjection).getExtent()
