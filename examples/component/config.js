@@ -156,30 +156,44 @@ var exampleConfig = {
           {
             name: '指南针',
             name_en: 'Compass',
-            version: '11.0.0',
+            version: '10.1.2',
             thumbnail: 'components_compass_vue.png',
             fileName: 'components_compass_vue'
           },
           {
             name: '绘制',
             name_en: 'Draw',
-            version: '11.0.0',
+            version: '10.1.2',
             thumbnail: 'components_draw_vue.png',
             fileName: 'components_draw_vue'
           },
           {
             name: '坐标转换',
             name_en: 'Coordinate Conversion',
-            version: '11.0.0',
+            version: '10.1.2',
             thumbnail: 'components_coordinate_conversion_vue.png',
             fileName: 'components_coordinate_conversion_vue'
           },
           {
             name: '飞行定位',
             name_en: 'Fly To',
-            version: '11.0.0',
-            thumbnail: 'components_flyto_vue.png',
-            fileName: 'components_flyto_vue'
+            version: '10.1.2',
+            thumbnail: 'components_flyTo_vue.png',
+            fileName: 'components_flyTo_vue'
+          },
+          {
+            name: '图层颜色',
+            name_en: 'Layer Color',
+            version: '10.1.2',
+            thumbnail: 'components_layer_color_vue.png',
+            fileName: 'components_layer_color_vue'
+          },
+          {
+            name: '属性表',
+            name_en: 'Attributes',
+            version: '10.1.2',
+            thumbnail: 'components_attributes_vue.png',
+            fileName: 'components_attributes_vue'
           }
         ]
       },
@@ -406,7 +420,7 @@ var exampleConfig = {
           {
               name: '时间轴组件',
               name_en: 'TimeLine Component',
-              version: '11.0.0',
+              version: '10.1.2',
               thumbnail: 'components_time_line_vue.png',
               fileName: 'components_time_line_vue',
               localIgnore: true
@@ -414,7 +428,7 @@ var exampleConfig = {
           {
             name: '超图大厦历史影像',
             name_en: 'Historical image of Chaotu Building',
-            version: '11.0.0',
+            version: '10.1.2',
             thumbnail: 'components_timeline_supermap.png',
             fileName: 'components_timeline_supermap',
             localIgnore: true
@@ -422,7 +436,7 @@ var exampleConfig = {
         {
             name: '气象卫星云图',
             name_en: 'Meteorological satellite cloud image',
-            version: '11.0.0',
+            version: '10.1.2',
             thumbnail: 'components_timeline_cloud.png',
             fileName: 'components_timeline_cloud',
             localIgnore: true
@@ -430,7 +444,7 @@ var exampleConfig = {
         {
               name: '幻灯片组件',
               name_en: 'Slideshow Component',
-              version: '11.0.0',
+              version: '10.1.2',
               thumbnail: 'components_slideshow_vue.png',
               fileName: 'components_slideshow_vue',
               localIgnore: true
