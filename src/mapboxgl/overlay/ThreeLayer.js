@@ -113,8 +113,7 @@ export class ThreeLayer extends mapboxgl.Evented {
             'amount': targetAmount,
             'bevelEnabled': true
         });
-        let bufferGeometry = new BufferGeometry().fromGeometry(geometry);
-        let mesh = new Mesh(bufferGeometry, material);
+        let mesh = new Mesh(geometry, material);
         let center = this.lngLatToPosition(this.getCoordinatesCenter(coords));
         mesh.position.set(center.x, center.y, -targetAmount);
         return mesh;
