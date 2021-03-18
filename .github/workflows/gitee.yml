@@ -7,7 +7,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: 'Mirror to gitee'
         uses: pixta-dev/repository-mirroring-action@v1
         with:
