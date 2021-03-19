@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-mapboxgl",
   "description": "",
-  "version": "10.1.1",
+  "version": "10.1.2",
   "keywords": [
     "SuperMap",
     "MapboxGL v1"
@@ -19,7 +19,7 @@
     "mapbox-gl": "1.12.0",
     "three": "0.126.1",
     "xlsx": "0.16.9",
-    "@supermap/iclient-common": "10.1.1",
+    "@supermap/iclient-common": "10.1.2",
     "canvg": "3.0.7",
     "xml-js": "1.6.11"
   }
