@@ -17,7 +17,6 @@ import {Geometry, MeasureService as CommonMeasureService} from '@supermap/iclien
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {SuperMap.MeasureMode} [options.measureMode=SuperMap.MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
  */
 export class MeasureService extends ServiceBase {
@@ -61,7 +60,6 @@ export class MeasureService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {
                 scope: me,

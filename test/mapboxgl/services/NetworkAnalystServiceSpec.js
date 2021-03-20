@@ -19,7 +19,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('mapboxgl_NetworkAnalystService', () => {
@@ -51,7 +51,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 var result = serviceResult.result;

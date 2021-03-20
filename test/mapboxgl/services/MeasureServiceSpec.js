@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('mapboxgl_MeasureService', () => {

@@ -6,7 +6,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_FieldService', () => {
     var serviceResult;

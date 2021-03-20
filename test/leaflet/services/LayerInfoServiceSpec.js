@@ -8,7 +8,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var layerInfoURL = GlobeParameter.WorldURL;
 var options = {
-    serverType: 'iServer'
+
 };
 var id;
 describe('leaflet_LayerInfoService', () => {

@@ -12,7 +12,6 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
-    serverType: 'iServer'
 };
 
 describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {

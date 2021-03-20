@@ -1,9 +1,9 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { FetchRequest, CommonUtil } from "@supermap/iclient-common";
-import { olExtends } from "./olExtends";
-import remove from "lodash.remove";
+import { FetchRequest, CommonUtil, SecurityManager } from '@supermap/iclient-common';
+import { olExtends } from './olExtends';
+import remove from 'lodash.remove';
 import Observable from 'ol/Observable';
 import Style from 'ol/style/Style';
 import CircleStyle from 'ol/style/Circle';
@@ -58,7 +58,7 @@ export class MapboxStyles extends Observable {
         super();
         options = options || {};
         this.spriteRegEx = /^(.*)(\?.*)$/;
-        this.defaultFont = ["DIN Offc Pro Medium", "Arial Unicode MS Regular"];
+        this.defaultFont = ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'];
         this.map = options.map;
         this.source = options.source;
         this.styleTarget =
@@ -75,23 +75,23 @@ export class MapboxStyles extends Observable {
             function() {
                 return new Style({
                     fill: new FillStyle({
-                        color: "rgba(255, 0, 0, 1)"
+                        color: 'rgba(255, 0, 0, 1)'
                     }),
                     stroke: new StrokeStyle({
-                        color: "rgba(255, 0, 0, 1)",
+                        color: 'rgba(255, 0, 0, 1)',
                         width: 10
                     }),
                     text: new Text({
                         font: 'normal 400 11.19px "Microsoft YaHei"',
-                        placement: "point",
+                        placement: 'point',
                         fill: new FillStyle({
-                            color: "blue"
+                            color: 'blue'
                         })
                     }),
                     image: new CircleStyle({
                         radius: 5,
                         fill: new FillStyle({
-                            color: "blue"
+                            color: 'blue'
                         })
                     })
                 });
@@ -120,7 +120,7 @@ export class MapboxStyles extends Observable {
         const layers = [];
         for (let index = 0; index < this._mbStyle.layers.length; index++) {
             const layer = this._mbStyle.layers[index];
-            if (layer["source-layer"] !== sourceLayer) {
+            if (layer['source-layer'] !== sourceLayer) {
                 continue;
             }
             layers.push(layer);
@@ -202,7 +202,7 @@ export class MapboxStyles extends Observable {
      * @param {Object} layerStyles - 图层样式或图层样式数组。
      */
     updateStyles(layerStyles) {
-        if (Object.prototype.toString.call(layerStyles) !== "[object Array]") {
+        if (Object.prototype.toString.call(layerStyles) !== '[object Array]') {
             layerStyles = [layerStyles];
         }
         const layerObj = {};
@@ -219,13 +219,13 @@ export class MapboxStyles extends Observable {
                 continue;
             }
             const newLayerStyle = JSON.parse(JSON.stringify(layerObj[oldLayerStyle.id]));
-            if(newLayerStyle.paint){
-                newLayerStyle.paint = Object.assign({},oldLayerStyle.paint,newLayerStyle.paint);
+            if (newLayerStyle.paint) {
+                newLayerStyle.paint = Object.assign({}, oldLayerStyle.paint, newLayerStyle.paint);
             }
-            if(newLayerStyle.layout){
-                newLayerStyle.layout = Object.assign({},oldLayerStyle.layout,newLayerStyle.layout);
+            if (newLayerStyle.layout) {
+                newLayerStyle.layout = Object.assign({}, oldLayerStyle.layout, newLayerStyle.layout);
             }
-            Object.assign(oldLayerStyle,newLayerStyle);
+            Object.assign(oldLayerStyle, newLayerStyle);
             count++;
         }
         this._createStyleFunction();
@@ -241,11 +241,12 @@ export class MapboxStyles extends Observable {
         this._loadStyle(style);
     }
     _loadStyle(style) {
-        if (Object.prototype.toString.call(style) == "[object Object]") {
+        if (Object.prototype.toString.call(style) == '[object Object]') {
             this._mbStyle = style;
             this._resolve();
         } else {
-            FetchRequest.get(style,null,{withCredentials:this.withCredentials})
+            var url = SecurityManager.appendCredential(style);
+            FetchRequest.get(url, null, { withCredentials: this.withCredentials })
                 .then(response => response.json())
                 .then(mbStyle => {
                     this._mbStyle = mbStyle;
@@ -259,18 +260,22 @@ export class MapboxStyles extends Observable {
         }
         if (this._mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
-            const sizeFactor = spriteScale == 0.5 ? "@2x" : "";
+            const sizeFactor = spriteScale == 0.5 ? '@2x' : '';
             //兼容一下iServer 等iServer修改
-            this._mbStyle.sprite = this._mbStyle.sprite.replace("@2x", "");
-            const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".json");
-            FetchRequest.get(spriteUrl,null,{withCredentials:this.withCredentials})
+            this._mbStyle.sprite = this._mbStyle.sprite.replace('@2x', '');
+            const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.json');
+            FetchRequest.get(SecurityManager.appendCredential(spriteUrl), null, {
+                withCredentials: this.withCredentials
+            })
                 .then(response => response.json())
                 .then(spritesJson => {
                     this._spriteData = spritesJson;
-                    this._spriteImageUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".png");
+                    this._spriteImageUrl = SecurityManager.appendCredential(
+                        this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.png')
+                    );
                     this._spriteImage = null;
                     const img = new Image();
-                    img.crossOrigin = this.withCredentials?"use-credentials":"anonymous";
+                    img.crossOrigin = this.withCredentials ? 'use-credentials' : 'anonymous';
                     img.onload = () => {
                         this._spriteImage = img;
                         this._initStyleFunction();
@@ -278,7 +283,7 @@ export class MapboxStyles extends Observable {
                     img.onerror = () => {
                         this._spriteImage = null;
                         this._initStyleFunction();
-                    }
+                    };
                     img.src = this._spriteImageUrl;
                 });
         } else {
@@ -300,7 +305,7 @@ export class MapboxStyles extends Observable {
          * @event ol.supermap.MapboxStyles#styleloaded
          * @description 样式加载成功后触发。
          */
-        this.dispatchEvent("styleloaded");
+        this.dispatchEvent('styleloaded');
     }
     _createStyleFunction() {
         if (this.map) {
@@ -315,7 +320,7 @@ export class MapboxStyles extends Observable {
             this.source,
             this.resolutions,
             this._spriteData,
-            "",
+            '',
             this._spriteImage
         );
         return (feature, resolution) => {
@@ -323,7 +328,7 @@ export class MapboxStyles extends Observable {
             if (
                 this.selectedObjects.length > 0 &&
                 this.selectedObjects.find(element => {
-                    return element.id === feature.getId() && element.sourceLayer === feature.get("layer");
+                    return element.id === feature.getId() && element.sourceLayer === feature.get('layer');
                 })
             ) {
                 const styleIndex = style && style[0] ? style[0].getZIndex() : 99999;
@@ -333,7 +338,7 @@ export class MapboxStyles extends Observable {
                 }
                 for (let index = 0; index < selectStyles.length; index++) {
                     const selectStyle = selectStyles[index];
-                    if (feature.getGeometry().getType() === "Point" && style[0].getText() && selectStyle.getText()) {
+                    if (feature.getGeometry().getType() === 'Point' && style[0].getText() && selectStyle.getText()) {
                         selectStyle.setFill(null);
                         selectStyle.setStroke(null);
                         selectStyle.setImage();
@@ -347,7 +352,7 @@ export class MapboxStyles extends Observable {
         };
     }
     _withPath(url, path) {
-        if (path && url.indexOf("http") != 0) {
+        if (path && url.indexOf('http') != 0) {
             url = path + url;
         }
         return url;
@@ -356,6 +361,6 @@ export class MapboxStyles extends Observable {
     _toSpriteUrl(url, path, extension) {
         url = this._withPath(url, path);
         const parts = url.match(this.spriteRegEx);
-        return parts ? parts[1] + extension + (parts.length > 2 ? parts[2] : "") : url + extension;
+        return parts ? parts[1] + extension + (parts.length > 2 ? parts[2] : '') : url + extension;
     }
 }

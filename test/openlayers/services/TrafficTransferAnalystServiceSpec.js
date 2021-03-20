@@ -6,7 +6,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.trafficTransferURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_TrafficTransferAnalystService', () => {
     var serviceResult;
@@ -37,7 +37,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result[0].name).toEqual("人民广场");
@@ -71,7 +70,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result[0].name).toEqual("人民广场");
@@ -101,7 +99,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.count).toEqual(2);
@@ -145,7 +142,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.count).toEqual(2);
@@ -192,7 +188,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.suggestWalking).toEqual(false);

@@ -5,9 +5,7 @@ import L, { Util as LUtil} from "leaflet";
 import "../core/Base";
 import {
     SecurityManager,
-    ServerType,
     Unit,
-    Credential,
     ServerGeometry,
     CommonUtil
 } from '@supermap/iclient-common';
@@ -34,7 +32,6 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
@@ -65,7 +62,6 @@ export var TiledMapLayer = L.TileLayer.extend({
         //切片版本名称，cacheEnabled 为 true 时有效。
         tileversion: null,
         crs: null,
-        serverType: ServerType.ISERVER,
         format: 'png',
         //启用托管地址。
         tileProxy:null,
@@ -295,7 +291,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         let layerUrl = CommonUtil.urlPathAppend(this._url, `tileImage.${this.options.format}`);
         this.requestParams = this.requestParams || this._getAllRequestParams();
         layerUrl = CommonUtil.urlAppend(layerUrl, LUtil.getParamString(this.requestParams));
-        layerUrl = this._appendCredential(layerUrl);
+        layerUrl = SecurityManager.appendCredential(layerUrl);
         this._layerUrl = layerUrl;
         return layerUrl;
     },
@@ -363,35 +359,6 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
 
         return params;
-    },
-
-    //追加token或key
-    _appendCredential: function (url) {
-        var newUrl = url,
-            credential, value;
-        switch (this.options.serverType) {
-            case ServerType.IPORTAL:
-                value = SecurityManager.getToken(this._url);
-                credential = value ? new Credential(value, "token") : null;
-                if (!credential) {
-                    value = SecurityManager.getKey(this._url);
-                    credential = value ? new Credential(value, "key") : null;
-                }
-                break;
-            case ServerType.ONLINE:
-                value = SecurityManager.getKey(this._url);
-                credential = value ? new Credential(value, "key") : null;
-                break;
-            default:
-                //iserver or others
-                value = SecurityManager.getToken(this._url);
-                credential = value ? new Credential(value, "token") : null;
-                break;
-        }
-        if (credential) {
-            newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
-        }
-        return newUrl;
     }
 });
 

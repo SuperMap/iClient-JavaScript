@@ -5,7 +5,7 @@ import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = 'http://supermap:8090/iserver/services/data-world/rest/data';
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
     var serviceResult = null;

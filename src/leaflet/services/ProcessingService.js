@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L from 'leaflet';
 import '../core/Base';
-import {ServiceBase} from './ServiceBase';
-import {CommontypesConversion} from '../core/CommontypesConversion';
+import { ServiceBase } from './ServiceBase';
+import { CommontypesConversion } from '../core/CommontypesConversion';
 import {
     DataFormat,
     KernelDensityJobsService,
@@ -31,14 +31,12 @@ import {
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
 export var ProcessingService = ServiceBase.extend({
-
-    initialize: function (url, options) {
+    initialize: function(url, options) {
         options = options || {};
         L.setOptions(this, options);
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -59,7 +57,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getKernelDensityJobs: function (callback, resultFormat) {
+    getKernelDensityJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
@@ -67,7 +65,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -85,7 +83,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getKernelDensityJob: function (id, callback, resultFormat) {
+    getKernelDensityJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
@@ -93,7 +91,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -112,7 +110,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addKernelDensityJob: function (params, callback, seconds, resultFormat) {
+    addKernelDensityJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -121,12 +119,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.kernelDensityJobs[job.id] = job.state;
                 }
             },
@@ -141,7 +139,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 密度分析 ID。
      * @returns {Object} 密度分析的状态。
      */
-    getKernelDensityJobState: function (id) {
+    getKernelDensityJobState: function(id) {
         return this.kernelDensityJobs[id];
     },
 
@@ -151,7 +149,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback - 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getSummaryMeshJobs: function (callback, resultFormat) {
+    getSummaryMeshJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
@@ -159,7 +157,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -177,7 +175,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getSummaryMeshJob: function (id, callback, resultFormat) {
+    getSummaryMeshJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
@@ -185,7 +183,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -204,7 +202,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addSummaryMeshJob: function (params, callback, seconds, resultFormat) {
+    addSummaryMeshJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -213,12 +211,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.summaryMeshJobs[job.id] = job.state;
                 }
             },
@@ -233,7 +231,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 点聚合分析的 ID。
      * @returns {Object} 点聚合分析的状态。
      */
-    getSummaryMeshJobState: function (id) {
+    getSummaryMeshJobState: function(id) {
         return this.summaryMeshJobs[id];
     },
 
@@ -243,7 +241,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getQueryJobs: function (callback, resultFormat) {
+    getQueryJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
@@ -251,7 +249,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -269,7 +267,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getQueryJob: function (id, callback, resultFormat) {
+    getQueryJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
@@ -277,7 +275,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -296,7 +294,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addQueryJob: function (params, callback, seconds, resultFormat) {
+    addQueryJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -305,12 +303,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.queryJobs[job.id] = job.state;
                 }
             },
@@ -325,7 +323,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 单对象查询分析的 ID。
      * @returns {Object} 单对象查询分析的状态。
      */
-    getQueryJobState: function (id) {
+    getQueryJobState: function(id) {
         return this.queryJobs[id];
     },
 
@@ -335,7 +333,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getSummaryRegionJobs: function (callback, resultFormat) {
+    getSummaryRegionJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
@@ -343,7 +341,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -361,7 +359,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getSummaryRegionJob: function (id, callback, resultFormat) {
+    getSummaryRegionJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
@@ -369,7 +367,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -388,7 +386,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addSummaryRegionJob: function (params, callback, seconds, resultFormat) {
+    addSummaryRegionJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -397,12 +395,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.summaryRegionJobs[job.id] = job.state;
                 }
             },
@@ -417,7 +415,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 区域汇总分析的 ID。
      * @returns {Object} 区域汇总分析的状态。
      */
-    getSummaryRegionJobState: function (id) {
+    getSummaryRegionJobState: function(id) {
         return this.summaryRegionJobs[id];
     },
 
@@ -427,7 +425,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getVectorClipJobs: function (callback, resultFormat) {
+    getVectorClipJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
@@ -435,7 +433,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -453,7 +451,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getVectorClipJob: function (id, callback, resultFormat) {
+    getVectorClipJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
@@ -461,7 +459,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -480,7 +478,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addVectorClipJob: function (params, callback, seconds, resultFormat) {
+    addVectorClipJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -489,12 +487,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.vectorClipJobs[job.id] = job.state;
                 }
             },
@@ -509,7 +507,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 矢量裁剪分析的 ID。
      * @returns {Object} 矢量裁剪分析的状态。
      */
-    getVectorClipJobState: function (id) {
+    getVectorClipJobState: function(id) {
         return this.vectorClipJobs[id];
     },
 
@@ -519,7 +517,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getOverlayGeoJobs: function (callback, resultFormat) {
+    getOverlayGeoJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
@@ -527,7 +525,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -545,7 +543,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getOverlayGeoJob: function (id, callback, resultFormat) {
+    getOverlayGeoJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
@@ -553,7 +551,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -572,7 +570,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addOverlayGeoJob: function (params, callback, seconds, resultFormat) {
+    addOverlayGeoJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -581,12 +579,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.overlayGeoJobs[job.id] = job.state;
                 }
             },
@@ -601,7 +599,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 叠加分析的 ID。
      * @returns {Object} 叠加分析的状态
      */
-    getoverlayGeoJobState: function (id) {
+    getoverlayGeoJobState: function(id) {
         return this.overlayGeoJobs[id];
     },
 
@@ -611,7 +609,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getBuffersJobs: function (callback, resultFormat) {
+    getBuffersJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
@@ -619,7 +617,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -637,7 +635,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getBuffersJob: function (id, callback, resultFormat) {
+    getBuffersJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
@@ -645,7 +643,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -664,7 +662,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addBuffersJob: function (params, callback, seconds, resultFormat) {
+    addBuffersJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -673,12 +671,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.buffersJobs[job.id] = job.state;
                 }
             },
@@ -693,7 +691,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 缓冲区分析的 ID。
      * @returns {Object} 缓冲区分析的状态
      */
-    getBuffersJobState: function (id) {
+    getBuffersJobState: function(id) {
         return this.buffersJobs[id];
     },
 
@@ -703,7 +701,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getTopologyValidatorJobs: function (callback, resultFormat) {
+    getTopologyValidatorJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
@@ -711,7 +709,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -729,7 +727,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getTopologyValidatorJob: function (id, callback, resultFormat) {
+    getTopologyValidatorJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
@@ -737,7 +735,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -756,7 +754,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addTopologyValidatorJob: function (params, callback, seconds, resultFormat) {
+    addTopologyValidatorJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -765,12 +763,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.topologyValidatorJobs[job.id] = job.state;
                 }
             },
@@ -785,7 +783,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 拓扑检查分析的 ID。
      * @returns {Object} 拓扑检查分析的状态。
      */
-    getTopologyValidatorJobState: function (id) {
+    getTopologyValidatorJobState: function(id) {
         return this.topologyValidatorJobs[id];
     },
 
@@ -795,7 +793,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getSummaryAttributesJobs: function (callback, resultFormat) {
+    getSummaryAttributesJobs: function(callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
@@ -803,7 +801,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -821,7 +819,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    getSummaryAttributesJob: function (id, callback, resultFormat) {
+    getSummaryAttributesJob: function(id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
@@ -829,7 +827,7 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -848,7 +846,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
-    addSummaryAttributesJob: function (params, callback, seconds, resultFormat) {
+    addSummaryAttributesJob: function(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -857,12 +855,12 @@ export var ProcessingService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.summaryAttributesJobs[job.id] = job.state;
                 }
             },
@@ -877,15 +875,15 @@ export var ProcessingService = ServiceBase.extend({
      * @param {string} id - 属性汇总分析的 ID。
      * @returns {Object} 属性汇总分析的状态。
      */
-    getSummaryAttributesJobState: function (id) {
+    getSummaryAttributesJobState: function(id) {
         return this.summaryAttributesJobs[id];
     },
 
-    _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+    _processFormat: function(resultFormat) {
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     },
 
-    _processParams: function (params) {
+    _processParams: function(params) {
         if (!params) {
             return {};
         }
@@ -904,7 +902,7 @@ export var ProcessingService = ServiceBase.extend({
         return params;
     }
 });
-export var processingService = function (url, options) {
+export var processingService = function(url, options) {
     return new ProcessingService(url, options);
 };
 

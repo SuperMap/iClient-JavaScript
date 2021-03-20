@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
@@ -26,12 +26,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         getFeaturesService.destroy();
     });
 
-    it('serverType', () => {
-        var getFeaturesService = featureService(dataServiceURL, { serverType: 'iPortal' });
-        expect(getFeaturesService).not.toBeNull();
-        expect(getFeaturesService.options.serverType).toEqual('iPortal');
-        getFeaturesService.destroy();
-    });
 
     it('withCredentials', () => {
         var getFeaturesService = featureService(dataServiceURL, { withCredentials: true });
@@ -81,7 +75,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
-                expect(getFeaturesByGeometryService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -147,7 +140,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, result => {
             serviceResult = result;
             try {
-                expect(getFeaturesByGeometryService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -197,7 +189,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
-                expect(getFeaturesByGeometryService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processFailed');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();
@@ -242,7 +233,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
-                expect(getFeaturesByGeometryService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processFailed');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();

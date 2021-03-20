@@ -29,7 +29,7 @@ var WorldURL = GlobeParameter.WorldURL;      //ThemeDotDensity, ThemeLable
 var ChinaURL = GlobeParameter.ChinaURL;      //ThemeGraduatedSymbol, ThemeRange, ThemeUnique
 var jingjinPopulationURL = GlobeParameter.jingjinMapURL + "/maps/京津地区人口分布图_专题图";       //themeGraph, themeGridRange
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_ThemeService', () => {
     var serviceResult;
@@ -47,13 +47,6 @@ describe('leaflet_ThemeService', () => {
         var service = themeService(WorldURL, { proxy: 'testProxy' });
         expect(service).not.toBeNull();
         expect(service.options.proxy).toEqual('testProxy');
-        service.destroy();
-    });
-
-    it('serverType', () => {
-        var service = themeService(WorldURL, { serverType: 'iPortal' });
-        expect(service).not.toBeNull();
-        expect(service.options.serverType).toEqual('iPortal');
         service.destroy();
     });
 
@@ -108,7 +101,6 @@ describe('leaflet_ThemeService', () => {
        
             try {
                 expect(themeDotDensityService).not.toBeNull();
-                expect(themeDotDensityService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");
@@ -167,7 +159,6 @@ describe('leaflet_ThemeService', () => {
       
             try {
                 expect(themeGraduatedSymbolService).not.toBeNull();
-                expect(themeGraduatedSymbolService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");
@@ -249,7 +240,6 @@ describe('leaflet_ThemeService', () => {
        
             try {
                 expect(themeGraphService).not.toBeNull();
-                expect(themeGraphService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");
@@ -332,7 +322,6 @@ describe('leaflet_ThemeService', () => {
       
             try {
                 expect(themeGridRangeService).not.toBeNull();
-                expect(themeGridRangeService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");
@@ -425,7 +414,6 @@ describe('leaflet_ThemeService', () => {
       
             try {
                 expect(themeLableService).not.toBeNull();
-                expect(themeLableService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");
@@ -491,7 +479,6 @@ describe('leaflet_ThemeService', () => {
         
             try {
                 expect(themeRangeService).not.toBeNull();
-                expect(themeRangeService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");
@@ -556,7 +543,6 @@ describe('leaflet_ThemeService', () => {
       
             try {
                 expect(themeUniqueService).not.toBeNull();
-                expect(themeUniqueService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.object.options.method).toBe("POST");

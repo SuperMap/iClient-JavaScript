@@ -35,7 +35,6 @@ export class AddressMatchService extends CommonServiceBase {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -58,7 +57,6 @@ export class AddressMatchService extends CommonServiceBase {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

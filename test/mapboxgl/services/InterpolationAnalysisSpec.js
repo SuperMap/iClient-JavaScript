@@ -5,7 +5,7 @@ var request = require('request');
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
     var serviceResult;

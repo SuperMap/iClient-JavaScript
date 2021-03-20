@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_FeatureService_getFeaturesByIDs', () => {
     var serviceResult;

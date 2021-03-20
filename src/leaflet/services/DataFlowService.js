@@ -13,7 +13,6 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @extends {L.supermap.ServiceBase}
  * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {Function} [options.style] - 设置数据加载样式。
  * @param {Function} [options.onEachFeature] -  设置每个数据加载 popup 等。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。

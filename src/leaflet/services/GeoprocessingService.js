@@ -29,7 +29,6 @@ import { ServiceBase } from './ServiceBase';
  *  
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 export const GeoprocessingService = ServiceBase.extend({
     initialize: function (url, options) {
@@ -53,7 +52,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -75,7 +73,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -99,7 +96,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -123,7 +119,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -149,7 +144,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -172,7 +166,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -195,7 +188,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -217,7 +209,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,
@@ -241,7 +232,6 @@ export const GeoprocessingService = ServiceBase.extend({
             withCredentials: this.options.withCredentials,
             crossOrigin: this.options.crossOrigin,
             headers: this.options.headers,
-            serverType: this.options.serverType,
             eventListeners: {
                 scope: this,
                 processCompleted: callback,

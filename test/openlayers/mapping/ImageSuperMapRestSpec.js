@@ -55,7 +55,6 @@ describe('openlayers_ImageSuperMapRest', () => {
         setTimeout(() => {
             try {
                 expect(imageTileOptions).not.toBeNull();
-                expect(imageTileOptions.serverType).toBe('ISERVER');
                 expect(imageTileOptions.crossOrigin).toBe('anonymous');
                 expect(imageTileSource).not.toBeNull();
                 done();

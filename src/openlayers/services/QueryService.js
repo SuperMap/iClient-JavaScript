@@ -24,7 +24,6 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {string} url - 地图查询服务访问地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -55,7 +54,7 @@ export class QueryService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -81,7 +80,7 @@ export class QueryService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -107,7 +106,7 @@ export class QueryService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -133,7 +132,7 @@ export class QueryService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

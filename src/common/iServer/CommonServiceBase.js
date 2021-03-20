@@ -1,33 +1,13 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from '../SuperMap';
-import {
-    FetchRequest
-} from "../util/FetchRequest";
-import {
-    Events
-} from '../commontypes/Events';
-import {
-    Credential
-} from '../commontypes/Credential';
-import {
-    SecurityManager
-} from '../security/SecurityManager';
-import {
-    Util
-} from '../commontypes/Util';
-import {
-    ServerType
-} from '../REST';
-import {
-    JSONFormat
-} from '../format/JSON';
-import {
-    FunctionExt
-} from '../commontypes/BaseTypes';
+import { SuperMap } from '../SuperMap';
+import { FetchRequest } from '../util/FetchRequest';
+import { Events } from '../commontypes/Events';
+import { SecurityManager } from '../security/SecurityManager';
+import { Util } from '../commontypes/Util';
+import { JSONFormat } from '../format/JSON';
+import { FunctionExt } from '../commontypes/BaseTypes';
 
 /**
  * @class SuperMap.CommonServiceBase
@@ -37,17 +17,15 @@ import {
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
 export class CommonServiceBase {
-
     constructor(url, options) {
         let me = this;
 
-        this.EVENT_TYPES = ["processCompleted", "processFailed"];
+        this.EVENT_TYPES = ['processCompleted', 'processFailed'];
 
         this.events = null;
 
@@ -59,7 +37,6 @@ export class CommonServiceBase {
 
         this.proxy = null;
 
-        this.serverType = null;
 
         this.index = null;
 
@@ -78,8 +55,6 @@ export class CommonServiceBase {
         this.isInTheSameDomain = null;
 
         this.withCredentials = false;
-        
-        
 
         if (Util.isArray(url)) {
             me.urls = url;
@@ -100,8 +75,6 @@ export class CommonServiceBase {
             me.url = url[0];
             me.totalTimes = 1;
         }
-        
-        me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
@@ -115,7 +88,7 @@ export class CommonServiceBase {
             me.events.on(me.eventListeners);
         }
 
-        this.CLASS_NAME = "SuperMap.CommonServiceBase";
+        this.CLASS_NAME = 'SuperMap.CommonServiceBase';
     }
 
     /**
@@ -171,10 +144,7 @@ export class CommonServiceBase {
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
-        let credential = this.getCredential(options.url);
-        if (credential) {
-            options.url = Util.urlAppend(options.url, credential.getUrlParameters());
-        }
+        options.url = SecurityManager.appendCredential(options.url);
 
         me.calculatePollingTimes();
         me._processSuccess = options.success;
@@ -187,37 +157,6 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.getCredential
-     * @description  获取凭据信息
-     * @param {string} url - 服务地址。
-     * @returns {SuperMap.Credential} 凭据信息对象。
-     */
-    getCredential(url) {
-        let keyUrl = url,
-            credential, value;
-        switch (this.serverType) {
-            case ServerType.IPORTAL:
-                value = SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential(value, "token") : null;
-                if (!credential) {
-                    value = SecurityManager.getKey(keyUrl);
-                    credential = value ? new Credential(value, "key") : null;
-                }
-                break;
-            case ServerType.ONLINE:
-                value = SecurityManager.getKey(keyUrl);
-                credential = value ? new Credential(value, "key") : null;
-                break;
-            default:
-                //iServer or others
-                value = SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential(value, "token") : null;
-                break;
-        }
-        return credential;
-    }
-
-    /**
      * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
      * @description 请求成功后执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
@@ -226,7 +165,6 @@ export class CommonServiceBase {
         let me = this;
         me._processSuccess(result);
     }
-
 
     /**
      * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
@@ -242,7 +180,6 @@ export class CommonServiceBase {
             me._processFailed(result);
         }
     }
-
 
     /**
      *
@@ -260,7 +197,6 @@ export class CommonServiceBase {
         me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
         me._commit(me.options);
     }
-
 
     /**
      * @function SuperMap.CommonServiceBase.prototype.calculatePollingTimes
@@ -280,7 +216,6 @@ export class CommonServiceBase {
                     me.totalTimes = me.times;
                 }
             }
-
         } else {
             if (me.totalTimes > me.POLLING_TIMES) {
                 me.totalTimes = me.POLLING_TIMES;
@@ -296,8 +231,7 @@ export class CommonServiceBase {
     isServiceSupportPolling() {
         let me = this;
         return !(
-            me.CLASS_NAME === "SuperMap.REST.ThemeService" ||
-            me.CLASS_NAME === "SuperMap.REST.EditFeaturesService"
+            me.CLASS_NAME === 'SuperMap.REST.ThemeService' || me.CLASS_NAME === 'SuperMap.REST.EditFeaturesService'
         );
     }
 
@@ -308,7 +242,7 @@ export class CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         result = Util.transformResult(result);
-        this.events.triggerEvent("processCompleted", {
+        this.events.triggerEvent('processCompleted', {
             result: result
         });
     }
@@ -321,16 +255,15 @@ export class CommonServiceBase {
     serviceProcessFailed(result) {
         result = Util.transformResult(result);
         let error = result.error || result;
-        this.events.triggerEvent("processFailed", {
+        this.events.triggerEvent('processFailed', {
             error: error
         });
     }
 
     _commit(options) {
-        if (options.method === "POST" || options.method === "PUT") {
+        if (options.method === 'POST' || options.method === 'PUT') {
             if (options.params) {
-                options.url = Util.urlAppend(options.url,
-                    Util.getParameterString(options.params || {}));
+                options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
             options.params = options.data;
         }
@@ -340,42 +273,45 @@ export class CommonServiceBase {
             crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
             proxy: options.proxy
-        }).then(function (response) {
-            if (response.text) {
-                return response.text();
-            }
-            if (response.json) {
-                return response.json();
-            }
-            return response;
-        }).then(function (text) {
-            var result = text;
-            if (typeof text === "string") {
-                result = new JSONFormat().read(text);
-            }
-            if (!result || result.error || result.code >= 300 && result.code !== 304) {
-                if (result && result.error) {
-                    result = {
-                        error: result.error
-                    };
-                } else {
-                    result = {
-                        error: result
-                    };
-                }
-            }
-            if (result.error) {
-                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                failure(result);
-            } else {
-                result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
-                success(result);
-            }
-        }).catch(function (e) {
-            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-            failure(e);
         })
+            .then(function(response) {
+                if (response.text) {
+                    return response.text();
+                }
+                if (response.json) {
+                    return response.json();
+                }
+                return response;
+            })
+            .then(function(text) {
+                var result = text;
+                if (typeof text === 'string') {
+                    result = new JSONFormat().read(text);
+                }
+                if (!result || result.error || (result.code >= 300 && result.code !== 304)) {
+                    if (result && result.error) {
+                        result = {
+                            error: result.error
+                        };
+                    } else {
+                        result = {
+                            error: result
+                        };
+                    }
+                }
+                if (result.error) {
+                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(result);
+                } else {
+                    result.succeed = result.succeed == undefined ? true : result.succeed;
+                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(result);
+                }
+            })
+            .catch(function(e) {
+                var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                failure(e);
+            });
     }
 }
 

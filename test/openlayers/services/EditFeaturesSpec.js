@@ -10,7 +10,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var options = {
-    serverType: 'iServer'
+
 };
 var id, id1, id2;
 var originFeature = null, updateFeature = null;

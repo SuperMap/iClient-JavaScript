@@ -15,10 +15,9 @@ describe('leaflet_MeasureService', () => {
 
     it('initialize', () => {
         var options = {
-            serverType: 'iServer'
+        
         };
         var service = measureService(url, options);
-        expect(service.options.serverType).toBe('iServer');
         expect(service.url).toEqual(url);
     });
 

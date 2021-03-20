@@ -3,7 +3,7 @@ import {RouteLocatorParameters} from '../../../src/common/iServer/RouteLocatorPa
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('leaflet_SpatialAnalystService_routeLocate', () => {
@@ -49,7 +49,6 @@ describe('leaflet_SpatialAnalystService_routeLocate', () => {
         
             try {
                 expect(routeLocatorService).not.toBeNull();
-                expect(routeLocatorService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();

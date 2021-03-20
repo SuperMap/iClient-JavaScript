@@ -5,7 +5,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', ()=> {
     var serviceResult;
@@ -40,7 +40,6 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', ()=> {
             serviceResult = result;
             try {
                 expect(terrainCurvatureCalculationService).not.toBeNull();
-                expect(terrainCurvatureCalculationService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();

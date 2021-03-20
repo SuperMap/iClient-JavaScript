@@ -46,7 +46,7 @@ export class WebPrintingJobService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -70,7 +70,7 @@ export class WebPrintingJobService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -94,7 +94,7 @@ export class WebPrintingJobService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -117,7 +117,7 @@ export class WebPrintingJobService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

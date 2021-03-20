@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Unit, ServerType, SecurityManager, Credential, ServerGeometry, CommonUtil } from '@supermap/iclient-common';
+import { Unit, SecurityManager, ServerGeometry, CommonUtil } from '@supermap/iclient-common';
 import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
 import Geometry from 'ol/geom/Geometry';
@@ -17,7 +17,6 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存，true 表示使用服务端的缓存。
@@ -41,45 +40,8 @@ export class ImageSuperMapRest extends TileImage {
     options.format = options.format ? options.format : 'png'
     var layerUrl = CommonUtil.urlPathAppend(options.url, "image." + options.format);
 
-    options.serverType = options.serverType || ServerType.ISERVER;
     //为url添加安全认证信息片段
-    layerUrl = appendCredential(options.url, layerUrl, options.serverType);
-
-    /**
-     * @function ol.source.ImageSuperMapRest.prototype.appendCredential
-     * @description 添加凭据。
-     * @param {string} url - 地址。
-     * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
-     * @returns {string} 添加生成后的新地址。
-     */
-    function appendCredential(id, url, serverType) {
-      var newUrl = url,
-        credential,
-        value;
-      switch (serverType) {
-        case ServerType.IPORTAL:
-          value = SecurityManager.getToken(id);
-          credential = value ? new Credential(value, 'token') : null;
-          if (!credential) {
-            value = SecurityManager.getKey(id);
-            credential = value ? new Credential(value, 'key') : null;
-          }
-          break;
-        case ServerType.ONLINE:
-          value = SecurityManager.getKey(id);
-          credential = value ? new Credential(value, 'key') : null;
-          break;
-        default:
-          //iserver or others
-          value = SecurityManager.getToken(id);
-          credential = value ? new Credential(value, 'token') : null;
-          break;
-      }
-      if (credential) {
-        newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
-      }
-      return newUrl;
-    }
+    layerUrl = SecurityManager.appendCredential(layerUrl);
 
     const params = {};
     //切片是否透明

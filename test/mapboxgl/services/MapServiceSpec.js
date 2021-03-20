@@ -1,10 +1,8 @@
 import {MapService} from '../../../src/mapboxgl/services/MapService';
-import {ServerType} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var options = {
-    serverType: ServerType.ISERVER
 };
 describe('mapboxgl_MapService', () => {
     var serviceResult;

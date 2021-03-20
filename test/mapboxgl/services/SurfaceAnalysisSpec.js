@@ -7,7 +7,7 @@ import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var url = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
 var options = {
-    serverType: 'iServer'
+
 };
 describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', () => {
     var serviceResult = null;

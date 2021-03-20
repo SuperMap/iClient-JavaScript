@@ -47,7 +47,6 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         setTimeout(() => {
             try {
                 expect(vectorTileOptions).not.toBeNull();
-                expect(vectorTileOptions.serverType).toBe("ISERVER");
                 expect(vectorTileOptions.crossOrigin).toBe("anonymous");
                 expect(vectorTileSource).not.toBeNull();
                 done();

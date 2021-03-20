@@ -5,7 +5,7 @@ import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
     var serviceResult;

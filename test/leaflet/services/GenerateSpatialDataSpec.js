@@ -7,7 +7,6 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
-    serverType: 'iServer'
 };
 
 describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
@@ -55,7 +54,6 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
             serviceResult = result;
             try {
                 expect(generateSpatialDataService).not.toBeNull();
-                expect(generateSpatialDataService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();

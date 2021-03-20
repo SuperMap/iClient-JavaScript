@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
     var serviceResult;
@@ -22,13 +22,6 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
         var service = spatialAnalystService(spatialAnalystURL, { proxy: 'testProxy' });
         expect(service).not.toBeNull();
         expect(service.options.proxy).toEqual('testProxy');
-        service.destroy();
-    });
-
-    it('serverType', () => {
-        var service = spatialAnalystService(spatialAnalystURL, { serverType: 'iPortal' });
-        expect(service).not.toBeNull();
-        expect(service.options.serverType).toEqual('iPortal');
         service.destroy();
     });
 
@@ -71,7 +64,6 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
        
             try {
                 expect(thiessenAnalystService).not.toBeNull();
-                expect(thiessenAnalystService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();

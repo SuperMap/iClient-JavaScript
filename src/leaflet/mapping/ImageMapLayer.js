@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L, { Util, Layer, ImageOverlay } from 'leaflet';
 import '../core/Base';
-import { ServerGeometry, ServerType, SecurityManager, Credential, CommonUtil } from '@supermap/iclient-common';
+import { ServerGeometry, SecurityManager, CommonUtil } from '@supermap/iclient-common';
 import Attributions from '../core/Attributions';
 import { toSuperMapGeometry } from "../core/Util";
 /**
@@ -32,7 +32,6 @@ import { toSuperMapGeometry } from "../core/Util";
  * @param {string} [options.errorOverlayUrl] - 图层未能加载时代替显示的瓦片地址。
  * @param {number} [options.zIndex=1] - 设置图层的层级。
  * @param {string} [options.className] - 自定义 dom 元素的 className。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
  * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
@@ -78,8 +77,6 @@ export var ImageMapLayer = Layer.extend({
         zIndex: 1,
         //自定义的html class name
         className: '',
-        //服务来源 iServer|iPortal|online。
-        serverType: ServerType.ISERVER,
         //版权信息
         attribution: Attributions.Common.attribution,
         //平移时图层延迟刷新间隔时间。
@@ -180,7 +177,7 @@ export var ImageMapLayer = Layer.extend({
         let serviceUrl = CommonUtil.urlPathAppend(this._url, `image.${this.options.format}`);
         let imageUrl =
             serviceUrl + Util.getParamString(Object.assign({}, this._initAllRequestParams(), params), serviceUrl);
-        imageUrl = this._appendCredential(imageUrl);
+        imageUrl = SecurityManager.appendCredential(imageUrl);
         //支持代理
         if (this.options.tileProxy) {
             imageUrl = this.options.tileProxy + encodeURIComponent(imageUrl);
@@ -397,36 +394,6 @@ export var ImageMapLayer = Layer.extend({
             size.y = bottom - top;
         }
         return size;
-    },
-
-    //追加token或key
-    _appendCredential: function(url) {
-        var newUrl = url,
-            credential,
-            value;
-        switch (this.options.serverType) {
-            case ServerType.IPORTAL:
-                value = SecurityManager.getToken(this._url);
-                credential = value ? new Credential(value, 'token') : null;
-                if (!credential) {
-                    value = SecurityManager.getKey(this._url);
-                    credential = value ? new Credential(value, 'key') : null;
-                }
-                break;
-            case ServerType.ONLINE:
-                value = SecurityManager.getKey(this._url);
-                credential = value ? new Credential(value, 'key') : null;
-                break;
-            default:
-                //iserver or others
-                value = SecurityManager.getToken(this._url);
-                credential = value ? new Credential(value, 'token') : null;
-                break;
-        }
-        if (credential) {
-            newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
-        }
-        return newUrl;
     }
 });
 

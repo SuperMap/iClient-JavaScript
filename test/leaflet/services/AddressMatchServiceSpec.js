@@ -6,7 +6,6 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
 var options = {
-    serverType: 'iServer'
 };
 
 describe('leaflet_AddressMatchService', () => {
@@ -54,7 +53,6 @@ describe('leaflet_AddressMatchService', () => {
             serviceResult = result;
              try {
                  expect(geoCodingService).not.toBeNull();
-                 expect(geoCodingService.options.serverType).toBe("iServer");
                  expect(serviceResult.type).toBe("processCompleted");
                  var result = serviceResult.result;
                  expect(result).not.toBeNull();
@@ -102,7 +100,6 @@ describe('leaflet_AddressMatchService', () => {
             serviceResult = result;
             try {
                 expect(GeoDecodingService).not.toBeNull();
-                expect(GeoDecodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
@@ -147,7 +144,6 @@ describe('leaflet_AddressMatchService', () => {
             serviceResult = result;
             try {
                 expect(geoCodingService).not.toBeNull();
-                expect(geoCodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processFailed");
                 var error = serviceResult.error;
                 expect(error).not.toBeNull();
@@ -187,7 +183,6 @@ describe('leaflet_AddressMatchService', () => {
             serviceResult = result;
             try {
                 expect(geoDecodingService).not.toBeNull();
-                expect(geoDecodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processFailed");
                 var error = serviceResult.error;
                 expect(error).not.toBeNull();

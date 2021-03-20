@@ -6,7 +6,7 @@ import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = 'http://supermap:8090/iserver/services/data-world/rest/data';
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_FeatureService_getFeaturesByBounds', () => {
     var serviceResult = null;
@@ -52,7 +52,6 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
         getFeaturesByBoundsService.getFeaturesByBounds(boundsParam, testResult => {
             serviceResult = testResult;
             expect(getFeaturesByBoundsService).not.toBeNull();
-            expect(getFeaturesByBoundsService.options.serverType).toBe('iServer');
             expect(serviceResult.type).toBe('processCompleted');
             var result = serviceResult.result;
             expect(result.succeed).toBe(true);

@@ -8,7 +8,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL + "%20Map";
 var options = {
-    serverType: 'iServer'
+
 };
 var id;
 describe('mapboxgl_LayerInfoService', () => {

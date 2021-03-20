@@ -12,7 +12,6 @@ import {
 import {
     FetchRequest,
     Unit,
-    ServerType,
     Credential,
     SecurityManager,
     CommonUtil
@@ -31,7 +30,6 @@ import Attributions from '../core/Attributions'
  * @param {Object} options - 图层参数。
  * @param {string} options.layerNames - 指定图层的名称列表，支持的类型为矢量图层。
  * @param {string} options.layersID - 获取进行切片的地图图层 ID。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型。
  * @param {string}  [options.cartoCSS] - 客户端 CartoCSS 样式字符串。
  * @param {boolean} [options.serverCartoCSSStyle=true] - 是否使用服务端 CartoCSS 样式。
  * @param {boolean} [options.processCharacters=false] - 设置客户端 CartoCSS 样式时是否进行特定字符转换。
@@ -45,10 +43,7 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
  */
 export var TileVectorLayer = VectorGrid.extend({
-
     options: {
-        //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
-        serverType: null,
         crs: null,
         //客户端cartocss样式
         cartoCSS: null,
@@ -126,7 +121,7 @@ export var TileVectorLayer = VectorGrid.extend({
     initLayersInfo: function () {
         var me = this;
         var layersUrl = CommonUtil.urlPathAppend(me.url, "layers");
-        FetchRequest.get(layersUrl, null, {
+        FetchRequest.get(SecurityManager.appendCredential(layersUrl), null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -211,7 +206,7 @@ export var TileVectorLayer = VectorGrid.extend({
     getVectorStylesFromServer: function () {
         var me = this;
         var vectorStyleUrl = CommonUtil.urlPathAppend(me.url, "tileFeature/vectorstyles");
-        FetchRequest.get(vectorStyleUrl, null, {
+        FetchRequest.get(SecurityManager.appendCredential(vectorStyleUrl), null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json()
@@ -455,7 +450,7 @@ export var TileVectorLayer = VectorGrid.extend({
         var params = [];
 
         //添加安全认证信息
-        var credential = this._getCredential();
+        var credential = this._getCredential(this._tileUrl);
         if (credential) {
             params.push(credential);
         }
@@ -500,26 +495,8 @@ export var TileVectorLayer = VectorGrid.extend({
 
     //获取token或key表达式
     _getCredential: function (url) {
-        var credential, value;
-        switch (this.options.serverType) {
-            case ServerType.IPORTAL:
-                value = SecurityManager.getToken(url);
-                credential = value ? new Credential(value, "token") : null;
-                if (!credential) {
-                    value = SecurityManager.getKey(url);
-                    credential = value ? new Credential(value, "key") : null;
-                }
-                break;
-            case ServerType.ONLINE:
-                value = SecurityManager.getKey(url);
-                credential = value ? new Credential(value, "key") : null;
-                break;
-            default:
-                //iserver or others
-                value = SecurityManager.getToken(url);
-                credential = value ? new Credential(value, "token") : null;
-                break;
-        }
+        var value = SecurityManager.getToken(url);
+        var credential = value ? new Credential(value, 'token') || new Credential(value, 'key') : null;
         if (credential) {
             return credential.getUrlParameters();
         }

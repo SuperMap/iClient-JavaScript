@@ -45,7 +45,6 @@ export class DatasetService extends CommonServiceBase {
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -76,7 +75,6 @@ export class DatasetService extends CommonServiceBase {
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -122,7 +120,6 @@ export class DatasetService extends CommonServiceBase {
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -150,7 +147,6 @@ export class DatasetService extends CommonServiceBase {
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback

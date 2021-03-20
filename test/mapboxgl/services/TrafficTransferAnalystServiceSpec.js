@@ -6,7 +6,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.trafficTransferURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('mapboxgl_TrafficTransferAnalystService', () => {
     var serviceResult = null;
@@ -35,7 +35,6 @@ describe('mapboxgl_TrafficTransferAnalystService', () => {
         service.queryStop(stopQueryParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
-            expect(service.options.serverType).toBe('iServer');
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toEqual("processCompleted");
             expect(serviceResult.result[0].id).toEqual(164);
@@ -61,7 +60,6 @@ describe('mapboxgl_TrafficTransferAnalystService', () => {
         service.queryStop(stopQueryParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
-            expect(service.options.serverType).toBe('iServer');
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toEqual("processCompleted");
             expect(serviceResult.result[0].id).toEqual(164);
@@ -85,7 +83,6 @@ describe('mapboxgl_TrafficTransferAnalystService', () => {
         service.analysisTransferPath(transferPathParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
-            expect(service.options.serverType).toBe('iServer');
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toEqual("processCompleted");
             expect(serviceResult.result.count).toEqual(2);
@@ -123,7 +120,6 @@ describe('mapboxgl_TrafficTransferAnalystService', () => {
         service.analysisTransferPath(transferPathParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
-            expect(service.options.serverType).toBe('iServer');
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toEqual("processCompleted");
             expect(serviceResult.result.count).toEqual(2);
@@ -164,7 +160,6 @@ describe('mapboxgl_TrafficTransferAnalystService', () => {
         service.analysisTransferSolution(transferSolutionParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
-            expect(service.options.serverType).toBe('iServer');
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toEqual("processCompleted");
             expect(serviceResult.result.suggestWalking).toEqual(false);

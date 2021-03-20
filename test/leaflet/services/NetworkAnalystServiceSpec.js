@@ -16,7 +16,7 @@ import { SupplyCenterType } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.networkAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_NetworkAnalystService', () => {
     var serviceResult;
@@ -48,7 +48,6 @@ describe('leaflet_NetworkAnalystService', () => {
 
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.edges).not.toBeNull();
@@ -82,7 +81,6 @@ describe('leaflet_NetworkAnalystService', () => {
 
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.length).toEqual(2);
@@ -120,7 +118,6 @@ describe('leaflet_NetworkAnalystService', () => {
 
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.facilityPathList).not.toBeNull();
@@ -177,7 +174,6 @@ describe('leaflet_NetworkAnalystService', () => {
 
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.facilityPathList.length).toEqual(1);

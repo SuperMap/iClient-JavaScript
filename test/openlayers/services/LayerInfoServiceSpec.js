@@ -8,7 +8,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var options = {
-    serverType: 'iServer'
+
 };
 var id;
 describe('openlayers_LayerInfoService', () => {
@@ -35,7 +35,6 @@ describe('openlayers_LayerInfoService', () => {
             serviceResult = result;
             try {
                 expect(layerService).not.toBeNull();
-                expect(layerService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.type).toBe("UGC");

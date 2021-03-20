@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('leaflet_QueryService_queryBySQL', () => {
@@ -23,13 +23,6 @@ describe('leaflet_QueryService_queryBySQL', () => {
         var service = queryService(worldMapURL, { proxy: 'testProxy' });
         expect(service).not.toBeNull();
         expect(service.options.proxy).toEqual('testProxy');
-        service.destroy();
-    });
-
-    it('serverType', () => {
-        var service = queryService(worldMapURL, { serverType: 'iPortal' });
-        expect(service).not.toBeNull();
-        expect(service.options.serverType).toEqual('iPortal');
         service.destroy();
     });
 
@@ -77,7 +70,6 @@ describe('leaflet_QueryService_queryBySQL', () => {
 
             try {
                 expect(queryBySQLService).not.toBeNull();
-                expect(queryBySQLService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -134,7 +126,6 @@ describe('leaflet_QueryService_queryBySQL', () => {
     
             try {
                 expect(queryBySQLService).not.toBeNull();
-                expect(queryBySQLService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -177,7 +168,6 @@ describe('leaflet_QueryService_queryBySQL', () => {
       
             try {
                 expect(queryBySQLService).not.toBeNull();
-                expect(queryBySQLService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -215,7 +205,6 @@ describe('leaflet_QueryService_queryBySQL', () => {
        
             try {
                 expect(queryBySQLService).not.toBeNull();
-                expect(queryBySQLService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();
@@ -247,7 +236,6 @@ describe('leaflet_QueryService_queryBySQL', () => {
        
             try {
                 expect(queryBySQLService).not.toBeNull();
-                expect(queryBySQLService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();

@@ -26,7 +26,7 @@ import { WebPrintingService, SuperMap } from '@supermap/iclient-common';
  * @param {Object} [options.headers] - 请求头。
  */
 export var WebPrintingJobService = ServiceBase.extend({
-    initialize: function (url, options) {
+    initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },
 
@@ -46,7 +46,7 @@ export var WebPrintingJobService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -63,14 +63,14 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @param {String} jobId - Web 打印输入文档任务 Id。
      * @param {RequestCallback} callback - 回调函数。
      */
-    getPrintingJob: function (jobId, callback) {
+    getPrintingJob: function(jobId, callback) {
         var me = this;
         var webPrintingService = new WebPrintingService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -87,14 +87,14 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @param {String} jobId - Web 打印输入文档任务 Id。
      * @param {RequestCallback} callback - 回调函数。
      */
-    getPrintingJobResult: function (jobId, callback) {
+    getPrintingJobResult: function(jobId, callback) {
         var me = this;
         var webPrintingService = new WebPrintingService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -110,14 +110,13 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @description 查询 Web 打印服务所有可用的模板信息。
      * @param {RequestCallback} callback - 回调函数。
      */
-    getLayoutTemplates: function (callback) {
+    getLayoutTemplates: function(callback) {
         var me = this;
         var webPrintingService = new WebPrintingService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -161,7 +160,7 @@ export var WebPrintingJobService = ServiceBase.extend({
     }
 });
 
-export var webPrintingJobService = function (url, options) {
+export var webPrintingJobService = function(url, options) {
     return new WebPrintingJobService(url, options);
 };
 

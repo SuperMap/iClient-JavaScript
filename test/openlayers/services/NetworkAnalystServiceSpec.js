@@ -48,7 +48,7 @@ import Point from 'ol/geom/Point';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_NetworkAnalystService', () => {
     var serviceResult;
@@ -84,7 +84,6 @@ describe('openlayers_NetworkAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 var result = serviceResult.result;

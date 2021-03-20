@@ -6,7 +6,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.trafficTransferURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_TrafficTransferAnalystService', () => {
     var serviceResult;
@@ -24,13 +24,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         var service = trafficTransferAnalystService(url, { proxy: 'testProxy' });
         expect(service).not.toBeNull();
         expect(service.options.proxy).toEqual('testProxy');
-        service.destroy();
-    });
-
-    it('serverType', () => {
-        var service = trafficTransferAnalystService(url, { serverType: 'iPortal' });
-        expect(service).not.toBeNull();
-        expect(service.options.serverType).toEqual('iPortal');
         service.destroy();
     });
 
@@ -72,7 +65,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
     
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result[0].id).toEqual(164);
@@ -107,7 +99,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result[0].id).toEqual(164);
@@ -139,7 +130,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
             serviceResult = result;
                    try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.count).toEqual(2);
@@ -186,7 +176,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
       
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.count).toEqual(2);
@@ -236,7 +225,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
        
             try {
                 expect(service).not.toBeNull();
-                expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.suggestWalking).toEqual(false);

@@ -7,7 +7,7 @@ import Polygon from 'ol/geom/Polygon';
 
 var url = GlobeParameter.mapServiceURL + "World";
 var options = {
-    serverType: 'iServer'
+
 };
 describe('openlayers_MeasureService', () => {
     var serviceResult;

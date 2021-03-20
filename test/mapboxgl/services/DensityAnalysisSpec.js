@@ -5,7 +5,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
     var serviceResult;

@@ -4,7 +4,6 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
 };
 
 describe('leaflet_FeatureService_getFeaturesByBounds', () => {
@@ -47,7 +46,6 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
-                expect(getFeaturesByBoundsService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -115,7 +113,6 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
-                expect(getFeaturesByBoundsService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -171,7 +168,6 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
-                expect(getFeaturesByBoundsService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processFailed');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();

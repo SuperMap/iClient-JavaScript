@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {FetchRequest} from '../util/FetchRequest';
-
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { FetchRequest } from '../util/FetchRequest';
+import { Credential } from '../commontypes/Credential';
 /**
  * @name SecurityManager
  * @memberOf SuperMap
@@ -17,7 +17,6 @@ import {FetchRequest} from '../util/FetchRequest';
  *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
  */
 export class SecurityManager {
-
     /**
      * @description 从服务器获取一个token,在此之前要注册服务器信息。
      * @function SuperMap.SecurityManager.generateToken
@@ -31,7 +30,9 @@ export class SecurityManager {
         if (!serverInfo) {
             return;
         }
-        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function(
+            response
+        ) {
             return response.text();
         });
     }
@@ -79,7 +80,7 @@ export class SecurityManager {
             return;
         }
 
-        ids = (Util.isArray(ids)) ? ids : [ids];
+        ids = Util.isArray(ids) ? ids : [ids];
         for (var i = 0; i < ids.length; i++) {
             var id = this._getUrlRestString(ids[0]) || ids[0];
             this.keys[id] = key;
@@ -146,10 +147,9 @@ export class SecurityManager {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
         };
-        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function(response) {
             return response.json();
         });
-
     }
 
     /**
@@ -166,12 +166,13 @@ export class SecurityManager {
             },
             withoutFormatSuffix: true
         };
-        return FetchRequest.get(url, "", requestOptions).then(function () {
-            return true;
-        }).catch(function () {
-            return false;
-        });
-
+        return FetchRequest.get(url, '', requestOptions)
+            .then(function() {
+                return true;
+            })
+            .catch(function() {
+                return false;
+            });
     }
 
     /**
@@ -181,7 +182,7 @@ export class SecurityManager {
      * @param {boolean} [newTab=true] - 是否新窗口打开。
      */
     static loginOnline(callbackLocation, newTab) {
-        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+        var loginUrl = SecurityManager.SSO + '/login?service=' + callbackLocation;
         this._open(loginUrl, newTab);
     }
 
@@ -206,10 +207,9 @@ export class SecurityManager {
             },
             withCredentials: true
         };
-        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function(response) {
             return response.json();
         });
-
     }
 
     /**
@@ -227,12 +227,13 @@ export class SecurityManager {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest.get(url, "", requestOptions).then(function () {
-            return true;
-        }).catch(function () {
-            return false;
-        });
-
+        return FetchRequest.get(url, '', requestOptions)
+            .then(function() {
+                return true;
+            })
+            .catch(function() {
+                return false;
+            });
     }
 
     /**
@@ -261,13 +262,13 @@ export class SecurityManager {
         loginInfo = JSON.stringify(loginInfo);
         var requestOptions = {
             headers: {
-                'Accept': '*/*',
+                Accept: '*/*',
                 'Content-Type': 'application/json'
             }
         };
         var me = this;
-        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
-            response.text().then(function (result) {
+        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function(response) {
+            response.text().then(function(result) {
                 me.imanagerToken = result;
                 return result;
             });
@@ -316,14 +317,41 @@ export class SecurityManager {
         }
     }
 
+    /**
+     * @description 服务URL追加授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
+     * @version 10.1.2
+     * @function SuperMap.SecurityManager.appendCredential
+     * @param {string} url - 服务URL
+     * @returns {string} - 返回绑定了token或者key的服务URL
+     */
+    static appendCredential(url) {
+        var newUrl = url;
+        var value = this.getToken(url);
+        var credential = value ? new Credential(value, 'token') : null;
+		if (!credential) {
+            value = this.getKey(url);
+            credential = value ? new Credential(value, 'key') : null;
+          }
+        if (credential) {
+            newUrl = Util.urlAppend(newUrl, credential.getUrlParameters());
+        }
+        return newUrl;
+    }
+
     static _open(url, newTab) {
-        newTab = (newTab != null) ? newTab : true;
+        newTab = newTab != null ? newTab : true;
         var offsetX = window.screen.availWidth / 2 - this.INNER_WINDOW_WIDTH / 2;
         var offsetY = window.screen.availHeight / 2 - this.INNER_WINDOW_HEIGHT / 2;
         var options =
-            "height=" + this.INNER_WINDOW_HEIGHT + ", width=" + this.INNER_WINDOW_WIDTH +
-            ",top=" + offsetY + ", left=" + offsetX +
-            ",toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
+            'height=' +
+            this.INNER_WINDOW_HEIGHT +
+            ', width=' +
+            this.INNER_WINDOW_WIDTH +
+            ',top=' +
+            offsetY +
+            ', left=' +
+            offsetX +
+            ',toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no';
         if (newTab) {
             window.open(url, 'login');
         } else {
@@ -355,7 +383,6 @@ export class SecurityManager {
 }
 SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager.INNER_WINDOW_HEIGHT = 600;
-SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager.ONLINE = "https://www.supermapol.com";
+SecurityManager.SSO = 'https://sso.supermap.com';
+SecurityManager.ONLINE = 'https://www.supermapol.com';
 SuperMap.SecurityManager = SecurityManager;
-

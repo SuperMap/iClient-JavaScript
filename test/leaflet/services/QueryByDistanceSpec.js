@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('leaflet_QueryService_queryByDistance', () => {
@@ -42,7 +42,6 @@ describe('leaflet_QueryService_queryByDistance', () => {
 
             try {
                 expect(queryByDistanceService).not.toBeNull();
-                expect(queryByDistanceService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -100,7 +99,6 @@ describe('leaflet_QueryService_queryByDistance', () => {
 
             try {
                 expect(queryByDistanceService).not.toBeNull();
-                expect(queryByDistanceService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -138,7 +136,6 @@ describe('leaflet_QueryService_queryByDistance', () => {
             setTimeout(() => {
                 try {
                     expect(queryByDistanceService).not.toBeNull();
-                    expect(queryByDistanceService.options.serverType).toBe("iServer");
                     expect(serviceResult.type).toBe("processFailed");
                     expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                     expect(serviceResult.error).not.toBeNull();
@@ -172,7 +169,6 @@ describe('leaflet_QueryService_queryByDistance', () => {
                 serviceResult = result;
                 try {
                     expect(queryByDistanceService).not.toBeNull();
-                    expect(queryByDistanceService.options.serverType).toBe("iServer");
                     expect(serviceResult.type).toBe("processFailed");
                     expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                     expect(serviceResult.error).not.toBeNull();

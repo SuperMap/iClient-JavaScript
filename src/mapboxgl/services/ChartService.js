@@ -29,7 +29,6 @@ import {
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  */
 export class ChartService extends ServiceBase {
     constructor(url, options) {
@@ -52,7 +51,7 @@ export class ChartService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -70,14 +69,15 @@ export class ChartService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getChartFeatureInfo(callback) {
-        var me = this, url = me.url.concat();
+        var me = this,
+            url = me.url.concat();
         url = CommonUtil.urlPathAppend(url, 'chartFeatureInfoSpecs');
         var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -88,23 +88,17 @@ export class ChartService extends ServiceBase {
     }
 
     _processParams(params) {
-
         if (!params) {
             return {};
         }
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        params.returnContent = params.returnContent == null ? true : params.returnContent;
         if (params.filter) {
             params.chartQueryFilterParameters = Util.isArray(params.filter) ? params.filter : [params.filter];
         }
 
         if (params.bounds) {
             if (params.bounds instanceof Array) {
-                params.bounds = new Bounds(
-                    params.bounds[0],
-                    params.bounds[1],
-                    params.bounds[2],
-                    params.bounds[3]
-                );
+                params.bounds = new Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
             }
             if (params.bounds instanceof mapboxgl.LngLatBounds) {
                 params.bounds = new Bounds(
@@ -114,13 +108,11 @@ export class ChartService extends ServiceBase {
                     params.bounds.getNorthEast().lat
                 );
             }
-
         }
-
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 }
 

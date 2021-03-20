@@ -4,7 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('leaflet_FeatureService_getFeaturesBySQL', () => {
@@ -51,7 +51,6 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
-                expect(getFeaturesBySQLService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -112,7 +111,6 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, result => {
             serviceResult = result;
             try {
-                expect(getFeaturesBySQLService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -163,7 +161,6 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
-                expect(getFeaturesBySQLService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processFailed');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();
@@ -209,7 +206,6 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             serviceResult = result;
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
-                expect(getFeaturesBySQLService.options.serverType).toBe('iServer');
                 expect(serviceResult.type).toBe('processFailed');
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();

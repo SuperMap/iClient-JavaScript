@@ -4,7 +4,7 @@ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('mapboxgl_DatasourceService', () => {
     var serviceResult;

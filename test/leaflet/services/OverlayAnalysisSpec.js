@@ -6,7 +6,7 @@ import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_SpatialAnalystService_overlayAnalysis', () => {
     var serviceResult = null;

@@ -1,18 +1,18 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {DataFormat} from '@supermap/iclient-common/REST';
-import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
-import {KernelDensityJobsService} from '@supermap/iclient-common/iServer/KernelDensityJobsService';
-import {SingleObjectQueryJobsService} from '@supermap/iclient-common/iServer/SingleObjectQueryJobsService';
-import {SummaryMeshJobsService} from '@supermap/iclient-common/iServer/SummaryMeshJobsService';
-import {SummaryRegionJobsService} from '@supermap/iclient-common/iServer/SummaryRegionJobsService';
-import {VectorClipJobsService} from '@supermap/iclient-common/iServer/VectorClipJobsService';
-import {OverlayGeoJobsService} from '@supermap/iclient-common/iServer/OverlayGeoJobsService';
-import {BuffersAnalystJobsService} from '@supermap/iclient-common/iServer/BuffersAnalystJobsService';
-import {TopologyValidatorJobsService} from '@supermap/iclient-common/iServer/TopologyValidatorJobsService';
-import {SummaryAttributesJobsService} from '@supermap/iclient-common/iServer/SummaryAttributesJobsService';
+import { SuperMap } from '../SuperMap';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { CommonServiceBase } from '@supermap/iclient-common/iServer/CommonServiceBase';
+import { KernelDensityJobsService } from '@supermap/iclient-common/iServer/KernelDensityJobsService';
+import { SingleObjectQueryJobsService } from '@supermap/iclient-common/iServer/SingleObjectQueryJobsService';
+import { SummaryMeshJobsService } from '@supermap/iclient-common/iServer/SummaryMeshJobsService';
+import { SummaryRegionJobsService } from '@supermap/iclient-common/iServer/SummaryRegionJobsService';
+import { VectorClipJobsService } from '@supermap/iclient-common/iServer/VectorClipJobsService';
+import { OverlayGeoJobsService } from '@supermap/iclient-common/iServer/OverlayGeoJobsService';
+import { BuffersAnalystJobsService } from '@supermap/iclient-common/iServer/BuffersAnalystJobsService';
+import { TopologyValidatorJobsService } from '@supermap/iclient-common/iServer/TopologyValidatorJobsService';
+import { SummaryAttributesJobsService } from '@supermap/iclient-common/iServer/SummaryAttributesJobsService';
 
 /**
  * @class SuperMap.REST.ProcessingService
@@ -31,7 +31,6 @@ import {SummaryAttributesJobsService} from '@supermap/iclient-common/iServer/Sum
  * @param {Object} [options.headers] - 请求头。
  */
 export class ProcessingService extends CommonServiceBase {
-
     constructor(url, options) {
         super(url, options);
         this.kernelDensityJobs = {};
@@ -58,8 +57,7 @@ export class ProcessingService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -84,8 +82,7 @@ export class ProcessingService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -105,12 +102,13 @@ export class ProcessingService extends CommonServiceBase {
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this,
+            format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-            headers: me.headers,  
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -144,11 +142,10 @@ export class ProcessingService extends CommonServiceBase {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            headers: me.headers,  
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -170,11 +167,10 @@ export class ProcessingService extends CommonServiceBase {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            headers: me.headers,  
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -192,14 +188,15 @@ export class ProcessingService extends CommonServiceBase {
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
-*/
+     */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this,
+            format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -236,8 +233,7 @@ export class ProcessingService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -262,8 +258,8 @@ export class ProcessingService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -290,7 +286,7 @@ export class ProcessingService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -327,8 +323,8 @@ export class ProcessingService extends CommonServiceBase {
             proxy: me.proxy,
             headers: me.headers,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
-            serverType: me.serverType,
+            crossOrigin: me.crossOrigin,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -352,9 +348,8 @@ export class ProcessingService extends CommonServiceBase {
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -374,11 +369,12 @@ export class ProcessingService extends CommonServiceBase {
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this,
+            format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
             eventListeners: {
                 scope: me,
@@ -415,9 +411,8 @@ export class ProcessingService extends CommonServiceBase {
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -441,9 +436,8 @@ export class ProcessingService extends CommonServiceBase {
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -469,9 +463,8 @@ export class ProcessingService extends CommonServiceBase {
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -507,9 +500,8 @@ export class ProcessingService extends CommonServiceBase {
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -533,9 +525,8 @@ export class ProcessingService extends CommonServiceBase {
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -560,14 +551,13 @@ export class ProcessingService extends CommonServiceBase {
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.overlayGeoJobs[job.id] = job.state;
                 }
             },
@@ -598,9 +588,8 @@ export class ProcessingService extends CommonServiceBase {
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -624,9 +613,8 @@ export class ProcessingService extends CommonServiceBase {
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -651,14 +639,13 @@ export class ProcessingService extends CommonServiceBase {
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.buffersJobs[job.id] = job.state;
                 }
             },
@@ -689,9 +676,8 @@ export class ProcessingService extends CommonServiceBase {
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -715,9 +701,8 @@ export class ProcessingService extends CommonServiceBase {
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -742,14 +727,13 @@ export class ProcessingService extends CommonServiceBase {
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.topologyValidatorJobs[job.id] = job.state;
                 }
             },
@@ -780,9 +764,8 @@ export class ProcessingService extends CommonServiceBase {
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -806,9 +789,8 @@ export class ProcessingService extends CommonServiceBase {
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -833,14 +815,13 @@ export class ProcessingService extends CommonServiceBase {
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback,
-                processRunning: function (job) {
+                processRunning: function(job) {
                     me.summaryAttributesJobs[job.id] = job.state;
                 }
             },
@@ -860,7 +841,7 @@ export class ProcessingService extends CommonServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 
     _processParams(params) {
@@ -879,7 +860,7 @@ export class ProcessingService extends CommonServiceBase {
     _convertPatams(points) {
         var geometryParam = {};
         if (points.length < 1) {
-            geometryParam = "";
+            geometryParam = '';
         } else {
             var results = [];
             for (var i = 0; i < points.length; i++) {
@@ -888,12 +869,11 @@ export class ProcessingService extends CommonServiceBase {
                 point.y = points[i].y;
                 results.push(point);
             }
-            geometryParam.type = "REGION";
+            geometryParam.type = 'REGION';
             geometryParam.points = results;
         }
         return geometryParam;
     }
-
 }
 
 SuperMap.REST.ProcessingService = ProcessingService;

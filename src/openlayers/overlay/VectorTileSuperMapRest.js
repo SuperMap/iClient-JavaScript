@@ -2,17 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
-import {
-    Unit,
-    ServerType,
-    SecurityManager,
-    Credential,
-    CommonUtil,
-    Bounds,
-    Size,
-    FetchRequest,
-    GeometryPoint
-} from '@supermap/iclient-common';
+import { Unit, SecurityManager, CommonUtil, Bounds, Size, FetchRequest, GeometryPoint } from '@supermap/iclient-common';
 import { VectorTileStyles } from './vectortile/VectorTileStyles';
 import VectorTile from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
@@ -31,7 +21,6 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @extends {ol/source/VectorTile}
  */
@@ -79,9 +68,10 @@ export class VectorTileSuperMapRest extends VectorTile {
         this.vectorTileStyles = new VectorTileStyles();
         if (options.format instanceof MVT && options.style) {
             if (Object.prototype.toString.call(options.style) == '[object String]') {
-                FetchRequest.get(options.style, null, { withCredentials: options.withCredentials })
-                    .then((response) => response.json())
-                    .then((mbStyle) => {
+                var url = SecurityManager.appendCredential(options.style);
+                FetchRequest.get(url, null, { withCredentials: options.withCredentials })
+                    .then(response => response.json())
+                    .then(mbStyle => {
                         this._fillByStyleJSON(mbStyle, options.source);
                         this.setState('ready');
                     });
@@ -158,11 +148,11 @@ export class VectorTileSuperMapRest extends VectorTile {
                 return me._tileUrl
                     .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
-                    .replace(yRegEx, function () {
+                    .replace(yRegEx, function() {
                         var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
                         return y.toString();
                     })
-                    .replace(dashYRegEx, function () {
+                    .replace(dashYRegEx, function() {
                         var z = tileCoord[0];
                         var range = me.tileGrid.getFullTileRange(z);
                         var y = range.getHeight() + tileCoord[2];
@@ -183,18 +173,18 @@ export class VectorTileSuperMapRest extends VectorTile {
             var width = Number(tileUrl.match(regWidth)[2]);
             var height = Number(tileUrl.match(regHeight)[2]);
 
-            tile.setLoader(function (extent, resolution, projection) {
+            tile.setLoader(function(extent, resolution, projection) {
                 FetchRequest.get(tileUrl)
-                    .then(function (response) {
+                    .then(function(response) {
                         if (tile.getFormat() instanceof GeoJSON) {
                             return response.json();
                         }
                     })
-                    .then(function (tileFeatureJson) {
+                    .then(function(tileFeatureJson) {
                         var features = [];
                         if (tile.getFormat() instanceof GeoJSON) {
-                            tileFeatureJson.recordsets.map(function (recordset) {
-                                recordset.features.map(function (feature) {
+                            tileFeatureJson.recordsets.map(function(recordset) {
+                                recordset.features.map(function(feature) {
                                     var points = [];
                                     var startIndex = 0;
                                     for (var i = 0; i < feature.geometry.parts.length; i++) {
@@ -214,8 +204,8 @@ export class VectorTileSuperMapRest extends VectorTile {
                                 });
                                 return recordset;
                             });
-                            tileFeatureJson.recordsets.map(function (recordset) {
-                                recordset.features.map(function (feature) {
+                            tileFeatureJson.recordsets.map(function(recordset) {
+                                recordset.features.map(function(feature) {
                                     feature.layerName = recordset.layerName;
                                     feature.type = feature.geometry.type;
                                     features.push(feature);
@@ -257,7 +247,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             const format = tile.getFormat();
             const success = tile.onLoad.bind(tile);
             const failure = tile.onError.bind(tile);
-            tile.setLoader(function (extent, resolution, projection) {
+            tile.setLoader(function(extent, resolution, projection) {
                 const xhr = new XMLHttpRequest();
                 xhr.open(
                     'GET',
@@ -268,7 +258,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                     xhr.responseType = 'arraybuffer';
                 }
                 xhr.withCredentials = me.withCredentials;
-                xhr.onload = function () {
+                xhr.onload = function() {
                     if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
                         const type = format.getType();
                         let source = void 0;
@@ -307,7 +297,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                         failure.call(this);
                     }
                 }.bind(this);
-                xhr.onerror = function () {
+                xhr.onerror = function() {
                     failure.call(this);
                 }.bind(this);
                 xhr.send();
@@ -320,7 +310,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         }
         if (style.sources && style.sources[source]) {
             //ToDo 支持多个tiles地址
-            this._tileUrl = style.sources[source].tiles[0];
+            this._tileUrl = SecurityManager.appendCredential(style.sources[source].tiles[0]);
         }
         if (style.metadata && style.metadata.indexbounds) {
             const indexbounds = style.metadata.indexbounds;
@@ -342,37 +332,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             this._tileUrl = CommonUtil.urlPathAppend(options.url, 'tileFeature.mvt');
         }
         //为url添加安全认证信息片段
-        options.serverType = options.serverType || ServerType.ISERVER;
-        this._tileUrl = appendCredential(this._tileUrl, options.serverType);
-
-        function appendCredential(url, serverType) {
-            var newUrl = url,
-                credential,
-                value;
-            switch (serverType) {
-                case ServerType.IPORTAL:
-                    value = SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, 'token') : null;
-                    if (!credential) {
-                        value = SecurityManager.getKey(url);
-                        credential = value ? new Credential(value, 'key') : null;
-                    }
-                    break;
-                case ServerType.ONLINE:
-                    value = SecurityManager.getKey(url);
-                    credential = value ? new Credential(value, 'key') : null;
-                    break;
-                default:
-                    //iserver or others
-                    value = SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, 'token') : null;
-                    break;
-            }
-            if (credential) {
-                newUrl = CommonUtil.urlAppend(newUrl,credential.getUrlParameters());
-            }
-            return newUrl;
-        }
+        this._tileUrl = SecurityManager.appendCredential(this._tileUrl);
 
         var returnAttributes = true;
         if (options.returnAttributes !== undefined) {
@@ -401,7 +361,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         if (options.returnCutEdges !== undefined) {
             params['returnCutEdges'] = options.returnCutEdges;
         }
-        this._tileUrl = CommonUtil.urlAppend(this._tileUrl,CommonUtil.getParameterString(params));
+        this._tileUrl = CommonUtil.urlAppend(this._tileUrl, CommonUtil.getParameterString(params));
     }
 
     /**

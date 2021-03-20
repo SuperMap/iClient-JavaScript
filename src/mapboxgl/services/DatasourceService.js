@@ -3,11 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {ServiceBase} from './ServiceBase';
-import {DatasourceService as CommonDatasourceService} from '@supermap/iclient-common/iServer/DatasourceService';
-import {SetDatasourceParameters,
-        CommonUtil
-} from '@supermap/iclient-common';
+import { ServiceBase } from './ServiceBase';
+import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
+import { SetDatasourceParameters, CommonUtil } from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.DatasourceService
@@ -19,7 +17,6 @@ import {SetDatasourceParameters,
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 ISERVER|IPORTAL|ONLINE。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
 export class DatasourceService extends ServiceBase {
@@ -43,7 +40,7 @@ export class DatasourceService extends ServiceBase {
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -73,7 +70,7 @@ export class DatasourceService extends ServiceBase {
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
             headers: me.headers,
-            serverType: me.serverType,
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -83,7 +80,7 @@ export class DatasourceService extends ServiceBase {
         datasourceService.getDatasourceService(datasourceName);
     }
 
-   /**
+    /**
      * @function mapboxgl.supermap.DatasourceService.prototype.setDatasource
      * @description 数据源信息设置服务。可实现更改当前数据源信息。
      * @example
@@ -98,18 +95,17 @@ export class DatasourceService extends ServiceBase {
             return;
         }
         const datasourceParams = {
-            description: params.description ,
+            description: params.description,
             coordUnit: params.coordUnit,
             distanceUnit: params.distanceUnit
         };
         const me = this;
-        const url = CommonUtil.urlPathAppend(me.url,`datasources/name/${params.datasourceName}`);
+        const url = CommonUtil.urlPathAppend(me.url, `datasources/name/${params.datasourceName}`);
         const datasourceService = new CommonDatasourceService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback

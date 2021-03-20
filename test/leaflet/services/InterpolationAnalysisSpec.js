@@ -6,7 +6,7 @@ import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
     var serviceResult;

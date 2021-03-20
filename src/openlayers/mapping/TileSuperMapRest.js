@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Unit, ServerType, SecurityManager, Credential, CommonUtil, ServerGeometry } from '@supermap/iclient-common';
+import { Unit, SecurityManager, CommonUtil, ServerGeometry } from '@supermap/iclient-common';
 import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
 import Geometry from 'ol/geom/Geometry';
@@ -17,7 +17,6 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
- * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled = true] - 是否使用服务端的缓存。
@@ -42,7 +41,6 @@ export class TileSuperMapRest extends TileImage {
 
         options.format = options.format ? options.format : 'png';
 
-        options.serverType = options.serverType || ServerType.ISERVER;
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -72,35 +70,6 @@ export class TileSuperMapRest extends TileImage {
         this.dpi = this.options.dpi || 96;
         var me = this;
         var layerUrl = CommonUtil.urlPathAppend(options.url, 'tileImage.' + options.format);
-
-        function appendCredential(url, serverType) {
-            var newUrl = url,
-                credential,
-                value;
-            switch (serverType) {
-                case ServerType.IPORTAL:
-                    value = SecurityManager.getToken(me._url);
-                    credential = value ? new Credential(value, 'token') : null;
-                    if (!credential) {
-                        value = SecurityManager.getKey(me._url);
-                        credential = value ? new Credential(value, 'key') : null;
-                    }
-                    break;
-                case ServerType.ONLINE:
-                    value = SecurityManager.getKey(me._url);
-                    credential = value ? new Credential(value, 'key') : null;
-                    break;
-                default:
-                    //iserver or others
-                    value = SecurityManager.getToken(me._url);
-                    credential = value ? new Credential(value, 'token') : null;
-                    break;
-            }
-            if (credential) {
-                newUrl = CommonUtil.urlAppend(newUrl, credential.getUrlParameters());
-            }
-            return newUrl;
-        }
 
         /**
          * @function  ol.source.TileSuperMapRest.prototype.getAllRequestParams
@@ -181,7 +150,7 @@ export class TileSuperMapRest extends TileImage {
             this.requestParams = this.requestParams || getAllRequestParams.call(this);
             this._layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(this.requestParams));
             //为url添加安全认证信息片段
-            this._layerUrl = appendCredential(this._layerUrl, options.serverType);
+            this._layerUrl = SecurityManager.appendCredential(this._layerUrl);
             return this._layerUrl;
         }
 

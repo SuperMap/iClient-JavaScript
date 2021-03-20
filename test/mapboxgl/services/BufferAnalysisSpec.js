@@ -12,7 +12,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
     var serviceResult;

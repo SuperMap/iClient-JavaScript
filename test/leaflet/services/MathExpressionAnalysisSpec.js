@@ -5,7 +5,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
-    serverType: 'iServer'
+
 };
 
 describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
@@ -46,7 +46,6 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
             serviceResult = result;
             try {
                 expect(mathExpressionAnalystService).not.toBeNull();
-                expect(mathExpressionAnalystService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
