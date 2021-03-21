@@ -3,7 +3,7 @@
  *       @supermap/react-iclient.(https://iclient.supermap.io)
  *       Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v10.1.1
+ *       version: v10.1.2
  *      
  */
 @font-face {font-family: "sm-components-icons-";
@@ -387,7 +387,6 @@
   top: -10px;
   width: 11px;
   font-size: 14px;
-  -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out; }
   .sm-component-animate-marker__name-container > span {
     width: 80px;
@@ -439,38 +438,31 @@
   -webkit-animation: dots 4s linear infinite;
           animation: dots 4s linear infinite; }
   .sm-component-animate-marker__dots-01:before {
-    -webkit-transform: rotate(8deg);
-            transform: rotate(8deg); }
+    transform: rotate(8deg); }
   .sm-component-animate-marker__dots-01:after {
-    -webkit-transform: rotate(65deg);
-            transform: rotate(65deg); }
+    transform: rotate(65deg); }
 
 .sm-component-animate-marker__dots-02 {
   -webkit-animation: dots2 4s linear infinite;
           animation: dots2 4s linear infinite; }
   .sm-component-animate-marker__dots-02:before {
-    -webkit-transform: rotate(73deg);
-            transform: rotate(73deg); }
+    transform: rotate(73deg); }
   .sm-component-animate-marker__dots-02:after {
-    -webkit-transform: rotate(122deg);
-            transform: rotate(122deg); }
+    transform: rotate(122deg); }
 
 .sm-component-animate-marker__dots-03 {
   -webkit-animation: dots 4s linear infinite;
           animation: dots 4s linear infinite; }
   .sm-component-animate-marker__dots-03:before {
-    -webkit-transform: rotate(39deg);
-            transform: rotate(39deg); }
+    transform: rotate(39deg); }
   .sm-component-animate-marker__dots-03:after {
-    -webkit-transform: rotate(242deg);
-            transform: rotate(242deg); }
+    transform: rotate(242deg); }
 
 .sm-component-animate-marker__halo {
   position: absolute;
   left: var(--halo-left);
   top: var(--halo-left);
-  -webkit-transform: translate3d(-50%, -50%, 0);
-          transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
   border-radius: 100%;
   width: var(--halo-width);
   height: var(--halo-width);
@@ -581,99 +573,75 @@
 
 @-webkit-keyframes warn {
   0% {
-    -webkit-transform: scale(0);
     transform: scale(0);
     opacity: 1; }
   100% {
-    -webkit-transform: scale(1);
     transform: scale(1);
     opacity: 0; } }
 
 @keyframes warn {
   0% {
-    -webkit-transform: scale(0);
     transform: scale(0);
     opacity: 1; }
   100% {
-    -webkit-transform: scale(1);
     transform: scale(1);
     opacity: 0; } }
 
 @-webkit-keyframes dots {
   0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7); }
+    transform: rotate(0deg) scale(0.7, 0.7); }
   50% {
-    -webkit-transform: rotate(180deg) scale(1, 1);
-            transform: rotate(180deg) scale(1, 1); }
+    transform: rotate(180deg) scale(1, 1); }
   100% {
-    -webkit-transform: rotate(360deg) scale(0.7, 0.7);
-            transform: rotate(360deg) scale(0.7, 0.7); } }
+    transform: rotate(360deg) scale(0.7, 0.7); } }
 
 @keyframes dots {
   0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7); }
+    transform: rotate(0deg) scale(0.7, 0.7); }
   50% {
-    -webkit-transform: rotate(180deg) scale(1, 1);
-            transform: rotate(180deg) scale(1, 1); }
+    transform: rotate(180deg) scale(1, 1); }
   100% {
-    -webkit-transform: rotate(360deg) scale(0.7, 0.7);
-            transform: rotate(360deg) scale(0.7, 0.7); } }
+    transform: rotate(360deg) scale(0.7, 0.7); } }
 
 @-webkit-keyframes dots2 {
   0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7); }
+    transform: rotate(0deg) scale(0.7, 0.7); }
   50% {
-    -webkit-transform: rotate(-180deg) scale(1, 1);
-            transform: rotate(-180deg) scale(1, 1); }
+    transform: rotate(-180deg) scale(1, 1); }
   100% {
-    -webkit-transform: rotate(-360deg) scale(0.7, 0.7);
-            transform: rotate(-360deg) scale(0.7, 0.7); } }
+    transform: rotate(-360deg) scale(0.7, 0.7); } }
 
 @keyframes dots2 {
   0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7); }
+    transform: rotate(0deg) scale(0.7, 0.7); }
   50% {
-    -webkit-transform: rotate(-180deg) scale(1, 1);
-            transform: rotate(-180deg) scale(1, 1); }
+    transform: rotate(-180deg) scale(1, 1); }
   100% {
-    -webkit-transform: rotate(-360deg) scale(0.7, 0.7);
-            transform: rotate(-360deg) scale(0.7, 0.7); } }
+    transform: rotate(-360deg) scale(0.7, 0.7); } }
 
 @-webkit-keyframes halo {
   0% {
-    -webkit-transform: rotate(360deg) scaleX(1);
-            transform: rotate(360deg) scaleX(1); }
+    transform: rotate(360deg) scaleX(1); }
   100% {
-    -webkit-transform: rotate(0deg) scaleX(1.1);
-            transform: rotate(0deg) scaleX(1.1); } }
+    transform: rotate(0deg) scaleX(1.1); } }
 
 @keyframes halo {
   0% {
-    -webkit-transform: rotate(360deg) scaleX(1);
-            transform: rotate(360deg) scaleX(1); }
+    transform: rotate(360deg) scaleX(1); }
   100% {
-    -webkit-transform: rotate(0deg) scaleX(1.1);
-            transform: rotate(0deg) scaleX(1.1); } }
+    transform: rotate(0deg) scaleX(1.1); } }
 
 @-webkit-keyframes halo2 {
   0% {
-    -webkit-transform: rotate(360deg) scaleX(0.9);
-            transform: rotate(360deg) scaleX(0.9); }
+    transform: rotate(360deg) scaleX(0.9); }
   100% {
-    -webkit-transform: rotate(90deg) scaleX(1.1);
-            transform: rotate(90deg) scaleX(1.1); } }
+    transform: rotate(90deg) scaleX(1.1); } }
 
 @keyframes halo2 {
   0% {
-    -webkit-transform: rotate(360deg) scaleX(0.9);
-            transform: rotate(360deg) scaleX(0.9); }
+    transform: rotate(360deg) scaleX(0.9); }
   100% {
-    -webkit-transform: rotate(90deg) scaleX(1.1);
-            transform: rotate(90deg) scaleX(1.1); } }
+    transform: rotate(90deg) scaleX(1.1); } }
 
 @-webkit-keyframes clipMe1 {
   0%,
