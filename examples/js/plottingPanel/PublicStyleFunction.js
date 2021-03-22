@@ -1282,7 +1282,7 @@ function symbolPropertyObject(selectfeature,styleObject) {
             algoSymbolRows.push(objectLibID);
         }
         //四个点以上含4个点可以设置成折线显示
-        if (typeof selectfeature.isCanPolyLineConnectCode !== "undefined" && selectfeature.isCanPolyLineConnectCode()=== true ) {
+        if ((selectfeature.getLatLngs().length >3)&&(typeof selectfeature.canPolylineConnectLocationPoint !== "undefined" && selectfeature.canPolylineConnectLocationPoint()=== true )) {
             var algoLineType = new Object();
             algoLineType.group = groupNew[8];
             algoLineType.name = displayNameNew[20];
