@@ -179,7 +179,7 @@ var exampleConfig = {
             name_en: 'Fly To',
             version: '10.1.2',
             thumbnail: 'components_flyTo_vue.png',
-            fileName: 'components_flyTo_vue'
+            fileName: 'components_flyto_vue'
           },
           {
             name: '图层颜色',
