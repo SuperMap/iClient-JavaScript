@@ -70,7 +70,7 @@ function build(nav,navOrder,level){
 function buildLi(obj){
     ?>
      <li class="item" data-name="<?js= obj.longname ?>">
-            <span class="title">
+            <span class="title" title="<?js= obj.longname ?>">
                 <?js= self.linkto(obj.longname, obj.longname) ?>
             </span>
             <ul class="members itemMembers">

@@ -18,7 +18,7 @@
     },
     "source": {
         "includePattern": ".+\\.js?$",
-        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
+        "excludePattern": ".+[\\\\/]src[\\\\/]common[\\\\/]iServer[\\\\/].*Service.js?$",
         "include": [
             "src/common","src/leaflet"
         ],
