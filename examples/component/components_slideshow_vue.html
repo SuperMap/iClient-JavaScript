@@ -33,7 +33,7 @@
         <sm-web-map map-id='567946816' :map-options="mapOptions" server-url='https://www.supermapol.com'
             tianditu-key='1d109683f4d84198e37a38c442d68311' @load="mapLoaded">
         </sm-web-map>
-        <sm-slideshow :autoplay="autoplay" :pagination="pagination" @change="slideChange">
+        <sm-slideshow :collapsed="false" :autoplay="autoplay" :pagination="pagination" @change="slideChange">
             <sm-slideshow-item v-for="item of content" :key="item.title">
                 <h3 style="margin-top: 8px;">{{ item.title }}</h3>
                 <p style="padding: 8px;">{{ item.description }}</p>

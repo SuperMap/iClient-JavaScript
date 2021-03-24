@@ -3,7 +3,7 @@
  *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v10.1.2
+ *     version: v11.0.0-dev
  *    
  */
 @charset "UTF-8";
@@ -1174,7 +1174,6 @@ body.vjs-full-window {
 }
 
 .video-js .vjs-seek-to-live-control {
-  align-items: center;
   cursor: pointer;
   flex: none;
   display: inline-flex;
