@@ -11,6 +11,7 @@ import { BucketAggParameter } from './BucketAggParameter';
  * @category iServer Data FeatureResults
  * @param {Object} options - 初始化参数。
  * @param {number} [options.precision=5] - 精度。
+ * @extends {SuperMap.BucketAggParameter}
  */
 export class GeoHashGridAggParameter extends BucketAggParameter {
     constructor(options) {

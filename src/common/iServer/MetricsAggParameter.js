@@ -11,6 +11,7 @@ import { Util } from '../commontypes/Util';
  * @category iServer Data FeatureResults
  * @param {Object} options - 初始化参数。
  * @param {SuperMap.MetricsAggType} [options.aggType = 'avg'] - 聚合类型设置。
+ * @extends {SuperMap.AggregationParameter}
  */
 export class MetricsAggParameter extends AggregationParameter {
     constructor(option) {

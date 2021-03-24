@@ -11,7 +11,7 @@ import { AggregationParameter } from './AggregationParameter';
  * @category iServer Data FeatureResults
  * @param {Object} options - 初始化参数。
  * @param {Array.<SuperMap.MetricsAggParameter>} options.subAggs - 子聚合类集合。
- *
+ * @extends {SuperMap.AggregationParameter}
  */
 export class BucketAggParameter extends AggregationParameter {
     constructor(options) {
