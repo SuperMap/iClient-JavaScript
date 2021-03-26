@@ -130,9 +130,6 @@ describe('leaflet_ThemeService', () => {
             expression: 'SMAREA',
             baseValue: 3000000000000,
             graduatedMode: 'CONSTANT',
-            flow: new ThemeFlow({
-                flowEnabled: true
-            }),
             style: new ThemeGraduatedSymbolStyle({
                 positiveStyle: new ServerStyle({
                     markerSize: 50,

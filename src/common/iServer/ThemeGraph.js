@@ -21,7 +21,6 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @param {Object} options - 参数。
  * @param {Array.<SuperMap.ThemeGraphItem>} options.items - 统计专题图子项集合。
  * @param {number}  [options.barWidth=0] - 柱状专题图中每一个柱的宽度。
- * @param {SuperMap.ThemeFlow} [options.flow] - 统计专题图流动显示与牵引线设置。
  * @param {SuperMap.GraduatedMode} [options.graduatedMode=SuperMap.GraduatedMode.CONSTANT] - 统计图中地理要素的值与图表尺寸间的映射关系。
  * @param {SuperMap.ThemeGraphAxes} [options.graphAxes] - 统计图中坐标轴样式相关信息。
  * @param {SuperMap.ThemeGraphSize} [options.graphSize=0] - 统计符号的最大最小尺寸。
@@ -46,13 +45,6 @@ export class ThemeGraph extends Theme {
          *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
          */
         this.barWidth = 0;
-
-        /**
-         * @member {SuperMap.ThemeFlow} SuperMap.ThemeGraph.prototype.flow
-         * @description 统计专题图流动显示与牵引线设置。
-         *              通过该字段可以设置统计符号是否流动显示和牵引线风格。
-         */
-        this.flow = new ThemeFlow();
 
         /**
          * @member {SuperMap.GraduatedMode} [SuperMap.ThemeGraph.prototype.graduatedMode=SuperMap.GraduatedMode.CONSTANT]
@@ -237,10 +229,6 @@ export class ThemeGraph extends Theme {
         super.destroy();
         var me = this;
         me.barWidth = null;
-        if (me.flow) {
-            me.flow.destroy();
-            me.flow = null;
-        }
         me.graduatedMode = null;
         if (me.graphAxes) {
             me.graphAxes.destroy();
@@ -296,11 +284,6 @@ export class ThemeGraph extends Theme {
             obj.graphTextFormat = this.graphText.graphTextFormat;
             obj.graphTextStyle = this.graphText.graphTextStyle;
         }
-        if (this.flow) {
-            obj.flowEnabled = this.flow.flowEnabled;
-            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
-            obj.leaderLineStyle = this.flow.leaderLineStyle;
-        }
         if (this.graphAxes) {
             obj.axesColor = this.graphAxes.axesColor;
             obj.axesDisplayed = this.graphAxes.axesDisplayed;
@@ -343,7 +326,6 @@ export class ThemeGraph extends Theme {
         var len = itemsG ? itemsG.length : 0;
         Util.copy(res, obj);
         res.items = [];
-        res.flow = ThemeFlow.fromObj(obj);
         res.graphAxes = ThemeGraphAxes.fromObj(obj);
         res.graphSize = ThemeGraphSize.fromObj(obj);
         res.graphText = ThemeGraphText.fromObj(obj);

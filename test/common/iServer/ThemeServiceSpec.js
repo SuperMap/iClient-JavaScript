@@ -367,10 +367,6 @@ describe('ThemeService', () => {
         var themeGraph = new ThemeGraph({
                 barWidth: 2,
                 graphType: ThemeGraphType.PIE,
-                flow: new ThemeFlow({
-                    flowEnabled: false,
-                    leaderLineDisplayed: false
-                }),
                 graphAxes: new ThemeGraphAxes({
                     axesTextDisplayed: false
                 }),
@@ -1347,9 +1343,6 @@ describe('ThemeService', () => {
         var themeGradSym = new ThemeGraduatedSymbol({
             baseValue: 5,
             expression: "POP_1994",
-            flow: new ThemeFlow({
-                flowEnabled: false
-            }),
             graduatedMode: GraduatedMode.LOGARITHM,
             offset: myOffset,
             style: myStyle

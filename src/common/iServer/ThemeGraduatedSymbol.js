@@ -18,7 +18,6 @@ import {GraduatedMode} from '../REST';
  * @param {SuperMap.ThemeGraduatedSymbolStyle} options.style - 用于设置等级符号图正负和零值显示风格。
  * @param {string} options.expression - 等级符号专题图的字段或字段表达式。
  * @param {number} [options.baseValue=0] - 等级符号专题图的基准值，单位同专题变量的单位。
- * @param {SuperMap.ThemeFlow} [options.flow] - 等级符号专题图符号流动显示与牵引线设置类。
  * @param {SuperMap.GraduatedMode} [options.graduatedMode=SuperMap.GraduatedMode.CONSTANT] - 等级符号专题图分级模式。
  * @param {SuperMap.ThemeOffset} [options.offset] - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
  * @param {SuperMap.ThemeMemoryData} [options.memoryData] - 专题图内存数据。
@@ -41,13 +40,6 @@ export class ThemeGraduatedSymbol extends Theme {
          * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。
          */
         this.expression = null;
-
-        /**
-         * @member {SuperMap.ThemeFlow} SuperMap.ThemeGraduatedSymbol.prototype.flow
-         * @description 等级符号专题图符号流动显示与牵引线设置类。<br>
-         *              通过该字段可以设置等级符号是否流动显示和牵引线风格。
-         */
-        this.flow = new ThemeFlow();
 
         /**
          * @member {SuperMap.GraduatedMode} [SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode=SuperMap.GraduatedMode.CONSTANT]
@@ -87,10 +79,6 @@ export class ThemeGraduatedSymbol extends Theme {
         super.destroy();
         var me = this;
         me.expression = null;
-        if (me.flow) {
-            me.flow.destroy();
-            me.flow = null;
-        }
         me.graduatedMode = GraduatedMode.CONSTANT;
         if (me.offset) {
             me.offset.destroy();
@@ -125,11 +113,6 @@ export class ThemeGraduatedSymbol extends Theme {
         obj.baseValue = this.baseValue;
         obj.expression = this.expression;
         obj.graduatedMode = this.graduatedMode;
-        if (this.flow) {
-            obj.flowEnabled = this.flow.flowEnabled;
-            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
-            obj.leaderLineStyle = this.flow.leaderLineStyle;
-        }
         if (this.offset) {
             obj.offsetFixed = this.offset.offsetFixed;
             obj.offsetX = this.offset.offsetX;
@@ -157,7 +140,6 @@ export class ThemeGraduatedSymbol extends Theme {
         }
         var res = new SuperMap.ThemeGraduatedSymbol();
         Util.copy(res, obj);
-        res.flow = ThemeFlow.fromObj(obj);
         res.offset = ThemeOffset.fromObj(obj);
         res.style = ThemeGraduatedSymbolStyle.fromObj(obj);
         return res;

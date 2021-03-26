@@ -93,9 +93,6 @@ describe('mapboxgl_ThemeService', () => {
             expression: "SMAREA",
             baseValue: 300,
             graduatedMode: GraduatedMode.CONSTANT,
-            flow: new ThemeFlow({
-                flowEnabled: true
-            }),
             style: new ThemeGraduatedSymbolStyle({
                 positiveStyle: new ServerStyle({
                     markerSize: 50,

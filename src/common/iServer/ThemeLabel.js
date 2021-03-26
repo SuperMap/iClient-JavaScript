@@ -24,7 +24,6 @@ import {LabelOverLengthMode} from '../REST';
  * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {SuperMap.ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
  * @param {SuperMap.ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
- * @param {SuperMap.ThemeFlow} [options.flow] - 标签专题图标签流动显示与牵引线设置类。
  * @param {SuperMap.LabelOverLengthMode} [options.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
  * @param {number} [options.maxLabelLength=256] - 标签在每一行显示的最大长度。
  * @param {number} [options.numericPrecision=0] - 通过该字段设置其显示的精度。
@@ -53,12 +52,6 @@ export class ThemeLabel extends Theme {
          * @description 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
          */
         this.background = new ThemeLabelBackground();
-
-        /**
-         * @member {SuperMap.ThemeFlow} [SuperMap.ThemeLabel.prototype.flow]
-         * @description 标签专题图标签流动显示与牵引线设置类。通过该字段可以设置标签是否流动显示和牵引线风格。
-         */
-        this.flow = new ThemeFlow();
 
         /**
          * @member {Array.<SuperMap.ThemeUniqueItem>} [SuperMap.ThemeLabel.prototype.items]
@@ -174,7 +167,6 @@ export class ThemeLabel extends Theme {
             me.background.destroy();
             me.background = null;
         }
-        me.flow = null;
         if (me.items) {
             for (var i = 0, items = me.items, len = items.length; i < len; i++) {
                 items[i].destroy();
@@ -240,12 +232,6 @@ export class ThemeLabel extends Theme {
             obj.offsetX = this.offset.offsetX;
             obj.offsetY = this.offset.offsetY;
         }
-
-        if (this.flow) {
-            obj.flowEnabled = this.flow.flowEnabled;
-            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
-            obj.leaderLineStyle = this.flow.leaderLineStyle;
-        }
         if (this.text) {
             obj.maxTextHeight = this.text.maxTextHeight;
             obj.maxTextWidth = this.text.maxTextWidth;
@@ -289,11 +275,6 @@ export class ThemeLabel extends Theme {
         Util.copy(lab, obj);
         lab.alongLine = ThemeLabelAlongLine.fromObj(obj);
         lab.background = ThemeLabelBackground.fromObj(obj);
-        lab.flow = new ThemeFlow({
-            flowEnabled: obj.flowEnabled,
-            leaderLineDisplayed: obj.leaderLineDisplayed,
-            leaderLineStyle: obj.leaderLineStyle
-        });
         if (itemsL) {
             lab.items = [];
             for (var i = 0, len = itemsL.length; i < len; i++) {
