@@ -89,6 +89,32 @@ describe('FetchRequest', () => {
             timeout: 45000
         });
     });
+    it('formdata', () => {
+        var url = 'http://test.supermap.io';
+        var data = new FormData();
+        FetchRequest.post(url, new FormData(), { withCredentials: 'depends' });
+        expect(fetch).toHaveBeenCalledWith('http://test.supermap.io.json', {
+            method: 'POST',
+            body: data,
+            headers: { },
+            credentials: 'same-origin',
+            mode: 'cors',
+            timeout: 45000
+        });
+    });
+    it('formdata_includeContentType', () => {
+        var url = 'http://test.supermap.io';
+        var data = new FormData();
+        FetchRequest.post(url, new FormData(), { withCredentials: 'depends', headers: { 'Content-Type': 'aaaaa' } });
+        expect(fetch).toHaveBeenCalledWith('http://test.supermap.io.json', {
+            method: 'POST',
+            body: data,
+            headers: { 'Content-Type': 'aaaaa' },
+            credentials: 'same-origin',
+            mode: 'cors',
+            timeout: 45000
+        });
+    });
     afterAll(() => {
         SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
         setCORS(defaltCors);

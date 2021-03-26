@@ -191,7 +191,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
     _fetch: function (url, params, options, type) {
         options = options || {};
         options.headers = options.headers || {};
-        if (!options.headers['Content-Type']) {
+        if (!options.headers['Content-Type'] && !FormData.prototype.isPrototypeOf(params)) {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         }
         if (options.timeout) {
