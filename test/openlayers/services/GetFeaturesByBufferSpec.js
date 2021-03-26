@@ -4,9 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = 'http://supermap:8090/iserver/services/data-world/rest/data';
-var options = {
-
-};
+var options = {};
 describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
     var serviceResult = null;
     var originalTimeout;
@@ -119,70 +117,6 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.targetPrj.epsgCode).toEqual(4326);
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
-        });
-        getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, result => {
-            serviceResult = result;
-            bufferParam.destroy();
-            done();
-        });
-    });
-    it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
-        var polygon = new Polygon([
-            [
-                [-20, 20],
-                [-20, -20],
-                [20, -20],
-                [20, 20],
-                [-20, 20]
-            ]
-        ]);
-        var bufferParam = new GetFeaturesByBufferParameters({
-            datasetNames: ['World:Capitals'],
-            bufferDistance: 10,
-            geometry: polygon,
-            targetPrj: { epsgCode: 4326 },
-            aggregations: aggregations
-        });
-        var getFeaturesByBuffeService = new FeatureService(featureServiceURL, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
-            expect(paramsObj.aggregations.aggName).toEqual('test');
-            expect(paramsObj.aggregations.aggFieldName).toEqual('SMID');
-            expect(paramsObj.aggregations.aggType).toEqual('avg');
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
-        });
-        getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, result => {
-            serviceResult = result;
-            bufferParam.destroy();
-            done();
-        });
-    });
-    it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
-        var polygon = new Polygon([
-            [
-                [-20, 20],
-                [-20, -20],
-                [20, -20],
-                [20, 20],
-                [-20, 20]
-            ]
-        ]);
-        var bufferParam = new GetFeaturesByBufferParameters({
-            datasetNames: ['World:Capitals'],
-            bufferDistance: 10,
-            geometry: polygon,
-            targetPrj: { epsgCode: 4326 },
-            aggregations: aggregations
-        });
-        var getFeaturesByBuffeService = new FeatureService(featureServiceURL, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
-            expect(paramsObj.aggregations.aggName).toEqual('test');
-            expect(paramsObj.aggregations.aggFieldName).toEqual('SMID');
-            expect(paramsObj.aggregations.aggType).toEqual('geohash_grid');
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, result => {
