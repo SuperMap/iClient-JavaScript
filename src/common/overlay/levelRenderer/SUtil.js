@@ -27,7 +27,7 @@ export class SUtil {
      * @return {Array} 生成的平滑节点数组。
      */
     static SUtil_smoothBezier(points, smooth, isLoop, constraint, originalPosition) {
-        if (!originalPosition || originalPosition !== 2) {
+        if (!originalPosition || originalPosition.length !== 2) {
             originalPosition = [0, 0];
         }
         var __OP = originalPosition;
@@ -117,7 +117,7 @@ export class SUtil {
      * @return {Array} 生成的平滑节点数组。
      */
     static SUtil_smoothSpline(points, isLoop, constraint, originalPosition) {
-        if (!originalPosition || originalPosition !== 2) {
+        if (!originalPosition || originalPosition.length !== 2) {
             originalPosition = [0, 0];
         }
         var __OP = originalPosition;

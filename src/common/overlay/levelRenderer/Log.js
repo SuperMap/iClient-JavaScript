@@ -21,7 +21,7 @@ export class Log {
         return function () {
             if (Config.debugMode === 0) {
                 return;
-            } else if (Config.debugMode == 1) {
+            } else if (Config.debugMode === 1) {
                 for (let k in arguments) {
                     throw new Error(arguments[k]);
                 }

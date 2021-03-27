@@ -547,17 +547,15 @@ export class Graphic extends ImageCanvasSource {
     getGraphicsInExtent(extent) {
         var graphics = [];
         if (!extent) {
-            this.graphics.map(function(graphic) {
+            this.graphics.forEach(graphic => {
                 graphics.push(graphic);
-                return graphic;
             });
             return graphics;
         }
-        this.graphics.map(function(graphic) {
+        this.graphics.forEach(graphic => {
             if (olExtent.containsExtent(extent, graphic.getGeometry().getExtent())) {
                 graphics.push(graphic);
             }
-            return graphic;
         });
         return graphics;
     }

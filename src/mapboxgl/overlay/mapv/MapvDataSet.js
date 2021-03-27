@@ -27,14 +27,13 @@ export var MapvDataSet = {
     getPoints: function (points) {
         if (points && (points instanceof Array)) {
             var mPoints = [];
-            points.map(function (data) {
+            points.forEach(data => {
                 mPoints.push({
                     geometry: {
                         type: 'Point',
                         coordinates: data.geometry.coordinates
                     }
                 });
-                return data;
             });
             return new DataSet(mPoints);
         }
@@ -46,7 +45,7 @@ export var MapvDataSet = {
     getCurveLines: function (startPoint, LinePoints) {
         if (startPoint && (startPoint instanceof Array) && LinePoints && (LinePoints instanceof Array)) {
             var lineData = [];
-            LinePoints.map(function (data) {
+            LinePoints.forEach(data => {
                 var coords = data.geometry && data.geometry.coordinates;
                 var toCenter = {lng: coords[0], lat: coords[1]};
                 var fromCenter = {lng: startPoint[0], lat: startPoint[1]};
@@ -57,7 +56,6 @@ export var MapvDataSet = {
                         coordinates: cv
                     }
                 });
-                return data;
             });
             return new DataSet(lineData);
         }
@@ -69,7 +67,7 @@ export var MapvDataSet = {
     getCurveDynamicPoints: function (center, endPoints) {
         if (center && (center instanceof Array) && endPoints && (endPoints instanceof Array)) {
             var timeData = [];
-            endPoints.map(function (data) {
+            endPoints.forEach(data => {
                 var coords = data.geometry && data.geometry.coordinates;
                 var toCenter = {lng: coords[0], lat: coords[1]};
                 var fromCenter = {lng: center[0], lat: center[1]};
@@ -83,7 +81,6 @@ export var MapvDataSet = {
                         time: j
                     });
                 }
-                return data
             });
             return new DataSet(timeData);
         }

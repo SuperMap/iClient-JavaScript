@@ -4615,7 +4615,6 @@ SuperMap.CartoCSS.Tree.Zoom = class Zoom {
                 this.zoom = "zoom && zoom <= " + value;
                 break;
             default:
-                return this;
                 break;
         }
         /*

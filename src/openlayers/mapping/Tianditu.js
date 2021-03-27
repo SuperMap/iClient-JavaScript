@@ -93,7 +93,7 @@ export class Tianditu extends WMTS {
   /**
    * @function ol.source.Tianditu.getTileGrid
    * @description 获取瓦片网格。
-   * @param {Object} projection - 投影参考对象。
+   * @param {string} projection - 投影参考对象。
    * @returns {ol/tilegrid/WMTS} 返回瓦片网格对象
    */
   static getTileGrid(projection) {
