@@ -102,7 +102,9 @@
             getFillColor: function(d) {
               return [d.population / d.area / 60, 140, 0];
             },
-            getLineColor: [80, 80, 80],
+            getLineColor: function() {
+              return [80, 80, 80]
+            },
             getLineWidth: 1
           }
         });
