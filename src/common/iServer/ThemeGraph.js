@@ -4,7 +4,6 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {Theme} from './Theme';
-import {ThemeFlow} from './ThemeFlow';
 import {ThemeOffset} from './ThemeOffset';
 import {ThemeGraphAxes} from './ThemeGraphAxes';
 import {ThemeGraphSize} from './ThemeGraphSize';

@@ -1,3 +1,97 @@
+# 10.1.2 #
+
+## 新特性
+
+### 新增指南针、绘制、飞行定位、幻灯片、坐标转换、图层颜色、属性表组件
+![1012-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/whatsNew1012_1.gif)
+
+## API changes
+
+### for leaflet
+
+- `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增  `options.aggregations` 参数，支持传入聚合查询参数
+
+### for OpenLayers
+
+- `ol.supermap.WebMap`
+
+  - `options` 新增 `googleMapsAPIKey` 参数，支持传入google map api的key
+
+  - 谷歌底图的标注根据cookie中的语言或者是浏览器语言显示
+
+- `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增  `options.aggregations` 参数，支持传入聚合查询参数
+  
+### for MapboxGL
+
+- `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增  `options.aggregations` 参数，支持传入聚合查询参数
+
+### Classic
+
+- `SuperMap.GetFeaturesBySQLParameters` `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增  `options.aggregations` 参数，支持传入聚合查询参数
+
+- `SuperMap.Control.TiledVectorLayerEditor` 新增 `mode` 参数，支持设置矢量地图编辑器图层列表显示模式
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 新增图层颜色(sm-layer-color) 组件
+
+  - 新增坐标转换(sm-coordinate-conversion)组件
+
+  - 新增指南针(sm-compass)组件
+  
+  - 新增时间轴(sm-time-line) (sm-time-range) (sm-time-slider) 组件
+  
+  - 新增属性表(sm-attributes)组件
+  
+  - 新增飞行定位(sm-fly-to)组件
+
+  - 新增幻灯片(sm-slideshow)组件
+
+
+
+## Fixed
+
+### for OpenLayers
+
+- `ol.supermap.WebMap`
+
+  - 修复谷歌地图地址不正确导致不出图的问题
+
+  - 修复加载WMS 1.1.1服务出图错乱的问题
+
+## Examples
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 地图子组件
+
+    - 新增图层颜色组件示例
+
+    - 新增属性表组件示例
+
+    - 新增指南针组件示例
+
+    - 新增飞行定位组件示例
+
+    - 新增绘制组件示例
+
+    - 新增坐标转换组件示例
+
+  - 基础
+
+    - 新增时间轴组件示例
+
+    - 新增“超图大厦历史影像”示例
+
+    - 新增“气象卫星云图”示例
+
+    - 新增幻灯片组件示例
+
+
 # 10.1.1 #
 
 ## 新特性

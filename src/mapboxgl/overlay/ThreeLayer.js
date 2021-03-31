@@ -16,7 +16,7 @@ const {
     Vector3,
     Shape,
     Mesh,
-    BufferGeometry,
+    // BufferGeometry,
     ExtrudeGeometry
 } = THREE;
 

@@ -3,7 +3,7 @@
  *     @supermap/vue-iclient.(https://iclient.supermap.io)
  *     Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v11.0.0-dev
+ *     version: v10.1.2
  *    
  */
 @charset "UTF-8";
@@ -1174,6 +1174,7 @@ body.vjs-full-window {
 }
 
 .video-js .vjs-seek-to-live-control {
+  align-items: center;
   cursor: pointer;
   flex: none;
   display: inline-flex;
@@ -3448,7 +3449,6 @@ html {
   background-color: var(--disabled-bg-color);
   cursor: not-allowed;
   opacity: 1;
-  background-color: transparent;
 }
 .sm-component-select-auto-complete.sm-component-select .sm-component-input[disabled]:hover {
   border-color: var(--border-color-base);
@@ -4808,7 +4808,7 @@ html {
 }
 .sm-component-btn-group {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
 }
 .sm-component-btn-group > .sm-component-btn,
 .sm-component-btn-group > span > .sm-component-btn {
@@ -6606,136 +6606,6 @@ a.sm-component-btn-sm {
 .sm-component-collapse .sm-component-collapse-item-disabled > .sm-component-collapse-header > .arrow {
   color: var(--disabled-text-color);
   cursor: not-allowed;
-}
-.sm-component-color-picker {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 14px;
-  font-variant: tabular-nums;
-  line-height: 1.5;
-  list-style: none;
-  font-feature-settings: 'tnum';
-  position: relative;
-  display: inline-block;
-  outline: none;
-  cursor: pointer;
-  transition: opacity 0.3s;
-  min-width: 55px;
-}
-.sm-component-color-picker .pickr {
-  display: inline-block;
-}
-.sm-component-color-picker .pickr .pcr-button {
-  width: 18px;
-  height: 18px;
-  margin-left: 7px;
-}
-.sm-component-color-picker .pickr .pcr-button:focus {
-  box-shadow: none;
-}
-.sm-component-color-picker.sm-component-color-picker-disabled {
-  cursor: not-allowed;
-}
-.sm-component-color-picker.sm-component-color-picker-disabled .sm-component-color-picker-selection {
-  background: var(--disabled-bg-color);
-  box-shadow: none;
-  border: 1px solid var(--border-color-base);
-}
-.sm-component-color-picker.sm-component-color-picker-disabled .sm-component-color-picker-selection:hover,
-.sm-component-color-picker.sm-component-color-picker-disabled .sm-component-color-picker-selection:focus,
-.sm-component-color-picker.sm-component-color-picker-disabled .sm-component-color-picker-selection:active {
-  border: 1px solid var(--border-color-base);
-  box-shadow: none;
-}
-.sm-component-color-picker.sm-component-color-picker-disabled.sm-component-color-picker-open .sm-component-color-picker-icon svg {
-  transform: none;
-}
-.sm-component-color-picker-open .sm-component-color-picker-icon svg {
-  transform: rotate(180deg);
-}
-.sm-component-color-picker-open .sm-component-color-picker-selection {
-  border-color: #40a9ff;
-  border-right-width: 1px !important;
-  outline: 0;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-}
-.sm-component-color-picker-selection {
-  display: block;
-  box-sizing: border-box;
-  background-color: var(--component-background);
-  border: 1px solid var(--border-color-base);
-  border-top-width: 1.02px;
-  border-radius: 4px;
-  outline: none;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  user-select: none;
-  position: relative;
-  height: 32px;
-  cursor: inherit;
-}
-.sm-component-color-picker-selection:hover {
-  border-color: var(--primary-5);
-  border-right-width: 1px !important;
-}
-.sm-component-color-picker-icon {
-  display: inline-block;
-  color: inherit;
-  font-style: normal;
-  line-height: 0;
-  text-align: center;
-  text-transform: none;
-  vertical-align: -0.125em;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  margin-top: -6px;
-  color: var(--disabled-text-color);
-  font-size: 12px;
-  line-height: 1;
-  transform-origin: 50% 50%;
-}
-.sm-component-color-picker-icon > * {
-  line-height: 1;
-}
-.sm-component-color-picker-icon svg {
-  display: inline-block;
-}
-.sm-component-color-picker-icon::before {
-  display: none;
-}
-.sm-component-color-picker-icon .sm-component-color-picker-icon-icon {
-  display: block;
-}
-.sm-component-color-picker-icon svg {
-  transition: transform 0.3s;
-}
-.sm-component-color-picker-lg {
-  font-size: 16px;
-}
-.sm-component-color-picker-lg .sm-component-color-picker-selection {
-  line-height: 28px;
-  height: 40px;
-}
-.sm-component-color-picker-lg .sm-component-color-picker-icon {
-  top: 20px;
-}
-.sm-component-color-picker-sm .sm-component-color-picker-selection {
-  line-height: 12px;
-  height: 24px;
-}
-.sm-component-color-picker-sm .pickr .pcr-button {
-  width: 14px;
-  height: 14px;
-}
-.sm-component-color-picker-sm .sm-component-color-picker-icon {
-  right: 10px;
-  top: 12px;
-  font-size: 10px;
 }
 .sm-component-comment {
   position: relative;
@@ -17056,9 +16926,6 @@ textarea.sm-component-mentions {
   }
 }
 .sm-component-modal-confirm .sm-component-modal-header {
-  display: none;
-}
-.sm-component-modal-confirm .sm-component-modal-close {
   display: none;
 }
 .sm-component-modal-confirm .sm-component-modal-body {

@@ -3,7 +3,7 @@
  *          iclient-classic.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.1
+ *          version: v10.1.2
  *
  */
 /******/ (function() { // webpackBootstrap
@@ -625,6 +625,54 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         return constructor.reject(reason);
       });
     });
+  }
+
+  function allSettled(arr) {
+    var P = this;
+    return new P(function (resolve, reject) {
+      if (!(arr && typeof arr.length !== 'undefined')) {
+        return reject(new TypeError(_typeof(arr) + ' ' + arr + ' is not iterable(cannot read property Symbol(Symbol.iterator))'));
+      }
+
+      var args = Array.prototype.slice.call(arr);
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
+          var then = val.then;
+
+          if (typeof then === 'function') {
+            then.call(val, function (val) {
+              res(i, val);
+            }, function (e) {
+              args[i] = {
+                status: 'rejected',
+                reason: e
+              };
+
+              if (--remaining === 0) {
+                resolve(args);
+              }
+            });
+            return;
+          }
+        }
+
+        args[i] = {
+          status: 'fulfilled',
+          value: val
+        };
+
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
   } // Store setTimeout reference so promise-polyfill will be unaffected by
   // other code modifying setTimeout (like sinon.useFakeTimers())
 
@@ -839,6 +887,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     });
   };
 
+  Promise.allSettled = allSettled;
+
   Promise.resolve = function (value) {
     if (value && _typeof(value) === 'object' && value.constructor === Promise) {
       return value;
@@ -901,12 +951,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     }
 
     throw new Error('unable to locate global object');
-  }();
+  }(); // Expose the polyfill if Promise is undefined or set to a
+  // non-function value. The latter can be due to a named HTMLElement
+  // being exposed by browsers for legacy reasons.
+  // https://github.com/taylorhakes/promise-polyfill/issues/114
 
-  if (!('Promise' in globalNS)) {
+
+  if (typeof globalNS['Promise'] !== 'function') {
     globalNS['Promise'] = Promise;
   } else if (!globalNS.Promise.prototype['finally']) {
     globalNS.Promise.prototype['finally'] = finallyConstructor;
+  } else if (!globalNS.Promise.allSettled) {
+    globalNS.Promise.allSettled = allSettled;
   }
 });
 
@@ -983,7 +1039,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
 !function() {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter
+// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
@@ -4798,7 +4854,7 @@ var FetchRequest = SuperMap.FetchRequest = {
     options = options || {};
     options.headers = options.headers || {};
 
-    if (!options.headers['Content-Type']) {
+    if (!options.headers['Content-Type'] && !FormData.prototype.isPrototypeOf(params)) {
       options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
     }
 
@@ -5049,6 +5105,114 @@ SuperMap.Util.RequestJSONPPromise = {
     return me.issue(config);
   }
 };
+// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
+function Credential_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Credential_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Credential_createClass(Constructor, protoProps, staticProps) { if (protoProps) Credential_defineProperties(Constructor.prototype, protoProps); if (staticProps) Credential_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+/**
+ * @class SuperMap.Credential
+ * @category Security
+ * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。</br>
+ * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。</br>
+ * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。</br>
+ * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。</br>
+ * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
+ * @param {string} [name='token'] - 验证信息前缀，name=value 部分的 name 部分。
+ * @example
+ * var pixcel = new SuperMap.Credential("valueString","token");
+ * pixcel.destroy();
+ */
+
+var Credential = /*#__PURE__*/function () {
+  function Credential(value, name) {
+    Credential_classCallCheck(this, Credential);
+
+    /**
+     * @member {string} SuperMap.Bounds.prototype.value
+     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+     */
+    this.value = value ? value : "";
+    /**
+     * @member {string} [SuperMap.Bounds.prototype.name='token']
+     * @description 验证信息前缀，name=value 部分的 name 部分。
+     */
+
+    this.name = name ? name : "token";
+    this.CLASS_NAME = "SuperMap.Credential";
+  }
+  /**
+   * @function SuperMap.Credential.prototype.getUrlParameters
+   * @example
+   * var credential = new SuperMap.Credential("valueString","token");
+   * //这里 str = "token=valueString";
+   * var str = credential.getUrlParameters();
+   * @returns {string} 返回安全信息组成的 url 片段。
+   */
+
+
+  Credential_createClass(Credential, [{
+    key: "getUrlParameters",
+    value: function getUrlParameters() {
+      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+      return this.name + "=" + this.value;
+    }
+    /**
+     * @function SuperMap.Bounds.prototype.getValue
+     * @description 获取 value。
+     * @example
+     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+     * var str = credential.getValue();
+     * @returns {string} 返回 value 字符串，在 iServer 服务下该 value 值即为 token 值。
+     */
+
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this.value;
+    }
+    /**
+     *
+     * @function SuperMap.Credential.prototype.destroy
+     * @description 销毁此对象。销毁后此对象的所有属性为 null，而不是初始值。
+     * @example
+     * var credential = new SuperMap.Credential("valueString","token");
+     * credential.destroy();
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.value = null;
+      this.name = null;
+    }
+  }]);
+
+  return Credential;
+}();
+/**
+ * @member {SuperMap.Credential} SuperMap.Credential.CREDENTIAL
+ * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
+ * @constant
+ * @example
+ * 代码实例:
+ *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
+ *  var value = "(以iServer为例，这里是申请的token值)";
+ *  var name = "token";
+ *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
+ *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
+ *
+ */
+
+Credential.CREDENTIAL = null;
+SuperMap.Credential = Credential;
 // CONCATENATED MODULE: ./src/common/security/SecurityManager.js
 function SecurityManager_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5059,6 +5223,7 @@ function SecurityManager_createClass(Constructor, protoProps, staticProps) { if 
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -5256,7 +5421,7 @@ var SecurityManager = /*#__PURE__*/function () {
         },
         withoutFormatSuffix: true
       };
-      return FetchRequest.get(url, "", requestOptions).then(function () {
+      return FetchRequest.get(url, '', requestOptions).then(function () {
         return true;
       })["catch"](function () {
         return false;
@@ -5272,7 +5437,7 @@ var SecurityManager = /*#__PURE__*/function () {
   }, {
     key: "loginOnline",
     value: function loginOnline(callbackLocation, newTab) {
-      var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+      var loginUrl = SecurityManager.SSO + '/login?service=' + callbackLocation;
 
       this._open(loginUrl, newTab);
     }
@@ -5322,7 +5487,7 @@ var SecurityManager = /*#__PURE__*/function () {
         withCredentials: true,
         withoutFormatSuffix: true
       };
-      return FetchRequest.get(url, "", requestOptions).then(function () {
+      return FetchRequest.get(url, '', requestOptions).then(function () {
         return true;
       })["catch"](function () {
         return false;
@@ -5360,7 +5525,7 @@ var SecurityManager = /*#__PURE__*/function () {
       loginInfo = JSON.stringify(loginInfo);
       var requestOptions = {
         headers: {
-          'Accept': '*/*',
+          Accept: '*/*',
           'Content-Type': 'application/json'
         }
       };
@@ -5425,13 +5590,39 @@ var SecurityManager = /*#__PURE__*/function () {
         delete this.keys[key];
       }
     }
+    /**
+     * @description 服务URL追加授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
+     * @version 10.1.2
+     * @function SuperMap.SecurityManager.appendCredential
+     * @param {string} url - 服务URL
+     * @returns {string} - 返回绑定了token或者key的服务URL
+     */
+
+  }, {
+    key: "appendCredential",
+    value: function appendCredential(url) {
+      var newUrl = url;
+      var value = this.getToken(url);
+      var credential = value ? new Credential(value, 'token') : null;
+
+      if (!credential) {
+        value = this.getKey(url);
+        credential = value ? new Credential(value, 'key') : null;
+      }
+
+      if (credential) {
+        newUrl = Util.urlAppend(newUrl, credential.getUrlParameters());
+      }
+
+      return newUrl;
+    }
   }, {
     key: "_open",
     value: function _open(url, newTab) {
       newTab = newTab != null ? newTab : true;
       var offsetX = window.screen.availWidth / 2 - this.INNER_WINDOW_WIDTH / 2;
       var offsetY = window.screen.availHeight / 2 - this.INNER_WINDOW_HEIGHT / 2;
-      var options = "height=" + this.INNER_WINDOW_HEIGHT + ", width=" + this.INNER_WINDOW_WIDTH + ",top=" + offsetY + ", left=" + offsetX + ",toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
+      var options = 'height=' + this.INNER_WINDOW_HEIGHT + ', width=' + this.INNER_WINDOW_WIDTH + ',top=' + offsetY + ', left=' + offsetX + ',toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no';
 
       if (newTab) {
         window.open(url, 'login');
@@ -5474,8 +5665,8 @@ var SecurityManager = /*#__PURE__*/function () {
 }();
 SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager.INNER_WINDOW_HEIGHT = 600;
-SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager.ONLINE = "https://www.supermapol.com";
+SecurityManager.SSO = 'https://sso.supermap.com';
+SecurityManager.ONLINE = 'https://www.supermapol.com';
 SuperMap.SecurityManager = SecurityManager;
 // CONCATENATED MODULE: ./src/common/REST.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
@@ -6869,30 +7060,36 @@ var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
 };
 
 /**
- * @enum AggregationType
+ * @enum BucketAggType
  * @memberOf SuperMap
- * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
+ * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
 
-var AggregationType = SuperMap.AggregationType = {
-  /** 格网聚合类型。 */
-  GEOHASH_GRID: "geohash_grid",
-
-  /** 过滤聚合类型。 */
-  FILTER: "filter"
+var BucketAggType = SuperMap.BucketAggType = {
+  /** 格网聚合类型 */
+  GEOHASH_GRID: "geohash_grid"
 };
 
 /**
- * @enum AggregationType
+ * @enum MetricsAggType
  * @memberOf SuperMap
- * @description  聚合查询中filter查询枚举类
+ * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
 
-var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
-  /** 范围查询。 */
-  GEO_BOUNDING_BOX: "geo_bounding_box"
+var MetricsAggType = SuperMap.MetricsAggType = {
+  /** 平均值聚合类型 */
+  AVG: 'avg',
+
+  /** 最大值聚合类型 */
+  MAX: 'max',
+
+  /** 最小值聚合类型 */
+  MIN: 'min',
+
+  /** 求和聚合类型 */
+  SUM: 'sum'
 };
 
 /**
@@ -9197,8 +9394,12 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
     key: "clickEvent",
     value: function clickEvent(e) {
       var pixel = e.xy;
+      var devicePixelRatio = this.devicePixelRatio || 1;
 
-      _get(_getPrototypeOf(MapVRenderer.prototype), "clickEvent", this).call(this, pixel, e);
+      _get(_getPrototypeOf(MapVRenderer.prototype), "clickEvent", this).call(this, {
+        x: pixel.x / devicePixelRatio,
+        y: pixel.y / devicePixelRatio
+      }, e);
     }
     /**
      * @function MapvRenderer.prototype.mousemoveEvent
@@ -9226,13 +9427,13 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
       if (this.options.methods) {
         if (this.options.methods.click) {
           map.events.on({
-            'click': this.clickEvent
+            click: this.clickEvent
           });
         }
 
         if (this.options.methods.mousemove) {
           map.events.on({
-            'mousemove': this.mousemoveEvent
+            mousemove: this.mousemoveEvent
           });
         }
       }
@@ -9250,13 +9451,13 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
       if (this.options.methods) {
         if (this.options.methods.click) {
           map.events.un({
-            'click': this.clickEvent
+            click: this.clickEvent
           });
         }
 
         if (this.options.methods.mousemove) {
           map.events.un({
-            'mousemove': this.mousemoveEvent
+            mousemove: this.mousemoveEvent
           });
         }
       }
@@ -9339,7 +9540,7 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
 
       var newData = this.dataSet.get({
         filter: function filter(data) {
-          return _filter != null && typeof _filter === "function" ? !_filter(data) : true;
+          return _filter != null && typeof _filter === 'function' ? !_filter(data) : true;
         }
       });
       this.dataSet.set(newData);
@@ -9380,13 +9581,13 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
   }, {
     key: "transferToMercator",
     value: function transferToMercator() {
-      if (this.options.coordType && ["bd09mc", "coordinates_mercator"].indexOf(this.options.coordType) > -1) {
+      if (this.options.coordType && ['bd09mc', 'coordinates_mercator'].indexOf(this.options.coordType) > -1) {
         var data = this.dataSet.get();
         data = this.dataSet.transferCoordinate(data, function (coordinates) {
           var pixel = SuperMap_SuperMap.Projection.transform({
             x: coordinates[0],
             y: coordinates[1]
-          }, "EPSG:3857", "EPSG:4326");
+          }, 'EPSG:3857', 'EPSG:4326');
           return [pixel.x, pixel.y];
         }, 'coordinates', 'coordinates');
 
@@ -9438,7 +9639,6 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
       var dataGetOptions = {
         fromColumn: 'coordinates',
         transferCoordinate: function transferCoordinate(coordinate) {
-          // var coord = layer.transferToMapLatLng({lon: coordinate[0], lat: coordinate[1]});
           var coord = {
             lon: coordinate[0],
             lat: coordinate[1]
@@ -9508,10 +9708,10 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
     key: "addAnimatorEvent",
     value: function addAnimatorEvent() {
       this.map.events.on({
-        'movestart': this.animatorMovestartEvent.bind(this)
+        movestart: this.animatorMovestartEvent.bind(this)
       });
       this.map.events.on({
-        'moveend': this.animatorMoveendEvent.bind(this)
+        moveend: this.animatorMoveendEvent.bind(this)
       });
     }
     /**
@@ -9669,7 +9869,7 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
     var global$2 = typeof window === 'undefined' ? {} : window;
     var devicePixelRatio = _this.devicePixelRatio = global$2.devicePixelRatio || 1;
 
-    if (context == '2d') {
+    if (context === '2d') {
       _this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
     }
 
@@ -9782,6 +9982,7 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
       MapVLayer_get(MapVLayer_getPrototypeOf(MapVLayer.prototype), "setMap", this).call(this, map);
 
       this.renderer = new MapVRenderer(map, this, this.dataSet, this.options);
+      this.renderer.devicePixelRatio = this.devicePixelRatio;
 
       if (!this.supported) {
         this.map.removeLayer(this);
@@ -9819,8 +10020,15 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
         var size = this.map.getSize();
         this.div.style.width = parseInt(size.w) + 'px';
         this.div.style.height = parseInt(size.h) + 'px';
-        this.canvas.width = parseInt(size.w);
-        this.canvas.height = parseInt(size.h);
+
+        if (this.options.draw === 'heatmap') {
+          this.canvas.width = parseInt(size.w) * this.devicePixelRatio;
+          this.canvas.height = parseInt(size.h) * this.devicePixelRatio;
+        } else {
+          this.canvas.width = parseInt(size.w);
+          this.canvas.height = parseInt(size.h);
+        }
+
         this.canvas.style.width = this.div.style.width;
         this.canvas.style.height = this.div.style.height;
         this.maxWidth = size.w;
@@ -9872,114 +10080,6 @@ SuperMap_SuperMap.Layer.MapVLayer = MapVLayer;
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
-function Credential_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function Credential_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function Credential_createClass(Constructor, protoProps, staticProps) { if (protoProps) Credential_defineProperties(Constructor.prototype, protoProps); if (staticProps) Credential_defineProperties(Constructor, staticProps); return Constructor; }
-
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-/**
- * @class SuperMap.Credential
- * @category Security
- * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。</br>
- * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。</br>
- * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。</br>
- * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。</br>
- * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
- * @param {string} [name='token'] - 验证信息前缀，name=value 部分的 name 部分。
- * @example
- * var pixcel = new SuperMap.Credential("valueString","token");
- * pixcel.destroy();
- */
-
-var Credential = /*#__PURE__*/function () {
-  function Credential(value, name) {
-    Credential_classCallCheck(this, Credential);
-
-    /**
-     * @member {string} SuperMap.Bounds.prototype.value
-     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
-     */
-    this.value = value ? value : "";
-    /**
-     * @member {string} [SuperMap.Bounds.prototype.name='token']
-     * @description 验证信息前缀，name=value 部分的 name 部分。
-     */
-
-    this.name = name ? name : "token";
-    this.CLASS_NAME = "SuperMap.Credential";
-  }
-  /**
-   * @function SuperMap.Credential.prototype.getUrlParameters
-   * @example
-   * var credential = new SuperMap.Credential("valueString","token");
-   * //这里 str = "token=valueString";
-   * var str = credential.getUrlParameters();
-   * @returns {string} 返回安全信息组成的 url 片段。
-   */
-
-
-  Credential_createClass(Credential, [{
-    key: "getUrlParameters",
-    value: function getUrlParameters() {
-      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-      return this.name + "=" + this.value;
-    }
-    /**
-     * @function SuperMap.Bounds.prototype.getValue
-     * @description 获取 value。
-     * @example
-     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-     * var str = credential.getValue();
-     * @returns {string} 返回 value 字符串，在 iServer 服务下该 value 值即为 token 值。
-     */
-
-  }, {
-    key: "getValue",
-    value: function getValue() {
-      return this.value;
-    }
-    /**
-     *
-     * @function SuperMap.Credential.prototype.destroy
-     * @description 销毁此对象。销毁后此对象的所有属性为 null，而不是初始值。
-     * @example
-     * var credential = new SuperMap.Credential("valueString","token");
-     * credential.destroy();
-     */
-
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this.value = null;
-      this.name = null;
-    }
-  }]);
-
-  return Credential;
-}();
-/**
- * @member {SuperMap.Credential} SuperMap.Credential.CREDENTIAL
- * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
- * @constant
- * @example
- * 代码实例:
- *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
- *  var value = "(以iServer为例，这里是申请的token值)";
- *  var name = "token";
- *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
- *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
- *
- */
-
-Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential;
 // CONCATENATED MODULE: ./src/common/format/Format.js
 function Format_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10428,8 +10528,6 @@ function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { i
 
 
 
-
-
 /**
  * @class SuperMap.CommonServiceBase
  * @category  iServer
@@ -10438,7 +10536,6 @@ function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { i
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -10449,13 +10546,12 @@ var CommonServiceBase = /*#__PURE__*/function () {
     CommonServiceBase_classCallCheck(this, CommonServiceBase);
 
     var me = this;
-    this.EVENT_TYPES = ["processCompleted", "processFailed"];
+    this.EVENT_TYPES = ['processCompleted', 'processFailed'];
     this.events = null;
     this.eventListeners = null;
     this.url = null;
     this.urls = null;
     this.proxy = null;
-    this.serverType = null;
     this.index = null;
     this.length = null;
     this.options = null;
@@ -10487,7 +10583,6 @@ var CommonServiceBase = /*#__PURE__*/function () {
       me.totalTimes = 1;
     }
 
-    me.serverType = me.serverType || ServerType.ISERVER;
     options = options || {};
     this.crossOrigin = options.crossOrigin;
     this.headers = options.headers;
@@ -10499,7 +10594,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
       me.events.on(me.eventListeners);
     }
 
-    this.CLASS_NAME = "SuperMap.CommonServiceBase";
+    this.CLASS_NAME = 'SuperMap.CommonServiceBase';
   }
   /**
    * @function SuperMap.CommonServiceBase.prototype.destroy
@@ -10563,12 +10658,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
       options.headers = options.headers || me.headers;
       options.isInTheSameDomain = me.isInTheSameDomain; //为url添加安全认证信息片段
 
-      var credential = this.getCredential(options.url);
-
-      if (credential) {
-        options.url = Util.urlAppend(options.url, credential.getUrlParameters());
-      }
-
+      options.url = SecurityManager.appendCredential(options.url);
       me.calculatePollingTimes();
       me._processSuccess = options.success;
       me._processFailed = options.failure;
@@ -10578,46 +10668,6 @@ var CommonServiceBase = /*#__PURE__*/function () {
       me.options = options;
 
       me._commit(me.options);
-    }
-    /**
-     * @function SuperMap.CommonServiceBase.prototype.getCredential
-     * @description  获取凭据信息
-     * @param {string} url - 服务地址。
-     * @returns {SuperMap.Credential} 凭据信息对象。
-     */
-
-  }, {
-    key: "getCredential",
-    value: function getCredential(url) {
-      var keyUrl = url,
-          credential,
-          value;
-
-      switch (this.serverType) {
-        case ServerType.IPORTAL:
-          value = SecurityManager.getToken(keyUrl);
-          credential = value ? new Credential(value, "token") : null;
-
-          if (!credential) {
-            value = SecurityManager.getKey(keyUrl);
-            credential = value ? new Credential(value, "key") : null;
-          }
-
-          break;
-
-        case ServerType.ONLINE:
-          value = SecurityManager.getKey(keyUrl);
-          credential = value ? new Credential(value, "key") : null;
-          break;
-
-        default:
-          //iServer or others
-          value = SecurityManager.getToken(keyUrl);
-          credential = value ? new Credential(value, "token") : null;
-          break;
-      }
-
-      return credential;
     }
     /**
      * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
@@ -10709,7 +10759,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
     key: "isServiceSupportPolling",
     value: function isServiceSupportPolling() {
       var me = this;
-      return !(me.CLASS_NAME === "SuperMap.REST.ThemeService" || me.CLASS_NAME === "SuperMap.REST.EditFeaturesService");
+      return !(me.CLASS_NAME === 'SuperMap.REST.ThemeService' || me.CLASS_NAME === 'SuperMap.REST.EditFeaturesService');
     }
     /**
      * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
@@ -10721,7 +10771,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
     key: "serviceProcessCompleted",
     value: function serviceProcessCompleted(result) {
       result = Util.transformResult(result);
-      this.events.triggerEvent("processCompleted", {
+      this.events.triggerEvent('processCompleted', {
         result: result
       });
     }
@@ -10736,14 +10786,14 @@ var CommonServiceBase = /*#__PURE__*/function () {
     value: function serviceProcessFailed(result) {
       result = Util.transformResult(result);
       var error = result.error || result;
-      this.events.triggerEvent("processFailed", {
+      this.events.triggerEvent('processFailed', {
         error: error
       });
     }
   }, {
     key: "_commit",
     value: function _commit(options) {
-      if (options.method === "POST" || options.method === "PUT") {
+      if (options.method === 'POST' || options.method === 'PUT') {
         if (options.params) {
           options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
         }
@@ -10770,7 +10820,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
       }).then(function (text) {
         var result = text;
 
-        if (typeof text === "string") {
+        if (typeof text === 'string') {
           result = new JSONFormat().read(text);
         }
 
@@ -11039,7 +11089,6 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -11064,7 +11113,6 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -11078,6 +11126,958 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
   return AddressMatchService;
 }(CommonServiceBase);
 SuperMap_SuperMap.REST.AddressMatchService = AddressMatchService;
+// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
+function DatasetService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { DatasetService_typeof = function _typeof(obj) { return typeof obj; }; } else { DatasetService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return DatasetService_typeof(obj); }
+
+function DatasetService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function DatasetService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function DatasetService_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasetService_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasetService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function DatasetService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { DatasetService_get = Reflect.get; } else { DatasetService_get = function _get(target, property, receiver) { var base = DatasetService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return DatasetService_get(target, property, receiver || target); }
+
+function DatasetService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasetService_getPrototypeOf(object); if (object === null) break; } return object; }
+
+function DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) DatasetService_setPrototypeOf(subClass, superClass); }
+
+function DatasetService_setPrototypeOf(o, p) { DatasetService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetService_setPrototypeOf(o, p); }
+
+function DatasetService_createSuper(Derived) { var hasNativeReflectConstruct = DatasetService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = DatasetService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = DatasetService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return DatasetService_possibleConstructorReturn(this, result); }; }
+
+function DatasetService_possibleConstructorReturn(self, call) { if (call && (DatasetService_typeof(call) === "object" || typeof call === "function")) { return call; } return DatasetService_assertThisInitialized(self); }
+
+function DatasetService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function DatasetService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function DatasetService_getPrototypeOf(o) { DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return DatasetService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.DatasetService
+ * @category iServer Data Dataset
+ * @classdesc 数据集查询服务。
+ * @param {string} url - 服务的访问地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ *
+ */
+
+var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
+  DatasetService_inherits(DatasetService, _CommonServiceBase);
+
+  var _super = DatasetService_createSuper(DatasetService);
+
+  function DatasetService(url, options) {
+    var _this;
+
+    DatasetService_classCallCheck(this, DatasetService);
+
+    _this = _super.call(this, url, options);
+
+    if (!options) {
+      return DatasetService_possibleConstructorReturn(_this);
+    }
+    /**
+     * @member {string} SuperMap.DatasetService.prototype.datasource
+     * @description 要查询的数据集所在的数据源名称。
+     */
+
+
+    _this.datasource = null;
+    /**
+     *  @member {string} SuperMap.DatasetService.prototype.dataset
+     *  @description 要查询的数据集名称。
+     */
+
+    _this.dataset = null;
+
+    if (options) {
+      Util.extend(DatasetService_assertThisInitialized(_this), options);
+    }
+
+    _this.CLASS_NAME = "SuperMap.DatasetService";
+    return _this;
+  }
+  /**
+   * @function SuperMap.DatasetService.prototype.destroy
+   * @override
+   */
+
+
+  DatasetService_createClass(DatasetService, [{
+    key: "destroy",
+    value: function destroy() {
+      DatasetService_get(DatasetService_getPrototypeOf(DatasetService.prototype), "destroy", this).call(this);
+
+      var me = this;
+      me.datasource = null;
+      me.dataset = null;
+    }
+    /**
+     * @function SuperMap.DatasetService.prototype.getDatasetsService
+     * @description 执行服务，查询数据集服务。
+     */
+
+  }, {
+    key: "getDatasetsService",
+    value: function getDatasetsService(params) {
+      var me = this;
+      me.url = Util.urlPathAppend(me.url, "datasources/name/".concat(params, "/datasets"));
+      me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.DatasetService.prototype.getDatasetService
+     * @description 执行服务，查询数据集信息服务。
+     */
+
+  }, {
+    key: "getDatasetService",
+    value: function getDatasetService(datasourceName, datasetName) {
+      var me = this;
+      me.url = Util.urlPathAppend(me.url, "datasources/name/".concat(datasourceName, "/datasets/name/").concat(datasetName));
+      me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.DatasetService.prototype.setDatasetService
+     * @description 执行服务，更改数据集信息服务。
+     */
+
+  }, {
+    key: "setDatasetService",
+    value: function setDatasetService(params) {
+      if (!params) {
+        return;
+      }
+
+      var me = this;
+      var jsonParamsStr = Util.toJSON(params);
+      me.request({
+        method: "PUT",
+        data: jsonParamsStr,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+    * @function SuperMap.DatasetService.prototype.deleteDatasetService
+    * @description 执行服务，删除数据集信息服务。
+    */
+
+  }, {
+    key: "deleteDatasetService",
+    value: function deleteDatasetService() {
+      var me = this;
+      me.request({
+        method: "DELETE",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+  }]);
+
+  return DatasetService;
+}(CommonServiceBase);
+SuperMap.DatasetService = DatasetService_DatasetService;
+// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
+function CreateDatasetParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function CreateDatasetParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function CreateDatasetParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) CreateDatasetParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) CreateDatasetParameters_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.CreateDatasetParameters
+ * @category iServer Data Dataset
+ * @classdesc 数据集创建参数类。
+ * @param {Object} options - 参数。 
+ * @param {string} options.datasourceName - 数据源名称(必选)。
+ * @param {string} options.datasetName - 数据集名称(必选)。
+ * @param {DatasetType} options.datasetType - 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+ */
+
+var CreateDatasetParameters = /*#__PURE__*/function () {
+  function CreateDatasetParameters(options) {
+    CreateDatasetParameters_classCallCheck(this, CreateDatasetParameters);
+
+    if (!options) {
+      return;
+    }
+    /**
+     * @member {string} SuperMap.CreateDatasetParameters.prototype.datasourceName
+     * @description 数据源名称。
+     */
+
+
+    this.datasourceName = null;
+    /**
+     * @member {string} SuperMap.CreateDatasetParameters.prototype.datasetName
+     * @description 数据集名称。
+     */
+
+    this.datasetName = null;
+    /**
+     * @member {DatasetType} SuperMap.CreateDatasetParameters.prototype.datasetType
+     * @description 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+     */
+
+    this.datasetType = null;
+
+    if (options) {
+      Util.extend(this, options);
+    }
+
+    this.CLASS_NAME = "SuperMap.CreateDatasetParameters";
+  }
+  /**
+   * @function SuperMap.CreateDatasetParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  CreateDatasetParameters_createClass(CreateDatasetParameters, [{
+    key: "destroy",
+    value: function destroy() {
+      var me = this;
+      me.datasourceName = null;
+      me.datasetName = null;
+      me.datasetType = null;
+    }
+  }]);
+
+  return CreateDatasetParameters;
+}();
+SuperMap.CreateDatasetParameters = CreateDatasetParameters;
+// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
+function UpdateDatasetParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function UpdateDatasetParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function UpdateDatasetParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) UpdateDatasetParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) UpdateDatasetParameters_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.UpdateDatasetParameters
+ * @category iServer Data Dataset
+ * @classdesc 数据集信息更改参数类。
+ * @param {Object} options - 参数。 
+ * @param {String} options.datasourceName - 数据源名称(必选)。
+ * @param {String} options.datasetName - 数据集名称(必选)。
+ * @param {boolean} options.isFileCache - 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
+ * @param {String} options.description - 数据集描述信息。
+ * @param {PrjCoordSys} options.prjCoordSys - 投影坐标系。
+ * @param {enum} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。
+ * @param {java.util.List<Color>} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
+ * @param {double} options.noValue - 栅格数据集中没有数据的像元的栅格值。当数据集类型为栅格数据集时，可以传递此参数。
+ */
+
+var UpdateDatasetParameters = /*#__PURE__*/function () {
+  function UpdateDatasetParameters(options) {
+    UpdateDatasetParameters_classCallCheck(this, UpdateDatasetParameters);
+
+    if (!options) {
+      return;
+    }
+    /**
+     * @member {string} SuperMap.UpdateDatasetParameters.prototype.datasourceName
+     * @description 数据源名称。
+     */
+
+
+    this.datasourceName = null;
+    /**
+     * @member {string} SuperMap.UpdateDatasetParameters.prototype.datasetName
+     * @description 数据集名称。
+     */
+
+    this.datasetName = null;
+    /**
+     * @member {boolean} SuperMap.UpdateDatasetParameters.prototype.isFileCache
+     * @description 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
+     */
+
+    this.isFileCache = null;
+    /**
+     * @member {String} SuperMap.UpdateDatasetParameters.prototype.description
+     * @description 数据集描述信息。
+     */
+
+    this.description = null;
+    /**
+     * @member {PrjCoordSys} SuperMap.UpdateDatasetParameters.prototype.prjCoordSys
+     * @description 投影坐标系。
+     */
+
+    this.prjCoordSys = null;
+    /**
+     * @member {enum} SuperMap.UpdateDatasetParameters.prototype.charset
+     * @description 矢量数据集的字符集。
+     */
+
+    this.charset = null;
+    /**
+     * @member {java.util.List<Color>} SuperMap.UpdateDatasetParameters.prototype.palette
+     * @description 影像数据的颜色调色板。
+     */
+
+    this.palette = null;
+    /**
+     * @member {double} SuperMap.UpdateDatasetParameters.prototype.noValue
+     * @description 栅格数据集中没有数据的像元的栅格值。
+     */
+
+    this.noValue = null;
+
+    if (options) {
+      Util.extend(this, options);
+    }
+
+    this.CLASS_NAME = "SuperMap.UpdateDatasetParameters";
+  }
+  /**
+   * @function SuperMap.UpdateDatasetParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  UpdateDatasetParameters_createClass(UpdateDatasetParameters, [{
+    key: "destroy",
+    value: function destroy() {
+      var me = this;
+      me.datasourceName = null;
+      me.datasetName = null;
+      me.isFileCache = null;
+      me.prjCoordSys = null;
+      me.charset = null;
+      me.palette = null;
+      me.noValue = null;
+    }
+  }]);
+
+  return UpdateDatasetParameters;
+}();
+SuperMap.UpdateDatasetParameters = UpdateDatasetParameters;
+// CONCATENATED MODULE: ./src/classic/services/DatasetService.js
+function services_DatasetService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { services_DatasetService_typeof = function _typeof(obj) { return typeof obj; }; } else { services_DatasetService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return services_DatasetService_typeof(obj); }
+
+function services_DatasetService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function services_DatasetService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function services_DatasetService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_DatasetService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_DatasetService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function services_DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) services_DatasetService_setPrototypeOf(subClass, superClass); }
+
+function services_DatasetService_setPrototypeOf(o, p) { services_DatasetService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasetService_setPrototypeOf(o, p); }
+
+function services_DatasetService_createSuper(Derived) { var hasNativeReflectConstruct = services_DatasetService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = services_DatasetService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = services_DatasetService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return services_DatasetService_possibleConstructorReturn(this, result); }; }
+
+function services_DatasetService_possibleConstructorReturn(self, call) { if (call && (services_DatasetService_typeof(call) === "object" || typeof call === "function")) { return call; } return services_DatasetService_assertThisInitialized(self); }
+
+function services_DatasetService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function services_DatasetService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function services_DatasetService_getPrototypeOf(o) { services_DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_DatasetService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class SuperMap.REST.DatasetService
+ * @category  iServer Data Dataset
+ * @classdesc 数据集查询。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+
+var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
+  services_DatasetService_inherits(DatasetService, _CommonServiceBase);
+
+  var _super = services_DatasetService_createSuper(DatasetService);
+
+  function DatasetService(url, options) {
+    var _this;
+
+    services_DatasetService_classCallCheck(this, DatasetService);
+
+    _this = _super.call(this, url, options);
+    _this.CLASS_NAME = "SuperMap.REST.DatasetService";
+    return _this;
+  }
+  /**
+   * @function SuperMap.REST.DatasetService.prototype.getDatasets
+   * @description 数据集查询服务。
+   * @example
+   *   new SuperMap.REST.DatasetService(url).getDatasets(datasourceName,function(result){
+   *     //doSomething
+   *   });
+   * @param {string} datasourceName - 数据源名称。
+   * @param {RequestCallback} callback - 回调函数。
+   */
+
+
+  services_DatasetService_createClass(DatasetService, [{
+    key: "getDatasets",
+    value: function getDatasets(datasourceName, callback) {
+      if (!datasourceName) {
+        return;
+      }
+
+      var me = this;
+      var datasetService = new DatasetService_DatasetService(me.url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasetService.getDatasetsService(datasourceName);
+    }
+    /**
+     * @function SuperMap.REST.DatasetService.prototype.getDataset
+     * @description 数据集查询服务。
+     * @example
+     *   new SuperMap.REST.DatasetService(url).getDataset(datasourceName, datasetName, function(result){
+     *     //doSomething
+     *   });
+     * @param {string} datasourceName - 数据源名称。
+     * @param {string} datasetName - 数据集名称。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+
+  }, {
+    key: "getDataset",
+    value: function getDataset(datasourceName, datasetName, callback) {
+      if (!datasourceName || !datasetName) {
+        return;
+      }
+
+      var me = this;
+      var datasetService = new DatasetService_DatasetService(me.url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasetService.getDatasetService(datasourceName, datasetName);
+    }
+    /**
+     * @function SuperMap.REST.DatasetService.prototype.setDataset
+     * @description 数据集信息设置服务。可实现修改已存在数据集，新增不存在数据集。
+     * @example
+     *   new SuperMap.REST.DatasetService(url).setDataset(params, function(result){
+     *     //doSomething
+     *   });
+     * @param {SuperMap.CreateDatasetParameters | SuperMap.UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
+     * @param {RequestCallback} callback - 回调函数。
+     */
+
+  }, {
+    key: "setDataset",
+    value: function setDataset(params, callback) {
+      if (!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)) {
+        return;
+      }
+
+      var datasetParams;
+
+      if (params instanceof CreateDatasetParameters) {
+        datasetParams = {
+          "datasetType": params.datasetType,
+          "datasetName": params.datasetName
+        };
+      } else if (params instanceof UpdateDatasetParameters) {
+        datasetParams = {
+          "datasetName": params.datasetName,
+          "isFileCache": params.isFileCache,
+          "description": params.description,
+          "prjCoordSys": params.prjCoordSys,
+          "charset": params.charset
+        };
+      }
+
+      var me = this;
+      var url = Util.urlPathAppend(me.url, "datasources/name/".concat(params.datasourceName, "/datasets/name/").concat(params.datasetName));
+      var datasetService = new DatasetService_DatasetService(url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasetService.setDatasetService(datasetParams);
+    }
+    /**
+     * @function SuperMap.REST.DatasetService.prototype.deleteDataset
+     * @description 指定数据源下的数据集删除服务。
+     * @example
+     *   new SuperMap.REST.DatasetService(url).deleteDataset(datasourceName, datasetName, function(result){
+     *     //doSomething
+     *   });
+     * @param {string} datasourceName - 数据源名称。
+     * @param {string} datasetName - 数据集名称。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+
+  }, {
+    key: "deleteDataset",
+    value: function deleteDataset(datasourceName, datasetName, callback) {
+      var me = this;
+      var url = Util.urlPathAppend(me.url, "datasources/name/".concat(datasourceName, "/datasets/name/").concat(datasetName));
+      var datasetService = new DatasetService_DatasetService(url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasetService.deleteDatasetService();
+    }
+  }]);
+
+  return DatasetService;
+}(CommonServiceBase);
+SuperMap_SuperMap.REST.DatasetService = DatasetService;
+// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
+function DatasourceService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { DatasourceService_typeof = function _typeof(obj) { return typeof obj; }; } else { DatasourceService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return DatasourceService_typeof(obj); }
+
+function DatasourceService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function DatasourceService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function DatasourceService_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceService_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function DatasourceService_get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { DatasourceService_get = Reflect.get; } else { DatasourceService_get = function _get(target, property, receiver) { var base = DatasourceService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return DatasourceService_get(target, property, receiver || target); }
+
+function DatasourceService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasourceService_getPrototypeOf(object); if (object === null) break; } return object; }
+
+function DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) DatasourceService_setPrototypeOf(subClass, superClass); }
+
+function DatasourceService_setPrototypeOf(o, p) { DatasourceService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasourceService_setPrototypeOf(o, p); }
+
+function DatasourceService_createSuper(Derived) { var hasNativeReflectConstruct = DatasourceService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = DatasourceService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = DatasourceService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return DatasourceService_possibleConstructorReturn(this, result); }; }
+
+function DatasourceService_possibleConstructorReturn(self, call) { if (call && (DatasourceService_typeof(call) === "object" || typeof call === "function")) { return call; } return DatasourceService_assertThisInitialized(self); }
+
+function DatasourceService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function DatasourceService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function DatasourceService_getPrototypeOf(o) { DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return DatasourceService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.DatasourceService
+ * @category iServer Data Datasource
+ * @classdesc 数据源查询服务。
+ * @param {string} url - 服务的访问地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
+ * @param {string}options.dataset - 要查询的数据集名称。</br>
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {SuperMap.CommonServiceBase}
+ */
+
+var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
+  DatasourceService_inherits(DatasourceService, _CommonServiceBase);
+
+  var _super = DatasourceService_createSuper(DatasourceService);
+
+  function DatasourceService(url, options) {
+    var _this;
+
+    DatasourceService_classCallCheck(this, DatasourceService);
+
+    _this = _super.call(this, url, options);
+
+    if (options) {
+      Util.extend(DatasourceService_assertThisInitialized(_this), options);
+    }
+
+    _this.CLASS_NAME = "SuperMap.DatasourceService";
+    return _this;
+  }
+  /**
+   * @function SuperMap.DatasourceService.prototype.destroy
+   * @override
+   */
+
+
+  DatasourceService_createClass(DatasourceService, [{
+    key: "destroy",
+    value: function destroy() {
+      DatasourceService_get(DatasourceService_getPrototypeOf(DatasourceService.prototype), "destroy", this).call(this);
+    }
+    /**
+     * @function SuperMap.DatasourceService.prototype.getDatasourceService
+     * @description 执行服务，查询数据源信息。
+     */
+
+  }, {
+    key: "getDatasourceService",
+    value: function getDatasourceService(datasourceName) {
+      var me = this;
+      me.url = Util.urlPathAppend(me.url, "datasources/name/".concat(datasourceName));
+      me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.DatasourceService.prototype.getDatasourcesService
+     * @description 执行服务，查询数据源信息。
+     */
+
+  }, {
+    key: "getDatasourcesService",
+    value: function getDatasourcesService() {
+      var me = this;
+      me.url = Util.urlPathAppend(me.url, "datasources");
+      me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+    /**
+     * @function SuperMap.DatasourceService.prototype.setDatasourceService
+     * @description 执行服务，查询数据源信息。
+     */
+
+  }, {
+    key: "setDatasourceService",
+    value: function setDatasourceService(params) {
+      if (!params) {
+        return;
+      }
+
+      var me = this;
+      var jsonParamsStr = Util.toJSON(params);
+      me.request({
+        method: "PUT",
+        data: jsonParamsStr,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+  }]);
+
+  return DatasourceService;
+}(CommonServiceBase);
+SuperMap.DatasourceService = DatasourceService_DatasourceService;
+// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
+function SetDatasourceParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function SetDatasourceParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function SetDatasourceParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SetDatasourceParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SetDatasourceParameters_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.SetDatasourceParameters
+ * @category iServer Data Datasource
+ * @classdesc 数据源信息查询参数类。
+ * @param {Object} options - 参数。 
+ * @param {string} options.datasourceName - 数据源名称。
+ * @param {string} options.description - 数据源描述信息。
+ * @param {Unit} options.coordUnit - 坐标单位。
+ * @param {Unit} options.distanceUnit - 距离单位。
+ */
+
+var SetDatasourceParameters = /*#__PURE__*/function () {
+  function SetDatasourceParameters(options) {
+    SetDatasourceParameters_classCallCheck(this, SetDatasourceParameters);
+
+    if (!options) {
+      return;
+    }
+    /**
+     * @member {string} SuperMap.SetDatasourceParameters.prototype.datasourceName
+     * @description 数据源名称。
+     */
+
+
+    this.datasourceName = null;
+    /**
+     * @member {string} SuperMap.SetDatasourceParameters.prototype.description
+     * @description 数据源描述信息。
+     */
+
+    this.description = null;
+    /**
+     * @member {Unit} SuperMap.SetDatasourceParameters.prototype.coordUnit
+     * @description 坐标单位。
+     */
+
+    this.coordUnit = null;
+    /**
+     * @member {Unit} SuperMap.SetDatasourceParameters.prototype.distanceUnit
+     * @description 距离单位。
+     */
+
+    this.distanceUnit = null;
+
+    if (options) {
+      Util.extend(this, options);
+    }
+
+    this.CLASS_NAME = "SuperMap.SetDatasourceParameters";
+  }
+  /**
+   * @function SuperMap.SetDatasourceParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  SetDatasourceParameters_createClass(SetDatasourceParameters, [{
+    key: "destroy",
+    value: function destroy() {
+      var me = this;
+      me.datasourceName = null;
+      me.description = null;
+      me.coordUnit = null;
+      me.distanceUnit = null;
+    }
+  }]);
+
+  return SetDatasourceParameters;
+}();
+SuperMap.SetDatasourceParameters = SetDatasourceParameters;
+// CONCATENATED MODULE: ./src/classic/services/DatasourceService.js
+function services_DatasourceService_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { services_DatasourceService_typeof = function _typeof(obj) { return typeof obj; }; } else { services_DatasourceService_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return services_DatasourceService_typeof(obj); }
+
+function services_DatasourceService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function services_DatasourceService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function services_DatasourceService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_DatasourceService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_DatasourceService_defineProperties(Constructor, staticProps); return Constructor; }
+
+function services_DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) services_DatasourceService_setPrototypeOf(subClass, superClass); }
+
+function services_DatasourceService_setPrototypeOf(o, p) { services_DatasourceService_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasourceService_setPrototypeOf(o, p); }
+
+function services_DatasourceService_createSuper(Derived) { var hasNativeReflectConstruct = services_DatasourceService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = services_DatasourceService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = services_DatasourceService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return services_DatasourceService_possibleConstructorReturn(this, result); }; }
+
+function services_DatasourceService_possibleConstructorReturn(self, call) { if (call && (services_DatasourceService_typeof(call) === "object" || typeof call === "function")) { return call; } return services_DatasourceService_assertThisInitialized(self); }
+
+function services_DatasourceService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function services_DatasourceService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function services_DatasourceService_getPrototypeOf(o) { services_DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_DatasourceService_getPrototypeOf(o); }
+
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.REST.DatasourceService
+ * @category  iServer Data Datasource
+ * @classdesc 数据源服务类。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+
+var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
+  services_DatasourceService_inherits(DatasourceService, _CommonServiceBase);
+
+  var _super = services_DatasourceService_createSuper(DatasourceService);
+
+  function DatasourceService(url, options) {
+    var _this;
+
+    services_DatasourceService_classCallCheck(this, DatasourceService);
+
+    _this = _super.call(this, url, options);
+    _this.CLASS_NAME = "SuperMap.REST.DatasourceService";
+    return _this;
+  }
+  /**
+   * @function SuperMap.REST.supermap.DatasourceService.prototype.getDatasources
+   * @description 数据源集查询服务。
+   * @example
+   *   new SuperMap.REST.DatasourceService(url).getDatasources(function(result){
+   *     //doSomething
+   *   });
+   * @param {RequestCallback} callback - 回调函数。
+   */
+
+
+  services_DatasourceService_createClass(DatasourceService, [{
+    key: "getDatasources",
+    value: function getDatasources(callback) {
+      var me = this;
+      var datasourceService = new DatasourceService_DatasourceService(me.url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasourceService.getDatasourcesService();
+    }
+    /**
+     * @function SuperMap.REST.DatasourceService.prototype.getDatasource
+     * @description 数据源信息查询服务。
+     * @example
+     *   new SuperMap.REST.DatasourceService(url).getDatasource(datasourceName,function(result){
+     *     //doSomething
+     *   });
+     * @param {string} datasourceName - 数据源名称。
+     * @param {RequestCallback} callback 回调函数。
+     */
+
+  }, {
+    key: "getDatasource",
+    value: function getDatasource(datasourceName, callback) {
+      if (!datasourceName) {
+        return;
+      }
+
+      var me = this;
+      var datasourceService = new DatasourceService_DatasourceService(me.url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          scope: me,
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasourceService.getDatasourceService(datasourceName);
+    }
+    /**
+      * @function SuperMap.REST.supermap.DatasourceService.prototype.setDatasource
+      * @description 数据源信息设置服务。可实现更改当前数据源信息。
+      * @example
+      *  new SuperMap.REST.DatasourceService(url).setDatasource(params, function(result){
+      *     //doSomething
+      *   });
+      * @param {SuperMap.SetDatasourceParameters} params - 数据源信息设置参数类。
+      * @param {RequestCallback} callback - 回调函数。
+      */
+
+  }, {
+    key: "setDatasource",
+    value: function setDatasource(params, callback) {
+      if (!(params instanceof SetDatasourceParameters)) {
+        return;
+      }
+
+      var datasourceParams = {
+        description: params.description,
+        coordUnit: params.coordUnit,
+        distanceUnit: params.distanceUnit
+      };
+      var me = this;
+      var url = Util.urlPathAppend(me.url, "datasources/name/".concat(params.datasourceName));
+      var datasourceService = new DatasourceService_DatasourceService(url, {
+        proxy: me.proxy,
+        withCredentials: me.withCredentials,
+        crossOrigin: me.crossOrigin,
+        headers: me.headers,
+        eventListeners: {
+          processCompleted: callback,
+          processFailed: callback
+        }
+      });
+      datasourceService.setDatasourceService(datasourceParams);
+    }
+  }]);
+
+  return DatasourceService;
+}(CommonServiceBase);
+SuperMap_SuperMap.REST.DatasourceService = DatasourceService;
 // CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
 function ProcessingServiceBase_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ProcessingServiceBase_typeof = function _typeof(obj) { return typeof obj; }; } else { ProcessingServiceBase_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ProcessingServiceBase_typeof(obj); }
 
@@ -11123,7 +12123,6 @@ function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getProt
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -11175,7 +12174,7 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
     key: "getJobs",
     value: function getJobs(url) {
       var me = this;
-      FetchRequest.get(me._processUrl(url), null, {
+      FetchRequest.get(SecurityManager.appendCredential(url), null, {
         proxy: me.proxy
       }).then(function (response) {
         return response.json();
@@ -11219,7 +12218,7 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
         crossOrigin: me.crossOrigin,
         isInTheSameDomain: me.isInTheSameDomain
       };
-      FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+      FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
         return response.json();
       }).then(function (result) {
         if (result.succeed) {
@@ -11242,7 +12241,7 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
 
       if (result) {
         var id = setInterval(function () {
-          FetchRequest.get(me._processUrl(result.newResourceLocation), {
+          FetchRequest.get(SecurityManager.appendCredential(result.newResourceLocation), {
             _t: new Date().getTime()
           }).then(function (response) {
             return response.json();
@@ -11279,15 +12278,6 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
     key: "serviceProcessFailed",
     value: function serviceProcessFailed(result) {
       ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase.prototype), "serviceProcessFailed", this).call(this, result);
-    }
-  }, {
-    key: "_processUrl",
-    value: function _processUrl(url) {
-      if (SecurityManager.getToken(url)) {
-        url = Util.urlAppend(url, 'token=' + SecurityManager.getToken(url));
-      }
-
-      return url;
     }
   }]);
 
@@ -11552,7 +12542,6 @@ function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPr
  * @param {string} url -点聚合分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
@@ -12012,7 +13001,6 @@ function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getProt
  * @param {string} url - 叠加分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，ISERVER|IPORTAL|ONLINE。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
@@ -12503,7 +13491,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12532,7 +13519,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12604,7 +13590,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12633,7 +13618,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12650,7 +13634,7 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
-    */
+     */
 
   }, {
     key: "addSummaryMeshJob",
@@ -12705,7 +13689,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12734,7 +13717,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         proxy: me.proxy,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12807,7 +13789,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         headers: me.headers,
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12836,7 +13817,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12908,7 +13888,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12937,7 +13916,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -12968,7 +13946,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13011,7 +13988,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13040,7 +14016,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13070,7 +14045,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13113,7 +14087,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13142,7 +14115,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13172,7 +14144,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13215,7 +14186,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13244,7 +14214,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13274,7 +14243,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13317,7 +14285,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13346,7 +14313,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13376,7 +14342,6 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
         withCredentials: me.withCredentials,
         crossOrigin: me.crossOrigin,
         headers: me.headers,
-        serverType: me.serverType,
         eventListeners: {
           scope: me,
           processCompleted: callback,
@@ -13429,7 +14394,7 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var geometryParam = {};
 
       if (points.length < 1) {
-        geometryParam = "";
+        geometryParam = '';
       } else {
         var results = [];
 
@@ -13440,7 +14405,7 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
           results.push(point);
         }
 
-        geometryParam.type = "REGION";
+        geometryParam.type = 'REGION';
         geometryParam.points = results;
       }
 
@@ -13455,6 +14420,8 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService;
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 // CONCATENATED MODULE: ./src/classic/index.js
