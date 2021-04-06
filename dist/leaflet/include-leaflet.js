@@ -58,36 +58,36 @@
             inputScript('https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
-            inputScript('https://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js');
         }
         if (inArray(includes, 'leaflet.markercluster')) {
-            inputCSS('https://cdn.bootcss.com/leaflet.markercluster/1.4.1/MarkerCluster.Default.css');
-            inputCSS('https://cdn.bootcss.com/leaflet.markercluster/1.4.1/MarkerCluster.css');
-            inputScript('https://cdn.bootcss.com/leaflet.markercluster/1.4.1/leaflet.markercluster.js');
+            inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css');
+            inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js');
         }
         if (inArray(includes, 'leaflet.draw')) {
-            inputCSS('https://cdn.bootcss.com/leaflet.draw/1.0.4/leaflet.draw.css');
-            inputScript('https://cdn.bootcss.com/leaflet.draw/1.0.4/leaflet.draw.js');
+            inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js');
         }
         if (inArray(includes, 'leaflet-geoman')) {
             inputCSS('https://cdn.jsdelivr.net/npm/@geoman-io/leaflet-geoman-free@2.7.0/dist/leaflet-geoman.css');
             inputScript('https://cdn.jsdelivr.net/npm/@geoman-io/leaflet-geoman-free@2.7.0/dist/leaflet-geoman.min.js');
         }
         if (inArray(includes, 'leaflet.miniMap')) {
-            inputCSS('https://cdn.bootcss.com/leaflet-minimap/3.6.1/Control.MiniMap.min.css');
-            inputScript('https://cdn.bootcss.com/leaflet-minimap/3.6.1/Control.MiniMap.min.js');
+            inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.js');
         }
         if (inArray(includes, 'mapv')) {
             inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.56/build/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'elasticsearch')) {
-            inputScript('https://cdn.bootcss.com/elasticsearch/16.7.1/elasticsearch.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/elasticsearch/16.7.1/elasticsearch.js');
         }
         if (inArray(includes, 'xlsx')) {
             inputScript('https://cdn.jsdelivr.net/npm/xlsx@0.16.7/dist/xlsx.core.min.js');
@@ -99,7 +99,7 @@
             );
         }
         if (inArray(includes, 'd3')) {
-            inputScript('https://cdn.bootcss.com/d3/6.1.1/d3.min.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/d3/6.1.1/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript('https://d3js.org/d3-hexbin.v0.2.min.js');
@@ -118,7 +118,7 @@
             inputScript('https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js');
         }
         if (inArray(includes, 'pixi')) {
-            inputScript('https://cdn.bootcss.com/pixi.js/4.8.7/pixi.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/pixi.js/4.8.7/pixi.js');
             inputScript('https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.8.1/L.PixiOverlay.min.js');
             inputScript(
                 'https://iclient.supermap.io/web/libs/leaflet/plugins/Leaflet.PixiOverlay/1.8.1/MarkerContainer.js'

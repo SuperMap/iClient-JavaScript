@@ -58,24 +58,24 @@
             inputScript('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://cdn.bootcss.com/openlayers/4.6.5/ol.css');
-            inputScript('https://cdn.bootcss.com/openlayers/4.6.5/ol.js');
+            inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.css');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.js');
         }
         if (inArray(includes, 'ol-debug')) {
-            inputCSS('https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css');
-            inputScript('https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js');
+            inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.css');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.js');
         }
         if (inArray(includes, 'mapv')) {
             inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.56/build/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://cdn.bootcss.com/proj4js/2.6.2/proj4.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/proj4js/2.6.2/proj4.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.3/dist/ol3Echarts.min.js');
