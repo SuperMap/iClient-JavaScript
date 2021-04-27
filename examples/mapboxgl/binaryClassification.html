@@ -22,13 +22,15 @@
   <script type="text/javascript" include="bootstrap,vue" src="../js/include-web.js"></script>
   <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
-  let img = document.querySelector('#tileImg16');
-  let canvas = document.querySelector('#data-canvas1');
-  let ctx = canvas.getContext('2d');
-  let predictBtn = document.querySelector('#predict');
+  var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+  var modelUrl = host + '/web/data/machine_learning/binary_classification/model.json';
+  var img = document.querySelector('#tileImg16');
+  var canvas = document.querySelector('#data-canvas1');
+  var ctx = canvas.getContext('2d');
+  var predictBtn = document.querySelector('#predict');
   ctx.drawImage(img, 0, 0, 640, 640);
-  let webMachineLearning = new SuperMap.WebMachineLearning();
-  let binaryClassification = new SuperMap.BinaryClassification({ modelUrl: 'http://192.168.11.148:8084/model.json', image: img });
+  var webMachineLearning = new SuperMap.WebMachineLearning();
+  var binaryClassification = new SuperMap.BinaryClassification({ modelUrl, image: img });
   predictBtn.addEventListener('click', function() {
     webMachineLearning.execute(binaryClassification).then((res) => {
     const { data, width, height } = res;

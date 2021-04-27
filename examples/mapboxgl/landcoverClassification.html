@@ -22,13 +22,15 @@
   <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 
   <script>
+  var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+  var modelUrl = host + '/web/data/machine_learning/landcover_classification/model.json';
   let img = document.querySelector('#landcover');
   let canvas = document.querySelector('#data-canvas1');
   let ctx = canvas.getContext('2d');
   let predictBtn = document.querySelector('#predict');
   ctx.drawImage(img, 0, 0, 640, 640);
   let webMachineLearning = new SuperMap.WebMachineLearning();
-  let landcoverClassification = new SuperMap.LandcoverClassification({ modelUrl: 'http://192.168.11.148:6677/model.json', image: img });
+  let landcoverClassification = new SuperMap.LandcoverClassification({ modelUrl, image: img });
   const colorMap = [[0,0,0], [255,0,0],[0,255,0],[0,255,255],[255,255,0],[0,0,255]];
   predictBtn.addEventListener('click', function() {
     webMachineLearning.execute(landcoverClassification).then((res) => {
