@@ -22,8 +22,7 @@
   <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 
   <script>
-  var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-  var modelUrl = host + '/web/data/machine_learning/landcover_classification/model.json';
+  var modelUrl = 'https://iclient.supermap.io/web/data/machine_learning/landcover_classification/model.json';
   let img = document.querySelector('#landcover');
   let canvas = document.querySelector('#data-canvas1');
   let ctx = canvas.getContext('2d');
