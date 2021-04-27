@@ -22,8 +22,7 @@
   <script type="text/javascript" include="bootstrap,vue" src="../js/include-web.js"></script>
   <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
-  var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-  var modelUrl = host + '/web/data/machine_learning/binary_classification/model.json';
+  var modelUrl = 'https://iclient.supermap.io/web/data/machine_learning/binary_classification/model.json';
   var img = document.querySelector('#tileImg16');
   var canvas = document.querySelector('#data-canvas1');
   var ctx = canvas.getContext('2d');
