@@ -17,7 +17,7 @@ module.exports = function (config) {
 
         client: {
             jasmine: {
-                random: false
+                random: false,
             }
         },
 
@@ -38,7 +38,7 @@ module.exports = function (config) {
                             '../node_modules/@turf/**',
                             '../node_modules/lodash/**'
                         ],
-                        plugins: ['istanbul']
+                        plugins: ['istanbul', '@babel/plugin-transform-runtime']
                     }
                 ],
                 [require('browserify-css'), { global: true }],
@@ -100,7 +100,6 @@ module.exports = function (config) {
             '../src/classic/**/!(index).js': ['browserify'],
             // './classic/**/*Spec.js': ['browserify'],
             './test-main-classic.js': ['browserify'],
-
             '../src/common/**/*.js': ['browserify'],
             // './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],

@@ -70,6 +70,9 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
+        if (typeof params.hasGeometry === 'boolean') {
+            paramsBySql.hasGeometry = params.hasGeometry;
+        }
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
         }

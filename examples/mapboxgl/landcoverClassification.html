@@ -1,0 +1,60 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n='resources.title_landcover_classification'></title>
+  <style>
+    #predict {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+    }
+  </style>
+</head>
+  <img style="position: absolute; left: 0px; top: 0px;" class="building" id="landcover" src="../img/landcover.png" alt="">
+  <canvas id="data-canvas1" width="640" height="640"></canvas>
+  <input type='button' id='predict' class='btn btn-primary' data-i18n="[value]resources.text_analyse"/>
+  <script type="text/javascript" include="bootstrap,vue" src="../js/include-web.js"></script>
+  <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+
+  <script>
+  let img = document.querySelector('#landcover');
+  let canvas = document.querySelector('#data-canvas1');
+  let ctx = canvas.getContext('2d');
+  let predictBtn = document.querySelector('#predict');
+  ctx.drawImage(img, 0, 0, 640, 640);
+  let webMachineLearning = new SuperMap.WebMachineLearning();
+  let landcoverClassification = new SuperMap.LandcoverClassification({ modelUrl: 'http://192.168.11.148:6677/model.json', image: img });
+  const colorMap = [[0,0,0], [255,0,0],[0,255,0],[0,255,255],[255,255,0],[0,0,255]];
+  predictBtn.addEventListener('click', function() {
+    webMachineLearning.execute(landcoverClassification).then((res) => {
+    const { data, width, height } = res;
+    const formatData = [];
+    data.forEach((colItem, index) => {
+        colItem.forEach((category, index1) => {
+          const maxIndex = category.findIndex((item, index) => {
+            const maxValue = Math.max.apply(undefined, category);
+            return item === maxValue;
+          })
+          formatData.push(colorMap[maxIndex][0], colorMap[maxIndex][1], colorMap[maxIndex][2], 100);
+        })
+      });
+      const bytes = ctx.getImageData(0, 0, 640, 640);
+      for (let i = 0; i < height * width; ++i) {
+          const j = i * 4;
+          bytes.data[j + 0] = formatData[j];
+          bytes.data[j + 1] = formatData[j + 1];
+          bytes.data[j + 2] = formatData[j + 2];
+          bytes.data[j + 3] = formatData[j + 3];
+      }
+      ctx.putImageData(bytes, 0, 0);
+   });
+  });
+  </script>
+</body>
+
+</html>

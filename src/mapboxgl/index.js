@@ -97,6 +97,9 @@ export {
     TokenServiceParameter,
     //thirdparty
     ElasticSearch,
+    BinaryClassification, 
+    LandcoverClassification, 
+    ObjectDetection,
     //util
     FetchRequest,
     ColorsPickerUtil,

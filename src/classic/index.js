@@ -3,6 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 export {ElasticSearch} from '@supermap/iclient-common/thirdparty/elasticsearch/ElasticSearch';
+export {BinaryClassification} from '@supermap/iclient-common/thirdparty/ai/BinaryClassification';
+export {LandcoverClassification} from '@supermap/iclient-common/thirdparty/ai/LandcoverClassification';
+export {ObjectDetection} from '@supermap/iclient-common/thirdparty/ai/ObjectDetection';
 export {SecurityManager} from '@supermap/iclient-common/security/SecurityManager';
 export {KernelDensityJobParameter} from '@supermap/iclient-common/iServer/KernelDensityJobParameter';
 export {SingleObjectQueryJobsParameter} from '@supermap/iclient-common/iServer/SingleObjectQueryJobsParameter';

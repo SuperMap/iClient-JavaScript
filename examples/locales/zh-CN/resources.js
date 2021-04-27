@@ -56,7 +56,8 @@ window.examplesResources = {
             "vuecomponents_leaflet": "Vue - Leaflet",
             "reactcomponents_mbgl": 'React - MapboxGL',
             "h5components": "H5",
-            "template": '模板'
+            "template": '模板',
+            "machineLearning": '机器学习'
         }
     },
     "footer": {
@@ -636,6 +637,9 @@ window.examplesResources = {
         "title_objectdetection":"机器学习结果叠加（目标检测）",
         "title_binaryclassification":"机器学习结果叠加（二元分类）",
         "title_mvt_mapboxgl":"MVT WGS84 (叠加 MapboxGL)",
+        "title_binary_classification": "二元分类",
+        "title_landcover_classification": "地物分类",
+        "title_object_detection": "目标识别",
 
         "text_service_name":"名称",
         "text_service_type":"类型",
@@ -690,6 +694,7 @@ window.examplesResources = {
         "text_removeResult": "移除结果",
         "text_addPath": "生成路径",
         "text_query": "查询",
+        "text_analyse": "分析",
         "text_closestFacilitiesService": "最近设施分析",
         "text_weightField": "权重字段:",
         "text_turnField": "终止里程点：(转向字段)",

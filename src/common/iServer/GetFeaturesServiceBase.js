@@ -55,6 +55,12 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
          */
         this.toIndex = 19;
 
+         /**
+         * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.hasGeometry=true]
+         * @description 返回结果是否包含Geometry
+         */
+        this.hasGeometry = true;
+
         /**
          * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.maxFeatures=1000]
          * @description 进行 SQL 查询时，用于设置服务端返回查询结果条目数量。
@@ -105,6 +111,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.fromIndex = params.fromIndex;
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
+        me.hasGeometry = params.hasGeometry;
         if (me.returnContent) {
             me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
             firstPara = false;
@@ -117,6 +124,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         if (params.returnCountOnly) {
             me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnContent)
         }
+
         jsonParameters = me.getJsonParameters(params);
         me.request({
             method: "POST",

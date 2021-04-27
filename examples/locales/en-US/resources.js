@@ -87,7 +87,8 @@ window.examplesResources = {
             "vuecomponents_leaflet": "Vue - Leaflet",
             "reactcomponents_mbgl": 'React - MapboxGL',
             "h5components": "H5",
-            "template": 'Templates'
+            "template": 'Templates',
+            "machineLearning": 'Machine Learning'
         },
         "more": {
             "_name": "More>>",
@@ -685,6 +686,9 @@ window.examplesResources = {
         "title_objectdetection":"Machinelearning Result Overlay(Objectdetection)",
         "title_binaryclassification":"Machinelearning Result Overlay(Binaryclassification)",
         "title_mvt_mapboxgl":"MVT WGS84 (via MapboxGL)",
+        "title_binary_classification": "Binary Claasification",
+        "title_landcover_classification": "Landcover Claasification",
+        "title_object_detection": "Object Detection",
 
         "text_service_name":"Name",
         "text_service_type":"Type",
@@ -739,6 +743,7 @@ window.examplesResources = {
         "text_removeResult": "Remove result",
         "text_addPath": "Add path",
         "text_query": "To query",
+        "text_analyse": "To anaylse",
         "text_closestFacilitiesService": "Closest Facilities Analysis Service",
         "text_weightField": "Weight field:",
         "text_turnField": "End of the mileage point (Turning field):",
