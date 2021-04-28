@@ -47,7 +47,8 @@ describe('GetFeaturesByBufferService', () => {
       bufferDistance: 30,
       attributeFilter: 'SMID>0',
       geometry: geometry,
-      returnContent: false
+      returnContent: false,
+      hasGeometry: false
     });
     var getFeaturesByBufferFailed = serviceFailedEventArgs => {
       serviceFailedEventArgsSystem = serviceFailedEventArgs;
@@ -66,6 +67,7 @@ describe('GetFeaturesByBufferService', () => {
         expect(getFeaturesByBufferService.returnContent).toBeNull();
         expect(getFeaturesByBufferService.fromIndex).toBeNull();
         expect(getFeaturesByBufferService.toIndex).toBeNull();
+        expect(getFeaturesByBufferService.hasGeometry).toBeNull();
         getFeaturesByBufferParameters.destroy();
         done();
       } catch (exception) {
@@ -107,7 +109,8 @@ describe('GetFeaturesByBufferService', () => {
       geometry: geometry,
       fromIndex: 0,
       toIndex: 19,
-      returnContent: true
+      returnContent: true,
+      hasGeometry: true
     });
     var getFeaturesByBufferFailed = serviceFailedEventArgs => {
       serviceFailedEventArgsSystem = serviceFailedEventArgs;
@@ -130,6 +133,7 @@ describe('GetFeaturesByBufferService', () => {
         expect(getFeaturesByBufferService.returnContent).toBeNull();
         expect(getFeaturesByBufferService.fromIndex).toBeNull();
         expect(getFeaturesByBufferService.toIndex).toBeNull();
+        expect(getFeaturesByBufferService.hasGeometry).toBeNull();
         getFeaturesByBufferParameters.destroy();
         done();
       } catch (exception) {
@@ -151,6 +155,7 @@ describe('GetFeaturesByBufferService', () => {
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
       expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
+      expect(paramsObj.hasGeometry).toBe(true)
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });

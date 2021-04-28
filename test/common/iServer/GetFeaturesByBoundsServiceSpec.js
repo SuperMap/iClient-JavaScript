@@ -99,13 +99,15 @@ describe('GetFeaturesByBoundsService', () => {
     );
     var boundsParams = new GetFeaturesByBoundsParameters({
       datasetNames: ['World:Countries'],
-      bounds: new Bounds(0, 0, 90, 90)
+      bounds: new Bounds(0, 0, 90, 90),
+      hasGeometry: false
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
       expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+      expect(paramsObj.hasGeometry).toBe(false);
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });

@@ -114,9 +114,15 @@ export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
             parasByGeometry.attributeFilter = params.attributeFilter;
             parasByGeometry.getFeatureMode = 'SPATIAL_ATTRIBUTEFILTER';
         }
+        
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByGeometry.maxFeatures = params.maxFeatures;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+            parasByGeometry.hasGeometry = params.hasGeometry;
+        }
+
         if (params.targetEpsgCode) {
             parasByGeometry.targetEpsgCode = params.targetEpsgCode;
         }

@@ -149,6 +149,9 @@
         if (inArray(includes, 'DefaultStyleConfiguration')) {
             inputScript("https://iclient.supermap.io/web/libs/iclient8c/resource/Plugins/Plotting/DefaultStyleConfiguration.js");
         }
+        if (inArray(includes, 'tensorflow')) {
+          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+        }
     }
 
     load();

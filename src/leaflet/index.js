@@ -100,6 +100,7 @@ import {
     BinaryClassification,
     LandcoverClassification,
     ObjectDetection,
+    WebMachineLearning,
     //util
     FetchRequest,
     ColorsPickerUtil,
@@ -581,6 +582,7 @@ export {
     BinaryClassification,
     LandcoverClassification,
     ObjectDetection,
+    WebMachineLearning,
     //util
     FetchRequest,
     ColorsPickerUtil,

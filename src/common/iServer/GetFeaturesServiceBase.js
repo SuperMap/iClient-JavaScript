@@ -92,6 +92,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = null;
         me.maxFeatures = null;
         me.format = null;
+        me.hasGeometry = null;
     }
 
     /**

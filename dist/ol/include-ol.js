@@ -110,6 +110,9 @@
         if (inArray(includes, 'canvg')) {
             inputScript('https://cdn.jsdelivr.net/npm/canvg@3.0.6/lib/umd.min.js');
         }
+        if (inArray(includes, 'tensorflow')) {
+          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+        }
 
         // dist
         if (!inArray(excludes, 'iclient-ol')) {

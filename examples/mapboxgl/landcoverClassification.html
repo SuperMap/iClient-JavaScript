@@ -16,10 +16,10 @@
   </style>
 </head>
   <img style="position: absolute; left: 0px; top: 0px;" class="building" id="landcover" src="../img/landcover.png" alt="">
-  <canvas id="data-canvas1" width="640" height="640"></canvas>
+  <canvas style="position: absolute; left: 0px; top: 0px;" id="data-canvas1" width="640" height="640"></canvas>
   <input type='button' id='predict' class='btn btn-primary' data-i18n="[value]resources.text_analyse"/>
   <script type="text/javascript" include="bootstrap,vue" src="../js/include-web.js"></script>
-  <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="iclient-mapboxgl-vue,mapbox-gl-enhance,tensorflow" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 
   <script>
   var modelUrl = 'https://iclient.supermap.io/web/data/machine_learning/landcover_classification/model.json';

@@ -75,7 +75,8 @@ describe('GetFeaturesByIDsService', () => {
       fromIndex: 0,
       fields: ['SMID'],
       toIndex: -1,
-      IDs: [1, 2, 3]
+      IDs: [1, 2, 3],
+      hasGeometry: false
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
@@ -85,6 +86,7 @@ describe('GetFeaturesByIDsService', () => {
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
       expect(paramsObj.getFeatureMode).toBe('ID');
+      expect(paramsObj.hasGeometry).toBe(false);
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(

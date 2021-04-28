@@ -125,6 +125,9 @@
             );
             inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
         }
+        if (inArray(includes, 'tensorflow')) {
+          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+        }
 
         // iclient
         if (!inArray(excludes, 'iclient-leaflet')) {

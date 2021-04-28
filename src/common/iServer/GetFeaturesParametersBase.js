@@ -70,7 +70,7 @@ export class GetFeaturesParametersBase {
         this.maxFeatures = null;
 
         /**
-         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.hasGeometry=false]
+         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.hasGeometry=true]
          * @description 返回结果是否包含Geometry
          */
         this.hasGeometry = true;
