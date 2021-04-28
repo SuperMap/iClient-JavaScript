@@ -70,6 +70,12 @@ export class GetFeaturesParametersBase {
         this.maxFeatures = null;
 
         /**
+         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.hasGeometry=true]
+         * @description 返回结果是否包含Geometry
+         */
+        this.hasGeometry = true;
+
+        /**
          * @member {SuperMap.MetricsAggParameter|SuperMap.GeoHashGridAggParameter} SuperMap.GetFeaturesParametersBase.prototype.aggregations
          * @description 聚合查询参数，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
          */
@@ -91,6 +97,7 @@ export class GetFeaturesParametersBase {
         me.returnContent = null;
         me.fromIndex = null;
         me.toIndex = null;
+        me.hasGeometry = null;
         me.maxFeatures = null;
         me.targetEpsgCode = null;
         me.targetPrj = null;

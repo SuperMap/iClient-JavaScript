@@ -50,7 +50,8 @@ describe('GetFeaturesByGeometryService', () => {
       fromIndex: 0,
       toIndex: -1,
       spatialQueryMode: SpatialQueryMode.INTERSECT,
-      geometry: point
+      geometry: point,
+      hasGeometry: false
     });
     var getFeaturesByGeometryFailed = serviceFailedEventArgs => {
       serviceFailedEventArgsSystem = serviceFailedEventArgs;
@@ -68,6 +69,7 @@ describe('GetFeaturesByGeometryService', () => {
         expect(getFeaturesByGeometryService.events).toBeNull();
         expect(getFeaturesByGeometryService.eventListeners).toBeNull();
         expect(getFeaturesByGeometryService.returnContent).toBeNull();
+        expect(getFeaturesByGeometryService.hasGeometry).toBeNull();
         getFeaturesByGeometryParameters.destroy();
         done();
       } catch (exception) {
@@ -88,6 +90,7 @@ describe('GetFeaturesByGeometryService', () => {
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
+      expect(paramsObj.hasGeometry).toBe(false);
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(

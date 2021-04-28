@@ -119,6 +119,11 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByBounds.maxFeatures = params.maxFeatures;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+          parasByBounds.hasGeometry = params.hasGeometry;
+        }
+
         if (params.targetEpsgCode) {
             parasByBounds.targetEpsgCode = params.targetEpsgCode;
         }

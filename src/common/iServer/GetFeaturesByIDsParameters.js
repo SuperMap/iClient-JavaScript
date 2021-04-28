@@ -87,11 +87,16 @@ export class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
         if (params.targetEpsgCode) {
             parasByIDs.targetEpsgCode = params.targetEpsgCode;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+            parasByIDs.hasGeometry = params.hasGeometry;
+        }
+
         if (!params.targetEpsgCode && params.targetPrj) {
             parasByIDs.targetPrj = params.targetPrj;
         }
         if (params.aggregations) {
-          parasByIDs.aggregations = params.aggregations;
+            parasByIDs.aggregations = params.aggregations;
         }
 
         return Util.toJSON(parasByIDs);

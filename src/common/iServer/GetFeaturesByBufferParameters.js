@@ -85,9 +85,9 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
      * @returns {string} 转化后的 JSON 字符串。
      */
     static toJsonParameters(params) {
-        var filterParameter, paramsBySql, geometry;
+        var filterParameter, paramsByBuffer, geometry;
         geometry = ServerGeometry.fromGeometry(params.geometry);
-        paramsBySql = {
+        paramsByBuffer = {
             datasetNames: params.datasetNames,
             getFeatureMode: 'BUFFER',
             bufferDistance: params.bufferDistance,
@@ -97,22 +97,27 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
             filterParameter = new FilterParameter();
             filterParameter.name = params.datasetNames;
             filterParameter.fields = params.fields;
-            paramsBySql.queryParameter = filterParameter;
+            paramsByBuffer.queryParameter = filterParameter;
         }
         if (params.attributeFilter) {
-            paramsBySql.attributeFilter = params.attributeFilter;
-            paramsBySql.getFeatureMode = 'BUFFER_ATTRIBUTEFILTER';
+            paramsByBuffer.attributeFilter = params.attributeFilter;
+            paramsByBuffer.getFeatureMode = 'BUFFER_ATTRIBUTEFILTER';
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
-            paramsBySql.maxFeatures = params.maxFeatures;
+            paramsByBuffer.maxFeatures = params.maxFeatures;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+            paramsByBuffer.hasGeometry = params.hasGeometry;
+        }
+
         if (params.targetEpsgCode) {
-            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+            paramsByBuffer.targetEpsgCode = params.targetEpsgCode;
         }
         if (!params.targetEpsgCode && params.targetPrj) {
-            paramsBySql.targetPrj = params.targetPrj;
+            paramsByBuffer.targetPrj = params.targetPrj;
         }
-        return Util.toJSON(paramsBySql);
+        return Util.toJSON(paramsByBuffer);
     }
 }
 
