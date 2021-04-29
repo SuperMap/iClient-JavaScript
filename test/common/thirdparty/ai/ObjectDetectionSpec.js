@@ -3,7 +3,7 @@ import image from '../../../resources/img/baiduTileTest.png';
 import * as tfconv from '@tensorflow/tfjs-converter';
 import * as tfcore from '@tensorflow/tfjs-core';
 
-describe('binary classification', () => {
+describe('object detection', () => {
     var testImage;
     beforeAll(() => {
         testImage = window.document.createElement('img');
