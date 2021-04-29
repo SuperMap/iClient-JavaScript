@@ -10,24 +10,42 @@
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
   <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
-     #main{
-        margin: 0 auto;
-        width: 100%;
-        height: 100%;
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="main">
-    <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284">
+    <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284" style="position: absolute;">
       <!-- 图层列表组件：sm-layer-list -->
-      <sm-layer-list position="top-left" :collapsed="false"></sm-layer-list>
+      <sm-layer-list position="top-left" :collapsed="false" :attributes="attributes"></sm-layer-list>
     </sm-web-map>
   </div>
   <script>
     new Vue({
-      el: '#main'
+      el: '#main',
+      data() {
+        return {
+          attributes: {
+            enabled: true,
+            position: 'bottom',
+            style: {
+              width: '100%',
+              height: '40%',
+              background: 'rgba(255, 255, 255, 0.3)'
+            },
+            associateWithMap: {
+              enabled: true,
+              zoomToFeature: true,
+              centerToFeature: true
+            }
+          }
+        }
+      }
     })
 
   </script>

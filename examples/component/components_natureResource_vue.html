@@ -20,6 +20,12 @@
                 box-sizing: border-box;
             }
 
+            #iframe {
+                width: 100%;
+                height: 91%;
+                
+            }
+
             @media screen and (max-width: 992px) {
                 #main {
                     overflow: auto;
@@ -38,25 +44,11 @@
         <div id="main">
             <sm-layout-header>
                 <div class="dashboard-header">
-                    <div class="left-header">
-                        <sm-text class="btn-active" v-bind="textPropsCommon" title="指标总览"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="调查监测"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="耕地保护"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="空间规划"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="用途管制"></sm-text>
-                    </div>
-                    <sm-text class="middle-header" v-bind="headerTitleProps"></sm-text>
-                    <div class="right-header">
-                        <sm-text v-bind="textPropsCommon" title="权益保护"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="地质矿产"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="生态修复"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="确权登记"></sm-text>
-                        <sm-text v-bind="textPropsCommon" title="执法监察"></sm-text>
-                    </div>
+                    <sm-nav v-bind="navProps" @change="changeScreen"></sm-nav>
                 </div>
             </sm-layout-header>
 
-            <sm-layout-content>
+            <sm-layout-content v-if="!isIframe">
                 <a-row>
                     <a-col :span="6">
                         <sm-border
@@ -262,6 +254,9 @@
                     </a-col>
                 </a-row>
             </sm-layout-content>
+            <sm-layout-content v-else>
+                <iframe id="iframe" :src="iframeSrc" frameborder="0" scrolling="auto"></iframe>
+            </sm-layout-content>
         </div>
 
         <script>
@@ -270,6 +265,83 @@
                 el: '#main',
                 data() {
                     return {
+                        isIframe: false,
+                        iframeSrc: '',
+                        navProps: {
+                            title: {
+                                title: "自然资源承载能力监管决策平台",
+                                position: "center",
+                                target: "_blank",
+                                style: {
+                                    width: "29%",
+                                    height: "100%",
+                                    letterSpacing: "1px",
+                                    fontSize: "32px",
+                                    color: "#fff",
+                                    fontWeight: "normal",
+                                    fontFamily: "微软雅黑"
+                                }
+                            },
+                            items: [
+                                {
+                                    key: 0,
+                                    title: "指标总览"
+                                },
+                                {
+                                    key: 1,
+                                    title: "调查监测"
+                                },
+                                {
+                                    key: 2,
+                                    title: "耕地保护"
+                                },
+                                {
+                                    key: 3,
+                                    title: "空间规划"
+                                },
+                                {
+                                    key: 4,
+                                    title: "用途管制"
+                                },
+                                {
+                                    key: 5,
+                                    title: "权益保护",
+                                },
+                                {
+                                    key: 6,
+                                    title: "地质矿产"
+                                },
+                                {
+                                    key: 7,
+                                    title: "生态修复"
+                                },
+                                {
+                                    key: 8,
+                                    title: "确权登记"
+                                },
+                                {
+                                    key: 9,
+                                    title: "执法监察"
+                                }
+                            ],
+                            itemStyle: function() {
+                                return {
+                                    fontSize: "16px",
+                                    fontWeight: "normal",
+                                    fontFamily: "微软雅黑",
+                                    color: "rgba(255, 255, 255, 0.65)"
+                                }
+                            },
+                            itemActiveStyle: function() {
+                                return {
+                                    backgroundImage: "url('../img/background/image8.png')",
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: 'contain',
+                                    color: "rgba(255, 255, 255)"
+                                }
+                            },
+                        },
                         headerTitleProps: {
                             frequency: 2,
                             startTiming: false,
@@ -1333,6 +1405,18 @@
                     if (screenWidth <= 540) {
                         this.showMap = false;
                     }
+                },
+                methods: {
+                    changeScreen(item, index) {
+                        this.isIframe = true;
+                        if (index === 1) {
+                            this.iframeSrc = window.location.href.replace(/editor/, 'components_demo_vue');
+                        } else if (index === 2) {
+                            this.iframeSrc = window.location.href.replace(/editor/, 'components_estateMonitoringPlatform_vue');
+                        } else {
+                            this.isIframe = false;
+                        }
+                    }
                 }
             });
         </script>
@@ -1430,6 +1514,7 @@
             }
 
             .sm-component-layout-content {
+                height: 100%;
                 margin-top: 20px;
             }
 
@@ -1550,7 +1635,6 @@
             }
 
             .dashboard-header {
-                background-image: url('../img/background/image1.png');
                 height: 72px;
                 display: flex;
                 align-items: center;
