@@ -4,7 +4,7 @@ import * as tfconv from '@tensorflow/tfjs-converter';
 import * as tfcore from '@tensorflow/tfjs-core';
 
 describe('binary classification', () => {
-    var testImage, imageTensor;
+    var testImage;
     beforeAll(() => {
         testImage = window.document.createElement('img');
         testImage.id = 'demo';

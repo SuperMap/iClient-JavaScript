@@ -1274,7 +1274,7 @@ module.exports = toPairs;
 
 /***/ }),
 
-/***/ 107:
+/***/ 558:
 /***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -1645,8 +1645,9 @@ if (typeof globalNS['Promise'] !== 'function') {
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -1668,8 +1669,8 @@ if (typeof globalNS['Promise'] !== 'function') {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
 /******/ 		__webpack_require__.n = (module) => {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
@@ -1701,10 +1702,12 @@ if (typeof globalNS['Promise'] !== 'function') {
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
 
@@ -12516,8 +12519,8 @@ SuperMap.TimeFlowControl = TimeFlowControl;
 
 
 
-// EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(107);
+// EXTERNAL MODULE: ./src/common/node_modules/promise-polyfill/dist/polyfill.js
+var polyfill = __webpack_require__(558);
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
 var fetch = __webpack_require__(693);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
@@ -40231,7 +40234,7 @@ class BinaryClassification extends MachineLearningModelBase {
       super(options);
     }
     /**
-     * @function  SuperMap.ObjectDetection.prototype.handleResult
+     * @function  SuperMap.BinaryClassification.prototype.handleResult
      * @description 对预测数据进行处理
      * @param {Object} prediction - 模型预测后的张量。
      * @returns {Object} 处理返回的数据
@@ -40336,7 +40339,9 @@ class ObjectDetection extends MachineLearningModelBase {
 
         const scoreData = {};
         score.forEach((colData, index) => {
-            scoreData[index] = +colData[1].toFixed(5);
+            if (colData[1] >= 0.5) {
+                scoreData[index] = +colData[1].toFixed(5);
+            }
         });
         const filterBbox = bbox
             .filter((item, index) => {
@@ -40447,6 +40452,7 @@ class ObjectDetection extends MachineLearningModelBase {
      */
 
     async nms(bbox, scores) {
+        console.log('bbox, scores', bbox, scores);
         const res = await external_function_try_return_tf_catch_e_return_namespaceObject.image.nonMaxSuppressionWithScoreAsync(bbox, scores, 100, 0.3);
         return res.selectedIndices.arraySync();
     }
@@ -40459,7 +40465,7 @@ class ObjectDetection extends MachineLearningModelBase {
      * @returns {array} 返回被间隔取值后的数组
      */
 
-    _getIntervalFromArray(array, interval, start) {
+    getIntervalFromArray(array, interval, start) {
         return array.map((arr) => {
             return arr.filter((item, index) => {
                 return index >= start && index % interval === start;
@@ -83378,6 +83384,7 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 
 })();
 
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
 

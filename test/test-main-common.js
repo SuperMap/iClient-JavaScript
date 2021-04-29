@@ -180,6 +180,7 @@ import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
 import './common/thirdparty/ai/BinaryClassificationSpec.js';
 import './common/thirdparty/ai/LandcoverClassificationSpec.js';
 import './common/thirdparty/ai/WebMachineLearningSpec.js';
+import './common/thirdparty/ai/ObjectDetectionSpec.js';
 /**common -- component**/
 import './common/components/templates/IndexTabsPageContainerSpec.js';
 import './common/components/templates/NavTabsPageSpec.js';

@@ -55,7 +55,9 @@ export class ObjectDetection extends MachineLearningBase {
 
         const scoreData = {};
         score.forEach((colData, index) => {
-            scoreData[index] = +colData[1].toFixed(5);
+            if (colData[1] >= 0.5) {
+                scoreData[index] = +colData[1].toFixed(5);
+            }
         });
         const filterBbox = bbox
             .filter((item, index) => {
@@ -178,7 +180,7 @@ export class ObjectDetection extends MachineLearningBase {
      * @returns {array} 返回被间隔取值后的数组
      */
 
-    _getIntervalFromArray(array, interval, start) {
+    getIntervalFromArray(array, interval, start) {
         return array.map((arr) => {
             return arr.filter((item, index) => {
                 return index >= start && index % interval === start;
