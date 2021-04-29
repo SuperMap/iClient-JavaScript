@@ -564,16 +564,16 @@ var exampleConfig = {
                         name_en: 'iServer REST Data VectorTile(20 million Point)',
                         version: '10.0.0',
                         localIgnore: true,
-                        thumbnail: "mvtVectorTile_restdata.png",
-                        fileName: "mvtVectorTile_restdata"
+                        thumbnail: 'mvtVectorTile_restdata.png',
+                        fileName: 'mvtVectorTile_restdata'
                     },
                     {
-                        name: "POI 标签高亮",
-                        name_en: "POI Label Highlight",
-                        version: "10.1.3",
+                        name: 'POI 标签高亮',
+                        name_en: 'POI Label Highlight',
+                        version: '10.1.3',
                         localIgnore: true,
-                        thumbnail: "mvt_poi_highlight.png",
-                        fileName: "mvtVectorTile_poi_highlight"
+                        thumbnail: 'mvt_poi_highlight.png',
+                        fileName: 'mvtVectorTile_poi_highlight'
                     }
                 ]
             },
@@ -1319,6 +1319,13 @@ var exampleConfig = {
                         version: '10.1.3',
                         thumbnail: 'landcoverClassification.png',
                         fileName: 'landcoverClassification'
+                    },
+                    {
+                        name: '目标检测',
+                        name_en: 'Object Detection',
+                        version: '10.1.3',
+                        thumbnail: 'object_detection.png',
+                        fileName: 'objectDetection'
                     }
                 ]
             }
