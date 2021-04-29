@@ -1,5 +1,6 @@
 import { BinaryClassification } from '../../../../src/common/thirdparty/ai/BinaryClassification';
 import { WebMachineLearning } from '../../../../src/common/thirdparty/ai/WebMachineLearning';
+import image from '../../../resources/img/baiduTileTest.png';
 import * as tfconv from '@tensorflow/tfjs-converter';
 import * as tfcore from '@tensorflow/tfjs-core';
 
@@ -8,13 +9,15 @@ describe('WebMachineLearning', () => {
     beforeAll(() => {
         testImage = window.document.createElement('img');
         testImage.id = 'demo';
-        testImage.src = testImage;
+        testImage.src = image.src;
         window.document.body.appendChild(testImage);
     });
-
+    afterAll(() => {
+        window.document.body.removeChild(testImage);
+    });
     it('predict', (done) => {
         var params = {
-            modelUrl: 'http://192.168.11.148:8080/model.json',
+            modelUrl: 'ttp://fakeurl/model.json',
             image: window.document.querySelector('#demo')
         };
         var binaryClassification = new BinaryClassification(params);

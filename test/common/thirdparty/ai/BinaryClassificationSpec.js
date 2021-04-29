@@ -11,6 +11,9 @@ describe('binary classification', () => {
         testImage.src = image.src;
         window.document.body.appendChild(testImage);
     });
+    afterAll(() => {
+        window.document.body.removeChild(testImage);
+    });
     it('predict', (done) => {
         var params = {
             modelUrl: 'http://fakeurl/model.json',
