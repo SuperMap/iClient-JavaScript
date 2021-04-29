@@ -18,12 +18,13 @@ describe('WebMachineLearning', () => {
     it('predict', (done) => {
         var params = {
             modelUrl: 'ttp://fakeurl/model.json',
-            image: window.document.querySelector('#demo')
+            image: window.document.querySelector('#demo'),
+            backend: 'cpu'
         };
         var binaryClassification = new BinaryClassification(params);
         expect(binaryClassification).not.toBeNull();
         expect(binaryClassification.modelUrl).toBe(params.modelUrl);
-        expect(binaryClassification.backend).toBe('webgl');
+        expect(binaryClassification.backend).toBe('cpu');
         spyOn(tfconv, 'loadGraphModel').and.callFake((modelUrl) => {
             expect(modelUrl).toBe(params.modelUrl);
             const model = {

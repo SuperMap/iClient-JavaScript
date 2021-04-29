@@ -17,12 +17,13 @@ describe('landcover classification', () => {
     it('predict', (done) => {
         var params = {
             modelUrl: 'http://fakeurl/model.json',
-            image: window.document.querySelector('#demo')
+            image: window.document.querySelector('#demo'),
+            backend: 'cpu'
         };
         var landcoverClassification = new LandcoverClassification(params);
         expect(landcoverClassification).not.toBeNull();
         expect(landcoverClassification.modelUrl).toBe(params.modelUrl);
-        expect(landcoverClassification.backend).toBe('webgl');
+        expect(landcoverClassification.backend).toBe('cpu');
         
         spyOn(tfconv, 'loadGraphModel').and.callFake((modelUrl) => {
           expect(modelUrl).toBe(params.modelUrl);

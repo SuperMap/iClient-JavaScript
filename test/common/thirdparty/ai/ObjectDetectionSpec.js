@@ -17,18 +17,16 @@ describe('object detection', () => {
     it('predict', (done) => {
         var params = {
             modelUrl: 'http://fakeurl/model.json',
-            image: document.querySelector('#demo')
+            image: document.querySelector('#demo'),
+            backend: 'cpu'
         };
         var objectDetection = new ObjectDetection(params);
         expect(objectDetection).not.toBeNull();
         expect(objectDetection.modelUrl).toBe(params.modelUrl);
-        expect(objectDetection.backend).toBe('webgl');
+        expect(objectDetection.backend).toBe('cpu');
         spyOn(tfconv, 'loadGraphModel').and.callFake((modelUrl) => {
             expect(modelUrl).toBe(params.modelUrl);
             const model = {
-                //         const score = result[3].arraySync();
-                // const bbox = result[2].arraySync();
-                // const delta = result[1].arraySync();
                 executeAsync: (x) => {
                     return [
                         {},
