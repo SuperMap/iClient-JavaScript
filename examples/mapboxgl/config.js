@@ -1325,7 +1325,7 @@ var exampleConfig = {
                         name_en: 'Object Detection',
                         version: '10.1.3',
                         thumbnail: 'object_detection.png',
-                        fileName: 'objectDetection'
+                        fileName: 'ObjectDetection'
                     }
                 ]
             }
