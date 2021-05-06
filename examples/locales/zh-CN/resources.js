@@ -639,7 +639,7 @@ window.examplesResources = {
         "title_mvt_mapboxgl":"MVT WGS84 (叠加 MapboxGL)",
         "title_binary_classification": "二元分类",
         "title_landcover_classification": "地物分类",
-        "title_object_detection": "目标识别",
+        "title_object_detection": "目标检测",
 
         "text_service_name":"名称",
         "text_service_type":"类型",

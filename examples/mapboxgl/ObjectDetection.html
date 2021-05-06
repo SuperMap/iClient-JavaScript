@@ -6,7 +6,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title data-i18n='resources.title_binary_classification'></title>
+  <title data-i18n='resources.title_object_detection'></title>
   <style>
     #predict {
       position: absolute;
@@ -22,7 +22,7 @@
   <script type="text/javascript" include="bootstrap,vue" src="../js/include-web.js"></script>
   <script include="tensorflow" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
-  var modelUrl = 'https://iclient.supermap.io/web/data/machine_learning/objcet_detection/model.json';
+  var modelUrl = 'https://iclient.supermap.io/web/data/machine_learning/object_detection/model.json';
   var img = document.querySelector('#tileImg16');
   var canvas = document.querySelector('#data-canvas1');
   var ctx = canvas.getContext('2d');
