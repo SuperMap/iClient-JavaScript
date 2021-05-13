@@ -1298,13 +1298,13 @@ var exampleConfig = {
         }
     },
     machineLearning: {
-        name: '机器学习',
-        name_en: 'Machine Learning',
+        name: 'WebAI影像分析',
+        name_en: 'WebAI Image Analysis',
         content: {
             machineLearning: {
-                name: '机器学习',
+                name: 'WebAI影像分析',
                 version: '10.1.3',
-                name_en: 'Machine Learning',
+                name_en: 'WebAI Image Analysis',
                 content: [
                     {
                         name: '二元分类',
