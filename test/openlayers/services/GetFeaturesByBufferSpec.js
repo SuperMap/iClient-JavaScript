@@ -125,4 +125,50 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
             done();
         });
     });
+    it('getFeaturesByBuffer_ICL1331', done => {
+        var polygon = new Polygon([
+            [
+                [-20, 20],
+                [-20, -20],
+                [20, -20],
+                [20, 20],
+                [-20, 20]
+            ]
+        ]);
+        var bufferParam = new GetFeaturesByBufferParameters({
+            datasetNames: ['World:Capitals'],
+            bufferDistance: 10,
+            geometry: polygon,
+            fromIndex: 1,
+            toIndex: 3
+        });
+        var getFeaturesByBuffeService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(featureServiceURL + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+            expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+            expect(paramsObj.bufferDistance).toEqual(10);
+            expect(paramsObj.getFeatureMode).toBe('BUFFER');
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
+        let errorCalled = false;
+        let callback = false;
+        setTimeout(()=>{
+            expect(callback).toBeTrue();
+            expect(errorCalled).toBeFalse();
+            done();
+        },5000)
+        getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, testResult => {
+            callback= true;
+            serviceResult = testResult;
+            if(serviceResult.type == "processFailed"){
+                errorCalled = true;
+            }else{
+                expect(serviceResult.type).toBe('processCompleted');
+                serviceResult[AAA]
+            }
+        });
+    });
 });
