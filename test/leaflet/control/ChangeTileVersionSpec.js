@@ -1,6 +1,7 @@
 import {changeTileVersion} from '../../../src/leaflet/control/ChangeTileVersion';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import { mockCreateTile } from '../../tool/mock_leaflet';
 
 var url = GlobeParameter.ChinaProvincesURL;
 describe('leaflet_ChangeTileVersion', () => {
@@ -15,6 +16,7 @@ describe('leaflet_ChangeTileVersion', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
+        mockCreateTile()
         map = L.map('map', {
             crs: L.CRS.EPSG4326,
             center: [33.03, 104.79],
@@ -22,7 +24,7 @@ describe('leaflet_ChangeTileVersion', () => {
         });
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
             if(testUrl.indexOf('ChinaProvinces/tilesets')>-1){
-                return Promise.resolve(new Response(tilesetsEscapedJson));
+                return Promise.resolve(new Response(JSON.stringify(tilesetsEscapedJson)));
             }
             return Promise.resolve();
         });
