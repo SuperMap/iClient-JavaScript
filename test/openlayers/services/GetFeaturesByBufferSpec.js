@@ -156,10 +156,11 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
         let errorCalled = false;
         let callback = false;
         setTimeout(()=>{
+            console.log('-------------------------except-----------------------');
             expect(callback).toBeTrue();
             expect(errorCalled).toBeFalse();
             done();
-        },5000)
+        },8000)
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, testResult => {
             callback= true;
             serviceResult = testResult;
