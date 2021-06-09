@@ -1,7 +1,7 @@
 ﻿/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-(function() {
+(function () {
     var r = new RegExp('(^|(.*?\\/))(include-mapboxgl.js)(\\?|$)'),
         s = document.getElementsByTagName('script'),
         targetScript;
@@ -153,7 +153,7 @@
             inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/GLTFLoader.js');
         }
         if (inArray(includes, 'echarts-gl')) {
-            inputScript('https://iclient.supermap.io/web/libs/echarts-gl/1.1.2/echarts-gl.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts-gl/1.1.2-fix/echarts-gl.min.js');
         }
         if (inArray(includes, 'mapbox-print-pdf')) {
             inputScript('https://iclient.supermap.io/web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
@@ -165,9 +165,8 @@
             inputScript('https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
         }
-
 
         // dist
         if (!inArray(excludes, 'iclient-mapboxgl')) {
