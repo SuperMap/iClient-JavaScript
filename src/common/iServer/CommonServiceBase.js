@@ -37,7 +37,6 @@ export class CommonServiceBase {
 
         this.proxy = null;
 
-
         this.index = null;
 
         this.length = null;
@@ -274,7 +273,7 @@ export class CommonServiceBase {
             timeout: options.async ? 0 : null,
             proxy: options.proxy
         })
-            .then(function(response) {
+            .then(function (response) {
                 if (response.text) {
                     return response.text();
                 }
@@ -283,34 +282,41 @@ export class CommonServiceBase {
                 }
                 return response;
             })
-            .then(function(text) {
-                var result = text;
+            .then(function (text) {
+                let requestResult = text;
                 if (typeof text === 'string') {
-                    result = new JSONFormat().read(text);
+                    requestResult = new JSONFormat().read(text);
                 }
-                if (!result || result.error || (result.code >= 300 && result.code !== 304)) {
-                    if (result && result.error) {
-                        result = {
-                            error: result.error
+                if (
+                    !requestResult ||
+                    requestResult.error ||
+                    (requestResult.code >= 300 && requestResult.code !== 304)
+                ) {
+                    if (requestResult && requestResult.error) {
+                        requestResult = {
+                            error: requestResult.error
                         };
                     } else {
-                        result = {
-                            error: result
+                        requestResult = {
+                            error: requestResult
                         };
                     }
                 }
-                if (result.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(result);
-                } else {
-                    result.succeed = result.succeed == undefined ? true : result.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(result);
-                }
+                return requestResult;
             })
-            .catch(function(e) {
+            .catch(function (e) {
                 var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(e);
+            })
+            .then((requestResult) => {
+                if (requestResult.error) {
+                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(requestResult);
+                } else {
+                    requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
+                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(requestResult);
+                }
             });
     }
 }
