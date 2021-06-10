@@ -329,5 +329,22 @@ describe('leaflet_GraphicLayer', () => {
             map.remove();
             window.document.body.removeChild(testDiv);
         });
+        it('CRS_4326_ICL_1042', (done) => {
+            let { map, testDiv } = createMap();
+            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+            setTimeout(() => {
+                expect(layer._crs).toEqual(map.options.crs);
+                const state = layer.getState();
+                expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
+                expect(state.zoom).toEqual(map.getZoom()+1);
+                const webglRenderLayer = layer._renderer._renderLayer;
+                expect(webglRenderLayer).not.toBeNull();
+                expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
+                expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
+                map.remove();
+                window.document.body.removeChild(testDiv);
+                done();
+            }, 4000);
+        });
     });
 });

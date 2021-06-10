@@ -79,6 +79,7 @@ export var GraphicLayer = L.Path.extend({
      */
     onAdd: function (map) {
         this._map = map;
+        this._crs = map.options.crs;
         this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
@@ -274,8 +275,9 @@ export var GraphicLayer = L.Path.extend({
         let center = map.getCenter();
         let longitude = center.lng;
         let latitude = center.lat;
-        let zoom = map.getZoom();
-        let maxZoom = map.getMaxZoom();
+        const zoomOffset = this._crs.code === "EPSG:4326"?1:0;
+        let zoom = map.getZoom()+zoomOffset;
+        let maxZoom = map.getMaxZoom()+zoomOffset;
 
         let mapViewport = {
             longitude: longitude,
