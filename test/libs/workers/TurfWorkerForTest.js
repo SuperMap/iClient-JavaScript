@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 if( 'undefined' === typeof window){
-    importScripts('https://cdn.bootcss.com/Turf.js/5.1.6/turf.js')
+    importScripts('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js')
 
 /**
  * 空间分析所需工具类
