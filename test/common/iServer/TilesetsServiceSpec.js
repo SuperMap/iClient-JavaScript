@@ -70,10 +70,10 @@ describe('TilesetsService', () => {
             expect(analyseResult.length).toEqual(1);
             expect(analyseResult[0].name).toBe("smtiles_tileset_1116742863");
             expect(analyseResult[0].metaData.mapName).toBe("长春市区图");
-            expect(analyseResult[0].metaData.resolutions[0]).toEqual(34.80645971);
-            expect(analyseResult[0].metaData.resolutions[1]).toEqual(17.403229855);
-            expect(analyseResult[0].metaData.scaleDenominators[0]).toEqual(131551.9737070866);
-            expect(analyseResult[0].metaData.scaleDenominators[1]).toEqual(65775.9868535433);
+            expect(analyseResult[0].metaData.resolutions[0]).toBeCloseTo(34.80645971, 0.00001);
+            expect(analyseResult[0].metaData.resolutions[1]).toBeCloseTo(17.403229855, 0.00001);
+            expect(analyseResult[0].metaData.scaleDenominators[0]).toBeCloseTo(131551.973707087, 0.00001);
+            expect(analyseResult[0].metaData.scaleDenominators[1]).toBeCloseTo(65775.9868535433, 0.00001);
             expect(analyseResult[0].metaData.tileFormat).toBe("PNG");
             expect(analyseResult[0].metaData.tileType).toBe("Image");
             expect(analyseResult[0].metaData.tileHeight).toEqual(256);
@@ -85,7 +85,7 @@ describe('TilesetsService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('GET');
             expect(testUrl).toBe(tileSetsURL + "/tilesets");
-            return Promise.resolve(new Response(tilesetsEscapedJson));
+            return Promise.resolve(new Response(JSON.stringify(tilesetsEscapedJson)));
         });
         tilesetsService.processAsync();
     });

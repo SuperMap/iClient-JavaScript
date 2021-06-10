@@ -516,7 +516,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'post').and.callFake((url) => {
-            if (url.indexOf('queryResults.json') > -1) {
+            if (url.indexOf('queryResults') > -1) {
                 return Promise.resolve(new Response(supermapRestData));
             }
             return Promise.resolve();

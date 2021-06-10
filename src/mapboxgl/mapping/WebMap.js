@@ -1999,7 +1999,7 @@ export class WebMap extends mapboxgl.Evented {
 					allFeatures[i].properties.lat = coordinate[1];
 				}
 			}
-			features.properties['index'] = i + '';
+			feature.properties['index'] = i + '';
 			features.push(feature);
 		}
 		return features;

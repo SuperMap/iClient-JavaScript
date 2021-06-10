@@ -345,7 +345,7 @@ export class ChangeTileVersion extends Control {
      * @param {Object} tileVersions - 待更新的切片版本。
      */
     update(tileVersions) {
-        this.tileVersions = tileVersions;
+        this.tileVersions = tileVersions ||[];
         this.updateLength(this.tileVersions.length);
     }
 

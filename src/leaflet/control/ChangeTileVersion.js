@@ -146,7 +146,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @param {number} tileVersions - 待更新的切片版本号。
      */
     update: function (tileVersions) {
-        this.tileVersions = tileVersions;
+        this.tileVersions = tileVersions || [];
         this.updateLength(this.tileVersions.length);
     },
 
