@@ -58,5 +58,5 @@ app.use('/en/dist', express.static('dist'), serveIndex('dist'));
 app.use('/en/build', express.static('build'), serveIndex('build'));
 app.use('/en', express.static('web/en'), serveIndex('web/en'));
 if (!product) {
-    open(`http://localhost:8082`);
+    open(`http://localhost:8082/examples/leaflet/examples.html`);
 }

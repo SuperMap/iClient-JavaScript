@@ -62,7 +62,7 @@ var exampleConfig = {
                     {
                         name: '疫情历史回放模板',
                         name_en: 'Epidemic history playback template',
-                        version: '11.0.0',
+                        version: '10.1.2',
                         thumbnail: 'components_timeline_ncp.png',
                         fileName: 'components_timeline_ncp',
                         localIgnore: true
@@ -70,7 +70,7 @@ var exampleConfig = {
                     {
                         name: '轨迹回放模板',
                         name_en: 'Track Layer template',
-                        version: '11.0.0',
+                        version: '10.1.2',
                         thumbnail: 'components_timeline_tracklayer.png',
                         fileName: 'components_timeline_tracklayer',
                         localIgnore: true

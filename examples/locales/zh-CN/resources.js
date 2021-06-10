@@ -436,6 +436,7 @@ window.examplesResources = {
         "title_mvtVectorLayer_vectortilerest": "iServer 矢量瓦片服务",
         "title_mvtVectorLayer_restdata": "iServer 数据服务矢量瓦片",
         "title_mvtVectorLayer4326": "iServer MVT矢量瓦片(WGS84)",
+        "title_mvtVectorLayer_poi_highlight": "POI 标签高亮",
         "title_mvtVectorLayer_mapboxStyle": "OSM风格(MVT WGS84)",
         "title_mvtVectorLayer_mapboxStyle_4326": "风格动态切换",
         "title_mvtVectorLayer_mapboxStyle_lineStyle": "线样式编辑",

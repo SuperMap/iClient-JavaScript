@@ -495,6 +495,7 @@ window.examplesResources = {
         "title_mvtVectorLayer_restdata": "iServer REST Data TileFeature",
         "title_mvtVectorLayer": "iServer MVT VectorTile",
         "title_mvtVectorLayer4326": "iServer MVT VectorTile (WGS84)",
+        "title_mvtVectorLayer_poi_highlight": "MVT POI Highlight",
         "title_mvtVectorLayer_mapboxStyle": "Style Switch",
         "title_mvtVectorLayer_mapboxStyle_4326": "OSM Style(MVT WGS84)",
         "title_mvtVectorLayer_mapboxStyle_lineStyle": "LineStyle Edit",

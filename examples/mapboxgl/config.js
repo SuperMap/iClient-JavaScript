@@ -566,6 +566,14 @@ var exampleConfig = {
                         localIgnore: true,
                         thumbnail: "mvtVectorTile_restdata.png",
                         fileName: "mvtVectorTile_restdata"
+                    },
+                    {
+                        name: 'POI 标签高亮',
+                        name_en: 'POI Label Highlight',
+                        version: '10.1.3',
+                        localIgnore: true,
+                        thumbnail: 'mvt_poi_highlight.png',
+                        fileName: 'mvtVectorTile_poi_highlight'
                     }
                 ]
             },
