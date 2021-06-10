@@ -329,7 +329,7 @@ describe('leaflet_GraphicLayer', () => {
             map.remove();
             window.document.body.removeChild(testDiv);
         });
-        it('CRS_4326_ICL_1042', (done) => {
+        it('CRS_4326_ICL_1134', (done) => {
             let { map, testDiv } = createMap();
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
             setTimeout(() => {
