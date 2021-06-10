@@ -18,9 +18,9 @@ import {LabelOverLengthMode} from '../REST';
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
  * @param {Object} options - 参数。
- * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。
+ * @param {Array.<SuperMap.ThemeLabelItem>} options.items - 分段标签专题图的子项数组。
  * @param {string} options.labelExpression - 标注字段表达式。
- * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
+ * @param {Array.<SuperMap.LabelImageCell|SuperMap.LabelSymbolCell|SuperMap.LabelThemeCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {SuperMap.ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
  * @param {SuperMap.ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
  * @param {SuperMap.LabelOverLengthMode} [options.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
@@ -53,7 +53,7 @@ export class ThemeLabel extends Theme {
         this.background = new ThemeLabelBackground();
 
         /**
-         * @member {Array.<SuperMap.ThemeUniqueItem>} [SuperMap.ThemeLabel.prototype.items]
+         * @member {Array.<SuperMap.ThemeLabelItem>} [SuperMap.ThemeLabel.prototype.items]
          * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression
          *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
          */
@@ -78,7 +78,7 @@ export class ThemeLabel extends Theme {
         this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
         /**
-         * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
+         * @member {Array.<SuperMap.LabelImageCell|SuperMap.LabelSymbolCell|SuperMap.LabelThemeCell>} SuperMap.ThemeLabel.prototype.matrixCells
          * @description 矩阵标签元素数组，用于制作矩阵标签专题图。
          *              数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
          */
