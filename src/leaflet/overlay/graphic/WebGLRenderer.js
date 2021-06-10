@@ -169,6 +169,8 @@ export var GraphicWebGLRenderer = L.Class.extend({
             radiusMinPixels: radiusMinPixels,
             radiusMaxPixels: radiusMaxPixels,
             strokeWidth: strokeWidth,
+            coordinateSystem:this._isWGS84()?window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS:window.DeckGL.COORDINATE_SYSTEM.LNGLAT,
+            isGeographicCoordinateSystem: this._isWGS84(),
             outline: outline,
             getPosition: function (point) {
                 if (!point) {
@@ -258,6 +260,8 @@ export var GraphicWebGLRenderer = L.Class.extend({
         deckOptions.canvas = this._container;
         deckOptions.onBeforeRender = this._onBeforeRender.bind(this);
         deckOptions.onAfterRender = this._onAfterRender.bind(this);
+        deckOptions.coordinateSystem = this._isWGS84()? window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS:window.DeckGL.COORDINATE_SYSTEM.LNGLAT;
+        deckOptions.isGeographicCoordinateSystem = this._isWGS84();
         if (!this.deckGL) {
             this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         } else {
@@ -304,6 +308,9 @@ export var GraphicWebGLRenderer = L.Class.extend({
     },
     _initPath: emptyFunc,
     _addPath: emptyFunc,
-    containsPoint: emptyFunc
+    containsPoint: emptyFunc,
+    _isWGS84(){
+        return this.layer._map.options.crs.code === "EPSG:4326";
+    }
 
 });
