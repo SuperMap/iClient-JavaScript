@@ -15,6 +15,7 @@ import './openlayers/mapping/WebMapSpec.js';
 import './openlayers/overlay/DataFlowSpec.js';
 import './openlayers/overlay/graphic/GraphicSpec.js';
 import './openlayers/overlay/GraphicSpec.js';
+import './openlayers/overlay/graphic/CanvasRendererSpec';
 
 import './openlayers/overlay/GraphSpec.js';
 import './openlayers/overlay/HeatMapSpec.js';

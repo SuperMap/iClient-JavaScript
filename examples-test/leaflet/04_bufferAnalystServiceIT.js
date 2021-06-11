@@ -9,7 +9,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g path', 10000);
-        browser.pause(2000);
+        browser.pause(10000);
         browser.elements('tag name', 'path', function (result) {
             this.assert.equal(result.value.length, 2, "expect Number of bufferAnalystServices path to be 2, actual is " + result.value.length);
         });

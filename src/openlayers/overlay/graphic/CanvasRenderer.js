@@ -47,11 +47,10 @@ export class GraphicCanvasRenderer extends olObject {
         CommonUtil.extend(this, opt);
         this.highLightStyle = this.layer.highLightStyle;
 
-        this.mapWidth = this.size[0];
-        this.mapHeight = this.size[1];
+        this.mapWidth = this.size[0] / this.pixelRatio;
+        this.mapHeight = this.size[1] / this.pixelRatio;
         this.width = this.map.getSize()[0];
         this.height = this.map.getSize()[1];
-
         this.context = Util.createCanvasContext2D(this.mapWidth, this.mapHeight);
         this.context.scale(this.pixelRatio, this.pixelRatio);
         this.canvas = this.context.canvas;
@@ -79,7 +78,6 @@ export class GraphicCanvasRenderer extends olObject {
         this.height = height;
         this.mapWidth = this.mapWidth * xRatio;
         this.mapHeight = this.mapHeight * yRatio;
-
         this.canvas.width = this.mapWidth;
         this.canvas.height = this.mapHeight;
         this.canvas.style.width = this.width + 'px';
@@ -114,18 +112,18 @@ export class GraphicCanvasRenderer extends olObject {
      */
     drawGraphics(graphics) {
         this.graphics_ = graphics || [];
-        let mapWidth = this.mapWidth / this.pixelRatio;
-        let mapHeight = this.mapHeight / this.pixelRatio;
+        let mapWidth = this.mapWidth;
+        let mapHeight = this.mapHeight;
 
         let vectorContext = olRender.toContext(this.context, {
             size: [mapWidth, mapHeight],
             pixelRatio: this.pixelRatio
         });
-        var defaultStyle = this.layer._getDefaultStyle();
+        let defaultStyle = this.layer._getDefaultStyle();
         let me = this,
             layer = me.layer,
             map = layer.map;
-        graphics.map(function(graphic) {
+        graphics.map(function (graphic) {
             let style = graphic.getStyle() || defaultStyle;
             if (me.selected === graphic) {
                 let defaultHighLightStyle = style;
