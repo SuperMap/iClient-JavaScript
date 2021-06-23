@@ -424,7 +424,7 @@ export class WebMap extends Observable {
             baseLayerInfo.visibleScales.forEach(scale => {
                 let value = 1 / scale;
                 res = this.getResFromScale(value, coordUnit);
-                scale = `1:${value.toLocaleString()}`;
+                scale = `1:${value}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
                 resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
@@ -433,7 +433,7 @@ export class WebMap extends Observable {
         } else if (baseLayerInfo.layerType === 'WMTS') {
             baseLayerInfo.scales.forEach(scale => {
                 res = this.getResFromScale(scale, coordUnit, 90.7);
-                scale = `1:${scale.toLocaleString()}`;
+                scale = `1:${scale}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
                 resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
@@ -480,7 +480,7 @@ export class WebMap extends Observable {
     getScaleFromRes(resolution, coordUnit = "DEGREE", dpi = 96) {
         let scale, mpu = metersPerUnit[coordUnit.toUpperCase()];
         scale = resolution * dpi * mpu / .0254;
-        return '1:' + scale.toLocaleString();
+        return '1:' + scale;
     }
     /**
     * @private
@@ -703,11 +703,20 @@ export class WebMap extends Observable {
               const scales = this.scales.map((scale) => {
                   return 1 / scale.split(':')[1];
               });
-              visibleScales = baseLayer.visibleScales || scales;
+              if (Array.isArray(baseLayer.visibleScales) && baseLayer.visibleScales.length && baseLayer.visibleScales) {
+                visibleScales = baseLayer.visibleScales;
+              } else {
+                visibleScales = scales;
+              }
               minScale = 1 / mapInfo.minScale.split(':')[1];
               maxScale = 1 / mapInfo.maxScale.split(':')[1];
           }
-        
+          if (minScale > maxScale) {
+            let temp = null;
+            temp = minScale;
+            minScale = maxScale;
+            maxScale = temp;
+          }
           const minVisibleScale = this.findNearest(visibleScales, minScale);
           const maxVisibleScale = this.findNearest(visibleScales, maxScale);
           const minZoom = visibleScales.indexOf(minVisibleScale);
@@ -829,7 +838,7 @@ export class WebMap extends Observable {
         // if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
         //     maxZoom = options.baseLayer.visibleScales.length;
         // }
-        this.map.setView(new View({ zoom, center, projection, maxZoom }));
+        this.map.setView(new View({ zoom, center, projection, maxZoom, maxResolution }));
         let viewOptions = {};
 
         if (baseLayer.scales && baseLayer.scales.length > 0 && baseLayer.layerType === "WMTS" ||
