@@ -97,10 +97,6 @@ import {
     TokenServiceParameter,
     //thirdparty
     ElasticSearch,
-    BinaryClassification,
-    LandcoverClassification,
-    ObjectDetection,
-    WebMachineLearning,
     //util
     FetchRequest,
     ColorsPickerUtil,
@@ -579,10 +575,6 @@ export {
     TokenServiceParameter,
     //thirdparty
     ElasticSearch,
-    BinaryClassification,
-    LandcoverClassification,
-    ObjectDetection,
-    WebMachineLearning,
     //util
     FetchRequest,
     ColorsPickerUtil,

@@ -2,6 +2,5 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ElasticSearch } from './elasticsearch';
-import { BinaryClassification, LandcoverClassification, ObjectDetection, WebMachineLearning } from './ai';
 
-export { ElasticSearch, BinaryClassification, LandcoverClassification, ObjectDetection, WebMachineLearning } ;
+export { ElasticSearch } ;
