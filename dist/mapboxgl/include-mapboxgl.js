@@ -171,7 +171,7 @@
         // dist
         if (!inArray(excludes, 'iclient-mapboxgl')) {
             if (supportES6()) {
-                inputScript('../../dist/mapboxgl/iclient-mapboxgl-es6.js');
+                inputScript('../../dist/mapboxgl/iclient-mapboxgl-es6.min.js');
             } else {
                 inputScript('../../dist/mapboxgl/iclient-mapboxgl.min.js');
             }
