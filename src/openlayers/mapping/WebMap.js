@@ -29,6 +29,7 @@ import MVT from 'ol/format/MVT';
 import Observable from 'ol/Observable';
 import olMap from 'ol/Map';
 import View from 'ol/View';
+import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import * as olProj from 'ol/proj';
 import * as olProj4 from 'ol/proj/proj4';
 import Units from 'ol/proj/Units';
@@ -423,7 +424,7 @@ export class WebMap extends Observable {
             baseLayerInfo.visibleScales.forEach(scale => {
                 let value = 1 / scale;
                 res = this.getResFromScale(value, coordUnit);
-                scale = `1:${value.toLocaleString()}`;
+                scale = `1:${value}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
                 resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
@@ -432,7 +433,7 @@ export class WebMap extends Observable {
         } else if (baseLayerInfo.layerType === 'WMTS') {
             baseLayerInfo.scales.forEach(scale => {
                 res = this.getResFromScale(scale, coordUnit, 90.7);
-                scale = `1:${scale.toLocaleString()}`;
+                scale = `1:${scale}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
                 resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
@@ -479,7 +480,7 @@ export class WebMap extends Observable {
     getScaleFromRes(resolution, coordUnit = "DEGREE", dpi = 96) {
         let scale, mpu = metersPerUnit[coordUnit.toUpperCase()];
         scale = resolution * dpi * mpu / .0254;
-        return '1:' + scale.toLocaleString();
+        return '1:' + scale;
     }
     /**
     * @private
@@ -673,7 +674,92 @@ export class WebMap extends Observable {
             // 挂载带baseLayer上，便于删除
             baseLayer.labelLayer = labelLayer;
         }
+        this.limitScale(mapInfo, baseLayer);
     }
+
+    validScale(scale) {
+      if (!scale) {
+          return false;
+      }
+      const scaleNum = scale.split(':')[1];
+      if (!scaleNum) {
+          return false;
+      }
+      const res = 1 / +scaleNum;
+      if (res === Infinity || res >= 1) {
+          return false;
+      }
+      return true;
+  }
+
+  limitScale(mapInfo, baseLayer) {
+      if (this.validScale(mapInfo.minScale) && this.validScale(mapInfo.maxScale)) {
+          let visibleScales, minScale, maxScale;
+          if (baseLayer.layerType === 'WMTS') {
+              visibleScales = baseLayer.scales;
+              minScale = mapInfo.minScale.split(':')[1];
+              maxScale = mapInfo.maxScale.split(':')[1];
+          } else {
+              const scales = this.scales.map((scale) => {
+                  return 1 / scale.split(':')[1];
+              });
+              if (Array.isArray(baseLayer.visibleScales) && baseLayer.visibleScales.length && baseLayer.visibleScales) {
+                visibleScales = baseLayer.visibleScales;
+              } else {
+                visibleScales = scales;
+              }
+              minScale = 1 / mapInfo.minScale.split(':')[1];
+              maxScale = 1 / mapInfo.maxScale.split(':')[1];
+          }
+          if (minScale > maxScale) {
+            let temp = null;
+            temp = minScale;
+            minScale = maxScale;
+            maxScale = temp;
+          }
+          const minVisibleScale = this.findNearest(visibleScales, minScale);
+          const maxVisibleScale = this.findNearest(visibleScales, maxScale);
+          const minZoom = visibleScales.indexOf(minVisibleScale);
+          const maxZoom = visibleScales.indexOf(maxVisibleScale);
+          if (minZoom !== 0 && maxZoom !== visibleScales.length - 1) {
+              this.map.setView(
+                  new View(
+                      Object.assign({}, this.map.getView().options_, {
+                          maxResolution: undefined,
+                          minResolution: undefined,
+                          minZoom,
+                          maxZoom,
+                          constrainResolution: false
+                      })
+                  )
+              );
+              this.map.addInteraction(
+                  new MouseWheelZoom({
+                      constrainResolution: true
+                  })
+              );
+          }
+      }
+  }
+
+  parseNumber(scaleStr) {
+    return Number(scaleStr.split(":")[1])
+  }
+
+  findNearest(scales, target) {
+    let resultIndex = 0
+    let targetScaleD = target;
+    for (let i = 1, len = scales.length; i < len; i++) {
+      if (
+        Math.abs(scales[i] - targetScaleD) <
+        Math.abs(scales[resultIndex] - targetScaleD)
+      ) {
+        resultIndex = i
+      }
+    }
+    return scales[resultIndex]
+  }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.addMVTMapLayer
@@ -752,6 +838,7 @@ export class WebMap extends Observable {
         // if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
         //     maxZoom = options.baseLayer.visibleScales.length;
         // }
+        this.map.setView(new View({ zoom, center, projection, maxZoom, maxResolution }));
         let viewOptions = {};
 
         if (baseLayer.scales && baseLayer.scales.length > 0 && baseLayer.layerType === "WMTS" ||

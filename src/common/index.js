@@ -362,7 +362,7 @@ import {
     OnlineServiceBase
 } from './online';
 import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter } from './security';
-import { ElasticSearch, BinaryClassification, LandcoverClassification, ObjectDetection, WebMachineLearning } from './thirdparty';
+import { ElasticSearch } from './thirdparty';
 import {
     setCORS,
     isCORS,
@@ -915,5 +915,5 @@ export {
 };
 export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
 export { CartoCSS, ThemeStyle };
-export { ElasticSearch, BinaryClassification, LandcoverClassification, ObjectDetection, WebMachineLearning };
+export { ElasticSearch };
 export { Lang, en, zh };

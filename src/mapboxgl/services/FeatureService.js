@@ -7,6 +7,8 @@ import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
 import {
     DataFormat,
+    Geometry,
+    GeometryPoint,
     GetFeaturesByIDsService,
     GetFeaturesBySQLService,
     GetFeaturesByBoundsService,
@@ -174,7 +176,7 @@ export class FeatureService extends ServiceBase {
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+        url = CommonUtil.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
@@ -214,7 +216,11 @@ export class FeatureService extends ServiceBase {
         if (params.geometry) {
             if (params.geometry instanceof mapboxgl.LngLatBounds) {
                 params.geometry = Util.toSuperMapPolygon(params.geometry);
-            } else {
+            } else if (params.geometry instanceof mapboxgl.Point) {
+                params.geometry = new GeometryPoint(params.geometry.x, params.geometry.y);
+            } else if (params.geometry instanceof mapboxgl.LngLat) {
+                params.geometry = new GeometryPoint(params.geometry.lng, params.geometry.lat);
+            } else if (!(params.geometry instanceof Geometry)) {
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
         }
@@ -222,7 +228,7 @@ export class FeatureService extends ServiceBase {
         if (params.features) {
             var features = [];
             if (Util.isArray(params.features)) {
-                params.features.map(function(feature) {
+                params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
                     return features;
                 });

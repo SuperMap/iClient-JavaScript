@@ -1,3 +1,4 @@
+import mapboxgl from 'mapbox-gl';
 import { FeatureService } from '../../../src/mapboxgl/services/FeatureService';
 import { GetFeaturesByBufferParameters } from '../../../src/common/iServer/GetFeaturesByBufferParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -131,6 +132,68 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
         });
         service.getFeaturesByBuffer(bufferParam, result => {
             serviceResult = result;
+            bufferParam.destroy();
+            done();
+        });
+    });
+    it('getFeaturesByBuffer_geometry_mapboxglPoint', done => {
+        var queryBufferGeometry = new mapboxgl.Point(-77, 38);
+        var bufferParam = new GetFeaturesByBufferParameters({
+            datasetNames: ['World:Capitals'],
+            bufferDistance: 10,
+            geometry: queryBufferGeometry,
+            fromIndex: 1,
+            toIndex: 3
+        });
+        var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+            expect(paramsObj.geometry).not.toBeFalsy();
+            expect(paramsObj.geometry.points.length).toBe(1);
+            expect(paramsObj.geometry.points[0].x).toBe(-77)
+            expect(paramsObj.geometry.points[0].y).toBe(38)
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
+        service.getFeaturesByBuffer(bufferParam, testResult => {
+            serviceResult = testResult;
+            var result = serviceResult.result;
+            expect(result.succeed).toBe(true);
+            expect(result.featureCount).toEqual(1);
+            expect(result.totalCount).toEqual(1);
+            expect(serviceResult.result.features.type).toEqual('FeatureCollection');
+            bufferParam.destroy();
+            done();
+        });
+    });
+    it('getFeaturesByBuffer_geometry_mapboxglLatlng', done => {
+        var queryBufferGeometry = new mapboxgl.LngLat(-77, 38);
+        var bufferParam = new GetFeaturesByBufferParameters({
+            datasetNames: ['World:Capitals'],
+            bufferDistance: 10,
+            geometry: queryBufferGeometry,
+            fromIndex: 1,
+            toIndex: 3
+        });
+        var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+            expect(paramsObj.geometry).not.toBeFalsy();
+            expect(paramsObj.geometry.points.length).toBe(1);
+            expect(paramsObj.geometry.points[0].x).toBe(-77);
+            expect(paramsObj.geometry.points[0].y).toBe(38);
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
+        service.getFeaturesByBuffer(bufferParam, testResult => {
+            serviceResult = testResult;
+            var result = serviceResult.result;
+            expect(result.succeed).toBe(true);
+            expect(result.featureCount).toEqual(1);
+            expect(result.totalCount).toEqual(1);
+            expect(serviceResult.result.features.type).toEqual('FeatureCollection');
             bufferParam.destroy();
             done();
         });

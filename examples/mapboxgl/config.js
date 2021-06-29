@@ -1296,40 +1296,6 @@ var exampleConfig = {
                 ]
             }
         }
-    },
-    machineLearning: {
-        name: 'WebAI影像分析',
-        name_en: 'WebAI Image Analysis',
-        content: {
-            machineLearning: {
-                name: 'WebAI影像分析',
-                version: '10.1.3',
-                name_en: 'WebAI Image Analysis',
-                content: [
-                    {
-                        name: '二元分类',
-                        name_en: 'Binary Classification',
-                        version: '10.1.3',
-                        thumbnail: 'binaryClassification.png',
-                        fileName: 'binaryClassification'
-                    },
-                    {
-                        name: '地物分类',
-                        name_en: 'Landcover Classification',
-                        version: '10.1.3',
-                        thumbnail: 'landcoverClassification.png',
-                        fileName: 'landcoverClassification'
-                    },
-                    {
-                        name: '目标检测',
-                        name_en: 'Object Detection',
-                        version: '10.1.3',
-                        thumbnail: 'object_detection.png',
-                        fileName: 'ObjectDetection'
-                    }
-                ]
-            }
-        }
     }
 };
 /**
@@ -1344,8 +1310,7 @@ var sideBarIconConfig = {
     viz: 'fa-map',
     control: 'fa-sliders',
     multiCoordSys: 'fa-globe',
-    GTC: 'fa-globe',
-    machineLearning: 'fa-globe'
+    GTC: 'fa-globe'
 };
 
 /**
@@ -1358,7 +1323,6 @@ var exampleIconConfig = {
     iPortal: 'fa-desktop',
     viz: 'fa-map',
     GTC: 'fa-globe',
-    multiCoordSys: 'fa-globe',
-    machineLearning: 'fa-globe'
+    multiCoordSys: 'fa-globe'
 };
 window.mapboxglExampleConfig = exampleConfig;
