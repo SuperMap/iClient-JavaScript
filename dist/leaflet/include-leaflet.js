@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-(function() {
+(function () {
     var r = new RegExp('(^|(.*?\\/))(include-leaflet.js)(\\?|$)'),
         s = document.getElementsByTagName('script'),
         targetScript;
@@ -56,6 +56,10 @@
         if (!inArray(excludes, 'leaflet')) {
             inputCSS('https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css');
             inputScript('https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js');
+        }
+        if (inArray(includes, 'mapbox-gl-enhance')) {
+            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
+            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js');
@@ -126,7 +130,7 @@
             inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
         }
 
         // iclient
@@ -167,7 +171,6 @@
         if (inArray(includes, 'leaflet-mapbox-gl')) {
             inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl-leaflet@0.0.14/leaflet-mapbox-gl.js');
         }
-        
     }
 
     load();
