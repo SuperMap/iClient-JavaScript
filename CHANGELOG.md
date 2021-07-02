@@ -1,3 +1,78 @@
+# 10.1.3 #
+
+## API changes
+
+### for Leaflet
+
+- `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByBufferParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增 options.hasGeometry 参数，支持这只是否返回几何信息
+
+### for OpenLayers
+
+- `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByBufferParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增 options.hasGeometry 参数，支持这只是否返回几何信息
+
+### for MapboxGL
+
+- `SuperMap.GetFeaturesByBoundsParameters` `SuperMap.GetFeaturesByBufferParameters` `SuperMap.GetFeaturesByGeometryParameters` `SuperMap.GetFeaturesByIDsParameters` 新增 options.hasGeometry 参数，支持这只是否返回几何信息
+
+### Component
+
+- vue-iclient-mapboxgl
+  
+  - 多行文本(sm-text-list)组件支持自定义单元格样式
+
+## Fixed
+
+### for Leaflet
+
+- iServer
+  
+  - 修复 各 `Service` 类回调函数中编码出错重复进入回调的问题
+
+- 可视化
+
+  - 修复 高效率点图层类 L.supermap.graphicLayer webgl 渲染模式下，当地图坐标系为 WGS84 时叠加偏移的问题
+
+- 动态标绘
+
+  - 修复 带不透明填充的点标号绘制时填充带透明度 问题
+  
+  - 修复 扇形区域在南北极绘制错误 问题
+
+### for OpenLayers
+
+- iServer
+
+  - 修复 各 `Service` 类回调函数中编码出错重复进入回调的问题
+
+- 可视化
+
+  - 修复 ol.source.Graphic在分辨率不为100%的浏览器下和设备比不为1的设备上显示不全的问题
+
+### for MapboxGL
+
+- iServer
+
+  - 修复各 `Service` 类回调函数中编码出错重复进入回调的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 属性表(sm-attributes)组件支持SuperMap iServer来源的数据分页请求
+
+## Examples
+
+### for MapboxGL
+
+- 可视化-EChartsGL
+
+  - 修复EChartsGL示例不能拖动和缩放的问题
+
+- 可视化-矢量瓦片
+
+  - 新增“POI 标签高亮”示例
+
+
 # 10.1.2 #
 
 ## 新特性
