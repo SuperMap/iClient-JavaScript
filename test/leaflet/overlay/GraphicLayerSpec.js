@@ -346,5 +346,41 @@ describe('leaflet_GraphicLayer', () => {
                 done();
             }, 4000);
         });
+        it('CRS_4326_ICL_1349', (done) => {
+            let { map, testDiv } = createMap();
+            map.options.crs = L.CRS.TianDiTu_Mercator;
+            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+            setTimeout(() => {
+                expect(layer._crs).toEqual(map.options.crs);
+                const state = layer.getState();
+                expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
+                expect(state.zoom).toEqual(map.getZoom()+1);
+                const webglRenderLayer = layer._renderer._renderLayer;
+                expect(webglRenderLayer).not.toBeNull();
+                expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT);
+                expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeFalse();
+                map.remove();
+                window.document.body.removeChild(testDiv);
+                done();
+            }, 4000);
+        });
+        it('CRS_4326_ICL_1349', (done) => {
+            let { map, testDiv } = createMap();
+            map.options.crs = L.CRS.TianDiTu_WGS84;
+            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+            setTimeout(() => {
+                expect(layer._crs).toEqual(map.options.crs);
+                const state = layer.getState();
+                expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
+                expect(state.zoom).toEqual(map.getZoom()+1);
+                const webglRenderLayer = layer._renderer._renderLayer;
+                expect(webglRenderLayer).not.toBeNull();
+                expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
+                expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
+                map.remove();
+                window.document.body.removeChild(testDiv);
+                done();
+            }, 4000);
+        });
     });
 });
