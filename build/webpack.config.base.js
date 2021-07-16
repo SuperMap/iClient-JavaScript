@@ -19,7 +19,8 @@ module.exports = {
         let fileName = moduleVersion === 'es6' ? `${productName}-${moduleVersion}` : `${productName}`;
         return {
             path: `${__dirname}/../dist/${libName}/`,
-            filename: `${fileName}.js`
+            filename: `${fileName}.js`,
+            chunkFormat :'commonjs'
         };
     },
 
