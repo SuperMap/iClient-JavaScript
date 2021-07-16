@@ -291,10 +291,10 @@ export class ServerGeometry {
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
-        //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
+            //根据面积排序
+            ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
             // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
             // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
@@ -324,17 +324,14 @@ export class ServerGeometry {
                 }
             }
         } else {
-            //根据面积排序
-            //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
             polygonArray = new Array();
             for (let i = 0; i < polygonArrayTemp.length; i++) {
                 if (geoTopo[i] && geoTopo[i] == -1) {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[
-                            polygonArray.length - 1
-                        ].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components =
+                            polygonArray[polygonArray.length - 1].components.concat(CCWArray);
                         CCWArray = [];
                     }
                     polygonArray.push(polygonArrayTemp[i]);
@@ -342,9 +339,8 @@ export class ServerGeometry {
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
-                            CCWArray
-                        );
+                        polygonArray[polyLength - 1].components =
+                            polygonArray[polyLength - 1].components.concat(CCWArray);
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
                             polygonArray.push(new Polygon(CCWArray));
@@ -406,10 +402,10 @@ export class ServerGeometry {
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
-        //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
+            //根据面积排序
+            ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
             // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
             // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
@@ -439,16 +435,14 @@ export class ServerGeometry {
                 }
             }
         } else {
-            //根据面积排序
             polygonArray = new Array();
             for (let i = 0; i < polygonArrayTemp.length; i++) {
                 if (geoTopo[i] && geoTopo[i] == -1) {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[
-                            polygonArray.length - 1
-                        ].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components =
+                            polygonArray[polygonArray.length - 1].components.concat(CCWArray);
                         CCWArray = [];
                     }
                     polygonArray.push(polygonArrayTemp[i]);
@@ -456,9 +450,8 @@ export class ServerGeometry {
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
-                            CCWArray
-                        );
+                        polygonArray[polyLength - 1].components =
+                            polygonArray[polyLength - 1].components.concat(CCWArray);
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
                             polygonArray.push(new Polygon(CCWArray));
