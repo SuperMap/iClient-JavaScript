@@ -124,8 +124,8 @@ describe('GetFeaturesBySQLService', () => {
       queryParameter: new FilterParameter({
         attributeFilter: 'SMID<10',
         name: 'Countries@World',
-        hasGeometry: false
       }),
+      hasGeometry: false,
       returnContent: true,
       fromIndex: 2,
       toIndex: 10
