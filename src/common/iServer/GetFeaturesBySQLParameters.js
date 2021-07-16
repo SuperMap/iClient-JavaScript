@@ -73,6 +73,9 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
         }
+        if (typeof params.hasGeometry === 'boolean') {
+            paramsBySql.hasGeometry = params.hasGeometry;
+        }
         if (params.targetEpsgCode) {
             paramsBySql.targetEpsgCode = params.targetEpsgCode;
         }

@@ -123,7 +123,8 @@ describe('GetFeaturesBySQLService', () => {
       datasetNames: ['World:Countries'],
       queryParameter: new FilterParameter({
         attributeFilter: 'SMID<10',
-        name: 'Countries@World'
+        name: 'Countries@World',
+        hasGeometry: false
       }),
       returnContent: true,
       fromIndex: 2,
@@ -134,6 +135,7 @@ describe('GetFeaturesBySQLService', () => {
       expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+      expect(paramsObj.hasGeometry).toBe(false);
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
