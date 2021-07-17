@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-ol",
   "description": "",
-  "version": "11.0.0-alpha",
+  "version": "11.0.0-beta",
   "keywords": [
     "SuperMap",
     "OpenLayers"
@@ -18,7 +18,7 @@
     "echarts": "4.9.0",
     "mapv": "2.0.62",
     "ol": "6.4.3",
-    "@supermap/iclient-common": "11.0.0-alpha",
+    "@supermap/iclient-common": "11.0.0-beta",
     "proj4": "2.6.3",
     "xlsx": "0.16.9",
     "canvg": "3.0.7",
