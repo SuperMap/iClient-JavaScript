@@ -44,6 +44,12 @@ export class LayerStatus {
 
         this.fieldValuesDisplayFilter = null;
 
+        /**
+         * @member {Object} [SuperMap.SetLayerStatusParameters]
+         * @description 图层组下的子图层资源信息
+         */
+        this.subLayers = null;
+
         if (options) {
             Util.extend(this, options);
         }
@@ -90,6 +96,10 @@ export class LayerStatus {
 
         if (this.fieldValuesDisplayFilter) {
             v.push('"fieldValuesDisplayFilter":' + Util.toJSON(this.fieldValuesDisplayFilter));
+        }
+
+        if (this.subLayers) {
+            v.push('"subLayers":' + this.subLayers.toJSON());
         }
 
         json += v;
