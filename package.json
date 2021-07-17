@@ -72,7 +72,7 @@
     "browserify-imgify": "^0.0.1",
     "chromedriver": "87.0.5",
     "clean-css-cli": "^4.3.0",
-    "commander": "^6.1.0",
+    "commander": "^8.0.0",
     "cross-env": "^7.0.2",
     "css-loader": "^5.0.0",
     "es3ify-loader": "^0.2.0",
