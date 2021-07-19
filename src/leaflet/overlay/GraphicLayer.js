@@ -19,6 +19,14 @@ const defaultProps = {
     strokeWidth: 1,
     outline: false
 };
+const BASE_RESOLUTIONS = {
+    'EPSG:4326': 360.0 / 256,
+    'EPSG:3857': (20037508.34279 * 2) / 256
+};
+const DEFAULT_ZOOM_OFFSET = {
+    'EPSG:4326': 1,
+    'EPSG:3857': 0
+};
 
 /**
  * @class L.supermap.graphicLayer
@@ -275,9 +283,12 @@ export var GraphicLayer = L.Path.extend({
         let center = map.getCenter();
         let longitude = center.lng;
         let latitude = center.lat;
-        const zoomOffset = this._crs.code === "EPSG:4326"?1:0;
-        let zoom = map.getZoom()+zoomOffset;
-        let maxZoom = map.getMaxZoom()+zoomOffset;
+        let zoomOffset = DEFAULT_ZOOM_OFFSET[this._crs.code] || 0;
+        if(BASE_RESOLUTIONS[this._crs.code] && this._crs.resolutions && this._crs.resolutions.length > 0 ){
+            zoomOffset = Math.round(Math.log2(BASE_RESOLUTIONS[this._crs.code]/this._crs.resolutions[0]))
+        }
+        let zoom = map.getZoom() + zoomOffset;
+        let maxZoom = map.getMaxZoom() + zoomOffset;
 
         let mapViewport = {
             longitude: longitude,
