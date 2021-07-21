@@ -30,14 +30,14 @@
         var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
-                attributeFilter: "SMID = 247"
+                attributeFilter: "SMID = 234"
             },
             datasetNames: ["World:Countries"]
         });
         L.supermap
             .featureService(url)
             .getFeaturesBySQL(sqlParam, function (serviceResult) {
-                resultLayer = L.geoJSON(serviceResult.result.features).addTo(map).bindPopup('SMID = 247');
+                resultLayer = L.geoJSON(serviceResult.result.features).addTo(map).bindPopup('SMID = 234');
             });
     }
 </script>
