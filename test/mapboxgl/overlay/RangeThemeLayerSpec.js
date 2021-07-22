@@ -431,6 +431,8 @@ describe('mapboxgl_RangeThemeLayer', () => {
                         expect(1).not.toBeNull();
                     }
                     themeLayer.clear();
+                    themeLayer.on('mousemove',function(){});
+                    themeLayer.off('mousemove')
                     done();
                 }
             }

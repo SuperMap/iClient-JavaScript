@@ -372,7 +372,7 @@ export class Theme {
     off(event, callback, context) { // eslint-disable-line no-unused-vars
         var me = this;
         if (me.renderer) {
-            me.renderer.off(event, callback);
+            me.renderer.un(event, callback);
         } else {
             this.map.off(event, callback);
         }
