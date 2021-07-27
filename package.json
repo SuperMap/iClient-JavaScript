@@ -81,7 +81,7 @@
     "eslint-webpack-plugin": "^2.1.0",
     "express": "^4.17.1",
     "get-pixels": "^3.3.2",
-    "image-size": "^0.9.2",
+    "image-size": "^1.0.0",
     "istanbul": "^0.4.5",
     "jasmine-core": "^3.6.0",
     "jsdoc": "^3.6.6",
