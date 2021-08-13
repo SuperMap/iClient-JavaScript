@@ -368,7 +368,7 @@ export class WebMap extends Observable {
         let that = this, handleResult = {};
         let newCrs = crs, action = "OpenMap";
 
-        if (crs === "EPSG:-1") {
+        if (this.isCustomProjection(crs)) {
             // 去iServer请求wkt  否则只能预览出图
             await FetchRequest.get(that.getRequestUrl(`${baseLayerUrl}/prjCoordSys.wkt`), null, {
                 withCredentials: that.withCredentials,
@@ -377,7 +377,7 @@ export class WebMap extends Observable {
                 return response.text();
             }).then(async function (result) {
                 if(result.indexOf("<!doctype html>") === -1) {
-                    that.addProjctionFromWKT(result, "EPSG:-1");
+                    that.addProjctionFromWKT(result, crs);
                     handleResult = {action, newCrs};
                 } else {
                     throw 'ERROR';
@@ -1140,7 +1140,7 @@ export class WebMap extends Observable {
             // prjCoordSys: {epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1]},
             format: layerInfo.format
         };
-        if(!isBaseLayer && this.baseProjection !== "EPSG:-1"){
+        if(!isBaseLayer && !this.isCustomProjection(this.baseProjection )){
             options.prjCoordSys = { epsgCode : this.baseProjection.split(':')[1]};
         }
         if (layerInfo.visibleScales && layerInfo.visibleScales.length > 0) {
@@ -1343,7 +1343,7 @@ export class WebMap extends Observable {
             let projection = {
                 epsgCode: that.baseProjection.split(":")[1]
             }
-            if (that.baseProjection !== "EPSG:-1") {
+            if (!that.isCustomProjection(that.baseProjection)) {
                 // bug IE11 不会自动编码
                 url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
             }
@@ -5121,5 +5121,11 @@ export class WebMap extends Observable {
                 break;    
         }
         return lang;
+    }
+    isCustomProjection(projection) {
+        if(Util.isNumber(projection)){
+            return [-1000,-1].includes(+projection)
+        }
+        return ['EPSG:-1000','EPSG:-1'].includes(projection);
     }
 }
