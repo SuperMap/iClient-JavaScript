@@ -40,6 +40,9 @@ describe('leaflet_NonEarthCRS', () => {
         expect(nonEarthCRSObject.projection.bounds).toEqual(nonEarthCRSObject.bounds);
         expect(nonEarthCRSObject.resolutions[0]).toEqual(1000);
         expect(nonEarthCRSObject.resolutions[1]).toEqual(100000);
+        expect(nonEarthCRSObject.scale(0)).toEqual(1/1000);
+        expect(nonEarthCRSObject.scale(1)).toEqual(1/100000);
+        expect(nonEarthCRSObject.zoom(1/1000)).toEqual(0);
         expect(nonEarthCRSObject.transformation).not.toBeNull();
         expect(nonEarthCRSObject._initHooksCalled).toBeTruthy();
     });

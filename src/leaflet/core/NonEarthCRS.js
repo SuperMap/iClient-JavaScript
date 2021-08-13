@@ -69,10 +69,12 @@ export var NonEarthCRS = L.Class.extend({
         if (!this.resolutions || this.resolutions.length === 0) {
             const width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
             defaultScale = 1.0 / (width / 256);
-        } else {
-            defaultScale = 1.0 / this.resolutions[0];
+            return defaultScale * Math.pow(2, zoom);
         }
-        return defaultScale * Math.pow(2, zoom);
+        if (this.resolutions[zoom]) {
+            return 1.0 / this.resolutions[zoom];
+        }
+        return (1.0 / this.resolutions[0]) * Math.pow(2, zoom);
     },
 
     /**
@@ -86,10 +88,13 @@ export var NonEarthCRS = L.Class.extend({
         if (!this.resolutions || this.resolutions.length === 0) {
             const width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
             defaultScale = 1.0 / (width / 256);
-        } else {
-            defaultScale = 1.0 / this.resolutions[0];
+            return Math.log(scale / defaultScale) / Math.LN2;
         }
-        return Math.log(scale / defaultScale) / Math.LN2;
+        const index = this.resolutions.indexOf(1.0 / scale);
+        if (index > -1) {
+            return index;
+        }
+        return Math.log(scale / (1.0 / this.resolutions[0])) / Math.LN2;
     },
     /**
      * @function L.CRS.NonEarthCRS.prototype.distance

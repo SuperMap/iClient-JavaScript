@@ -29,7 +29,7 @@ export var toSuperMapGeometry = function(geometry) {
         result = geojson ? format.read(geojson, geojson.type) : geometry;
     }
 
-    var serverResult = result;
+    var serverResult = result || geometry;
     if (L.Util.isArray(result)) {
         if (result.length === 1) {
             serverResult = result[0];
