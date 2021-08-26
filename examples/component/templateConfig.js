@@ -74,6 +74,38 @@ var exampleConfig = {
                         thumbnail: 'components_timeline_tracklayer.png',
                         fileName: 'components_timeline_tracklayer',
                         localIgnore: true
+                    },
+                    {
+                        name: '城市智慧大脑-全市概况',
+                        name_en: 'Smart City Brain_City Overview',
+                        version: '10.2.0',
+                        thumbnail: 'components_city_smart_overview_vue.png',
+                        fileName: 'components_city_smart_overview_vue',
+                        localIgnore: true
+                    },
+                    {
+                        name: '城市智慧大脑-城市管理',
+                        name_en: 'Smart City Brain_City management',
+                        version: '10.2.0',
+                        thumbnail: 'components_city_smart_management_vue.png',
+                        fileName: 'components_city_smart_management_vue',
+                        localIgnore: true
+                    },
+                    {
+                        name: '城市智慧大脑-经济运行',
+                        name_en: 'Smart City Brain_Econom ic Operation',
+                        version: '10.2.0',
+                        thumbnail: 'components_city_smart_economic_vue.png',
+                        fileName: 'components_city_smart_economic_vue',
+                        localIgnore: true
+                    },
+                    {
+                        name: '城市智慧大脑-民生幸福',
+                        name_en: 'Smart City Brain_Livelihood',
+                        version: '10.2.0',
+                        thumbnail: 'components_city_smart_livelihood_vue.png',
+                        fileName: 'components_city_smart_livelihood_vue',
+                        localIgnore: true
                     }
                 ]
             }
