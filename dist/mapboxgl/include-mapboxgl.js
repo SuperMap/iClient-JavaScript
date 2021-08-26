@@ -187,6 +187,9 @@
             inputCSS('../../dist/mapboxgl/iclient-mapboxgl-react.css');
             inputScript('../../dist/mapboxgl/iclient-mapboxgl-react.min.js');
         }
+        if (inArray(includes, 'vue-cesium')) {
+            inputScript('https://cdnjs.cloudflare.com/ajax/libs/vue-cesium/2.1.4/lib/index.umd.min.js');
+        }
     }
 
     load();
