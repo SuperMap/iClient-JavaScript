@@ -76,6 +76,14 @@ var exampleConfig = {
                         localIgnore: true
                     },
                     {
+                        name: '智慧园区模板',
+                        name_en: 'Smart Park Template',
+                        version: '10.2.0',
+                        thumbnail: 'components_smartpark_vue.png',
+                        fileName: 'components_smartpark_vue',
+                        localIgnore: true
+                    },
+                    {
                         name: '城市智慧大脑-全市概况',
                         name_en: 'Smart City Brain_City Overview',
                         version: '10.2.0',

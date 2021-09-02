@@ -611,6 +611,7 @@ window.examplesResources = {
         "title_componentsTimeLineCloud_Vue": "气象卫星云图",
         "title_componentsTimeLineNcp_Vue": "疫情历史回放",
         "title_componentsTimeLineTracklayer_Vue": "轨迹回放",
+        "title_componentsSmartPark_Vue": "智慧园区",
         "title_componentsWebmap_React": 'iPortal地图',
         "title_componentsMap_React": 'iServer地图',
         "title_componentsRasterTile_React": '栅格图层组件',

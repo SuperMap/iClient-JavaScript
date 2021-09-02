@@ -1,0 +1,857 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+    <title data-i18n="resources.title_componentsSmartPark_Vue"></title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script include="echarts-vue,vue-cesium,iclient-mapboxgl-vue,mapbox-gl-enhance"
+        src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1c2c3b;
+            width: 100%;
+            height: 100%;
+        }
+
+        .scene-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 101;
+
+        }
+
+        .scene-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 1;
+            background: url('https://iclient.supermap.io/web/data/background/image69.png') no-repeat 100% 100%;
+            pointer-events: none;
+            background-size: 100% 100%;
+            background-position: center;
+        }
+
+        .scene-container::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            left: 0;
+            z-index: 1;
+            bottom: 11px;
+            height: 18px;
+            background: url('../img/background/image82.png') no-repeat 100% 100%;
+            pointer-events: none;
+            background-size: 100% 100%;
+            background-position: center;
+        }
+
+
+
+        .template-name {
+            width: 100%;
+            height: 86px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 103;
+            background: url('https://iclient.supermap.io/web/data/background/image91.png') no-repeat;
+            background-size: 100% 100%;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .template-name>.sm-component-text {
+            padding: 0;
+            line-height: 50px;
+            letter-spacing: 8px;
+            font-size: 1.875vw;
+        }
+
+        .template-name .left-tabs,
+        .template-name .right-tabs {
+            position: absolute;
+            bottom: 20px;
+            width: 31%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .template-name .left-tabs {
+            left: 0;
+        }
+
+        .template-name .right-tabs {
+            right: 0;
+        }
+
+        .tab-item {
+            position: relative;
+            text-align: center;
+            width: 140px;
+            height: 40px;
+            line-height: 40px;
+            cursor: pointer;
+            margin-right: 15px;
+            background-image: url('../img/background/image78.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .tab-item-active {
+            background-image: url('../img/background/image77.png');
+        }
+
+        .tab-item:last-child {
+            margin-right: 0;
+        }
+
+        .tab-item .sm-component-image {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tab-item .sm-component-text {
+            font-size: 0.85vw;
+        }
+
+        .sm-component-text,
+        .sm-component-indicator,
+        .sm-component-image {
+            background: transparent !important;
+        }
+
+        .global-info-wrap .sm-component-chart .sm-component-collapse-card__content,
+        .order-wrap .sm-component-chart .sm-component-collapse-card__content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .global-info-wrap,
+        .flowdata-wrap {
+            position: absolute;
+            top: 86px;
+            bottom: 0;
+            z-index: 102;
+            box-sizing: content-box;
+            width: 17%;
+            min-width: 260px;
+            overflow: hidden;
+        }
+
+        .global-info-wrap>div:not(:last-child),
+        .flowdata-wrap>div:not(:last-child) {
+            margin-bottom: 8%;
+        }
+
+        .global-info-wrap {
+            left: 0;
+            padding-left: 20px;
+        }
+
+        .global-info-wrap .sm-component-image {
+            width: 25px;
+            height: 26px;
+            margin-right: 6px;
+        }
+
+        .info-title {
+            padding-left: 18px;
+            margin-bottom: 12px;
+            background-image: url('../img/background/image85.png');
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 40px;
+        }
+
+        .info-title .sm-component-text {
+            font-weight: 600;
+        }
+
+        .flowdata-wrap {
+            right: 0;
+            padding-right: 20px;
+        }
+
+        .accident-wrap,
+        .flowdata-item-wrap {
+            min-width: 260px;
+        }
+
+        .accident-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icon-border-holder {
+            position: relative;
+            padding-left: 60px;
+            flex: 1;
+        }
+
+        .icon-border-holder::before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            content: '';
+            background-image: url('../img/background/image84.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            width: 50px;
+            height: 52px;
+        }
+
+        .icon-border-holder::after {
+            position: absolute;
+            left: 5px;
+            top: 6px;
+            content: '';
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            width: 41px;
+            height: 41px;
+
+        }
+
+        .traffic-light-item::after {
+            background-image: url('../img/background/image90.png');
+        }
+
+        .traffic-accident-item::after {
+            background-image: url('../img/background/image89.png');
+        }
+
+        .traffic-light-item {
+            margin-right: 20px;
+        }
+
+        .accident-holder {
+            background-color: rgb(47 158 252 / 25%);
+            border-radius: 0px 4px 4px 0px;
+        }
+
+        .accident-holder .sm-component-text,
+        .accident-holder .sm-component-indicator {
+            display: flex;
+            line-height: 1;
+        }
+
+        .accident-holder .sm-component-text {
+            font-size: 12px;
+            margin-top: 3px;
+            padding-bottom: 8px;
+        }
+
+        .flowdata-item-wrap .sm-component-chart .sm-component-collapse-card__content {
+            width: 100%;
+            height: 220px;
+        }
+
+        .pies-wrap {
+            position: relative;
+        }
+
+        .pies-wrap .chart-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .pies-wrap .pie-item,
+        .pie-item .pie-text {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .pie-item .chart-item,
+        .pie-item .legend-item {
+            flex: 1;
+        }
+
+        .pie-item-total {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .pie-item-total>div,
+        .legend-item>div {
+            display: flex;
+        }
+
+        .pie-item-total>.sm-component-text {
+            font-size: 12px;
+            padding-top: 0;
+        }
+
+        .pie-item-total>.sm-component-indicator {
+            padding-left: 3px;
+        }
+
+        .chart-item:last-of-type .pie-text {
+            width: 80%;
+        }
+
+        .chart-item:last-of-type .legend-item::before {
+            left: 12%;
+        }
+
+        .pie-text {
+            position: absolute;
+            left: 50%;
+            bottom: -38px;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        .legend-item {
+            position: relative;
+        }
+
+        .legend-item::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+        }
+
+        .legend-item:first-child::before {
+            background-color: #4da8fd;
+        }
+
+        .legend-item:nth-of-type(2)::before {
+            background-color: #26d6a0;
+        }
+
+        .legend-item:last-of-type::before {
+            background-color: #ffcb71;
+        }
+
+        .legend-item .legend-value {
+            font-weight: 600;
+        }
+
+        .legend-item .sm-component-text {
+            font-size: 12px;
+            padding: 0;
+        }
+
+        .legend-item .sm-component-text.legend-label {
+            padding-left: 3px;
+        }
+
+        .pie-item .sm-component-chart {
+            height: 130px;
+            background-image: url('https://iclient.supermap.io/web/data/background/image86.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .energy-wrap .sm-component-indicator {
+            padding-left: 27px;
+        }
+
+        .energy-wrap .sm-component-indicator .sm-component-indicator__title {
+            margin-right: 10px;
+        }
+
+        .energy-item {
+            position: relative;
+            padding-left: 60px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+        }
+
+        .energy-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 68px;
+            height: 68px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            text-align: center;
+            line-height: 68px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .energy-item-first {
+            margin: 20px 0 16px;
+        }
+
+        .energy-item-first::before {
+            content: '今年';
+            background-image: url('https://iclient.supermap.io/web/data/background/image87.png');
+        }
+
+        .energy-item-second::before {
+            content: '去年';
+            background-image: url('https://iclient.supermap.io/web/data/background/image88.png');
+        }
+
+        .energy-value {
+            height: 30px;
+            line-height: 30px;
+            padding-left: 36px;
+            justify-content: flex-start;
+            background-size: 100% 100% !important;
+            background-repeat: no-repeat !important;
+        }
+
+        .energy-item-first .energy-value {
+            flex-basis: 82%;
+            background-image: url('../img/background/image80.png') !important;
+        }
+
+        .energy-item-second .energy-value {
+            flex: 1;
+            background-image: url('../img/background/image81.png') !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div class="template-name">
+            <sm-text title="智慧园区管理系统" text-color="#fff" background="transparent"></sm-text>
+            <div class="left-tabs">
+                <div class="tab-item tab-item-active">
+                    <sm-text title="综合态势" text-color="#FFCB70"></sm-text>
+                </div>
+                <div class="tab-item">
+                    <sm-text title="综合安防" text-color="#86CAFF"></sm-text>
+                </div>
+                <div class="tab-item">
+                    <sm-text title="综合安防" text-color="#86CAFF"></sm-text>
+                </div>
+            </div>
+            <div class="right-tabs">
+                <div class="tab-item">
+                    <sm-text title="综合态势" text-color="#86CAFF"></sm-text>
+                </div>
+                <div class="tab-item">
+                    <sm-text title="综合安防" text-color="#86CAFF"></sm-text>
+                </div>
+                <div class="tab-item">
+                    <sm-text title="综合安防" text-color="#86CAFF"></sm-text>
+                </div>
+            </div>
+        </div>
+        <div class="scene-container">
+            <sm-web-scene class="web-scene" v-bind="webSceneProps"></sm-web-scene>
+        </div>
+        <div class="global-info-wrap">
+            <div>
+                <div class="info-title">
+                    <sm-text title="人车数量统计" text-color="#fff"></sm-text>
+                </div>
+                <div class="pies-wrap">
+                    <div class="pie-item">
+                        <div class="chart-item">
+                            <sm-chart icon-class="" text-color="#fff" :options="humanPieOptions"
+                                :color-group="['#4da8fd', '#26d6a0', '#ffcb71']" background="transparent">
+                            </sm-chart>
+                            <div class="pie-item-total">
+                                <sm-indicator :num="927" title="" unit="" indicator-color="#fff"></sm-indicator>
+                                <sm-text title="总人数" text-color="#86CAFF"></sm-text>
+                            </div>
+                            <div class="pie-text">
+                                <div class="legend-item">
+                                    <sm-text class="legend-label" title="员工" text-color="rgba(255,255,255,0.65)">
+                                    </sm-text>
+                                    <sm-text class="legend-value" title="400" text-color="#4da8fd"></sm-text>
+                                </div>
+                                <div class="legend-item">
+                                    <sm-text class="legend-label" title="访客" text-color="rgba(255,255,255,0.65)">
+                                    </sm-text>
+                                    <sm-text class="legend-value" title="290" text-color="#26d6a0"></sm-text>
+                                </div>
+                                <div class="legend-item">
+                                    <sm-text class="legend-label" title="安保" text-color="rgba(255,255,255,0.65)">
+                                    </sm-text>
+                                    <sm-text class="legend-value" title="237" text-color="#ffcb71"></sm-text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-item">
+                            <sm-chart icon-class="" text-color="#fff" :options="trafficPieOptions"
+                                :color-group="['#4da8fd', '#26d6a0']" background="transparent"></sm-chart>
+                            <div class="pie-item-total">
+                                <sm-indicator :num="344" title="" unit="" indicator-color="#fff"></sm-indicator>
+                                <sm-text title="总人数" text-color="#86CAFF"></sm-text>
+                            </div>
+                            <div class="pie-text">
+                                <div class="legend-item">
+                                    <sm-text class="legend-label" title="员工" text-color="rgba(255,255,255,0.65)">
+                                    </sm-text>
+                                    <sm-text class="legend-value" title="244" text-color="#4da8fd"></sm-text>
+                                </div>
+                                <div class="legend-item">
+                                    <sm-text class="legend-label" title="访客" text-color="rgba(255,255,255,0.65)">
+                                    </sm-text>
+                                    <sm-text class="legend-value" title="100" text-color="#26d6a0"></sm-text>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="info-title">
+                    <sm-text title="资产分类统计" text-color="#fff"></sm-text>
+                </div>
+                <sm-chart icon-class="" text-color="#fff" :options="assetsBarOptions" :color-group="['#4da8fd']"
+                    background="transparent" style="height: 200px;"></sm-chart>
+            </div>
+            <div class="energy-wrap">
+                <div class="info-title">
+                    <sm-text title="耗能统计" text-color="#fff"></sm-text>
+                </div>
+                <sm-indicator num="11.9%" title="年度累计同比节能" unit="" text-color="#fff" indicator-color="#4da8fd"
+                    mode="horizontal" font-size="18px"></sm-indicator>
+                <div class="energy-item energy-item-first">
+                    <sm-text class="energy-value" text-color="#fff" title="15,767,165 Kwh"></sm-text>
+                </div>
+                <div class="energy-item energy-item-second">
+                    <sm-text class="energy-value" text-color="#fff" title="17,820,290 Kwh"></sm-text>
+                </div>
+            </div>
+        </div>
+        <div class="flowdata-wrap">
+            <div class="order-wrap">
+                <div class="info-title">
+                    <sm-text title="工单处理统计" text-color="#fff"></sm-text>
+                </div>
+                <sm-chart icon-class="" text-color="#fff" :options="orderLineOptions"
+                    :color-group="['#6BBCFB', '#26D6A0']" background="transparent" style="height: 200px;"></sm-chart>
+            </div>
+            <div class="accident-wrap">
+                <div class="info-title">
+                    <sm-text title="会议室使用率" text-color="#fff"></sm-text>
+                </div>
+                <div class="accident-content">
+                    <div class="traffic-light-item icon-border-holder">
+                        <div class="accident-holder ">
+                            <sm-indicator num="6间" title="" unit="" font-size="18" indicator-color="#fff">
+                            </sm-indicator>
+                            <sm-text title="已使用" text-color="#85CAFF"></sm-text>
+                        </div>
+                    </div>
+                    <div class="traffic-accident-item icon-border-holder">
+                        <div class="accident-holder">
+                            <sm-indicator num="15间" title="" unit="" font-size="18" indicator-color="#fff">
+                            </sm-indicator>
+                            <sm-text title="总数" text-color="#85CAFF"></sm-text>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size: 0; margin-top: 20px; padding-bottom: 20px;">
+                    <sm-text title="使用率40%" text-color="#fff" :font-style="{fontSize: '14px'}"></sm-text>
+                    <sm-progress background="transparent" percent="40" size="small" status="active"
+                        :stroke-color="{'0%': '#fff', '50%': '#26D6A0'}" trail-color="#ffffff26" :show-info="false"
+                        style="line-height: 1;">
+                    </sm-progress>
+                </div>
+            </div>
+            <div class="order-wrap">
+                <div class="info-title">
+                    <sm-text title="智能预警统计" text-color="#fff"></sm-text>
+                </div>
+                <sm-chart icon-class="" text-color="#fff" :options="smartRadarOptions"
+                    :color-group="['#6BBCFB', '#26D6A0']" background="transparent" style="height: 240px;">
+                </sm-chart>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        if (VueCesium) {
+            Vue.prototype.$vc = {};
+            Vue.use(VueCesium.Viewer);
+        }
+        new Vue({
+            el: '#main',
+            data() {
+                var commonOptions = {
+                    xAxis: {
+                        data: [],
+                        axisTick: {
+                            show: false,
+                            alignWithLabel: true
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff',
+                                opacity: 0.45
+                            }
+                        },
+                        axisLabel: {
+                            rotate: 0,
+                            fontFamily: 'MicrosoftYaHei',
+                            color: 'rgba(255, 255, 255, 0.85)'
+                        },
+                        show: true,
+                        name: '',
+                        nameGap: 2,
+                        nameLocation: 'end',
+                        type: 'category'
+                    },
+                    yAxis: {
+                        name: '',
+                        axisTick: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: '#fff',
+                                opacity: 0.45
+                            }
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#fff',
+                                opacity: 0.15
+                            }
+                        },
+                        axisLabel: {
+                            rotate: 0,
+                            fontFamily: 'MicrosoftYaHei',
+                            color: 'rgba(255, 255, 255, 0.85)'
+                        },
+                        show: true,
+                        splitArea: {
+                            show: false
+                        },
+                        nameGap: 5,
+                        nameLocation: 'end',
+                        type: 'value',
+                        nameTextStyle: {
+                            padding: [0, 0, 5, 0]
+                        }
+                    },
+                    legend: {
+                        show: false
+                    },
+                    tooltip: {
+                        formatter: "{b0}: {c0}"
+                    },
+                    grid: {
+                        left: 30,
+                        right: 20,
+                        top: 20,
+                        bottom: 25
+                    }
+                };
+                return {
+                    webSceneProps: {
+                        cesiumPath: 'https://iclient.supermap.io/web/libs/iClientfor3D/Cesium.js',
+                        sceneUrl: 'https://www.supermapol.com/web/scenes/1722746321',
+                        options: {
+                            scanEffect: {
+                                type: 'noScan'
+                            },
+                            position: {
+                                "x": -2179960.0185244954,
+                                "y": 4379800.359050573,
+                                "z": 4092239.93629855
+                            }
+                        }
+
+                    },
+                    humanPieOptions: {
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            show: false,
+                            itemWidth: 8,
+                            itemHeight: 8,
+                            left: 'center',
+                            top: 'bottom',
+                            textStyle: {
+                                color: 'rgba(255,255,255,0.65)'
+                            }
+                        },
+                        series: [
+                            {
+                                name: '人数量统计',
+                                type: 'pie',
+                                startAngle: -60,
+                                radius: ['55%', '70%'],
+                                center: ['50%', '50%'],
+                                data: [
+                                    { value: 400, name: '员工' },
+                                    { value: 290, name: '访客' },
+                                    { value: 237, name: '安保' }
+                                ],
+                                label: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false
+                                    },
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    trafficPieOptions: {
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            show: false,
+                            itemGap: 15,
+                            itemWidth: 8,
+                            itemHeight: 8,
+                            left: 'center',
+                            top: 'bottom'
+                        },
+                        series: [
+                            {
+                                name: '车数量统计',
+                                type: 'pie',
+                                startAngle: 45,
+                                radius: ['55%', '70%'],
+                                center: ['50%', '50%'],
+                                data: [
+                                    { value: 244, name: '员工' },
+                                    { value: 100, name: '访客' }
+                                ],
+                                label: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false
+                                    },
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    assetsBarOptions: Object.assign({}, commonOptions, {
+                        grid: {
+                            left: 50,
+                            right: 35,
+                            top: 20,
+                            bottom: 25
+                        },
+                        xAxis: Object.assign({}, commonOptions.xAxis, {
+                            data: ['房屋建筑物', '无形资产', '机器设备', '电子设备', '装修改良']
+                        }),
+                        yAxis: Object.assign({}, commonOptions.yAxis, {
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#fff',
+                                    opacity: 0.45
+                                }
+                            }
+                        }),
+                        series: [
+                            {
+                                name: '资产值',
+                                type: 'bar',
+                                barWidth: 13,
+                                data: [100, 600, 2200, 4100, 220]
+                            }
+                        ]
+                    }),
+                    orderLineOptions: Object.assign({}, commonOptions, {
+                        xAxis: Object.assign({}, commonOptions.xAxis, {
+                            data: ['08-28', '08-29', '08-30', '08-31', '09-01', '09-02', '09-03']
+                        }),
+                        grid: {
+                            top: 20,
+                            left: 35,
+                            right: 20,
+                            bottom: 25
+                        },
+                        series: [{
+                            type: 'line',
+                            symbol: 'circle',
+                            symbolSize: 5,
+                            data: [3, 5, 4, 2, 9, 6, 5]
+                        }, {
+                            type: 'line',
+                            symbol: 'circle',
+                            symbolSize: 5,
+                            data: [6, 8, 6, 11, 8, 9, 6]
+                        }]
+                    }),
+                    smartRadarOptions: {
+                        radar: {
+                            startAngle: 120,
+                            radius: '68%',
+                            indicator: [
+                                { name: '资产管理', max: 6500, color: 'rgba(255,255,255,0.85)' },
+                                { name: '能效管理', max: 20000, color: 'rgba(255,255,255,0.85)' },
+                                { name: '设施管理', max: 58000, color: 'rgba(255,255,255,0.85)' },
+                                { name: '环境空间', max: 26000, color: 'rgba(255,255,255,0.85)' },
+                                { name: '便捷通行', max: 52000, color: 'rgba(255,255,255,0.85)' },
+                                { name: '综合安防', max: 25000, color: 'rgba(255,255,255,0.85)' }
+                            ],
+                            splitArea: { show: false }
+                        },
+                        series: [{
+                            name: '智能预警',
+                            type: 'radar',
+                            data: [
+                                {
+                                    value: [5000, 14000, 28000, 26000, 42000, 21000],
+                                    name: '智能预警',
+                                    areaStyle: {
+                                        color: 'rgba(107, 188, 251, 0.25)'
+                                    }
+                                }
+                            ]
+                        }]
+                    }
+                };
+            }
+        })
+
+    </script>
+</body>
+
+</html>

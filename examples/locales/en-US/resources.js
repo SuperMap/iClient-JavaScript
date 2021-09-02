@@ -659,6 +659,7 @@ window.examplesResources = {
         "title_componentsTimeLineCloud_Vue": "Meteorological satellite cloud image(Vue)",
         "title_componentsTimeLineNcp_Vue": "Epidemic history playback(Vue)",
         "title_componentsTimeLineTracklayer_Vue": "Track layer(Vue)",
+        "title_componentsSmartPark_Vue": "Smart Park(Vue)",
         "title_componentsTimeLine_Vue": 'TimeLine Component(Vue)',
         "title_componentsWebmap_React": 'iPortal Map component(React)',
         "title_componentsMap_React": 'iServer Map component(React)',
