@@ -347,5 +347,102 @@ describe('MeasureService', () => {
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
     });
+
+    // MeasureParameters-distanceMode
+    it('processAsync_distanceMode-geodesic', (done) => {
+      var mapServiceURL = GlobeParameter.mapServiceURL;
+      var worldMapURL = mapServiceURL + "World Map";
+      var measureCompleted = (measureEventArgs) => {
+          measureEventArgsSystem = measureEventArgs;
+          try {
+              var measureResult = measureEventArgsSystem.result;
+              expect(measureResult).not.toBeNull();
+              expect(measureResult.succeed).toBeTruthy();
+              expect(measureResult.area).toEqual(-1);
+              expect(measureResult.distance).toEqual(3.0616868362);
+              expect(measureResult.unit).toBe("METER");
+              measureService.destroy();
+              expect(measureService.url == null).toBeTruthy();
+              expect(measureService.isInTheSameDomain == null).toBeTruthy();
+              expect(measureService.EVENT_TYPES == null).toBeTruthy();
+              expect(measureService.events == null).toBeTruthy();
+              expect(measureService.distanceMode == null).toBeTruthy();
+              measureParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("MeasureService_" + exception.name + ":" + exception.message);
+              measureService.destroy();
+              measureParameters.destroy();
+              done();
+          }
+      };
+      var measureFailed = (serviceFailedEventArgs) => {
+          serviceFailedEventArgsSystem = serviceFailedEventArgs;
+      };
+      var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+      var points = [new Point(0, 0), new Point(10, 10)];
+      var geometry = new LinearRing(points);
+      var measureParameters = new MeasureParameters(geometry,{ distanceMode: 'Geodesic' });
+      expect(measureService).not.toBeNull();
+      expect(measureService.url).toEqual(worldMapURL);
+      spyOn(FetchRequest, 'commit').and.callFake((method,testUrl,params) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(worldMapURL+"/distance");
+          expect(params).not.toBeNull();
+          expect(params.distanceMode).toEqual('Geodesic');
+          return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance": 3.0616868362}`));
+      });
+      measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
+      measureService.processAsync(measureParameters);
+  });
+
+  it('processAsync_distanceMode', (done) => {
+    var mapServiceURL = GlobeParameter.mapServiceURL;
+    var worldMapURL = mapServiceURL + "World Map";
+    var measureCompleted = (measureEventArgs) => {
+        measureEventArgsSystem = measureEventArgs;
+        try {
+            var measureResult = measureEventArgsSystem.result;
+            expect(measureResult).not.toBeNull();
+            expect(measureResult.succeed).toBeTruthy();
+            expect(measureResult.area).toEqual(-1);
+            expect(measureResult.distance).toEqual(3.9981624957);
+            expect(measureResult.unit).toBe("METER");
+            measureService.destroy();
+            expect(measureService.url == null).toBeTruthy();
+            expect(measureService.isInTheSameDomain == null).toBeTruthy();
+            expect(measureService.EVENT_TYPES == null).toBeTruthy();
+            expect(measureService.events == null).toBeTruthy();
+            expect(measureService.distanceMode == null).toBeTruthy();
+            measureParameters.destroy();
+            done();
+        } catch (exception) {
+            expect(false).toBeTruthy();
+            console.log("MeasureService_" + exception.name + ":" + exception.message);
+            measureService.destroy();
+            measureParameters.destroy();
+            done();
+        }
+    };
+    var measureFailed = (serviceFailedEventArgs) => {
+        serviceFailedEventArgsSystem = serviceFailedEventArgs;
+    };
+    var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+    var points = [new Point(0, 0), new Point(10, 10)];
+    var geometry = new LinearRing(points);
+    var measureParameters = new MeasureParameters(geometry,{ distanceMode: 'Planar' });
+    expect(measureService).not.toBeNull();
+    expect(measureService.url).toEqual(worldMapURL);
+    spyOn(FetchRequest, 'commit').and.callFake((method,testUrl,params) => {
+        expect(method).toBe("GET");
+        expect(testUrl).toBe(worldMapURL+"/distance");
+        expect(params).not.toBeNull();
+        expect(params.distanceMode).toEqual('Planar');
+        return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance": 3.9981624957}`));
+    });
+    measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
+    measureService.processAsync(measureParameters);
+});
 });
 

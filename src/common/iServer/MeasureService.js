@@ -91,10 +91,11 @@ export class MeasureService extends CommonServiceBase {
             paramsTemp = {
                 "point2Ds": Util.toJSON(point2ds),
                 "unit": params.unit,
-                "prjCoordSys": prjCoordSysTemp
+                "prjCoordSys": prjCoordSysTemp,
+                "distanceMode": params.distanceMode || 'Geodesic'
             };
         } else {
-            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit};
+            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit, "distanceMode": params.distanceMode || 'Geodesic'};
         }
 
         me.request({
