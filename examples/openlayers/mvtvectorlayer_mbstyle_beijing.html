@@ -230,6 +230,7 @@
                     format: new ol.format.MVT({
                         featureClass: ol.Feature
                     }),
+                    tileGrid:ol.tilegrid.createXYZ({tileSize:512}),
                     tileType: 'ViewBounds'
                 };
                 vectorLayer = new ol.layer.VectorTile({
