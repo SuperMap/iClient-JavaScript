@@ -56,8 +56,8 @@ export class VectorTileSuperMapRest extends VectorTile {
             tileClass: options.tileClass,
             tileGrid: options.tileGrid,
             tilePixelRatio: options.tilePixelRatio,
-            tileUrlFunction: options.format instanceof MVT && options.style ? zxyTileUrlFunction : tileUrlFunction,
-            tileLoadFunction: options.format instanceof MVT ? mvtTileLoadFunction : tileLoadFunction,
+            tileUrlFunction: options.tileUrlFunction || (options.format instanceof MVT && options.style ? zxyTileUrlFunction : tileUrlFunction),
+            tileLoadFunction: options.tileLoadFunction || (options.format instanceof MVT ? mvtTileLoadFunction : tileLoadFunction),
             wrapX: options.wrapX !== undefined ? options.wrapX : false,
             tileSize: options.tileSize || null,
             zDirection: ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? null : 0

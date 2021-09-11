@@ -90,7 +90,7 @@ const dpiConfig = {
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
- * @param {function} [options.mapSetting.overlays] - 地图的overlayer
+ * @param {function} [options.mapSetting.overlays] - 地图的overlayerp
  * @param {function} [options.mapSetting.controls] - 地图的控件
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数
  * @extends {ol/Observable}
@@ -697,8 +697,8 @@ export class WebMap extends Observable {
           let visibleScales, minScale, maxScale;
           if (baseLayer.layerType === 'WMTS') {
               visibleScales = baseLayer.scales;
-              minScale = mapInfo.minScale.split(':')[1];
-              maxScale = mapInfo.maxScale.split(':')[1];
+              minScale = +mapInfo.minScale.split(':')[1];
+              maxScale = +mapInfo.maxScale.split(':')[1];
           } else {
               const scales = this.scales.map((scale) => {
                   return 1 / scale.split(':')[1];
@@ -708,19 +708,16 @@ export class WebMap extends Observable {
               } else {
                 visibleScales = scales;
               }
-              minScale = 1 / mapInfo.minScale.split(':')[1];
-              maxScale = 1 / mapInfo.maxScale.split(':')[1];
-          }
-          if (minScale > maxScale) {
-            let temp = null;
-            temp = minScale;
-            minScale = maxScale;
-            maxScale = temp;
+              minScale = 1 / +mapInfo.minScale.split(':')[1];
+              maxScale = 1 / +mapInfo.maxScale.split(':')[1];
           }
           const minVisibleScale = this.findNearest(visibleScales, minScale);
           const maxVisibleScale = this.findNearest(visibleScales, maxScale);
-          const minZoom = visibleScales.indexOf(minVisibleScale);
-          const maxZoom = visibleScales.indexOf(maxVisibleScale);
+          let minZoom = visibleScales.indexOf(minVisibleScale);
+          let maxZoom = visibleScales.indexOf(maxVisibleScale);
+          if (minZoom > maxZoom) {
+              [minZoom, maxZoom] = [maxZoom, minZoom];
+          }
           if (minZoom !== 0 && maxZoom !== visibleScales.length - 1) {
               this.map.setView(
                   new View(
@@ -1641,6 +1638,10 @@ export class WebMap extends Observable {
             requestEncoding: layerInfo.requestEncoding || 'KVP',
             tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin, layerInfo.matrixIds),
             tileLoadFunction: function (imageTile, src) {
+                if (src.indexOf('tianditu.gov.cn') >= 0) {
+                    imageTile.getImage().src = `${src}&tk=${CommonUtil.getParameters(layerInfo.url)['tk']}`;
+                    return;
+                }
                 imageTile.getImage().src = src
             }
         })

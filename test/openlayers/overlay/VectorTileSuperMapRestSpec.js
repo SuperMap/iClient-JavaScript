@@ -6,7 +6,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 
 var url = GlobeParameter.ChinaURL;
 describe('openlayers_VectorTileSuperMapRest', () => {
-    var testDiv, map, vectorTileOptions, vectorTileSource,originalTimeout;
+    var testDiv, map, vectorTileOptions, vectorTileSource,originalTimeout,vectorLayer;
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -16,6 +16,23 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
+        
+    });
+    beforeEach(() => {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    });
+    afterEach(() => {
+        if (vectorLayer) {
+            map.removeLayer(vectorLayer);
+        }
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+    afterAll(() => {
+        window.document.body.removeChild(testDiv);
+    });
+
+    it('initialize', (done) => {
         new MapService(url).getMapInfo((serviceResult) => {
             map = new Map({
                 target: 'map',
@@ -26,24 +43,11 @@ describe('openlayers_VectorTileSuperMapRest', () => {
             });
             vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
-            var vectorLayer = new VectorTileLayer({
+            vectorLayer = new VectorTileLayer({
                 source: vectorTileSource
             });
             map.addLayer(vectorLayer);
         });
-    });
-    beforeEach(() => {
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    });
-    afterEach(() => {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    });
-    afterAll(() => {
-        window.document.body.removeChild(testDiv);
-    });
-
-    it('initialize', (done) => {
         setTimeout(() => {
             try {
                 expect(vectorTileOptions).not.toBeNull();
@@ -53,6 +57,37 @@ describe('openlayers_VectorTileSuperMapRest', () => {
             } catch (exception) {
                 console.log("'initialize'案例失败：" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
+            }
+        }, 6000);
+    });
+    it('custom_tileLoadFunction', (done) => {
+        var tileLoadFunction = jasmine.createSpy('tileLoadFunction');
+        new MapService(url).getMapInfo((serviceResult) => {
+            map = new Map({
+                target: 'map',
+                view: new View({
+                    center: [12957388, 4853991],
+                    zoom: 11
+                })
+            });
+            vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+            vectorTileOptions.tileLoadFunction = tileLoadFunction;
+            vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
+            vectorLayer = new VectorTileLayer({
+                source: vectorTileSource
+            });
+            map.addLayer(vectorLayer);
+        });
+        setTimeout(() => {
+            try {
+                expect(vectorTileOptions).not.toBeNull();
+                expect(vectorTileSource).not.toBeNull();
+                expect(tileLoadFunction).toHaveBeenCalled();
+                done();
+            } catch (exception) {
+                console.log("'initialize'案例失败：" + exception.name + ":" + exception.message);
+                expect(false).toBeTruthy();
+                done();
             }
         }, 6000);
     });
