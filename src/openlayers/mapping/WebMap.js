@@ -718,7 +718,7 @@ export class WebMap extends Observable {
           if (minZoom > maxZoom) {
               [minZoom, maxZoom] = [maxZoom, minZoom];
           }
-          if (minZoom !== 0 && maxZoom !== visibleScales.length - 1) {
+          if (minZoom !== 0 || maxZoom !== visibleScales.length - 1) {
               this.map.setView(
                   new View(
                       Object.assign({}, this.map.getView().options_, {
