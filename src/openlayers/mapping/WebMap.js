@@ -697,8 +697,8 @@ export class WebMap extends Observable {
           let visibleScales, minScale, maxScale;
           if (baseLayer.layerType === 'WMTS') {
               visibleScales = baseLayer.scales;
-              minScale = mapInfo.minScale.split(':')[1];
-              maxScale = mapInfo.maxScale.split(':')[1];
+              minScale = +mapInfo.minScale.split(':')[1];
+              maxScale = +mapInfo.maxScale.split(':')[1];
           } else {
               const scales = this.scales.map((scale) => {
                   return 1 / scale.split(':')[1];
@@ -708,19 +708,16 @@ export class WebMap extends Observable {
               } else {
                 visibleScales = scales;
               }
-              minScale = 1 / mapInfo.minScale.split(':')[1];
-              maxScale = 1 / mapInfo.maxScale.split(':')[1];
-          }
-          if (minScale > maxScale) {
-            let temp = null;
-            temp = minScale;
-            minScale = maxScale;
-            maxScale = temp;
+              minScale = 1 / +mapInfo.minScale.split(':')[1];
+              maxScale = 1 / +mapInfo.maxScale.split(':')[1];
           }
           const minVisibleScale = this.findNearest(visibleScales, minScale);
           const maxVisibleScale = this.findNearest(visibleScales, maxScale);
-          const minZoom = visibleScales.indexOf(minVisibleScale);
-          const maxZoom = visibleScales.indexOf(maxVisibleScale);
+          let minZoom = visibleScales.indexOf(minVisibleScale);
+          let maxZoom = visibleScales.indexOf(maxVisibleScale);
+          if (minZoom > maxZoom) {
+              [minZoom, maxZoom] = [maxZoom, minZoom];
+          }
           if (minZoom !== 0 && maxZoom !== visibleScales.length - 1) {
               this.map.setView(
                   new View(
@@ -1641,6 +1638,10 @@ export class WebMap extends Observable {
             requestEncoding: layerInfo.requestEncoding || 'KVP',
             tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin, layerInfo.matrixIds),
             tileLoadFunction: function (imageTile, src) {
+                if (src.indexOf('tianditu.gov.cn') >= 0) {
+                    imageTile.getImage().src = `${src}&tk=${CommonUtil.getParameters(layerInfo.url)['tk']}`;
+                    return;
+                }
                 imageTile.getImage().src = src
             }
         })
@@ -2133,7 +2134,7 @@ export class WebMap extends Observable {
         if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
         }
-        if(['EPSG:-1', 'EPSG:0', 'EPSG:-1000'].includes(layer.projection)) {
+        if(['EPSG:0'].includes(layer.projection)) {
             // 不支持动态投影restData服务
             that.layerAdded++;
             that.sendMapToUser(layerLength);
