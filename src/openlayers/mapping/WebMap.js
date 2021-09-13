@@ -90,7 +90,7 @@ const dpiConfig = {
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
- * @param {function} [options.mapSetting.overlays] - 地图的overlayerp
+ * @param {function} [options.mapSetting.overlays] - 地图的overlays
  * @param {function} [options.mapSetting.controls] - 地图的控件
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数
  * @extends {ol/Observable}
@@ -2134,7 +2134,7 @@ export class WebMap extends Observable {
         if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
         }
-        if(['EPSG:-1', 'EPSG:0', 'EPSG:-1000'].includes(layer.projection)) {
+        if(['EPSG:0'].includes(layer.projection)) {
             // 不支持动态投影restData服务
             that.layerAdded++;
             that.sendMapToUser(layerLength);
