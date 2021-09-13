@@ -115,7 +115,10 @@ export class DeckglLayer {
         if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
             this.coordinateSystem = 3;
             this.isGeographicCoordinateSystem = true;
-        }
+        } else {
+            this.coordinateSystem = 1;
+            this.isGeographicCoordinateSystem = false;
+        } 
         //创建图层容器
         this._initContainer();
 
@@ -340,6 +343,9 @@ export class DeckglLayer {
         if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
             state.coordinateSystem = this.coordinateSystem;
             state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
+        } else {
+            state.coordinateSystem = 1;
+            state.isGeographicCoordinateSystem = false
         }
 
         //更行数据
@@ -397,7 +403,7 @@ export class DeckglLayer {
         var me = this;
         this.props.getPosition = this.callback.getPosition
             ? this.callback.getPosition
-            : function(point) {
+            : function (point) {
                   if (!point) {
                       return [0, 0, 0];
                   }
@@ -407,7 +413,7 @@ export class DeckglLayer {
         if (this.callback.getColor) {
             this.props.getColor = this.callback.getColor
                 ? this.callback.getColor
-                : function(point) {
+                : function (point) {
                       let style = point && point.getStyle();
                       return (style && style.color) || me.props.color;
                   };
@@ -416,7 +422,7 @@ export class DeckglLayer {
         if (this.callback.getRadius) {
             this.props.getRadius = this.callback.getRadius
                 ? this.callback.getRadius
-                : function(point) {
+                : function (point) {
                       let style = point && point.getStyle();
                       return (style && style.radius) || me.props.radius;
                   };
@@ -441,7 +447,7 @@ export class DeckglLayer {
     _createPathLayer() {
         this.props.getPath = this.callback.getPath
             ? this.callback.getPath
-            : function(feature) {
+            : function (feature) {
                   return feature.geometry.coordinates;
               };
         //以下几个函数也可走默认值
@@ -465,7 +471,7 @@ export class DeckglLayer {
     _createPolygonLayer() {
         this.props.getPolygon = this.callback.getPolygon
             ? this.callback.getPolygon
-            : function(feature) {
+            : function (feature) {
                   return feature.geometry.coordinates;
               };
 
@@ -496,7 +502,7 @@ export class DeckglLayer {
         //todo ArcLineLayer geojson coordinates数组中只能有一个线段
         this.props.getSourcePosition = this.callback.getSourcePosition
             ? this.callback.getSourcePosition
-            : function(feature) {
+            : function (feature) {
                   if (!feature) {
                       return [0, 0, 0];
                   }
@@ -505,7 +511,7 @@ export class DeckglLayer {
               };
         this.props.getTargetPosition = this.callback.getTargetPosition
             ? this.callback.getTargetPosition
-            : function(feature) {
+            : function (feature) {
                   if (!feature) {
                       return [0, 0, 0];
                   }
@@ -533,7 +539,7 @@ export class DeckglLayer {
     _createHexagonLayer() {
         this.props.getPosition = this.callback.getPosition
             ? this.callback.getPosition
-            : function(feature) {
+            : function (feature) {
                   if (!feature) {
                       return [0, 0, 0];
                   }
