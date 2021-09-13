@@ -77,12 +77,12 @@
           data: features,
           props: {
             widthScale: 20, //线宽比例
-            widthMinPixels: 2 //线宽最小像素值
+            widthMinPixels: 2, //线宽最小像素值
+            fp64:true // 以高精度64位模式呈现图层
             //该类型可配置的其他参数有：
             //widthMaxPixels  线宽最大像素值，默认为 Number.MAX_SAFE_INTEGER；
             //rounded  节点是否绘制为弧形，可选参数，默认为 false；
             //miterLimit  节点相对于线宽的最大范围，默认为 4，仅在 rounded 为 false 时有效；
-            //fp64  否应以高精度64位模式呈现图层，默认为 false；
             //dashJustified 是否虚线形式显示，默认为 false，仅在 getDashArray() 回调函数被指定时有效；
           },
           callback: {
