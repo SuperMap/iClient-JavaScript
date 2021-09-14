@@ -1,6 +1,7 @@
 import { FeatureService } from '../../../src/mapboxgl/services/FeatureService';
 import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.dataServiceURL;
 describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
@@ -203,4 +204,26 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
             done();
         });
     });
+    it('GetFeaturesByGeometryParameters:prjCoordSys', (done) => {
+      var sw = new mapboxgl.LngLat(-20, -20);
+      var ne = new mapboxgl.LngLat(20, 20);
+      var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
+      var geometryParam = new GetFeaturesByGeometryParameters({
+          datasetNames: ['World:Countries'],
+          geometry: lngLatBounds,
+          spatialQueryMode: 'INTERSECT',
+      });
+      var service = new FeatureService(url);
+
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.geometry.prjCoordSys.epsgCode).toEqual(4326);
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+      });
+      service.getFeaturesByGeometry(geometryParam, (result) => {
+          serviceResult = result;
+          geometryParam.destroy();
+          done();
+      });
+  });
 });

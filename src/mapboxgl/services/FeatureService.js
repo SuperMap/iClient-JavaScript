@@ -216,11 +216,13 @@ export class FeatureService extends ServiceBase {
         if (params.geometry) {
             if (params.geometry instanceof mapboxgl.LngLatBounds) {
                 params.geometry = Util.toSuperMapPolygon(params.geometry);
+                params.geometry.SRID = 4326;
             } else if (params.geometry instanceof mapboxgl.Point) {
                 params.geometry = new GeometryPoint(params.geometry.x, params.geometry.y);
             } else if (params.geometry instanceof mapboxgl.LngLat) {
                 params.geometry = new GeometryPoint(params.geometry.lng, params.geometry.lat);
-            }else if (!(params.geometry instanceof Geometry)) {
+                params.geometry.SRID = 4326;
+            } else if (!(params.geometry instanceof Geometry)) {
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
         }
