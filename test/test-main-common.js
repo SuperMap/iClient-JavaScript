@@ -89,6 +89,17 @@ import './common/iServer/DatasourceServiceSpec.js';
 // import './common/iServer/FacilityAnalystTracedown3DServiceSpec.js';
 // import './common/iServer/FacilityAnalystTraceup3DServiceSpec.js';
 // import './common/iServer/FacilityAnalystUpstream3DServiceSpec.js';
+import './common/iServer/ImageServiceSpec';
+import './common/iServer/imageCollectionServiceSpec';
+import './common/iServer/FieldsFilterSpec';
+import './common/iServer/ImageGFAspectSpec';
+import './common/iServer/ImageGFHillShadeSpec';
+import './common/iServer/ImageGFOrthoSpec';
+import './common/iServer/ImageGFSlopeSpec';
+import './common/iServer/ImageSearchParameterSpec';
+import './common/iServer/ImageRenderingRuleSpec';
+import './common/iServer/SortbySpec';
+import './common/iServer/ImageStretchOptionSpec';
 
 /**common -- control**/
 import './common/control/TimeControlBaseSpec.js';

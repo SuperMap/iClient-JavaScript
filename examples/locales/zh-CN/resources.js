@@ -85,6 +85,7 @@ window.examplesResources = {
         "envTips": "请在服务器环境下运行示范程序!"
     },
     "resources": {
+        "title_image_service": "影像服务",
         "title_iPortalUploadData":"上传数据",
         "title_iPortalRegisterData":"注册数据",
         "title_edit_attr":"编辑属性",
@@ -646,6 +647,9 @@ window.examplesResources = {
         "title_landcover_classification": "地物分类",
         "title_object_detection": "目标检测",
 
+        "text_district_search": "行政区检索",
+        "text_rectangle_search": "矩形检索",
+        "text_polygon_search": "多边形检索",
         "text_service_name":"名称",
         "text_service_type":"类型",
         "text_service_status":"状态",
@@ -699,6 +703,7 @@ window.examplesResources = {
         "text_removeResult": "移除结果",
         "text_addPath": "生成路径",
         "text_query": "查询",
+        "text_reset": "重置",
         "text_analyse": "分析",
         "text_closestFacilitiesService": "最近设施分析",
         "text_weightField": "权重字段:",

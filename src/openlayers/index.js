@@ -258,6 +258,15 @@ export {
     WebPrintingJobExportOptions,
     WebPrintingJobParameters,
     WebPrintingService,
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption,
     //components
     FileTypes,
     FileConfig,
@@ -274,8 +283,7 @@ export {
     PaginationContainer,
     ComponentsUtil,
     FileReaderUtil
-}
-from '@supermap/iclient-common';
+} from '@supermap/iclient-common';
 
 export * from './control';
 export * from './core';

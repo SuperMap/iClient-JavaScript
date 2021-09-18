@@ -16,6 +16,7 @@
     trafficTransferURL: "http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun",
     vectorURL: "http://localhost:8090/iserver/services/map-world/rest/maps/World/",
     gridURL: "http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图",
+    imageTileURL: "http://localhost:8090/iserver/services/imageservice-hainan2image/restjsr",
     imageURL: "http://localhost:8090/iserver/services/map-world/rest/maps/世界地图_Day",
     WorldURL: "http://localhost:8090/iserver/services/map-world/rest/maps/World",
     ChinaURL: "http://localhost:8090/iserver/services/map-china400/rest/maps/China",
@@ -32,5 +33,6 @@
     ChinaProvincesURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces",
     californiaURL: "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California",
     distributedAnalysisURL:"http://localhost:8090/iserver/services/distributedanalyst/rest/v1/jobs",
-    webPrintingURL: "http://localhost:8090/iserver/services/webprinting/rest/webprinting/v1"
+    webPrintingURL: "http://localhost:8090/iserver/services/webprinting/rest/webprinting/v1",
+    imageServiceURL: "http://localhost:8090/iserver/imageservice-imageserviceName/restjsr",
     }

@@ -260,11 +260,19 @@ export class CommonServiceBase {
     }
 
     _commit(options) {
-        if (options.method === 'POST' || options.method === 'PUT') {
+        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
                 options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
-            options.params = options.data;
+            if (typeof options.data === 'object') {
+                try {
+                    options.params = Util.toJSON(options.data);
+                } catch (e) {
+                    console.log('不是json对象');
+                }
+            } else {
+                options.params = options.data;
+            }
         }
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,

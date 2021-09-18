@@ -56,6 +56,8 @@ import './mapboxgl/services/TrafficTransferAnalystServiceSpec.js';
 import './mapboxgl/services/WebPrintingJobServiceSpec.js';
 import './mapboxgl/services/DatasetServiceSpec.js';
 import './mapboxgl/services/DatasourceServiceSpec.js';
+import './mapboxgl/services/ImageServiceSpec';
+import './mapboxgl/services/ImageCollectionServiceSpec';
 
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';

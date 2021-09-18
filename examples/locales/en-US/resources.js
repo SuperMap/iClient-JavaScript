@@ -144,6 +144,7 @@ window.examplesResources = {
         "envTips": "Please run the program in server environment!"
     },
     "resources": {
+        "title_image_service": "Image Service",
         "title_iPortalUploadData":"Upload Data",
         "title_iPortalRegisterData":"Register Data",
         "title_edit_attr":"Edit Attribute",
@@ -695,6 +696,9 @@ window.examplesResources = {
         "title_landcover_classification": "Landcover Claasification",
         "title_object_detection": "Object Detection",
 
+        "text_district_search": "Administrative region search",
+        "text_rectangle_search": "Rectangle retrieval",
+        "text_polygon_search": "Polygon retrieval",
         "text_service_name":"Name",
         "text_service_type":"Type",
         "text_service_status":"Status",

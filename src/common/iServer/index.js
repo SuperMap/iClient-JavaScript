@@ -241,6 +241,31 @@ import { WebPrintingJobLayoutOptions } from './WebPrintingJobLayoutOptions';
 import { WebPrintingJobExportOptions } from './WebPrintingJobExportOptions';
 import { WebPrintingJobParameters } from './WebPrintingJobParameters';
 import { WebPrintingService } from './WebPrintingService';
+import ImageCollectionService from './ImageCollectionService';
+import ImageService from './ImageService';
+import ImageSearchParameter from './ImageSearchParameter';
+import ImageRenderingRule from './ImageRenderingRule';
+import FieldsFilter from './FieldsFilter';
+import ImageGFHillShade from './ImageGFHillShade';
+import ImageGFAspect from './ImageGFAspect';
+import ImageGFOrtho from './ImageGFOrtho';
+import ImageGFSlope from './ImageGFSlope';
+import ImageStretchOption from './ImageStretchOption';
+import Sortby from './Sortby';
+
+export {
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption
+};
+export { ImageCollectionService };
+export { ImageService };
 
 export { AddressMatchService };
 export { AggregationParameter };

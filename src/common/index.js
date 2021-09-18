@@ -349,7 +349,18 @@ import {
     WebPrintingJobLayoutOptions,
     WebPrintingJobExportOptions,
     WebPrintingJobParameters,
-    WebPrintingService
+    WebPrintingService,
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption,
+    ImageCollectionService,
+    ImageService
 } from './iServer';
 import {
     Online,
@@ -838,7 +849,18 @@ export {
     WebPrintingJobLayoutOptions,
     WebPrintingJobExportOptions,
     WebPrintingJobParameters,
-    WebPrintingService
+    WebPrintingService,
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption,
+    ImageCollectionService,
+    ImageService
 };
 export {
     Online,

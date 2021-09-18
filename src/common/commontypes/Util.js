@@ -1091,3 +1091,49 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
         textHeight: textHeight
     };
 };
+/**
+ * @description 获取转换后的path路径。
+ * @param {string} path - 待转换的path, 包含`{param}`。
+ * @param {Object} pathParams - path中待替换的参数。
+ * @returns {string} 返回转换后的path路径
+ */
+SuperMap.Util.convertPath = function (path, pathParams) {
+  if (!pathParams) {
+      return path;
+  }
+  return path.replace(/\{([\w-\.]+)\}/g, (fullMatch, key) => {
+      var value;
+      if (pathParams.hasOwnProperty(key)) {
+          value = paramToString(pathParams[key]);
+      } else {
+          value = fullMatch;
+      }
+      return encodeURIComponent(value);
+  });
+};
+
+function paramToString(param) {
+  if (param == undefined || param == null) {
+      return '';
+  }
+  if (param instanceof Date) {
+      return param.toJSON();
+  }
+  if (canBeJsonified(param)) {
+      return JSON.stringify(param);
+  }
+
+  return param.toString();
+}
+
+function canBeJsonified(str) {
+  if (typeof str !== 'string' && typeof str !== 'object') {
+      return false;
+  }
+  try {
+      const type = str.toString();
+      return type === '[object Object]' || type === '[object Array]';
+  } catch (err) {
+      return false;
+  }
+}

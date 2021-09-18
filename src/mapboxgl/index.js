@@ -275,9 +275,17 @@ export {
     ComponentsUtil,
     FileReaderUtil,
     ChartView,
-    ChartViewModel
-}
-from '@supermap/iclient-common';
+    ChartViewModel,
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption
+} from '@supermap/iclient-common';
 
 export * from './control';
 export * from './core';

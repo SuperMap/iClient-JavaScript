@@ -9,7 +9,7 @@ import { ChangeTileVersion, Logo, ScaleLine } from './control';
 import { StyleUtils, Util } from './core';
 
 /* mapping */
-import { BaiduMap, ImageSuperMapRest, SuperMapCloud, Tianditu, TileSuperMapRest, WebMap } from './mapping';
+import { BaiduMap, ImageSuperMapRest, SuperMapCloud, ImageTileSuperMapRest, Tianditu, TileSuperMapRest, WebMap } from './mapping';
 
 /* overlay */
 import {
@@ -56,7 +56,9 @@ import {
     SpatialAnalystService,
     ThemeService,
     TrafficTransferAnalystService,
-    WebPrintingJobService
+    WebPrintingJobService,
+    ImageService,
+    ImageCollectionService
 } from './services';
 
 if (window && window.ol) {
@@ -74,6 +76,7 @@ if (window && window.ol) {
     ol.source.BaiduMap = BaiduMap;
     ol.source.ImageSuperMapRest = ImageSuperMapRest;
     ol.source.SuperMapCloud = SuperMapCloud;
+    ol.source.ImageTileSuperMapRest = ImageTileSuperMapRest;
     ol.source.Tianditu = Tianditu;
     ol.source.TileSuperMapRest = TileSuperMapRest;
     ol.supermap.WebMap = WebMap;
@@ -119,6 +122,8 @@ if (window && window.ol) {
     ol.supermap.ThemeService = ThemeService;
     ol.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
     ol.supermap.WebPrintingJobService = WebPrintingJobService;
+    ol.supermap.ImageService = ImageService;
+    ol.supermap.ImageCollectionService = ImageCollectionService;
 }
 
 export * from './control';

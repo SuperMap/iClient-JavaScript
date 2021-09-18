@@ -429,6 +429,19 @@ var exampleConfig = {
                     }
                 ]
             },
+            "image": {
+              name: "影像服务",
+              name_en: "Image Service",
+              content: [
+                  {
+                      name: "影像服务",
+                      name_en: "Image Service",
+                      version: "10.2.0",
+                      thumbnail: "imageService.png",
+                      fileName: "imageService"
+                  }
+              ]
+            },
             "security": {
                 name: "安全",
                 name_en: "Security",

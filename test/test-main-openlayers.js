@@ -10,6 +10,7 @@ import './openlayers/core/MapExtendSpec.js';
 import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/TileSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
+import './openlayers/mapping/ImageTileSuperMapRestSpec.js';
 
 /*openlayers -- overlay*/
 import './openlayers/overlay/DataFlowSpec.js';
@@ -68,3 +69,5 @@ import './openlayers/services/GridCellInfosServiceSpec.js';
 import './openlayers/services/WebPrintingJobServiceSpec.js';
 import './openlayers/services/DatasetServiceSpec.js';
 import './openlayers/services/DatasourceServiceSpec.js';
+import './openlayers/services/ImageServiceSpec';
+import './openlayers/services/ImageCollectionServiceSpec';

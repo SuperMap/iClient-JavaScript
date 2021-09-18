@@ -4,6 +4,7 @@ var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
 var geojsonapi = "https://geojson.org";
+var geometryapi="https://datatracker.ietf.org/doc/html/rfc7946#section-3.1";
 var helpDocApi = "https://iportal.supermap.io/iportal/help/html/zh/index.htm";
 var typeLinks = {
     //openlayers
@@ -75,8 +76,9 @@ var typeLinks = {
     "SuperMap.Layer":classicapi + '/Layer-js.html',
     "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
 
-	//GeoJSON
+	   //GeoJSON
     "GeoJSONObject": geojsonapi,
+    "GeoJSONGeometry": geometryapi,
 
     // WebMap 结构
     "WebMapSummaryObject": helpDocApi + '#iP/Appendix/WebMap/WebMapSummary.htm'

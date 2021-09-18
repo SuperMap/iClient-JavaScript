@@ -60,12 +60,20 @@
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
             inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.js');
         }
+        if (inArray(includes, 'turf')) {
+            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js');
+        }
         if (inArray(includes, 'draw')) {
             inputCSS(
                 'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.css'
             );
             inputScript(
                 'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.js'
+            );
+        }
+        if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
+            inputScript(
+                'https://cdn.jsdelivr.net/gh/CartoDB/mapboxgl-draw-rectangle-drag@1.0.1/build/mapboxgl-draw-rectangle-drag.browser.js'
             );
         }
         if (inArray(includes, 'compare')) {

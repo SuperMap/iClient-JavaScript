@@ -12,6 +12,7 @@ import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
 import './leaflet/mapping/WebMapSpec.js';
 import './leaflet/mapping/TiandituTileLayerSpec';
+import './leaflet/mapping/ImageTileLayerSpec';
 
 /*leaflet -- overlay*/
 
@@ -72,7 +73,8 @@ import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
 import './leaflet/services/WebPrintingJobServiceSpec.js';
 import './leaflet/services/DatasetServiceSpec.js';
 import './leaflet/services/DatasourceServiceSpec.js';
-
+import './leaflet/services/ImageServiceSpec';
+import './leaflet/services/ImageCollectionServiceSpec';
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
 import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';

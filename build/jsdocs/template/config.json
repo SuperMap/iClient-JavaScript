@@ -283,6 +283,10 @@
       "GeoprocessingService": {
         "name": "地理处理",
         "name_en": "GeoprocessingService"
+      },
+      "Image": {
+        "name": "影像服务",
+        "name_en": "Image"
       }
     }
   },

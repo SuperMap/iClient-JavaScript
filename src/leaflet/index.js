@@ -258,6 +258,15 @@ import {
     WebPrintingJobExportOptions,
     WebPrintingJobParameters,
     WebPrintingService,
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption,
     //components
     FileTypes,
     FileConfig,
@@ -276,15 +285,9 @@ import {
     FileReaderUtil,
     ChartView,
     ChartViewModel
-
 } from '@supermap/iclient-common';
 
-import {
-    Logo,
-    logo,
-    ChangeTileVersion,
-    changeTileVersion
-} from './control';
+import { Logo, logo, ChangeTileVersion, changeTileVersion } from './control';
 
 import {
     CommontypesConversion,
@@ -319,7 +322,9 @@ import {
     WMTSLayer,
     wmtsLayer,
     WebMap,
-    webMap
+    webMap,
+    ImageTileLayer,
+    imageTileLayer
 } from './mapping';
 import {
     DataFlowLayer,
@@ -348,13 +353,11 @@ import {
     UniqueThemeLayer,
     uniqueThemeLayer,
     VectorTileFormat,
-
     CartoCSSToLeaflet,
     DefaultStyle,
     CartoStyleMap,
     ServerStyleMap,
     CompOpMap,
-
     ImageStyle,
     imageStyle,
     CircleStyle,
@@ -368,7 +371,6 @@ import {
     ThemeFeature,
     themeFeature,
     ThemeLayer,
-
     CanvasRenderer,
     LineSymbolizer,
     PointSymbolizer,
@@ -422,7 +424,9 @@ import {
     TrafficTransferAnalystService,
     trafficTransferAnalystService,
     WebPrintingJobService,
-    webPrintingJobService
+    webPrintingJobService,
+    ImageCollectionService,
+    ImageService
 } from './services';
 
 import {
@@ -477,7 +481,7 @@ export {
     dataServiceQueryView,
     DataServiceQueryViewModel,
     dataServiceQueryViewModel
-}
+};
 
 export {
     SuperMap,
@@ -736,6 +740,15 @@ export {
     WebPrintingJobExportOptions,
     WebPrintingJobParameters,
     WebPrintingService,
+    FieldsFilter,
+    ImageGFAspect,
+    ImageGFHillShade,
+    ImageGFOrtho,
+    ImageGFSlope,
+    ImageSearchParameter,
+    ImageRenderingRule,
+    Sortby,
+    ImageStretchOption,
     //components
     FileTypes,
     FileConfig,
@@ -755,12 +768,7 @@ export {
     ChartView,
     ChartViewModel
 };
-export {
-    Logo,
-    logo,
-    ChangeTileVersion,
-    changeTileVersion
-};
+export { Logo, logo, ChangeTileVersion, changeTileVersion };
 export {
     CommontypesConversion,
     BaiduCRS,
@@ -794,7 +802,9 @@ export {
     WMTSLayer,
     wmtsLayer,
     WebMap,
-    webMap
+    webMap,
+    ImageTileLayer,
+    imageTileLayer
 };
 export {
     DataFlowLayer,
@@ -823,13 +833,11 @@ export {
     UniqueThemeLayer,
     uniqueThemeLayer,
     VectorTileFormat,
-
     CartoCSSToLeaflet,
     DefaultStyle,
     CartoStyleMap,
     ServerStyleMap,
     CompOpMap,
-
     ImageStyle,
     imageStyle,
     CircleStyle,
@@ -843,7 +851,6 @@ export {
     ThemeFeature,
     themeFeature,
     ThemeLayer,
-
     CanvasRenderer,
     LineSymbolizer,
     PointSymbolizer,
@@ -897,5 +904,7 @@ export {
     TrafficTransferAnalystService,
     trafficTransferAnalystService,
     WebPrintingJobService,
-    webPrintingJobService
+    webPrintingJobService,
+    ImageCollectionService,
+    ImageService
 };
