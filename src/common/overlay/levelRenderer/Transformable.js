@@ -183,7 +183,7 @@ export class Transformable {
                     }
                 }
             } else {
-                if (this.rotation !== 0) {
+                if (+this.rotation !== 0) {
                     SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }

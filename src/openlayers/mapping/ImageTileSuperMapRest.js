@@ -66,7 +66,7 @@ export class ImageTileSuperMapRest extends XYZ {
             return layerUrl;
         }
 
-        function _getAllRequestParams() {
+        function _getAllRequestParams(options) {
             var params = {};
             params['transparent'] = options.transparent;
             params['cacheEnabled'] = !(options.cacheEnabled === false);
