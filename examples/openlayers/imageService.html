@@ -296,26 +296,15 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>文件名称</th>
-                                    <th>添加时间</th>
-                                    <th>浏览影像</th>
+                                    <th data-i18n="resources.text_filename"></th>
+                                    <th data-i18n="resources.text_addTime"></th>
+                                    <th data-i18n="resources.text_showImage"></th>
                                 </tr>
                             </thead>
                             <tbody id="collectionsTbody"></tbody>
                         </table>
                         <nav class="page" aria-label="Page navigation">
-                            <ul id="pagination" class="pagination">
-                                <li id="previous-page">
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li id="next-page" style="margin-right: 0">
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            <ul id="pagination" class="pagination"></ul>
                         </nav>
                     </div>
                 </div>
@@ -350,7 +339,7 @@
         <script type="text/javascript">
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var root = host + '/iserver/services/imageservice-hainan/restjsr';
-            var url = host + '/iserver/services/data-China100/rest/data';
+            var url = host + '/iserver/services/data-china400/rest/data';
             var projection = 'EPSG:4326';
             var map = new ol.Map({
                 target: 'map',
@@ -693,6 +682,7 @@
                 var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
                     queryParameter: { attributeFilter: "PAC Like '46%'" },
                     datasetNames: ['China:City_R'],
+                    targetPrj: { epsgCode: 4326 },
                     maxFeatures: 10000
                 });
                 new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
@@ -808,6 +798,7 @@
             }
 
             function appendPage(features) {
+                $('#pagination').empty();
                 var pageHtml =
                     '<li id="previous-page" class="disabled" onclick="goPrevious()">' +
                     '<a href="#" aria-label="Previous">' +
