@@ -74,7 +74,7 @@ window.examplesResources = {
         "join": "加入我们： 超图Web客户端团队 ",
         "join_tips1": "（请发邮件至: ",
         "join_tips2": "，附上您的简历哦）",
-        "copyright": "版权所有 © 2000-2021 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074"
+        "copyright": "版权所有 © 2000-2021 北京超图软件股份有限公司 蜀ICP备16000471号-1"
     },
     "editor": {
         "expand": " 展开",
@@ -451,8 +451,9 @@ window.examplesResources = {
         "title_rankSymbolThemeLayer": "符号等级专题图",
         "title_snapDrawFeatures": "捕捉图形绘制",
         "title_superMapCloudLayer": "超图云地图",
-        "title_tiandituLayer_ll": "天地图-经纬度",
-        "title_tiandituLayer_mecartor": "天地图-墨卡托",
+        "title_tiandituLayer_ll": "天地图-矢量-经纬度",
+        "title_tiandituLayer_mecartor": "天地图-影像-墨卡托",
+        "title_tiandituLayer_terrain": "天地图-地形-经纬度",
         "title_vectorTiledLayer": "矢量瓦片",
         "title_turfClassificationAnalysis": "分类分析",
         "title_turfGridAnalysis": "格网分析",

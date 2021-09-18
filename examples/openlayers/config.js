@@ -1173,16 +1173,22 @@ var exampleConfig = {
                 name: "天地图",
                 name_en: "Tianditu",
                 content: [{
-                    name: "天地图-经纬度",
-                    name_en: "tianditu-ll",
-                    thumbnail: "ol_tianditu_ll.png",
-                    fileName: "tiandituLayer_ll"
-                }, {
-                    name: "天地图-墨卡托",
-                    name_en: "tianditu-mercator",
+                    name: "天地图-影像-墨卡托",
+                    name_en: "tianditu-iamge-mercator",
                     thumbnail: "ol_tianditu_mercator.png",
                     fileName: "tiandituLayer_mecartor"
-                }]
+                },{
+                    name: "天地图-矢量-经纬度",
+                    name_en: "tianditu-vector-wgs84",
+                    thumbnail: "ol_tianditu_ll.png",
+                    fileName: "tiandituLayer_vector"
+                },{
+                    name: "天地图-地形-经纬度",
+                    name_en: "tianditu-terrain-wgs84",
+                    thumbnail: "ol_tiandituLayer_ll_ter.png",
+                    fileName: "tiandituLayer_ll"
+                }
+                ]
             },
             "SuperMapCloud": {
                 name: "超图云",

@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title data-i18n="resources.title_tiandituLayer_ll"></title>
+    <title data-i18n="resources.title_tiandituLayer_terrain"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
   </head>
 
@@ -20,11 +20,13 @@
       });
       L.supermap
         .tiandituTileLayer({
+          layerType: 'ter',
           key: '1d109683f4d84198e37a38c442d68311'
         })
         .addTo(map);
       L.supermap
         .tiandituTileLayer({
+          layerType: 'ter',
           isLabel: true,
           key: '1d109683f4d84198e37a38c442d68311'
         })

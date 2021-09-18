@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_tiandituLayer_terrain"></title>
+    <title data-i18n="resources.title_tiandituLayer_ll"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 </head>
@@ -17,7 +17,7 @@
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
             .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-            center: [0, 0],
+            center: [0,0],
             zoom: 1,
             projection: "EPSG:4326",
             multiWorld: true
@@ -25,13 +25,11 @@
 
         layers: [new ol.layer.Tile({
             source: new ol.source.Tianditu({
-                layerType: 'ter',
                 key: "1d109683f4d84198e37a38c442d68311",
                 projection: "EPSG:4326"
             })
         }), new ol.layer.Tile({
             source: new ol.source.Tianditu({
-                layerType: 'ter',
                 key: "1d109683f4d84198e37a38c442d68311",
                 isLabel: true,
                 projection: "EPSG:4326"
