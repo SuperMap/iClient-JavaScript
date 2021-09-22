@@ -121,7 +121,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="可办事项"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -131,7 +131,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="总事项"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -167,7 +167,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="办结率"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -193,14 +193,14 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="党员年龄分布"
-                                    
+
                                 ></sm-text>
                                 <div style="margin-left: 21px">
                                     <div class="progress-describe">
                                         <sm-text
                                             v-bind="textPropsCommon"
                                             title="35岁以下"
-                                            
+
                                         ></sm-text>
                                         <sm-text
                                             v-bind="textNumberProps"
@@ -226,7 +226,7 @@
                                         <sm-text
                                             v-bind="textPropsCommon"
                                             title="35岁以下"
-                                            
+
                                         ></sm-text>
                                         <sm-text
                                             v-bind="textNumberProps"
@@ -252,7 +252,7 @@
                                         <sm-text
                                             v-bind="textPropsCommon"
                                             title="35岁以下"
-                                            
+
                                         ></sm-text>
                                         <sm-text
                                             v-bind="textNumberProps"
@@ -287,7 +287,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="党委"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -300,7 +300,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="党支部"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -313,7 +313,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="联合党支部"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -425,7 +425,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="四大问题处置率"
-                                    
+
                                 ></sm-text>
                                 <div class="content-detail" style="width: 220px">
                                     <div class="problem-text">
@@ -467,7 +467,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="事件来源数量统计"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 260px; height: 120px">
                                     <sm-chart icon-class="" :options="industryChartBarPropDatas"></sm-chart>
@@ -489,7 +489,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="单位：人/平方公里"
-                                        
+
                                     ></sm-text>
                                     <sm-text
                                         v-bind="textNumberProps"
@@ -502,7 +502,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="单位：人"
-                                        
+
                                     ></sm-text>
                                     <sm-text
                                         v-bind="textNumberProps"
@@ -516,7 +516,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="旅游业占服务业比重"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-content">
                                     <div style="width: 110px; height: 110px">
@@ -591,7 +591,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="公共停车场"
-                                                
+
                                             ></sm-text>
                                         </div>
                                         <div>
@@ -599,7 +599,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="专用停车场"
-                                                
+
                                             ></sm-text>
                                         </div>
                                         <div>
@@ -607,7 +607,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="道路停车场"
-                                                
+
                                             ></sm-text>
                                         </div>
                                     </div>
@@ -1462,6 +1462,8 @@
                             backgroundColor: '',
                             yAxis: {
                                 name: '单位：个',
+                                min: 0,
+                                max: 100,
                                 axisLabel: {
                                     rotate: 0,
                                     fontFamily: 'MicrosoftYaHei',
