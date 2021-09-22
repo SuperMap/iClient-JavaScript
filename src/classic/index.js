@@ -19,3 +19,7 @@ export { GeoDecodingParameter } from '@supermap/iclient-common/iServer/GeoDecodi
 export * from './overlay';
 export * from './services';
 export { SuperMap } from './SuperMap';
+/**
+ *@namespace SuperMap
+ *@category BaseTypes Namespace
+ */
