@@ -103,7 +103,7 @@
                                         <sm-text
                                             v-bind="textPropsCommon"
                                             title="单位：亿元"
-                                            
+
                                         ></sm-text>
                                         <sm-text
                                             v-bind="textNumberProps"
@@ -128,7 +128,7 @@
                                         <sm-text
                                             v-bind="textPropsCommon"
                                             title="单位：亿元"
-                                            
+
                                         ></sm-text>
                                         <sm-text
                                             v-bind="textNumberProps"
@@ -240,7 +240,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="固定资产投资总额"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -258,7 +258,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="社销零总额"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -353,7 +353,7 @@
                             <sm-text
                                 v-bind="textPropsCommon"
                                 title="社销零总额变化趋势"
-                                
+
                             ></sm-text>
                             <div class="chart-bar" style="width: 100%; height: 140px; margin: 0;">
                                 <sm-chart v-bind="lineChartProps"></sm-chart>
@@ -397,7 +397,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="规上工业总产值的增长趋势"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 260px; height: 120px">
                                     <sm-chart icon-class="" :options="industryChartBarPropDatas"></sm-chart>
@@ -408,7 +408,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="金融业增长趋势"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 260px; height: 120px">
                                     <sm-chart v-bind="lineChartProps"></sm-chart>
@@ -439,7 +439,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="金融业增长趋势"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 300px; height: 120px">
                                     <sm-chart v-bind="lineChartProps"></sm-chart>
@@ -1284,6 +1284,8 @@
                             backgroundColor: '',
                             yAxis: {
                                 name: '单位：个',
+                                min: 0,
+                                max: 100,
                                 axisLabel: {
                                     rotate: 0,
                                     fontFamily: 'MicrosoftYaHei',

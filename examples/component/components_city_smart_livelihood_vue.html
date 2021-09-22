@@ -340,7 +340,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="住宅总面积增速"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 100%; height: 120px">
                                     <sm-chart v-bind="lineChartProps"></sm-chart>
@@ -380,7 +380,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="住宅机构分布"
-                                        
+
                                     ></sm-text>
                                     <div class="chart-bar" style="width: 100%; height: 120px">
                                         <sm-chart icon-class="" :options="chartBarPropDatas1"></sm-chart>
@@ -402,7 +402,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="安全生产事故死亡率"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 100%; height: 120px">
                                     <sm-chart icon-class="" :options="chartBarPropDatas"></sm-chart>
@@ -414,7 +414,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="药品抽检合格率"
-                                        
+
                                     ></sm-text>
                                     <div class="chart-bar" style="width: 100%; height: 120px">
                                         <sm-chart icon-class="" :options="chartXBarPropDatas"></sm-chart>
@@ -441,7 +441,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="单位：家"
-                                        
+
                                     ></sm-text>
                                     <sm-text v-bind="textNumberProps" title="1,345" style="height: 30px"></sm-text>
                                 </div>
@@ -454,7 +454,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="单位：个"
-                                        
+
                                     ></sm-text>
                                     <sm-text v-bind="textNumberProps" title="2, 021" style="height: 30px"></sm-text>
                                 </div>
@@ -465,7 +465,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="城市接待游客比例"
-                                        
+
                                     ></sm-text>
                                     <div class="chart-content">
                                         <div style="width: 127px; height: 127px">
@@ -477,7 +477,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2018"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                             <div>
@@ -485,7 +485,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2019"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                             <div>
@@ -493,7 +493,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2020"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                         </div>
@@ -506,7 +506,7 @@
                                     <sm-text
                                         v-bind="textPropsCommon"
                                         title="旅游业占服务业比重"
-                                        
+
                                     ></sm-text>
                                     <div class="chart-content">
                                         <div style="width: 110px; height: 110px">
@@ -518,7 +518,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2017"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                             <div>
@@ -526,7 +526,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2018"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                             <div>
@@ -534,7 +534,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2019"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                             <div>
@@ -542,7 +542,7 @@
                                                 <sm-text
                                                     v-bind="textPropsCommon"
                                                     title="2020"
-                                                    
+
                                                 ></sm-text>
                                             </div>
                                         </div>
@@ -708,6 +708,8 @@
                             backgroundColor: '',
                             yAxis: {
                                 name: '单位：件',
+                                min: 0,
+                                max: 10,
                                 axisLabel: {
                                     rotate: 0,
                                     fontFamily: 'MicrosoftYaHei',
@@ -852,6 +854,8 @@
                             backgroundColor: '',
                             yAxis: {
                                 name: '单位：%',
+                                min: 0,
+                                max: 100,
                                 axisLabel: {
                                     rotate: 0,
                                     fontFamily: 'MicrosoftYaHei',

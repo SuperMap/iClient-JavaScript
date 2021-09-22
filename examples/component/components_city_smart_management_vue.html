@@ -102,7 +102,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="当日案件统计"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-content">
                                     <div style="width: 120px; height: 120px">
@@ -114,7 +114,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="结案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -127,7 +127,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="受理案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -140,7 +140,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="立案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -156,7 +156,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="当日案件来源"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-content">
                                     <div style="width: 120px; height: 120px">
@@ -168,7 +168,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="立案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -187,7 +187,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="结案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -206,7 +206,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="受理案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -225,7 +225,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="立案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -375,7 +375,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="结案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -388,7 +388,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="受理案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -401,7 +401,7 @@
                                             <sm-text
                                                 v-bind="textPropsCommon"
                                                 title="立案案件"
-                                                
+
                                             ></sm-text>
                                             <sm-text
                                                 v-bind="textNumberProps"
@@ -479,7 +479,7 @@
                                 <sm-text
                                     v-bind="textPropsCommon"
                                     title="事件来源数量统计"
-                                    
+
                                 ></sm-text>
                                 <div class="chart-bar" style="width: 280px; height: 127px">
                                     <sm-chart icon-class="" :options="chartBarPropDatas1"></sm-chart>
@@ -1575,6 +1575,8 @@
                             backgroundColor: '',
                             yAxis: {
                                 name: '单位：个',
+                                min: 0,
+                                max: 100,
                                 axisLabel: {
                                     rotate: 0,
                                     fontFamily: 'MicrosoftYaHei',
