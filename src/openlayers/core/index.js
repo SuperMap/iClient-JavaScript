@@ -12,3 +12,11 @@ export {MapExtend} from './MapExtend';
  * @namespace ol.supermap
  * @category BaseTypes Namespace
  */
+/**
+ * @namespace ol.style
+ * @category BaseTypes Namespace
+ */
+/**
+ * @namespace ol.source
+ * @category BaseTypes Namespace
+ */
