@@ -65,17 +65,18 @@
             inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js');
         }
         if (inArray(includes, 'leaflet.markercluster')) {
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css');
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.1/dist/MarkerCluster.Default.css');
+            inputCSS('https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.1/dist/MarkerCluster.css');
+            inputScript('https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.1/dist/leaflet.markercluster.js');
         }
         if (inArray(includes, 'leaflet.draw')) {
             inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css');
             inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js');
         }
         if (inArray(includes, 'leaflet-geoman')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/@geoman-io/leaflet-geoman-free@2.7.0/dist/leaflet-geoman.css');
-            inputScript('https://cdn.jsdelivr.net/npm/@geoman-io/leaflet-geoman-free@2.7.0/dist/leaflet-geoman.min.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/@skyraptor/leaflet-geoman-free@2.11.3/dist/leaflet-geoman.css');
+            inputScript('https://cdn.jsdelivr.net/npm/@skyraptor/leaflet-geoman-free@2.11.3/dist/leaflet-geoman.min.js');
+            
         }
         if (inArray(includes, 'leaflet.miniMap')) {
             inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css');
@@ -98,12 +99,10 @@
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
-            inputScript(
-                'https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js'
-            );
+            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js');
         }
         if (inArray(includes, 'd3')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/d3/6.1.1/d3.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/d3@7.0.3/dist/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript('https://d3js.org/d3-hexbin.v0.2.min.js');
@@ -123,10 +122,8 @@
         }
         if (inArray(includes, 'pixi')) {
             inputScript('https://cdn.bootcdn.net/ajax/libs/pixi.js/4.8.7/pixi.js');
-            inputScript('https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.8.1/L.PixiOverlay.min.js');
-            inputScript(
-                'https://iclient.supermap.io/web/libs/leaflet/plugins/Leaflet.PixiOverlay/1.8.1/MarkerContainer.js'
-            );
+            inputScript('https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.8.2/L.PixiOverlay.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/Leaflet.PixiOverlay/MarkerContainer.js');
             inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
         }
         if (inArray(includes, 'tensorflow')) {
@@ -169,7 +166,7 @@
             inputScript('../../dist/leaflet/iclient-leaflet-vue.min.js');
         }
         if (inArray(includes, 'leaflet-mapbox-gl')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl-leaflet@0.0.14/leaflet-mapbox-gl.js');
+            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl-leaflet@0.0.15/leaflet-mapbox-gl.min.js');
         }
     }
 
