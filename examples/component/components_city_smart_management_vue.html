@@ -3,2195 +3,2069 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title data-i18n="resources.title_smartCityManagement_Vue"></title>
-        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-        <script
-            include="echarts-vue,ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance,vue-cesium"
-            src="../../dist/mapboxgl/include-mapboxgl.js"
-        ></script>
-        <style>
-            #main {
-                margin: 0 auto;
-                width: 100%;
-                height: 100vh;
-                overflow: hidden;
-                box-sizing: border-box;
-            }
-        </style>
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_smartCityManagement_Vue"></title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script
+      include="echarts-vue,ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance,vue-cesium"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <style>
+      #main {
+        margin: 0 auto;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
 
-    <body style="margin: 0">
-        <div id="main">
-            <sm-web-scene class="web-scene" v-bind="webSceneProps"></sm-web-scene>
-            <div class="template">
-                <div class="dashboard-switch-header">
-                    <sm-text class="title" v-bind="headerTitleProps"></sm-text>
-                    <div class="subtitle">
-                        <sm-text style="margin: 0px 0px 10px 22px; padding: 0;font-style: italic;" v-bind="subtitleProps"></sm-text>
-                    </div>
-                </div>
-                <div class="menu">
-                    <sm-text
-                        v-bind="textLinkProps"
-                        class="text-link"
-                        title="全市概况"
-                        href="./components_city_smart_overview_vue.html"
-                    ></sm-text>
-                    <sm-text
-                        v-bind="textLinkProps"
-                        class="text-link link-active"
-                        title="城市管理"
-                        href="./components_city_smart_management_vue.html"
-                    ></sm-text>
-                    <sm-text
-                        v-bind="textLinkProps"
-                        class="text-link"
-                        title="经济运行"
-                        href="./components_city_smart_economic_vue.html"
-                    ></sm-text>
-                    <sm-text
-                        v-bind="textLinkProps"
-                        class="text-link"
-                        title="民生幸福"
-                        href="./components_city_smart_livelihood_vue.html"
-                    ></sm-text>
-                </div>
-                <div class="content">
-                    <div class="left-content">
-                        <div style="width: 90%; margin: 0 auto">
-                            <div class="subheading">
-                                <span class="title-arorn"></span>
-                                <sm-text v-bind="textGridTitle" title="当日案件统计"></sm-text>
-                                <div class="decorative-strip"></div>
-                                <div class="gif-point"></div>
-                            </div>
-                            <div class="content-detail">
-                                <div class="chart-content">
-                                    <div class="progress-content" style="margin-right: 26px">
-                                        <sm-progress v-bind="progressProps"> </sm-progress>
-                                        <sm-text
-                                            v-bind="textPropsCommon"
-                                            title="立案率"
-                                            style="font-size: 11px; position: absolute; top: 32px; left: 45px"
-                                        ></sm-text>
-                                        <sm-text
-                                            v-bind="textNumberProps"
-                                            title="95%"
-                                            style="font-size: 24px; position: absolute; top: 50px; left: 41px"
-                                        ></sm-text>
-                                    </div>
-                                    <div class="progress-content">
-                                        <sm-progress v-bind="progressProps" percent="75"> </sm-progress>
-                                        <sm-text
-                                            v-bind="textPropsCommon"
-                                            title="结案率"
-                                            style="font-size: 11px; position: absolute; top: 32px; left: 45px"
-                                        ></sm-text>
-                                        <sm-text
-                                            v-bind="textNumberProps"
-                                            title="75%"
-                                            style="font-size: 24px; position: absolute; top: 50px; left: 41px"
-                                        ></sm-text>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bottom-progress">
-                                <span style="font-size: 11px; color: #ff8c25">丨</span>
-                                <sm-text
-                                    v-bind="textPropsCommon"
-                                    title="当日案件统计"
-
-                                ></sm-text>
-                                <div class="chart-content">
-                                    <div style="width: 120px; height: 120px">
-                                        <sm-chart class="chart-pie" v-bind="chartPiePropDatas"></sm-chart>
-                                    </div>
-                                    <div style="margin: 16px 0 0 22px">
-                                        <div>
-                                            <span class="span-point" style="background: #9dfad6"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="结案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="85"
-                                                style="font-size: 24px; height: 16px; float: right; color: #9dfad6"
-                                            ></sm-text>
-                                        </div>
-                                        <div style="margin-top: 6px">
-                                            <span class="span-point" style="background: #55adea"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="受理案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="102"
-                                                style="font-size: 24px; height: 16px; float: right; color: #55adea"
-                                            ></sm-text>
-                                        </div>
-                                        <div style="margin-top: 6px">
-                                            <span class="span-point" style="background: #6d769c"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="立案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="160"
-                                                style="font-size: 24px; height: 16px; float: right; color: #6d769c"
-                                            ></sm-text>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bottom-progress">
-                                <span style="font-size: 11px; color: #ff8c25">丨</span>
-                                <sm-text
-                                    v-bind="textPropsCommon"
-                                    title="当日案件来源"
-
-                                ></sm-text>
-                                <div class="chart-content">
-                                    <div style="width: 120px; height: 120px">
-                                        <sm-chart class="chart-Rose" v-bind="chartRosePropDatas"></sm-chart>
-                                    </div>
-                                    <div style="margin-top: 16px 0 0 22px">
-                                        <div>
-                                            <span class="span-point" style="background: #6d769c"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="立案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="36"
-                                                style="
-                                                    font-size: 24px;
-                                                    line-height: 26px;
-                                                    float: right;
-                                                    color: #6d769c;
-                                                    padding: 0;
-                                                "
-                                            ></sm-text>
-                                        </div>
-                                        <div>
-                                            <span class="span-point" style="background: #9dfad6"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="结案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="85"
-                                                style="
-                                                    font-size: 24px;
-                                                    line-height: 26px;
-                                                    float: right;
-                                                    color: #9dfad6;
-                                                    padding: 0;
-                                                "
-                                            ></sm-text>
-                                        </div>
-                                        <div style="margin-top: 6px">
-                                            <span class="span-point" style="background: #55adea"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="受理案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="102"
-                                                style="
-                                                    font-size: 24px;
-                                                    line-height: 26px;
-                                                    float: right;
-                                                    color: #55adea;
-                                                    padding: 0;
-                                                "
-                                            ></sm-text>
-                                        </div>
-                                        <div style="margin-top: 6px">
-                                            <span class="span-point" style="background: #6d769c"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="立案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="160"
-                                                style="
-                                                    font-size: 24px;
-                                                    line-height: 26px;
-                                                    float: right;
-                                                    color: #6d769c;
-                                                    padding: 0;
-                                                "
-                                            ></sm-text>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="right-content">
-                        <div class="right-content-top">
-                            <div class="subheading">
-                                <span class="title-arorn"></span>
-                                <sm-text v-bind="textGridTitle" title="案件总览"></sm-text>
-                                <div class="decorative-strip"></div>
-                                <div class="gif-point"></div>
-                            </div>
-                            <div class="case-image">
-                                <div
-                                    style="
-                                        width: 24px;
-                                        height: 28px;
-                                        margin: 10px;
-                                        background-image: url('../img/background/icon1.png');
-                                        background-size: 100% 100%;
-                                    "
-                                ></div>
-                                <div style="margin-right: 46px">
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="历史案件总数"
-                                        style="display: block; text-align: left"
-                                    ></sm-text>
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="单位：件"
-                                        style="font-size: 11px; text-align: left; display: block"
-                                    ></sm-text>
-                                </div>
-                                <sm-text v-bind="textNumberProps" title="23,021" style="font-size: 32px"></sm-text>
-                            </div>
-                            <div class="case-image">
-                                <div
-                                    style="
-                                        width: 24px;
-                                        height: 28px;
-                                        margin: 10px;
-                                        background-image: url('../img/background/icon11.png');
-                                        background-size: 100% 100%;
-                                    "
-                                ></div>
-                                <div style="margin-right: 80px">
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="上报数"
-                                        style="display: block; text-align: left"
-                                    ></sm-text>
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="单位：件"
-                                        style="font-size: 11px; text-align: left; display: block"
-                                    ></sm-text>
-                                </div>
-                                <sm-text v-bind="textNumberProps" title="23,021" style="font-size: 32px"></sm-text>
-                            </div>
-                            <div class="case-image">
-                                <div
-                                    style="
-                                        width: 24px;
-                                        height: 28px;
-                                        margin: 10px;
-                                        background-image: url('../img/background/icon12.png');
-                                        background-size: 100% 100%;
-                                    "
-                                ></div>
-                                <div style="margin-right: 80px">
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="立案数"
-                                        style="display: block; text-align: left"
-                                    ></sm-text>
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="单位：件"
-                                        style="font-size: 11px; text-align: left; display: block"
-                                    ></sm-text>
-                                </div>
-                                <sm-text v-bind="textNumberProps" title="23,021" style="font-size: 32px"></sm-text>
-                            </div>
-                            <div class="content-detail">
-                                <div style="width: 50%; margin-top: 8px">
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="按时处置率"
-                                        style="display: block"
-                                    ></sm-text>
-                                    <sm-liquid-fill
-                                        id="liquidFill1"
-                                        :value="0.65"
-                                        :font-size="18"
-                                        wave-color="#55ADEA"
-                                        text-color="#ffffff"
-                                        background-color="rgba(255, 255, 255, 0.18)"
-                                        style="width: 110px; height: 110px; background: transparent"
-                                    >
-                                    </sm-liquid-fill>
-                                </div>
-                                <div style="width: 50%; margin-top: 8px">
-                                    <sm-text v-bind="textPropsCommon" title="结案率" style="display: block"></sm-text>
-                                    <sm-liquid-fill
-                                        id="liquidFill1"
-                                        :value="0.65"
-                                        :font-size="18"
-                                        wave-color="#55ADEA"
-                                        text-color="#ffffff"
-                                        background-color="rgba(255, 255, 255, 0.18)"
-                                        style="width: 110px; height: 110px; background: transparent"
-                                    >
-                                    </sm-liquid-fill>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="right-content-bottom">
-                            <div class="subheading">
-                                <span class="title-arorn"></span>
-                                <sm-text v-bind="textGridTitle" title="城管人员"></sm-text>
-                                <div class="decorative-strip"></div>
-                                <div class="gif-point"></div>
-                            </div>
-                            <div class="bottom-progress">
-                                <div class="chart-content">
-                                    <div style="width: 120px; height: 120px">
-                                        <sm-chart class="chart-pie" v-bind="chartPiePropDatas"></sm-chart>
-                                    </div>
-                                    <div style="margin-top: 16px 0 0 22px">
-                                        <div>
-                                            <span class="span-point" style="background: #9dfad6"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="结案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="85"
-                                                style="font-size: 24px; height: 16px; float: right; color: #9dfad6"
-                                            ></sm-text>
-                                        </div>
-                                        <div style="margin-top: 6px">
-                                            <span class="span-point" style="background: #55adea"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="受理案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="102"
-                                                style="font-size: 24px; height: 16px; float: right; color: #55adea"
-                                            ></sm-text>
-                                        </div>
-                                        <div style="margin-top: 6px">
-                                            <span class="span-point" style="background: #6d769c"></span>
-                                            <sm-text
-                                                v-bind="textPropsCommon"
-                                                title="立案案件"
-
-                                            ></sm-text>
-                                            <sm-text
-                                                v-bind="textNumberProps"
-                                                title="160"
-                                                style="font-size: 24px; height: 16px; float: right; color: #6d769c"
-                                            ></sm-text>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bottom">
-                    <div class="bottom-content" style="margin-left: 16px">
-                        <div class="subheading">
-                            <span class="title-arorn"></span>
-                            <sm-text v-bind="textGridTitle" title="产业总览"></sm-text>
-                            <div class="decorative-strip"></div>
-                            <div class="gif-point"></div>
-                        </div>
-                        <div class="content-detail">
-                            <div>
-                                <div class="economy-image">
-                                    <span
-                                        class="inner-image"
-                                        style="background-image: url(../img//background/icon2.png)"
-                                    ></span>
-                                </div>
-                                <div class="economy-image">
-                                    <span
-                                        class="inner-image"
-                                        style="background-image: url(../img//background/icon3.png)"
-                                    ></span>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="progressText">
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="公众满意度"
-                                        style="font-size: 11px; text-align: left"
-                                    ></sm-text>
-                                    <sm-text
-                                        v-bind="textNumberProps"
-                                        title="95%"
-                                        style="font-size: 24px; color: #25f9ff; text-align: left"
-                                    ></sm-text>
-                                </div>
-                                <div class="progressText">
-                                    <sm-text
-                                        v-bind="textPropsCommon"
-                                        title="调解率"
-                                        style="font-size: 11px; text-align: left"
-                                    ></sm-text>
-                                    <sm-text
-                                        v-bind="textNumberProps"
-                                        title="95%"
-                                        style="font-size: 24px; color: #25f9ff; text-align: left"
-                                    ></sm-text>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom-content" style="width: 280px; margin: 0 auto">
-                        <div class="subheading">
-                            <span class="title-arorn"></span>
-                            <sm-text v-bind="textGridTitle" title="各区案件管理"></sm-text>
-                            <div class="decorative-strip"></div>
-                            <div class="gif-point"></div>
-                        </div>
-                        <div class="content-detail">
-                            <div class="bottom-pie">
-                                <span style="font-size: 11px; color: #ff8c25">丨</span>
-                                <sm-text
-                                    v-bind="textPropsCommon"
-                                    title="事件来源数量统计"
-
-                                ></sm-text>
-                                <div class="chart-bar" style="width: 280px; height: 127px">
-                                    <sm-chart icon-class="" :options="chartBarPropDatas1"></sm-chart>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom-content" style="width: 300px; margin: 0 auto">
-                        <div class="subheading">
-                            <span class="title-arorn"></span>
-                            <sm-text v-bind="textGridTitle" title="案件上报趋势"></sm-text>
-                            <div class="decorative-strip"></div>
-                            <div class="gif-point"></div>
-                        </div>
-                        <div class="content-detail">
-                            <div class="industry-chart">
-                                <div class="chart-bar" style="width: 300px; height: 150px">
-                                    <sm-chart v-bind="lineChartProps"></sm-chart>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom-content" style="width: 300px; margin: 0 auto">
-                        <div class="subheading">
-                            <span class="title-arorn"></span>
-                            <sm-text v-bind="textGridTitle" title="案件详细列表"></sm-text>
-                            <div class="decorative-strip"></div>
-                            <div class="gif-point"></div>
-                        </div>
-                        <sm-text-list
-                            v-bind="textlistPropDatas"
-                            style="width: 300px; height: 140px; margin-top: 10px"
-                        ></sm-text-list>
-                    </div>
-                    <div class="bottom-content" style="width: 500px; margin: 0 auto">
-                        <div class="subheading">
-                            <span class="title-arorn"></span>
-                            <sm-text v-bind="textGridTitle" title="交通运行"></sm-text>
-                            <div class="decorative-strip"></div>
-                            <div class="gif-point"></div>
-                        </div>
-                        <div class="content-detail">
-                            <div class="economic-text">
-                                <div style="display: flex; margin-bottom: 10px">
-                                    <div style="width: 90px; border-left: 1px solid rgba(255, 255, 255, 0.65)">
-                                        <sm-text v-bind="textPropsCommon" title="摄像头"></sm-text>
-                                        <sm-text v-bind="textPropsCommon" title="单位：个"></sm-text>
-                                    </div>
-                                    <sm-text
-                                        v-bind="textNumberProps"
-                                        title="1345"
-                                        style="height: 36px; color: #25f1ff"
-                                    ></sm-text>
-                                </div>
-                                <div style="display: flex; margin-bottom: 10px">
-                                    <div style="width: 90px; border-left: 1px solid rgba(255, 255, 255, 0.65)">
-                                        <sm-text v-bind="textPropsCommon" title="职能摄像头"></sm-text>
-                                        <sm-text v-bind="textPropsCommon" title="单位：个"></sm-text>
-                                    </div>
-                                    <sm-text
-                                        v-bind="textNumberProps"
-                                        title="3706"
-                                        style="height: 36px; color: #25f1ff"
-                                    ></sm-text>
-                                </div>
-                                <div style="display: flex">
-                                    <div style="width: 90px; border-left: 1px solid rgba(255, 255, 255, 0.65)">
-                                        <sm-text v-bind="textPropsCommon" title="普通摄像头"></sm-text>
-                                        <sm-text v-bind="textPropsCommon" title="单位：个"></sm-text>
-                                    </div>
-                                    <sm-text
-                                        v-bind="textNumberProps"
-                                        title="2865"
-                                        style="height: 36px; color: #25f1ff"
-                                    ></sm-text>
-                                </div>
-                            </div>
-                            <div class="industry-chart">
-                                <span style="font-size: 11px; color: #ff8c25">丨</span>
-                                <sm-text v-bind="textPropsCommon" title="部件数量" ></sm-text>
-                                <div class="chart-bar" style="width: 300px; height: 120px">
-                                    <sm-chart icon-class="" :options="industryChartBarPropDatas"></sm-chart>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <body style="margin: 0">
+    <div id="main">
+      <div class="web-scene">
+        <sm-web-scene v-bind="webSceneProps"></sm-web-scene>
+      </div>
+      <div class="dashboard-switch-header">
+        <sm-text class="title" v-bind="headerTitleProps"></sm-text>
+      </div>
+      <div class="subtitle">
+        <sm-text style="margin: 0px 0px 10px 22px; padding: 0; font-style: italic" v-bind="subtitleProps"></sm-text>
+      </div>
+      <div class="menu">
+        <sm-text
+          v-bind="textLinkProps"
+          class="text-link"
+          title="全市概况"
+          href="./components_city_smart_overview_vue.html"
+        ></sm-text>
+        <sm-text
+          v-bind="textLinkProps"
+          class="text-link link-active"
+          title="城市管理"
+          href="./components_city_smart_management_vue.html"
+        ></sm-text>
+        <sm-text
+          v-bind="textLinkProps"
+          class="text-link"
+          title="经济运行"
+          href="./components_city_smart_economic_vue.html"
+        ></sm-text>
+        <sm-text
+          v-bind="textLinkProps"
+          class="text-link"
+          title="民生幸福"
+          href="./components_city_smart_livelihood_vue.html"
+        ></sm-text>
+      </div>
+      <div class="left-content">
+        <div style="width: 90%; margin: 0 auto">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="当日案件统计"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="content-detail">
+            <div class="chart-content">
+              <div class="progress-content" style="margin-right: 26px">
+                <sm-progress v-bind="progressProps"> </sm-progress>
+                <sm-text
+                  v-bind="textPropsCommon"
+                  title="立案率"
+                  style="font-size: 11px; position: absolute; top: 32px; left: 45px"
+                ></sm-text>
+                <sm-text
+                  v-bind="textNumberProps"
+                  title="95%"
+                  style="font-size: 24px; position: absolute; top: 50px; left: 41px"
+                ></sm-text>
+              </div>
+              <div class="progress-content">
+                <sm-progress v-bind="progressProps" percent="75"> </sm-progress>
+                <sm-text
+                  v-bind="textPropsCommon"
+                  title="结案率"
+                  style="font-size: 11px; position: absolute; top: 32px; left: 45px"
+                ></sm-text>
+                <sm-text
+                  v-bind="textNumberProps"
+                  title="75%"
+                  style="font-size: 24px; position: absolute; top: 50px; left: 41px"
+                ></sm-text>
+              </div>
             </div>
+          </div>
+          <div class="bottom-progress">
+            <span style="font-size: 11px; color: #ff8c25">丨</span>
+            <sm-text v-bind="textPropsCommon" title="当日案件统计"></sm-text>
+            <div class="chart-content">
+              <div style="width: 120px; height: 120px">
+                <sm-chart class="chart-pie" v-bind="chartPiePropDatas"></sm-chart>
+              </div>
+              <div style="margin: 16px 0 0 22px">
+                <div style="display: flex; align-items: center">
+                  <span class="span-point" style="background: #9dfad6"></span>
+                  <sm-text v-bind="textPropsCommon" title="结案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="85"
+                    style="font-size: 24px; height: 16px; float: right; color: #9dfad6"
+                  ></sm-text>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <span class="span-point" style="background: #55adea"></span>
+                  <sm-text v-bind="textPropsCommon" title="受理案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="102"
+                    style="font-size: 24px; height: 16px; float: right; color: #55adea"
+                  ></sm-text>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <span class="span-point" style="background: #6d769c"></span>
+                  <sm-text v-bind="textPropsCommon" title="立案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="160"
+                    style="font-size: 24px; height: 16px; float: right; color: #6d769c"
+                  ></sm-text>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-progress">
+            <span style="font-size: 11px; color: #ff8c25">丨</span>
+            <sm-text v-bind="textPropsCommon" title="当日案件来源"></sm-text>
+            <div class="chart-content">
+              <div style="width: 120px; height: 120px">
+                <sm-chart class="chart-Rose" v-bind="chartRosePropDatas"></sm-chart>
+              </div>
+              <div style="margin-top: 16px 0 0 22px">
+                <div>
+                  <span class="span-point" style="background: #6d769c"></span>
+                  <sm-text v-bind="textPropsCommon" title="立案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="36"
+                    style="font-size: 24px; line-height: 26px; float: right; color: #6d769c; padding: 0"
+                  ></sm-text>
+                </div>
+                <div>
+                  <span class="span-point" style="background: #9dfad6"></span>
+                  <sm-text v-bind="textPropsCommon" title="结案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="85"
+                    style="font-size: 24px; line-height: 26px; float: right; color: #9dfad6; padding: 0"
+                  ></sm-text>
+                </div>
+                <div style="margin-top: 6px">
+                  <span class="span-point" style="background: #55adea"></span>
+                  <sm-text v-bind="textPropsCommon" title="受理案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="102"
+                    style="font-size: 24px; line-height: 26px; float: right; color: #55adea; padding: 0"
+                  ></sm-text>
+                </div>
+                <div style="margin-top: 6px">
+                  <span class="span-point" style="background: #6d769c"></span>
+                  <sm-text v-bind="textPropsCommon" title="立案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="160"
+                    style="font-size: 24px; line-height: 26px; float: right; color: #6d769c; padding: 0"
+                  ></sm-text>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="right-content">
+        <div class="right-content-top">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="案件总览"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="case-image">
+            <div
+              style="
+                width: 24px;
+                height: 28px;
+                margin: 10px;
+                background-image: url('../img/background/icon1.png');
+                background-size: 100% 100%;
+              "
+            ></div>
+            <div style="margin-right: 46px">
+              <sm-text v-bind="textPropsCommon" title="历史案件总数" style="display: block; text-align: left"></sm-text>
+              <sm-text
+                v-bind="textPropsCommon"
+                title="单位：件"
+                style="font-size: 11px; text-align: left; display: block"
+              ></sm-text>
+            </div>
+            <sm-text v-bind="textNumberProps" title="23,021" style="font-size: 32px"></sm-text>
+          </div>
+          <div class="case-image">
+            <div
+              style="
+                width: 24px;
+                height: 28px;
+                margin: 10px;
+                background-image: url('../img/background/icon11.png');
+                background-size: 100% 100%;
+              "
+            ></div>
+            <div style="margin-right: 80px">
+              <sm-text v-bind="textPropsCommon" title="上报数" style="display: block; text-align: left"></sm-text>
+              <sm-text
+                v-bind="textPropsCommon"
+                title="单位：件"
+                style="font-size: 11px; text-align: left; display: block"
+              ></sm-text>
+            </div>
+            <sm-text v-bind="textNumberProps" title="23,021" style="font-size: 32px"></sm-text>
+          </div>
+          <div class="case-image">
+            <div
+              style="
+                width: 24px;
+                height: 28px;
+                margin: 10px;
+                background-image: url('../img/background/icon12.png');
+                background-size: 100% 100%;
+              "
+            ></div>
+            <div style="margin-right: 80px">
+              <sm-text v-bind="textPropsCommon" title="立案数" style="display: block; text-align: left"></sm-text>
+              <sm-text
+                v-bind="textPropsCommon"
+                title="单位：件"
+                style="font-size: 11px; text-align: left; display: block"
+              ></sm-text>
+            </div>
+            <sm-text v-bind="textNumberProps" title="23,021" style="font-size: 32px"></sm-text>
+          </div>
+          <div class="content-detail">
+            <div style="width: 50%; margin-top: 8px">
+              <sm-text v-bind="textPropsCommon" title="按时处置率" style="display: block"></sm-text>
+              <sm-liquid-fill
+                id="liquidFill1"
+                :value="0.65"
+                :font-size="18"
+                wave-color="#55ADEA"
+                text-color="#ffffff"
+                background-color="rgba(255, 255, 255, 0.18)"
+                style="width: 110px; height: 110px; background: transparent"
+              >
+              </sm-liquid-fill>
+            </div>
+            <div style="width: 50%; margin-top: 8px">
+              <sm-text v-bind="textPropsCommon" title="结案率" style="display: block"></sm-text>
+              <sm-liquid-fill
+                id="liquidFill1"
+                :value="0.65"
+                :font-size="18"
+                wave-color="#55ADEA"
+                text-color="#ffffff"
+                background-color="rgba(255, 255, 255, 0.18)"
+                style="width: 110px; height: 110px; background: transparent"
+              >
+              </sm-liquid-fill>
+            </div>
+          </div>
+        </div>
+        <div class="right-content-bottom">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="城管人员"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="bottom-progress">
+            <div class="chart-content">
+              <div style="width: 120px; height: 120px">
+                <sm-chart class="chart-pie" v-bind="chartPiePropDatas"></sm-chart>
+              </div>
+              <div style="margin: 16px 0 0 22px">
+                <div style="display: flex; align-items: center">
+                  <span class="span-point" style="background: #9dfad6"></span>
+                  <sm-text v-bind="textPropsCommon" title="结案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="85"
+                    style="font-size: 24px; height: 16px; float: right; color: #9dfad6"
+                  ></sm-text>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <span class="span-point" style="background: #55adea"></span>
+                  <sm-text v-bind="textPropsCommon" title="受理案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="102"
+                    style="font-size: 24px; height: 16px; float: right; color: #55adea"
+                  ></sm-text>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <span class="span-point" style="background: #6d769c"></span>
+                  <sm-text v-bind="textPropsCommon" title="立案案件"></sm-text>
+                  <sm-text
+                    v-bind="textNumberProps"
+                    title="160"
+                    style="font-size: 24px; height: 16px; float: right; color: #6d769c"
+                  ></sm-text>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="bottom-content" style="margin-left: 16px">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="产业总览"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="content-detail">
+            <div>
+              <div class="economy-image">
+                <span class="inner-image" style="background-image: url(../img//background/icon2.png)"></span>
+              </div>
+              <div class="economy-image">
+                <span class="inner-image" style="background-image: url(../img//background/icon3.png)"></span>
+              </div>
+            </div>
+            <div>
+              <div class="progressText">
+                <sm-text
+                  v-bind="textPropsCommon"
+                  title="公众满意度"
+                  style="font-size: 11px; text-align: left"
+                ></sm-text>
+                <sm-text
+                  v-bind="textNumberProps"
+                  title="95%"
+                  style="font-size: 24px; color: #25f9ff; text-align: left"
+                ></sm-text>
+              </div>
+              <div class="progressText">
+                <sm-text v-bind="textPropsCommon" title="调解率" style="font-size: 11px; text-align: left"></sm-text>
+                <sm-text
+                  v-bind="textNumberProps"
+                  title="95%"
+                  style="font-size: 24px; color: #25f9ff; text-align: left"
+                ></sm-text>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-content" style="width: 280px; margin: 0 auto">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="各区案件管理"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="content-detail">
+            <div class="bottom-pie">
+              <span style="font-size: 11px; color: #ff8c25">丨</span>
+              <sm-text v-bind="textPropsCommon" title="事件来源数量统计"></sm-text>
+              <div class="chart-bar" style="width: 280px; height: 127px">
+                <sm-chart icon-class="" :options="chartBarPropDatas1"></sm-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-content" style="width: 300px; margin: 0 auto">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="案件上报趋势"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="content-detail">
+            <div class="industry-chart">
+              <div class="chart-bar" style="width: 300px; height: 150px">
+                <sm-chart v-bind="lineChartProps"></sm-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-content" style="width: 300px; margin: 0 auto">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="案件详细列表"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <sm-text-list v-bind="textlistPropDatas" style="width: 300px; height: 140px; margin-top: 10px"></sm-text-list>
+        </div>
+        <div class="bottom-content" style="width: 500px; margin: 0 auto">
+          <div class="subheading">
+            <span class="title-arorn"></span>
+            <sm-text v-bind="textGridTitle" title="交通运行"></sm-text>
+            <div class="decorative-strip"></div>
+            <div class="gif-point"></div>
+          </div>
+          <div class="content-detail">
+            <div class="economic-text">
+              <div style="display: flex; margin-bottom: 10px">
+                <div style="width: 90px; border-left: 1px solid rgba(255, 255, 255, 0.65)">
+                  <sm-text v-bind="textPropsCommon" title="摄像头"></sm-text>
+                  <sm-text v-bind="textPropsCommon" title="单位：个"></sm-text>
+                </div>
+                <sm-text v-bind="textNumberProps" title="1345" style="height: 36px; color: #25f1ff"></sm-text>
+              </div>
+              <div style="display: flex; margin-bottom: 10px">
+                <div style="width: 90px; border-left: 1px solid rgba(255, 255, 255, 0.65)">
+                  <sm-text v-bind="textPropsCommon" title="职能摄像头"></sm-text>
+                  <sm-text v-bind="textPropsCommon" title="单位：个"></sm-text>
+                </div>
+                <sm-text v-bind="textNumberProps" title="3706" style="height: 36px; color: #25f1ff"></sm-text>
+              </div>
+              <div style="display: flex">
+                <div style="width: 90px; border-left: 1px solid rgba(255, 255, 255, 0.65)">
+                  <sm-text v-bind="textPropsCommon" title="普通摄像头"></sm-text>
+                  <sm-text v-bind="textPropsCommon" title="单位：个"></sm-text>
+                </div>
+                <sm-text v-bind="textNumberProps" title="2865" style="height: 36px; color: #25f1ff"></sm-text>
+              </div>
+            </div>
+            <div class="industry-chart">
+              <span style="font-size: 11px; color: #ff8c25">丨</span>
+              <sm-text v-bind="textPropsCommon" title="部件数量"></sm-text>
+              <div class="chart-bar" style="width: 300px; height: 120px">
+                <sm-chart icon-class="" :options="industryChartBarPropDatas"></sm-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <script>
-            Vue.use(VueCesium, { cesiumPath: 'https://iclient.supermap.io/web/libs/iClientfor3D/Cesium.js' });
-            //本示例数据纯属虚构
-            new Vue({
-                el: '#main',
-                data() {
-                    return {
-                        webSceneProps: {
-                            sceneUrl: 'https://www.supermapol.com/web/scenes/1722746321',
-                            options: {
-                                scanEffect: {
-                                    status: true,
-                                    type: 'noScan',
-                                    centerPostion: { x: null, y: null, z: null },
-                                    period: 2000,
-                                    speed: 500
-                                },
-                                position: { x: null, y: null, z: null },
-                                withCredentials: false
-                            }
-                        },
-                        headerTitleProps: {
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            dataType: 'static',
-                            title: '城市智慧大脑',
-                            href: '',
-                            target: '_blank',
-                            fontStyle: {
-                                fontSize: '36px',
-                                lineHeight: '50px',
-                                fontWeight: 'bolder',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                textIndent: 0,
-                                fontFamily: '微软雅黑'
-                            },
-                            lineHeightUnit: 'multiples',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            backgroundColor: 'rgba(0, 0, 0, 0)',
-                            textColor: '#FFFFFF',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        textLinkProps: {
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            background: 'rgba(0,0,0,0)',
-                            textColor: '#fff',
-                            dataType: 'static',
-                            href: '',
-                            target: '_self',
-                            fontStyle: {
-                                fontSize: '22px',
-                                lineHeight: '22px',
-                                fontWeight: 'normal',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                textIndent: 0,
-                                fontFamily: '微软雅黑'
-                            },
-                            lineHeightUnit: 'multiples',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        textPropsCommon: {
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            background: 'rgba(0,0,0,0)',
-                            textColor: '#fff',
-                            dataType: 'static',
-                            href: '',
-                            target: '_blank',
-                            fontStyle: {
-                                fontSize: '14px',
-                                lineHeight: 1.5,
-                                fontWeight: 'normal',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                textIndent: 0,
-                                fontFamily: '微软雅黑'
-                            },
-                            lineHeightUnit: 'multiples',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        subtitleProps: {
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            dataType: 'static',
-                            title: '城市管理',
-                            href: '',
-                            target: '_blank',
-                            fontStyle: {
-                                fontSize: '27px',
-                                lineHeight: '30px',
-                                fontWeight: 'bolder',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                textIndent: 0,
-                                fontFamily: '微软雅黑'
-                            },
-                            lineHeightUnit: 'multiples',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            backgroundColor: 'rgba(0, 0, 0, 0)',
-                            textColor: '#FFFFFF',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        textNumberProps: {
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            dataType: 'static',
-                            title: '',
-                            href: '',
-                            target: '_blank',
-                            fontStyle: {
-                                fontSize: '29px',
-                                lineHeight: 1.5,
-                                fontWeight: 'normal',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                textIndent: 0,
-                                fontFamily: '微软雅黑'
-                            },
-                            lineHeightUnit: 'multiples',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            backgroundColor: 'rgba(0, 0, 0, 0)',
-                            textColor: '#25F9FF',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        progressProps: {
-                            background: 'rgba(0, 0, 0, 0)',
-                            dataType: 'static',
-                            type: 'circle',
-                            strokeWidth: 8,
-                            percent: 95,
-                            percentType: 'percent',
-                            status: 'normal',
-                            strokeColor: '#55ADEA',
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            trailColor: 'rgba(255, 255, 255, 0.25)',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            backgroundColor: 'rgba(0, 0, 0, 0)',
-                            textColor: 'rgba(0, 0, 0, 0)',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        chartBarPropDatas: {
-                            backgroundColor: '',
-                            yAxis: {
-                                name: '单位：件',
-                                axisLabel: {
-                                    rotate: 0,
-                                    fontFamily: 'MicrosoftYaHei',
-                                    color: '#fff'
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                axisTick: {
-                                    lineStyle: {
-                                        color: '#FFFFFF'
-                                    }
-                                },
-                                show: true,
-                                splitLine: {
-                                    lineStyle: {
-                                        color: '#E9E9E9',
-                                        width: 0.3,
-                                        type: 'solid'
-                                    },
-                                    show: false
-                                },
-                                splitArea: {
-                                    show: false
-                                },
-                                nameGap: 5,
-                                scale: true,
-                                nameLocation: 'end',
-                                type: 'value',
-                                nameTextStyle: {
-                                    padding: [0, 0, 5, 0]
-                                }
-                            },
-                            xAxis: {
-                                axisLabel: {
-                                    rotate: 0,
-                                    fontFamily: 'MicrosoftYaHei',
-                                    color: '#fff'
-                                },
-                                data: ['来源1', '来源2', '来源3', '来源4', '来源5'],
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                show: true,
-                                name: '',
-                                axisTick: {
-                                    alignWithLabel: true,
-                                    lineStyle: {
-                                        color: '#FFFFFF'
-                                    }
-                                },
-                                splitLine: {
-                                    lineStyle: {
-                                        color: '#E9E9E9',
-                                        type: 'solid'
-                                    },
-                                    show: false
-                                },
-                                nameGap: 2,
-                                nameLocation: 'end',
-                                type: 'category'
-                            },
-                            grid: {
-                                top: 25,
-                                left: 30,
-                                bottom: 25
-                            },
-                            legend: {
-                                data: ['Y1', 'Y3'],
-                                show: false,
-                                textStyle: {
-                                    color: '#ffffff'
-                                },
-                                type: 'scroll'
-                            },
-                            series: [
-                                {
-                                    data: ['23', '96', '65', '43', '29'],
-                                    name: 'Y1',
-                                    barWidth: 10,
-                                    emphasis: {
-                                        itemStyle: {
-                                            color: '#A8CFFF'
-                                        }
-                                    },
-                                    type: 'bar'
-                                }
-                            ],
-                            tooltip: {
-                                axisPointer: {
-                                    shadowStyle: {
-                                        color: 'rgba(231,243,252,0)'
-                                    },
-                                    type: 'shadow'
-                                },
-                                trigger: 'axis',
-                                textStyle: {
-                                    align: 'left'
-                                }
-                            },
-                            textStyle: {
-                                fontFamily: 'Microsoft YaHei Light'
-                            },
-                            title: {
-                                padding: [5, 0, 0, 20],
-                                x: 'left',
-                                text: '',
-                                textStyle: {
-                                    fontFamily: 'Microsoft YaHei Light',
-                                    color: '#ffffff',
-                                    fontWeight: '100'
-                                }
-                            }
-                        },
-                        chartBarPropDatas1: {
-                            backgroundColor: '',
-                            yAxis: {
-                                name: '单位：件',
-                                axisLabel: {
-                                    rotate: 0,
-                                    fontFamily: 'MicrosoftYaHei',
-                                    color: '#fff'
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                axisTick: {
-                                    lineStyle: {
-                                        color: '#FFFFFF'
-                                    }
-                                },
-                                show: true,
-                                splitLine: {
-                                    lineStyle: {
-                                        color: '#E9E9E9',
-                                        width: 0.3,
-                                        type: 'solid'
-                                    },
-                                    show: true
-                                },
-                                splitArea: {
-                                    show: false
-                                },
-                                nameGap: 5,
-                                scale: true,
-                                nameLocation: 'end',
-                                type: 'value',
-                                nameTextStyle: {
-                                    padding: [0, 0, 5, 0]
-                                }
-                            },
-                            xAxis: {
-                                axisLabel: {
-                                    rotate: 0,
-                                    fontFamily: 'MicrosoftYaHei',
-                                    color: '#fff'
-                                },
-                                data: ['来源1', '来源2', '来源3', '来源4', '来源5'],
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                show: true,
-                                name: '',
-                                axisTick: {
-                                    alignWithLabel: true,
-                                    lineStyle: {
-                                        color: '#FFFFFF'
-                                    }
-                                },
-                                splitLine: {
-                                    lineStyle: {
-                                        color: '#E9E9E9',
-                                        type: 'solid'
-                                    },
-                                    show: false
-                                },
-                                nameGap: 2,
-                                nameLocation: 'end',
-                                type: 'category'
-                            },
-                            grid: {
-                                top: 25,
-                                left: 30,
-                                right: 0,
-                                bottom: 25
-                            },
-                            legend: {
-                                data: ['Y1', 'Y3'],
-                                show: false,
-                                textStyle: {
-                                    color: '#ffffff'
-                                },
-                                type: 'scroll'
-                            },
-                            series: [
-                                {
-                                    data: ['6', '3', '8', '5', '7', '5'],
-                                    name: 'Y1',
-                                    barWidth: 5,
-                                    emphasis: {
-                                        itemStyle: {
-                                            color: '#2F9EFC'
-                                        }
-                                    },
-                                    type: 'bar'
-                                },
-                                {
-                                    data: ['7', '3', '9', '5', '6', '3'],
-                                    name: 'Y2',
-                                    barWidth: 5,
-                                    emphasis: {
-                                        itemStyle: {
-                                            color: '#9DFAD6'
-                                        }
-                                    },
-                                    type: 'bar'
-                                },
-                                {
-                                    data: ['4', '4', '6', '3', '9', '5'],
-                                    name: 'Y3',
-                                    barWidth: 5,
-                                    emphasis: {
-                                        itemStyle: {
-                                            color: '#6D769C'
-                                        }
-                                    },
-                                    type: 'bar'
-                                }
-                            ],
-                            tooltip: {
-                                axisPointer: {
-                                    shadowStyle: {
-                                        color: 'rgba(231,243,252,0)'
-                                    },
-                                    type: 'shadow'
-                                },
-                                trigger: 'axis',
-                                textStyle: {
-                                    align: 'left'
-                                }
-                            },
-                            textStyle: {
-                                fontFamily: 'Microsoft YaHei Light'
-                            },
-                            title: {
-                                padding: [5, 0, 0, 20],
-                                x: 'left',
-                                text: '',
-                                textStyle: {
-                                    fontFamily: 'Microsoft YaHei Light',
-                                    color: '#ffffff',
-                                    fontWeight: '100'
-                                }
-                            }
-                        },
-                        textGridTitle: {
-                            frequency: 2,
-                            startTiming: false,
-                            url: '',
-                            background: 'rgba(0,0,0,0)',
-                            textColor: '#fff',
-                            dataType: 'static',
-                            title: '',
-                            href: '',
-                            target: '_blank',
-                            fontStyle: {
-                                fontSize: '18px',
-                                lineHeight: '30px',
-                                fontWeight: 'bold',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                textIndent: 0,
-                                fontFamily: '微软雅黑'
-                            },
-                            lineHeightUnit: 'multiples',
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
-                        },
-                        chartPiePropDatas: {
-                            background: 'rgba(0,0,0,0)',
-                            frequency: 2,
-                            startTiming: false,
-                            seriesType: 'pie',
-                            headerName: '',
-                            iconClass: '',
-                            dataset: {
-                                maxFeatures: '3',
-                                url: '',
-                                type: 'geoJSON',
-                                geoJSON: {
-                                    type: 'FeatureCollection',
-                                    features: [
-                                        {
-                                            properties: {
-                                                date: 'Mon',
-                                                sale: 3000
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'Tue',
-                                                sale: 3000
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'Wed',
-                                                sale: 3000
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'Thu',
-                                                sale: 3617
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'Fri',
-                                                sale: 3400
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'Sat',
-                                                sale: 4200
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'Sun',
-                                                sale: 1842
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            datasetOptions: [
-                                {
-                                    xField: 'date',
-                                    yField: 'sale',
-                                    sort: 'unsort',
-                                    seriesType: 'pie'
-                                }
-                            ],
-                            options: {
-                                tooltip: {
-                                    trigger: 'item',
-                                    formatter: '{a} <br/>{b}: {c} ({d}%)'
-                                },
-                                legend: {
-                                    type: 'scroll',
-                                    orient: 'vertical',
-                                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                    show: false,
-                                    top: 'top',
-                                    left: 'left',
-                                    textStyle: {
-                                        color: 'rgba(255, 255, 255, 0.65)',
-                                        fontSize: 12
-                                    }
-                                },
-                                series: [
-                                    {
-                                        name: 'demo',
-                                        type: 'pie',
-                                        radius: ['60%', '80%'],
-                                        avoidLabelOverlap: false,
-                                        label: {
-                                            normal: {
-                                                show: false,
-                                                position: 'center',
-                                                textStyle: {
-                                                    fontSize: 12
-                                                },
-                                                formatter: '{b}: {c}'
-                                            },
-                                            emphasis: {
-                                                show: true,
-                                                textStyle: {
-                                                    fontSize: '30',
-                                                    fontWeight: 'bold'
-                                                }
-                                            }
-                                        },
-                                        labelLine: {
-                                            show: false,
-                                            smooth: true
-                                        },
-                                        data: [
-                                            {
-                                                value: 500,
-                                                name: 'Mon'
-                                            },
-                                            {
-                                                value: 800,
-                                                name: 'Tue'
-                                            },
-                                            {
-                                                value: 3000,
-                                                name: 'Wed'
-                                            },
-                                            {
-                                                value: 3617,
-                                                name: 'Thu'
-                                            },
-                                            {
-                                                value: 3400,
-                                                name: 'Fri'
-                                            },
-                                            {
-                                                value: 4200,
-                                                name: 'Sat'
-                                            },
-                                            {
-                                                value: 1842,
-                                                name: 'Sun'
-                                            }
-                                        ],
-                                        clockwise: true,
-                                        maxLabels: '',
-                                        animationEasing: 'quadraticIn',
-                                        animationEasingUpdate: 'quadraticIn',
-                                        startAngle: 90,
-                                        center: ['50%', '50%']
-                                    }
-                                ]
-                            },
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            backgroundColor: 'rgba(0, 0, 0, 0)',
-                            textColor: 'rgba(255, 255, 255, 0.65)',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
-                            isGradient: false,
-                            autoPlay: false,
-                            orderYField: 'sale',
-                            animationDelay: true,
-                            highlightColor: '#00eeff',
-                            thresholdConfig: [
-                                {
-                                    show: false,
-                                    type: 'data',
-                                    dataConfig: [],
-                                    rankConfig: []
-                                }
-                            ]
-                        },
-                        chartRosePropDatas: {
-                            background: 'rgba(0,0,0,0)',
-                            frequency: 2,
-                            startTiming: false,
-                            iconClass: '',
-                            seriesType: 'pie',
-                            headerName: '',
-                            dataset: {
-                                maxFeatures: '4',
-                                url: '',
-                                withCredentials: false,
-                                type: 'geoJSON',
-                                geoJSON: {
-                                    type: 'FeatureCollection',
-                                    features: [
-                                        {
-                                            properties: {
-                                                date: 'rose1',
-                                                sale: 10
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose2',
-                                                sale: 5
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose3',
-                                                sale: 15
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose4',
-                                                sale: 25
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose5',
-                                                sale: 20
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose6',
-                                                sale: 35
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose7',
-                                                sale: 30
-                                            }
-                                        },
-                                        {
-                                            properties: {
-                                                date: 'rose8',
-                                                sale: 40
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            datasetOptions: [
-                                {
-                                    xField: 'date',
-                                    yField: 'sale',
-                                    sort: 'unsort',
-                                    seriesType: 'pie'
-                                }
-                            ],
-                            options: {
-                                tooltip: {
-                                    trigger: 'item',
-                                    formatter: '{a} <br/>{b} : {c} ({d}%)'
-                                },
-                                grid: {
-                                    top: 35,
-                                    left: 50,
-                                    bottom: 25
-                                },
-                                legend: {
-                                    left: 'center',
-                                    top: 'bottom',
-                                    data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8'],
-                                    show: false,
-                                    textStyle: {
-                                        color: 'rgba(255, 255, 255, 0.65)',
-                                        fontSize: 12
-                                    }
-                                },
-                                series: [
-                                    {
-                                        name: 'area',
-                                        type: 'pie',
-                                        radius: ['40%', '80%'],
-                                        center: ['50%', '50%'],
-                                        roseType: 'area',
-                                        data: [
-                                            {
-                                                value: 10,
-                                                name: 'rose1'
-                                            },
-                                            {
-                                                value: 5,
-                                                name: 'rose2'
-                                            },
-                                            {
-                                                value: 15,
-                                                name: 'rose3'
-                                            },
-                                            {
-                                                value: 25,
-                                                name: 'rose4'
-                                            },
-                                            {
-                                                value: 20,
-                                                name: 'rose5'
-                                            },
-                                            {
-                                                value: 35,
-                                                name: 'rose6'
-                                            },
-                                            {
-                                                value: 30,
-                                                name: 'rose7'
-                                            },
-                                            {
-                                                value: 40,
-                                                name: 'rose8'
-                                            }
-                                        ],
-                                        clockwise: true,
-                                        maxLabels: '',
-                                        animationEasing: 'quadraticIn',
-                                        animationEasingUpdate: 'quadraticIn',
-                                        label: {
-                                            normal: {
-                                                position: 'center',
-                                                show: false,
-                                                textStyle: {
-                                                    fontSize: 12
-                                                },
-                                                formatter: '{b}: {c}'
-                                            },
-                                            emphasis: {
-                                                textStyle: {
-                                                    fontSize: 30
-                                                }
-                                            }
-                                        },
-                                        startAngle: 90,
-                                        avoidLabelOverlap: false,
-                                        labelLine: {
-                                            show: false
-                                        }
-                                    }
-                                ]
-                            },
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            backgroundColor: 'rgba(0, 0, 0, 0)',
-                            textColor: 'rgba(255, 255, 255, 0.65)',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
-                            isGradient: false,
-                            autoPlay: false,
-                            orderYField: 'sale',
-                            animationDelay: true,
-                            highlightColor: '#00eeff',
-                            thresholdConfig: [
-                                {
-                                    show: false,
-                                    type: 'data',
-                                    dataConfig: [],
-                                    rankConfig: []
-                                }
-                            ]
-                        },
-                        lineChartProps: {
-                            background: 'rgba(0,0,0,0)',
-                            textColor: '#fff',
-                            frequency: 2,
-                            startTiming: false,
-                            iconClass: '',
-                            seriesType: 'line',
-                            headerName: '',
-                            dataset: { maxFeatures: 20, url: '', type: '' },
-                            datasetOptions: [{ seriesType: 'line' }],
-                            options: {
-                                series: [
-                                    {
-                                        data: [8, 7, 9, 4, 8, 6, 4, 8, 3, 6, 6, 5],
-                                        name: 'Y1',
-                                        emphasis: { itemStyle: {} },
-                                        stack: 0,
-                                        type: 'line',
-                                        smooth: false,
-                                        animationEasing: 'quadraticIn',
-                                        animationEasingUpdate: 'quadraticIn',
-                                        label: {
-                                            normal: {
-                                                position: 'top',
-                                                show: false,
-                                                textStyle: { fontSize: 12 },
-                                                smart: false
-                                            }
-                                        },
-                                        showAllSymbol: 'auto',
-                                        symbol: 'emptyCircle',
-                                        symbolSize: 5,
-                                        itemStyle: { borderWidth: 2 },
-                                        lineStyle: { color: '#2F9EFC' },
-                                        areaStyle: {
-                                            color: 'rgba(0, 0, 0, 0)'
-                                        }
-                                    },
-                                    {
-                                        data: [3, 4, 1, 6, 5, 2, 7, 3, 5, 4, 5, 4],
-                                        name: 'Y2',
-                                        emphasis: { itemStyle: {} },
-                                        stack: 0,
-                                        type: 'line',
-                                        smooth: false,
-                                        animationEasing: 'quadraticIn',
-                                        animationEasingUpdate: 'quadraticIn',
-                                        label: {
-                                            normal: {
-                                                position: 'top',
-                                                show: false,
-                                                textStyle: { fontSize: 12 },
-                                                smart: false
-                                            }
-                                        },
-                                        showAllSymbol: 'auto',
-                                        symbol: 'emptyCircle',
-                                        symbolSize: 5,
-                                        itemStyle: { borderWidth: 2 },
-                                        lineStyle: { color: '#9DFAD6' },
-                                        areaStyle: {
-                                            color: 'rgba(0, 0, 0, 0)'
-                                        }
-                                    }
-                                ],
-                                yAxis: {
-                                    axisLabel: {
-                                        rotate: 0,
-                                        fontFamily: 'MicrosoftYaHei',
-                                        show: true,
-                                        color: '#fff',
-                                        fontSize: 12,
-                                        align: 'right',
-                                        margin: 8
-                                    },
-                                    axisLine: { lineStyle: { color: '#fff' }, show: true },
-                                    name: '单位：件',
-                                    show: true,
-                                    splitLine: {
-                                        lineStyle: {
-                                            width: 0.3,
-                                            type: 'solid',
-                                            color: '#ccc',
-                                            opacity: 1
-                                        },
-                                        show: false
-                                    },
-                                    splitArea: { show: false },
-                                    nameGap: 5,
-                                    nameLocation: 'end',
-                                    type: 'value',
-                                    nameTextStyle: { padding: [0, 0, 5, 0] },
-                                    axisTick: { show: true }
-                                },
-                                xAxis: {
-                                    axisLabel: {
-                                        rotate: 0,
-                                        fontFamily: 'MicrosoftYaHei',
-                                        show: true,
-                                        color: '#fff',
-                                        fontSize: 12,
-                                        align: 'center',
-                                        margin: 8
-                                    },
-                                    data: [
-                                        '1月',
-                                        '2月',
-                                        '3月',
-                                        '4月',
-                                        '5月',
-                                        '6月',
-                                        '7月',
-                                        '8月',
-                                        '9月',
-                                        '10月',
-                                        '11月',
-                                        '12月'
-                                    ],
-                                    axisLine: { lineStyle: { color: '#fff' }, show: true },
-                                    show: true,
-                                    name: '',
-                                    axisTick: { alignWithLabel: true, show: true },
-                                    splitLine: {
-                                        lineStyle: {
-                                            type: 'solid',
-                                            color: '#ccc',
-                                            opacity: 1,
-                                            width: 0.3
-                                        },
-                                        show: false
-                                    },
-                                    nameGap: 2,
-                                    nameLocation: 'end',
-                                    type: 'category',
-                                    boundaryGap: true
-                                },
-                                grid: { top: 35, left: 30, bottom: 25, right: 0 },
-                                legend: {
-                                    data: ['Y1', 'Y2'],
-                                    show: false,
-                                    textStyle: { color: '#fff', fontSize: 12 },
-                                    type: 'scroll',
-                                    top: 'top',
-                                    left: 'center'
-                                },
-                                tooltip: {
-                                    axisPointer: { shadowStyle: {}, type: 'line' },
-                                    trigger: 'axis',
-                                    textStyle: { align: 'left' }
-                                },
-                                textStyle: { fontFamily: 'Microsoft YaHei Light' },
-                                title: {
-                                    padding: [5, 0, 0, 20],
-                                    x: 'left',
-                                    text: '',
-                                    textStyle: {
-                                        fontFamily: 'Microsoft YaHei Light',
-                                        fontWeight: '100'
-                                    }
-                                }
-                            },
-                            backgroundImage: '',
-                            backgroundRepeat: 'noRepeat',
-                            backgroundGradient: false,
-                            gradientDirection: 'left',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
-                            isGradient: false,
-                            animationDelay: true,
-                            highlightColor: '#00eeff',
-                            thresholdConfig: [
-                                {
-                                    show: false,
-                                    type: 'data',
-                                    dataConfig: [],
-                                    rankConfig: []
-                                },
-                                {
-                                    show: false,
-                                    type: 'data',
-                                    dataConfig: [],
-                                    rankConfig: []
-                                }
-                            ]
-                        },
-                        industryChartBarPropDatas: {
-                            backgroundColor: '',
-                            yAxis: {
-                                name: '单位：个',
-                                min: 0,
-                                max: 100,
-                                axisLabel: {
-                                    rotate: 0,
-                                    fontFamily: 'MicrosoftYaHei',
-                                    color: '#fff'
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                axisTick: {
-                                    lineStyle: {
-                                        color: '#FFFFFF'
-                                    }
-                                },
-                                show: true,
-                                splitLine: {
-                                    lineStyle: {
-                                        color: '#E9E9E9',
-                                        width: 0.3,
-                                        type: 'solid'
-                                    },
-                                    show: false
-                                },
-                                splitNumber: 6,
-                                splitArea: {
-                                    show: false
-                                },
-                                nameGap: 5,
-                                scale: true,
-                                nameLocation: 'end',
-                                type: 'value',
-                                nameTextStyle: {
-                                    padding: [0, 0, 5, 0]
-                                }
-                            },
-                            xAxis: {
-                                axisLabel: {
-                                    rotate: 0,
-                                    fontFamily: 'MicrosoftYaHei',
-                                    color: '#fff'
-                                },
-                                data: ['井盖', '路灯', '公厕', '转运站', '绿化带'],
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                show: true,
-                                name: '',
-                                axisTick: {
-                                    alignWithLabel: true,
-                                    lineStyle: {
-                                        color: '#FFFFFF'
-                                    }
-                                },
-                                splitLine: {
-                                    lineStyle: {
-                                        color: '#E9E9E9',
-                                        type: 'solid'
-                                    },
-                                    show: false
-                                },
-                                nameGap: 2,
-                                nameLocation: 'end',
-                                type: 'category'
-                            },
-                            grid: {
-                                top: 25,
-                                left: 30,
-                                right: 0,
-                                bottom: 25
-                            },
-                            legend: {
-                                data: ['Y1', 'Y3'],
-                                show: false,
-                                textStyle: {
-                                    color: '#ffffff'
-                                },
-                                type: 'scroll'
-                            },
-                            series: [
-                                {
-                                    data: ['60', '90', '50', '70', '80'],
-                                    name: 'Y1',
-                                    barWidth: 6,
-                                    emphasis: {
-                                        itemStyle: {
-                                            color: '#A8CFFF'
-                                        }
-                                    },
-                                    type: 'bar'
-                                }
-                            ],
-                            tooltip: {
-                                axisPointer: {
-                                    shadowStyle: {
-                                        color: 'rgba(231,243,252,0)'
-                                    },
-                                    type: 'shadow'
-                                },
-                                trigger: 'axis',
-                                textStyle: {
-                                    align: 'left'
-                                }
-                            },
-                            textStyle: {
-                                fontFamily: 'Microsoft YaHei Light'
-                            },
-                            title: {
-                                padding: [5, 0, 0, 20],
-                                x: 'left',
-                                text: '',
-                                textStyle: {
-                                    fontFamily: 'Microsoft YaHei Light',
-                                    color: '#ffffff',
-                                    fontWeight: '100'
-                                }
-                            }
-                        },
-                        textlistPropDatas: {
-                            autoResize: true,
-                            content: null,
-                            dataset: {
-                                type: 'geoJSON',
-                                maxFeatures: 500,
-                                geoJSON: {
-                                    type: 'FeatureCollection',
-                                    features: [
-                                        {
-                                            properties: {
-                                                name: '公共设施损坏案件',
-                                                situation: '已受理',
-                                                distribution: '手动分拨',
-                                                state: '处置中'
-                                            },
-                                            type: 'Feature'
-                                        },
-                                        {
-                                            properties: {
-                                                name: '道路交通事故',
-                                                situation: '已受理',
-                                                distribution: '手动分拨',
-                                                state: '处置中'
-                                            },
-                                            type: 'Feature'
-                                        },
-                                        {
-                                            properties: {
-                                                name: '市容环境',
-                                                situation: '已受理',
-                                                distribution: '自动分拨',
-                                                state: '处置中'
-                                            },
-                                            type: 'Feature'
-                                        },
-                                        {
-                                            properties: {
-                                                name: '建筑工地事故',
-                                                situation: '已受理',
-                                                distribution: '手动分拨',
-                                                state: '结案'
-                                            },
-                                            type: 'Feature'
-                                        },
-                                        {
-                                            properties: {
-                                                name: '施化建筑',
-                                                situation: '已受理',
-                                                distribution: '手动分拨',
-                                                state: '结案'
-                                            },
-                                            type: 'Feature'
-                                        },
-                                        {
-                                            properties: {
-                                                name: '危化品泄漏',
-                                                situation: '已受理',
-                                                distribution: '手动分拨',
-                                                state: '处置中'
-                                            },
-                                            type: 'Feature'
-                                        }
-                                    ]
-                                }
-                            },
-                            fontSize: 10,
-                            autoRolling: true,
-                            rows: 6,
-                            columns: [
-                                {
-                                    header: '案件名称',
-                                    field: 'name',
-                                    slotConfig: {
-                                        type: 'text',
-                                        linkTitle: '',
-                                        linkTarget: '_blank',
-                                        imageRepeat: 'center'
-                                    },
-                                    defaultSortType: 'descend',
-                                    fixInfo: { prefix: '', suffix: '' },
-                                    width: 0
-                                },
-                                {
-                                    header: '受理情况',
-                                    field: 'situation',
-                                    slotConfig: {
-                                        type: 'text',
-                                        linkTitle: '',
-                                        linkTarget: '_blank',
-                                        imageRepeat: 'center'
-                                    },
-                                    defaultSortType: 'none',
-                                    fixInfo: { prefix: '', suffix: '' },
-                                    width: 0
-                                },
-                                {
-                                    header: '分拨情况',
-                                    field: 'distribution',
-                                    slotConfig: {
-                                        type: 'text',
-                                        linkTitle: '',
-                                        linkTarget: '_blank',
-                                        imageRepeat: 'center'
-                                    },
-                                    defaultSortType: 'none',
-                                    fixInfo: { prefix: '', suffix: '' },
-                                    width: 0
-                                },
-                                {
-                                    header: '案件状态',
-                                    field: 'state',
-                                    slotConfig: {
-                                        type: 'text',
-                                        linkTitle: '',
-                                        linkTarget: '_blank',
-                                        imageRepeat: 'center'
-                                    },
-                                    defaultSortType: 'none',
-                                    fixInfo: { prefix: '', suffix: '' },
-                                    width: 0
-                                }
-                            ],
-                            background: 'rgba(0,0,0,0)',
-                            textColor: '#fff',
-                            colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
-                            headerStyle: {
-                                background: 'rgba(85, 173, 234, 0.25)',
-                                sortBtnSelectColor: '#626c91',
-                                color: '#fff',
-                                sortBtnColor: '#fff',
-                                show: true,
-                                height: 0
-                            },
-                            rowStyle: {
-                                oddStyle: { background: 'rgba(255, 255, 255, 0.15)' },
-                                evenStyle: { background: 'rgba(63, 177, 227, 0)' },
-                                height: 0
-                            },
-                            highlightColor: '#01ffff',
-                            thresholdsStyle: [
-                                { type: 'background', data: [] },
-                                { type: 'background', data: [] },
-                                { type: 'background', data: [] },
-                                { type: 'background', data: [] }
-                            ]
-                        }
-                    };
+    <script>
+      Vue.use(VueCesium, { cesiumPath: 'https://iclient.supermap.io/web/libs/iClientfor3D/Cesium.js' });
+      //本示例数据纯属虚构
+      new Vue({
+        el: '#main',
+        data() {
+          return {
+            webSceneProps: {
+              sceneUrl: 'https://www.supermapol.com/web/scenes/1722746321',
+              options: {
+                scanEffect: {
+                  status: true,
+                  type: 'noScan',
+                  centerPostion: { x: null, y: null, z: null },
+                  period: 2000,
+                  speed: 500
+                },
+                position: { x: null, y: null, z: null },
+                withCredentials: false
+              }
+            },
+            headerTitleProps: {
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              dataType: 'static',
+              title: '城市智慧大脑',
+              href: '',
+              target: '_blank',
+              fontStyle: {
+                fontSize: '36px',
+                lineHeight: '50px',
+                fontWeight: 'bolder',
+                justifyContent: 'center',
+                textAlign: 'center',
+                textIndent: 0,
+                fontFamily: '微软雅黑'
+              },
+              lineHeightUnit: 'multiples',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              textColor: '#FFFFFF',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            textLinkProps: {
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              background: 'rgba(0,0,0,0)',
+              textColor: '#fff',
+              dataType: 'static',
+              href: '',
+              target: '_self',
+              fontStyle: {
+                fontSize: '22px',
+                lineHeight: '22px',
+                fontWeight: 'normal',
+                justifyContent: 'center',
+                textAlign: 'center',
+                textIndent: 0,
+                fontFamily: '微软雅黑'
+              },
+              lineHeightUnit: 'multiples',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            textPropsCommon: {
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              background: 'rgba(0,0,0,0)',
+              textColor: '#fff',
+              dataType: 'static',
+              href: '',
+              target: '_blank',
+              fontStyle: {
+                fontSize: '14px',
+                lineHeight: 1.5,
+                fontWeight: 'normal',
+                justifyContent: 'center',
+                textAlign: 'center',
+                textIndent: 0,
+                fontFamily: '微软雅黑'
+              },
+              lineHeightUnit: 'multiples',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            subtitleProps: {
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              dataType: 'static',
+              title: '城市管理',
+              href: '',
+              target: '_blank',
+              fontStyle: {
+                fontSize: '27px',
+                lineHeight: '30px',
+                fontWeight: 'bolder',
+                justifyContent: 'center',
+                textAlign: 'center',
+                textIndent: 0,
+                fontFamily: '微软雅黑'
+              },
+              lineHeightUnit: 'multiples',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              textColor: '#FFFFFF',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            textNumberProps: {
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              dataType: 'static',
+              title: '',
+              href: '',
+              target: '_blank',
+              fontStyle: {
+                fontSize: '29px',
+                lineHeight: 1.5,
+                fontWeight: 'normal',
+                justifyContent: 'center',
+                textAlign: 'center',
+                textIndent: 0,
+                fontFamily: '微软雅黑'
+              },
+              lineHeightUnit: 'multiples',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              textColor: '#25F9FF',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            progressProps: {
+              background: 'rgba(0, 0, 0, 0)',
+              dataType: 'static',
+              type: 'circle',
+              strokeWidth: 8,
+              percent: 95,
+              percentType: 'percent',
+              status: 'normal',
+              strokeColor: '#55ADEA',
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              trailColor: 'rgba(255, 255, 255, 0.25)',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              textColor: 'rgba(0, 0, 0, 0)',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            chartBarPropDatas: {
+              backgroundColor: '',
+              yAxis: {
+                name: '单位：件',
+                axisLabel: {
+                  rotate: 0,
+                  fontFamily: 'MicrosoftYaHei',
+                  color: '#fff'
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: '#ffffff'
+                  }
+                },
+                axisTick: {
+                  lineStyle: {
+                    color: '#FFFFFF'
+                  }
+                },
+                show: true,
+                splitLine: {
+                  lineStyle: {
+                    color: '#E9E9E9',
+                    width: 0.3,
+                    type: 'solid'
+                  },
+                  show: false
+                },
+                splitArea: {
+                  show: false
+                },
+                nameGap: 5,
+                scale: true,
+                nameLocation: 'end',
+                type: 'value',
+                nameTextStyle: {
+                  padding: [0, 0, 5, 0]
                 }
-            });
-        </script>
-        <style>
-            html {
-                font-size: 10px;
+              },
+              xAxis: {
+                axisLabel: {
+                  rotate: 0,
+                  fontFamily: 'MicrosoftYaHei',
+                  color: '#fff'
+                },
+                data: ['来源1', '来源2', '来源3', '来源4', '来源5'],
+                axisLine: {
+                  lineStyle: {
+                    color: '#ffffff'
+                  }
+                },
+                show: true,
+                name: '',
+                axisTick: {
+                  alignWithLabel: true,
+                  lineStyle: {
+                    color: '#FFFFFF'
+                  }
+                },
+                splitLine: {
+                  lineStyle: {
+                    color: '#E9E9E9',
+                    type: 'solid'
+                  },
+                  show: false
+                },
+                nameGap: 2,
+                nameLocation: 'end',
+                type: 'category'
+              },
+              grid: {
+                top: 25,
+                left: 30,
+                bottom: 25
+              },
+              legend: {
+                data: ['Y1', 'Y3'],
+                show: false,
+                textStyle: {
+                  color: '#ffffff'
+                },
+                type: 'scroll'
+              },
+              series: [
+                {
+                  data: ['23', '96', '65', '43', '29'],
+                  name: 'Y1',
+                  barWidth: 10,
+                  emphasis: {
+                    itemStyle: {
+                      color: '#A8CFFF'
+                    }
+                  },
+                  type: 'bar'
+                }
+              ],
+              tooltip: {
+                axisPointer: {
+                  shadowStyle: {
+                    color: 'rgba(231,243,252,0)'
+                  },
+                  type: 'shadow'
+                },
+                trigger: 'axis',
+                textStyle: {
+                  align: 'left'
+                }
+              },
+              textStyle: {
+                fontFamily: 'Microsoft YaHei Light'
+              },
+              title: {
+                padding: [5, 0, 0, 20],
+                x: 'left',
+                text: '',
+                textStyle: {
+                  fontFamily: 'Microsoft YaHei Light',
+                  color: '#ffffff',
+                  fontWeight: '100'
+                }
+              }
+            },
+            chartBarPropDatas1: {
+              backgroundColor: '',
+              yAxis: {
+                name: '单位：件',
+                axisLabel: {
+                  rotate: 0,
+                  fontFamily: 'MicrosoftYaHei',
+                  color: '#fff'
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: '#ffffff'
+                  }
+                },
+                axisTick: {
+                  show: false
+                },
+                show: true,
+                splitLine: {
+                  lineStyle: {
+                    color: '#E9E9E9',
+                    width: 0.3,
+                    type: 'solid'
+                  },
+                  show: true
+                },
+                splitArea: {
+                  show: false
+                },
+                nameGap: 5,
+                scale: true,
+                nameLocation: 'end',
+                type: 'value',
+                nameTextStyle: {
+                  padding: [0, 0, 5, 0]
+                }
+              },
+              xAxis: {
+                axisLabel: {
+                  rotate: 0,
+                  fontFamily: 'MicrosoftYaHei',
+                  color: '#fff'
+                },
+                data: ['来源1', '来源2', '来源3', '来源4', '来源5'],
+                axisLine: {
+                  lineStyle: {
+                    color: '#ffffff'
+                  }
+                },
+                show: true,
+                name: '',
+                axisTick: {
+                  show: false
+                },
+                splitLine: {
+                  lineStyle: {
+                    color: '#E9E9E9',
+                    type: 'solid'
+                  },
+                  show: false
+                },
+                nameGap: 2,
+                nameLocation: 'end',
+                type: 'category'
+              },
+              grid: {
+                top: 25,
+                left: 30,
+                right: 0,
+                bottom: 25
+              },
+              legend: {
+                data: ['Y1', 'Y3'],
+                show: false,
+                textStyle: {
+                  color: '#ffffff'
+                },
+                type: 'scroll'
+              },
+              series: [
+                {
+                  data: [6, 2.3, 8, 5, 7.3, 5.4],
+                  name: 'Y1',
+                  barWidth: 6,
+                  emphasis: {
+                    itemStyle: {
+                      color: '#2F9EFC'
+                    }
+                  },
+                  type: 'bar'
+                },
+                {
+                  data: [7.2, 2.8, 9.6, 5, 6, 3],
+                  name: 'Y2',
+                  barWidth: 5,
+                  emphasis: {
+                    itemStyle: {
+                      color: '#9DFAD6'
+                    }
+                  },
+                  type: 'bar'
+                },
+                {
+                  data: [4, 4, 6, 3, 9, 5],
+                  name: 'Y3',
+                  barWidth: 5,
+                  emphasis: {
+                    itemStyle: {
+                      color: '#6D769C'
+                    }
+                  },
+                  type: 'bar'
+                }
+              ],
+              tooltip: {
+                axisPointer: {
+                  shadowStyle: {
+                    color: 'rgba(231,243,252,0)'
+                  },
+                  type: 'shadow'
+                },
+                trigger: 'axis',
+                textStyle: {
+                  align: 'left'
+                }
+              },
+              textStyle: {
+                fontFamily: 'Microsoft YaHei Light'
+              },
+              title: {
+                padding: [5, 0, 0, 20],
+                x: 'left',
+                text: '',
+                textStyle: {
+                  fontFamily: 'Microsoft YaHei Light',
+                  color: '#ffffff',
+                  fontWeight: '100'
+                }
+              }
+            },
+            textGridTitle: {
+              frequency: 2,
+              startTiming: false,
+              url: '',
+              background: 'rgba(0,0,0,0)',
+              textColor: '#fff',
+              dataType: 'static',
+              title: '',
+              href: '',
+              target: '_blank',
+              fontStyle: {
+                fontSize: '18px',
+                lineHeight: '30px',
+                fontWeight: 'bold',
+                justifyContent: 'center',
+                textAlign: 'center',
+                textIndent: 0,
+                fontFamily: '微软雅黑'
+              },
+              lineHeightUnit: 'multiples',
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad']
+            },
+            chartPiePropDatas: {
+              background: 'rgba(0,0,0,0)',
+              frequency: 2,
+              startTiming: false,
+              seriesType: 'pie',
+              headerName: '',
+              iconClass: '',
+              dataset: {
+                maxFeatures: '3',
+                url: '',
+                type: 'geoJSON',
+                geoJSON: {
+                  type: 'FeatureCollection',
+                  features: [
+                    {
+                      properties: {
+                        date: 'Mon',
+                        sale: 3000
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'Tue',
+                        sale: 3000
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'Wed',
+                        sale: 3000
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'Thu',
+                        sale: 3617
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'Fri',
+                        sale: 3400
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'Sat',
+                        sale: 4200
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'Sun',
+                        sale: 1842
+                      }
+                    }
+                  ]
+                }
+              },
+              datasetOptions: [
+                {
+                  xField: 'date',
+                  yField: 'sale',
+                  sort: 'unsort',
+                  seriesType: 'pie'
+                }
+              ],
+              options: {
+                tooltip: {
+                  trigger: 'item',
+                  formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                  type: 'scroll',
+                  orient: 'vertical',
+                  data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                  show: false,
+                  top: 'top',
+                  left: 'left',
+                  textStyle: {
+                    color: 'rgba(255, 255, 255, 0.65)',
+                    fontSize: 12
+                  }
+                },
+                series: [
+                  {
+                    name: 'demo',
+                    type: 'pie',
+                    radius: ['60%', '80%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                      normal: {
+                        show: false,
+                        position: 'center',
+                        textStyle: {
+                          fontSize: 12
+                        },
+                        formatter: '{b}: {c}'
+                      },
+                      emphasis: {
+                        show: true,
+                        textStyle: {
+                          fontSize: '30',
+                          fontWeight: 'bold'
+                        }
+                      }
+                    },
+                    labelLine: {
+                      show: false,
+                      smooth: true
+                    },
+                    data: [
+                      {
+                        value: 500,
+                        name: 'Mon'
+                      },
+                      {
+                        value: 800,
+                        name: 'Tue'
+                      },
+                      {
+                        value: 3000,
+                        name: 'Wed'
+                      },
+                      {
+                        value: 3617,
+                        name: 'Thu'
+                      },
+                      {
+                        value: 3400,
+                        name: 'Fri'
+                      },
+                      {
+                        value: 4200,
+                        name: 'Sat'
+                      },
+                      {
+                        value: 1842,
+                        name: 'Sun'
+                      }
+                    ],
+                    clockwise: true,
+                    maxLabels: '',
+                    animationEasing: 'quadraticIn',
+                    animationEasingUpdate: 'quadraticIn',
+                    startAngle: 90,
+                    center: ['50%', '50%']
+                  }
+                ]
+              },
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              textColor: 'rgba(255, 255, 255, 0.65)',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
+              isGradient: false,
+              autoPlay: false,
+              orderYField: 'sale',
+              animationDelay: true,
+              highlightColor: '#00eeff',
+              thresholdConfig: [
+                {
+                  show: false,
+                  type: 'data',
+                  dataConfig: [],
+                  rankConfig: []
+                }
+              ]
+            },
+            chartRosePropDatas: {
+              background: 'rgba(0,0,0,0)',
+              frequency: 2,
+              startTiming: false,
+              iconClass: '',
+              seriesType: 'pie',
+              headerName: '',
+              dataset: {
+                maxFeatures: '4',
+                url: '',
+                withCredentials: false,
+                type: 'geoJSON',
+                geoJSON: {
+                  type: 'FeatureCollection',
+                  features: [
+                    {
+                      properties: {
+                        date: 'rose1',
+                        sale: 10
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose2',
+                        sale: 5
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose3',
+                        sale: 15
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose4',
+                        sale: 25
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose5',
+                        sale: 20
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose6',
+                        sale: 35
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose7',
+                        sale: 30
+                      }
+                    },
+                    {
+                      properties: {
+                        date: 'rose8',
+                        sale: 40
+                      }
+                    }
+                  ]
+                }
+              },
+              datasetOptions: [
+                {
+                  xField: 'date',
+                  yField: 'sale',
+                  sort: 'unsort',
+                  seriesType: 'pie'
+                }
+              ],
+              options: {
+                tooltip: {
+                  trigger: 'item',
+                  formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                grid: {
+                  top: 35,
+                  left: 50,
+                  bottom: 25
+                },
+                legend: {
+                  left: 'center',
+                  top: 'bottom',
+                  data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8'],
+                  show: false,
+                  textStyle: {
+                    color: 'rgba(255, 255, 255, 0.65)',
+                    fontSize: 12
+                  }
+                },
+                series: [
+                  {
+                    name: 'area',
+                    type: 'pie',
+                    radius: ['40%', '80%'],
+                    center: ['50%', '50%'],
+                    roseType: 'area',
+                    data: [
+                      {
+                        value: 10,
+                        name: 'rose1'
+                      },
+                      {
+                        value: 5,
+                        name: 'rose2'
+                      },
+                      {
+                        value: 15,
+                        name: 'rose3'
+                      },
+                      {
+                        value: 25,
+                        name: 'rose4'
+                      },
+                      {
+                        value: 20,
+                        name: 'rose5'
+                      },
+                      {
+                        value: 35,
+                        name: 'rose6'
+                      },
+                      {
+                        value: 30,
+                        name: 'rose7'
+                      },
+                      {
+                        value: 40,
+                        name: 'rose8'
+                      }
+                    ],
+                    clockwise: true,
+                    maxLabels: '',
+                    animationEasing: 'quadraticIn',
+                    animationEasingUpdate: 'quadraticIn',
+                    label: {
+                      normal: {
+                        position: 'center',
+                        show: false,
+                        textStyle: {
+                          fontSize: 12
+                        },
+                        formatter: '{b}: {c}'
+                      },
+                      emphasis: {
+                        textStyle: {
+                          fontSize: 30
+                        }
+                      }
+                    },
+                    startAngle: 90,
+                    avoidLabelOverlap: false,
+                    labelLine: {
+                      show: false
+                    }
+                  }
+                ]
+              },
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              textColor: 'rgba(255, 255, 255, 0.65)',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
+              isGradient: false,
+              autoPlay: false,
+              orderYField: 'sale',
+              animationDelay: true,
+              highlightColor: '#00eeff',
+              thresholdConfig: [
+                {
+                  show: false,
+                  type: 'data',
+                  dataConfig: [],
+                  rankConfig: []
+                }
+              ]
+            },
+            lineChartProps: {
+              background: 'rgba(0,0,0,0)',
+              textColor: '#fff',
+              frequency: 2,
+              startTiming: false,
+              iconClass: '',
+              seriesType: 'line',
+              headerName: '',
+              dataset: { maxFeatures: 20, url: '', type: '' },
+              datasetOptions: [{ seriesType: 'line' }],
+              options: {
+                series: [
+                  {
+                    data: [8, 7, 9, 4, 8, 6, 4, 8, 3, 6, 6, 5],
+                    name: 'Y1',
+                    emphasis: { itemStyle: {} },
+                    stack: 0,
+                    type: 'line',
+                    smooth: false,
+                    animationEasing: 'quadraticIn',
+                    animationEasingUpdate: 'quadraticIn',
+                    label: {
+                      normal: {
+                        position: 'top',
+                        show: false,
+                        textStyle: { fontSize: 12 },
+                        smart: false
+                      }
+                    },
+                    showAllSymbol: 'auto',
+                    symbol: 'emptyCircle',
+                    symbolSize: 5,
+                    itemStyle: { borderWidth: 2 },
+                    lineStyle: { color: '#2F9EFC' },
+                    areaStyle: {
+                      color: 'rgba(0, 0, 0, 0)'
+                    }
+                  },
+                  {
+                    data: [3, 4, 1, 6, 5, 2, 7, 3, 5, 4, 5, 4],
+                    name: 'Y2',
+                    emphasis: { itemStyle: {} },
+                    stack: 0,
+                    type: 'line',
+                    smooth: false,
+                    animationEasing: 'quadraticIn',
+                    animationEasingUpdate: 'quadraticIn',
+                    label: {
+                      normal: {
+                        position: 'top',
+                        show: false,
+                        textStyle: { fontSize: 12 },
+                        smart: false
+                      }
+                    },
+                    showAllSymbol: 'auto',
+                    symbol: 'emptyCircle',
+                    symbolSize: 5,
+                    itemStyle: { borderWidth: 2 },
+                    lineStyle: { color: '#9DFAD6' },
+                    areaStyle: {
+                      color: 'rgba(0, 0, 0, 0)'
+                    }
+                  }
+                ],
+                yAxis: {
+                  axisLabel: {
+                    rotate: 0,
+                    fontFamily: 'MicrosoftYaHei',
+                    show: true,
+                    color: '#fff',
+                    fontSize: 12,
+                    align: 'right',
+                    margin: 8
+                  },
+                  axisLine: { lineStyle: { color: '#fff' }, show: true },
+                  name: '单位：件',
+                  show: true,
+                  splitLine: {
+                    lineStyle: {
+                      width: 0.3,
+                      type: 'solid',
+                      color: '#ccc',
+                      opacity: 1
+                    },
+                    show: false
+                  },
+                  splitArea: { show: false },
+                  nameGap: 5,
+                  nameLocation: 'end',
+                  type: 'value',
+                  nameTextStyle: { padding: [0, 0, 5, 0] },
+                  axisTick: { show: false }
+                },
+                xAxis: {
+                  axisLabel: {
+                    rotate: 0,
+                    fontFamily: 'MicrosoftYaHei',
+                    show: true,
+                    color: '#fff',
+                    fontSize: 12,
+                    align: 'center',
+                    margin: 8
+                  },
+                  data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                  axisLine: { lineStyle: { color: '#fff' }, show: true },
+                  show: true,
+                  name: '',
+                  axisTick: { show: false },
+                  splitLine: {
+                    lineStyle: {
+                      type: 'solid',
+                      color: '#ccc',
+                      opacity: 1,
+                      width: 0.3
+                    },
+                    show: false
+                  },
+                  nameGap: 2,
+                  nameLocation: 'end',
+                  type: 'category',
+                  boundaryGap: true
+                },
+                grid: { top: 35, left: 30, bottom: 25, right: 0 },
+                legend: {
+                  data: ['Y1', 'Y2'],
+                  show: false,
+                  textStyle: { color: '#fff', fontSize: 12 },
+                  type: 'scroll',
+                  top: 'top',
+                  left: 'center'
+                },
+                tooltip: {
+                  axisPointer: { shadowStyle: {}, type: 'line' },
+                  trigger: 'axis',
+                  textStyle: { align: 'left' }
+                },
+                textStyle: { fontFamily: 'Microsoft YaHei Light' },
+                title: {
+                  padding: [5, 0, 0, 20],
+                  x: 'left',
+                  text: '',
+                  textStyle: {
+                    fontFamily: 'Microsoft YaHei Light',
+                    fontWeight: '100'
+                  }
+                }
+              },
+              backgroundImage: '',
+              backgroundRepeat: 'noRepeat',
+              backgroundGradient: false,
+              gradientDirection: 'left',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
+              isGradient: false,
+              animationDelay: true,
+              highlightColor: '#00eeff',
+              thresholdConfig: [
+                {
+                  show: false,
+                  type: 'data',
+                  dataConfig: [],
+                  rankConfig: []
+                },
+                {
+                  show: false,
+                  type: 'data',
+                  dataConfig: [],
+                  rankConfig: []
+                }
+              ]
+            },
+            industryChartBarPropDatas: {
+              backgroundColor: '',
+              yAxis: {
+                name: '单位：个',
+                min: 0,
+                max: 100,
+                axisLabel: {
+                  rotate: 0,
+                  fontFamily: 'MicrosoftYaHei',
+                  color: '#fff'
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: '#ffffff'
+                  }
+                },
+                axisTick: {
+                  show: false,
+                  lineStyle: {
+                    color: '#FFFFFF'
+                  }
+                },
+                show: true,
+                splitLine: {
+                  lineStyle: {
+                    color: '#E9E9E9',
+                    width: 0.3,
+                    type: 'solid'
+                  },
+                  show: false
+                },
+                splitNumber: 6,
+                splitArea: {
+                  show: false
+                },
+                nameGap: 5,
+                scale: true,
+                nameLocation: 'end',
+                type: 'value',
+                nameTextStyle: {
+                  padding: [0, 0, 5, 0]
+                }
+              },
+              xAxis: {
+                axisLabel: {
+                  rotate: 0,
+                  fontFamily: 'MicrosoftYaHei',
+                  color: '#fff'
+                },
+                data: ['井盖', '路灯', '公厕', '转运站', '绿化带'],
+                axisLine: {
+                  lineStyle: {
+                    color: '#ffffff'
+                  }
+                },
+                show: true,
+                name: '',
+                axisTick: {
+                  show: false
+                },
+                splitLine: {
+                  lineStyle: {
+                    color: '#E9E9E9',
+                    type: 'solid'
+                  },
+                  show: false
+                },
+                nameGap: 2,
+                nameLocation: 'end',
+                type: 'category'
+              },
+              grid: {
+                top: 25,
+                left: 30,
+                right: 0,
+                bottom: 25
+              },
+              legend: {
+                data: ['Y1', 'Y3'],
+                show: false,
+                textStyle: {
+                  color: '#ffffff'
+                },
+                type: 'scroll'
+              },
+              series: [
+                {
+                  data: ['30', '90', '50', '36', '0'],
+                  name: 'Y1',
+                  barWidth: 6,
+                  emphasis: {
+                    itemStyle: {
+                      color: '#A8CFFF'
+                    }
+                  },
+                  type: 'bar'
+                }
+              ],
+              tooltip: {
+                axisPointer: {
+                  shadowStyle: {
+                    color: 'rgba(231,243,252,0)'
+                  },
+                  type: 'shadow'
+                },
+                trigger: 'axis',
+                textStyle: {
+                  align: 'left'
+                }
+              },
+              textStyle: {
+                fontFamily: 'Microsoft YaHei Light'
+              },
+              title: {
+                padding: [5, 0, 0, 20],
+                x: 'left',
+                text: '',
+                textStyle: {
+                  fontFamily: 'Microsoft YaHei Light',
+                  color: '#ffffff',
+                  fontWeight: '100'
+                }
+              }
+            },
+            textlistPropDatas: {
+              autoResize: true,
+              content: null,
+              dataset: {
+                type: 'geoJSON',
+                maxFeatures: 500,
+                geoJSON: {
+                  type: 'FeatureCollection',
+                  features: [
+                    {
+                      properties: {
+                        name: '公共设施损坏案件',
+                        situation: '已受理',
+                        distribution: '手动分拨',
+                        state: '处置中'
+                      },
+                      type: 'Feature'
+                    },
+                    {
+                      properties: {
+                        name: '道路交通事故',
+                        situation: '已受理',
+                        distribution: '手动分拨',
+                        state: '处置中'
+                      },
+                      type: 'Feature'
+                    },
+                    {
+                      properties: {
+                        name: '市容环境',
+                        situation: '已受理',
+                        distribution: '自动分拨',
+                        state: '处置中'
+                      },
+                      type: 'Feature'
+                    },
+                    {
+                      properties: {
+                        name: '建筑工地事故',
+                        situation: '已受理',
+                        distribution: '手动分拨',
+                        state: '结案'
+                      },
+                      type: 'Feature'
+                    },
+                    {
+                      properties: {
+                        name: '施化建筑',
+                        situation: '已受理',
+                        distribution: '手动分拨',
+                        state: '结案'
+                      },
+                      type: 'Feature'
+                    },
+                    {
+                      properties: {
+                        name: '危化品泄漏',
+                        situation: '已受理',
+                        distribution: '手动分拨',
+                        state: '处置中'
+                      },
+                      type: 'Feature'
+                    }
+                  ]
+                }
+              },
+              fontSize: 10,
+              autoRolling: true,
+              rows: 6,
+              columns: [
+                {
+                  header: '案件名称',
+                  field: 'name',
+                  slotConfig: {
+                    type: 'text',
+                    linkTitle: '',
+                    linkTarget: '_blank',
+                    imageRepeat: 'center'
+                  },
+                  defaultSortType: 'descend',
+                  fixInfo: { prefix: '', suffix: '' },
+                  width: 0
+                },
+                {
+                  header: '受理情况',
+                  field: 'situation',
+                  slotConfig: {
+                    type: 'text',
+                    linkTitle: '',
+                    linkTarget: '_blank',
+                    imageRepeat: 'center'
+                  },
+                  defaultSortType: 'none',
+                  fixInfo: { prefix: '', suffix: '' },
+                  width: 0
+                },
+                {
+                  header: '分拨情况',
+                  field: 'distribution',
+                  slotConfig: {
+                    type: 'text',
+                    linkTitle: '',
+                    linkTarget: '_blank',
+                    imageRepeat: 'center'
+                  },
+                  defaultSortType: 'none',
+                  fixInfo: { prefix: '', suffix: '' },
+                  width: 0
+                },
+                {
+                  header: '案件状态',
+                  field: 'state',
+                  slotConfig: {
+                    type: 'text',
+                    linkTitle: '',
+                    linkTarget: '_blank',
+                    imageRepeat: 'center'
+                  },
+                  defaultSortType: 'none',
+                  fixInfo: { prefix: '', suffix: '' },
+                  width: 0
+                }
+              ],
+              background: 'rgba(0,0,0,0)',
+              textColor: '#fff',
+              colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad'],
+              headerStyle: {
+                background: 'rgba(85, 173, 234, 0.25)',
+                sortBtnSelectColor: '#626c91',
+                color: '#fff',
+                sortBtnColor: '#fff',
+                show: true,
+                height: 0
+              },
+              rowStyle: {
+                oddStyle: { background: 'rgba(255, 255, 255, 0.15)' },
+                evenStyle: { background: 'rgba(63, 177, 227, 0)' },
+                height: 0
+              },
+              highlightColor: '#01ffff',
+              thresholdsStyle: [
+                { type: 'background', data: [] },
+                { type: 'background', data: [] },
+                { type: 'background', data: [] },
+                { type: 'background', data: [] }
+              ]
             }
-            .web-scene,
-            .template {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                overflow: hidden;
-                top: 0;
-                left: 0;
-            }
-            .template {
-                background-image: url('../img/background/image27.png');
-                background-size: 100% 100%;
-            }
-            .sm-component-text {
-                background: none !important;
-            }
+          };
+        }
+      });
+    </script>
+    <style>
+      html {
+        font-size: 10px;
+      }
+      .web-scene {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        z-index: 101;
+      }
+      .web-scene::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        background: url('https://iclient.supermap.io/web/data/background/image69.png') no-repeat 100% 100%;
+        pointer-events: none;
+        background-size: 100% 100%;
+        background-position: center;
+      }
+      .sm-component-text {
+        background: none !important;
+      }
 
-            .dashboard-switch-header {
-                background-image: url('https://iclient.supermap.io/web/data/background/image1.png');
-                background-size: 100% 100%;
-                height: 70px;
-                display: flex;
-                position: relative;
-            }
+      .dashboard-switch-header {
+        width: 100%;
+        background-image: url('https://iclient.supermap.io/web/data/background/image1.png');
+        background-size: 100% 100%;
+        height: 70px;
+      }
 
-            .title {
-                font-size: 32px;
-                display: flex;
-                height: 50px;
-                width: 100%;
-                padding: 0;
-            }
-
-            .subtitle {
-                position: absolute;
-                bottom: 0;
-                left: 10px;
-                width: 130px;
-                height: 30px;
-                font-size: 20px;
-                font-weight: bold;
-                background-image: url('../img/background/image13.png');
-                background-size: 100% 100%;
-            }
-            .menu,
-            .content,
-            .bottom {
-                margin: 0 10px;
-            }
-            .menu {
-                width: 50%;
-                margin: 0 auto;
-                height: 58px;
-                display: flex;
-                align-items: center;
-            }
-            .text-link {
-                width: 150px;
-                margin-left: 70px;
-                background-image: url('../img/background/image16.png') !important;
-                background-size: 100% 100% !important;
-            }
-            .link-active {
-                background-image: url('../img/background/image15.png') !important;
-                background-size: 100% 100% !important;
-            }
-            .content {
-                height: 529px;
-                display: flex;
-                justify-content: space-between;
-            }
-            .left-content,
-            .right-content {
-                width: 329px;
-                height: 100%;
-                background: rgba(0, 18, 31, 0.45);
-                padding-top: 10px;
-            }
-
-            .right-content-bottom,
-            .right-content-top,
-            .left-content-bottom,
-            .left-content-top {
-                width: 90%;
-                margin: 0 auto;
-            }
-            .right-content-bottom::after {
-                content: '';
-                display: block;
-                height: 0;
-                clear: both;
-                visibility: hidden;
-            }
-            .case-image,
-            .content-detail {
-                display: flex;
-                justify-content: flex-start;
-            }
-            .case-image {
-                background-image: url('../img/background/image24.png');
-                background-size: 100% 100%;
-            }
-            .case-image .sm-component-text,
-            .content-detail .sm-component-text {
-                padding: 0;
-            }
-            .content-detail-one,
-            .content-detail-two {
-                width: 45%;
-                margin: 0 auto;
-                margin-top: 16px;
-                text-align: center;
-            }
-            .content-detail-background {
-                height: 106px;
-                background-image: url('https://iclient.supermap.io/web/data/background/image2.png');
-                background-size: 100% 100%;
-            }
-            .economic-content {
-                float: left;
-                display: flex;
-                justify-content: flex-start;
-                width: 60%;
-                margin-top: 16px;
-                background-image: url('../img/background/image20.png');
-                background-size: 100% 100%;
-            }
-            .economic-text {
-                width: 160px;
-                margin: 0 26px 0 6px;
-            }
-            .economic-number {
-                margin-top: 16px;
-                float: right;
-            }
-            .economic-text .sm-component-text {
-                display: block;
-                text-align: left !important;
-                padding: 0 0 0 10px;
-            }
-            .right-content-detail-background {
-                width: 100px;
-                height: 80px;
-                margin: 0 auto;
-                background-image: url('https://iclient.supermap.io/web/data/background/image3.png');
-                background-size: 100% 100%;
-            }
-            .subheading {
-                height: 30px;
-                margin-bottom: 10px;
-                display: flex;
-                justify-content: flex-start;
-                position: relative;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.65);
-            }
-            .subheading > .sm-component-text {
-                padding: 0;
-                margin-left: 6px;
-                font-style: italic;
-            }
-            .title-arorn {
-                display: inline-block;
-                width: 18px;
-                height: 30px;
-                background-image: url('../img/background/image26.png');
-                background-size: 100% 100%;
-            }
-            .decorative-strip {
-                width: 100%;
-                height: 12px;
-                background-image: url('../img/background/image25.png');
-                background-size: 100% 100%;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-            }
-            .gif-point {
-                width: 20px;
-                height: 20px;
-                background-image: url('../img/background/icon10.png');
-                background-size: 100% 100%;
-                z-index: 1000;
-                position: absolute;
-                bottom: -8px;
-                right: -13px;
-            }
-            .chart-content {
-                width: 100%;
-                position: relative;
-                display: flex;
-                justify-content: flex-start;
-            }
-            .progress-content {
-                margin-top: 10px;
-                width: 127px;
-                height: 127px;
-                position: relative;
-            }
-            .bottom-progress {
-                margin-top: 15px;
-            }
-            .chart-describe {
-                width: 46%;
-                height: 100%;
-                margin-left: 8%;
-            }
-            .chart-describe .sm-component-text {
-                display: block;
-                padding: 0;
-                text-align: left !important;
-            }
-            .progress-describe .sm-component-text {
-                padding: 0;
-            }
-            .chart-Rose,
-            .chart-pie {
-                height: 127px;
-            }
-            .chart-pie-text {
-                width: 45%;
-                padding-top: 13px;
-            }
-            .chart-pie-text .sm-component-text {
-                padding: 0;
-            }
-            .sm-component-chart .sm-component-collapse-card__content {
-                width: 100%;
-                height: 100%;
-            }
-            .bottom {
-                margin-top: 6px;
-                padding-top: 10px;
-                height: 208px;
-                background: rgba(0, 18, 31, 0.45);
-                display: flex;
-                justify-content: flex-start;
-            }
-            .economy-image {
-                width: 80px;
-                height: 60px;
-                margin-bottom: 16px;
-                text-align: center;
-                background-image: url('../img/background/image23.png');
-                background-size: 100% 100%;
-            }
-            .inner-image {
-                display: inline-block;
-                width: 34px;
-                height: 34px;
-                background-size: 100% 100%;
-            }
-            .progressText {
-                margin: 0 0 16px 16px;
-                padding-left: 10px;
-                border-left: 1px solid rgba(255, 255, 255, 0.65);
-            }
-            .progressText .sm-component-text {
-                display: block;
-                padding: 0;
-            }
-            .image-number {
-                width: 160px;
-                height: 100px;
-                padding-top: 6px;
-                text-align: center;
-                background-image: url('https://iclient.supermap.io/web/data/background/image3.png');
-                background-size: 100% 100%;
-            }
-            .culture-image-number {
-                width: 120px;
-                height: 120px;
-                padding-top: 6px;
-                text-align: center;
-                background-image: url('../img/background/image21.png');
-                background-size: 100% 100%;
-            }
-            .traffic-content-one {
-                width: 40%;
-                text-align: center;
-            }
-            .traffic-content-two {
-                width: 60%;
-            }
-            .traffic-content-background {
-                width: 130px;
-                margin: 0px auto;
-                text-align: center;
-                height: 110px;
-                background-image: url('https://iclient.supermap.io/web/data/background/image4.png');
-                background-size: 100% 100%;
-            }
-            .span-point {
-                display: inline-block;
-                width: 5px;
-                height: 5px;
-                margin-right: 6px;
-            }
-            .safe-text {
-                width: 80%;
-                margin: 20px auto 0;
-                padding-left: 16px;
-                border-left: 1px solid rgba(255, 255, 255, 0.65);
-            }
-            .chart-bar {
-                width: 100%;
-                height: 120px;
-                margin-top: 5px;
-            }
-            .chart-bar .sm-component-chart {
-                height: inherit;
-            }
-            .city-text-content {
-                width: 100%;
-                height: 120px;
-            }
-            .city-text {
-                width: 76px;
-                float: left;
-                border-left: 2px solid #ffffff;
-                margin-top: 5px;
-            }
-            .city-text .sm-component-text,
-            .safe-text .sm-component-text {
-                display: block;
-                text-align: left !important;
-            }
-            .economy-text .sm-component-text,
-            .city-text .sm-component-text {
-                padding-left: 5px;
-            }
-            .economy-text-content {
-                margin-top: 18px;
-            }
-            .economy-text {
-                width: 50%;
-                height: 100%;
-                display: inline-block;
-                text-align: left;
-                border-left: 2px solid #ffffff;
-            }
-        </style>
-    </body>
+      .title {
+        font-size: 32px;
+        height: 50px;
+        width: 100%;
+        padding: 0;
+      }
+      .subtitle,
+      .dashboard-switch-header,
+      .menu,
+      .left-content,
+      .right-content,
+      .bottom {
+        position: absolute;
+        z-index: 110;
+      }
+      .menu {
+        top: 55px;
+        left: 25%;
+        width: 50%;
+        height: 58px;
+        display: flex;
+        align-items: center;
+      }
+      .subtitle {
+        top: 45px;
+        left: 15px;
+        width: 146px;
+        height: 30px;
+        font-size: 20px;
+        font-weight: bold;
+        background-image: url('../img/background/image13.png');
+        background-size: 100% 100%;
+      }
+      .text-link {
+        width: 150px;
+        margin-left: 70px;
+        background-image: url('../img/background/image16.png') !important;
+        background-size: 100% 100% !important;
+      }
+      .link-active {
+        background-image: url('../img/background/image15.png') !important;
+        background-size: 100% 100% !important;
+      }
+      .left-content,
+      .right-content {
+        top: 106px;
+        width: 329px;
+        height: 534px;
+        background: rgba(0, 18, 31, 0.45);
+        padding-top: 10px;
+      }
+      .left-content {
+        left: 1%;
+      }
+      .right-content {
+        right: 1%;
+      }
+      .right-content-bottom,
+      .right-content-top,
+      .left-content-bottom,
+      .left-content-top {
+        width: 90%;
+        margin: 0 auto;
+      }
+      .right-content-bottom::after {
+        content: '';
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+      }
+      .case-image,
+      .content-detail {
+        display: flex;
+        justify-content: flex-start;
+      }
+      .case-image {
+        background-image: url('../img/background/image24.png');
+        background-size: 100% 100%;
+      }
+      .case-image .sm-component-text,
+      .content-detail .sm-component-text {
+        padding: 0;
+      }
+      .content-detail-one,
+      .content-detail-two {
+        width: 45%;
+        margin: 0 auto;
+        margin-top: 16px;
+        text-align: center;
+      }
+      .content-detail-background {
+        height: 106px;
+        background-image: url('https://iclient.supermap.io/web/data/background/image2.png');
+        background-size: 100% 100%;
+      }
+      .economic-content {
+        float: left;
+        display: flex;
+        justify-content: flex-start;
+        width: 60%;
+        margin-top: 16px;
+        background-image: url('../img/background/image20.png');
+        background-size: 100% 100%;
+      }
+      .economic-text {
+        width: 160px;
+        margin: 0 26px 0 6px;
+      }
+      .economic-number {
+        margin-top: 16px;
+        float: right;
+      }
+      .economic-text .sm-component-text {
+        display: block;
+        text-align: left !important;
+        padding: 0 0 0 10px;
+      }
+      .right-content-detail-background {
+        width: 100px;
+        height: 80px;
+        margin: 0 auto;
+        background-image: url('https://iclient.supermap.io/web/data/background/image3.png');
+        background-size: 100% 100%;
+      }
+      .subheading {
+        height: 30px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-start;
+        position: relative;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+      }
+      .subheading > .sm-component-text {
+        padding: 0;
+        margin-left: 6px;
+        font-style: italic;
+        z-index: 10;
+      }
+      .title-arorn {
+        display: inline-block;
+        width: 18px;
+        height: 30px;
+        background-image: url('../img/background/image26.png');
+        background-size: 100% 100%;
+      }
+      .decorative-strip {
+        width: 100%;
+        height: 12px;
+        background-image: url('../img/background/image25.png');
+        background-size: 100% 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      .gif-point {
+        width: 20px;
+        height: 20px;
+        background-image: url('../img/background/icon10.png');
+        background-size: 100% 100%;
+        z-index: 1000;
+        position: absolute;
+        bottom: -8px;
+        right: -13px;
+      }
+      .chart-content {
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+      }
+      .progress-content {
+        margin-top: 10px;
+        width: 127px;
+        height: 127px;
+        position: relative;
+      }
+      .bottom-progress {
+        margin-top: 15px;
+      }
+      .chart-describe {
+        width: 46%;
+        height: 100%;
+        margin-left: 8%;
+      }
+      .chart-describe .sm-component-text {
+        display: block;
+        padding: 0;
+        text-align: left !important;
+      }
+      .progress-describe .sm-component-text {
+        padding: 0;
+      }
+      .chart-Rose,
+      .chart-pie {
+        height: 127px;
+      }
+      .chart-pie-text {
+        width: 45%;
+        padding-top: 13px;
+      }
+      .chart-pie-text .sm-component-text {
+        padding: 0;
+      }
+      .sm-component-chart .sm-component-collapse-card__content {
+        width: 100%;
+        height: 100%;
+      }
+      .bottom {
+        width: 98%;
+        bottom: 16px;
+        left: 1%;
+        height: 215px;
+        background: rgba(0, 18, 31, 0.45);
+        display: flex;
+        justify-content: flex-start;
+      }
+      .economy-image {
+        width: 80px;
+        height: 60px;
+        margin-bottom: 16px;
+        text-align: center;
+        background-image: url('../img/background/image23.png');
+        background-size: 100% 100%;
+      }
+      .inner-image {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        background-size: 100% 100%;
+      }
+      .progressText {
+        margin: 0 0 16px 16px;
+        padding-left: 10px;
+        border-left: 1px solid rgba(255, 255, 255, 0.65);
+      }
+      .progressText .sm-component-text {
+        display: block;
+        padding: 0;
+      }
+      .image-number {
+        width: 160px;
+        height: 100px;
+        padding-top: 6px;
+        text-align: center;
+        background-image: url('https://iclient.supermap.io/web/data/background/image3.png');
+        background-size: 100% 100%;
+      }
+      .culture-image-number {
+        width: 120px;
+        height: 120px;
+        padding-top: 6px;
+        text-align: center;
+        background-image: url('../img/background/image21.png');
+        background-size: 100% 100%;
+      }
+      .traffic-content-one {
+        width: 40%;
+        text-align: center;
+      }
+      .traffic-content-two {
+        width: 60%;
+      }
+      .traffic-content-background {
+        width: 130px;
+        margin: 0px auto;
+        text-align: center;
+        height: 110px;
+        background-image: url('https://iclient.supermap.io/web/data/background/image4.png');
+        background-size: 100% 100%;
+      }
+      .span-point {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        margin-right: 6px;
+      }
+      .safe-text {
+        width: 80%;
+        margin: 20px auto 0;
+        padding-left: 16px;
+        border-left: 1px solid rgba(255, 255, 255, 0.65);
+      }
+      .chart-bar {
+        width: 100%;
+        height: 120px;
+        margin-top: 5px;
+      }
+      .chart-bar .sm-component-chart {
+        height: inherit;
+      }
+      .city-text-content {
+        width: 100%;
+        height: 120px;
+      }
+      .city-text {
+        width: 76px;
+        float: left;
+        border-left: 2px solid #ffffff;
+        margin-top: 5px;
+      }
+      .city-text .sm-component-text,
+      .safe-text .sm-component-text {
+        display: block;
+        text-align: left !important;
+      }
+      .economy-text .sm-component-text,
+      .city-text .sm-component-text {
+        padding-left: 5px;
+      }
+      .economy-text-content {
+        margin-top: 18px;
+      }
+      .economy-text {
+        width: 50%;
+        height: 100%;
+        display: inline-block;
+        text-align: left;
+        border-left: 2px solid #ffffff;
+      }
+    </style>
+  </body>
 </html>
