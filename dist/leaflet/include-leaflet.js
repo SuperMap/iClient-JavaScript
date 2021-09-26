@@ -76,17 +76,17 @@
         if (inArray(includes, 'leaflet-geoman')) {
             inputCSS('https://cdn.jsdelivr.net/npm/@skyraptor/leaflet-geoman-free@2.11.3/dist/leaflet-geoman.css');
             inputScript('https://cdn.jsdelivr.net/npm/@skyraptor/leaflet-geoman-free@2.11.3/dist/leaflet-geoman.min.js');
-            
+
         }
         if (inArray(includes, 'leaflet.miniMap')) {
             inputCSS('https://cdn.bootcdn.net/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css');
             inputScript('https://cdn.bootcdn.net/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.56/build/mapv.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
@@ -95,7 +95,7 @@
             inputScript('https://cdn.bootcdn.net/ajax/libs/elasticsearch/16.7.1/elasticsearch.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript('https://cdn.jsdelivr.net/npm/xlsx@0.16.7/dist/xlsx.core.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/xlsx@0.17.2/dist/xlsx.core.min.js');
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
@@ -127,7 +127,7 @@
             inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
         }
         if (inArray(includes, 'tensorflow')) {
-            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
         }
 
         // iclient
@@ -144,16 +144,14 @@
         if (inArray(includes, 'iclient-plot-leaflet')) {
             inputCSS('https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.0/iclient-plot-leaflet.css');
             if (supportES6()) {
-                inputScript(
-                    'https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.0/iclient-plot-leaflet-es6.min.js'
-                );
+                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.0/iclient-plot-leaflet-es6.min.js');
             } else {
                 inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.0/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.8/dist/antd.min.css');
+            inputScript('https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.8/dist/antd.min.js');
         }
         if (inArray(includes, 'echarts-vue')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');

@@ -53,39 +53,30 @@
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         if (!inArray(includes, 'mapbox-gl-enhance') && !inArray(excludes, 'mapbox-gl')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/mapbox-gl@1.12.0/dist/mapbox-gl.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl@1.12.0/dist/mapbox-gl.min.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/mapbox-gl@1.13.1/dist/mapbox-gl.min.css');
+            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl@1.13.1/dist/mapbox-gl.min.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
             inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'draw')) {
-            inputCSS(
-                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.css'
-            );
-            inputScript(
-                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.js'
-            );
+            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.3.0/mapbox-gl-draw.css');
+            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.3.0/mapbox-gl-draw.js');
         }
+
         if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
-            inputScript(
-                'https://cdn.jsdelivr.net/gh/CartoDB/mapboxgl-draw-rectangle-drag@1.0.1/build/mapboxgl-draw-rectangle-drag.browser.js'
-            );
-        }
+          inputScript('https://cdn.jsdelivr.net/gh/CartoDB/mapboxgl-draw-rectangle-drag@1.0.1/build/mapboxgl-draw-rectangle-drag.browser.js');
+      }
         if (inArray(includes, 'compare')) {
-            inputCSS(
-                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css'
-            );
-            inputScript(
-                'https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js'
-            );
+            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
+            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.56/build/mapv.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js');
         }
         if (inArray(includes, 'echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
@@ -102,22 +93,22 @@
             inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/xlsx/0.16.7/xlsx.core.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/xlsx@0.17.2/dist/xlsx.core.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/proj4js/2.6.2/proj4.js');
+            inputScript('https://cdn.jsdelivr.net/npm/proj4@2.7.5/dist/proj4.js');
         }
         if (inArray(includes, 'shapefile')) {
             inputScript('https://cdn.jsdelivr.net/npm/shapefile@0.6.6/dist/shapefile.js');
         }
         if (inArray(includes, 'ant-design-vue')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.9/dist/antd.min.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.8/dist/antd.min.css');
+            inputScript('https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.8/dist/antd.min.js');
         }
         if (inArray(includes, 'antd')) {
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/antd/3.25.3/antd.min.css');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/moment.js/2.24.0/moment.min.js');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/antd/3.25.3/antd.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/antd@3.25.3/dist/antd.min.css');
+            inputScript('https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/antd@3.25.3/dist/antd.min.js');
         }
         if (inArray(includes, 'deck')) {
             inputScript('https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js');
@@ -129,15 +120,13 @@
             inputScript('https://iclient.supermap.io/web/libs/geostats/geostats.js');
         }
         if (inArray(includes, 'canvg')) {
-            inputScript('https://cdn.jsdelivr.net/npm/canvg@3.0.6/lib/umd.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/canvg/canvg.min.js');
         }
         if (inArray(includes, 'convert')) {
             inputScript('https://iclient.supermap.io/web/libs/xml-js/1.6.8/xml-js.min.js');
         }
         if (inArray(includes, 'LegacyJSONLoader')) {
-            inputScript(
-                'https://cdn.jsdelivr.net/npm/three@0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js'
-            );
+            inputScript('https://cdn.jsdelivr.net/npm/three@0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
         }
         if (inArray(includes, 'OBJLoader')) {
             inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/OBJLoader.js');
@@ -167,13 +156,13 @@
             inputScript('https://iclient.supermap.io/web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
         }
         if (inArray(includes, 'moment')) {
-            inputScript('https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js');
         }
         if (inArray(includes, 'lodash')) {
-            inputScript('https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
         }
 
         // dist

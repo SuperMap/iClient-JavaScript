@@ -4,7 +4,7 @@
 	(factory((global.mapv = global.mapv || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "2.0.56";
+var version = "2.0.62";
 
 /**
  * @author kyle / http://nikai.us/
@@ -249,6 +249,48 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+
+
+
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
 /**
  * @author kyle / http://nikai.us/
  */
@@ -294,7 +336,7 @@ function DataSet(data, options) {
     }
 }
 
-DataSet.prototype = Event.prototype;
+DataSet.prototype = Object.create(Event.prototype);
 
 /**
  * Add data.
@@ -4084,46 +4126,22 @@ var drawClip = {
  * @author kyle / http://nikai.us/
  */
 
+var imageMap = {};
+var stacks = {};
 var drawCluster = {
     draw: function draw(context, dataSet, options) {
         context.save();
         var data = dataSet instanceof DataSet ? dataSet.get() : dataSet;
-
-        var pointCountMax;
-        var pointCountMin;
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
-            if (item.properties && item.properties.cluster) {
-                if (pointCountMax === undefined) {
-                    pointCountMax = item.properties.point_count;
-                }
-                if (pointCountMin === undefined) {
-                    pointCountMin = item.properties.point_count;
-                }
-                pointCountMax = Math.max(pointCountMax, item.properties.point_count);
-                pointCountMin = Math.min(pointCountMin, item.properties.point_count);
-            }
-        }
-
-        var intensity = new Intensity({
-            min: pointCountMin,
-            max: pointCountMax,
-            minSize: options.minSize || 8,
-            maxSize: options.maxSize || 30,
-            gradient: options.gradient
-        });
-
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            var coordinates = data[i].geometry._coordinates || data[i].geometry.coordinates;
+            var coordinates = item.geometry._coordinates || item.geometry.coordinates;
             context.beginPath();
             if (item.properties && item.properties.cluster) {
-                context.arc(coordinates[0], coordinates[1], intensity.getSize(item.properties.point_count), 0, Math.PI * 2);
-                context.fillStyle = intensity.getColor(item.properties.point_count);
+                context.arc(coordinates[0], coordinates[1], item.size, 0, Math.PI * 2);
+                context.fillStyle = item.fillStyle;
                 context.fill();
 
                 if (options.label && options.label.show !== false) {
-
                     context.fillStyle = options.label.fillStyle || 'white';
 
                     if (options.label.font) {
@@ -4140,17 +4158,89 @@ var drawCluster = {
 
                     var text = item.properties.point_count;
                     var textWidth = context.measureText(text).width;
-                    context.fillText(text, coordinates[0] + .5 - textWidth / 2, coordinates[1] + .5 + 3);
+                    context.fillText(text, coordinates[0] + 0.5 - textWidth / 2, coordinates[1] + 0.5 + 3);
                 }
             } else {
-                context.arc(coordinates[0], coordinates[1], options.size || 5, 0, Math.PI * 2);
-                context.fillStyle = options.fillStyle || 'red';
-                context.fill();
+                this.drawIcon(item, options, context);
             }
         }
         context.restore();
+    },
+    drawIcon: function drawIcon(item, options, context) {
+        var _ref = item.geometry._coordinates || item.geometry.coordinates,
+            _ref2 = slicedToArray(_ref, 2),
+            x = _ref2[0],
+            y = _ref2[1];
+
+        var iconOptions = Object.assign({}, options.iconOptions, item.iconOptions);
+        var drawPoint = function drawPoint() {
+            context.beginPath();
+            context.arc(x, y, options.size || 5, 0, Math.PI * 2);
+            context.fillStyle = options.fillStyle || 'red';
+            context.fill();
+        };
+        if (!iconOptions.url) {
+            drawPoint();
+            return;
+        }
+        var iconWidth = iconOptions.width;
+        var iconHeight = iconOptions.height;
+        var iconOffset = iconOptions.offset || { x: 0, y: 0 };
+        x = x - ~~iconWidth / 2 + iconOffset.x;
+        y = y - ~~iconHeight / 2 + iconOffset.y;
+        var url = window.encodeURIComponent(iconOptions.url);
+        var img = imageMap[url];
+        if (img) {
+            if (img === 'error') {
+                drawPoint();
+            } else if (iconWidth && iconHeight) {
+                context.drawImage(img, x, y, iconWidth, iconHeight);
+            } else {
+                context.drawImage(img, x, y);
+            }
+        } else {
+            if (!stacks[url]) {
+                stacks[url] = [];
+                getImage(url, function (img, src) {
+                    stacks[src] && stacks[src].forEach(function (fun) {
+                        return fun(img);
+                    });
+                    stacks[src] = null;
+                    imageMap[src] = img;
+                }, function (src) {
+                    stacks[src] && stacks[src].forEach(function (fun) {
+                        return fun('error', src);
+                    });
+                    stacks[src] = null;
+                    imageMap[src] = 'error';
+                    drawPoint();
+                });
+            }
+            stacks[url].push(function (x, y, iconWidth, iconHeight) {
+                return function (img) {
+                    if (img === 'error') {
+                        drawPoint();
+                    } else if (iconWidth && iconHeight) {
+                        context.drawImage(img, x, y, iconWidth, iconHeight);
+                    } else {
+                        context.drawImage(img, x, y);
+                    }
+                };
+            }(x, y, iconWidth, iconHeight));
+        }
     }
 };
+
+function getImage(url, callback, fallback) {
+    var img = new Image();
+    img.onload = function () {
+        callback && callback(img, url);
+    };
+    img.onerror = function () {
+        fallback && fallback(url);
+    };
+    img.src = window.decodeURIComponent(url);
+}
 
 /**
  * @author Mofei Zhu<mapv@zhuwenlong.com>
@@ -4268,65 +4358,104 @@ function isRectOverlay(rect1, rect2) {
 }
 
 /**
- * @author Mofei Zhu<mapv@zhuwenlong.com>
- * This file is to draw text
+ * @author wanghyper
+ * This file is to draw icon
  */
 
+var imageMap$1 = {};
+var stacks$1 = {};
 var drawIcon = {
     draw: function draw(context, dataSet, options) {
         var data = dataSet instanceof DataSet ? dataSet.get() : dataSet;
 
-        context.fillStyle = 'white';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
+        var _loop = function _loop() {
+            var item = data[i];
+            if (item.geometry) {
+                icon = item.icon || options.icon;
 
-        var offset = options.offset || {
-            x: 0,
-            y: 0
-        };
-
-        // set from options
-        // for (var key in options) {
-        //     context[key] = options[key];
-        // }
-        // console.log(data)
-        for (var i = 0, len = data.length; i < len; i++) {
-
-            if (data[i].geometry) {
-                var deg = data[i].deg || options.deg;
-                var icon = data[i].icon || options.icon;
-                var coordinates = data[i].geometry._coordinates || data[i].geometry.coordinates;
-                var x = coordinates[0];
-                var y = coordinates[1];
-                if (deg) {
-                    context.save();
-                    context.translate(x, y);
-                    context.rotate(deg * Math.PI / 180);
-                    context.translate(-x, -y);
-                }
-                var width = options._width || options.width || icon.width;
-                var height = options._height || options.height || icon.height;
-                x = x - width / 2 + offset.x;
-                y = y - height / 2 + offset.y;
-                if (options.sx && options.sy && options.swidth && options.sheight && options.width && options.height) {
-                    context.drawImage(icon, options.sx, options.sy, options.swidth, options.sheight, x, y, width, height);
-                } else if (options.width && options.height) {
-                    context.drawImage(icon, x, y, width, height);
+                if (typeof icon === 'string') {
+                    var url = window.encodeURIComponent(icon);
+                    var img = imageMap$1[url];
+                    if (img) {
+                        drawItem(img, options, context, item);
+                    } else {
+                        if (!stacks$1[url]) {
+                            stacks$1[url] = [];
+                            getImage$1(url, function (img, src) {
+                                stacks$1[src] && stacks$1[src].forEach(function (fun) {
+                                    return fun(img);
+                                });
+                                stacks$1[src] = null;
+                                imageMap$1[src] = img;
+                            }, function (src) {
+                                stacks$1[src] && stacks$1[src].forEach(function (fun) {
+                                    return fun('error');
+                                });
+                                stacks$1[src] = null;
+                                imageMap$1[src] = 'error';
+                            });
+                        }
+                        stacks$1[url].push(function (img) {
+                            drawItem(img, options, context, item);
+                        });
+                    }
                 } else {
-                    context.drawImage(icon, x, y);
-                }
-
-                if (deg) {
-                    context.restore();
+                    drawItem(icon, options, context, item);
                 }
             }
+        };
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var icon;
+
+            _loop();
         }
     }
 };
+function drawItem(img, options, context, item) {
+    context.save();
+    var coordinates = item.geometry._coordinates || item.geometry.coordinates;
+    var x = coordinates[0];
+    var y = coordinates[1];
+    var offset = options.offset || { x: 0, y: 0 };
+    var width = item.width || options._width || options.width;
+    var height = item.height || options._height || options.height;
+    x = x - ~~width / 2 + offset.x;
+    y = y - ~~height / 2 + offset.y;
+    if (typeof img === 'string') {
+        context.beginPath();
+        context.arc(x, y, options.size || 5, 0, Math.PI * 2);
+        context.fillStyle = options.fillStyle || 'red';
+        context.fill();
+        return;
+    }
+    var deg = item.deg || options.deg;
+    if (deg) {
+        context.translate(x, y);
+        context.rotate(deg * Math.PI / 180);
+        context.translate(-x, -y);
+    }
 
-/**
- * from https://github.com/mapbox/supercluster
- */
+    if (options.sx && options.sy && options.swidth && options.sheight && options.width && options.height) {
+        context.drawImage(img, options.sx, options.sy, options.swidth, options.sheight, x, y, width, height);
+    } else if (width && height) {
+        context.drawImage(img, x, y, width, height);
+    } else {
+        context.drawImage(img, x, y);
+    }
+    context.restore();
+}
+
+function getImage$1(url, callback, fallback) {
+    var img = new Image();
+    img.onload = function () {
+        callback && callback(img, url);
+    };
+    img.onerror = function () {
+        fallback && fallback(url);
+    };
+    img.src = window.decodeURIComponent(url);
+}
 
 function sortKD(ids, coords, nodeSize, left, right, depth) {
     if (right - left <= nodeSize) {
@@ -4543,10 +4672,14 @@ KDBush.prototype.within = function within$1(x, y, r) {
 var defaultOptions = {
     minZoom: 0, // min zoom to generate clusters on
     maxZoom: 16, // max zoom level to cluster the points on
+    minPoints: 2, // minimum points to form a cluster
     radius: 40, // cluster radius in pixels
     extent: 512, // tile extent (radius is calculated relative to it)
     nodeSize: 64, // size of the KD-tree leaf node, affects performance
     log: false, // whether to log timing info
+
+    // whether to generate numeric ids for input features (in vector tiles)
+    generateId: false,
 
     // a reduce function for calculating custom cluster properties
     reduce: null, // (accumulated, props) => { accumulated.sum += props.sum; }
@@ -4633,8 +4766,8 @@ Supercluster.prototype.getClusters = function getClusters(bbox, zoom) {
 };
 
 Supercluster.prototype.getChildren = function getChildren(clusterId) {
-    var originId = clusterId >> 5;
-    var originZoom = clusterId % 32;
+    var originId = this._getOriginId(clusterId);
+    var originZoom = this._getOriginZoom(clusterId);
     var errorMsg = 'No cluster with the specified id.';
 
     var index = this.trees[originZoom];
@@ -4703,16 +4836,16 @@ Supercluster.prototype.getTile = function getTile(z, x, y) {
 };
 
 Supercluster.prototype.getClusterExpansionZoom = function getClusterExpansionZoom(clusterId) {
-    var clusterZoom = clusterId % 32 - 1;
-    while (clusterZoom <= this.options.maxZoom) {
+    var expansionZoom = this._getOriginZoom(clusterId) - 1;
+    while (expansionZoom <= this.options.maxZoom) {
         var children = this.getChildren(clusterId);
-        clusterZoom++;
+        expansionZoom++;
         if (children.length !== 1) {
             break;
         }
         clusterId = children[0].properties.cluster_id;
     }
-    return clusterZoom;
+    return expansionZoom;
 };
 
 Supercluster.prototype._appendLeaves = function _appendLeaves(result, clusterId, limit, offset, skipped) {
@@ -4752,21 +4885,35 @@ Supercluster.prototype._addTileFeatures = function _addTileFeatures(ids, points,
         var i = list[i$1];
 
         var c = points[i];
+        var isCluster = c.numPoints;
         var f = {
             type: 1,
             geometry: [[Math.round(this.options.extent * (c.x * z2 - x)), Math.round(this.options.extent * (c.y * z2 - y))]],
-            tags: c.numPoints ? getClusterProperties(c) : this.points[c.index].properties
+            tags: isCluster ? getClusterProperties(c) : this.points[c.index].properties
         };
-        var id = c.numPoints ? c.id : this.points[c.index].id;
+
+        // assign id
+        var id = void 0;
+        if (isCluster) {
+            id = c.id;
+        } else if (this.options.generateId) {
+            // optionally generate id
+            id = c.index;
+        } else if (this.points[c.index].id) {
+            // keep id if already assigned
+            id = this.points[c.index].id;
+        }
+
         if (id !== undefined) {
             f.id = id;
         }
+
         tile.features.push(f);
     }
 };
 
 Supercluster.prototype._limitZoom = function _limitZoom(z) {
-    return Math.max(this.options.minZoom, Math.min(z, this.options.maxZoom + 1));
+    return Math.max(this.options.minZoom, Math.min(+z, this.options.maxZoom + 1));
 };
 
 Supercluster.prototype._cluster = function _cluster(points, zoom) {
@@ -4775,6 +4922,7 @@ Supercluster.prototype._cluster = function _cluster(points, zoom) {
     var radius = ref.radius;
     var extent = ref.extent;
     var reduce = ref.reduce;
+    var minPoints = ref.minPoints;
     var r = radius / (extent * Math.pow(2, zoom));
 
     // loop through each point
@@ -4790,49 +4938,86 @@ Supercluster.prototype._cluster = function _cluster(points, zoom) {
         var tree = this.trees[zoom + 1];
         var neighborIds = tree.within(p.x, p.y, r);
 
-        var numPoints = p.numPoints || 1;
-        var wx = p.x * numPoints;
-        var wy = p.y * numPoints;
+        var numPointsOrigin = p.numPoints || 1;
+        var numPoints = numPointsOrigin;
 
-        var clusterProperties = reduce && numPoints > 1 ? this._map(p, true) : null;
-
-        // encode both zoom and point index on which the cluster originated
-        var id = (i << 5) + (zoom + 1);
-
+        // count the number of points in a potential cluster
         for (var i$1 = 0, list = neighborIds; i$1 < list.length; i$1 += 1) {
             var neighborId = list[i$1];
 
             var b = tree.points[neighborId];
             // filter out neighbors that are already processed
-            if (b.zoom <= zoom) {
-                continue;
-            }
-            b.zoom = zoom; // save the zoom (so it doesn't get processed twice)
-
-            var numPoints2 = b.numPoints || 1;
-            wx += b.x * numPoints2; // accumulate coordinates for calculating weighted center
-            wy += b.y * numPoints2;
-
-            numPoints += numPoints2;
-            b.parentId = id;
-
-            if (reduce) {
-                if (!clusterProperties) {
-                    clusterProperties = this._map(p, true);
-                }
-                reduce(clusterProperties, this._map(b));
+            if (b.zoom > zoom) {
+                numPoints += b.numPoints || 1;
             }
         }
 
-        if (numPoints === 1) {
-            clusters.push(p);
-        } else {
+        if (numPoints >= minPoints) {
+            // enough points to form a cluster
+            var wx = p.x * numPointsOrigin;
+            var wy = p.y * numPointsOrigin;
+
+            var clusterProperties = reduce && numPointsOrigin > 1 ? this._map(p, true) : null;
+
+            // encode both zoom and point index on which the cluster originated -- offset by total length of features
+            var id = (i << 5) + (zoom + 1) + this.points.length;
+
+            for (var i$2 = 0, list$1 = neighborIds; i$2 < list$1.length; i$2 += 1) {
+                var neighborId$1 = list$1[i$2];
+
+                var b$1 = tree.points[neighborId$1];
+
+                if (b$1.zoom <= zoom) {
+                    continue;
+                }
+                b$1.zoom = zoom; // save the zoom (so it doesn't get processed twice)
+
+                var numPoints2 = b$1.numPoints || 1;
+                wx += b$1.x * numPoints2; // accumulate coordinates for calculating weighted center
+                wy += b$1.y * numPoints2;
+
+                b$1.parentId = id;
+
+                if (reduce) {
+                    if (!clusterProperties) {
+                        clusterProperties = this._map(p, true);
+                    }
+                    reduce(clusterProperties, this._map(b$1));
+                }
+            }
+
             p.parentId = id;
             clusters.push(createCluster(wx / numPoints, wy / numPoints, id, numPoints, clusterProperties));
+        } else {
+            // left points as unclustered
+            clusters.push(p);
+
+            if (numPoints > 1) {
+                for (var i$3 = 0, list$2 = neighborIds; i$3 < list$2.length; i$3 += 1) {
+                    var neighborId$2 = list$2[i$3];
+
+                    var b$2 = tree.points[neighborId$2];
+                    if (b$2.zoom <= zoom) {
+                        continue;
+                    }
+                    b$2.zoom = zoom;
+                    clusters.push(b$2);
+                }
+            }
         }
     }
 
     return clusters;
+};
+
+// get index of the point from which the cluster originated
+Supercluster.prototype._getOriginId = function _getOriginId(clusterId) {
+    return clusterId - this.points.length >> 5;
+};
+
+// get zoom of the point from which the cluster originated
+Supercluster.prototype._getOriginZoom = function _getOriginZoom(clusterId) {
+    return (clusterId - this.points.length) % 32;
 };
 
 Supercluster.prototype._map = function _map(point, clone) {
@@ -4948,16 +5133,38 @@ var BaseLayer = function () {
 
         this.dataSet = dataSet;
         this.map = map;
-
-        if (options.draw === 'cluster' && !this.supercluster) {
-            this.supercluster = new Supercluster({ maxZoom: options.maxZoom || 19, radius: options.clusterRadius || 100 });
-            this.supercluster.load(dataSet.get());
-            this.clusterDataSet = new DataSet();
+        if (options.draw === 'cluster') {
+            this.refreshCluster(options);
         }
     }
 
     createClass(BaseLayer, [{
-        key: "getDefaultContextConfig",
+        key: 'refreshCluster',
+        value: function refreshCluster(options) {
+            options = options || this.options;
+            this.supercluster = new Supercluster({
+                maxZoom: options.maxZoom || 19,
+                radius: options.clusterRadius || 100,
+                minPoints: options.minPoints || 2,
+                extent: options.extent || 512
+            });
+
+            this.supercluster.load(this.dataSet.get());
+            // 拿到每个级别下的最大值最小值
+            this.supercluster.trees.forEach(function (item) {
+                var max = 0;
+                var min = Infinity;
+                item.points.forEach(function (point) {
+                    max = Math.max(point.numPoints || 0, max);
+                    min = Math.min(point.numPoints || Infinity, min);
+                });
+                item.max = max;
+                item.min = min;
+            });
+            this.clusterDataSet = new DataSet();
+        }
+    }, {
+        key: 'getDefaultContextConfig',
         value: function getDefaultContextConfig() {
             return {
                 globalAlpha: 1,
@@ -4980,7 +5187,7 @@ var BaseLayer = function () {
             };
         }
     }, {
-        key: "initDataRange",
+        key: 'initDataRange',
         value: function initDataRange(options) {
             var self = this;
             self.intensity = new Intensity({
@@ -5001,7 +5208,7 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "getLegend",
+        key: 'getLegend',
         value: function getLegend(options) {
             var draw = this.options.draw;
             var legend = null;
@@ -5013,12 +5220,11 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "processData",
+        key: 'processData',
         value: function processData(data) {
             var self = this;
             var draw = self.options.draw;
             if (draw == 'bubble' || draw == 'intensity' || draw == 'category' || draw == 'choropleth' || draw == 'simple') {
-
                 for (var i = 0; i < data.length; i++) {
                     var item = data[i];
 
@@ -5045,9 +5251,8 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "isEnabledTime",
+        key: 'isEnabledTime',
         value: function isEnabledTime() {
-
             var animationOptions = this.options.animation;
 
             var flag = animationOptions && !(animationOptions.enabled === false);
@@ -5055,7 +5260,7 @@ var BaseLayer = function () {
             return flag;
         }
     }, {
-        key: "argCheck",
+        key: 'argCheck',
         value: function argCheck(options) {
             if (options.draw == 'heatmap') {
                 if (options.strokeStyle) {
@@ -5064,7 +5269,7 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "drawContext",
+        key: 'drawContext',
         value: function drawContext(context, dataSet, options, nwPixel) {
             var self = this;
             switch (self.options.draw) {
@@ -5096,7 +5301,7 @@ var BaseLayer = function () {
                     drawClip.draw(context, dataSet, self.options);
                     break;
                 default:
-                    if (self.options.context == "webgl") {
+                    if (self.options.context == 'webgl') {
                         webglDrawSimple.draw(self.canvasLayer.canvas.getContext('webgl'), dataSet, self.options);
                     } else {
                         drawSimple.draw(context, dataSet, self.options);
@@ -5108,11 +5313,11 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "isPointInPath",
+        key: 'isPointInPath',
         value: function isPointInPath(context, pixel) {
             var context = this.canvasLayer.canvas.getContext(this.context);
             var data;
-            if (this.options.draw === 'cluster') {
+            if (this.options.draw === 'cluster' && (!this.options.maxClusterZoom || this.options.maxClusterZoom >= this.getZoom())) {
                 data = this.clusterDataSet.get();
             } else {
                 data = this.dataSet.get();
@@ -5137,15 +5342,33 @@ var BaseLayer = function () {
                         return data[i];
                     }
                 } else {
-
                     if (context.isPointInPath(x, y)) {
                         return data[i];
                     }
                 }
             }
         }
+        // 递归获取聚合点下的所有原始点数据
+
     }, {
-        key: "clickEvent",
+        key: 'getClusterPoints',
+        value: function getClusterPoints(cluster) {
+            var _this = this;
+
+            if (cluster.type !== 'Feature') {
+                return [];
+            }
+            var children = this.supercluster.getChildren(cluster.id);
+            return children.map(function (item) {
+                if (item.type === 'Feature') {
+                    return _this.getClusterPoints(item);
+                } else {
+                    return item;
+                }
+            }).flat();
+        }
+    }, {
+        key: 'clickEvent',
         value: function clickEvent(pixel, e) {
             if (!this.options.methods) {
                 return;
@@ -5153,32 +5376,44 @@ var BaseLayer = function () {
             var dataItem = this.isPointInPath(this.getContext(), pixel);
 
             if (dataItem) {
+                if (this.options.draw === 'cluster') {
+                    var children = this.getClusterPoints(dataItem);
+                    dataItem.children = children;
+                }
                 this.options.methods.click(dataItem, e);
             } else {
                 this.options.methods.click(null, e);
             }
         }
     }, {
-        key: "mousemoveEvent",
+        key: 'mousemoveEvent',
         value: function mousemoveEvent(pixel, e) {
             if (!this.options.methods) {
                 return;
             }
             var dataItem = this.isPointInPath(this.getContext(), pixel);
             if (dataItem) {
+                if (this.options.draw === 'cluster') {
+                    var children = this.getClusterPoints(dataItem);
+                    dataItem.children = children;
+                }
                 this.options.methods.mousemove(dataItem, e);
             } else {
                 this.options.methods.mousemove(null, e);
             }
         }
     }, {
-        key: "tapEvent",
+        key: 'tapEvent',
         value: function tapEvent(pixel, e) {
             if (!this.options.methods) {
                 return;
             }
             var dataItem = this.isPointInPath(this.getContext(), pixel);
             if (dataItem) {
+                if (this.options.draw === 'cluster') {
+                    var children = this.getClusterPoints(dataItem);
+                    dataItem.children = children;
+                }
                 this.options.methods.tap(dataItem, e);
             } else {
                 this.options.methods.tap(null, e);
@@ -5190,7 +5425,7 @@ var BaseLayer = function () {
          */
 
     }, {
-        key: "update",
+        key: 'update',
         value: function update(obj, isDraw) {
             var self = this;
             var _options = obj.options;
@@ -5204,7 +5439,7 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "setOptions",
+        key: 'setOptions',
         value: function setOptions(options) {
             var self = this;
             self.dataSet.reset();
@@ -5214,7 +5449,7 @@ var BaseLayer = function () {
             self.draw();
         }
     }, {
-        key: "set",
+        key: 'set',
         value: function set$$1(obj) {
             var self = this;
             var ctx = this.getContext();
@@ -5226,19 +5461,18 @@ var BaseLayer = function () {
             self.draw();
         }
     }, {
-        key: "destroy",
+        key: 'destroy',
         value: function destroy() {
             this.unbindEvent();
             this.hide();
         }
     }, {
-        key: "initAnimator",
+        key: 'initAnimator',
         value: function initAnimator() {
             var self = this;
             var animationOptions = self.options.animation;
 
             if (self.options.draw == 'time' || self.isEnabledTime()) {
-
                 if (!animationOptions.stepsRange) {
                     animationOptions.stepsRange = {
                         start: this.dataSet.getMin('time') || 0,
@@ -5262,10 +5496,10 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "addAnimatorEvent",
+        key: 'addAnimatorEvent',
         value: function addAnimatorEvent() {}
     }, {
-        key: "animatorMovestartEvent",
+        key: 'animatorMovestartEvent',
         value: function animatorMovestartEvent() {
             var animationOptions = this.options.animation;
             if (this.isEnabledTime() && this.animator) {
@@ -5274,7 +5508,7 @@ var BaseLayer = function () {
             }
         }
     }, {
-        key: "animatorMoveendEvent",
+        key: 'animatorMoveendEvent',
         value: function animatorMoveendEvent() {
             if (this.isEnabledTime() && this.animator) {
                 this.animator.start();
@@ -5600,7 +5834,6 @@ var Layer = function (_BaseLayer) {
         var _this = possibleConstructorReturn(this, (Layer.__proto__ || Object.getPrototypeOf(Layer)).call(this, map, dataSet, options));
 
         var self = _this;
-        var data = null;
         options = options || {};
 
         _this.clickEvent = _this.clickEvent.bind(_this);
@@ -5626,32 +5859,35 @@ var Layer = function (_BaseLayer) {
 
         dataSet.on('change', function () {
             self.transferToMercator();
+            // 数据更新后重新生成聚合数据
+            if (options.draw === 'cluster') {
+                self.refreshCluster();
+            }
             canvasLayer.draw();
         });
-
         return _this;
     }
 
     createClass(Layer, [{
-        key: "clickEvent",
+        key: 'clickEvent',
         value: function clickEvent(e) {
             var pixel = e.pixel;
-            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), "clickEvent", this).call(this, pixel, e);
+            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), 'clickEvent', this).call(this, pixel, e);
         }
     }, {
-        key: "mousemoveEvent",
+        key: 'mousemoveEvent',
         value: function mousemoveEvent(e) {
             var pixel = e.pixel;
-            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), "mousemoveEvent", this).call(this, pixel, e);
+            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), 'mousemoveEvent', this).call(this, pixel, e);
         }
     }, {
-        key: "tapEvent",
+        key: 'tapEvent',
         value: function tapEvent(e) {
             var pixel = e.pixel;
-            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), "tapEvent", this).call(this, pixel, e);
+            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), 'tapEvent', this).call(this, pixel, e);
         }
     }, {
-        key: "bindEvent",
+        key: 'bindEvent',
         value: function bindEvent(e) {
             this.unbindEvent();
             var map = this.map;
@@ -5660,14 +5896,14 @@ var Layer = function (_BaseLayer) {
 
             if (this.options.methods) {
                 if (this.options.methods.click) {
-                    map.setDefaultCursor("default");
+                    map.setDefaultCursor('default');
                     map.addEventListener('click', this.clickEvent);
                 }
                 if (this.options.methods.mousemove) {
                     map.addEventListener('mousemove', this.mousemoveEvent);
                 }
 
-                if ("ontouchend" in window.document && this.options.methods.tap) {
+                if ('ontouchend' in window.document && this.options.methods.tap) {
                     map.addEventListener('touchstart', function (e) {
                         timer = new Date();
                     });
@@ -5680,7 +5916,7 @@ var Layer = function (_BaseLayer) {
             }
         }
     }, {
-        key: "unbindEvent",
+        key: 'unbindEvent',
         value: function unbindEvent(e) {
             var map = this.map;
 
@@ -5697,7 +5933,7 @@ var Layer = function (_BaseLayer) {
         // 经纬度左边转换为墨卡托坐标
 
     }, {
-        key: "transferToMercator",
+        key: 'transferToMercator',
         value: function transferToMercator(dataSet) {
             if (!dataSet) {
                 dataSet = this.dataSet;
@@ -5738,23 +5974,19 @@ var Layer = function (_BaseLayer) {
             }
         }
     }, {
-        key: "getContext",
+        key: 'getContext',
         value: function getContext() {
             return this.canvasLayer.canvas.getContext(this.context);
         }
     }, {
-        key: "_canvasUpdate",
+        key: '_canvasUpdate',
         value: function _canvasUpdate(time) {
             if (!this.canvasLayer) {
                 return;
             }
-
             var self = this;
-
-            var animationOptions = self.options.animation;
-
+            var animationOptions = this.options.animation;
             var map = this.canvasLayer._map;
-
             var projection;
             var mcCenter;
             if (map.getMapType().getProjection) {
@@ -5785,12 +6017,11 @@ var Layer = function (_BaseLayer) {
             } else {
                 zoomUnit = Math.pow(2, 18 - map.getZoom());
             }
-
-            var nwMc = new BMap$3.Pixel(mcCenter.x - map.getSize().width / 2 * zoomUnit, mcCenter.y + map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
+            //左上角墨卡托坐标
+            var nwMc = new BMap$3.Pixel(mcCenter.x - map.getSize().width / 2 * zoomUnit, mcCenter.y + map.getSize().height / 2 * zoomUnit);
 
             var context = this.getContext();
-
-            if (self.isEnabledTime()) {
+            if (this.isEnabledTime()) {
                 if (time === undefined) {
                     clear(context);
                     return;
@@ -5807,14 +6038,14 @@ var Layer = function (_BaseLayer) {
             }
 
             if (this.context == '2d') {
-                for (var key in self.options) {
-                    context[key] = self.options[key];
+                for (var key in this.options) {
+                    context[key] = this.options[key];
                 }
             } else {
                 context.clear(context.COLOR_BUFFER_BIT);
             }
 
-            if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
+            if (this.options.minZoom && map.getZoom() < this.options.minZoom || this.options.maxZoom && map.getZoom() > this.options.maxZoom) {
                 return;
             }
 
@@ -5824,7 +6055,7 @@ var Layer = function (_BaseLayer) {
             }
 
             var dataGetOptions = {
-                fromColumn: self.options.coordType == 'bd09mc' ? 'coordinates' : 'coordinates_mercator',
+                fromColumn: this.options.coordType == 'bd09mc' ? 'coordinates' : 'coordinates_mercator',
                 transferCoordinate: function transferCoordinate(coordinate) {
                     var x = (coordinate[0] - nwMc.x) / zoomUnit * scale;
                     var y = (nwMc.y - coordinate[1]) / zoomUnit * scale;
@@ -5845,15 +6076,42 @@ var Layer = function (_BaseLayer) {
 
             // get data from data set
             var data;
-
-            if (self.options.draw === 'cluster') {
+            var zoom = this.getZoom();
+            if (this.options.draw === 'cluster' && (!this.options.maxClusterZoom || this.options.maxClusterZoom >= zoom)) {
                 var bounds = this.map.getBounds();
                 var ne = bounds.getNorthEast();
                 var sw = bounds.getSouthWest();
-                var clusterData = this.supercluster.getClusters([sw.lng, sw.lat, ne.lng, ne.lat], this.getZoom());
+                var clusterData = this.supercluster.getClusters([sw.lng, sw.lat, ne.lng, ne.lat], zoom);
+                this.pointCountMax = this.supercluster.trees[zoom].max;
+                this.pointCountMin = this.supercluster.trees[zoom].min;
+                var intensity = {};
+                var color = null;
+                var size = null;
+                if (this.pointCountMax === this.pointCountMin) {
+                    color = this.options.fillStyle;
+                    size = this.options.minSize || 8;
+                } else {
+                    intensity = new Intensity({
+                        min: this.pointCountMin,
+                        max: this.pointCountMax,
+                        minSize: this.options.minSize || 8,
+                        maxSize: this.options.maxSize || 30,
+                        gradient: this.options.gradient
+                    });
+                }
+                for (var i = 0; i < clusterData.length; i++) {
+                    var item = clusterData[i];
+                    if (item.properties && item.properties.cluster_id) {
+                        clusterData[i].size = size || intensity.getSize(item.properties.point_count);
+                        clusterData[i].fillStyle = color || intensity.getColor(item.properties.point_count);
+                    } else {
+                        clusterData[i].size = self.options.size;
+                    }
+                }
+
                 this.clusterDataSet.set(clusterData);
                 this.transferToMercator(this.clusterDataSet);
-                data = this.clusterDataSet.get(dataGetOptions);
+                data = self.clusterDataSet.get(dataGetOptions);
             } else {
                 data = self.dataSet.get(dataGetOptions);
             }
@@ -5886,9 +6144,8 @@ var Layer = function (_BaseLayer) {
             self.options.updateCallback && self.options.updateCallback(time);
         }
     }, {
-        key: "init",
+        key: 'init',
         value: function init(options) {
-
             var self = this;
             self.options = options;
             this.initDataRange(options);
@@ -5910,33 +6167,35 @@ var Layer = function (_BaseLayer) {
             this.bindEvent();
         }
     }, {
-        key: "getZoom",
+        key: 'getZoom',
         value: function getZoom() {
             return this.map.getZoom();
         }
     }, {
-        key: "addAnimatorEvent",
+        key: 'addAnimatorEvent',
         value: function addAnimatorEvent() {
             this.map.addEventListener('movestart', this.animatorMovestartEvent.bind(this));
             this.map.addEventListener('moveend', this.animatorMoveendEvent.bind(this));
         }
     }, {
-        key: "show",
+        key: 'show',
         value: function show() {
             this.map.addOverlay(this.canvasLayer);
+            this.bindEvent();
         }
     }, {
-        key: "hide",
+        key: 'hide',
         value: function hide() {
+            this.unbindEvent();
             this.map.removeOverlay(this.canvasLayer);
         }
     }, {
-        key: "draw",
+        key: 'draw',
         value: function draw() {
             this.canvasLayer && this.canvasLayer.draw();
         }
     }, {
-        key: "clearData",
+        key: 'clearData',
         value: function clearData() {
             this.dataSet && this.dataSet.clear();
             this.update({
@@ -5944,7 +6203,7 @@ var Layer = function (_BaseLayer) {
             });
         }
     }, {
-        key: "destroy",
+        key: 'destroy',
         value: function destroy() {
             this.unbindEvent();
             this.clearData();
@@ -6874,10 +7133,6 @@ if (typeof maptalks !== 'undefined') {
                 }
 
                 var scale = 1;
-                if (self.context === '2d' && self.options.draw !== 'heatmap') {
-                    //in heatmap.js, devicePixelRatio is being mulitplied independently
-                    scale = self.canvasLayer.devicePixelRatio;
-                }
 
                 //reuse to save coordinate instance creation
                 var coord = new maptalks.Coordinate(0, 0);
@@ -6941,7 +7196,7 @@ if (typeof maptalks !== 'undefined') {
                 }
                 var map = this.getMap();
                 var size = map.getSize();
-                var r = maptalks.Browser.retina ? 2 : 1,
+                var r = map.getDevicePixelRatio ? map.getDevicePixelRatio() : maptalks.Browser.retina ? 2 : 1,
                     w = r * size.width,
                     h = r * size.height;
                 this.canvas = maptalks.Canvas.createCanvas(w, h, map.CanvasClass);
@@ -6950,6 +7205,10 @@ if (typeof maptalks !== 'undefined') {
                     this.context = this.canvas.getContext('2d');
                     if (this.layer.options['globalCompositeOperation']) {
                         this.context.globalCompositeOperation = this.layer.options['globalCompositeOperation'];
+                    }
+                    if (this.layer.baseLayer.options.draw !== 'heatmap' && r !== 1) {
+                        //in heatmap.js, devicePixelRatio is being mulitplied independently
+                        this.context.scale(r, r);
                     }
                 } else {
                     var attributes = {
@@ -6974,7 +7233,8 @@ if (typeof maptalks !== 'undefined') {
             value: function _bindToMapv() {
                 //some bindings needed by mapv baselayer
                 var base = this.layer.baseLayer;
-                this.devicePixelRatio = maptalks.Browser.retina ? 2 : 1;
+                var map = this.getMap();
+                this.devicePixelRatio = map.getDevicePixelRatio ? map.getDevicePixelRatio() : maptalks.Browser.retina ? 2 : 1;
                 base.canvasLayer = this;
                 base._canvasUpdate = this._canvasUpdate.bind(this);
                 base.getContext = function () {
@@ -7418,6 +7678,7 @@ var Layer$8 = function (_BaseLayer) {
       var context = canvas.getContext(this.context);
       var animationOptions = this.options.animation;
       var _projection = this.options.hasOwnProperty('projection') ? this.options.projection : 'EPSG:4326';
+      var mapViewProjection = this.$Map.getView().getProjection().getCode();
       if (this.isEnabledTime()) {
         if (time === undefined) {
           clear(context);
@@ -7441,10 +7702,13 @@ var Layer$8 = function (_BaseLayer) {
       } else {
         context.clear(context.COLOR_BUFFER_BIT);
       }
-      var dataGetOptions = {
-        transferCoordinate: function transferCoordinate(coordinate) {
-          return map.getPixelFromCoordinate(ol.proj.transform(coordinate, _projection, 'EPSG:4326'));
-        }
+      var dataGetOptions = {};
+      dataGetOptions.transferCoordinate = _projection === mapViewProjection ? function (coordinate) {
+        // 当数据与map的投影一致时不再进行投影转换
+        return map.getPixelFromCoordinate(coordinate);
+      } : function (coordinate) {
+        // 数据与Map投影不一致时 将数据投影转换为 Map的投影
+        return map.getPixelFromCoordinate(ol.proj.transform(coordinate, _projection, mapViewProjection));
       };
 
       if (time !== undefined) {
@@ -7499,7 +7763,7 @@ var Layer$8 = function (_BaseLayer) {
           extent: extent,
           source: new ol.source.ImageCanvas({
             canvasFunction: this.canvasFunction.bind(this),
-            projection: this.options.hasOwnProperty('projection') ? this.options.projection : 'EPSG:4326',
+            projection: this.$Map.getView().getProjection().getCode(), // 图层投影与Map保持一致
             ratio: this.options.hasOwnProperty('ratio') ? this.options.ratio : 1
           })
         });
@@ -7686,6 +7950,26 @@ var Layer$8 = function (_BaseLayer) {
         element.style.cursor = this.previousCursor_;
         this.previousCursor_ = undefined;
       }
+    }
+
+    /**
+     * 显示图层
+     */
+
+  }, {
+    key: "show",
+    value: function show() {
+      this.$Map.addLayer(this.layer_);
+    }
+
+    /**
+     * 隐藏图层
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.$Map.removeLayer(this.layer_);
     }
   }]);
   return Layer;

@@ -54,8 +54,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css');
-            inputScript('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js');
+            inputCSS('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.7.0/css/ol.css');
+            inputScript('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.7.0/build/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.css');
@@ -66,19 +66,19 @@
             inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.56/build/mapv.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.min.js');
+            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
             inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/proj4js/2.6.2/proj4.js');
+            inputScript('https://cdn.jsdelivr.net/npm/proj4@2.7.5/dist/proj4.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.3/dist/ol3Echarts.min.js');
+            inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.4/dist/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
             inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js');
@@ -93,13 +93,11 @@
             inputScript('https://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-OL3.js');
         }
         if (inArray(includes, 'animatedclusterlayer')) {
-            inputScript(
-                'https://iclient.supermap.io/web/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js'
-            );
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js');
         }
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.6.0/src/ol-layerswitcher.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.6.0/dist/ol-layerswitcher.min.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/src/ol-layerswitcher.css');
+            inputScript('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/dist/ol-layerswitcher.min.js');
         }
         if (inArray(includes, 'jsonsql')) {
             inputScript('https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js');
@@ -108,10 +106,10 @@
             inputScript('https://iclient.supermap.io/web/libs/geostats/geostats.js');
         }
         if (inArray(includes, 'canvg')) {
-            inputScript('https://cdn.jsdelivr.net/npm/canvg@3.0.6/lib/umd.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/canvg/canvg.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.5.0/dist/tf.min.js');
+          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
         }
 
         // dist
