@@ -15,7 +15,6 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {string} [options.token] 用于登录的令牌。需要登陆才能获取数据的链接信息，否则返回的 config 信息为 null，获取不到后台的链接信息。
  * @extends {SuperMap.CommonServiceBase}
  */
 export default class ImageService extends CommonServiceBase {
