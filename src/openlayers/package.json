@@ -17,7 +17,7 @@
     "@turf/turf": "6.5.0",
     "echarts": "4.9.0",
     "mapv": "2.0.62",
-    "ol": "6.7.0",
+    "ol": "6.6.1",
     "@supermap/iclient-common": "10.2.0",
     "proj4": "2.7.5",
     "xlsx": "0.17.2",

@@ -127,7 +127,7 @@
     "lodash.topairs": "4.3.0",
     "mapbox-gl": "1.13.1",
     "mapv": "2.0.62",
-    "ol": "6.7.0",
+    "ol": "6.6.1",
     "pbf": "3.2.1",
     "proj4": "2.7.5",
     "promise-polyfill": "8.2.0",
