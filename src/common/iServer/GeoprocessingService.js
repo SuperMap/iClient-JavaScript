@@ -3,8 +3,8 @@ import { CommonServiceBase } from './CommonServiceBase';
 
 /**
  * @class SuperMap.GeoprocessingService
- * @category  iServer GeoprocessingService
- * @classdesc 地理处理服务接口的基类。
+ * @category  iServer ProcessingAutomationService
+ * @classdesc 处理自动化服务接口的基类。
  * @version 10.1.0
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。
@@ -23,25 +23,25 @@ export class GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTools
-     * @description 获取地理处理工具列表。
+     * @description 获取处理自动化工具列表。
      */
     getTools() {
         this._get(`${this.url}/list`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTool
-     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 处理自动化工具ID。
      */
     getTool(identifier) {
         this._get(`${this.url}/${identifier}`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.execute
-     * @description 同步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 同步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      */
     execute(identifier, parameter, environment) {
         parameter = parameter ? parameter : null;
@@ -51,10 +51,10 @@ export class GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.submitJob
-     * @description 异步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environments - 地理处理工具的环境参数。
+     * @description 异步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environments - 处理自动化工具的环境参数。
      */
     submitJob(identifier, parameter, environments) {
         parameter = parameter ? parameter : null;
@@ -73,9 +73,9 @@ export class GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.waitForJobCompletion
-     * @description 获取地理处理异步执行状态信息。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化异步执行状态信息。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {Callback} options.statusCallback - 任务状态的回调函数。
@@ -115,9 +115,9 @@ export class GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobInfo
-     * @description 获取地理处理任务的执行信息。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 获取处理自动化任务的执行信息。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      */
     getJobInfo(identifier, jobId) {
         this._get(`${this.url}/${identifier}/jobs/${jobId}`);
@@ -125,17 +125,17 @@ export class GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.cancelJob
-     * @description 取消地理处理任务的异步执行。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 取消处理自动化任务的异步执行。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      */
     cancelJob(identifier, jobId) {
         this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobs
-     * @description 获取地理处理服务任务列表。
-     * @param {string} identifier - 地理处理工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @description 获取处理自动化服务任务列表。
+     * @param {string} identifier - 处理自动化工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      */
     getJobs(identifier) {
         let url = `${this.url}/jobs`;
@@ -146,10 +146,10 @@ export class GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getResults
-     * @description 地理处理工具执行的结果等,支持结果过滤。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @description 处理自动化工具执行的结果等,支持结果过滤。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      */
     getResults(identifier, jobId, filter) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
