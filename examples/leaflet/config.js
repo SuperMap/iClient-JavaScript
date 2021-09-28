@@ -570,16 +570,16 @@ var exampleConfig = {
         name_en: "Online",
         localIgnore: true,
         content: {
-            "ol_map": {
-                name: "地图",
-                name_en: "Web map",
-                content: [{
-                    name: "黄龙溪徒步",
-                    name_en: "Huanglongxi walking",
-                    thumbnail: "l_onlineWebmap.png",
-                    fileName: "onlineWebmap"
-                }]
-            },
+            // "ol_map": {
+            //     name: "地图",
+            //     name_en: "Web map",
+            //     content: [{
+            //         name: "黄龙溪徒步",
+            //         name_en: "Huanglongxi walking",
+            //         thumbnail: "l_onlineWebmap.png",
+            //         fileName: "onlineWebmap"
+            //     }]
+            // },
             "ol_security": {
                 name: "安全",
                 name_en: "Security",

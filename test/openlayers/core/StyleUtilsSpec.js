@@ -311,12 +311,12 @@ describe('openlayers_StyleUtils', () => {
                 expect(imageStyle.getImage()).not.toBeNull();
                 var size = imageStyle.getSize();
                 expect(size).not.toBeNull();
-                expect(size[0]).toBe(9);
-                expect(size[1]).toBe(9);
+                expect(size[0]).toBe(7);
+                expect(size[1]).toBe(7);
                 var anchor = imageStyle.getAnchor();
                 expect(anchor).not.toBeNull();
-                expect(anchor[0]).toBe(4.5);
-                expect(anchor[1]).toBe(4.5);
+                expect(anchor[0]).toBe(3.5);
+                expect(anchor[1]).toBe(3.5);
                 var stroke = imageStyle.getStroke();
                 expect(stroke).not.toBeNull();
                 expect(stroke.getColor()).toBe("#c33");
