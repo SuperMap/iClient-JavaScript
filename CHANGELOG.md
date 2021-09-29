@@ -1,3 +1,140 @@
+# 10.2.0 #
+
+## 新特性
+
+### 新增影像服务API，支持对 iServer 影像服务发布的影像(栅格)数据进行浏览和检索，供切片、图例、统计信息等API
+![1020-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1020-1.png)
+
+### 新增指南针、绘制、飞行定位、幻灯片、坐标转换、图层颜色、属性表组件等多款实用组件
+![1020-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1020-2.png)
+
+### 新增智慧城市、智慧园区等行业应用模板
+![1020-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1020-3.png)
+
+### 优化组件主题，新增浅色主题，一句代码即可快速切换
+![1020-4](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1020-4.png)
+
+### 优化组件引入，支持按需引入，减小应用构建体积
+![1020-5](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1020-5.png)
+
+## API changes
+
+### for Leaflet
+
+- 对接 SuperMap iServer ImageService 影像服务
+
+  - 新增 `L.supermap.ImageService` 影像服务类
+
+  - 新增 `L.supermap.ImageCollectionService` 影像集合服务类
+
+  - 新增 `L.supermap.ImageTileLayer` 影像服务图层
+
+  - 新增 `SuperMap.ImageSearchParameter` 影像服务查询参数类
+
+  - 新增 `SuperMap.ImageRenderingRule` 影像服务渲染参数类
+
+- 地理处理服务类描述更名为处理自动化服务
+
+### for OpenLayers
+
+- 对接 SuperMap iServer ImageService 影像服务
+
+  - 新增 `ol.supermap.ImageService` 影像服务类
+
+  - 新增 `ol.supermap.ImageCollectionService` 影像集合服务类
+
+  - 新增 `ol.source.ImageTileSuperMapRest` 影像服务图层源
+
+  - 新增 `SuperMap.ImageSearchParameter` 影像服务查询参数类
+
+- 地理处理服务类描述更名为处理自动化服务
+
+### for MapboxGL
+
+- 对接 SuperMap iServer ImageService 影像服务
+
+  - 新增 `mapboxgl.supermap.ImageService` 影像服务类
+
+  - 新增 `mapboxgl.supermap.ImageCollectionService` 影像集合服务类
+
+  - 新增 `SuperMap.ImageSearchParameter` 影像服务查询参数类
+
+  - 新增 `SuperMap.ImageRenderingRule` 影像服务渲染参数类
+
+- 地理处理服务类描述更名为处理自动化服务
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 支持按需引入
+
+  - 优化浅色主题
+
+  - 图层列表(sm-layer-list)组件支持显示属性表
+
+  - 幻灯片(sm-slideshow)组件新增autoresize参数，支持自适应大小
+
+  - 属性表(sm-attributes)组件新增飞行配置项，支持设置要素定位时的飞行效果
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.CRS.NonEarthCRS` 平面无投影设置非2倍关系的固定比例尺时不起作用的问题
+
+- 修复距离测量 `SuperMap.MeasureParameters` 的 `distanceMode` 参数不起作用的问题
+
+### for OpenLayers
+
+- 修复显示 SuperMap iServer 数据服务和地图服务查询结果时可能的岛洞丢失问题
+
+- 修复距离测量 `SuperMap.MeasureParameters` 的 `distanceMode` 参数不起作用的问题
+
+- 修复 `ol.source.VectorTileSuperMapRest` 的 `tileLoadFunction` 传入不起作用的问题
+
+### for MapboxGL
+
+- 修复 `SuperMap.GetFeaturesByBufferParameters` 的 `geometry` 不支持 `SuperMap.Point` 类型参数的问题
+
+- 修复 `mapboxgl.supermap.ThemeLayer` 关闭事件报错、失败的问题
+
+- 修复距离测量 `SuperMap.MeasureParameters` 的 `distanceMode` 参数不起作用的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复文本列表(sm-text-list)只有一条数据时，高度计算错误的问题
+
+  - 修复地图(sm-web-map)组件显示分段专题图图标大小不对的问题
+
+  - 修复地图(sm-web-map)组件打开shapefile图层报错的问题
+
+  - 修复图层颜色(sm-layer-color)组件本身没有颜色的图层重置失败的问题
+
+  - 修复幻灯片(sm-slideshow)组件数据改变不刷新的问题
+
+  - 修复数据查询(sm-query)组件，在地图是WebMercato投影时，查询当前地图范围失败的问题
+
+  - 修复点选查询(sm-identify)组件，显示出查询结果弹窗后放大地图，弹窗偏移的问题
+
+  - 修复指标(sm-indicator)组件设置千分符位数字时导致卡死的问题
+
+  - 优化轨迹图层(sm-track-layer)组件动画显示效果
+
+  - 修复属性表(sm-attributes)组件隐藏列后操作表头，隐藏的列失效的问题
+
+  - 修复鹰眼(sm-mini-map)组件可能出现的卡顿现象
+
+## Examples
+
+### Component
+
+- 新增智慧园区模板
+
+- 新增智慧城市模板
+
 # 10.1.3 #
 
 ## API changes
