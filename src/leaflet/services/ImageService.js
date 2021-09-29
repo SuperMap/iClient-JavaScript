@@ -74,7 +74,7 @@ export var ImageService = ServiceBase.extend({
     },
     /**
      * @function L.supermap.ImageService.prototype.search
-     * @description 返回与过滤条件匹配的 STAC Items。此方式将作为标准的、全要素查询 API。 如果实现了`GET /search`，那么就必须实现此方法。 如果此端点在服务端实现，需要将其链接添加到 `GET /` 响应中的链接对象数组中， 此端点的链接对象的 `rel`属性值为`search`；链接对象中`method`属性值为`POST` 。
+     * @description 查询与过滤条件匹配的影像数据。
      * @param {SuperMap.ImageSearchParameter} [itemSearch] 查询参数
      * @param {RequestCallback} callback - 请求结果的回调函数。
      */
