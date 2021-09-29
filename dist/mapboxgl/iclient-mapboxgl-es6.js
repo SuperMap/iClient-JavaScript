@@ -3,7 +3,7 @@
  *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.2
+ *          version: v10.2.0
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -1274,7 +1274,7 @@ module.exports = toPairs;
 
 /***/ }),
 
-/***/ 558:
+/***/ 107:
 /***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -1711,7 +1711,7 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BinaryClassification, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, ComponentsUtil, ComputeWeightMatrixParameters, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, FeatureService, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FileConfig, FileModel, FileReaderUtil, FileTypes, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoRelationAnalystParameters, GeometryBufferAnalystParameters, GeometryOverlayAnalystParameters, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, Image, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LandcoverClassification, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, MapExtend, MapService, MappingParameters, MapvDataSet, MapvLayer, MapvRenderer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, ObjectDetection, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RangeTheme3DLayer, RankSymbol, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, SideType, SingleObjectQueryJobsParameter, SmoothMethod, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TerrainCurvatureCalculationParameters, TextAlignment, Theme, Theme3DLayer, ThemeDotDensity, ThemeFeature, ThemeFlow, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, ThreeLayerRenderer, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, UniqueTheme3DLayer, Unit, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, WebMachineLearning, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebPrintingService, getDefaultVectorTileStyle, setBackground, setPaintProperty
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, ComponentsUtil, ComputeWeightMatrixParameters, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, FeatureService, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileConfig, FileModel, FileReaderUtil, FileTypes, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoRelationAnalystParameters, GeometryBufferAnalystParameters, GeometryOverlayAnalystParameters, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, Image, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, MapExtend, MapService, MappingParameters, MapvDataSet, MapvLayer, MapvRenderer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RangeTheme3DLayer, RankSymbol, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, SideType, SingleObjectQueryJobsParameter, SmoothMethod, Sortby, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TerrainCurvatureCalculationParameters, TextAlignment, Theme, Theme3DLayer, ThemeDotDensity, ThemeFeature, ThemeFlow, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, ThreeLayerRenderer, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, UniqueTheme3DLayer, Unit, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebPrintingService, getDefaultVectorTileStyle, setBackground, setPaintProperty
 
 ;// CONCATENATED MODULE: ./src/common/SuperMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
@@ -5014,6 +5014,52 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
         textHeight: textHeight
     };
 };
+/**
+ * @description 获取转换后的path路径。
+ * @param {string} path - 待转换的path, 包含`{param}`。
+ * @param {Object} pathParams - path中待替换的参数。
+ * @returns {string} 返回转换后的path路径
+ */
+SuperMap.Util.convertPath = function (path, pathParams) {
+  if (!pathParams) {
+      return path;
+  }
+  return path.replace(/\{([\w-\.]+)\}/g, (fullMatch, key) => {
+      var value;
+      if (pathParams.hasOwnProperty(key)) {
+          value = paramToString(pathParams[key]);
+      } else {
+          value = fullMatch;
+      }
+      return encodeURIComponent(value);
+  });
+};
+
+function paramToString(param) {
+  if (param == undefined || param == null) {
+      return '';
+  }
+  if (param instanceof Date) {
+      return param.toJSON();
+  }
+  if (canBeJsonified(param)) {
+      return JSON.stringify(param);
+  }
+
+  return param.toString();
+}
+
+function canBeJsonified(str) {
+  if (typeof str !== 'string' && typeof str !== 'object') {
+      return false;
+  }
+  try {
+      const type = str.toString();
+      return type === '[object Object]' || type === '[object Array]';
+  } catch (err) {
+      return false;
+  }
+}
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/LonLat.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
@@ -10427,10 +10473,10 @@ class ServerGeometry {
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
-        //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
+            //根据面积排序
+            ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
             // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
             // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
@@ -10460,17 +10506,14 @@ class ServerGeometry {
                 }
             }
         } else {
-            //根据面积排序
-            //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
             polygonArray = new Array();
             for (let i = 0; i < polygonArrayTemp.length; i++) {
                 if (geoTopo[i] && geoTopo[i] == -1) {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[
-                            polygonArray.length - 1
-                        ].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components =
+                            polygonArray[polygonArray.length - 1].components.concat(CCWArray);
                         CCWArray = [];
                     }
                     polygonArray.push(polygonArrayTemp[i]);
@@ -10478,9 +10521,8 @@ class ServerGeometry {
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
-                            CCWArray
-                        );
+                        polygonArray[polyLength - 1].components =
+                            polygonArray[polyLength - 1].components.concat(CCWArray);
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
                             polygonArray.push(new Polygon(CCWArray));
@@ -10542,10 +10584,10 @@ class ServerGeometry {
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
-        //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
+            //根据面积排序
+            ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
             // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
             // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
@@ -10575,16 +10617,14 @@ class ServerGeometry {
                 }
             }
         } else {
-            //根据面积排序
             polygonArray = new Array();
             for (let i = 0; i < polygonArrayTemp.length; i++) {
                 if (geoTopo[i] && geoTopo[i] == -1) {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[
-                            polygonArray.length - 1
-                        ].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components =
+                            polygonArray[polygonArray.length - 1].components.concat(CCWArray);
                         CCWArray = [];
                     }
                     polygonArray.push(polygonArrayTemp[i]);
@@ -10592,9 +10632,8 @@ class ServerGeometry {
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
-                            CCWArray
-                        );
+                        polygonArray[polyLength - 1].components =
+                            polygonArray[polyLength - 1].components.concat(CCWArray);
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
                             polygonArray.push(new Polygon(CCWArray));
@@ -12519,8 +12558,8 @@ SuperMap.TimeFlowControl = TimeFlowControl;
 
 
 
-// EXTERNAL MODULE: ./src/common/node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(558);
+// EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
+var polyfill = __webpack_require__(107);
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
 var fetch = __webpack_require__(693);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
@@ -14556,7 +14595,6 @@ class CommonServiceBase {
 
         this.proxy = null;
 
-
         this.index = null;
 
         this.length = null;
@@ -14780,11 +14818,19 @@ class CommonServiceBase {
     }
 
     _commit(options) {
-        if (options.method === 'POST' || options.method === 'PUT') {
+        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
                 options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
-            options.params = options.data;
+            if (typeof options.data === 'object') {
+                try {
+                    options.params = Util.toJSON(options.data);
+                } catch (e) {
+                    console.log('不是json对象');
+                }
+            } else {
+                options.params = options.data;
+            }
         }
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
@@ -14793,7 +14839,7 @@ class CommonServiceBase {
             timeout: options.async ? 0 : null,
             proxy: options.proxy
         })
-            .then(function(response) {
+            .then(function (response) {
                 if (response.text) {
                     return response.text();
                 }
@@ -14802,34 +14848,41 @@ class CommonServiceBase {
                 }
                 return response;
             })
-            .then(function(text) {
-                var result = text;
+            .then(function (text) {
+                let requestResult = text;
                 if (typeof text === 'string') {
-                    result = new JSONFormat().read(text);
+                    requestResult = new JSONFormat().read(text);
                 }
-                if (!result || result.error || (result.code >= 300 && result.code !== 304)) {
-                    if (result && result.error) {
-                        result = {
-                            error: result.error
+                if (
+                    !requestResult ||
+                    requestResult.error ||
+                    (requestResult.code >= 300 && requestResult.code !== 304)
+                ) {
+                    if (requestResult && requestResult.error) {
+                        requestResult = {
+                            error: requestResult.error
                         };
                     } else {
-                        result = {
-                            error: result
+                        requestResult = {
+                            error: requestResult
                         };
                     }
                 }
-                if (result.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(result);
-                } else {
-                    result.succeed = result.succeed == undefined ? true : result.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(result);
-                }
+                return requestResult;
             })
-            .catch(function(e) {
+            .catch(function (e) {
                 var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(e);
+            })
+            .then((requestResult) => {
+                if (requestResult.error) {
+                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(requestResult);
+                } else {
+                    requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
+                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(requestResult);
+                }
             });
     }
 }
@@ -23025,8 +23078,8 @@ SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;
 
 /**
  * @class SuperMap.GeoprocessingService
- * @category  iServer GeoprocessingService
- * @classdesc 地理处理服务接口的基类。
+ * @category  iServer ProcessingAutomationService
+ * @classdesc 处理自动化服务接口的基类。
  * @version 10.1.0
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。
@@ -23045,25 +23098,25 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTools
-     * @description 获取地理处理工具列表。
+     * @description 获取处理自动化工具列表。
      */
     getTools() {
         this._get(`${this.url}/list`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTool
-     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 处理自动化工具ID。
      */
     getTool(identifier) {
         this._get(`${this.url}/${identifier}`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.execute
-     * @description 同步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 同步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      */
     execute(identifier, parameter, environment) {
         parameter = parameter ? parameter : null;
@@ -23073,10 +23126,10 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.submitJob
-     * @description 异步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environments - 地理处理工具的环境参数。
+     * @description 异步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environments - 处理自动化工具的环境参数。
      */
     submitJob(identifier, parameter, environments) {
         parameter = parameter ? parameter : null;
@@ -23095,9 +23148,9 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.waitForJobCompletion
-     * @description 获取地理处理异步执行状态信息。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化异步执行状态信息。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {Callback} options.statusCallback - 任务状态的回调函数。
@@ -23137,9 +23190,9 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobInfo
-     * @description 获取地理处理任务的执行信息。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 获取处理自动化任务的执行信息。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      */
     getJobInfo(identifier, jobId) {
         this._get(`${this.url}/${identifier}/jobs/${jobId}`);
@@ -23147,17 +23200,17 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.cancelJob
-     * @description 取消地理处理任务的异步执行。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 取消处理自动化任务的异步执行。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      */
     cancelJob(identifier, jobId) {
         this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobs
-     * @description 获取地理处理服务任务列表。
-     * @param {string} identifier - 地理处理工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @description 获取处理自动化服务任务列表。
+     * @param {string} identifier - 处理自动化工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      */
     getJobs(identifier) {
         let url = `${this.url}/jobs`;
@@ -23168,10 +23221,10 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getResults
-     * @description 地理处理工具执行的结果等,支持结果过滤。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @description 处理自动化工具执行的结果等,支持结果过滤。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      */
     getResults(identifier, jobId, filter) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
@@ -26101,9 +26154,9 @@ SuperMap.ThemeLabelBackground = ThemeLabelBackground;
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
  * @param {Object} options - 参数。
- * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。
+ * @param {Array.<SuperMap.ThemeLabelItem>} options.items - 分段标签专题图的子项数组。
  * @param {string} options.labelExpression - 标注字段表达式。
- * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
+ * @param {Array.<SuperMap.LabelImageCell|SuperMap.LabelSymbolCell|SuperMap.LabelThemeCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {SuperMap.ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
  * @param {SuperMap.ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
  * @param {SuperMap.LabelOverLengthMode} [options.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
@@ -26136,7 +26189,7 @@ class ThemeLabel extends Theme {
         this.background = new ThemeLabelBackground();
 
         /**
-         * @member {Array.<SuperMap.ThemeUniqueItem>} [SuperMap.ThemeLabel.prototype.items]
+         * @member {Array.<SuperMap.ThemeLabelItem>} [SuperMap.ThemeLabel.prototype.items]
          * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression
          *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
          */
@@ -26161,7 +26214,7 @@ class ThemeLabel extends Theme {
         this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
         /**
-         * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
+         * @member {Array.<SuperMap.LabelImageCell|SuperMap.LabelSymbolCell|SuperMap.LabelThemeCell>} SuperMap.ThemeLabel.prototype.matrixCells
          * @description 矩阵标签元素数组，用于制作矩阵标签专题图。
          *              数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
          */
@@ -30821,10 +30874,11 @@ class MeasureService_MeasureService extends CommonServiceBase {
             paramsTemp = {
                 "point2Ds": Util.toJSON(point2ds),
                 "unit": params.unit,
-                "prjCoordSys": prjCoordSysTemp
+                "prjCoordSys": prjCoordSysTemp,
+                "distanceMode": params.distanceMode || 'Geodesic'
             };
         } else {
-            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit};
+            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit, "distanceMode": params.distanceMode || 'Geodesic'};
         }
 
         me.request({
@@ -38277,10 +38331,1163 @@ class WebPrintingService extends CommonServiceBase {
 
 SuperMap.WebPrintingService = WebPrintingService;
 
+;// CONCATENATED MODULE: ./src/common/iServer/ImageCollectionService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.ImageCollectionService
+ * @classdesc 影像集合服务类
+ * @version 10.2.0
+ * @category iServer Image
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {string} options.collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {SuperMap.CommonServiceBase}
+ */
+class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
+    constructor(url, options) {
+        super(url, options);
+        this.options = options || {};
+        if (options) {
+            Util.extend(this, options);
+        }
+        this.CLASS_NAME = 'SuperMap.ImageCollectionService';
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getLegend
+     * @description 返回当前影像集合的图例信息。默认为服务发布所配置的风格，支持根据风格参数生成新的图例。
+     * @param {Object} queryParams query参数
+     * @param {SuperMap.ImageRenderingRule} [queryParams.renderingRule] renderingRule 对象，用来指定影像的渲染风格，从而确定图例内容。影像的渲染风格包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。该参数未设置时，将使用发布服务时所配置的风格。
+     */
+    getLegend(queryParams) {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/legend', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            params: queryParams,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getStatistics
+     * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
+     */
+    getStatistics() {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/statistics', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getTileInfo
+     * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
+     
+     */
+    getTileInfo() {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/tileInfo', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.deleteItemByID
+     * @description 删除影像集合中指定 ID 的 Item，即从影像集合中删除指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     */
+    deleteItemByID(featureId) {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId,
+            featureId: featureId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'DELETE',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getItemByID
+     * @description 返回指定ID（`collectionId`）的影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     */
+    getItemByID(featureId) {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId,
+            featureId: featureId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+}
+
+SuperMap.ImageCollectionService = ImageCollectionService_ImageCollectionService;
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.ImageService
+ * @classdesc 影像服务类
+ * @version 10.2.0
+ * @category iServer Image
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {SuperMap.CommonServiceBase}
+ */
+class ImageService_ImageService extends CommonServiceBase {
+    constructor(url, options) {
+        super(url, options);
+        this.options = options || {};
+        if (options) {
+            Util.extend(this, options);
+        }
+        this.CLASS_NAME = 'SuperMap.ImageService';
+    }
+
+    /**
+     * @function SuperMap.ImageService.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function SuperMap.ImageService.prototype.getCollections
+     * @description 返回当前影像服务中的影像集合列表（Collections）。
+     */
+    getCollections() {
+        var me = this;
+        var path = Util.convertPath('/collections');
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageService.prototype.getCollectionByID
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+     */
+    getCollectionByID(collectionId) {
+        var pathParams = {
+            collectionId: collectionId
+        };
+        var me = this;
+        var path = Util.convertPath('/collections/{collectionId}', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageSearchService.prototype.search
+     * @description 返回与过滤条件匹配的 STAC Items。此方式将作为标准的、全要素查询 API。 如果实现了`GET /search`，那么就必须实现此方法。 如果此端点在服务端实现，需要将其链接添加到 `GET /` 响应中的链接对象数组中， 此端点的链接对象的 `rel`属性值为`search`；链接对象中`method`属性值为`POST` 。
+     * @param {SuperMap.ImageSearchParameter} [imageSearchParameter] 查询参数
+     */
+    search(imageSearchParameter) {
+        var postBody = { ...(imageSearchParameter || {}) };
+        var me = this;
+        var path = Util.convertPath('/search');
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'POST',
+            url,
+            data: postBody,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+}
+
+SuperMap.ImageService = ImageService_ImageService;
+
+;// CONCATENATED MODULE: ./src/common/iServer/FieldsFilter.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+* @class SuperMap.FieldsFilter
+* @classdesc 指定返回的用于描述 Feature 的字段。
+* @param {Object} options - 初始化参数。  
+* @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，要保留字段
+* @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，要排除的字段
+*/
+class FieldsFilter {
+  constructor(options) { 
+    /**
+    * @description 对返回的字段内容进行过滤，要保留字段 
+    * @member {Array.<string>} SuperMap.FieldsFilter.prototype.include
+    */
+    this.include = undefined;
+    /**
+    * @description 对返回的字段内容进行过滤，要排除的字段 
+    * @member {Array.<string>} SuperMap.FieldsFilter.prototype.exclude
+    */
+    this.exclude = undefined;
+
+    this.CLASS_NAME = 'SuperMap.FieldsFilter';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.FieldsFilter.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.include = undefined;
+    me.exclude = undefined;
+  }
+
+  /**
+  * @function SuperMap.FieldsFilter.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.FieldsFilter} obj 返回的模型.
+  * @return {SuperMap.FieldsFilter} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new FieldsFilter();
+      if (data.hasOwnProperty('include')) {
+          obj.include = data.include
+      }
+      if (data.hasOwnProperty('exclude')) {
+          obj.exclude = data.exclude
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.FieldsFilter = FieldsFilter;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/Sortby.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.Sortby
+ * @param {Object} options - 初始化参数。
+ * @param {string} options.field 属性名称
+ * @param {SuperMap.Sortby.Direction} options.direction 排序规则， 默认升序
+ */
+class Sortby {
+    constructor(options) {
+        /**
+         * @description 属性名称
+         * @member {string} SuperMap.Sortby.prototype.field
+         */
+        this.field = undefined;
+        /**
+         * @description 排序规则
+         * @member {SuperMap.Sortby.Direction} SuperMap.Sortby.prototype.direction
+         * @default SuperMap.Sortby.Direction.ASC
+         */
+        this.direction = SuperMap.Sortby.Direction.ASC;
+
+        this.CLASS_NAME = 'SuperMap.Sortby';
+        Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.Sortby.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.field = undefined;
+        me.direction = 'ASC';
+    }
+
+    /**
+     * @function SuperMap.Sortby.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.Sortby} obj 返回的模型.
+     * @return {SuperMap.Sortby} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new Sortby();
+            if (data.hasOwnProperty('field')) {
+                obj.field = data.field;
+            }
+            if (data.hasOwnProperty('direction')) {
+                obj.direction = data.direction;
+            }
+        }
+        return obj;
+    }
+}
+
+SuperMap.Sortby = Sortby;
+/**
+ * @enum SuperMap.Sortby.Direction
+ * @readonly
+ * @type {string}
+ */
+SuperMap.Sortby.Direction = {
+    ASC: 'ASC',
+    DESC: 'DESC'
+};
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageSearchParameter.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class SuperMap.ImageSearchParameter
+ * @param {Object} options - 初始化参数。
+ * @param {Array.<number>} [options.bbox] 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
+ * @param {Array.<string>} [options.collections] 影像集合的ID数组，将在该指定的Collection中搜索Items。
+ * @param {Array.<string>} [options.ids] 只返回指定 Item 的 ID 数组中的Item。返回的 Item 的 ID 值数组。 设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
+ * @param {number} [options.limit] 返回的最大结果数，即响应文档包含的 Item 的数目。
+ * @param {SuperMap.FieldsFilter} [options.fields] 通过‘include’和‘exclude’属性分别指定哪些字段包含在查询结果的 Feature 描述中，哪些需要排除。返回结果中的stac_version，id，bbox，assets，links，geometry，type，properties这些字段为必须字段，若要返回结果中不含这种字段信息，需要显示地进行排除设置，如：排除geometry和bbox字段；在POST请求中，则需要将这些字段添加到“exclude”字段中，例如： "fields": { "exclude": ["geometry","bbox"] } } 。而对于返回的“properties”对象中的扩展字段内容，可以将字段前添加到‘include’字段中，如： "fields": { "include": ["properties.SmFileName","properties.SmHighPS"] } } ，表示properties.SmFileName和properties.SmHighPS 属性都包含在查询结果中。
+ * @param {Object} [options.query] 定义查询哪些属性，查询运算符将应用于这些属性。运算符包括：eq、neq、gt、lt、gte、lte、startsWith、endsWith、 contains、in。 其中in是Array.<string>类型  例如：{ "SmFileName": { "eq":"B49C001002.tif" }}
+ * @param {Array.<SuperMap.Sortby>} [options.sortby] 由包含属性名称和排序规则的对象构成的数组。
+ */
+class ImageSearchParameter {
+    constructor(options) {
+        /**
+         * @description 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
+         * @member {Array.<number>} SuperMap.ImageSearchParameter.prototype.bbox
+         */
+        this.bbox = undefined;
+        /**
+         * @description 影像集合的ID数组，将在该指定的Collection中搜索Items。
+         * @member {Array.<string>} SuperMap.ImageSearchParameter.prototype.collections
+         */
+        this.collections = undefined;
+        /**
+         * @description 返回的 Item 的 ID 值数组。 设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
+         * @member {Array.<string>} SuperMap.ImageSearchParameter.prototype.ids
+         */
+        this.ids = undefined;
+        /**
+         * @description 单页返回的最大结果数。 最小值为1最大值为10000
+         * @member {number} SuperMap.ImageSearchParameter.prototype.limit
+         */
+        this.limit = undefined;
+        /**
+         * @description 通过‘include’和‘exclude’属性分别指定哪些字段包含在查询结果的 Feature 描述中，哪些需要排除。返回结果中的stac_version，id，bbox，assets，links，geometry，type，properties这些字段为必须字段，若要返回结果中不含这种字段信息，需要显示地进行排除设置，如：排除geometry和bbox字段；在POST请求中，则需要将这些字段添加到“exclude”字段中，例如： "fields": { "exclude": ["geometry","bbox"] } } 。而对于返回的“properties”对象中的扩展字段内容，可以将字段前添加到‘include’字段中，如： "fields": { "include": ["properties.SmFileName","properties.SmHighPS"] } } ，表示properties.SmFileName和properties.SmHighPS 属性都包含在查询结果中。
+         * @member {SuperMap.FieldsFilter} SuperMap.ImageSearchParameter.prototype.fields
+         */
+        this.fields = undefined;
+        /**
+         * @description 定义查询哪些属性，查询运算符将应用于这些属性。
+         * @member {Object} SuperMap.ImageSearchParameter.prototype.query
+         */
+        this.query = undefined;
+        /**
+         * @description 由包含属性名称和排序规则的对象构成的数组。
+         * @member {Array.<SuperMap.Sortby>} SuperMap.ImageSearchParameter.prototype.sortby
+         */
+        this.sortby = undefined;
+
+        this.CLASS_NAME = 'SuperMap.ImageSearchParameter';
+        Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.ImageSearchParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.bbox = undefined;
+        me.collections = undefined;
+        me.ids = undefined;
+        me.limit = undefined;
+        me.fields = undefined;
+        me.query = undefined;
+        me.sortby = undefined;
+    }
+
+    /**
+     * @function SuperMap.ImageSearchParameter.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.ImageSearchParameter} obj 返回的模型.
+     * @return {SuperMap.ImageSearchParameter} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ImageSearchParameter();
+            if (data.hasOwnProperty('bbox')) {
+                obj.bbox = data.bbox;
+            }
+            if (data.hasOwnProperty('collections')) {
+                obj.collections = data.collections;
+            }
+            if (data.hasOwnProperty('ids')) {
+                obj.ids = data.ids;
+            }
+            if (data.hasOwnProperty('limit')) {
+                obj.limit = data.limit;
+            }
+            if (data.hasOwnProperty('fields')) {
+                obj.fields = (FieldsFilter.constructFromObject && FieldsFilter.constructFromObject(data.fields, {})) || data.fields;
+            }
+            if (data.hasOwnProperty('query')) {
+                obj.query = data.query;
+            }
+            if (data.hasOwnProperty('sortby')) {
+                obj.sortby = data.sortby;
+                if (data.sortby) {
+                    obj.sortby = data.sortby.map((item) => {
+                        return (Sortby.constructFromObject && Sortby.constructFromObject(item, {})) || item;
+                    });
+                }
+            }
+        }
+        return obj;
+    }
+}
+SuperMap.ImageSearchParameter = ImageSearchParameter;
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageStretchOption.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.ImageStretchOption
+ * @param {Object} options - 初始化参数。
+ * @param {SuperMap.ImageStretchOption.StretchType} [options.stretchType] 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
+ * @param {number} [options.stdevCoefficient] 标准差系数。
+ * @param {number} [options.gaussianCoefficient] 高斯系数。
+ * @param {boolean} [options.useMedianValue] 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
+ * @param {number} [options.minPercent] 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
+ * @param {number} [options.maxPercent] 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
+ */
+class ImageStretchOption {
+    constructor(options) {
+        /**
+         * @description 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
+         * @member {SuperMap.ImageStretchOption.StretchType} SuperMap.ImageStretchOption.prototype.stretchType
+         */
+        this.stretchType = undefined;
+        /**
+         * @description 标准差系数。
+         * @member {number} SuperMap.ImageStretchOption.prototype.stdevCoefficient
+         */
+        this.stdevCoefficient = undefined;
+        /**
+         * @description 高斯系数。
+         * @member {number} SuperMap.ImageStretchOption.prototype.gaussianCoefficient
+         */
+        this.gaussianCoefficient = undefined;
+        /**
+         * @description 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
+         * @member {boolean} SuperMap.ImageStretchOption.prototype.useMedianValue
+         */
+        this.useMedianValue = undefined;
+        /**
+         * @description 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
+         * @member {number} SuperMap.ImageStretchOption.prototype.minPercent
+         */
+        this.minPercent = undefined;
+        /**
+         * @description 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
+         * @member {number} SuperMap.ImageStretchOption.prototype.maxPercent
+         */
+        this.maxPercent = undefined;
+
+        this.CLASS_NAME = 'SuperMap.ImageStretchOption';
+        Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.ImageStretchOption.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.stretchType = undefined;
+        me.stdevCoefficient = undefined;
+        me.gaussianCoefficient = undefined;
+        me.useMedianValue = undefined;
+        me.minPercent = undefined;
+        me.maxPercent = undefined;
+    }
+
+    /**
+     * @function SuperMap.ImageStretchOption.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.ImageStretchOption} obj 返回的模型.
+     * @return {SuperMap.ImageStretchOption} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ImageStretchOption();
+            if (data.hasOwnProperty('stretchType')) {
+                obj.stretchType = data.stretchType;
+            }
+            if (data.hasOwnProperty('stdevCoefficient')) {
+                obj.stdevCoefficient = data.stdevCoefficient;
+            }
+            if (data.hasOwnProperty('gaussianCoefficient')) {
+                obj.gaussianCoefficient = data.gaussianCoefficient;
+            }
+            if (data.hasOwnProperty('useMedianValue')) {
+                obj.useMedianValue = data.useMedianValue;
+            }
+            if (data.hasOwnProperty('minPercent')) {
+                obj.minPercent = data.minPercent;
+            }
+            if (data.hasOwnProperty('maxPercent')) {
+                obj.maxPercent = data.maxPercent;
+            }
+        }
+        return obj;
+    }
+}
+
+SuperMap.ImageStretchOption = ImageStretchOption;
+/**
+ * @enum SuperMap.ImageStretchOption.StretchType
+ * @readonly
+ * @type {string}
+ */
+SuperMap.ImageStretchOption.StretchType = {
+    NONE: 'NONE',
+    GAUSSIAN: 'GAUSSIAN',
+    PERCENTCLIP: 'PERCENTCLIP',
+    MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
+    STANDARDDEVIATION: 'STANDARDDEVIATION'
+};
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageRenderingRule.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.ImageRenderingRule
+ * @classdesc 定义请求的影像如何进行渲染或者处理，如：影像的拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。
+ * @param {Object} options - 初始化参数。
+ * @param {SuperMap.ImageRenderingRule.DisplayMode} [options.displayMode] 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
+ * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为STRETCHED，该属性指定一个波段的索引号(波段索引号从0开始计数)；若影像的显示模式为COMPOSITE，该属性为组合的波段索引号，例如：属性值3,2,1表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
+ * @param {SuperMap.ImageStretchOption} [options.stretchOption] 影像的拉伸参数。
+ * @param {SuperMap.ImageRenderingRule.InterpolationMode} [options.interpolationMode] 影像显示时使用的插值算法。
+ * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+ * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+ * @param {number} [options.brightness] 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
+ * @param {number} [options.contrast] 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
+ * @param {string} [options.noData] 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
+ * @param {string} [options.noDataColor] 影像的无值的显示颜色，支持RGB颜色，例如：255,0,0（红色），那么无值将以指定的红色显示。
+ * @param {boolean} [options.noDataTransparent] 无值是否透明显示，true表示透明显示无值；否则为false。
+ * @param {string} [options.backgroundValue] 影像的背景值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的背景值。
+ * @param {string} [options.backgroundColor] 指定背景值的颜色。支持指定RGB颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
+ * @param {boolean} [options.backgroundTransparent] 背景值是否透明显示，true表示透明显示背景值；否则为false。
+ * @param {Array.<SuperMap.ImageGFHillShade|SuperMap.ImageGFSlope|SuperMap.ImageGFAspect|SuperMap.ImageGFOrtho>} [options.gridFunctions] 栅格函数链。
+ */
+class ImageRenderingRule {
+    constructor(options) {
+        /**
+         * @description 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
+         * @member {SuperMap.ImageRenderingRule.DisplayMode} SuperMap.ImageRenderingRule.prototype.displayMode
+         */
+        this.displayMode = undefined;
+        /**
+         * @description 影像显示的波段或者波段组合。该参数为一个数组，数组元素为波段索引号。若影像的显示模式为Stretched，该属性指定一个显示的波段；若影像的显示模式为Composite，该属性为组合的波段索引号，例如：属性值4,3,2表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.displayBands
+         */
+        this.displayBands = undefined;
+        /**
+         * @description 影像的拉伸参数。
+         * @member {SuperMap.ImageStretchOption} SuperMap.ImageRenderingRule.prototype.stretchOption
+         */
+        this.stretchOption = undefined;
+        /**
+         * @description 影像显示时使用的插值算法。
+         * @member {SuperMap.ImageRenderingRule.InterpolationMode} SuperMap.ImageRenderingRule.prototype.interpolationMode
+         */
+        this.interpolationMode = undefined;
+        /**
+         * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+         * @member {Array.<string>} SuperMap.ImageRenderingRule.prototype.colorScheme
+         */
+        this.colorScheme = undefined;
+        /**
+         * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+         * @member {Array.<string>} SuperMap.ImageRenderingRule.prototype.colorTable
+         */
+        this.colorTable = undefined;
+        /**
+         * @description 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
+         * @member {number} SuperMap.ImageRenderingRule.prototype.brightness
+         */
+        this.brightness = undefined;
+        /**
+         * @description 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
+         * @member {number} SuperMap.ImageRenderingRule.prototype.contrast
+         */
+        this.contrast = undefined;
+        /**
+         * @description 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.noData
+         */
+        this.noData = undefined;
+        /**
+         * @description 影像的无值的显示颜色，支持RGB颜色，例如：255,0,0（红色），那么无值将以指定的红色显示。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.noDataColor
+         */
+        this.noDataColor = undefined;
+        /**
+         * @description 无值是否透明显示，true表示透明显示无值；否则为false。
+         * @member {boolean} SuperMap.ImageRenderingRule.prototype.noDataTransparent
+         */
+        this.noDataTransparent = undefined;
+
+        /**
+         * @description 影像的背景值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的背景值。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.backgroundValue
+         */
+        this.backgroundValue = undefined;
+        /**
+         * @description 指定背景值的颜色。支持指定RGB颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.backgroundColor
+         */
+        this.backgroundColor = undefined;
+        /**
+         * @description 背景值是否透明显示，true表示透明显示背景值；否则为false。
+         * @member {boolean} SuperMap.ImageRenderingRule.prototype.backgroundTransparent
+         */
+        this.backgroundTransparent = undefined;
+        /**
+         * @description 栅格函数选项，通过应用栅格函数，可以对影像进行快速显示处理。
+         * @member {Array.<SuperMap.ImageGFHillShade|SuperMap.ImageGFSlope|SuperMap.ImageGFAspect|SuperMap.ImageGFOrtho>} SuperMap.ImageRenderingRule.prototype.gridFunctions
+         */
+        this.gridFunctions = undefined;
+
+        this.CLASS_NAME = 'SuperMap.ImageRenderingRule';
+        Util.extend(this, options);
+
+        /**
+         * @enum SuperMap.ImageRenderingRule.DisplayMode
+         * @readonly
+         * @type {string}
+         */
+        SuperMap.ImageRenderingRule.DisplayMode = {
+            COMPOSITE: 'COMPOSITE',
+            STRETCHED: 'Stretched'
+        };
+
+        /**
+         * @enum SuperMap.ImageRenderingRule.InterpolationMode
+         * @readonly
+         * @type {string}
+         */
+        SuperMap.ImageRenderingRule.InterpolationMode = {
+            NEARESTNEIGHBOR: 'NEARESTNEIGHBOR',
+            HIGHQUALITYBILINEAR: 'HIGHQUALITYBILINEAR',
+            DEFAULT: 'DEFAULT'
+        };
+    }
+
+    /**
+     * @function SuperMap.ImageRenderingRule.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.displayMode = undefined;
+        me.displayBands = undefined;
+        me.stretchOption = undefined;
+        me.interpolationMode = undefined;
+        me.colorScheme = undefined;
+        me.colorTable = undefined;
+        me.brightness = undefined;
+        me.contrast = undefined;
+        me.noData = undefined;
+        me.noDataColor = undefined;
+        me.noDataTransparent = undefined;
+        me.backgroundValue = undefined;
+        me.backgroundColor = undefined;
+        me.backgroundTransparent = undefined;
+        me.gridFuncOptions = undefined;
+    }
+
+    /**
+     * @function SuperMap.ImageRenderingRule.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.ImageRenderingRule} obj 返回的模型.
+     * @return {SuperMap.ImageRenderingRule} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ImageRenderingRule();
+            if (data.hasOwnProperty('displayMode')) {
+                obj.displayMode = data.displayMode;
+            }
+            if (data.hasOwnProperty('displayBands')) {
+                obj.displayBands = data.displayBands;
+            }
+            if (data.hasOwnProperty('stretchOption')) {
+                obj.stretchOption =
+                    (ImageStretchOption.constructFromObject &&
+                        ImageStretchOption.constructFromObject(data.stretchOption, {})) ||
+                    data.stretchOption;
+            }
+            if (data.hasOwnProperty('interpolationMode')) {
+                obj.interpolationMode = data.interpolationMode;
+            }
+            if (data.hasOwnProperty('colorScheme')) {
+                obj.colorScheme = data.colorScheme;
+            }
+            if (data.hasOwnProperty('colorTable')) {
+                obj.colorTable = data.colorTable;
+            }
+            if (data.hasOwnProperty('brightness')) {
+                obj.brightness = data.brightness;
+            }
+            if (data.hasOwnProperty('contrast')) {
+                obj.contrast = data.contrast;
+            }
+            if (data.hasOwnProperty('noData')) {
+                obj.noData = data.noData;
+            }
+            if (data.hasOwnProperty('noDataColor')) {
+                obj.noDataColor = data.noDataColor;
+            }
+            if (data.hasOwnProperty('backgroundValue')) {
+                obj.backgroundValue = data.backgroundValue;
+            }
+            if (data.hasOwnProperty('noDataTransparent')) {
+                obj.noDataTransparent = data.noDataTransparent;
+            }
+            if (data.hasOwnProperty('backgroundColor')) {
+                obj.backgroundColor = data.backgroundColor;
+            }
+            if (data.hasOwnProperty('backgroundTransparent')) {
+                obj.backgroundTransparent = data.backgroundTransparent;
+            }
+            if (data.hasOwnProperty('gridFunctions')) {
+                obj.gridFunctions = data.gridFunctions;
+            }
+        }
+        return obj;
+    }
+}
+
+SuperMap.ImageRenderingRule = ImageRenderingRule;
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFHillShade.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+* @class SuperMap.ImageGFHillShade
+* @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。
+* @param {Object} options - 初始化参数。    
+* @param {string} [options.girdFuncName='GFHillShade'] 栅格函数名称，参数值为：GFHillShade。
+* @param {number} [options.Azimuth = 315] 光源方位角。用于确定光源的方向，是从光源所在位置的正北方向线起，依顺时针方向到光源与目标方向线的夹角，范围为 0-360 度，以正北方向为 0 度，依顺时针方向递增。默认值为：315。
+* @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
+* @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+*/
+class ImageGFHillShade {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFHillShade。 
+    * @member {string} SuperMap.ImageGFHillShade.prototype.girdFuncName
+    * @default 'GFHillShade'
+    */
+    this.girdFuncName = 'GFHillShade';
+    /**
+    * @description 光源方位角。用于确定光源的方向，是从光源所在位置的正北方向线起，依顺时针方向到光源与目标方向线的夹角，范围为 0-360 度，以正北方向为 0 度，依顺时针方向递增。默认值为：315。 
+    * @member {number} SuperMap.ImageGFHillShade.prototype.Azimuth
+    */
+    this.Azimuth = 315;
+    /**
+    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。 
+    * @member {number} SuperMap.ImageGFHillShade.prototype.Altitude
+    */
+    this.Altitude = 45;
+    /**
+    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。 
+    * @member {number} SuperMap.ImageGFHillShade.prototype.ZFactor
+    */
+    this.ZFactor = 1;
+
+    this.CLASS_NAME = 'SuperMap.ImageGFHillShade';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFHillShade.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFHillShade';
+    me.Azimuth = 315;
+    me.Altitude = 45;
+    me.ZFactor = 1;
+  }
+
+  /**
+  * @function SuperMap.ImageGFHillShade.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFHillShade} obj 返回的模型.
+  * @return {SuperMap.ImageGFHillShade} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFHillShade();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+      if (data.hasOwnProperty('Azimuth')) {
+          obj.Azimuth = data.Azimuth
+      }
+      if (data.hasOwnProperty('Altitude')) {
+          obj.Altitude = data.Altitude
+      }
+      if (data.hasOwnProperty('ZFactor')) {
+          obj.ZFactor = data.ZFactor
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.ImageGFHillShade = ImageGFHillShade;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFAspect.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+* @class SuperMap.ImageGFAspect
+* @classdesc 栅格函数对象:对DEM数据生成坡向渲图。
+* @param {Object} options - 初始化参数。  
+* @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
+* @param {number} [options.Azimuth] 光源方位角，固定为360度。
+*/
+class ImageGFAspect {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFAspect。 
+    * @member {string} SuperMap.ImageGFAspect.prototype.girdFuncName
+    * @default 'GFAspect'
+    */
+    this.girdFuncName = 'GFAspect';
+    /**
+    * @description 光源方位角，固定为360度。 
+    * @member {number} SuperMap.ImageGFAspect.prototype.Azimuth
+    */
+    this.Azimuth = undefined;
+
+    this.CLASS_NAME = 'SuperMap.ImageGFAspect';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFAspect.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFAspect';
+    me.Azimuth = undefined;
+  }
+
+  /**
+  * @function SuperMap.ImageGFAspect.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFAspect} obj 返回的模型.
+  * @return {SuperMap.ImageGFAspect} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFAspect();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+      if (data.hasOwnProperty('Azimuth')) {
+          obj.Azimuth = data.Azimuth
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.ImageGFAspect = ImageGFAspect;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFOrtho.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+* @class SuperMap.ImageGFOrtho
+* @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
+* @param {Object} options - 初始化参数。 
+* @param {string} [options.girdFuncName='GFOrtho'] 栅格函数名称，参数值为：GFOrtho。
+*/
+class ImageGFOrtho {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFOrtho。 
+    * @member {string} SuperMap.ImageGFOrtho.prototype.girdFuncName
+    * @default 'GFOrtho'
+    */
+    this.girdFuncName = 'GFOrtho';
+
+    this.CLASS_NAME = 'SuperMap.ImageGFOrtho';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFOrtho.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFOrtho';
+  }
+
+  /**
+  * @function SuperMap.ImageGFOrtho.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFOrtho} obj 返回的模型.
+  * @return {SuperMap.ImageGFOrtho} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFOrtho();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+    }
+    return obj;
+  }
+}
+
+SuperMap.ImageGFOrtho = ImageGFOrtho;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFSlope.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+* @class SuperMap.ImageGFSlope
+* @classdesc 栅格函数对象:对DEM数据生成坡度图。
+* @param {Object} options - 初始化参数。   
+* @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
+* @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
+* @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+*/
+class ImageGFSlope {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFSlope。 
+    * @member {string} SuperMap.ImageGFSlope.prototype.girdFuncName
+    * @default 'GFSlope'
+    */
+    this.girdFuncName = 'GFSlope';
+    /**
+    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。 
+    * @member {number} SuperMap.ImageGFSlope.prototype.Altitude
+    */
+    this.Altitude = 45;
+    /**
+    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。 
+    * @member {number} SuperMap.ImageGFSlope.prototype.ZFactor
+    */
+    this.ZFactor = 1;
+
+    this.CLASS_NAME = 'SuperMap.ImageGFSlope';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFSlope.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFSlope';
+    me.Altitude = 45;
+    me.ZFactor = 1;
+  }
+
+  /**
+  * @function SuperMap.ImageGFSlope.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFSlope} obj 返回的模型.
+  * @return {SuperMap.ImageGFSlope} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFSlope();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+      if (data.hasOwnProperty('Altitude')) {
+          obj.Altitude = data.Altitude
+      }
+      if (data.hasOwnProperty('ZFactor')) {
+          obj.ZFactor = data.ZFactor
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.ImageGFSlope = ImageGFSlope;
+
+
 ;// CONCATENATED MODULE: ./src/common/iServer/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -40117,440 +41324,10 @@ SuperMap.ElasticSearch = ElasticSearch;
 
 
 
-;// CONCATENATED MODULE: external "function(){try{return tf}catch(e){return {}}}()"
-const external_function_try_return_tf_catch_e_return_namespaceObject = function(){try{return tf}catch(e){return {}}}();
-;// CONCATENATED MODULE: ./src/common/thirdparty/ai/MachineLearningBase.js
-
-
-var backendOptions = {
-    WEBGL: 'webgl',
-    CPU: 'cpu'
-};
-
-/**
- * @class SuperMap.MachineLearningBase
- * @classdesc MachineLearning 的分析基类。
- * @category MachineLearning
- * @param {string} modelUrl - 模型分析地址。
- * @param {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} image - 图片对象。
- * @param {string} [backend=backendOptions.WEBGL] - 模型分析方式( cpu 或 webgl)。
- */
-
-class MachineLearningModelBase {
-    constructor(options) {
-        const { modelUrl, image, backend } = options;
-        /**
-         *  @member {string} SuperMap.MachineLearningBase.prototype.modelUrl
-         *  @description 模型地址
-         */
-        this.modelUrl = modelUrl;
-        /**
-         *  @member {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} SuperMap.MachineLearningBase.prototype.image
-         *  @description 图片对象
-         */
-        this.image = image;
-        /**
-         *  @member {Object} SuperMap.MachineLearningBase.prototype.backend
-         *  @description 模型分析方式( cpu 或 webgl)。
-         */
-        this.backend = backend || backendOptions.WEBGL;
-        external_function_try_return_tf_catch_e_return_namespaceObject.setBackend(this.backend);
-    }
-
-    /**
-     * @function  SuperMap.MachineLearningBase.prototype._loadModel
-     * @description 加载模型
-     * @param {string} modelUrl - 模型地址。
-     * @returns {Promise<tf.GraphModel>}
-     */
-
-    async _loadModel(modelUrl) {
-        return await external_function_try_return_tf_catch_e_return_namespaceObject.loadGraphModel(modelUrl);
-    }
-
-    /**
-     * @function  SuperMap.MachineLearningBase.prototype.handleResult
-     * @description 对预测数据进行处理
-     */
-
-    handleResult() {}
-
-    /**
-     * @function  SuperMap.MachineLearningBase.prototype.handleInputParams
-     * @description 处理输入张量
-     * @param {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} image - 图片对象。
-     * @param {number} width - 图片宽度。
-     * @param {number} height - 图片高度。
-     * @param {string} dtype - 数据类型。
-     * @returns {Object} - 输入处理后的张量
-     */
-
-    handleInputParams(image, width = 640, height = 640, dtype = 'float32') {
-        return external_function_try_return_tf_catch_e_return_namespaceObject.cast(external_function_try_return_tf_catch_e_return_namespaceObject.image.resizeBilinear(external_function_try_return_tf_catch_e_return_namespaceObject.expandDims(external_function_try_return_tf_catch_e_return_namespaceObject.browser.fromPixels(image)), [width, height]), dtype);
-    }
-
-    /**
-     * @function  SuperMap.MachineLearningBase.prototype.predict
-     * @description 对模型进行预测
-     * @returns {object}
-     */
-
-    async predict() {
-        if (!this.modelUrl || !this.image) {
-            return;
-        }
-        if (!this.model) {
-            this.model = await this._loadModel(this.modelUrl);
-        }
-        this.imageTensor = this.handleInputParams(this.image);
-        const prediction = await this.model.executeAsync(this.imageTensor);
-        return this.handleResult(prediction);
-    }
-
-    /**
-     * @function  SuperMap.MachineLearningBase.prototype.dispose
-     * @description 释放内存
-     */
-
-    dispose() {
-        this.imageTensor && this.imageTensor.dispose();
-        this.imageTensor = null;
-    }
-}
-
-;// CONCATENATED MODULE: ./src/common/thirdparty/ai/BinaryClassification.js
-
-
-
-/**
- * @class SuperMap.BinaryClassification
- * @classdesc 二元分类类。
- * @category BinaryClassification
- * @extends {SuperMap.MachineLearningBase}
- */
-
-class BinaryClassification extends MachineLearningModelBase {
-    constructor(options) {
-      super(options);
-    }
-    /**
-     * @function  SuperMap.BinaryClassification.prototype.handleResult
-     * @description 对预测数据进行处理
-     * @param {Object} prediction - 模型预测后的张量。
-     * @returns {Object} 处理返回的数据
-     */
-
-    handleResult(prediction) {
-        const width = prediction.shape.slice(1, 2)[0];
-        const height = prediction.shape.slice(2, 3)[0];
-        return { data: prediction.dataSync(), width, height };
-    }
-}
-
-SuperMap.BinaryClassification = BinaryClassification;
-
-;// CONCATENATED MODULE: ./src/common/thirdparty/ai/LandcoverClassification.js
-
-
-
-/**
- * @class SuperMap.LandcoverClassification
- * @classdesc 二元分类类。
- * @category LandcoverClassification
- * @extends {SuperMap.MachineLearningBase}
- */
-
-class LandcoverClassification extends MachineLearningModelBase {
-    constructor(options) {
-        super(options);
-    }
-    /**
-     * @function  SuperMap.ObjectDetection.prototype.handleResult
-     * @description 对模型进行预测
-     * @param {Object} prediction - 模型预测后的张量。
-     * @returns {Object} 处理返回的数据
-     */
-
-    handleResult(prediction) {
-        const width = prediction.shape.slice(1, 2)[0];
-        const height = prediction.shape.slice(2, 3)[0];
-        const data = prediction.arraySync()[0];
-        return { data, width, height };
-    }
-}
-
-SuperMap.LandcoverClassification = LandcoverClassification;
-
-;// CONCATENATED MODULE: ./src/common/thirdparty/ai/ObjectDetection.js
-
-
-
-
-/**
- * @class SuperMap.ObjectDetection
- * @classdesc 目标检测类。
- * @category ObjectDetection
- * @extends {SuperMap.MachineLearningBase}
- */
-
-class ObjectDetection extends MachineLearningModelBase {
-    constructor(options) {
-        super(options);
-    }
-    /**
-     * @function  SuperMap.ObjectDetection.prototype.predict
-     * @description 对模型进行预测
-     * @returns {Object} 预测后的数据
-     */
-
-    async predict() {
-        if (!this.modelUrl || !this.image) {
-            return;
-        }
-        if (!this.model) {
-            this.model = await this._loadModel(this.modelUrl);
-        }
-        this.imageTensor = this.handleInputParams(this.image, 600, 600);
-        const params = external_function_try_return_tf_catch_e_return_namespaceObject.tensor([600, 600, 1], [3], 'float32');
-        const prediction = await this.model.executeAsync([params, this.imageTensor]);
-        return this.handleResult(prediction);
-    }
-
-    /**
-     * @function  SuperMap.ObjectDetection.prototype.handleResult
-     * @description 对预测数据进行处理
-     * @param {object} result - 预测后的数据。
-     * @returns {Object} 处理返回的数据
-     */
-
-    async handleResult(result) {
-        const score = result[3].arraySync();
-        const bbox = result[2].arraySync();
-        const delta = result[1].arraySync();
-
-        const deltaFormat = delta.map((deltaItem) => {
-            return deltaItem.map((deltaItem2, index) => {
-                if (index % 4 === 0 || index % 4 === 1) {
-                    return deltaItem2 * 0.1;
-                }
-                return deltaItem2 * 0.2;
-            });
-        });
-
-        const scoreData = {};
-        score.forEach((colData, index) => {
-            if (colData[1] >= 0.5) {
-                scoreData[index] = +colData[1].toFixed(5);
-            }
-        });
-        const filterBbox = bbox
-            .filter((item, index) => {
-                return scoreData[index];
-            })
-            .map((item1) => {
-                return item1.map((item2) => {
-                    return +item2.toFixed(5);
-                });
-            });
-
-        const filterDelta = deltaFormat
-            .filter((item, index) => {
-                return scoreData[index];
-            })
-            .map((item1) => {
-                return item1.map((item2) => {
-                    return +item2.toFixed(5);
-                });
-            });
-        const widths = [];
-        const heights = [];
-        const ctr_x = [];
-        const ctr_y = [];
-        filterBbox.forEach((colBbox) => {
-            let width = colBbox[3] - colBbox[1] + 1.0;
-            let height = colBbox[4] - colBbox[2] + 1.0;
-            widths.push(width);
-            heights.push(height);
-            ctr_x.push(colBbox[1] + 0.5 * width);
-            ctr_y.push(colBbox[2] + 0.5 * height);
-        });
-        const dx = this.getIntervalFromArray(filterDelta, 4, 0);
-        const dy = this.getIntervalFromArray(filterDelta, 4, 1);
-        const dw = this.getIntervalFromArray(filterDelta, 4, 2);
-        const dh = this.getIntervalFromArray(filterDelta, 4, 3);
-
-        const planeDx = dx.map((x) => {
-            return x[1];
-        });
-
-        const planeDy = dy.map((y) => {
-            return y[1];
-        });
-
-        const planeDW = dw.map((x) => {
-            return x[1];
-        });
-
-        const planeDh = dh.map((x) => {
-            return x[1];
-        });
-
-        const pred_ctr_x = [];
-        const pred_ctr_y = [];
-        const pred_w = [];
-        const pred_h = [];
-
-        for (let i = 0; i < widths.length; i++) {
-            pred_ctr_x.push(planeDx[i] * widths[i] + ctr_x[i]);
-            pred_ctr_y.push(planeDy[i] * heights[i] + ctr_y[i]);
-            pred_w.push(Math.exp(planeDW[i]) * widths[i]);
-            pred_h.push(Math.exp(planeDh[i]) * heights[i]);
-        }
-
-        const bbox_x1 = pred_ctr_x.map((x, index) => {
-            return x - 0.5 * pred_w[index];
-        });
-
-        const bbox_x2 = pred_ctr_x.map((x, index) => {
-            return x + 0.5 * pred_w[index];
-        });
-
-        const bbox_y1 = pred_ctr_y.map((y, index) => {
-            return y - 0.5 * pred_h[index];
-        });
-
-        const bbox_y2 = pred_ctr_y.map((y, index) => {
-            return y + 0.5 * pred_h[index];
-        });
-
-        const scores = Object.values(scoreData);
-
-        const bbox_list = bbox_x1.map((x1, index) => {
-            return [bbox_y1[index], bbox_x1[index], bbox_y2[index], bbox_x2[index]];
-        });
-
-        const bboxIndex = await this.nms(bbox_list, scores);
-        const bboxList = [];
-        pred_ctr_x.forEach((x1, index) => {
-            if (bboxIndex.includes(index)) {
-                bboxList.push({
-                    x: x1 - pred_w[index] / 2,
-                    y: pred_ctr_y[index] - pred_h[index] / 2,
-                    w: pred_w[index],
-                    h: pred_h[index]
-                });
-            }
-        });
-        return bboxList;
-    }
-
-    /**
-     * @function SuperMap.ObjectDetection.prototype.nms
-     * @param {array} bbox - 包围框数据。
-     * @param {array} scores - 模型得分数据。
-     * @returns {array} 返回去重后的包围框数据
-     */
-
-    async nms(bbox, scores) {
-        console.log('bbox, scores', bbox, scores);
-        const res = await external_function_try_return_tf_catch_e_return_namespaceObject.image.nonMaxSuppressionWithScoreAsync(bbox, scores, 100, 0.3);
-        return res.selectedIndices.arraySync();
-    }
-
-    /**
-     * @function SuperMap.ObjectDetection.prototype.getIntervalFromArray
-     * @param {array} array - 数组。
-     * @param {number} interval - 取值的间隔。
-     * @param {number} start - 取值的起始位置。
-     * @returns {array} 返回被间隔取值后的数组
-     */
-
-    getIntervalFromArray(array, interval, start) {
-        return array.map((arr) => {
-            return arr.filter((item, index) => {
-                return index >= start && index % interval === start;
-            });
-        });
-    }
-
-    /**
-     * @function  SuperMap.ObjectDetection.prototype.handleInputParams
-     * @description 处理输入张量
-     * @param {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} image - 图片对象。
-     * @param {number} width - 图片宽度。
-     * @param {number} height - 图片高度。
-     * @param {string} dtype - 数据类型。
-     * @returns {Object} - 输入处理后的张量
-     */
-
-    handleInputParams(image, width, height, dtype = 'float32') {
-        return external_function_try_return_tf_catch_e_return_namespaceObject.tidy(() => {
-            this.imageTensor = external_function_try_return_tf_catch_e_return_namespaceObject.cast(
-                external_function_try_return_tf_catch_e_return_namespaceObject.image.resizeBilinear(external_function_try_return_tf_catch_e_return_namespaceObject.expandDims(external_function_try_return_tf_catch_e_return_namespaceObject.browser.fromPixels(image)), [width, height]),
-                dtype
-            );
-            const shape = this.imageTensor.bufferSync().shape;
-            const dataTemp = [];
-            this.imageTensor.bufferSync().values.forEach((value, index) => {
-                if (index % 3 === 0) {
-                    dataTemp.push(+(value - 122.7717).toFixed(6));
-                }
-                if (index % 3 === 1) {
-                    dataTemp.push(+(value - 115.9465).toFixed(6));
-                }
-                if (index % 3 === 2) {
-                    dataTemp.push(+(value - 102.9801).toFixed(6));
-                }
-            });
-
-            dataTemp.forEach((item, index) => {
-                if (index % 3 === 0) {
-                    [dataTemp[index], dataTemp[index + 2]] = [dataTemp[index + 2], dataTemp[index]];
-                }
-            });
-            const testImageTensorR = external_function_try_return_tf_catch_e_return_namespaceObject.tensor(dataTemp, shape, dtype);
-            return testImageTensorR;
-        });
-    }
-}
-
-SuperMap.ObjectDetection = ObjectDetection;
-
-;// CONCATENATED MODULE: ./src/common/thirdparty/ai/WebMachineLearning.js
-
-
-/**
- * @class SuperMap.WebMachineLearning
- * @classdesc WebMachineLearning 分析类。
- * @category WebMachineLearning
- */
-
-class WebMachineLearning {
-    /**
-     * @function  SuperMap.WebMachineLearning.prototype.execute
-     * @description 执行预测
-     * @param {BinaryClassification|LandcoverClassification|ObjectDetection} instance - 模型实例。
-     * @returns {Object} 返回处理的数据
-     */
-    execute(instance) {
-        return instance.predict();
-    }
-}
-
-SuperMap.WebMachineLearning = WebMachineLearning;
-
-;// CONCATENATED MODULE: ./src/common/thirdparty/ai/index.js
-
-
-
-
-
-
 ;// CONCATENATED MODULE: ./src/common/thirdparty/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -50903,13 +51680,13 @@ class Log {
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log";
         return function () {
-            if (Config.debugMode === 0) {
+            if (+Config.debugMode === 0) {
                 return;
-            } else if (Config.debugMode === 1) {
+            } else if (+Config.debugMode === 1) {
                 for (let k in arguments) {
                     throw new Error(arguments[k]);
                 }
-            } else if (Config.debugMode > 1) {
+            } else if (+Config.debugMode > 1) {
                 for (let k in arguments) {
                     console.log(arguments[k]);
                 }
@@ -51642,7 +52419,7 @@ class Transformable {
                     }
                 }
             } else {
-                if (this.rotation !== 0) {
+                if (+this.rotation !== 0) {
                     SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }
@@ -69400,7 +70177,7 @@ class ThemeLayer_Theme {
     off(event, callback, context) { // eslint-disable-line no-unused-vars
         var me = this;
         if (me.renderer) {
-            me.renderer.off(event, callback);
+            me.renderer.un(event, callback);
         } else {
             this.map.off(event, callback);
         }
@@ -75461,7 +76238,10 @@ class DeckglLayer {
         if (map.getCRS && map.getCRS() !== (external_mapboxgl_default()).CRS.EPSG3857) {
             this.coordinateSystem = 3;
             this.isGeographicCoordinateSystem = true;
-        }
+        } else {
+            this.coordinateSystem = 1;
+            this.isGeographicCoordinateSystem = false;
+        } 
         //创建图层容器
         this._initContainer();
 
@@ -75686,6 +76466,9 @@ class DeckglLayer {
         if (map.getCRS && map.getCRS() !== (external_mapboxgl_default()).CRS.EPSG3857) {
             state.coordinateSystem = this.coordinateSystem;
             state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
+        } else {
+            state.coordinateSystem = 1;
+            state.isGeographicCoordinateSystem = false
         }
 
         //更行数据
@@ -75743,7 +76526,7 @@ class DeckglLayer {
         var me = this;
         this.props.getPosition = this.callback.getPosition
             ? this.callback.getPosition
-            : function(point) {
+            : function (point) {
                   if (!point) {
                       return [0, 0, 0];
                   }
@@ -75753,7 +76536,7 @@ class DeckglLayer {
         if (this.callback.getColor) {
             this.props.getColor = this.callback.getColor
                 ? this.callback.getColor
-                : function(point) {
+                : function (point) {
                       let style = point && point.getStyle();
                       return (style && style.color) || me.props.color;
                   };
@@ -75762,7 +76545,7 @@ class DeckglLayer {
         if (this.callback.getRadius) {
             this.props.getRadius = this.callback.getRadius
                 ? this.callback.getRadius
-                : function(point) {
+                : function (point) {
                       let style = point && point.getStyle();
                       return (style && style.radius) || me.props.radius;
                   };
@@ -75787,7 +76570,7 @@ class DeckglLayer {
     _createPathLayer() {
         this.props.getPath = this.callback.getPath
             ? this.callback.getPath
-            : function(feature) {
+            : function (feature) {
                   return feature.geometry.coordinates;
               };
         //以下几个函数也可走默认值
@@ -75811,7 +76594,7 @@ class DeckglLayer {
     _createPolygonLayer() {
         this.props.getPolygon = this.callback.getPolygon
             ? this.callback.getPolygon
-            : function(feature) {
+            : function (feature) {
                   return feature.geometry.coordinates;
               };
 
@@ -75842,7 +76625,7 @@ class DeckglLayer {
         //todo ArcLineLayer geojson coordinates数组中只能有一个线段
         this.props.getSourcePosition = this.callback.getSourcePosition
             ? this.callback.getSourcePosition
-            : function(feature) {
+            : function (feature) {
                   if (!feature) {
                       return [0, 0, 0];
                   }
@@ -75851,7 +76634,7 @@ class DeckglLayer {
               };
         this.props.getTargetPosition = this.callback.getTargetPosition
             ? this.callback.getTargetPosition
-            : function(feature) {
+            : function (feature) {
                   if (!feature) {
                       return [0, 0, 0];
                   }
@@ -75879,7 +76662,7 @@ class DeckglLayer {
     _createHexagonLayer() {
         this.props.getPosition = this.callback.getPosition
             ? this.callback.getPosition
-            : function(feature) {
+            : function (feature) {
                   if (!feature) {
                       return [0, 0, 0];
                   }
@@ -77919,7 +78702,7 @@ class FeatureService extends ServiceBase {
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url = Util.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+        url = Util.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
@@ -77959,7 +78742,13 @@ class FeatureService extends ServiceBase {
         if (params.geometry) {
             if (params.geometry instanceof (external_mapboxgl_default()).LngLatBounds) {
                 params.geometry = core_Util_Util.toSuperMapPolygon(params.geometry);
-            } else {
+                params.geometry.SRID = 4326;
+            } else if (params.geometry instanceof (external_mapboxgl_default()).Point) {
+                params.geometry = new Point(params.geometry.x, params.geometry.y);
+            } else if (params.geometry instanceof (external_mapboxgl_default()).LngLat) {
+                params.geometry = new Point(params.geometry.lng, params.geometry.lat);
+                params.geometry.SRID = 4326;
+            } else if (!(params.geometry instanceof Geometry)) {
                 params.geometry = core_Util_Util.toSuperMapGeometry(params.geometry);
             }
         }
@@ -77967,7 +78756,7 @@ class FeatureService extends ServiceBase {
         if (params.features) {
             var features = [];
             if (core_Util_Util.isArray(params.features)) {
-                params.features.map(function(feature) {
+                params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
                     return features;
                 });
@@ -78190,12 +78979,12 @@ class GridCellInfosService extends ServiceBase {
 
 /**
  * @class mapboxgl.supermap.GeoprocessingService
- * @classdesc 地理处理服务接口类。
+ * @classdesc 处理自动化服务接口类。
  * @version 10.1.0
- * @category  iServer GeoprocessingService
+ * @category  iServer ProcessingAutomationService
  * @extends  {mapboxgl.supermap.ServiceBase}
  * @example
- *  //为了安全访问受保护的地理处理服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。
+ *  //为了安全访问受保护的处理自动化服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。
  * SuperMap.SecurityManager.registerToken(serviceUrl, token);
  *  var geoprocessingService = new L.supermap.geoprocessingService("http://localhost:8090/iserver/services/geoprocessing/restjsr/gp/v2")
         geoprocessingService.submitJob(identifier,params, environments, function(serverResult) {
@@ -78224,7 +79013,7 @@ class GeoprocessingService extends ServiceBase {
     }
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.getTools
-     * @description 获取地理处理工具列表。
+     * @description 获取处理自动化工具列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     getTools(callback) {
@@ -78244,8 +79033,8 @@ class GeoprocessingService extends ServiceBase {
     }
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.getTool
-     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     getTool(identifier, callback) {
@@ -78266,10 +79055,10 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.execute
-     * @description 同步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 同步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} callback 回调函数。
      */
     execute(identifier, parameter, environment, callback) {
@@ -78290,10 +79079,10 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.submitJob
-     * @description 异步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 异步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} callback 回调函数。
      */
     submitJob(identifier, parameter, environment, callback) {
@@ -78314,9 +79103,9 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.waitForJobCompletion
-     * @description 获取地理处理异步执行状态信息。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化异步执行状态信息。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {Callback} options.statusCallback - 任务状态的回调函数。
@@ -78340,9 +79129,9 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.getJobInfo
-     * @description 获取地理处理任务的执行信息。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 获取处理自动化任务的执行信息。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      * @param {RequestCallback} callback 回调函数。
      */
     getJobInfo(identifier, jobId, callback) {
@@ -78363,9 +79152,9 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.cancelJob
-     * @description 取消地理处理任务的异步执行。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 取消处理自动化任务的异步执行。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      * @param {RequestCallback} callback 回调函数。
      */
     cancelJob(identifier, jobId, callback) {
@@ -78386,8 +79175,8 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.getJobs
-     * @description 获取地理处理服务任务列表。
-     * @param {string} identifier - 地理处理工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @description 获取处理自动化服务任务列表。
+     * @param {string} identifier - 处理自动化工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      * @param {RequestCallback} callback 回调函数。
      */
     getJobs(identifier, callback) {
@@ -78408,10 +79197,10 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.GeoprocessingService.prototype.getResults
-     * @description 地理处理工具异步执行的结果,支持结果过滤。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @description 处理自动化工具异步执行的结果,支持结果过滤。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     getResults(identifier, jobId, filter, callback) {
@@ -81220,10 +82009,262 @@ class WebPrintingJobService extends ServiceBase {
 
 (external_mapboxgl_default()).supermap.WebPrintingJobService = WebPrintingJobService;
 
+;// CONCATENATED MODULE: ./src/mapboxgl/services/ImageService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class mapboxgl.supermap.ImageService
+ * @version 10.2.0
+ * @constructs mapboxgl.supermap.ImageService
+ * @classdesc 影像服务类
+ * @category  iServer Image
+ * @example
+ *      mapboxgl.supermap.ImageService(url,options)
+ *      .getCollections(function(result){
+ *          //doSomething
+ *      })
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {mapboxgl.supermap.ServiceBase}
+ */
+class ImageService extends ServiceBase {
+    constructor(url, options) {
+        super(url, options);
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageService.prototype.getCollections
+     * @description 返回当前影像服务中的影像集合列表（Collections）。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getCollections(callback) {
+        var me = this;
+        var ImageService = new ImageService_ImageService(this.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageService.getCollections();
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageService.prototype.getCollectionByID
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getCollectionByID(collectionId, callback) {
+        var me = this;
+        var ImageService = new ImageService_ImageService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageService.getCollectionByID(collectionId);
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageService.prototype.search
+     * @description 返回与过滤条件匹配的 STAC Items。此方式将作为标准的、全要素查询 API。 如果实现了`GET /search`，那么就必须实现此方法。 如果此端点在服务端实现，需要将其链接添加到 `GET /` 响应中的链接对象数组中， 此端点的链接对象的 `rel`属性值为`search`；链接对象中`method`属性值为`POST` 。
+     * @param {SuperMap.ImageSearchParameter} [itemSearch] 查询参数
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    search(itemSearch, callback) {
+        var me = this;
+        var ImageService = new ImageService_ImageService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageService.search(itemSearch);
+    }
+}
+
+(external_mapboxgl_default()).supermap.ImageService = ImageService;
+
+;// CONCATENATED MODULE: ./src/mapboxgl/services/ImageCollectionService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class mapboxgl.supermap.ImageCollectionService
+ * @version 10.2.0
+ * @constructs mapboxgl.supermap.ImageCollectionService
+ * @classdesc 影像集合服务类
+ * @category  iServer Image
+ * @extends {mapboxgl.supermap.ServiceBase}
+ * @example
+ *      mapboxgl.supermap.ImageCollectionService(url,options)
+ *      .getLegend(collectionId, queryParams, function(result){
+ *          //doSomething
+ *      })
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {string} options.collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+class ImageCollectionService extends ServiceBase {
+    constructor(url, options) {
+        super(url, options);
+    }
+    /**
+     * @function mapboxgl.supermap.ImageCollectionService.prototype.getLegend
+     * @param {Object} queryParams query参数
+     * @param {SuperMap.ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。不指定时，使用发布服务时所配置的风格。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getLegend(queryParams, callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(this.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getLegend(queryParams);
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageCollectionService.prototype.getStatistics
+     * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getStatistics(callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(me.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getStatistics();
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageCollectionService.prototype.getTileInfo
+     * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getTileInfo(callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(me.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getTileInfo();
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageCollectionService.prototype.deleteItemByID
+     * @description 删除影像集合中指定ID （`featureId`） 的Item对象，即从影像集合中删除指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    deleteItemByID(featureId, callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(this.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.deleteItemByID(featureId);
+    }
+
+    /**
+     * @function mapboxgl.supermap.ImageCollectionService.prototype.getItemByID
+     * @description 返回影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getItemByID(featureId, callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(me.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getItemByID(featureId);
+    }
+}
+
+(external_mapboxgl_default()).supermap.ImageCollectionService = ImageCollectionService;
+
 ;// CONCATENATED MODULE: ./src/mapboxgl/services/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -83242,7 +84283,7 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 					allFeatures[i].properties.lat = coordinate[1];
 				}
 			}
-			features.properties['index'] = i + '';
+			feature.properties['index'] = i + '';
 			features.push(feature);
 		}
 		return features;
