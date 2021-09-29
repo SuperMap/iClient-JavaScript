@@ -3,7 +3,7 @@
  *          iclient-openlayers.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2021 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.1.2
+ *          version: v10.2.0
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -3983,98 +3983,31 @@ if (typeof globalNS['Promise'] !== 'function') {
 })));
 
 
-/***/ })
+/***/ }),
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/node module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.nmd = (module) => {
-/******/ 			module.paths = [];
-/******/ 			if (!module.children) module.children = [];
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-(() => {
+/***/ 371:
+/***/ (() => {
+
+"use strict";
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/***/ }),
+
+/***/ 638:
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduMap, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonTheme, ComponentsUtil, ComputeWeightMatrixParameters, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, FeatureService, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FileConfig, FileModel, FileReaderUtil, FileTypes, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoRelationAnalystParameters, GeometryBufferAnalystParameters, GeometryOverlayAnalystParameters, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, Image, ImageSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, SideType, SingleObjectQueryJobsParameter, SmoothMethod, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TerrainCurvatureCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeFlow, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, WebMap, WebPrintingJobService, lineMap, lineStyle, pointMap, pointStyle, polygonMap, polygonStyle
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduMap, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonTheme, ComponentsUtil, ComputeWeightMatrixParameters, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, FeatureService, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FileConfig, FileModel, FileReaderUtil, FileTypes, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoRelationAnalystParameters, GeometryBufferAnalystParameters, GeometryOverlayAnalystParameters, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, Image, ImageCollectionService, ImageService, ImageSuperMapRest, ImageTileSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, SideType, SingleObjectQueryJobsParameter, SmoothMethod, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TerrainCurvatureCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeFlow, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, WebMap, WebPrintingJobService, lineMap, lineStyle, pointMap, pointStyle, polygonMap, polygonStyle
 
-// CONCATENATED MODULE: external "ol.Observable"
+;// CONCATENATED MODULE: external "ol.Observable"
 const external_ol_Observable_namespaceObject = ol.Observable;
 var external_ol_Observable_default = /*#__PURE__*/__webpack_require__.n(external_ol_Observable_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/services/ServiceBase.js
+;// CONCATENATED MODULE: ./src/openlayers/services/ServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -4100,14 +4033,14 @@ class ServiceBase extends (external_ol_Observable_default()) {
         this.dispatchEvent({type: 'initialized', value: this});
     }
 }
-// CONCATENATED MODULE: ./src/common/SuperMap.js
+;// CONCATENATED MODULE: ./src/common/SuperMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap.Components = window.SuperMap.Components || {};
 
-// CONCATENATED MODULE: ./src/common/REST.js
+;// CONCATENATED MODULE: ./src/common/REST.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -5553,7 +5486,7 @@ var WebScaleUnit = SuperMap.WebScaleUnit = {
 }
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/Size.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Size.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -5650,7 +5583,7 @@ class Size {
 }
 
 SuperMap.Size = Size;
-// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -5834,7 +5767,7 @@ class Pixel {
 SuperMap.Pixel = Pixel;
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
+;// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -6307,7 +6240,7 @@ var ArrayExt = SuperMap.Array = {
 
 };
 
-// CONCATENATED MODULE: ./src/common/commontypes/Util.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Util.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -7401,8 +7334,54 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
         textHeight: textHeight
     };
 };
+/**
+ * @description 获取转换后的path路径。
+ * @param {string} path - 待转换的path, 包含`{param}`。
+ * @param {Object} pathParams - path中待替换的参数。
+ * @returns {string} 返回转换后的path路径
+ */
+SuperMap.Util.convertPath = function (path, pathParams) {
+  if (!pathParams) {
+      return path;
+  }
+  return path.replace(/\{([\w-\.]+)\}/g, (fullMatch, key) => {
+      var value;
+      if (pathParams.hasOwnProperty(key)) {
+          value = paramToString(pathParams[key]);
+      } else {
+          value = fullMatch;
+      }
+      return encodeURIComponent(value);
+  });
+};
 
-// CONCATENATED MODULE: ./src/common/commontypes/LonLat.js
+function paramToString(param) {
+  if (param == undefined || param == null) {
+      return '';
+  }
+  if (param instanceof Date) {
+      return param.toJSON();
+  }
+  if (canBeJsonified(param)) {
+      return JSON.stringify(param);
+  }
+
+  return param.toString();
+}
+
+function canBeJsonified(str) {
+  if (typeof str !== 'string' && typeof str !== 'object') {
+      return false;
+  }
+  try {
+      const type = str.toString();
+      return type === '[object Object]' || type === '[object Array]';
+  } catch (err) {
+      return false;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/common/commontypes/LonLat.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -7592,7 +7571,7 @@ class LonLat {
 }
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/Bounds.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Bounds.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -8329,7 +8308,7 @@ class Bounds {
 
 SuperMap.Bounds = Bounds;
 
-// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -8507,7 +8486,7 @@ class Geometry {
 
 SuperMap.Geometry = Geometry;
 
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/Collection.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Collection.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -8753,7 +8732,7 @@ class Collection extends Geometry {
 }
 
 SuperMap.Geometry.Collection = Collection;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPoint.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPoint.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -8810,7 +8789,7 @@ class MultiPoint extends Collection {
 }
 
 SuperMap.Geometry.MultiPoint = MultiPoint;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/Curve.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Curve.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -8847,7 +8826,7 @@ class Curve extends MultiPoint {
 }
 
 SuperMap.Geometry.Curve = Curve;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/Point.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Point.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -8991,7 +8970,7 @@ class Point extends Geometry {
 
 SuperMap.Geometry.Point = Point;
 
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/LineString.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/LineString.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9318,7 +9297,7 @@ class LineString extends Curve {
 SuperMap.Geometry.LineString = LineString;
 
  
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/GeoText.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/GeoText.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9644,7 +9623,7 @@ class GeoText extends Geometry {
 }
 
 SuperMap.Geometry.GeoText = GeoText;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/LinearRing.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/LinearRing.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9763,7 +9742,7 @@ class LinearRing extends LineString {
 }
 
 SuperMap.Geometry.LinearRing = LinearRing;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiLineString.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiLineString.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9805,7 +9784,7 @@ class MultiLineString extends Collection {
 }
 
 SuperMap.Geometry.MultiLineString = MultiLineString;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPolygon.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPolygon.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9849,7 +9828,7 @@ class MultiPolygon extends Collection {
 }
 
 SuperMap.Geometry.MultiPolygon = MultiPolygon;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/Polygon.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Polygon.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9909,7 +9888,7 @@ class Polygon extends Collection {
 }
 
 SuperMap.Geometry.Polygon = Polygon;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/Rectangle.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Rectangle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -9993,7 +9972,7 @@ class Rectangle extends Geometry {
 }
 
 SuperMap.Geometry.Rectangle = Rectangle;
-// CONCATENATED MODULE: ./src/common/commontypes/geometry/index.js
+;// CONCATENATED MODULE: ./src/common/commontypes/geometry/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -10020,7 +9999,7 @@ SuperMap.Geometry.Rectangle = Rectangle;
 
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -10117,7 +10096,7 @@ class Credential {
 Credential.CREDENTIAL = null;
 SuperMap.Credential = Credential;
 
-// CONCATENATED MODULE: ./src/common/commontypes/Date.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Date.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -10215,7 +10194,7 @@ var DateExt = SuperMap.Date = {
     }
 };
 
-// CONCATENATED MODULE: ./src/common/commontypes/Event.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Event.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -10562,7 +10541,7 @@ SuperMap.Event = Event;
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/Events.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Events.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11092,7 +11071,7 @@ SuperMap.Events.prototype.BROWSER_EVENTS = [
     "MSGestureStart", "MSGestureChange", "MSGestureEnd",
     "contextmenu"
 ];
-// CONCATENATED MODULE: ./src/common/commontypes/Feature.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Feature.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11152,7 +11131,7 @@ class Feature {
 }
 
 SuperMap.Feature = Feature;
-// CONCATENATED MODULE: ./src/common/commontypes/Vector.js
+;// CONCATENATED MODULE: ./src/common/commontypes/Vector.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11474,7 +11453,7 @@ SuperMap.Feature.Vector = Vector;
 
 
 
-// CONCATENATED MODULE: ./src/common/commontypes/index.js
+;// CONCATENATED MODULE: ./src/common/commontypes/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11507,7 +11486,7 @@ SuperMap.Feature.Vector = Vector;
 
 
 
-// CONCATENATED MODULE: ./src/common/format/Format.js
+;// CONCATENATED MODULE: ./src/common/format/Format.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11575,7 +11554,7 @@ class Format {
 
 SuperMap.Format = SuperMap.Format || Format;
 
-// CONCATENATED MODULE: ./src/common/format/JSON.js
+;// CONCATENATED MODULE: ./src/common/format/JSON.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11881,7 +11860,7 @@ class JSONFormat extends Format {
 }
 
 SuperMap.Format.JSON = JSONFormat;
-// CONCATENATED MODULE: ./src/common/iServer/ServerColor.js
+;// CONCATENATED MODULE: ./src/common/iServer/ServerColor.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -11969,7 +11948,7 @@ class ServerColor {
 SuperMap.ServerColor = ServerColor;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
+;// CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -12184,7 +12163,7 @@ class ServerStyle {
 
 SuperMap.ServerStyle = ServerStyle;
 
-// CONCATENATED MODULE: ./src/common/iServer/PointWithMeasure.js
+;// CONCATENATED MODULE: ./src/common/iServer/PointWithMeasure.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -12286,7 +12265,7 @@ class PointWithMeasure extends Point {
 
 SuperMap.PointWithMeasure = PointWithMeasure;
 
-// CONCATENATED MODULE: ./src/common/iServer/Route.js
+;// CONCATENATED MODULE: ./src/common/iServer/Route.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -12520,7 +12499,7 @@ class Route extends Collection {
 }
 
 SuperMap.Route = Route;
-// CONCATENATED MODULE: ./src/common/iServer/ServerGeometry.js
+;// CONCATENATED MODULE: ./src/common/iServer/ServerGeometry.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -12814,10 +12793,10 @@ class ServerGeometry {
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
-        //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
+            //根据面积排序
+            ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
             // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
             // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
@@ -12847,17 +12826,14 @@ class ServerGeometry {
                 }
             }
         } else {
-            //根据面积排序
-            //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
             polygonArray = new Array();
             for (let i = 0; i < polygonArrayTemp.length; i++) {
                 if (geoTopo[i] && geoTopo[i] == -1) {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[
-                            polygonArray.length - 1
-                        ].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components =
+                            polygonArray[polygonArray.length - 1].components.concat(CCWArray);
                         CCWArray = [];
                     }
                     polygonArray.push(polygonArrayTemp[i]);
@@ -12865,9 +12841,8 @@ class ServerGeometry {
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
-                            CCWArray
-                        );
+                        polygonArray[polyLength - 1].components =
+                            polygonArray[polyLength - 1].components.concat(CCWArray);
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
                             polygonArray.push(new Polygon(CCWArray));
@@ -12929,10 +12904,10 @@ class ServerGeometry {
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
-        //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
+            //根据面积排序
+            ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
             // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
             // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
@@ -12962,16 +12937,14 @@ class ServerGeometry {
                 }
             }
         } else {
-            //根据面积排序
             polygonArray = new Array();
             for (let i = 0; i < polygonArrayTemp.length; i++) {
                 if (geoTopo[i] && geoTopo[i] == -1) {
                     CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
                 } else {
                     if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[
-                            polygonArray.length - 1
-                        ].components.concat(CCWArray);
+                        polygonArray[polygonArray.length - 1].components =
+                            polygonArray[polygonArray.length - 1].components.concat(CCWArray);
                         CCWArray = [];
                     }
                     polygonArray.push(polygonArrayTemp[i]);
@@ -12979,9 +12952,8 @@ class ServerGeometry {
                 if (i == len - 1) {
                     var polyLength = polygonArray.length;
                     if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(
-                            CCWArray
-                        );
+                        polygonArray[polyLength - 1].components =
+                            polygonArray[polyLength - 1].components.concat(CCWArray);
                     } else {
                         for (let k = 0, length = CCWArray.length; k < length; k++) {
                             polygonArray.push(new Polygon(CCWArray));
@@ -13172,7 +13144,7 @@ class ServerGeometry {
 
 SuperMap.ServerGeometry = ServerGeometry;
 
-// CONCATENATED MODULE: ./src/common/format/GeoJSON.js
+;// CONCATENATED MODULE: ./src/common/format/GeoJSON.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -13885,7 +13857,7 @@ class GeoJSON extends JSONFormat {
 }
 
 SuperMap.Format.GeoJSON = GeoJSON;
-// CONCATENATED MODULE: ./src/common/format/WKT.js
+;// CONCATENATED MODULE: ./src/common/format/WKT.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14239,7 +14211,7 @@ class WKT extends Format {
 }
 
 SuperMap.Format.WKT = WKT;
-// CONCATENATED MODULE: ./src/common/format/index.js
+;// CONCATENATED MODULE: ./src/common/format/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14252,7 +14224,7 @@ SuperMap.Format.WKT = WKT;
 
 
 
-// CONCATENATED MODULE: ./src/common/control/TimeControlBase.js
+;// CONCATENATED MODULE: ./src/common/control/TimeControlBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14686,7 +14658,7 @@ class TimeControlBase {
 SuperMap.TimeControlBase = TimeControlBase;
 
 
-// CONCATENATED MODULE: ./src/common/control/TimeFlowControl.js
+;// CONCATENATED MODULE: ./src/common/control/TimeFlowControl.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14894,7 +14866,7 @@ class TimeFlowControl extends TimeControlBase {
 SuperMap.TimeFlowControl = TimeFlowControl;
 
 
-// CONCATENATED MODULE: ./src/common/control/index.js
+;// CONCATENATED MODULE: ./src/common/control/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14913,8 +14885,7 @@ var fetch = __webpack_require__(693);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(144);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
-
-// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
+;// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15350,7 +15321,7 @@ SuperMap.Util.RequestJSONPPromise = {
     }
 };
 
-// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
+;// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15740,7 +15711,7 @@ SecurityManager.SSO = 'https://sso.supermap.com';
 SecurityManager.ONLINE = 'https://www.supermapol.com';
 SuperMap.SecurityManager = SecurityManager;
 
-// CONCATENATED MODULE: ./src/common/iManager/iManagerServiceBase.js
+;// CONCATENATED MODULE: ./src/common/iManager/iManagerServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15809,7 +15780,7 @@ class IManagerServiceBase {
 
 SuperMap.iManagerServiceBase = IManagerServiceBase;
 
-// CONCATENATED MODULE: ./src/common/iManager/iManagerCreateNodeParam.js
+;// CONCATENATED MODULE: ./src/common/iManager/iManagerCreateNodeParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15843,7 +15814,7 @@ class IManagerCreateNodeParam {
 SuperMap.iManagerCreateNodeParam = IManagerCreateNodeParam;
 
 
-// CONCATENATED MODULE: ./src/common/iManager/iManager.js
+;// CONCATENATED MODULE: ./src/common/iManager/iManager.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15935,7 +15906,7 @@ class IManager extends IManagerServiceBase {
 SuperMap.iManager = IManager;
 
 
-// CONCATENATED MODULE: ./src/common/iManager/index.js
+;// CONCATENATED MODULE: ./src/common/iManager/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15947,7 +15918,7 @@ SuperMap.iManager = IManager;
 
 
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15998,7 +15969,7 @@ class IPortalServiceBase {
 
 SuperMap.iPortalServiceBase = IPortalServiceBase;
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16048,7 +16019,7 @@ class IPortalQueryParam {
 SuperMap.iPortalQueryParam = IPortalQueryParam;
  
  
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryResult.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryResult.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16083,7 +16054,7 @@ class IPortalQueryResult {
 SuperMap.iPortalQueryResult = IPortalQueryResult;
 
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalResource.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalResource.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16204,7 +16175,7 @@ class IPortalResource extends IPortalServiceBase {
 SuperMap.iPortalResource = IPortalResource;
 
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16234,7 +16205,7 @@ class IPortalShareParam {
 SuperMap.iPortalShareParam = IPortalShareParam;
  
  
-// CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16338,7 +16309,7 @@ class IPortal extends IPortalServiceBase {
 
 SuperMap.iPortal = IPortal;
 
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16370,7 +16341,7 @@ class IPortalShareEntity {
 SuperMap.iPortalShareEntity = IPortalShareEntity;
  
  
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddResourceParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddResourceParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16400,7 +16371,7 @@ SuperMap.iPortalShareEntity = IPortalShareEntity;
  SuperMap.iPortalAddResourceParam = IPortalAddResourceParam;
    
    
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalRegisterServiceParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalRegisterServiceParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16436,7 +16407,7 @@ class IPortalRegisterServiceParam {
 SuperMap.iPortalRegisterServiceParam = IPortalRegisterServiceParam;
    
    
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddDataParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddDataParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16468,7 +16439,7 @@ SuperMap.iPortalRegisterServiceParam = IPortalRegisterServiceParam;
  SuperMap.iPortalAddDataParam = IPortalAddDataParam;
   
   
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataMetaInfoParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataMetaInfoParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16513,7 +16484,7 @@ SuperMap.iPortalRegisterServiceParam = IPortalRegisterServiceParam;
  SuperMap.iPortalDataMetaInfoParam = IPortalDataMetaInfoParam;
   
   
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataStoreInfoParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataStoreInfoParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16543,7 +16514,7 @@ SuperMap.iPortalRegisterServiceParam = IPortalRegisterServiceParam;
  SuperMap.iPortalDataStoreInfoParam = IPortalDataStoreInfoParam;
   
   
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataConnectionInfoParam.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataConnectionInfoParam.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16571,7 +16542,7 @@ SuperMap.iPortalRegisterServiceParam = IPortalRegisterServiceParam;
  SuperMap.iPortalDataConnectionInfoParam = IPortalDataConnectionInfoParam;
   
   
-// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
+;// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16871,7 +16842,7 @@ class IPortalUser extends IPortalServiceBase {
 }
 
 SuperMap.iPortalUser = IPortalUser;
-// CONCATENATED MODULE: ./src/common/iPortal/index.js
+;// CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16904,7 +16875,7 @@ SuperMap.iPortalUser = IPortalUser;
 
 
 
-// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
+;// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16943,7 +16914,6 @@ class CommonServiceBase {
         this.urls = null;
 
         this.proxy = null;
-
 
         this.index = null;
 
@@ -17168,11 +17138,19 @@ class CommonServiceBase {
     }
 
     _commit(options) {
-        if (options.method === 'POST' || options.method === 'PUT') {
+        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
                 options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
-            options.params = options.data;
+            if (typeof options.data === 'object') {
+                try {
+                    options.params = Util.toJSON(options.data);
+                } catch (e) {
+                    console.log('不是json对象');
+                }
+            } else {
+                options.params = options.data;
+            }
         }
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
@@ -17181,7 +17159,7 @@ class CommonServiceBase {
             timeout: options.async ? 0 : null,
             proxy: options.proxy
         })
-            .then(function(response) {
+            .then(function (response) {
                 if (response.text) {
                     return response.text();
                 }
@@ -17190,34 +17168,41 @@ class CommonServiceBase {
                 }
                 return response;
             })
-            .then(function(text) {
-                var result = text;
+            .then(function (text) {
+                let requestResult = text;
                 if (typeof text === 'string') {
-                    result = new JSONFormat().read(text);
+                    requestResult = new JSONFormat().read(text);
                 }
-                if (!result || result.error || (result.code >= 300 && result.code !== 304)) {
-                    if (result && result.error) {
-                        result = {
-                            error: result.error
+                if (
+                    !requestResult ||
+                    requestResult.error ||
+                    (requestResult.code >= 300 && requestResult.code !== 304)
+                ) {
+                    if (requestResult && requestResult.error) {
+                        requestResult = {
+                            error: requestResult.error
                         };
                     } else {
-                        result = {
-                            error: result
+                        requestResult = {
+                            error: requestResult
                         };
                     }
                 }
-                if (result.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(result);
-                } else {
-                    result.succeed = result.succeed == undefined ? true : result.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(result);
-                }
+                return requestResult;
             })
-            .catch(function(e) {
+            .catch(function (e) {
                 var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(e);
+            })
+            .then((requestResult) => {
+                if (requestResult.error) {
+                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(requestResult);
+                } else {
+                    requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
+                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(requestResult);
+                }
             });
     }
 }
@@ -17239,7 +17224,7 @@ SuperMap.CommonServiceBase = CommonServiceBase;
  * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
  */
 
-// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17317,7 +17302,7 @@ class GeoCodingParameter {
 }
 
 SuperMap.GeoCodingParameter = GeoCodingParameter;
-// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17412,7 +17397,7 @@ class GeoDecodingParameter {
 }
 
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
-// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
+;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17511,7 +17496,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
 
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
 
-// CONCATENATED MODULE: ./src/common/iServer/AggregationParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/AggregationParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17553,7 +17538,7 @@ class AggregationParameter {
 
 SuperMap.AggregationParameter = AggregationParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/BucketAggParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/BucketAggParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17593,7 +17578,7 @@ class BucketAggParameter extends AggregationParameter {
 
 SuperMap.BucketAggParameter = BucketAggParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/MetricsAggParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/MetricsAggParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17631,7 +17616,7 @@ class MetricsAggParameter extends AggregationParameter {
 
 SuperMap.MetricsAggParameter = MetricsAggParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17804,7 +17789,7 @@ class AreaSolarRadiationParameters {
 }
 
 SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters;
-// CONCATENATED MODULE: ./src/common/iServer/SpatialAnalystBase.js
+;// CONCATENATED MODULE: ./src/common/iServer/SpatialAnalystBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17909,7 +17894,7 @@ class SpatialAnalystBase extends CommonServiceBase {
 
 SuperMap.SpatialAnalystBase = SpatialAnalystBase;
 
-// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationService.js
+;// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -17986,7 +17971,7 @@ class AreaSolarRadiationService extends SpatialAnalystBase {
 SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/BufferDistance.js
+;// CONCATENATED MODULE: ./src/common/iServer/BufferDistance.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18035,7 +18020,7 @@ class BufferDistance {
 }
 
 SuperMap.BufferDistance = BufferDistance;
-// CONCATENATED MODULE: ./src/common/iServer/BufferSetting.js
+;// CONCATENATED MODULE: ./src/common/iServer/BufferSetting.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18124,7 +18109,7 @@ class BufferSetting {
 }
 
 SuperMap.BufferSetting = BufferSetting;
-// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18170,7 +18155,7 @@ class BufferAnalystParameters {
 }
 
 SuperMap.BufferAnalystParameters = BufferAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/DataReturnOption.js
+;// CONCATENATED MODULE: ./src/common/iServer/DataReturnOption.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18240,7 +18225,7 @@ class DataReturnOption {
 }
 
 SuperMap.DataReturnOption = DataReturnOption;
-// CONCATENATED MODULE: ./src/common/iServer/JoinItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/JoinItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18347,7 +18332,7 @@ class JoinItem {
 }
 
 SuperMap.JoinItem = JoinItem;
-// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18489,7 +18474,7 @@ class DatasourceConnectionInfo {
 }
 
 SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
-// CONCATENATED MODULE: ./src/common/iServer/LinkItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/LinkItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18640,7 +18625,7 @@ class LinkItem {
 }
 
 SuperMap.LinkItem = LinkItem;
-// CONCATENATED MODULE: ./src/common/iServer/FilterParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/FilterParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18780,7 +18765,7 @@ class FilterParameter {
 }
 
 SuperMap.FilterParameter = FilterParameter;
-// CONCATENATED MODULE: ./src/common/iServer/DatasetBufferAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetBufferAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18891,7 +18876,7 @@ class DatasetBufferAnalystParameters extends BufferAnalystParameters {
 
 
 SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/GeometryBufferAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeometryBufferAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -18977,7 +18962,7 @@ class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 }
 
 SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19070,7 +19055,7 @@ class BufferAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.BufferAnalystService = BufferAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
+;// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19139,7 +19124,7 @@ class OutputSetting {
 }
 
 SuperMap.OutputSetting = OutputSetting;
-// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19220,7 +19205,7 @@ class MappingParameters {
 }
 
 SuperMap.MappingParameters = MappingParameters;
-// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19357,7 +19342,7 @@ class BuffersAnalystJobsParameter {
 
 SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
+;// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19514,7 +19499,7 @@ class ProcessingServiceBase extends CommonServiceBase {
 }
 
 SuperMap.ProcessingServiceBase = ProcessingServiceBase;
-// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19577,7 +19562,7 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
 
 SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19646,7 +19631,7 @@ class BurstPipelineAnalystParameters {
 }
 
 SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/NetworkAnalystServiceBase.js
+;// CONCATENATED MODULE: ./src/common/iServer/NetworkAnalystServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19717,7 +19702,7 @@ class NetworkAnalystServiceBase extends CommonServiceBase {
 }
 
 SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase;
-// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19796,7 +19781,7 @@ class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/ChartFeatureInfoSpecsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/ChartFeatureInfoSpecsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19861,7 +19846,7 @@ class ChartFeatureInfoSpecsService extends CommonServiceBase {
 }
 
 SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
-// CONCATENATED MODULE: ./src/common/iServer/ChartQueryFilterParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/ChartQueryFilterParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -19952,7 +19937,7 @@ class ChartQueryFilterParameter {
 }
 
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;
-// CONCATENATED MODULE: ./src/common/iServer/ChartQueryParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/ChartQueryParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20088,7 +20073,7 @@ class ChartQueryParameters {
 }
 
 SuperMap.ChartQueryParameters = ChartQueryParameters;
-// CONCATENATED MODULE: ./src/common/iServer/QueryParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20212,7 +20197,7 @@ class QueryParameters {
 }
 
 SuperMap.QueryParameters = QueryParameters;
-// CONCATENATED MODULE: ./src/common/iServer/ChartQueryService.js
+;// CONCATENATED MODULE: ./src/common/iServer/ChartQueryService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20375,7 +20360,7 @@ class ChartQueryService extends CommonServiceBase {
 }
 
 SuperMap.ChartQueryService = ChartQueryService;
-// CONCATENATED MODULE: ./src/common/iServer/ClipParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/ClipParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20469,7 +20454,7 @@ class ClipParameter {
 }
 
 SuperMap.ClipParameter = ClipParameter;
-// CONCATENATED MODULE: ./src/common/iServer/ColorDictionary.js
+;// CONCATENATED MODULE: ./src/common/iServer/ColorDictionary.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20538,7 +20523,7 @@ class ColorDictionary {
 SuperMap.ColorDictionary = ColorDictionary;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystResultSetting.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystResultSetting.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20640,7 +20625,7 @@ class TransportationAnalystResultSetting {
 }
 
 SuperMap.TransportationAnalystResultSetting = TransportationAnalystResultSetting;
-// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20737,7 +20722,7 @@ class TransportationAnalystParameter {
 }
 
 SuperMap.TransportationAnalystParameter = TransportationAnalystParameter;
-// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20799,7 +20784,7 @@ class ComputeWeightMatrixParameters {
 }
 
 SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters;
-// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixService.js
+;// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -20905,7 +20890,7 @@ class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;
-// CONCATENATED MODULE: ./src/common/iServer/DataFlowService.js
+;// CONCATENATED MODULE: ./src/common/iServer/DataFlowService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21134,7 +21119,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 }
 
 SuperMap.DataFlowService = DataFlowService_DataFlowService;
-// CONCATENATED MODULE: ./src/common/iServer/DatasetInfo.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetInfo.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21259,7 +21244,7 @@ class DatasetInfo {
 }
 
 SuperMap.DatasetInfo = DatasetInfo;
-// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21302,7 +21287,7 @@ class OverlayAnalystParameters {
 }
 
 SuperMap.OverlayAnalystParameters = OverlayAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/DatasetOverlayAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetOverlayAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21462,7 +21447,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 }
 
 SuperMap.DatasetOverlayAnalystParameters = DatasetOverlayAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParametersSetting.js
+;// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParametersSetting.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21593,7 +21578,7 @@ class SurfaceAnalystParametersSetting {
 }
 
 SuperMap.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting;
-// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21671,7 +21656,7 @@ class SurfaceAnalystParameters {
 }
 
 SuperMap.SurfaceAnalystParameters = SurfaceAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/DatasetSurfaceAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetSurfaceAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21771,7 +21756,7 @@ class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
 }
 
 SuperMap.DatasetSurfaceAnalystParameters = DatasetSurfaceAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21849,7 +21834,7 @@ class ThiessenAnalystParameters {
 }
 
 SuperMap.ThiessenAnalystParameters = ThiessenAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/DatasetThiessenAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetThiessenAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -21930,7 +21915,7 @@ class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
 
 SuperMap.DatasetThiessenAnalystParameters = DatasetThiessenAnalystParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22025,7 +22010,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
 }
 
 SuperMap.DatasourceService = DatasourceService_DatasourceService;
-// CONCATENATED MODULE: ./src/common/iServer/DensityKernelAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/DensityKernelAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22143,7 +22128,7 @@ class DensityKernelAnalystParameters {
 
 SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/DensityAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/DensityAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22229,7 +22214,7 @@ class DensityAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.DensityAnalystService = DensityAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22351,7 +22336,7 @@ class EditFeaturesParameters {
 }
 
 SuperMap.EditFeaturesParameters = EditFeaturesParameters;
-// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesService.js
+;// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22472,7 +22457,7 @@ class EditFeaturesService extends CommonServiceBase {
 }
 
 SuperMap.EditFeaturesService = EditFeaturesService;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalyst3DParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalyst3DParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22540,7 +22525,7 @@ class FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22582,7 +22567,7 @@ class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22661,7 +22646,7 @@ class FacilityAnalystSinks3DService extends CommonServiceBase {
 }
 
 SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22703,7 +22688,7 @@ class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22776,7 +22761,7 @@ class FacilityAnalystSources3DService extends CommonServiceBase {
 }
 
 SuperMap.FacilityAnalystSources3DService = FacilityAnalystSources3DService;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22849,7 +22834,7 @@ class FacilityAnalystStreamParameters {
 }
 
 SuperMap.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22937,7 +22922,7 @@ class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -22976,7 +22961,7 @@ class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23044,7 +23029,7 @@ class FacilityAnalystTracedown3DService extends CommonServiceBase {
 }
 
 SuperMap.FacilityAnalystTracedown3DService = FacilityAnalystTracedown3DService;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23082,7 +23067,7 @@ class FacilityAnalystTraceup3DParameters extends FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23157,7 +23142,7 @@ class FacilityAnalystTraceup3DService extends CommonServiceBase {
 }
 
 SuperMap.FacilityAnalystTraceup3DService = FacilityAnalystTraceup3DService;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23202,7 +23187,7 @@ class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23268,7 +23253,7 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
 
 SuperMap.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService;
 
-// CONCATENATED MODULE: ./src/common/iServer/FieldParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FieldParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23320,7 +23305,7 @@ class FieldParameters {
 
 SuperMap.FieldParameters = FieldParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticsParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticsParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23377,7 +23362,7 @@ class FieldStatisticsParameters extends FieldParameters {
 
 SuperMap.FieldStatisticsParameters = FieldStatisticsParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23486,7 +23471,7 @@ class FieldStatisticService extends CommonServiceBase {
 }
 
 SuperMap.FieldStatisticService = FieldStatisticService;
-// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23587,7 +23572,7 @@ class FindClosestFacilitiesParameters {
 }
 
 SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23738,7 +23723,7 @@ class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService;
-// CONCATENATED MODULE: ./src/common/iServer/FindLocationParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindLocationParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23821,7 +23806,7 @@ class FindLocationParameters {
 }
 
 SuperMap.FindLocationParameters = FindLocationParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FindLocationService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindLocationService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -23945,7 +23930,7 @@ class FindLocationService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FindLocationService = FindLocationService;
-// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24030,7 +24015,7 @@ class FindMTSPPathsParameters {
 }
 
 SuperMap.FindMTSPPathsParameters = FindMTSPPathsParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24172,7 +24157,7 @@ class FindMTSPPathsService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FindMTSPPathsService = FindMTSPPathsService;
-// CONCATENATED MODULE: ./src/common/iServer/FindPathParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindPathParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24255,7 +24240,7 @@ class FindPathParameters {
 }
 
 SuperMap.FindPathParameters = FindPathParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FindPathService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindPathService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24391,7 +24376,7 @@ class FindPathService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FindPathService = FindPathService;
-// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24488,7 +24473,7 @@ class FindServiceAreasParameters {
 }
 
 SuperMap.FindServiceAreasParameters = FindServiceAreasParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24627,7 +24612,7 @@ class FindServiceAreasService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FindServiceAreasService = FindServiceAreasService;
-// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24704,7 +24689,7 @@ class FindTSPPathsParameters {
 }
 
 SuperMap.FindTSPPathsParameters = FindTSPPathsParameters;
-// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24842,7 +24827,7 @@ class FindTSPPathsService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.FindTSPPathsService = FindTSPPathsService;
-// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -24980,7 +24965,7 @@ class GenerateSpatialDataParameters {
 }
 
 SuperMap.GenerateSpatialDataParameters = GenerateSpatialDataParameters;
-// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25100,7 +25085,7 @@ class GenerateSpatialDataService extends SpatialAnalystBase {
 }
 
 SuperMap.GenerateSpatialDataService = GenerateSpatialDataService;
-// CONCATENATED MODULE: ./src/common/iServer/GeoHashGridAggParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeoHashGridAggParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25159,7 +25144,7 @@ class GeoHashGridAggParameter extends BucketAggParameter {
 
 SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/GeometryOverlayAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeometryOverlayAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25271,7 +25256,7 @@ class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 }
 
 SuperMap.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/GeometrySurfaceAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeometrySurfaceAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25336,7 +25321,7 @@ class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
 
 SuperMap.GeometrySurfaceAnalystParameters = GeometrySurfaceAnalystParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GeometryThiessenAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeometryThiessenAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25407,14 +25392,14 @@ class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
 }
 
 SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/GeoprocessingService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeoprocessingService.js
 
 
 
 /**
  * @class SuperMap.GeoprocessingService
- * @category  iServer GeoprocessingService
- * @classdesc 地理处理服务接口的基类。
+ * @category  iServer ProcessingAutomationService
+ * @classdesc 处理自动化服务接口的基类。
  * @version 10.1.0
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。
@@ -25433,25 +25418,25 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTools
-     * @description 获取地理处理工具列表。
+     * @description 获取处理自动化工具列表。
      */
     getTools() {
         this._get(`${this.url}/list`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getTool
-     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 处理自动化工具ID。
      */
     getTool(identifier) {
         this._get(`${this.url}/${identifier}`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.execute
-     * @description 同步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 同步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      */
     execute(identifier, parameter, environment) {
         parameter = parameter ? parameter : null;
@@ -25461,10 +25446,10 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.submitJob
-     * @description 异步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environments - 地理处理工具的环境参数。
+     * @description 异步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environments - 处理自动化工具的环境参数。
      */
     submitJob(identifier, parameter, environments) {
         parameter = parameter ? parameter : null;
@@ -25483,9 +25468,9 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.waitForJobCompletion
-     * @description 获取地理处理异步执行状态信息。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化异步执行状态信息。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {Callback} options.statusCallback - 任务状态的回调函数。
@@ -25525,9 +25510,9 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobInfo
-     * @description 获取地理处理任务的执行信息。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 获取处理自动化任务的执行信息。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      */
     getJobInfo(identifier, jobId) {
         this._get(`${this.url}/${identifier}/jobs/${jobId}`);
@@ -25535,17 +25520,17 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GeoprocessingService.prototype.cancelJob
-     * @description 取消地理处理任务的异步执行。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 取消处理自动化任务的异步执行。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      */
     cancelJob(identifier, jobId) {
         this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getJobs
-     * @description 获取地理处理服务任务列表。
-     * @param {string} identifier - 地理处理工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @description 获取处理自动化服务任务列表。
+     * @param {string} identifier - 处理自动化工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      */
     getJobs(identifier) {
         let url = `${this.url}/jobs`;
@@ -25556,10 +25541,10 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     }
     /**
      * @function SuperMap.GeoprocessingService.prototype.getResults
-     * @description 地理处理工具执行的结果等,支持结果过滤。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @description 处理自动化工具执行的结果等,支持结果过滤。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      */
     getResults(identifier, jobId, filter) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
@@ -25582,7 +25567,7 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 }
 SuperMap.GeoprocessingService = GeoprocessingService_GeoprocessingService;
 
-// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25697,7 +25682,7 @@ class GeoRelationAnalystParameters {
 }
 
 SuperMap.GeoRelationAnalystParameters = GeoRelationAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25793,7 +25778,7 @@ class GeoRelationAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.GeoRelationAnalystService = GeoRelationAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25920,7 +25905,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
 }
 
 SuperMap.DatasetService = DatasetService_DatasetService;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesParametersBase.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesParametersBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -25993,6 +25978,12 @@ class GetFeaturesParametersBase {
         this.maxFeatures = null;
 
         /**
+         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.hasGeometry=true]
+         * @description 返回结果是否包含Geometry
+         */
+        this.hasGeometry = true;
+
+        /**
          * @member {SuperMap.MetricsAggParameter|SuperMap.GeoHashGridAggParameter} SuperMap.GetFeaturesParametersBase.prototype.aggregations
          * @description 聚合查询参数，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
          */
@@ -26014,6 +26005,7 @@ class GetFeaturesParametersBase {
         me.returnContent = null;
         me.fromIndex = null;
         me.toIndex = null;
+        me.hasGeometry = null;
         me.maxFeatures = null;
         me.targetEpsgCode = null;
         me.targetPrj = null;
@@ -26024,7 +26016,7 @@ class GetFeaturesParametersBase {
 }
 
 SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26146,6 +26138,11 @@ class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByBounds.maxFeatures = params.maxFeatures;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+          parasByBounds.hasGeometry = params.hasGeometry;
+        }
+
         if (params.targetEpsgCode) {
             parasByBounds.targetEpsgCode = params.targetEpsgCode;
         }
@@ -26167,7 +26164,7 @@ GetFeaturesByBoundsParameters.getFeatureMode = {
 
 SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesServiceBase.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26225,6 +26222,12 @@ class GetFeaturesServiceBase extends CommonServiceBase {
          */
         this.toIndex = 19;
 
+         /**
+         * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.hasGeometry=true]
+         * @description 返回结果是否包含Geometry
+         */
+        this.hasGeometry = true;
+
         /**
          * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.maxFeatures=1000]
          * @description 进行 SQL 查询时，用于设置服务端返回查询结果条目数量。
@@ -26256,6 +26259,7 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = null;
         me.maxFeatures = null;
         me.format = null;
+        me.hasGeometry = null;
     }
 
     /**
@@ -26275,6 +26279,7 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.fromIndex = params.fromIndex;
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
+        me.hasGeometry = params.hasGeometry;
         if (me.returnContent) {
             me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
             firstPara = false;
@@ -26287,6 +26292,7 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         if (params.returnCountOnly) {
             me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnContent)
         }
+
         jsonParameters = me.getJsonParameters(params);
         me.request({
             method: "POST",
@@ -26316,7 +26322,7 @@ class GetFeaturesServiceBase extends CommonServiceBase {
 }
 
 SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26378,7 +26384,7 @@ class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
 }
 
 SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26466,9 +26472,9 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
      * @returns {string} 转化后的 JSON 字符串。
      */
     static toJsonParameters(params) {
-        var filterParameter, paramsBySql, geometry;
+        var filterParameter, paramsByBuffer, geometry;
         geometry = ServerGeometry.fromGeometry(params.geometry);
-        paramsBySql = {
+        paramsByBuffer = {
             datasetNames: params.datasetNames,
             getFeatureMode: 'BUFFER',
             bufferDistance: params.bufferDistance,
@@ -26478,28 +26484,33 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
             filterParameter = new FilterParameter();
             filterParameter.name = params.datasetNames;
             filterParameter.fields = params.fields;
-            paramsBySql.queryParameter = filterParameter;
+            paramsByBuffer.queryParameter = filterParameter;
         }
         if (params.attributeFilter) {
-            paramsBySql.attributeFilter = params.attributeFilter;
-            paramsBySql.getFeatureMode = 'BUFFER_ATTRIBUTEFILTER';
+            paramsByBuffer.attributeFilter = params.attributeFilter;
+            paramsByBuffer.getFeatureMode = 'BUFFER_ATTRIBUTEFILTER';
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
-            paramsBySql.maxFeatures = params.maxFeatures;
+            paramsByBuffer.maxFeatures = params.maxFeatures;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+            paramsByBuffer.hasGeometry = params.hasGeometry;
+        }
+
         if (params.targetEpsgCode) {
-            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+            paramsByBuffer.targetEpsgCode = params.targetEpsgCode;
         }
         if (!params.targetEpsgCode && params.targetPrj) {
-            paramsBySql.targetPrj = params.targetPrj;
+            paramsByBuffer.targetPrj = params.targetPrj;
         }
-        return Util.toJSON(paramsBySql);
+        return Util.toJSON(paramsByBuffer);
     }
 }
 
 SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26563,7 +26574,7 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
 }
 
 SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26680,9 +26691,15 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
             parasByGeometry.attributeFilter = params.attributeFilter;
             parasByGeometry.getFeatureMode = 'SPATIAL_ATTRIBUTEFILTER';
         }
+        
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByGeometry.maxFeatures = params.maxFeatures;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+            parasByGeometry.hasGeometry = params.hasGeometry;
+        }
+
         if (params.targetEpsgCode) {
             parasByGeometry.targetEpsgCode = params.targetEpsgCode;
         }
@@ -26699,7 +26716,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
 SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26760,7 +26777,7 @@ class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 }
 
 SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26850,11 +26867,16 @@ class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
         if (params.targetEpsgCode) {
             parasByIDs.targetEpsgCode = params.targetEpsgCode;
         }
+
+        if (typeof params.hasGeometry === 'boolean') {
+            parasByIDs.hasGeometry = params.hasGeometry;
+        }
+
         if (!params.targetEpsgCode && params.targetPrj) {
             parasByIDs.targetPrj = params.targetPrj;
         }
         if (params.aggregations) {
-          parasByIDs.aggregations = params.aggregations;
+            parasByIDs.aggregations = params.aggregations;
         }
 
         return Util.toJSON(parasByIDs);
@@ -26863,7 +26885,7 @@ class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
 
 SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26925,7 +26947,7 @@ class GetFeaturesByIDsService extends GetFeaturesServiceBase {
 }
 
 SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService;
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -26998,6 +27020,9 @@ class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
+        if (typeof params.hasGeometry === 'boolean') {
+            paramsBySql.hasGeometry = params.hasGeometry;
+        }
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
         }
@@ -27016,7 +27041,7 @@ class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
 SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27079,7 +27104,7 @@ class GetFeaturesBySQLService extends GetFeaturesServiceBase {
 }
 
 SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService;
-// CONCATENATED MODULE: ./src/common/iServer/GetFieldsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetFieldsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27164,7 +27189,7 @@ class GetFieldsService extends CommonServiceBase {
 }
 
 SuperMap.GetFieldsService = GetFieldsService;
-// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27231,7 +27256,7 @@ class GetGridCellInfosParameters {
 
 SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27383,7 +27408,7 @@ class GetGridCellInfosService extends CommonServiceBase {
 }
 
 SuperMap.GetGridCellInfosService = GetGridCellInfosService;
-// CONCATENATED MODULE: ./src/common/iServer/ThemeMemoryData.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeMemoryData.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27450,7 +27475,7 @@ class ThemeMemoryData {
 }
 
 SuperMap.ThemeMemoryData = ThemeMemoryData;
-// CONCATENATED MODULE: ./src/common/iServer/Theme.js
+;// CONCATENATED MODULE: ./src/common/iServer/Theme.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27519,7 +27544,7 @@ class Theme {
 }
 
 SuperMap.Theme = Theme;
-// CONCATENATED MODULE: ./src/common/iServer/ServerTextStyle.js
+;// CONCATENATED MODULE: ./src/common/iServer/ServerTextStyle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27725,7 +27750,7 @@ class ServerTextStyle {
 
 SuperMap.ServerTextStyle = ServerTextStyle;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27828,7 +27853,7 @@ class ThemeLabelItem {
 
 SuperMap.ThemeLabelItem = ThemeLabelItem;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeUniqueItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeUniqueItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -27933,7 +27958,7 @@ class ThemeUniqueItem {
 SuperMap.ThemeUniqueItem = ThemeUniqueItem;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeOffset.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeOffset.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28009,7 +28034,7 @@ class ThemeOffset {
 
 SuperMap.ThemeOffset = ThemeOffset;
 
-// CONCATENATED MODULE: ./src/common/iServer/LabelMixedTextStyle.js
+;// CONCATENATED MODULE: ./src/common/iServer/LabelMixedTextStyle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28133,7 +28158,7 @@ class LabelMixedTextStyle {
 SuperMap.LabelMixedTextStyle = LabelMixedTextStyle;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelText.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelText.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28248,7 +28273,7 @@ class ThemeLabelText {
 
 SuperMap.ThemeLabelText = ThemeLabelText;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelAlongLine.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelAlongLine.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28353,7 +28378,7 @@ class ThemeLabelAlongLine {
 
 SuperMap.ThemeLabelAlongLine = ThemeLabelAlongLine;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelBackground.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelBackground.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28428,7 +28453,7 @@ class ThemeLabelBackground {
 
 SuperMap.ThemeLabelBackground = ThemeLabelBackground;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeLabel.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabel.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28449,9 +28474,9 @@ SuperMap.ThemeLabelBackground = ThemeLabelBackground;
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
  * @param {Object} options - 参数。
- * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。
+ * @param {Array.<SuperMap.ThemeLabelItem>} options.items - 分段标签专题图的子项数组。
  * @param {string} options.labelExpression - 标注字段表达式。
- * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
+ * @param {Array.<SuperMap.LabelImageCell|SuperMap.LabelSymbolCell|SuperMap.LabelThemeCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {SuperMap.ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
  * @param {SuperMap.ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
  * @param {SuperMap.LabelOverLengthMode} [options.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
@@ -28484,7 +28509,7 @@ class ThemeLabel extends Theme {
         this.background = new ThemeLabelBackground();
 
         /**
-         * @member {Array.<SuperMap.ThemeUniqueItem>} [SuperMap.ThemeLabel.prototype.items]
+         * @member {Array.<SuperMap.ThemeLabelItem>} [SuperMap.ThemeLabel.prototype.items]
          * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression
          *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
          */
@@ -28509,7 +28534,7 @@ class ThemeLabel extends Theme {
         this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
         /**
-         * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
+         * @member {Array.<SuperMap.LabelImageCell|SuperMap.LabelSymbolCell|SuperMap.LabelThemeCell>} SuperMap.ThemeLabel.prototype.matrixCells
          * @description 矩阵标签元素数组，用于制作矩阵标签专题图。
          *              数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
          */
@@ -28733,7 +28758,7 @@ class ThemeLabel extends Theme {
 
 SuperMap.ThemeLabel = ThemeLabel;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeUnique.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeUnique.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28875,7 +28900,7 @@ class ThemeUnique extends Theme {
 
 SuperMap.ThemeUnique = ThemeUnique;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphAxes.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphAxes.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -28977,7 +29002,7 @@ class ThemeGraphAxes {
 
 SuperMap.ThemeGraphAxes = ThemeGraphAxes;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphSize.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphSize.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29040,7 +29065,7 @@ class ThemeGraphSize {
 
 SuperMap.ThemeGraphSize = ThemeGraphSize;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphText.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphText.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29120,7 +29145,7 @@ class ThemeGraphText {
 
 SuperMap.ThemeGraphText = ThemeGraphText;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29209,7 +29234,7 @@ class ThemeGraphItem {
 
 SuperMap.ThemeGraphItem = ThemeGraphItem;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraph.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraph.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29550,7 +29575,7 @@ class ThemeGraph extends Theme {
 }
 
 SuperMap.ThemeGraph = ThemeGraph;
-// CONCATENATED MODULE: ./src/common/iServer/ThemeDotDensity.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeDotDensity.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29661,7 +29686,7 @@ class ThemeDotDensity extends Theme {
 SuperMap.ThemeDotDensity = ThemeDotDensity;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbolStyle.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbolStyle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29757,7 +29782,7 @@ class ThemeGraduatedSymbolStyle {
 SuperMap.ThemeGraduatedSymbolStyle = ThemeGraduatedSymbolStyle;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbol.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbol.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -29908,7 +29933,7 @@ class ThemeGraduatedSymbol extends Theme {
 
 SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeRangeItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeRangeItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30027,7 +30052,7 @@ class ThemeRangeItem {
 
 SuperMap.ThemeRangeItem = ThemeRangeItem;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeRange.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeRange.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30162,7 +30187,7 @@ class ThemeRange extends Theme {
 
 SuperMap.ThemeRange = ThemeRange;
 
-// CONCATENATED MODULE: ./src/common/iServer/UGCLayer.js
+;// CONCATENATED MODULE: ./src/common/iServer/UGCLayer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30285,7 +30310,7 @@ class UGCLayer {
 }
 
 SuperMap.UGCLayer = UGCLayer;
-// CONCATENATED MODULE: ./src/common/iServer/OverlapDisplayedOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/OverlapDisplayedOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30425,7 +30450,7 @@ class OverlapDisplayedOptions {
 }
 
 SuperMap.OverlapDisplayedOptions = OverlapDisplayedOptions;
-// CONCATENATED MODULE: ./src/common/iServer/UGCMapLayer.js
+;// CONCATENATED MODULE: ./src/common/iServer/UGCMapLayer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30544,7 +30569,7 @@ class UGCMapLayer extends UGCLayer {
 
 SuperMap.UGCMapLayer = UGCMapLayer;
 
-// CONCATENATED MODULE: ./src/common/iServer/UGCSubLayer.js
+;// CONCATENATED MODULE: ./src/common/iServer/UGCSubLayer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30665,7 +30690,7 @@ class UGCSubLayer extends UGCMapLayer {
 
 SuperMap.UGCSubLayer = UGCSubLayer;
 
-// CONCATENATED MODULE: ./src/common/iServer/ServerTheme.js
+;// CONCATENATED MODULE: ./src/common/iServer/ServerTheme.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30783,7 +30808,7 @@ class ServerTheme extends UGCSubLayer {
 
 SuperMap.ServerTheme = ServerTheme;
 
-// CONCATENATED MODULE: ./src/common/iServer/Grid.js
+;// CONCATENATED MODULE: ./src/common/iServer/Grid.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -30983,7 +31008,7 @@ class Grid extends UGCSubLayer {
 
 SuperMap.Grid = Grid;
 
-// CONCATENATED MODULE: ./src/common/iServer/Image.js
+;// CONCATENATED MODULE: ./src/common/iServer/Image.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31094,7 +31119,7 @@ class UGCImage extends UGCSubLayer {
 
 SuperMap.Image = UGCImage;
 
-// CONCATENATED MODULE: ./src/common/iServer/Vector.js
+;// CONCATENATED MODULE: ./src/common/iServer/Vector.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31166,7 +31191,7 @@ class Vector_Vector extends UGCSubLayer {
 
 SuperMap.Vector = Vector_Vector;
 
-// CONCATENATED MODULE: ./src/common/iServer/GetLayersInfoService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GetLayersInfoService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31304,7 +31329,7 @@ class GetLayersInfoService extends CommonServiceBase {
 }
 
 SuperMap.GetLayersInfoService = GetLayersInfoService;
-// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31477,7 +31502,7 @@ class InterpolationAnalystParameters {
 }
 
 SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/InterpolationRBFAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/InterpolationRBFAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31611,7 +31636,7 @@ class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
 SuperMap.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/InterpolationDensityAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/InterpolationDensityAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31670,7 +31695,7 @@ class InterpolationDensityAnalystParameters extends InterpolationAnalystParamete
 }
 
 SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/InterpolationIDWAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/InterpolationIDWAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31763,7 +31788,7 @@ class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
 
 SuperMap.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/InterpolationKrigingAnalystParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/InterpolationKrigingAnalystParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -31983,7 +32008,7 @@ class InterpolationKrigingAnalystParameters extends InterpolationAnalystParamete
 }
 
 SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32099,7 +32124,7 @@ class InterpolationAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.InterpolationAnalystService = InterpolationAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32267,7 +32292,7 @@ class KernelDensityJobParameter {
     }
 }
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
-// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32332,7 +32357,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
 }
 
 SuperMap.KernelDensityJobsService = KernelDensityJobsService;
-// CONCATENATED MODULE: ./src/common/iServer/LabelMatrixCell.js
+;// CONCATENATED MODULE: ./src/common/iServer/LabelMatrixCell.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32353,7 +32378,7 @@ class LabelMatrixCell {
 }
 
 SuperMap.LabelMatrixCell = LabelMatrixCell;
-// CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
+;// CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32441,7 +32466,7 @@ class LabelImageCell extends LabelMatrixCell {
 }
 
 SuperMap.LabelImageCell = LabelImageCell;
-// CONCATENATED MODULE: ./src/common/iServer/LabelSymbolCell.js
+;// CONCATENATED MODULE: ./src/common/iServer/LabelSymbolCell.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32511,7 +32536,7 @@ class LabelSymbolCell extends LabelMatrixCell {
 }
 
 SuperMap.LabelSymbolCell = LabelSymbolCell;
-// CONCATENATED MODULE: ./src/common/iServer/LabelThemeCell.js
+;// CONCATENATED MODULE: ./src/common/iServer/LabelThemeCell.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32573,7 +32598,7 @@ class LabelThemeCell extends LabelMatrixCell {
 }
 
 SuperMap.LabelThemeCell = LabelThemeCell;
-// CONCATENATED MODULE: ./src/common/iServer/LayerStatus.js
+;// CONCATENATED MODULE: ./src/common/iServer/LayerStatus.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32677,7 +32702,7 @@ class LayerStatus {
 }
 
 SuperMap.LayerStatus = LayerStatus;
-// CONCATENATED MODULE: ./src/common/iServer/MapService.js
+;// CONCATENATED MODULE: ./src/common/iServer/MapService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32789,7 +32814,7 @@ class MapService_MapService extends CommonServiceBase {
 
 SuperMap.MapService = MapService_MapService;
 
-// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -32929,7 +32954,7 @@ class MathExpressionAnalysisParameters {
 }
 
 SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters;
-// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisService.js
+;// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33002,7 +33027,7 @@ class MathExpressionAnalysisService extends SpatialAnalystBase {
 }
 
 SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;
-// CONCATENATED MODULE: ./src/common/iServer/MeasureParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/MeasureParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33075,7 +33100,7 @@ class MeasureParameters {
 }
 
 SuperMap.MeasureParameters = MeasureParameters;
-// CONCATENATED MODULE: ./src/common/iServer/MeasureService.js
+;// CONCATENATED MODULE: ./src/common/iServer/MeasureService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33169,10 +33194,11 @@ class MeasureService_MeasureService extends CommonServiceBase {
             paramsTemp = {
                 "point2Ds": Util.toJSON(point2ds),
                 "unit": params.unit,
-                "prjCoordSys": prjCoordSysTemp
+                "prjCoordSys": prjCoordSysTemp,
+                "distanceMode": params.distanceMode || 'Geodesic'
             };
         } else {
-            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit};
+            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit, "distanceMode": params.distanceMode || 'Geodesic'};
         }
 
         me.request({
@@ -33188,7 +33214,7 @@ class MeasureService_MeasureService extends CommonServiceBase {
 }
 
 SuperMap.MeasureService = MeasureService_MeasureService;
-// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33284,7 +33310,7 @@ class OverlayAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.OverlayAnalystService = OverlayAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33409,7 +33435,7 @@ class OverlayGeoJobParameter {
 }
 
 SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
-// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33474,7 +33500,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
 }
 SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33541,7 +33567,7 @@ class QueryByBoundsParameters extends QueryParameters {
 }
 
 SuperMap.QueryByBoundsParameters = QueryByBoundsParameters;
-// CONCATENATED MODULE: ./src/common/iServer/QueryService.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33708,7 +33734,7 @@ class QueryService extends CommonServiceBase {
 }
 
 SuperMap.QueryService = QueryService;
-// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33782,7 +33808,7 @@ class QueryByBoundsService extends QueryService {
 
 SuperMap.QueryByBoundsService = QueryByBoundsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33880,7 +33906,7 @@ class QueryByDistanceParameters extends QueryParameters {
 }
 
 SuperMap.QueryByDistanceParameters = QueryByDistanceParameters;
-// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceService.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -33951,7 +33977,7 @@ class QueryByDistanceService extends QueryService {
 }
 
 SuperMap.QueryByDistanceService = QueryByDistanceService;
-// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryParameters.js
  /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
   * This program are made available under the terms of the Apache License, Version 2.0
   * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34033,7 +34059,7 @@ class QueryByGeometryParameters extends QueryParameters {
 }
 
 SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;
-// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryService.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34113,7 +34139,7 @@ class QueryByGeometryService extends QueryService {
 
 SuperMap.QueryByGeometryService = QueryByGeometryService;
 
-// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34168,7 +34194,7 @@ class QueryBySQLParameters extends QueryParameters {
 
 }
 SuperMap.QueryBySQLParameters = QueryBySQLParameters;
-// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLService.js
+;// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34251,7 +34277,7 @@ class QueryBySQLService extends QueryService {
 
 SuperMap.QueryBySQLService = QueryBySQLService;
 
-// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34322,7 +34348,7 @@ class RouteCalculateMeasureParameters {
 }
 
 SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters;
-// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureService.js
+;// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34448,7 +34474,7 @@ class RouteCalculateMeasureService extends SpatialAnalystBase {
 
 SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService;
 
-// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34581,7 +34607,7 @@ class RouteLocatorParameters {
 }
 
 SuperMap.RouteLocatorParameters = RouteLocatorParameters;
-// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorService.js
+;// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34707,7 +34733,7 @@ class RouteLocatorService extends SpatialAnalystBase {
 
 SuperMap.RouteLocatorService = RouteLocatorService;
 
-// CONCATENATED MODULE: ./src/common/iServer/ServerFeature.js
+;// CONCATENATED MODULE: ./src/common/iServer/ServerFeature.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34820,7 +34846,7 @@ class ServerFeature {
 
 
 SuperMap.ServerFeature = ServerFeature;
-// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34890,7 +34916,7 @@ class SetDatasourceParameters {
 
 SuperMap.SetDatasourceParameters = SetDatasourceParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -34948,7 +34974,7 @@ class SetLayerInfoParameters {
 
 SuperMap.SetLayerInfoParameters = SetLayerInfoParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35014,7 +35040,7 @@ class SetLayerInfoService extends CommonServiceBase {
 
 SuperMap.SetLayerInfoService = SetLayerInfoService;
 
-// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35074,7 +35100,7 @@ class SetLayersInfoParameters {
 
 SuperMap.SetLayersInfoParameters = SetLayersInfoParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35201,7 +35227,7 @@ class SetLayersInfoService extends CommonServiceBase {
 
 SuperMap.SetLayersInfoService = SetLayersInfoService;
 
-// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35283,7 +35309,7 @@ class SetLayerStatusParameters {
 }
 
 SuperMap.SetLayerStatusParameters = SetLayerStatusParameters;
-// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35429,7 +35455,7 @@ class SetLayerStatusService extends CommonServiceBase {
 
 SuperMap.SetLayerStatusService = SetLayerStatusService;
 
-// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35548,7 +35574,7 @@ class SingleObjectQueryJobsParameter {
 
 SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35611,7 +35637,7 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
 SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/StopQueryParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/StopQueryParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35658,7 +35684,7 @@ class StopQueryParameters {
 }
 
 SuperMap.StopQueryParameters = StopQueryParameters;
-// CONCATENATED MODULE: ./src/common/iServer/StopQueryService.js
+;// CONCATENATED MODULE: ./src/common/iServer/StopQueryService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35732,7 +35758,7 @@ class StopQueryService extends CommonServiceBase {
 }
 
 SuperMap.StopQueryService = StopQueryService;
-// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35843,7 +35869,7 @@ class SummaryAttributesJobsParameter {
 
 }
 SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
-// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -35907,7 +35933,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
 }
 
 SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
-// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36080,7 +36106,7 @@ class SummaryMeshJobParameter {
 
 SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36146,7 +36172,7 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
 
 SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36360,7 +36386,7 @@ class SummaryRegionJobParameter {
 
 SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36423,7 +36449,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
 
 SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/SupplyCenter.js
+;// CONCATENATED MODULE: ./src/common/iServer/SupplyCenter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36512,7 +36538,7 @@ class SupplyCenter {
 SuperMap.SupplyCenter = SupplyCenter;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36611,7 +36637,7 @@ class SurfaceAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.SurfaceAnalystService = SurfaceAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36715,7 +36741,7 @@ class TerrainCurvatureCalculationParameters {
 
 SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationService.js
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36787,7 +36813,7 @@ class TerrainCurvatureCalculationService extends SpatialAnalystBase {
 
 SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeFlow.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeFlow.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36873,7 +36899,7 @@ class ThemeFlow {
 
 SuperMap.ThemeFlow = ThemeFlow;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRangeItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRangeItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -36987,7 +37013,7 @@ class ThemeGridRangeItem {
 
 SuperMap.ThemeGridRangeItem = ThemeGridRangeItem;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRange.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRange.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37109,7 +37135,7 @@ class ThemeGridRange extends Theme {
 SuperMap.ThemeGridRange = ThemeGridRange;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUniqueItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUniqueItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37212,7 +37238,7 @@ class ThemeGridUniqueItem {
 
 SuperMap.ThemeGridUniqueItem = ThemeGridUniqueItem;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUnique.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUnique.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37327,7 +37353,7 @@ class ThemeGridUnique extends Theme {
 }
 
 SuperMap.ThemeGridUnique = ThemeGridUnique;
-// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelUniqueItem.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelUniqueItem.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37432,7 +37458,7 @@ class ThemeLabelUniqueItem {
 
 SuperMap.ThemeLabelUniqueItem = ThemeLabelUniqueItem;
 
-// CONCATENATED MODULE: ./src/common/iServer/ThemeParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37547,7 +37573,7 @@ class ThemeParameters {
 }
 
 SuperMap.ThemeParameters = ThemeParameters;
-// CONCATENATED MODULE: ./src/common/iServer/ThemeService.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThemeService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37682,7 +37708,7 @@ class ThemeService_ThemeService extends CommonServiceBase {
 }
 
 SuperMap.ThemeService = ThemeService_ThemeService;
-// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37775,7 +37801,7 @@ class ThiessenAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.ThiessenAnalystService = ThiessenAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/GeometryBatchAnalystService.js
+;// CONCATENATED MODULE: ./src/common/iServer/GeometryBatchAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37912,7 +37938,7 @@ class GeometryBatchAnalystService extends SpatialAnalystBase {
 }
 
 SuperMap.GeometryBatchAnalystService = GeometryBatchAnalystService;
-// CONCATENATED MODULE: ./src/common/iServer/TilesetsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/TilesetsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -37968,7 +37994,7 @@ class TilesetsService extends CommonServiceBase {
 }
 
 SuperMap.TilesetsService = TilesetsService;
-// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38085,7 +38111,7 @@ class TopologyValidatorJobsParameter {
 }
 
 SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
-// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38149,7 +38175,7 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
 }
 
 SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
-// CONCATENATED MODULE: ./src/common/iServer/TransferLine.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransferLine.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38269,7 +38295,7 @@ class TransferLine {
 }
 
 SuperMap.TransferLine = TransferLine;
-// CONCATENATED MODULE: ./src/common/iServer/TransferPathParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransferPathParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38333,7 +38359,7 @@ class TransferPathParameters {
 }
 
 SuperMap.TransferPathParameters = TransferPathParameters;
-// CONCATENATED MODULE: ./src/common/iServer/TransferPathService.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransferPathService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38407,7 +38433,7 @@ class TransferPathService extends CommonServiceBase {
 
 SuperMap.TransferPathService = TransferPathService;
 
-// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38538,7 +38564,7 @@ class TransferSolutionParameters {
 
 SuperMap.TransferSolutionParameters = TransferSolutionParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionService.js
+;// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38634,7 +38660,7 @@ class TransferSolutionService extends CommonServiceBase {
 SuperMap.TransferSolutionService = TransferSolutionService;
 
 
-// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38709,7 +38735,7 @@ class UpdateEdgeWeightParameters {
 }
 
 SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters;
-// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38769,7 +38795,7 @@ class CreateDatasetParameters {
 
 SuperMap.CreateDatasetParameters = CreateDatasetParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightService.js
+;// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38882,7 +38908,7 @@ class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;
-// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -38954,7 +38980,7 @@ class UpdateTurnNodeWeightParameters {
 }
 
 SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters;
-// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightService.js
+;// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39065,7 +39091,7 @@ class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 }
 
 SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;
-// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39166,7 +39192,7 @@ class UpdateDatasetParameters {
 
 SuperMap.UpdateDatasetParameters = UpdateDatasetParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39283,7 +39309,7 @@ class VectorClipJobsParameter {
 
 SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
+;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39346,7 +39372,7 @@ class VectorClipJobsService extends ProcessingServiceBase {
 
 SuperMap.VectorClipJobsService = VectorClipJobsService;
 
-// CONCATENATED MODULE: ./src/common/iServer/RasterFunctionParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/RasterFunctionParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39383,7 +39409,7 @@ class RasterFunctionParameter {
 
 SuperMap.RasterFunctionParameter = RasterFunctionParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/NDVIParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/NDVIParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39461,7 +39487,7 @@ class NDVIParameter extends RasterFunctionParameter {
 
 SuperMap.NDVIParameter = NDVIParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/HillshadeParameter.js
+;// CONCATENATED MODULE: ./src/common/iServer/HillshadeParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39552,7 +39578,7 @@ class HillshadeParameter extends RasterFunctionParameter {
 
 SuperMap.HillshadeParameter = HillshadeParameter;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobCustomItems.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobCustomItems.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39625,7 +39651,7 @@ class WebPrintingJobCustomItems {
 
 SuperMap.WebPrintingJobCustomItems = WebPrintingJobCustomItems;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobImage.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobImage.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39686,7 +39712,7 @@ class WebPrintingJobImage {
 
 SuperMap.WebPrintingJobImage = WebPrintingJobImage;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayers.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayers.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39736,7 +39762,7 @@ SuperMap.WebPrintingJobImage = WebPrintingJobImage;
 
  SuperMap.WebPrintingJobLayers = WebPrintingJobLayers;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLegendOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLegendOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39829,7 +39855,7 @@ class WebPrintingJobLegendOptions {
 
 SuperMap.WebPrintingJobLegendOptions = WebPrintingJobLegendOptions;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLittleMapOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLittleMapOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39925,7 +39951,7 @@ class WebPrintingJobLittleMapOptions {
 
 SuperMap.WebPrintingJobLittleMapOptions = WebPrintingJobLittleMapOptions;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobNorthArrowOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobNorthArrowOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -39985,7 +40011,7 @@ class WebPrintingJobNorthArrowOptions {
 
 SuperMap.WebPrintingJobNorthArrowOptions = WebPrintingJobNorthArrowOptions;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobScaleBarOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobScaleBarOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -40069,7 +40095,7 @@ class WebPrintingJobScaleBarOptions {
 
 SuperMap.WebPrintingJobScaleBarOptions = WebPrintingJobScaleBarOptions;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobContent.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobContent.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -40148,7 +40174,7 @@ class WebPrintingJobContent {
 
 SuperMap.WebPrintingJobContent = WebPrintingJobContent;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayoutOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayoutOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -40286,7 +40312,7 @@ class WebPrintingJobLayoutOptions {
 
 SuperMap.WebPrintingJobLayoutOptions = WebPrintingJobLayoutOptions;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobExportOptions.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobExportOptions.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -40374,7 +40400,7 @@ class WebPrintingJobExportOptions {
 
 SuperMap.WebPrintingJobExportOptions = WebPrintingJobExportOptions;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobParameters.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -40444,7 +40470,7 @@ class WebPrintingJobParameters {
 
 SuperMap.WebPrintingJobParameters = WebPrintingJobParameters;
 
-// CONCATENATED MODULE: ./src/common/iServer/WebPrintingService.js
+;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -40625,7 +40651,1145 @@ class WebPrintingService extends CommonServiceBase {
 
 SuperMap.WebPrintingService = WebPrintingService;
 
-// CONCATENATED MODULE: ./src/common/iServer/index.js
+;// CONCATENATED MODULE: ./src/common/iServer/ImageCollectionService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.ImageCollectionService
+ * @classdesc 影像集合服务类
+ * @version 10.2.0
+ * @category iServer Image
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {string} options.collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {SuperMap.CommonServiceBase}
+ */
+class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
+    constructor(url, options) {
+        super(url, options);
+        this.options = options || {};
+        if (options) {
+            Util.extend(this, options);
+        }
+        this.CLASS_NAME = 'SuperMap.ImageCollectionService';
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getLegend
+     * @description 返回当前影像集合的图例信息。默认为服务发布所配置的风格，支持根据风格参数生成新的图例。
+     * @param {Object} queryParams query参数
+     * @param {SuperMap.ImageRenderingRule} [queryParams.renderingRule] renderingRule 对象，用来指定影像的渲染风格，从而确定图例内容。影像的渲染风格包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。该参数未设置时，将使用发布服务时所配置的风格。
+     */
+    getLegend(queryParams) {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/legend', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            params: queryParams,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getStatistics
+     * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
+     */
+    getStatistics() {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/statistics', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getTileInfo
+     * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
+     
+     */
+    getTileInfo() {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/tileInfo', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.deleteItemByID
+     * @description 删除影像集合中指定 ID 的 Item，即从影像集合中删除指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     */
+    deleteItemByID(featureId) {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId,
+            featureId: featureId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'DELETE',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageCollectionService.prototype.getItemByID
+     * @description 返回指定ID（`collectionId`）的影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     */
+    getItemByID(featureId) {
+        var me = this;
+        var pathParams = {
+            collectionId: me.options.collectionId,
+            featureId: featureId
+        };
+        var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+}
+
+SuperMap.ImageCollectionService = ImageCollectionService_ImageCollectionService;
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.ImageService
+ * @classdesc 影像服务类
+ * @version 10.2.0
+ * @category iServer Image
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {SuperMap.CommonServiceBase}
+ */
+class ImageService_ImageService extends CommonServiceBase {
+    constructor(url, options) {
+        super(url, options);
+        this.options = options || {};
+        if (options) {
+            Util.extend(this, options);
+        }
+        this.CLASS_NAME = 'SuperMap.ImageService';
+    }
+
+    /**
+     * @function SuperMap.ImageService.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function SuperMap.ImageService.prototype.getCollections
+     * @description 返回当前影像服务中的影像集合列表（Collections）。
+     */
+    getCollections() {
+        var me = this;
+        var path = Util.convertPath('/collections');
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageService.prototype.getCollectionByID
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+     */
+    getCollectionByID(collectionId) {
+        var pathParams = {
+            collectionId: collectionId
+        };
+        var me = this;
+        var path = Util.convertPath('/collections/{collectionId}', pathParams);
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'GET',
+            url,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+
+    /**
+     * @function SuperMap.ImageSearchService.prototype.search
+     * @description 返回与过滤条件匹配的 STAC Items。此方式将作为标准的、全要素查询 API。 如果实现了`GET /search`，那么就必须实现此方法。 如果此端点在服务端实现，需要将其链接添加到 `GET /` 响应中的链接对象数组中， 此端点的链接对象的 `rel`属性值为`search`；链接对象中`method`属性值为`POST` 。
+     * @param {SuperMap.ImageSearchParameter} [imageSearchParameter] 查询参数
+     */
+    search(imageSearchParameter) {
+        var postBody = { ...(imageSearchParameter || {}) };
+        var me = this;
+        var path = Util.convertPath('/search');
+        var url = Util.urlPathAppend(me.url, path);
+        this.request({
+            method: 'POST',
+            url,
+            data: postBody,
+            scope: this,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
+    }
+}
+
+SuperMap.ImageService = ImageService_ImageService;
+
+;// CONCATENATED MODULE: ./src/common/iServer/FieldsFilter.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+* @class SuperMap.FieldsFilter
+* @classdesc 指定返回的用于描述 Feature 的字段。
+* @param {Object} options - 初始化参数。  
+* @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，要保留字段
+* @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，要排除的字段
+*/
+class FieldsFilter {
+  constructor(options) { 
+    /**
+    * @description 对返回的字段内容进行过滤，要保留字段 
+    * @member {Array.<string>} SuperMap.FieldsFilter.prototype.include
+    */
+    this.include = undefined;
+    /**
+    * @description 对返回的字段内容进行过滤，要排除的字段 
+    * @member {Array.<string>} SuperMap.FieldsFilter.prototype.exclude
+    */
+    this.exclude = undefined;
+
+    this.CLASS_NAME = 'SuperMap.FieldsFilter';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.FieldsFilter.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.include = undefined;
+    me.exclude = undefined;
+  }
+
+  /**
+  * @function SuperMap.FieldsFilter.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.FieldsFilter} obj 返回的模型.
+  * @return {SuperMap.FieldsFilter} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new FieldsFilter();
+      if (data.hasOwnProperty('include')) {
+          obj.include = data.include
+      }
+      if (data.hasOwnProperty('exclude')) {
+          obj.exclude = data.exclude
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.FieldsFilter = FieldsFilter;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/Sortby.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.Sortby
+ * @param {Object} options - 初始化参数。
+ * @param {string} options.field 属性名称
+ * @param {SuperMap.Sortby.Direction} options.direction 排序规则， 默认升序
+ */
+class Sortby {
+    constructor(options) {
+        /**
+         * @description 属性名称
+         * @member {string} SuperMap.Sortby.prototype.field
+         */
+        this.field = undefined;
+        /**
+         * @description 排序规则
+         * @member {SuperMap.Sortby.Direction} SuperMap.Sortby.prototype.direction
+         * @default SuperMap.Sortby.Direction.ASC
+         */
+        this.direction = SuperMap.Sortby.Direction.ASC;
+
+        this.CLASS_NAME = 'SuperMap.Sortby';
+        Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.Sortby.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.field = undefined;
+        me.direction = 'ASC';
+    }
+
+    /**
+     * @function SuperMap.Sortby.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.Sortby} obj 返回的模型.
+     * @return {SuperMap.Sortby} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new Sortby();
+            if (data.hasOwnProperty('field')) {
+                obj.field = data.field;
+            }
+            if (data.hasOwnProperty('direction')) {
+                obj.direction = data.direction;
+            }
+        }
+        return obj;
+    }
+}
+
+SuperMap.Sortby = Sortby;
+/**
+ * @enum SuperMap.Sortby.Direction
+ * @readonly
+ * @type {string}
+ */
+SuperMap.Sortby.Direction = {
+    ASC: 'ASC',
+    DESC: 'DESC'
+};
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageSearchParameter.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class SuperMap.ImageSearchParameter
+ * @param {Object} options - 初始化参数。
+ * @param {Array.<number>} [options.bbox] 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
+ * @param {Array.<string>} [options.collections] 影像集合的ID数组，将在该指定的Collection中搜索Items。
+ * @param {Array.<string>} [options.ids] 只返回指定 Item 的 ID 数组中的Item。返回的 Item 的 ID 值数组。 设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
+ * @param {number} [options.limit] 返回的最大结果数，即响应文档包含的 Item 的数目。
+ * @param {SuperMap.FieldsFilter} [options.fields] 通过‘include’和‘exclude’属性分别指定哪些字段包含在查询结果的 Feature 描述中，哪些需要排除。返回结果中的stac_version，id，bbox，assets，links，geometry，type，properties这些字段为必须字段，若要返回结果中不含这种字段信息，需要显示地进行排除设置，如：排除geometry和bbox字段；在POST请求中，则需要将这些字段添加到“exclude”字段中，例如： "fields": { "exclude": ["geometry","bbox"] } } 。而对于返回的“properties”对象中的扩展字段内容，可以将字段前添加到‘include’字段中，如： "fields": { "include": ["properties.SmFileName","properties.SmHighPS"] } } ，表示properties.SmFileName和properties.SmHighPS 属性都包含在查询结果中。
+ * @param {Object} [options.query] 定义查询哪些属性，查询运算符将应用于这些属性。运算符包括：eq、neq、gt、lt、gte、lte、startsWith、endsWith、 contains、in。 其中in是Array.<string>类型  例如：{ "SmFileName": { "eq":"B49C001002.tif" }}
+ * @param {Array.<SuperMap.Sortby>} [options.sortby] 由包含属性名称和排序规则的对象构成的数组。
+ */
+class ImageSearchParameter {
+    constructor(options) {
+        /**
+         * @description 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
+         * @member {Array.<number>} SuperMap.ImageSearchParameter.prototype.bbox
+         */
+        this.bbox = undefined;
+        /**
+         * @description 影像集合的ID数组，将在该指定的Collection中搜索Items。
+         * @member {Array.<string>} SuperMap.ImageSearchParameter.prototype.collections
+         */
+        this.collections = undefined;
+        /**
+         * @description 返回的 Item 的 ID 值数组。 设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
+         * @member {Array.<string>} SuperMap.ImageSearchParameter.prototype.ids
+         */
+        this.ids = undefined;
+        /**
+         * @description 单页返回的最大结果数。 最小值为1最大值为10000
+         * @member {number} SuperMap.ImageSearchParameter.prototype.limit
+         */
+        this.limit = undefined;
+        /**
+         * @description 通过‘include’和‘exclude’属性分别指定哪些字段包含在查询结果的 Feature 描述中，哪些需要排除。返回结果中的stac_version，id，bbox，assets，links，geometry，type，properties这些字段为必须字段，若要返回结果中不含这种字段信息，需要显示地进行排除设置，如：排除geometry和bbox字段；在POST请求中，则需要将这些字段添加到“exclude”字段中，例如： "fields": { "exclude": ["geometry","bbox"] } } 。而对于返回的“properties”对象中的扩展字段内容，可以将字段前添加到‘include’字段中，如： "fields": { "include": ["properties.SmFileName","properties.SmHighPS"] } } ，表示properties.SmFileName和properties.SmHighPS 属性都包含在查询结果中。
+         * @member {SuperMap.FieldsFilter} SuperMap.ImageSearchParameter.prototype.fields
+         */
+        this.fields = undefined;
+        /**
+         * @description 定义查询哪些属性，查询运算符将应用于这些属性。
+         * @member {Object} SuperMap.ImageSearchParameter.prototype.query
+         */
+        this.query = undefined;
+        /**
+         * @description 由包含属性名称和排序规则的对象构成的数组。
+         * @member {Array.<SuperMap.Sortby>} SuperMap.ImageSearchParameter.prototype.sortby
+         */
+        this.sortby = undefined;
+
+        this.CLASS_NAME = 'SuperMap.ImageSearchParameter';
+        Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.ImageSearchParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.bbox = undefined;
+        me.collections = undefined;
+        me.ids = undefined;
+        me.limit = undefined;
+        me.fields = undefined;
+        me.query = undefined;
+        me.sortby = undefined;
+    }
+
+    /**
+     * @function SuperMap.ImageSearchParameter.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.ImageSearchParameter} obj 返回的模型.
+     * @return {SuperMap.ImageSearchParameter} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ImageSearchParameter();
+            if (data.hasOwnProperty('bbox')) {
+                obj.bbox = data.bbox;
+            }
+            if (data.hasOwnProperty('collections')) {
+                obj.collections = data.collections;
+            }
+            if (data.hasOwnProperty('ids')) {
+                obj.ids = data.ids;
+            }
+            if (data.hasOwnProperty('limit')) {
+                obj.limit = data.limit;
+            }
+            if (data.hasOwnProperty('fields')) {
+                obj.fields = (FieldsFilter.constructFromObject && FieldsFilter.constructFromObject(data.fields, {})) || data.fields;
+            }
+            if (data.hasOwnProperty('query')) {
+                obj.query = data.query;
+            }
+            if (data.hasOwnProperty('sortby')) {
+                obj.sortby = data.sortby;
+                if (data.sortby) {
+                    obj.sortby = data.sortby.map((item) => {
+                        return (Sortby.constructFromObject && Sortby.constructFromObject(item, {})) || item;
+                    });
+                }
+            }
+        }
+        return obj;
+    }
+}
+SuperMap.ImageSearchParameter = ImageSearchParameter;
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageStretchOption.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.ImageStretchOption
+ * @param {Object} options - 初始化参数。
+ * @param {SuperMap.ImageStretchOption.StretchType} [options.stretchType] 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
+ * @param {number} [options.stdevCoefficient] 标准差系数。
+ * @param {number} [options.gaussianCoefficient] 高斯系数。
+ * @param {boolean} [options.useMedianValue] 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
+ * @param {number} [options.minPercent] 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
+ * @param {number} [options.maxPercent] 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
+ */
+class ImageStretchOption {
+    constructor(options) {
+        /**
+         * @description 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
+         * @member {SuperMap.ImageStretchOption.StretchType} SuperMap.ImageStretchOption.prototype.stretchType
+         */
+        this.stretchType = undefined;
+        /**
+         * @description 标准差系数。
+         * @member {number} SuperMap.ImageStretchOption.prototype.stdevCoefficient
+         */
+        this.stdevCoefficient = undefined;
+        /**
+         * @description 高斯系数。
+         * @member {number} SuperMap.ImageStretchOption.prototype.gaussianCoefficient
+         */
+        this.gaussianCoefficient = undefined;
+        /**
+         * @description 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
+         * @member {boolean} SuperMap.ImageStretchOption.prototype.useMedianValue
+         */
+        this.useMedianValue = undefined;
+        /**
+         * @description 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
+         * @member {number} SuperMap.ImageStretchOption.prototype.minPercent
+         */
+        this.minPercent = undefined;
+        /**
+         * @description 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
+         * @member {number} SuperMap.ImageStretchOption.prototype.maxPercent
+         */
+        this.maxPercent = undefined;
+
+        this.CLASS_NAME = 'SuperMap.ImageStretchOption';
+        Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.ImageStretchOption.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.stretchType = undefined;
+        me.stdevCoefficient = undefined;
+        me.gaussianCoefficient = undefined;
+        me.useMedianValue = undefined;
+        me.minPercent = undefined;
+        me.maxPercent = undefined;
+    }
+
+    /**
+     * @function SuperMap.ImageStretchOption.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.ImageStretchOption} obj 返回的模型.
+     * @return {SuperMap.ImageStretchOption} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ImageStretchOption();
+            if (data.hasOwnProperty('stretchType')) {
+                obj.stretchType = data.stretchType;
+            }
+            if (data.hasOwnProperty('stdevCoefficient')) {
+                obj.stdevCoefficient = data.stdevCoefficient;
+            }
+            if (data.hasOwnProperty('gaussianCoefficient')) {
+                obj.gaussianCoefficient = data.gaussianCoefficient;
+            }
+            if (data.hasOwnProperty('useMedianValue')) {
+                obj.useMedianValue = data.useMedianValue;
+            }
+            if (data.hasOwnProperty('minPercent')) {
+                obj.minPercent = data.minPercent;
+            }
+            if (data.hasOwnProperty('maxPercent')) {
+                obj.maxPercent = data.maxPercent;
+            }
+        }
+        return obj;
+    }
+}
+
+SuperMap.ImageStretchOption = ImageStretchOption;
+/**
+ * @enum SuperMap.ImageStretchOption.StretchType
+ * @readonly
+ * @type {string}
+ */
+SuperMap.ImageStretchOption.StretchType = {
+    NONE: 'NONE',
+    GAUSSIAN: 'GAUSSIAN',
+    PERCENTCLIP: 'PERCENTCLIP',
+    MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
+    STANDARDDEVIATION: 'STANDARDDEVIATION'
+};
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageRenderingRule.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.ImageRenderingRule
+ * @classdesc 定义请求的影像如何进行渲染或者处理，如：影像的拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。
+ * @param {Object} options - 初始化参数。
+ * @param {SuperMap.ImageRenderingRule.DisplayMode} [options.displayMode] 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
+ * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为STRETCHED，该属性指定一个波段的索引号(波段索引号从0开始计数)；若影像的显示模式为COMPOSITE，该属性为组合的波段索引号，例如：属性值3,2,1表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
+ * @param {SuperMap.ImageStretchOption} [options.stretchOption] 影像的拉伸参数。
+ * @param {SuperMap.ImageRenderingRule.InterpolationMode} [options.interpolationMode] 影像显示时使用的插值算法。
+ * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+ * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+ * @param {number} [options.brightness] 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
+ * @param {number} [options.contrast] 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
+ * @param {string} [options.noData] 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
+ * @param {string} [options.noDataColor] 影像的无值的显示颜色，支持RGB颜色，例如：255,0,0（红色），那么无值将以指定的红色显示。
+ * @param {boolean} [options.noDataTransparent] 无值是否透明显示，true表示透明显示无值；否则为false。
+ * @param {string} [options.backgroundValue] 影像的背景值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的背景值。
+ * @param {string} [options.backgroundColor] 指定背景值的颜色。支持指定RGB颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
+ * @param {boolean} [options.backgroundTransparent] 背景值是否透明显示，true表示透明显示背景值；否则为false。
+ * @param {Array.<SuperMap.ImageGFHillShade|SuperMap.ImageGFSlope|SuperMap.ImageGFAspect|SuperMap.ImageGFOrtho>} [options.gridFunctions] 栅格函数链。
+ */
+class ImageRenderingRule {
+    constructor(options) {
+        /**
+         * @description 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
+         * @member {SuperMap.ImageRenderingRule.DisplayMode} SuperMap.ImageRenderingRule.prototype.displayMode
+         */
+        this.displayMode = undefined;
+        /**
+         * @description 影像显示的波段或者波段组合。该参数为一个数组，数组元素为波段索引号。若影像的显示模式为Stretched，该属性指定一个显示的波段；若影像的显示模式为Composite，该属性为组合的波段索引号，例如：属性值4,3,2表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.displayBands
+         */
+        this.displayBands = undefined;
+        /**
+         * @description 影像的拉伸参数。
+         * @member {SuperMap.ImageStretchOption} SuperMap.ImageRenderingRule.prototype.stretchOption
+         */
+        this.stretchOption = undefined;
+        /**
+         * @description 影像显示时使用的插值算法。
+         * @member {SuperMap.ImageRenderingRule.InterpolationMode} SuperMap.ImageRenderingRule.prototype.interpolationMode
+         */
+        this.interpolationMode = undefined;
+        /**
+         * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+         * @member {Array.<string>} SuperMap.ImageRenderingRule.prototype.colorScheme
+         */
+        this.colorScheme = undefined;
+        /**
+         * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+         * @member {Array.<string>} SuperMap.ImageRenderingRule.prototype.colorTable
+         */
+        this.colorTable = undefined;
+        /**
+         * @description 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
+         * @member {number} SuperMap.ImageRenderingRule.prototype.brightness
+         */
+        this.brightness = undefined;
+        /**
+         * @description 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
+         * @member {number} SuperMap.ImageRenderingRule.prototype.contrast
+         */
+        this.contrast = undefined;
+        /**
+         * @description 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.noData
+         */
+        this.noData = undefined;
+        /**
+         * @description 影像的无值的显示颜色，支持RGB颜色，例如：255,0,0（红色），那么无值将以指定的红色显示。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.noDataColor
+         */
+        this.noDataColor = undefined;
+        /**
+         * @description 无值是否透明显示，true表示透明显示无值；否则为false。
+         * @member {boolean} SuperMap.ImageRenderingRule.prototype.noDataTransparent
+         */
+        this.noDataTransparent = undefined;
+
+        /**
+         * @description 影像的背景值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的背景值。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.backgroundValue
+         */
+        this.backgroundValue = undefined;
+        /**
+         * @description 指定背景值的颜色。支持指定RGB颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
+         * @member {string} SuperMap.ImageRenderingRule.prototype.backgroundColor
+         */
+        this.backgroundColor = undefined;
+        /**
+         * @description 背景值是否透明显示，true表示透明显示背景值；否则为false。
+         * @member {boolean} SuperMap.ImageRenderingRule.prototype.backgroundTransparent
+         */
+        this.backgroundTransparent = undefined;
+        /**
+         * @description 栅格函数选项，通过应用栅格函数，可以对影像进行快速显示处理。
+         * @member {Array.<SuperMap.ImageGFHillShade|SuperMap.ImageGFSlope|SuperMap.ImageGFAspect|SuperMap.ImageGFOrtho>} SuperMap.ImageRenderingRule.prototype.gridFunctions
+         */
+        this.gridFunctions = undefined;
+
+        this.CLASS_NAME = 'SuperMap.ImageRenderingRule';
+        Util.extend(this, options);
+
+        /**
+         * @enum SuperMap.ImageRenderingRule.DisplayMode
+         * @readonly
+         * @type {string}
+         */
+        SuperMap.ImageRenderingRule.DisplayMode = {
+            COMPOSITE: 'COMPOSITE',
+            STRETCHED: 'Stretched'
+        };
+
+        /**
+         * @enum SuperMap.ImageRenderingRule.InterpolationMode
+         * @readonly
+         * @type {string}
+         */
+        SuperMap.ImageRenderingRule.InterpolationMode = {
+            NEARESTNEIGHBOR: 'NEARESTNEIGHBOR',
+            HIGHQUALITYBILINEAR: 'HIGHQUALITYBILINEAR',
+            DEFAULT: 'DEFAULT'
+        };
+    }
+
+    /**
+     * @function SuperMap.ImageRenderingRule.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.displayMode = undefined;
+        me.displayBands = undefined;
+        me.stretchOption = undefined;
+        me.interpolationMode = undefined;
+        me.colorScheme = undefined;
+        me.colorTable = undefined;
+        me.brightness = undefined;
+        me.contrast = undefined;
+        me.noData = undefined;
+        me.noDataColor = undefined;
+        me.noDataTransparent = undefined;
+        me.backgroundValue = undefined;
+        me.backgroundColor = undefined;
+        me.backgroundTransparent = undefined;
+        me.gridFuncOptions = undefined;
+    }
+
+    /**
+     * @function SuperMap.ImageRenderingRule.prototype.constructFromObject
+     * @param {Object} data 要转换的数据.
+     * @param {SuperMap.ImageRenderingRule} obj 返回的模型.
+     * @return {SuperMap.ImageRenderingRule} 返回结果
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ImageRenderingRule();
+            if (data.hasOwnProperty('displayMode')) {
+                obj.displayMode = data.displayMode;
+            }
+            if (data.hasOwnProperty('displayBands')) {
+                obj.displayBands = data.displayBands;
+            }
+            if (data.hasOwnProperty('stretchOption')) {
+                obj.stretchOption =
+                    (ImageStretchOption.constructFromObject &&
+                        ImageStretchOption.constructFromObject(data.stretchOption, {})) ||
+                    data.stretchOption;
+            }
+            if (data.hasOwnProperty('interpolationMode')) {
+                obj.interpolationMode = data.interpolationMode;
+            }
+            if (data.hasOwnProperty('colorScheme')) {
+                obj.colorScheme = data.colorScheme;
+            }
+            if (data.hasOwnProperty('colorTable')) {
+                obj.colorTable = data.colorTable;
+            }
+            if (data.hasOwnProperty('brightness')) {
+                obj.brightness = data.brightness;
+            }
+            if (data.hasOwnProperty('contrast')) {
+                obj.contrast = data.contrast;
+            }
+            if (data.hasOwnProperty('noData')) {
+                obj.noData = data.noData;
+            }
+            if (data.hasOwnProperty('noDataColor')) {
+                obj.noDataColor = data.noDataColor;
+            }
+            if (data.hasOwnProperty('backgroundValue')) {
+                obj.backgroundValue = data.backgroundValue;
+            }
+            if (data.hasOwnProperty('noDataTransparent')) {
+                obj.noDataTransparent = data.noDataTransparent;
+            }
+            if (data.hasOwnProperty('backgroundColor')) {
+                obj.backgroundColor = data.backgroundColor;
+            }
+            if (data.hasOwnProperty('backgroundTransparent')) {
+                obj.backgroundTransparent = data.backgroundTransparent;
+            }
+            if (data.hasOwnProperty('gridFunctions')) {
+                obj.gridFunctions = data.gridFunctions;
+            }
+        }
+        return obj;
+    }
+}
+
+SuperMap.ImageRenderingRule = ImageRenderingRule;
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFHillShade.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+* @class SuperMap.ImageGFHillShade
+* @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。
+* @param {Object} options - 初始化参数。    
+* @param {string} [options.girdFuncName='GFHillShade'] 栅格函数名称，参数值为：GFHillShade。
+* @param {number} [options.Azimuth = 315] 光源方位角。用于确定光源的方向，是从光源所在位置的正北方向线起，依顺时针方向到光源与目标方向线的夹角，范围为 0-360 度，以正北方向为 0 度，依顺时针方向递增。默认值为：315。
+* @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
+* @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+*/
+class ImageGFHillShade {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFHillShade。 
+    * @member {string} SuperMap.ImageGFHillShade.prototype.girdFuncName
+    * @default 'GFHillShade'
+    */
+    this.girdFuncName = 'GFHillShade';
+    /**
+    * @description 光源方位角。用于确定光源的方向，是从光源所在位置的正北方向线起，依顺时针方向到光源与目标方向线的夹角，范围为 0-360 度，以正北方向为 0 度，依顺时针方向递增。默认值为：315。 
+    * @member {number} SuperMap.ImageGFHillShade.prototype.Azimuth
+    */
+    this.Azimuth = 315;
+    /**
+    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。 
+    * @member {number} SuperMap.ImageGFHillShade.prototype.Altitude
+    */
+    this.Altitude = 45;
+    /**
+    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。 
+    * @member {number} SuperMap.ImageGFHillShade.prototype.ZFactor
+    */
+    this.ZFactor = 1;
+
+    this.CLASS_NAME = 'SuperMap.ImageGFHillShade';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFHillShade.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFHillShade';
+    me.Azimuth = 315;
+    me.Altitude = 45;
+    me.ZFactor = 1;
+  }
+
+  /**
+  * @function SuperMap.ImageGFHillShade.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFHillShade} obj 返回的模型.
+  * @return {SuperMap.ImageGFHillShade} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFHillShade();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+      if (data.hasOwnProperty('Azimuth')) {
+          obj.Azimuth = data.Azimuth
+      }
+      if (data.hasOwnProperty('Altitude')) {
+          obj.Altitude = data.Altitude
+      }
+      if (data.hasOwnProperty('ZFactor')) {
+          obj.ZFactor = data.ZFactor
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.ImageGFHillShade = ImageGFHillShade;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFAspect.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+* @class SuperMap.ImageGFAspect
+* @classdesc 栅格函数对象:对DEM数据生成坡向渲图。
+* @param {Object} options - 初始化参数。  
+* @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
+* @param {number} [options.Azimuth] 光源方位角，固定为360度。
+*/
+class ImageGFAspect {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFAspect。 
+    * @member {string} SuperMap.ImageGFAspect.prototype.girdFuncName
+    * @default 'GFAspect'
+    */
+    this.girdFuncName = 'GFAspect';
+    /**
+    * @description 光源方位角，固定为360度。 
+    * @member {number} SuperMap.ImageGFAspect.prototype.Azimuth
+    */
+    this.Azimuth = undefined;
+
+    this.CLASS_NAME = 'SuperMap.ImageGFAspect';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFAspect.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFAspect';
+    me.Azimuth = undefined;
+  }
+
+  /**
+  * @function SuperMap.ImageGFAspect.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFAspect} obj 返回的模型.
+  * @return {SuperMap.ImageGFAspect} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFAspect();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+      if (data.hasOwnProperty('Azimuth')) {
+          obj.Azimuth = data.Azimuth
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.ImageGFAspect = ImageGFAspect;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFOrtho.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+* @class SuperMap.ImageGFOrtho
+* @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
+* @param {Object} options - 初始化参数。 
+* @param {string} [options.girdFuncName='GFOrtho'] 栅格函数名称，参数值为：GFOrtho。
+*/
+class ImageGFOrtho {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFOrtho。 
+    * @member {string} SuperMap.ImageGFOrtho.prototype.girdFuncName
+    * @default 'GFOrtho'
+    */
+    this.girdFuncName = 'GFOrtho';
+
+    this.CLASS_NAME = 'SuperMap.ImageGFOrtho';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFOrtho.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFOrtho';
+  }
+
+  /**
+  * @function SuperMap.ImageGFOrtho.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFOrtho} obj 返回的模型.
+  * @return {SuperMap.ImageGFOrtho} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFOrtho();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+    }
+    return obj;
+  }
+}
+
+SuperMap.ImageGFOrtho = ImageGFOrtho;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/ImageGFSlope.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+* @class SuperMap.ImageGFSlope
+* @classdesc 栅格函数对象:对DEM数据生成坡度图。
+* @param {Object} options - 初始化参数。   
+* @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
+* @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
+* @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+*/
+class ImageGFSlope {
+  constructor(options) { 
+    /**
+    * @description 栅格函数名称，参数值为：GFSlope。 
+    * @member {string} SuperMap.ImageGFSlope.prototype.girdFuncName
+    * @default 'GFSlope'
+    */
+    this.girdFuncName = 'GFSlope';
+    /**
+    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。 
+    * @member {number} SuperMap.ImageGFSlope.prototype.Altitude
+    */
+    this.Altitude = 45;
+    /**
+    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。 
+    * @member {number} SuperMap.ImageGFSlope.prototype.ZFactor
+    */
+    this.ZFactor = 1;
+
+    this.CLASS_NAME = 'SuperMap.ImageGFSlope';
+    Util.extend(this, options);
+    
+  }
+
+  /**
+  * @function SuperMap.ImageGFSlope.prototype.destroy
+  * @description 释放资源，将引用资源的属性置空。
+  */
+  destroy() {
+    var me = this;
+    me.girdFuncName = 'GFSlope';
+    me.Altitude = 45;
+    me.ZFactor = 1;
+  }
+
+  /**
+  * @function SuperMap.ImageGFSlope.prototype.constructFromObject
+  * @param {Object} data 要转换的数据.
+  * @param {SuperMap.ImageGFSlope} obj 返回的模型.
+  * @return {SuperMap.ImageGFSlope} 返回结果
+  */
+  static constructFromObject(data, obj) {
+    if (data) {
+      obj = obj || new ImageGFSlope();
+      if (data.hasOwnProperty('girdFuncName')) {
+          obj.girdFuncName = data.girdFuncName
+      }
+      if (data.hasOwnProperty('Altitude')) {
+          obj.Altitude = data.Altitude
+      }
+      if (data.hasOwnProperty('ZFactor')) {
+          obj.ZFactor = data.ZFactor
+      }
+    }
+    return obj;
+  }
+}
+
+
+
+SuperMap.ImageGFSlope = ImageGFSlope;
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41110,7 +42274,22 @@ SuperMap.WebPrintingService = WebPrintingService;
 
 
 
-// CONCATENATED MODULE: ./src/common/online/OnlineResources.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;// CONCATENATED MODULE: ./src/common/online/OnlineResources.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41247,7 +42426,7 @@ var FilterField = SuperMap.FilterField = {
     USERNAME: "USERNAME"
 };
 
-// CONCATENATED MODULE: ./src/common/online/OnlineServiceBase.js
+;// CONCATENATED MODULE: ./src/common/online/OnlineServiceBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41295,7 +42474,7 @@ class OnlineServiceBase {
 
 SuperMap.OnlineServiceBase = OnlineServiceBase;
 
-// CONCATENATED MODULE: ./src/common/online/OnlineData.js
+;// CONCATENATED MODULE: ./src/common/online/OnlineData.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41406,7 +42585,7 @@ class OnlineData extends OnlineServiceBase {
 
 SuperMap.OnlineData = OnlineData;
 
-// CONCATENATED MODULE: ./src/common/online/Online.js
+;// CONCATENATED MODULE: ./src/common/online/Online.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41487,7 +42666,7 @@ class Online {
 }
 
 SuperMap.Online = Online;
-// CONCATENATED MODULE: ./src/common/online/OnlineQueryDatasParameter.js
+;// CONCATENATED MODULE: ./src/common/online/OnlineQueryDatasParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41591,7 +42770,7 @@ class OnlineQueryDatasParameter {
 }
 
 SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;
-// CONCATENATED MODULE: ./src/common/online/index.js
+;// CONCATENATED MODULE: ./src/common/online/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41607,7 +42786,7 @@ SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;
 
 
 
-// CONCATENATED MODULE: ./src/common/security/KeyServiceParameter.js
+;// CONCATENATED MODULE: ./src/common/security/KeyServiceParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41654,7 +42833,7 @@ class KeyServiceParameter {
 
 SuperMap.KeyServiceParameter = KeyServiceParameter;
 
-// CONCATENATED MODULE: ./src/common/security/ServerInfo.js
+;// CONCATENATED MODULE: ./src/common/security/ServerInfo.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41730,7 +42909,7 @@ class ServerInfo {
 
 SuperMap.ServerInfo = ServerInfo;
 
-// CONCATENATED MODULE: ./src/common/security/TokenServiceParameter.js
+;// CONCATENATED MODULE: ./src/common/security/TokenServiceParameter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41815,7 +42994,7 @@ class TokenServiceParameter {
 
 SuperMap.TokenServiceParameter = TokenServiceParameter;
 
-// CONCATENATED MODULE: ./src/common/security/index.js
+;// CONCATENATED MODULE: ./src/common/security/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -41828,11 +43007,10 @@ SuperMap.TokenServiceParameter = TokenServiceParameter;
 
 
 
-// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
+;// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
 const external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
-
-// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
+;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -42459,14 +43637,14 @@ class ElasticSearch {
 
 SuperMap.ElasticSearch = ElasticSearch;
 
-// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/index.js
+;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
-// CONCATENATED MODULE: ./src/common/thirdparty/index.js
+;// CONCATENATED MODULE: ./src/common/thirdparty/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -42474,7 +43652,7 @@ SuperMap.ElasticSearch = ElasticSearch;
 
 
 
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Util.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Util.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -42767,7 +43945,7 @@ class Util_Util {
         clazz.constructor = clazz;
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Color.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Color.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -43876,7 +45054,7 @@ class Color {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/util/ColorsPickerUtil.js
+;// CONCATENATED MODULE: ./src/common/util/ColorsPickerUtil.js
 
 
 
@@ -44045,7 +45223,7 @@ class ColorsPickerUtil  {
 }
 SuperMap.ColorsPickerUtil = ColorsPickerUtil;
 
-// CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
+;// CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
 
 
 class ArrayStatistic {
@@ -44246,7 +45424,7 @@ class ArrayStatistic {
 
 }
 SuperMap.ArrayStatistic = ArrayStatistic;
-// CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
+;// CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
 
 
 var getMeterPerMapUnit = function(mapUnit) {
@@ -44295,7 +45473,7 @@ function conversionDegree(degrees) {
     return `${degree}°${fraction}'${second}`;
 }
 
-// CONCATENATED MODULE: ./src/common/util/index.js
+;// CONCATENATED MODULE: ./src/common/util/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -44311,8 +45489,7 @@ function conversionDegree(degrees) {
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
 var lodash_topairs = __webpack_require__(52);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
-
-// CONCATENATED MODULE: ./src/common/style/CartoCSS.js
+;// CONCATENATED MODULE: ./src/common/style/CartoCSS.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -48984,7 +50161,7 @@ SuperMap.CartoCSS.Tree.Zoom.ranges = {
     23: 100
 };
 
-// CONCATENATED MODULE: ./src/common/style/ThemeStyle.js
+;// CONCATENATED MODULE: ./src/common/style/ThemeStyle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49180,7 +50357,7 @@ class ThemeStyle {
 
 SuperMap.ThemeStyle = ThemeStyle;
 
-// CONCATENATED MODULE: ./src/common/style/index.js
+;// CONCATENATED MODULE: ./src/common/style/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49190,7 +50367,7 @@ SuperMap.ThemeStyle = ThemeStyle;
 
 
 
-// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeParameters.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeParameters.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49296,7 +50473,7 @@ class ShapeParameters {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters = ShapeParameters;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49378,7 +50555,7 @@ class Point_Point extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Point = Point_Point;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Line.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Line.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49447,7 +50624,7 @@ class Line_Line extends ShapeParameters {
 */
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Line = Line_Line;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Polygon.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Polygon.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49527,7 +50704,7 @@ class Polygon_Polygon extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Polygon = Polygon_Polygon;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Rectangle.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Rectangle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49618,7 +50795,7 @@ class Rectangle_Rectangle extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Rectangle = Rectangle_Rectangle;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Sector.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Sector.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49729,7 +50906,7 @@ class Sector extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Sector = Sector;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Label.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Label.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49819,7 +50996,7 @@ class Label extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Label = Label;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Image.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Image.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49929,7 +51106,7 @@ class Image_Image extends ShapeParameters {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Image = Image_Image;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Circle.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Circle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -49994,7 +51171,7 @@ class Circle_Circle extends ShapeParameters {
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Circle = Circle_Circle;
 
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Eventful.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Eventful.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -50241,7 +51418,7 @@ class Eventful {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Vector.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Vector.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -50605,7 +51782,7 @@ class levelRenderer_Vector_Vector {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Curve.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Curve.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -51152,7 +52329,7 @@ class Curve_Curve {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Area.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Area.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52231,7 +53408,7 @@ class Area {
         return height;
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/ComputeBoundingBox.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/ComputeBoundingBox.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52437,7 +53614,7 @@ class ComputeBoundingBox {
         }
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Env.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Env.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52580,7 +53757,7 @@ class Env {
         return true;
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Event.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Event.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52657,7 +53834,7 @@ class Event_Event {
             || typeof e.detail != 'undefined' && -e.detail;
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Http.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Http.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52714,7 +53891,7 @@ class Http {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Config.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Config.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52801,7 +53978,7 @@ Config.catchBrushException = false;
  * @private 
  */
 Config.debugMode = 0;
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Log.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Log.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52823,13 +54000,13 @@ class Log {
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log";
         return function () {
-            if (Config.debugMode === 0) {
+            if (+Config.debugMode === 0) {
                 return;
-            } else if (Config.debugMode === 1) {
+            } else if (+Config.debugMode === 1) {
                 for (let k in arguments) {
                     throw new Error(arguments[k]);
                 }
-            } else if (Config.debugMode > 1) {
+            } else if (+Config.debugMode > 1) {
                 for (let k in arguments) {
                     console.log(arguments[k]);
                 }
@@ -52850,7 +54027,7 @@ class Log {
         return true;
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Math.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Math.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -52924,7 +54101,7 @@ class MathTool {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Matrix.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Matrix.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -53137,7 +54314,7 @@ class Matrix {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SUtil.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SUtil.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -53376,7 +54553,7 @@ SUtil_SUtil.Util_matrix = new Matrix();
 SUtil_SUtil.Util = new Util_Util();
 SUtil_SUtil.Util_vector = new levelRenderer_Vector_Vector();
 
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -53562,7 +54739,7 @@ class Transformable {
                     }
                 }
             } else {
-                if (this.rotation !== 0) {
+                if (+this.rotation !== 0) {
                     SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }
@@ -53647,7 +54824,7 @@ class Transformable {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Shape.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Shape.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -54565,7 +55742,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable) {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPoint.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPoint.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -54708,7 +55885,7 @@ class SmicPoint extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicText.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicText.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -55226,7 +56403,7 @@ class SmicText extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicCircle.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicCircle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -55378,7 +56555,7 @@ class SmicCircle extends Shape_Shape {
         return style.__rect;
     }
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPolygon.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPolygon.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -55879,7 +57056,7 @@ class SmicPolygon extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicBrokenLine.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicBrokenLine.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -56172,7 +57349,7 @@ class SmicBrokenLine extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicImage.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicImage.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -56423,7 +57600,7 @@ class SmicImage extends Shape_Shape {
 }
 SmicImage._needsRefresh = [];
 SmicImage._refreshTimeout = null;
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRectangle.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRectangle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -56663,7 +57840,7 @@ class SmicRectangle extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicSector.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicSector.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -56873,7 +58050,7 @@ class SmicSector extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeFactory.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeFactory.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -57716,7 +58893,7 @@ class ShapeFactory {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeFactory = ShapeFactory;
-// CONCATENATED MODULE: ./src/common/overlay/feature/Theme.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/Theme.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -57834,7 +59011,7 @@ class Theme_Theme {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.Theme = Theme_Theme;
-// CONCATENATED MODULE: ./src/common/overlay/Graph.js
+;// CONCATENATED MODULE: ./src/common/overlay/Graph.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -58357,7 +59534,7 @@ Theme_Theme.getDataValues = function (data, fields, decimalNumber) {
 };
 
 SuperMap.Feature.Theme.Graph = Graph;
-// CONCATENATED MODULE: ./src/common/overlay/Bar.js
+;// CONCATENATED MODULE: ./src/common/overlay/Bar.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -58719,7 +59896,7 @@ class Bar extends Graph {
 */
 
 SuperMap.Feature.Theme.Bar = Bar;
-// CONCATENATED MODULE: ./src/common/overlay/Bar3D.js
+;// CONCATENATED MODULE: ./src/common/overlay/Bar3D.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -59157,7 +60334,7 @@ class Bar3D extends Graph {
  */
 
 SuperMap.Feature.Theme.Bar3D = Bar3D;
-// CONCATENATED MODULE: ./src/common/overlay/RankSymbol.js
+;// CONCATENATED MODULE: ./src/common/overlay/RankSymbol.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -59307,7 +60484,7 @@ class RankSymbol extends Graph {
 }
 
 SuperMap.Feature.Theme.RankSymbol = RankSymbol;
-// CONCATENATED MODULE: ./src/common/overlay/Circle.js
+;// CONCATENATED MODULE: ./src/common/overlay/Circle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -59467,7 +60644,7 @@ class Circle extends RankSymbol {
  */
 
 SuperMap.Feature.Theme.Circle = Circle;
-// CONCATENATED MODULE: ./src/common/overlay/Line.js
+;// CONCATENATED MODULE: ./src/common/overlay/Line.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -59770,7 +60947,7 @@ class Line extends Graph {
  */
 
 SuperMap.Feature.Theme.Line = Line;
-// CONCATENATED MODULE: ./src/common/overlay/Pie.js
+;// CONCATENATED MODULE: ./src/common/overlay/Pie.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -59982,7 +61159,7 @@ class Pie extends Graph {
  */
 
 SuperMap.Feature.Theme.Pie = Pie;
-// CONCATENATED MODULE: ./src/common/overlay/Point.js
+;// CONCATENATED MODULE: ./src/common/overlay/Point.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -60255,7 +61432,7 @@ class overlay_Point_Point extends Graph {
  * @property {Object} [pointClickAble=true] - 是否允许图形点被点击。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽图形点对专题图层事件的响应。
  */
 SuperMap.Feature.Theme.Point = overlay_Point_Point;
-// CONCATENATED MODULE: ./src/common/overlay/Ring.js
+;// CONCATENATED MODULE: ./src/common/overlay/Ring.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -60473,7 +61650,7 @@ class Ring extends Graph {
  */
 
 SuperMap.Feature.Theme.Ring = Ring;
-// CONCATENATED MODULE: ./src/common/overlay/ThemeVector.js
+;// CONCATENATED MODULE: ./src/common/overlay/ThemeVector.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -61142,7 +62319,7 @@ class ThemeVector extends Theme_Theme {
 }
 
 SuperMap.Feature.Theme.ThemeVector = ThemeVector;
-// CONCATENATED MODULE: ./src/common/overlay/feature/index.js
+;// CONCATENATED MODULE: ./src/common/overlay/feature/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -61179,7 +62356,7 @@ SuperMap.Feature.Theme.ThemeVector = ThemeVector;
 
 
 
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Group.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Group.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -61445,7 +62622,7 @@ class Group extends SuperMap.mixin(Eventful, Transformable) {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Storage.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Storage.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -61929,7 +63106,7 @@ class Storage {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Painter.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Painter.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -63077,7 +64254,7 @@ class PaintLayer extends Transformable {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Handler.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Handler.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -64206,7 +65383,7 @@ class Handler extends Eventful {
     // SMIC-方法扩展 - end
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Easing.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Easing.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -64660,7 +65837,7 @@ class Easing {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Clip.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Clip.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -64780,7 +65957,7 @@ class Clip {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Animation.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Animation.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -65468,7 +66645,7 @@ class Animator {
 
 
 
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Render.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Render.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66032,7 +67209,7 @@ class Render {
 
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/LevelRenderer.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/LevelRenderer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66156,7 +67333,7 @@ class LevelRenderer {
 }
 
 SuperMap.LevelRenderer = LevelRenderer;
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicEllipse.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicEllipse.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66314,7 +67491,7 @@ class SmicEllipse extends (/* unused pure expression or super */ null && (Shape)
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicIsogon.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicIsogon.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66477,7 +67654,7 @@ class SmicIsogon extends (/* unused pure expression or super */ null && (Shape))
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRing.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRing.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66617,7 +67794,7 @@ class SmicRing extends (/* unused pure expression or super */ null && (Shape)) {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicStar.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicStar.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66805,7 +67982,7 @@ class SmicStar extends (/* unused pure expression or super */ null && (Shape)) {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/index.js
+;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66886,7 +68063,7 @@ class SmicStar extends (/* unused pure expression or super */ null && (Shape)) {
 
 
 
-// CONCATENATED MODULE: ./src/common/overlay/index.js
+;// CONCATENATED MODULE: ./src/common/overlay/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66916,7 +68093,7 @@ class SmicStar extends (/* unused pure expression or super */ null && (Shape)) {
 
 
 
-// CONCATENATED MODULE: ./src/common/components/CommonTypes.js
+;// CONCATENATED MODULE: ./src/common/components/CommonTypes.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66934,7 +68111,7 @@ const CommonTypes_FileTypes = {
 const CommonTypes_FileConfig = {
     fileMaxSize: 10 * 1024 * 1024
 };
-// CONCATENATED MODULE: ./src/common/components/openfile/FileModel.js
+;// CONCATENATED MODULE: ./src/common/components/openfile/FileModel.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66974,7 +68151,7 @@ class FileModel {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/components/messagebox/MessageBox.js
+;// CONCATENATED MODULE: ./src/common/components/messagebox/MessageBox.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67060,11 +68237,10 @@ class MessageBox {
 }
 
 SuperMap.Components.MessageBox = MessageBox;
-// CONCATENATED MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
+;// CONCATENATED MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
 const external_function_try_return_echarts_catch_e_return_namespaceObject = function(){try{return echarts}catch(e){return {}}}();
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_namespaceObject);
-
-// CONCATENATED MODULE: ./src/common/lang/Lang.js
+;// CONCATENATED MODULE: ./src/common/lang/Lang.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67170,11 +68346,10 @@ let Lang = {
 SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
-// CONCATENATED MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
+;// CONCATENATED MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 const external_function_try_return_XLSX_catch_e_return_namespaceObject = function(){try{return XLSX}catch(e){return {}}}();
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_namespaceObject);
-
-// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
+;// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67393,7 +68568,7 @@ let FileReaderUtil = {
 SuperMap.Components.FileReaderUtil = FileReaderUtil;
 
 
-// CONCATENATED MODULE: ./src/common/components/chart/ChartModel.js
+;// CONCATENATED MODULE: ./src/common/components/chart/ChartModel.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67970,7 +69145,7 @@ class ChartModel {
         this.events.triggerEvent('getdatafailed', errorData);
     }
 }
-// CONCATENATED MODULE: ./src/common/components/chart/ChartViewModel.js
+;// CONCATENATED MODULE: ./src/common/components/chart/ChartViewModel.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68563,7 +69738,7 @@ class ChartViewModel {
     }
 }
 SuperMap.Components.ChartViewModel = ChartViewModel;
-// CONCATENATED MODULE: ./src/common/components/chart/ChartView.js
+;// CONCATENATED MODULE: ./src/common/components/chart/ChartView.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68725,7 +69900,7 @@ class ChartView {
 }
 
 SuperMap.Components.Chart = ChartView;
-// CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
+;// CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68796,7 +69971,7 @@ class TemplateBase {
 }
 
 SuperMap.Components.TemplateBase = TemplateBase;
-// CONCATENATED MODULE: ./src/common/components/templates/CommonContainer.js
+;// CONCATENATED MODULE: ./src/common/components/templates/CommonContainer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68863,7 +70038,7 @@ class CommonContainer extends TemplateBase {
 }
 
 SuperMap.Components.CommonContainer = CommonContainer;
-// CONCATENATED MODULE: ./src/common/components/templates/Select.js
+;// CONCATENATED MODULE: ./src/common/components/templates/Select.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68993,7 +70168,7 @@ class Select extends TemplateBase {
 
 SuperMap.Components.Select = Select;
 
-// CONCATENATED MODULE: ./src/common/components/templates/DropDownBox.js
+;// CONCATENATED MODULE: ./src/common/components/templates/DropDownBox.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69193,7 +70368,7 @@ class DropDownBox extends TemplateBase {
 
 SuperMap.Components.DropDownBox = DropDownBox;
 
-// CONCATENATED MODULE: ./src/common/components/templates/PopContainer.js
+;// CONCATENATED MODULE: ./src/common/components/templates/PopContainer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69263,7 +70438,7 @@ class PopContainer extends TemplateBase {
 }
 
 SuperMap.Components.PopContainer = PopContainer;
-// CONCATENATED MODULE: ./src/common/components/templates/AttributesPopContainer.js
+;// CONCATENATED MODULE: ./src/common/components/templates/AttributesPopContainer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69323,7 +70498,7 @@ class AttributesPopContainer extends PopContainer {
 }
 
 SuperMap.Components.AttributesPopContainer = AttributesPopContainer;
-// CONCATENATED MODULE: ./src/common/components/templates/IndexTabsPageContainer.js
+;// CONCATENATED MODULE: ./src/common/components/templates/IndexTabsPageContainer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69437,7 +70612,7 @@ class IndexTabsPageContainer extends TemplateBase {
 }
 
 SuperMap.Components.IndexTabsPageContainer = IndexTabsPageContainer;
-// CONCATENATED MODULE: ./src/common/components/templates/CityTabsPage.js
+;// CONCATENATED MODULE: ./src/common/components/templates/CityTabsPage.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69559,7 +70734,7 @@ class CityTabsPage extends IndexTabsPageContainer {
 }
 
 SuperMap.Components.CityTabsPage = CityTabsPage;
-// CONCATENATED MODULE: ./src/common/components/templates/NavTabsPage.js
+;// CONCATENATED MODULE: ./src/common/components/templates/NavTabsPage.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69691,7 +70866,7 @@ class NavTabsPage extends TemplateBase {
 }
 
 SuperMap.Components.NavTabsPage = NavTabsPage;
-// CONCATENATED MODULE: ./src/common/components/templates/PaginationContainer.js
+;// CONCATENATED MODULE: ./src/common/components/templates/PaginationContainer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70005,7 +71180,7 @@ class PaginationContainer extends TemplateBase {
 }
 
 SuperMap.Components.PaginationContainer = PaginationContainer;
-// CONCATENATED MODULE: ./src/common/components/util/Util.js
+;// CONCATENATED MODULE: ./src/common/components/util/Util.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70031,7 +71206,7 @@ let ComponentsUtil = {
     }
 
 };
-// CONCATENATED MODULE: ./src/common/components/util/index.js
+;// CONCATENATED MODULE: ./src/common/components/util/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70040,7 +71215,7 @@ let ComponentsUtil = {
 
 
 
-// CONCATENATED MODULE: ./src/common/components/index.js
+;// CONCATENATED MODULE: ./src/common/components/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70085,7 +71260,7 @@ let ComponentsUtil = {
 
 
 
-// CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
+;// CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
 ﻿
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -70210,7 +71385,7 @@ let en = {
 
 SuperMap.Lang["en-US"] = en;
 
-// CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
+;// CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
 ﻿/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70337,7 +71512,7 @@ let zh = {
 SuperMap.Lang["zh-CN"] = zh;
 
 
-// CONCATENATED MODULE: ./src/common/lang/index.js
+;// CONCATENATED MODULE: ./src/common/lang/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70349,7 +71524,7 @@ SuperMap.Lang["zh-CN"] = zh;
 
 
 
-// CONCATENATED MODULE: ./src/common/index.js
+;// CONCATENATED MODULE: ./src/common/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70388,7 +71563,7 @@ SuperMap.Lang["zh-CN"] = zh;
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/services/MapService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/MapService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70462,11 +71637,10 @@ class MapService extends ServiceBase {
         tilesetsService.processAsync();
     }
 }
-// CONCATENATED MODULE: external "ol.control.Control"
+;// CONCATENATED MODULE: external "ol.control.Control"
 const external_ol_control_Control_namespaceObject = ol.control.Control;
 var external_ol_control_Control_default = /*#__PURE__*/__webpack_require__.n(external_ol_control_Control_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/control/ChangeTileVersion.js
+;// CONCATENATED MODULE: ./src/openlayers/control/ChangeTileVersion.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -70814,7 +71988,7 @@ class ChangeTileVersion extends (external_ol_control_Control_default()) {
      * @param {Object} tileVersions - 待更新的切片版本。
      */
     update(tileVersions) {
-        this.tileVersions = tileVersions;
+        this.tileVersions = tileVersions ||[];
         this.updateLength(this.tileVersions.length);
     }
 
@@ -70908,17 +72082,15 @@ class ChangeTileVersion extends (external_ol_control_Control_default()) {
     }
 }
 
-// CONCATENATED MODULE: external "ol.control.ScaleLine"
+;// CONCATENATED MODULE: external "ol.control.ScaleLine"
 const external_ol_control_ScaleLine_namespaceObject = ol.control.ScaleLine;
 var external_ol_control_ScaleLine_default = /*#__PURE__*/__webpack_require__.n(external_ol_control_ScaleLine_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.proj"
+;// CONCATENATED MODULE: external "ol.proj"
 const external_ol_proj_namespaceObject = ol.proj;
-// CONCATENATED MODULE: external "ol.AssertionError"
+;// CONCATENATED MODULE: external "ol.AssertionError"
 const external_ol_AssertionError_namespaceObject = ol.AssertionError;
 var external_ol_AssertionError_default = /*#__PURE__*/__webpack_require__.n(external_ol_AssertionError_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/control/ScaleLine.js
+;// CONCATENATED MODULE: ./src/openlayers/control/ScaleLine.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -71080,12 +72252,12 @@ class ScaleLine extends (external_ol_control_ScaleLine_default()) {
 
     }
 }
-// CONCATENATED MODULE: ./src/common/control/img/Logo.js
+;// CONCATENATED MODULE: ./src/common/control/img/Logo.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var LogoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII=";
-// CONCATENATED MODULE: ./src/openlayers/control/Logo.js
+;// CONCATENATED MODULE: ./src/openlayers/control/Logo.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -71184,14 +72356,14 @@ class Logo extends (external_ol_control_Control_default()) {
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/control/index.js
+;// CONCATENATED MODULE: ./src/openlayers/control/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/StyleMap.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/StyleMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -71439,7 +72611,7 @@ var StyleMap = {
         "value": ""
     }
 };
-// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/DeafultCanvasStyle.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/DeafultCanvasStyle.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -71565,15 +72737,13 @@ var DeafultCanvasStyle = {
         imageSmoothingEnabled: true
     }
 };
-// CONCATENATED MODULE: external "ol.geom.Point"
+;// CONCATENATED MODULE: external "ol.geom.Point"
 const external_ol_geom_Point_namespaceObject = ol.geom.Point;
 var external_ol_geom_Point_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_Point_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.format.GeoJSON"
+;// CONCATENATED MODULE: external "ol.format.GeoJSON"
 const external_ol_format_GeoJSON_namespaceObject = ol.format.GeoJSON;
 var external_ol_format_GeoJSON_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_GeoJSON_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/services/QueryService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/QueryService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -71743,7 +72913,7 @@ class QueryService_QueryService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/FeatureService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/FeatureService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -71986,29 +73156,25 @@ class FeatureService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: external "ol.util"
+;// CONCATENATED MODULE: external "ol.util"
 const external_ol_util_namespaceObject = ol.util;
-// CONCATENATED MODULE: external "ol.geom.Geometry"
+;// CONCATENATED MODULE: external "ol.geom.Geometry"
 const external_ol_geom_Geometry_namespaceObject = ol.geom.Geometry;
 var external_ol_geom_Geometry_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_Geometry_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.render"
+;// CONCATENATED MODULE: external "ol.render"
 const external_ol_render_namespaceObject = ol.render;
-// CONCATENATED MODULE: external "ol.source.Vector"
+;// CONCATENATED MODULE: external "ol.source.Vector"
 const external_ol_source_Vector_namespaceObject = ol.source.Vector;
 var external_ol_source_Vector_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_Vector_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.layer.Vector"
+;// CONCATENATED MODULE: external "ol.layer.Vector"
 const external_ol_layer_Vector_namespaceObject = ol.layer.Vector;
 var external_ol_layer_Vector_default = /*#__PURE__*/__webpack_require__.n(external_ol_layer_Vector_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style"
+;// CONCATENATED MODULE: external "ol.style"
 const external_ol_style_namespaceObject = ol.style;
-// CONCATENATED MODULE: external "ol.Feature"
+;// CONCATENATED MODULE: external "ol.Feature"
 const external_ol_Feature_namespaceObject = ol.Feature;
 var external_ol_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol_Feature_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/core/Util.js
+;// CONCATENATED MODULE: ./src/openlayers/core/Util.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -72552,35 +73718,28 @@ class core_Util_Util {
     }
 }
 
-// CONCATENATED MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
+;// CONCATENATED MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
 const external_function_try_return_canvg_catch_e_return_namespaceObject = function(){try{return canvg}catch(e){return {}}}();
 var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_canvg_catch_e_return_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style.Style"
+;// CONCATENATED MODULE: external "ol.style.Style"
 const external_ol_style_Style_namespaceObject = ol.style.Style;
 var external_ol_style_Style_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Style_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style.Icon"
+;// CONCATENATED MODULE: external "ol.style.Icon"
 const external_ol_style_Icon_namespaceObject = ol.style.Icon;
 var external_ol_style_Icon_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Icon_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style.Circle"
+;// CONCATENATED MODULE: external "ol.style.Circle"
 const external_ol_style_Circle_namespaceObject = ol.style.Circle;
 var external_ol_style_Circle_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Circle_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style.Fill"
+;// CONCATENATED MODULE: external "ol.style.Fill"
 const external_ol_style_Fill_namespaceObject = ol.style.Fill;
 var external_ol_style_Fill_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Fill_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style.Stroke"
+;// CONCATENATED MODULE: external "ol.style.Stroke"
 const external_ol_style_Stroke_namespaceObject = ol.style.Stroke;
 var external_ol_style_Stroke_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Stroke_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.style.Text"
+;// CONCATENATED MODULE: external "ol.style.Text"
 const external_ol_style_Text_namespaceObject = ol.style.Text;
 var external_ol_style_Text_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Text_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/core/StyleUtils.js
+;// CONCATENATED MODULE: ./src/openlayers/core/StyleUtils.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -73828,15 +74987,13 @@ class StyleUtils {
     return [outlineStroke, stroke];
   }
 }
-// CONCATENATED MODULE: external "ol.Map"
+;// CONCATENATED MODULE: external "ol.Map"
 const external_ol_Map_namespaceObject = ol.Map;
 var external_ol_Map_default = /*#__PURE__*/__webpack_require__.n(external_ol_Map_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.layer.Group"
+;// CONCATENATED MODULE: external "ol.layer.Group"
 const external_ol_layer_Group_namespaceObject = ol.layer.Group;
 var external_ol_layer_Group_default = /*#__PURE__*/__webpack_require__.n(external_ol_layer_Group_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/core/MapExtend.js
+;// CONCATENATED MODULE: ./src/openlayers/core/MapExtend.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -73886,24 +75043,38 @@ var MapExtend = function () {
         return this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
     }
 }();
-// CONCATENATED MODULE: ./src/openlayers/core/index.js
+;// CONCATENATED MODULE: ./src/openlayers/core/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
-// CONCATENATED MODULE: external "ol.source.TileImage"
+/**
+ * @namespace ol
+ * @category BaseTypes Namespace
+ */
+/**
+ * @namespace ol.supermap
+ * @category BaseTypes Namespace
+ */
+/**
+ * @namespace ol.style
+ * @category BaseTypes Namespace
+ */
+/**
+ * @namespace ol.source
+ * @category BaseTypes Namespace
+ */
+;// CONCATENATED MODULE: external "ol.source.TileImage"
 const external_ol_source_TileImage_namespaceObject = ol.source.TileImage;
 var external_ol_source_TileImage_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_TileImage_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.asserts"
+;// CONCATENATED MODULE: external "ol.asserts"
 const external_ol_asserts_namespaceObject = ol.asserts;
-// CONCATENATED MODULE: external "ol.tilegrid.TileGrid"
+;// CONCATENATED MODULE: external "ol.tilegrid.TileGrid"
 const external_ol_tilegrid_TileGrid_namespaceObject = ol.tilegrid.TileGrid;
 var external_ol_tilegrid_TileGrid_default = /*#__PURE__*/__webpack_require__.n(external_ol_tilegrid_TileGrid_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/mapping/BaiduMap.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/BaiduMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -74022,11 +75193,11 @@ class BaiduMap extends (external_ol_source_TileImage_default()) {
     }
 }
 
-// CONCATENATED MODULE: external "ol.size"
+;// CONCATENATED MODULE: external "ol.size"
 const external_ol_size_namespaceObject = ol.size;
-// CONCATENATED MODULE: external "ol.tilegrid"
+;// CONCATENATED MODULE: external "ol.tilegrid"
 const external_ol_tilegrid_namespaceObject = ol.tilegrid;
-// CONCATENATED MODULE: ./src/openlayers/mapping/ImageSuperMapRest.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/ImageSuperMapRest.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -74289,11 +75460,10 @@ class ImageSuperMapRest extends (external_ol_source_TileImage_default()) {
   }
 }
 
-// CONCATENATED MODULE: external "ol.source.XYZ"
+;// CONCATENATED MODULE: external "ol.source.XYZ"
 const external_ol_source_XYZ_namespaceObject = ol.source.XYZ;
 var external_ol_source_XYZ_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_XYZ_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/mapping/SuperMapCloud.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/SuperMapCloud.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -74348,15 +75518,13 @@ class SuperMapCloud extends (external_ol_source_XYZ_default()) {
     }
 }
 
-// CONCATENATED MODULE: external "ol.source.WMTS"
+;// CONCATENATED MODULE: external "ol.source.WMTS"
 const external_ol_source_WMTS_namespaceObject = ol.source.WMTS;
 var external_ol_source_WMTS_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_WMTS_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.tilegrid.WMTS"
+;// CONCATENATED MODULE: external "ol.tilegrid.WMTS"
 const external_ol_tilegrid_WMTS_namespaceObject = ol.tilegrid.WMTS;
 var external_ol_tilegrid_WMTS_default = /*#__PURE__*/__webpack_require__.n(external_ol_tilegrid_WMTS_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/mapping/Tianditu.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/Tianditu.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -74507,7 +75675,7 @@ class Tianditu extends (external_ol_source_WMTS_default()) {
   }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/mapping/TileSuperMapRest.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/TileSuperMapRest.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -74896,7 +76064,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/global.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/global.js
 /* harmony default export */ function global(defs) {
   defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
   defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
@@ -74909,11 +76077,15 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
   defs['EPSG:102113'] = defs['EPSG:3857'];
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/values.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/values.js
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
+var PJD_GRIDSHIFT = 3;
 var PJD_WGS84 = 4; // WGS84 or equivalent
 var PJD_NODATUM = 5; // WGS84 or equivalent
+var SRS_WGS84_SEMIMAJOR = 6378137.0;  // only used in grid shift transforms
+var SRS_WGS84_SEMIMINOR = 6356752.314;  // only used in grid shift transforms
+var SRS_WGS84_ESQUARED = 0.0066943799901413165; // only used in grid shift transforms
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
 var HALF_PI = Math.PI/2;
 // ellipoid pj_set_ell.c
@@ -74936,7 +76108,7 @@ var TWO_PI = Math.PI * 2;
 // floating point error) from changing their sign.
 var SPI = 3.14159265359;
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/PrimeMeridian.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/PrimeMeridian.js
 var PrimeMeridian_exports = {};
 
 
@@ -74954,13 +76126,13 @@ PrimeMeridian_exports.stockholm = 18.058277777778; //"18d3'29.8\"E",
 PrimeMeridian_exports.athens = 23.7163375; //"23d42'58.815\"E",
 PrimeMeridian_exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/units.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/units.js
 /* harmony default export */ const units = ({
   ft: {to_meter: 0.3048},
   'us-ft': {to_meter: 1200 / 3937}
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/match.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/match.js
 var ignoredChar = /[\s_\-\/\(\)]/g;
 function match(obj, key) {
   if (obj[key]) {
@@ -74979,7 +76151,7 @@ function match(obj, key) {
   }
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projString.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projString.js
 
 
 
@@ -75027,6 +76199,9 @@ function match(obj, key) {
     },
     alpha: function(v) {
       self.alpha = parseFloat(v) * D2R;
+    },
+    gamma: function(v) {
+      self.rectified_grid_angle = parseFloat(v);
     },
     lonc: function(v) {
       self.longc = v * D2R;
@@ -75093,6 +76268,9 @@ function match(obj, key) {
       if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
         self.axis = v;
       }
+    },
+    approx: function() {
+      self.approx = true;
     }
   };
   for (paramName in paramObj) {
@@ -75116,7 +76294,7 @@ function match(obj, key) {
   return self;
 }
 
-// CONCATENATED MODULE: ./node_modules/wkt-parser/parser.js
+;// CONCATENATED MODULE: ./node_modules/wkt-parser/parser.js
 /* harmony default export */ const parser = (parseString);
 
 var NEUTRAL = 1;
@@ -75287,7 +76465,7 @@ function parseString(txt) {
   return parser.output();
 }
 
-// CONCATENATED MODULE: ./node_modules/wkt-parser/process.js
+;// CONCATENATED MODULE: ./node_modules/wkt-parser/process.js
 
 
 function mapit(obj, key, value) {
@@ -75402,7 +76580,7 @@ function sExpr(v, obj) {
   }
 }
 
-// CONCATENATED MODULE: ./node_modules/wkt-parser/index.js
+;// CONCATENATED MODULE: ./node_modules/wkt-parser/index.js
 var wkt_parser_D2R = 0.01745329251994329577;
 
 
@@ -75440,15 +76618,14 @@ function cleanWKT(wkt) {
   if (wkt.AXIS) {
     var axisOrder = '';
     for (var i = 0, ii = wkt.AXIS.length; i < ii; ++i) {
-      var axis = wkt.AXIS[i];
-      var descriptor = axis[0].toLowerCase();
-      if (descriptor.indexOf('north') !== -1) {
+      var axis = [wkt.AXIS[i][0].toLowerCase(), wkt.AXIS[i][1].toLowerCase()];
+      if (axis[0].indexOf('north') !== -1 || ((axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'north')) {
         axisOrder += 'n';
-      } else if (descriptor.indexOf('south') !== -1) {
+      } else if (axis[0].indexOf('south') !== -1 || ((axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'south')) {
         axisOrder += 's';
-      } else if (descriptor.indexOf('east') !== -1) {
+      } else if (axis[0].indexOf('east') !== -1 || ((axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'east')) {
         axisOrder += 'e';
-      } else if (descriptor.indexOf('west') !== -1) {
+      } else if (axis[0].indexOf('west') !== -1 || ((axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'west')) {
         axisOrder += 'w';
       }
     }
@@ -75551,12 +76728,22 @@ function cleanWKT(wkt) {
   };
   var list = [
     ['standard_parallel_1', 'Standard_Parallel_1'],
+    ['standard_parallel_1', 'Latitude of 1st standard parallel'],
     ['standard_parallel_2', 'Standard_Parallel_2'],
+    ['standard_parallel_2', 'Latitude of 2nd standard parallel'],
     ['false_easting', 'False_Easting'],
+    ['false_easting', 'False easting'],
+    ['false-easting', 'Easting at false origin'],
     ['false_northing', 'False_Northing'],
+    ['false_northing', 'False northing'],
+    ['false_northing', 'Northing at false origin'],
     ['central_meridian', 'Central_Meridian'],
+    ['central_meridian', 'Longitude of natural origin'],
+    ['central_meridian', 'Longitude of false origin'],
     ['latitude_of_origin', 'Latitude_Of_Origin'],
     ['latitude_of_origin', 'Central_Parallel'],
+    ['latitude_of_origin', 'Latitude of natural origin'],
+    ['latitude_of_origin', 'Latitude of false origin'],
     ['scale_factor', 'Scale_Factor'],
     ['k0', 'scale_factor'],
     ['latitude_of_center', 'Latitude_Of_Center'],
@@ -75597,7 +76784,7 @@ function cleanWKT(wkt) {
   return obj;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/defs.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/defs.js
 
 
 
@@ -75654,7 +76841,7 @@ function defs(name) {
 global(defs);
 /* harmony default export */ const lib_defs = (defs);
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/parseCode.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/parseCode.js
 
 
 
@@ -75665,7 +76852,7 @@ function testObj(code){
 function testDef(code){
   return code in lib_defs;
 }
- var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
+var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
 function testWKT(code){
   return codeWords.some(function (word) {
     return code.indexOf(word) > -1;
@@ -75718,7 +76905,7 @@ function parse(code){
 
 /* harmony default export */ const parseCode = (parse);
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/extend.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/extend.js
 /* harmony default export */ function extend(destination, source) {
   destination = destination || {};
   var value, property;
@@ -75734,16 +76921,16 @@ function parse(code){
   return destination;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/msfnz.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/msfnz.js
 /* harmony default export */ function msfnz(eccent, sinphi, cosphi) {
   var con = eccent * sinphi;
   return cosphi / (Math.sqrt(1 - con * con));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/sign.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/sign.js
 /* harmony default export */ function sign(x) {
   return x<0 ? -1 : 1;
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_lon.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_lon.js
 
 
 
@@ -75752,7 +76939,7 @@ function parse(code){
   return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/tsfnz.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/tsfnz.js
 
 
 /* harmony default export */ function tsfnz(eccent, phi, sinphi) {
@@ -75762,7 +76949,7 @@ function parse(code){
   return (Math.tan(0.5 * (HALF_PI - phi)) / con);
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/phi2z.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/phi2z.js
 
 
 /* harmony default export */ function phi2z(eccent, ts) {
@@ -75781,7 +76968,7 @@ function parse(code){
   return -9999;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/merc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/merc.js
 
 
 
@@ -75883,7 +77070,7 @@ var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP"
   names: names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/longlat.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/longlat.js
 function longlat_init() {
   //no-op for longlat
 }
@@ -75901,7 +77088,7 @@ var longlat_names = ["longlat", "identity"];
   names: longlat_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections.js
 
 
 var projs = [merc, longlat];
@@ -75942,7 +77129,7 @@ function start() {
   get: get
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Ellipsoid.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Ellipsoid.js
 var Ellipsoid_exports = {};
 
 Ellipsoid_exports.MERIT = {
@@ -76203,7 +77390,7 @@ Ellipsoid_exports.sphere = {
   ellipseName: "Normal Sphere (r=6370997)"
 };
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/deriveConstants.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/deriveConstants.js
 
 
 
@@ -76253,7 +77440,7 @@ function sphere(a, b, rf, ellps, sphere) {
   };
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Datum.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Datum.js
 var Datum_exports = {};
 
 Datum_exports.wgs84 = {
@@ -76287,7 +77474,7 @@ Datum_exports.nad27 = {
 };
 
 Datum_exports.potsdam = {
-  towgs84: "606.0,23.0,413.0",
+  towgs84: "598.1,73.7,418.2,0.202,0.045,-2.455,6.7",
   ellipse: "bessel",
   datumName: "Potsdam Rauenberg 1950 DHDN"
 };
@@ -76299,7 +77486,7 @@ Datum_exports.carthage = {
 };
 
 Datum_exports.hermannskogel = {
-  towgs84: "653.0,-212.0,449.0",
+  towgs84: "577.326,90.129,463.919,5.137,1.474,5.297,2.4232",
   ellipse: "bessel",
   datumName: "Hermannskogel"
 };
@@ -76358,10 +77545,10 @@ Datum_exports.rnb72 = {
   datumName: "Reseau National Belge 1972"
 };
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/datum.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/datum.js
 
 
-function datum(datumCode, datum_params, a, b, es, ep2) {
+function datum(datumCode, datum_params, a, b, es, ep2, nadgrids) {
   var out = {};
 
   if (datumCode === undefined || datumCode === 'none') {
@@ -76386,6 +77573,10 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
     }
   }
 
+  if (nadgrids) {
+    out.datum_type = PJD_GRIDSHIFT;
+    out.grids = nadgrids;
+  }
   out.a = a; //datum object also uses these values
   out.b = b;
   out.es = es;
@@ -76395,7 +77586,152 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
 
 /* harmony default export */ const lib_datum = (datum);
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/Proj.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/nadgrid.js
+/**
+ * Resources for details of NTv2 file formats:
+ * - https://web.archive.org/web/20140127204822if_/http://www.mgs.gov.on.ca:80/stdprodconsume/groups/content/@mgs/@iandit/documents/resourcelist/stel02_047447.pdf
+ * - http://mimaka.com/help/gs/html/004_NTV2%20Data%20Format.htm
+ */
+
+var loadedNadgrids = {};
+
+/**
+ * Load a binary NTv2 file (.gsb) to a key that can be used in a proj string like +nadgrids=<key>. Pass the NTv2 file
+ * as an ArrayBuffer.
+ */
+function nadgrid(key, data) {
+  var view = new DataView(data);
+  var isLittleEndian = detectLittleEndian(view);
+  var header = readHeader(view, isLittleEndian);
+  if (header.nSubgrids > 1) {
+    console.log('Only single NTv2 subgrids are currently supported, subsequent sub grids are ignored');
+  }
+  var subgrids = readSubgrids(view, header, isLittleEndian);
+  var nadgrid = {header: header, subgrids: subgrids};
+  loadedNadgrids[key] = nadgrid;
+  return nadgrid;
+}
+
+/**
+ * Given a proj4 value for nadgrids, return an array of loaded grids
+ */
+function getNadgrids(nadgrids) {
+  // Format details: http://proj.maptools.org/gen_parms.html
+  if (nadgrids === undefined) { return null; }
+  var grids = nadgrids.split(',');
+  return grids.map(parseNadgridString);
+}
+
+function parseNadgridString(value) {
+  if (value.length === 0) {
+    return null;
+  }
+  var optional = value[0] === '@';
+  if (optional) {
+    value = value.slice(1);
+  }
+  if (value === 'null') {
+    return {name: 'null', mandatory: !optional, grid: null, isNull: true};
+  }
+  return {
+    name: value,
+    mandatory: !optional,
+    grid: loadedNadgrids[value] || null,
+    isNull: false
+  };
+}
+
+function secondsToRadians(seconds) {
+  return (seconds / 3600) * Math.PI / 180;
+}
+
+function detectLittleEndian(view) {
+  var nFields = view.getInt32(8, false);
+  if (nFields === 11) {
+    return false;
+  }
+  nFields = view.getInt32(8, true);
+  if (nFields !== 11) {
+    console.warn('Failed to detect nadgrid endian-ness, defaulting to little-endian');
+  }
+  return true;
+}
+
+function readHeader(view, isLittleEndian) {
+  return {
+    nFields: view.getInt32(8, isLittleEndian),
+    nSubgridFields: view.getInt32(24, isLittleEndian),
+    nSubgrids: view.getInt32(40, isLittleEndian),
+    shiftType: decodeString(view, 56, 56 + 8).trim(),
+    fromSemiMajorAxis: view.getFloat64(120, isLittleEndian),
+    fromSemiMinorAxis: view.getFloat64(136, isLittleEndian),
+    toSemiMajorAxis: view.getFloat64(152, isLittleEndian),
+    toSemiMinorAxis: view.getFloat64(168, isLittleEndian),
+  };
+}
+
+function decodeString(view, start, end) {
+  return String.fromCharCode.apply(null, new Uint8Array(view.buffer.slice(start, end)));
+}
+
+function readSubgrids(view, header, isLittleEndian) {
+  var gridOffset = 176;
+  var grids = [];
+  for (var i = 0; i < header.nSubgrids; i++) {
+    var subHeader = readGridHeader(view, gridOffset, isLittleEndian);
+    var nodes = readGridNodes(view, gridOffset, subHeader, isLittleEndian);
+    var lngColumnCount = Math.round(
+      1 + (subHeader.upperLongitude - subHeader.lowerLongitude) / subHeader.longitudeInterval);
+    var latColumnCount = Math.round(
+      1 + (subHeader.upperLatitude - subHeader.lowerLatitude) / subHeader.latitudeInterval);
+    // Proj4 operates on radians whereas the coordinates are in seconds in the grid
+    grids.push({
+      ll: [secondsToRadians(subHeader.lowerLongitude), secondsToRadians(subHeader.lowerLatitude)],
+      del: [secondsToRadians(subHeader.longitudeInterval), secondsToRadians(subHeader.latitudeInterval)],
+      lim: [lngColumnCount, latColumnCount],
+      count: subHeader.gridNodeCount,
+      cvs: mapNodes(nodes)
+    });
+  }
+  return grids;
+}
+
+function mapNodes(nodes) {
+  return nodes.map(function (r) {return [secondsToRadians(r.longitudeShift), secondsToRadians(r.latitudeShift)];});
+}
+
+function readGridHeader(view, offset, isLittleEndian) {
+  return {
+    name: decodeString(view, offset + 8, offset + 16).trim(),
+    parent: decodeString(view, offset + 24, offset + 24 + 8).trim(),
+    lowerLatitude: view.getFloat64(offset + 72, isLittleEndian),
+    upperLatitude: view.getFloat64(offset + 88, isLittleEndian),
+    lowerLongitude: view.getFloat64(offset + 104, isLittleEndian),
+    upperLongitude: view.getFloat64(offset + 120, isLittleEndian),
+    latitudeInterval: view.getFloat64(offset + 136, isLittleEndian),
+    longitudeInterval: view.getFloat64(offset + 152, isLittleEndian),
+    gridNodeCount: view.getInt32(offset + 168, isLittleEndian)
+  };
+}
+
+function readGridNodes(view, offset, gridHeader, isLittleEndian) {
+  var nodesOffset = offset + 176;
+  var gridRecordLength = 16;
+  var gridShiftRecords = [];
+  for (var i = 0; i < gridHeader.gridNodeCount; i++) {
+    var record = {
+      latitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength, isLittleEndian),
+      longitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength + 4, isLittleEndian),
+      latitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 8, isLittleEndian),
+      longitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 12, isLittleEndian),
+    };
+    gridShiftRecords.push(record);
+  }
+  return gridShiftRecords;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/Proj.js
+
 
 
 
@@ -76426,7 +77762,7 @@ function Projection(srsCode,callback) {
   if (json.datumCode && json.datumCode !== 'none') {
     var datumDef = match(Datum_exports, json.datumCode);
     if (datumDef) {
-      json.datum_params = datumDef.towgs84 ? datumDef.towgs84.split(',') : null;
+      json.datum_params = json.datum_params || (datumDef.towgs84 ? datumDef.towgs84.split(',') : null);
       json.ellps = datumDef.ellipse;
       json.datumName = datumDef.datumName ? datumDef.datumName : json.datumCode;
     }
@@ -76434,9 +77770,13 @@ function Projection(srsCode,callback) {
   json.k0 = json.k0 || 1.0;
   json.axis = json.axis || 'enu';
   json.ellps = json.ellps || 'wgs84';
+  json.lat1 = json.lat1 || json.lat0; // Lambert_Conformal_Conic_1SP, for example, needs this
+
   var sphere_ = sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
   var ecc = eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
-  var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2);
+  var nadgrids = getNadgrids(json.nadgrids);
+  var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2,
+    nadgrids);
 
   extend(this, json); // transfer everything over from the projection because we don't know what we'll need
   extend(this, ourProj); // transfer all the methods from the projection
@@ -76466,7 +77806,7 @@ Projection.projections = projections;
 Projection.projections.start();
 /* harmony default export */ const Proj = (Projection);
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/datumUtils.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/datumUtils.js
 
 
 function compareDatums(source, dest) {
@@ -76713,7 +78053,8 @@ function geocentricFromWgs84(p, datum_type, datum_params) {
   } //cs_geocentric_from_wgs84()
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/datum_transform.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/datum_transform.js
+
 
 
 
@@ -76735,14 +78076,33 @@ function checkParams(type) {
   }
 
   // If this datum requires grid shifts, then apply it to geodetic coordinates.
+  var source_a = source.a;
+  var source_es = source.es;
+  if (source.datum_type === PJD_GRIDSHIFT) {
+    var gridShiftCode = applyGridShift(source, false, point);
+    if (gridShiftCode !== 0) {
+      return undefined;
+    }
+    source_a = SRS_WGS84_SEMIMAJOR;
+    source_es = SRS_WGS84_ESQUARED;
+  }
+
+  var dest_a = dest.a;
+  var dest_b = dest.b;
+  var dest_es = dest.es;
+  if (dest.datum_type === PJD_GRIDSHIFT) {
+    dest_a = SRS_WGS84_SEMIMAJOR;
+    dest_b = SRS_WGS84_SEMIMINOR;
+    dest_es = SRS_WGS84_ESQUARED;
+  }
 
   // Do we need to go through geocentric coordinates?
-  if (source.es === dest.es && source.a === dest.a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
+  if (source_es === dest_es && source_a === dest_a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
     return point;
   }
 
   // Convert to geocentric coordinates.
-  point = geodeticToGeocentric(point, source.es, source.a);
+  point = geodeticToGeocentric(point, source_es, source_a);
   // Convert between datums
   if (checkParams(source.datum_type)) {
     point = geocentricToWgs84(point, source.datum_type, source.datum_params);
@@ -76750,11 +78110,136 @@ function checkParams(type) {
   if (checkParams(dest.datum_type)) {
     point = geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
   }
-  return geocentricToGeodetic(point, dest.es, dest.a, dest.b);
+  point = geocentricToGeodetic(point, dest_es, dest_a, dest_b);
 
+  if (dest.datum_type === PJD_GRIDSHIFT) {
+    var destGridShiftResult = applyGridShift(dest, true, point);
+    if (destGridShiftResult !== 0) {
+      return undefined;
+    }
+  }
+
+  return point;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/adjust_axis.js
+function applyGridShift(source, inverse, point) {
+  if (source.grids === null || source.grids.length === 0) {
+    console.log('Grid shift grids not found');
+    return -1;
+  }
+  var input = {x: -point.x, y: point.y};
+  var output = {x: Number.NaN, y: Number.NaN};
+  var onlyMandatoryGrids = false;
+  var attemptedGrids = [];
+  for (var i = 0; i < source.grids.length; i++) {
+    var grid = source.grids[i];
+    attemptedGrids.push(grid.name);
+    if (grid.isNull) {
+      output = input;
+      break;
+    }
+    onlyMandatoryGrids = grid.mandatory;
+    if (grid.grid === null) {
+      if (grid.mandatory) {
+        console.log("Unable to find mandatory grid '" + grid.name + "'");
+        return -1;
+      }
+      continue;
+    }
+    var subgrid = grid.grid.subgrids[0];
+    // skip tables that don't match our point at all
+    var epsilon = (Math.abs(subgrid.del[1]) + Math.abs(subgrid.del[0])) / 10000.0;
+    var minX = subgrid.ll[0] - epsilon;
+    var minY = subgrid.ll[1] - epsilon;
+    var maxX = subgrid.ll[0] + (subgrid.lim[0] - 1) * subgrid.del[0] + epsilon;
+    var maxY = subgrid.ll[1] + (subgrid.lim[1] - 1) * subgrid.del[1] + epsilon;
+    if (minY > input.y || minX > input.x || maxY < input.y || maxX < input.x ) {
+      continue;
+    }
+    output = applySubgridShift(input, inverse, subgrid);
+    if (!isNaN(output.x)) {
+      break;
+    }
+  }
+  if (isNaN(output.x)) {
+    console.log("Failed to find a grid shift table for location '"+
+      -input.x * R2D + " " + input.y * R2D + " tried: '" + attemptedGrids + "'");
+    return -1;
+  }
+  point.x = -output.x;
+  point.y = output.y;
+  return 0;
+}
+
+function applySubgridShift(pin, inverse, ct) {
+  var val = {x: Number.NaN, y: Number.NaN};
+  if (isNaN(pin.x)) { return val; }
+  var tb = {x: pin.x, y: pin.y};
+  tb.x -= ct.ll[0];
+  tb.y -= ct.ll[1];
+  tb.x = adjust_lon(tb.x - Math.PI) + Math.PI;
+  var t = nadInterpolate(tb, ct);
+  if (inverse) {
+    if (isNaN(t.x)) {
+      return val;
+    }
+    t.x = tb.x - t.x;
+    t.y = tb.y - t.y;
+    var i = 9, tol = 1e-12;
+    var dif, del;
+    do {
+      del = nadInterpolate(t, ct);
+      if (isNaN(del.x)) {
+        console.log("Inverse grid shift iteration failed, presumably at grid edge.  Using first approximation.");
+        break;
+      }
+      dif = {x: tb.x - (del.x + t.x), y: tb.y - (del.y + t.y)};
+      t.x += dif.x;
+      t.y += dif.y;
+    } while (i-- && Math.abs(dif.x) > tol && Math.abs(dif.y) > tol);
+    if (i < 0) {
+      console.log("Inverse grid shift iterator failed to converge.");
+      return val;
+    }
+    val.x = adjust_lon(t.x + ct.ll[0]);
+    val.y = t.y + ct.ll[1];
+  } else {
+    if (!isNaN(t.x)) {
+      val.x = pin.x + t.x;
+      val.y = pin.y + t.y;
+    }
+  }
+  return val;
+}
+
+function nadInterpolate(pin, ct) {
+  var t = {x: pin.x / ct.del[0], y: pin.y / ct.del[1]};
+  var indx = {x: Math.floor(t.x), y: Math.floor(t.y)};
+  var frct = {x: t.x - 1.0 * indx.x, y: t.y - 1.0 * indx.y};
+  var val= {x: Number.NaN, y: Number.NaN};
+  var inx;
+  if (indx.x < 0 || indx.x >= ct.lim[0]) {
+    return val;
+  }
+  if (indx.y < 0 || indx.y >= ct.lim[1]) {
+    return val;
+  }
+  inx = (indx.y * ct.lim[0]) + indx.x;
+  var f00 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  inx++;
+  var f10= {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  inx += ct.lim[0];
+  var f11 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  inx--;
+  var f01 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  var m11 = frct.x * frct.y, m10 = frct.x * (1.0 - frct.y),
+    m00 = (1.0 - frct.x) * (1.0 - frct.y), m01 = (1.0 - frct.x) * frct.y;
+  val.x = (m00 * f00.x + m10 * f10.x + m01 * f01.x + m11 * f11.x);
+  val.y = (m00 * f00.y + m10 * f10.y + m01 * f01.y + m11 * f11.y);
+  return val;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/adjust_axis.js
 /* harmony default export */ function adjust_axis(crs, denorm, point) {
   var xin = point.x,
     yin = point.y,
@@ -76817,7 +78302,7 @@ function checkParams(type) {
   return out;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/toPoint.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/toPoint.js
 /* harmony default export */ function toPoint(array){
   var out = {
     x: array[0],
@@ -76831,7 +78316,7 @@ function checkParams(type) {
   }
   return out;
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/checkSanity.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/checkSanity.js
 /* harmony default export */ function checkSanity(point) {
   checkCoord(point.x);
   checkCoord(point.y);
@@ -76848,7 +78333,7 @@ function checkCoord(num) {
   }
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/transform.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/transform.js
 
 
 
@@ -76860,7 +78345,7 @@ function checkNotWGS(source, dest) {
   return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
 }
 
-function transform(source, dest, point) {
+function transform(source, dest, point, enforceAxis) {
   var wgs84;
   if (Array.isArray(point)) {
     point = toPoint(point);
@@ -76869,11 +78354,11 @@ function transform(source, dest, point) {
   // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
   if (source.datum && dest.datum && checkNotWGS(source, dest)) {
     wgs84 = new Proj('WGS84');
-    point = transform(source, wgs84, point);
+    point = transform(source, wgs84, point, enforceAxis);
     source = wgs84;
   }
   // DGR, 2010/11/12
-  if (source.axis !== 'enu') {
+  if (enforceAxis && source.axis !== 'enu') {
     point = adjust_axis(source, false, point);
   }
   // Transform source points to long/lat, if they aren't already.
@@ -76903,6 +78388,9 @@ function transform(source, dest, point) {
 
   // Convert datums if needed, and if possible.
   point = datum_transform(source.datum, dest.datum, point);
+  if (!point) {
+    return;
+  }
 
   // Adjust for the prime meridian if necessary
   if (dest.from_greenwich) {
@@ -76932,22 +78420,22 @@ function transform(source, dest, point) {
   }
 
   // DGR, 2010/11/12
-  if (dest.axis !== 'enu') {
+  if (enforceAxis && dest.axis !== 'enu') {
     return adjust_axis(dest, true, point);
   }
 
   return point;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/core.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/core.js
 
 
 var wgs84 = Proj('WGS84');
 
-function transformer(from, to, coords) {
+function transformer(from, to, coords, enforceAxis) {
   var transformedArray, out, keys;
   if (Array.isArray(coords)) {
-    transformedArray = transform(from, to, coords) || {x: NaN, y: NaN};
+    transformedArray = transform(from, to, coords, enforceAxis) || {x: NaN, y: NaN};
     if (coords.length > 2) {
       if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
         if (typeof transformedArray.z === 'number') {
@@ -76962,7 +78450,7 @@ function transformer(from, to, coords) {
       return [transformedArray.x, transformedArray.y];
     }
   } else {
-    out = transform(from, to, coords);
+    out = transform(from, to, coords, enforceAxis);
     keys = Object.keys(coords);
     if (keys.length === 2) {
       return out;
@@ -77012,11 +78500,11 @@ function proj4(fromProj, toProj, coord) {
     return transformer(fromProj, toProj, coord);
   } else {
     obj = {
-      forward: function (coords) {
-        return transformer(fromProj, toProj, coords);
+      forward: function (coords, enforceAxis) {
+        return transformer(fromProj, toProj, coords, enforceAxis);
       },
-      inverse: function (coords) {
-        return transformer(toProj, fromProj, coords);
+      inverse: function (coords, enforceAxis) {
+        return transformer(toProj, fromProj, coords, enforceAxis);
       }
     };
     if (single) {
@@ -77026,7 +78514,7 @@ function proj4(fromProj, toProj, coord) {
   }
 }
 /* harmony default export */ const core = (proj4);
-// CONCATENATED MODULE: ./node_modules/mgrs/mgrs.js
+;// CONCATENATED MODULE: ./node_modules/mgrs/mgrs.js
 
 
 
@@ -77774,7 +79262,7 @@ function getMinNorthing(zoneLetter) {
 
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/Point.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/Point.js
 
 
 function lib_Point_Point(x, y, z) {
@@ -77810,7 +79298,7 @@ lib_Point_Point.prototype.toMGRS = function(accuracy) {
 };
 /* harmony default export */ const lib_Point = (lib_Point_Point);
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_enfn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_enfn.js
 var C00 = 1;
 var C02 = 0.25;
 var C04 = 0.046875;
@@ -77835,13 +79323,13 @@ var C88 = 0.3076171875;
   en[4] = t * es * C88;
   return en;
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_mlfn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_mlfn.js
 /* harmony default export */ function pj_mlfn(phi, sphi, cphi, en) {
   cphi *= sphi;
   sphi *= sphi;
   return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_inv_mlfn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_inv_mlfn.js
 
 
 
@@ -77865,7 +79353,7 @@ var MAX_ITER = 20;
   return phi;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/tmerc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/tmerc.js
 // Heavily based on this tmerc projection implementation
 // https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
 
@@ -78032,7 +79520,7 @@ function tmerc_inverse(p) {
   return p;
 }
 
-var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
+var tmerc_names = ["Fast_Transverse_Mercator", "Fast Transverse Mercator"];
 /* harmony default export */ const tmerc = ({
   init: tmerc_init,
   forward: tmerc_forward,
@@ -78040,13 +79528,13 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   names: tmerc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/sinh.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/sinh.js
 /* harmony default export */ function sinh(x) {
   var r = Math.exp(x);
   r = (r - 1 / r) / 2;
   return r;
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/hypot.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/hypot.js
 /* harmony default export */ function hypot(x, y) {
   x = Math.abs(x);
   y = Math.abs(y);
@@ -78056,7 +79544,7 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   return a * Math.sqrt(1 + Math.pow(b, 2));
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/log1py.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/log1py.js
 /* harmony default export */ function log1py(x) {
   var y = 1 + x;
   var z = y - 1;
@@ -78064,7 +79552,7 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   return z === 0 ? x : x * Math.log(y) / z;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinhy.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinhy.js
 
 
 
@@ -78075,7 +79563,7 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   return x < 0 ? -y : y;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/gatg.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/gatg.js
 /* harmony default export */ function gatg(pp, B) {
   var cos_2B = 2 * Math.cos(2 * B);
   var i = pp.length - 1;
@@ -78092,7 +79580,7 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   return (B + h * Math.sin(2 * B));
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/clens.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/clens.js
 /* harmony default export */ function clens(pp, arg_r) {
   var r = 2 * Math.cos(arg_r);
   var i = pp.length - 1;
@@ -78109,13 +79597,13 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   return Math.sin(arg_r) * hr;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/cosh.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/cosh.js
 /* harmony default export */ function cosh(x) {
   var r = Math.exp(x);
   r = (r + 1 / r) / 2;
   return r;
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/clens_cmplx.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/clens_cmplx.js
 
 
 
@@ -78149,7 +79637,7 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
   return [r * hr - i * hi, r * hi + i * hr];
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/etmerc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/etmerc.js
 // Heavily based on this etmerc projection implementation
 // https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
 
@@ -78161,9 +79649,16 @@ var tmerc_names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 
+
 function etmerc_init() {
-  if (this.es === undefined || this.es <= 0) {
-    throw new Error('incorrect elliptical usage');
+  if (!this.approx && (isNaN(this.es) || this.es <= 0)) {
+    throw new Error('Incorrect elliptical usage. Try using the +approx option in the proj string, or PROJECTION["Fast_Transverse_Mercator"] in the WKT.');
+  }
+  if (this.approx) {
+    // When '+approx' is set, use tmerc instead
+    tmerc.init.apply(this);
+    this.forward = tmerc.forward;
+    this.inverse = tmerc.inverse;
   }
 
   this.x0 = this.x0 !== undefined ? this.x0 : 0;
@@ -78308,7 +79803,7 @@ function etmerc_inverse(p) {
   return p;
 }
 
-var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
+var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc", "Transverse_Mercator", "Transverse Mercator", "tmerc"];
 /* harmony default export */ const etmerc = ({
   init: etmerc_init,
   forward: etmerc_forward,
@@ -78316,7 +79811,7 @@ var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercato
   names: etmerc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_zone.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_zone.js
 
 
 /* harmony default export */ function adjust_zone(zone, lon) {
@@ -78332,7 +79827,7 @@ var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercato
   return zone;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/utm.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/utm.js
 
 
 var dependsOn = 'etmerc';
@@ -78362,11 +79857,11 @@ var utm_names = ["Universal Transverse Mercator System", "utm"];
   dependsOn: dependsOn
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/srat.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/srat.js
 /* harmony default export */ function srat(esinp, exp) {
   return (Math.pow((1 - esinp) / (1 + esinp), exp));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gauss.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gauss.js
 
 var gauss_MAX_ITER = 20;
 
@@ -78420,7 +79915,7 @@ var gauss_names = ["gauss"];
   names: gauss_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/sterea.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/sterea.js
 
 
 
@@ -78486,7 +79981,7 @@ var sterea_names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_
   names: sterea_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/stere.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/stere.js
 
 
 
@@ -78662,7 +80157,7 @@ var stere_names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (va
   ssfn_: ssfn_
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/somerc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/somerc.js
 /*
   references:
     Formules et constantes pour le Calcul pour la
@@ -78750,172 +80245,242 @@ var somerc_names = ["somerc"];
   names: somerc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/omerc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/omerc.js
 
 
 
+
+
+var TOL = 1e-7;
+
+function isTypeA(P) {
+  var typeAProjections = ['Hotine_Oblique_Mercator','Hotine_Oblique_Mercator_Azimuth_Natural_Origin'];
+  var projectionName = typeof P.PROJECTION === "object" ? Object.keys(P.PROJECTION)[0] : P.PROJECTION;
+  
+  return 'no_uoff' in P || 'no_off' in P || typeAProjections.indexOf(projectionName) !== -1;
+}
 
 
 /* Initialize the Oblique Mercator  projection
     ------------------------------------------*/
-function omerc_init() {
-  this.no_off = this.no_off || false;
-  this.no_rot = this.no_rot || false;
-
-  if (isNaN(this.k0)) {
-    this.k0 = 1;
-  }
-  var sinlat = Math.sin(this.lat0);
-  var coslat = Math.cos(this.lat0);
-  var con = this.e * sinlat;
-
-  this.bl = Math.sqrt(1 + this.es / (1 - this.es) * Math.pow(coslat, 4));
-  this.al = this.a * this.bl * this.k0 * Math.sqrt(1 - this.es) / (1 - con * con);
-  var t0 = tsfnz(this.e, this.lat0, sinlat);
-  var dl = this.bl / coslat * Math.sqrt((1 - this.es) / (1 - con * con));
-  if (dl * dl < 1) {
-    dl = 1;
-  }
-  var fl;
-  var gl;
-  if (!isNaN(this.longc)) {
-    //Central point and azimuth method
-
-    if (this.lat0 >= 0) {
-      fl = dl + Math.sqrt(dl * dl - 1);
-    }
-    else {
-      fl = dl - Math.sqrt(dl * dl - 1);
-    }
-    this.el = fl * Math.pow(t0, this.bl);
-    gl = 0.5 * (fl - 1 / fl);
-    this.gamma0 = Math.asin(Math.sin(this.alpha) / dl);
-    this.long0 = this.longc - Math.asin(gl * Math.tan(this.gamma0)) / this.bl;
-
-  }
-  else {
-    //2 points method
-    var t1 = tsfnz(this.e, this.lat1, Math.sin(this.lat1));
-    var t2 = tsfnz(this.e, this.lat2, Math.sin(this.lat2));
-    if (this.lat0 >= 0) {
-      this.el = (dl + Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
-    }
-    else {
-      this.el = (dl - Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
-    }
-    var hl = Math.pow(t1, this.bl);
-    var ll = Math.pow(t2, this.bl);
-    fl = this.el / hl;
-    gl = 0.5 * (fl - 1 / fl);
-    var jl = (this.el * this.el - ll * hl) / (this.el * this.el + ll * hl);
-    var pl = (ll - hl) / (ll + hl);
-    var dlon12 = adjust_lon(this.long1 - this.long2);
-    this.long0 = 0.5 * (this.long1 + this.long2) - Math.atan(jl * Math.tan(0.5 * this.bl * (dlon12)) / pl) / this.bl;
-    this.long0 = adjust_lon(this.long0);
-    var dlon10 = adjust_lon(this.long1 - this.long0);
-    this.gamma0 = Math.atan(Math.sin(this.bl * (dlon10)) / gl);
-    this.alpha = Math.asin(dl * Math.sin(this.gamma0));
+function omerc_init() {  
+  var con, com, cosph0, D, F, H, L, sinph0, p, J, gamma = 0,
+    gamma0, lamc = 0, lam1 = 0, lam2 = 0, phi1 = 0, phi2 = 0, alpha_c = 0, AB;
+  
+  // only Type A uses the no_off or no_uoff property
+  // https://github.com/OSGeo/proj.4/issues/104
+  this.no_off = isTypeA(this);
+  this.no_rot = 'no_rot' in this;
+  
+  var alp = false;
+  if ("alpha" in this) {
+    alp = true;
   }
 
+  var gam = false;
+  if ("rectified_grid_angle" in this) {
+    gam = true;
+  }
+
+  if (alp) {
+    alpha_c = this.alpha;
+  }
+  
+  if (gam) {
+    gamma = (this.rectified_grid_angle * D2R);
+  }
+  
+  if (alp || gam) {
+    lamc = this.longc;
+  } else {
+    lam1 = this.long1;
+    phi1 = this.lat1;
+    lam2 = this.long2;
+    phi2 = this.lat2;
+    
+    if (Math.abs(phi1 - phi2) <= TOL || (con = Math.abs(phi1)) <= TOL ||
+        Math.abs(con - HALF_PI) <= TOL || Math.abs(Math.abs(this.lat0) - HALF_PI) <= TOL ||
+        Math.abs(Math.abs(phi2) - HALF_PI) <= TOL) {
+      throw new Error();
+    }
+  }
+  
+  var one_es = 1.0 - this.es;
+  com = Math.sqrt(one_es);
+  
+  if (Math.abs(this.lat0) > EPSLN) {
+    sinph0 = Math.sin(this.lat0);
+    cosph0 = Math.cos(this.lat0);
+    con = 1 - this.es * sinph0 * sinph0;
+    this.B = cosph0 * cosph0;
+    this.B = Math.sqrt(1 + this.es * this.B * this.B / one_es);
+    this.A = this.B * this.k0 * com / con;
+    D = this.B * com / (cosph0 * Math.sqrt(con));
+    F = D * D -1;
+    
+    if (F <= 0) {
+      F = 0;
+    } else {
+      F = Math.sqrt(F);
+      if (this.lat0 < 0) {
+        F = -F;
+      }
+    }
+    
+    this.E = F += D;
+    this.E *= Math.pow(tsfnz(this.e, this.lat0, sinph0), this.B);
+  } else {
+    this.B = 1 / com;
+    this.A = this.k0;
+    this.E = D = F = 1;
+  }
+  
+  if (alp || gam) {
+    if (alp) {
+      gamma0 = Math.asin(Math.sin(alpha_c) / D);
+      if (!gam) {
+        gamma = alpha_c;
+      }
+    } else {
+      gamma0 = gamma;
+      alpha_c = Math.asin(D * Math.sin(gamma0));
+    }
+    this.lam0 = lamc - Math.asin(0.5 * (F - 1 / F) * Math.tan(gamma0)) / this.B;
+  } else {
+    H = Math.pow(tsfnz(this.e, phi1, Math.sin(phi1)), this.B);
+    L = Math.pow(tsfnz(this.e, phi2, Math.sin(phi2)), this.B);
+    F = this.E / H;
+    p = (L - H) / (L + H);
+    J = this.E * this.E;
+    J = (J - L * H) / (J + L * H);
+    con = lam1 - lam2;
+    
+    if (con < -Math.pi) {
+      lam2 -=TWO_PI;
+    } else if (con > Math.pi) {
+      lam2 += TWO_PI;
+    }
+    
+    this.lam0 = adjust_lon(0.5 * (lam1 + lam2) - Math.atan(J * Math.tan(0.5 * this.B * (lam1 - lam2)) / p) / this.B);
+    gamma0 = Math.atan(2 * Math.sin(this.B * adjust_lon(lam1 - this.lam0)) / (F - 1 / F));
+    gamma = alpha_c = Math.asin(D * Math.sin(gamma0));
+  }
+  
+  this.singam = Math.sin(gamma0);
+  this.cosgam = Math.cos(gamma0);
+  this.sinrot = Math.sin(gamma);
+  this.cosrot = Math.cos(gamma);
+  
+  this.rB = 1 / this.B;
+  this.ArB = this.A * this.rB;
+  this.BrA = 1 / this.ArB;
+  AB = this.A * this.B;
+  
   if (this.no_off) {
-    this.uc = 0;
+    this.u_0 = 0;
+  } else {
+    this.u_0 = Math.abs(this.ArB * Math.atan(Math.sqrt(D * D - 1) / Math.cos(alpha_c)));
+    
+    if (this.lat0 < 0) {
+      this.u_0 = - this.u_0;
+    }  
   }
-  else {
-    if (this.lat0 >= 0) {
-      this.uc = this.al / this.bl * Math.atan2(Math.sqrt(dl * dl - 1), Math.cos(this.alpha));
-    }
-    else {
-      this.uc = -1 * this.al / this.bl * Math.atan2(Math.sqrt(dl * dl - 1), Math.cos(this.alpha));
-    }
-  }
-
+    
+  F = 0.5 * gamma0;
+  this.v_pole_n = this.ArB * Math.log(Math.tan(FORTPI - F));
+  this.v_pole_s = this.ArB * Math.log(Math.tan(FORTPI + F));
 }
+
 
 /* Oblique Mercator forward equations--mapping lat,long to x,y
     ----------------------------------------------------------*/
 function omerc_forward(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var dlon = adjust_lon(lon - this.long0);
-  var us, vs;
-  var con;
-  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
-    if (lat > 0) {
-      con = -1;
+  var coords = {};
+  var S, T, U, V, W, temp, u, v;
+  p.x = p.x - this.lam0;
+  
+  if (Math.abs(Math.abs(p.y) - HALF_PI) > EPSLN) {
+    W = this.E / Math.pow(tsfnz(this.e, p.y, Math.sin(p.y)), this.B);
+    
+    temp = 1 / W;
+    S = 0.5 * (W - temp);
+    T = 0.5 * (W + temp);
+    V = Math.sin(this.B * p.x);
+    U = (S * this.singam - V * this.cosgam) / T;
+        
+    if (Math.abs(Math.abs(U) - 1.0) < EPSLN) {
+      throw new Error();
     }
-    else {
-      con = 1;
-    }
-    vs = this.al / this.bl * Math.log(Math.tan(FORTPI + con * this.gamma0 * 0.5));
-    us = -1 * con * HALF_PI * this.al / this.bl;
+    
+    v = 0.5 * this.ArB * Math.log((1 - U)/(1 + U));
+    temp = Math.cos(this.B * p.x);
+    
+    if (Math.abs(temp) < TOL) {
+      u = this.A * p.x;
+    } else {
+      u = this.ArB * Math.atan2((S * this.cosgam + V * this.singam), temp);
+    }    
+  } else {
+    v = p.y > 0 ? this.v_pole_n : this.v_pole_s;
+    u = this.ArB * p.y;
   }
-  else {
-    var t = tsfnz(this.e, lat, Math.sin(lat));
-    var ql = this.el / Math.pow(t, this.bl);
-    var sl = 0.5 * (ql - 1 / ql);
-    var tl = 0.5 * (ql + 1 / ql);
-    var vl = Math.sin(this.bl * (dlon));
-    var ul = (sl * Math.sin(this.gamma0) - vl * Math.cos(this.gamma0)) / tl;
-    if (Math.abs(Math.abs(ul) - 1) <= EPSLN) {
-      vs = Number.POSITIVE_INFINITY;
-    }
-    else {
-      vs = 0.5 * this.al * Math.log((1 - ul) / (1 + ul)) / this.bl;
-    }
-    if (Math.abs(Math.cos(this.bl * (dlon))) <= EPSLN) {
-      us = this.al * this.bl * (dlon);
-    }
-    else {
-      us = this.al * Math.atan2(sl * Math.cos(this.gamma0) + vl * Math.sin(this.gamma0), Math.cos(this.bl * dlon)) / this.bl;
-    }
-  }
-
+     
   if (this.no_rot) {
-    p.x = this.x0 + us;
-    p.y = this.y0 + vs;
+    coords.x = u;
+    coords.y = v;
+  } else {
+    u -= this.u_0;
+    coords.x = v * this.cosrot + u * this.sinrot;
+    coords.y = u * this.cosrot - v * this.sinrot;
   }
-  else {
-
-    us -= this.uc;
-    p.x = this.x0 + vs * Math.cos(this.alpha) + us * Math.sin(this.alpha);
-    p.y = this.y0 + us * Math.cos(this.alpha) - vs * Math.sin(this.alpha);
-  }
-  return p;
+  
+  coords.x = (this.a * coords.x + this.x0);
+  coords.y = (this.a * coords.y + this.y0);
+  
+  return coords;
 }
 
 function omerc_inverse(p) {
-  var us, vs;
+  var u, v, Qp, Sp, Tp, Vp, Up;
+  var coords = {};
+  
+  p.x = (p.x - this.x0) * (1.0 / this.a);
+  p.y = (p.y - this.y0) * (1.0 / this.a);
+
   if (this.no_rot) {
-    vs = p.y - this.y0;
-    us = p.x - this.x0;
+    v = p.y;
+    u = p.x;
+  } else {
+    v = p.x * this.cosrot - p.y * this.sinrot;
+    u = p.y * this.cosrot + p.x * this.sinrot + this.u_0;
   }
-  else {
-    vs = (p.x - this.x0) * Math.cos(this.alpha) - (p.y - this.y0) * Math.sin(this.alpha);
-    us = (p.y - this.y0) * Math.cos(this.alpha) + (p.x - this.x0) * Math.sin(this.alpha);
-    us += this.uc;
+  
+  Qp = Math.exp(-this.BrA * v);
+  Sp = 0.5 * (Qp - 1 / Qp);
+  Tp = 0.5 * (Qp + 1 / Qp);
+  Vp = Math.sin(this.BrA * u);
+  Up = (Vp * this.cosgam + Sp * this.singam) / Tp;
+  
+  if (Math.abs(Math.abs(Up) - 1) < EPSLN) {
+    coords.x = 0;
+    coords.y = Up < 0 ? -HALF_PI : HALF_PI;
+  } else {
+    coords.y = this.E / Math.sqrt((1 + Up) / (1 - Up));
+    coords.y = phi2z(this.e, Math.pow(coords.y, 1 / this.B));
+    
+    if (coords.y === Infinity) {
+      throw new Error();
+    }
+        
+    coords.x = -this.rB * Math.atan2((Sp * this.cosgam - Vp * this.singam), Math.cos(this.BrA * u));
   }
-  var qp = Math.exp(-1 * this.bl * vs / this.al);
-  var sp = 0.5 * (qp - 1 / qp);
-  var tp = 0.5 * (qp + 1 / qp);
-  var vp = Math.sin(this.bl * us / this.al);
-  var up = (vp * Math.cos(this.gamma0) + sp * Math.sin(this.gamma0)) / tp;
-  var ts = Math.pow(this.el / Math.sqrt((1 + up) / (1 - up)), 1 / this.bl);
-  if (Math.abs(up - 1) < EPSLN) {
-    p.x = this.long0;
-    p.y = HALF_PI;
-  }
-  else if (Math.abs(up + 1) < EPSLN) {
-    p.x = this.long0;
-    p.y = -1 * HALF_PI;
-  }
-  else {
-    p.y = phi2z(this.e, ts);
-    p.x = adjust_lon(this.long0 - Math.atan2(sp * Math.cos(this.gamma0) - vp * Math.sin(this.gamma0), Math.cos(this.bl * us / this.al)) / this.bl);
-  }
-  return p;
+  
+  coords.x += this.lam0;
+  
+  return coords;
 }
 
-var omerc_names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
+var omerc_names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Two_Point_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "Oblique_Mercator", "omerc"];
 /* harmony default export */ const omerc = ({
   init: omerc_init,
   forward: omerc_forward,
@@ -78923,7 +80488,7 @@ var omerc_names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine
   names: omerc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/lcc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/lcc.js
 
 
 
@@ -78931,16 +80496,18 @@ var omerc_names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine
 
 
 function lcc_init() {
-
-  // array of:  r_maj,r_min,lat1,lat2,c_lon,c_lat,false_east,false_north
-  //double c_lat;                   /* center latitude                      */
-  //double c_lon;                   /* center longitude                     */
+  
+  //double lat0;                    /* the reference latitude               */
+  //double long0;                   /* the reference longitude              */
   //double lat1;                    /* first standard parallel              */
   //double lat2;                    /* second standard parallel             */
   //double r_maj;                   /* major axis                           */
   //double r_min;                   /* minor axis                           */
   //double false_east;              /* x offset in meters                   */
   //double false_north;             /* y offset in meters                   */
+  
+  //the above value can be set with proj4.defs
+  //example: proj4.defs("EPSG:2154","+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 
   if (!this.lat2) {
     this.lat2 = this.lat1;
@@ -79056,7 +80623,14 @@ function lcc_inverse(p) {
   return p;
 }
 
-var lcc_names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
+var lcc_names = [
+  "Lambert Tangential Conformal Conic Projection",
+  "Lambert_Conformal_Conic",
+  "Lambert_Conformal_Conic_1SP",
+  "Lambert_Conformal_Conic_2SP",
+  "lcc"
+];
+
 /* harmony default export */ const lcc = ({
   init: lcc_init,
   forward: lcc_forward,
@@ -79064,7 +80638,7 @@ var lcc_names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
   names: lcc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/krovak.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/krovak.js
 
 
 function krovak_init() {
@@ -79172,32 +80746,32 @@ var krovak_names = ["Krovak", "krovak"];
   names: krovak_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/mlfn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/mlfn.js
 /* harmony default export */ function mlfn(e0, e1, e2, e3, phi) {
   return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e0fn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e0fn.js
 /* harmony default export */ function e0fn(x) {
   return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e1fn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e1fn.js
 /* harmony default export */ function e1fn(x) {
   return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e2fn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e2fn.js
 /* harmony default export */ function e2fn(x) {
   return (0.05859375 * x * x * (1 + 0.75 * x));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e3fn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e3fn.js
 /* harmony default export */ function e3fn(x) {
   return (x * x * x * (35 / 3072));
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/gN.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/gN.js
 /* harmony default export */ function gN(a, e, sinphi) {
   var temp = e * sinphi;
   return a / Math.sqrt(1 - temp * temp);
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_lat.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_lat.js
 
 
 
@@ -79205,7 +80779,7 @@ var krovak_names = ["Krovak", "krovak"];
   return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/imlfn.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/imlfn.js
 /* harmony default export */ function imlfn(ml, e0, e1, e2, e3) {
   var phi;
   var dphi;
@@ -79222,7 +80796,7 @@ var krovak_names = ["Krovak", "krovak"];
   //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
   return NaN;
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/cass.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/cass.js
 
 
 
@@ -79332,7 +80906,7 @@ var cass_names = ["Cassini", "Cassini_Soldner", "cass"];
   names: cass_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/qsfnz.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/qsfnz.js
 /* harmony default export */ function qsfnz(eccent, sinphi) {
   var con;
   if (eccent > 1.0e-7) {
@@ -79343,7 +80917,7 @@ var cass_names = ["Cassini", "Cassini_Soldner", "cass"];
     return (2 * sinphi);
   }
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/laea.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/laea.js
 
 
 
@@ -79643,14 +81217,14 @@ var laea_names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area"
   OBLIQ: OBLIQ
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinz.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinz.js
 /* harmony default export */ function asinz(x) {
   if (Math.abs(x) > 1) {
     x = (x > 1) ? 1 : -1;
   }
   return Math.asin(x);
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/aea.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/aea.js
 
 
 
@@ -79781,7 +81355,7 @@ var aea_names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
   phi1z: phi1z
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gnom.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gnom.js
 
 
 
@@ -79887,7 +81461,7 @@ var gnom_names = ["gnom"];
   names: gnom_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/common/iqsfnz.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/iqsfnz.js
 
 
 /* harmony default export */ function iqsfnz(eccent, q) {
@@ -79921,7 +81495,7 @@ var gnom_names = ["gnom"];
   return NaN;
 }
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/cea.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/cea.js
 
 
 
@@ -79993,7 +81567,7 @@ var cea_names = ["cea"];
   names: cea_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/eqc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/eqc.js
 
 
 
@@ -80043,7 +81617,7 @@ var eqc_names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
   names: eqc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/poly.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/poly.js
 
 
 
@@ -80180,7 +81754,7 @@ var poly_names = ["Polyconic", "poly"];
   names: poly_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/nzmg.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/nzmg.js
 
 
 /*
@@ -80408,7 +81982,7 @@ var nzmg_names = ["New_Zealand_Map_Grid", "nzmg"];
   names: nzmg_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/mill.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/mill.js
 
 
 /*
@@ -80462,7 +82036,7 @@ var mill_names = ["Miller_Cylindrical", "mill"];
   names: mill_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/sinu.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/sinu.js
 
 
 
@@ -80579,7 +82153,7 @@ var sinu_names = ["Sinusoidal", "sinu"];
   names: sinu_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/moll.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/moll.js
 
 function moll_init() {}
 
@@ -80664,7 +82238,7 @@ var moll_names = ["Mollweide", "moll"];
   names: moll_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/eqdc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/eqdc.js
 
 
 
@@ -80783,7 +82357,7 @@ var eqdc_names = ["Equidistant_Conic", "eqdc"];
   names: eqdc_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/vandg.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/vandg.js
 
 
 
@@ -80914,7 +82488,7 @@ var vandg_names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
   names: vandg_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/aeqd.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/aeqd.js
 
 
 
@@ -81124,7 +82698,7 @@ var aeqd_names = ["Azimuthal_Equidistant", "aeqd"];
   names: aeqd_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/ortho.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/ortho.js
 
 
 
@@ -81217,7 +82791,7 @@ var ortho_names = ["ortho"];
   names: ortho_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/qsc.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/qsc.js
 // QSC projection rewritten from the original PROJ4
 // https://github.com/OSGeo/proj.4/blob/master/src/PJ_qsc.c
 
@@ -81587,7 +83161,7 @@ var qsc_names = ["Quadrilateralized Spherical Cube", "Quadrilateralized_Spherica
 });
 
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/robin.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/robin.js
 // Robinson projection
 // Based on https://github.com/OSGeo/proj.4/blob/master/src/PJ_robin.c
 // Polynomial coeficients from http://article.gmane.org/gmane.comp.gis.proj-4.devel/6039
@@ -81750,7 +83324,7 @@ var robin_names = ["Robinson", "robin"];
   names: robin_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geocent.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geocent.js
 
 
 function geocent_init() {
@@ -81775,7 +83349,7 @@ var geocent_names = ["Geocentric", 'geocentric', "geocent", "Geocent"];
     inverse: geocent_inverse,
     names: geocent_names
 });
-// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/tpers.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/tpers.js
 
 var mode = {
   N_POLE: 0,
@@ -81946,7 +83520,7 @@ var tpers_names = ["Tilted_Perspective", "tpers"];
   names: tpers_names
 });
 
-// CONCATENATED MODULE: ./node_modules/proj4/projs.js
+;// CONCATENATED MODULE: ./node_modules/proj4/projs.js
 
 
 
@@ -82005,7 +83579,8 @@ var tpers_names = ["Tilted_Perspective", "tpers"];
   proj4.Proj.projections.add(geocent);
   proj4.Proj.projections.add(tpers);
 }
-// CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
+
 
 
 
@@ -82021,13 +83596,14 @@ core.WGS84 = new core.Proj('WGS84');
 core.Point = lib_Point;
 core.toPoint = toPoint;
 core.defs = lib_defs;
+core.nadgrid = nadgrid;
 core.transform = transform;
 core.mgrs = mgrs;
 core.version = '__VERSION__';
 proj4_projs(core);
 /* harmony default export */ const lib = (core);
 
-// CONCATENATED MODULE: ./src/openlayers/services/DataFlowService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/DataFlowService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -82145,7 +83721,7 @@ class DataFlowService extends ServiceBase {
         this.dispatchEvent({type: e.eventType || e.type, value: e});
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/DataFlow.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/DataFlow.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -82260,7 +83836,7 @@ class DataFlow extends (external_ol_source_Vector_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/theme/ThemeFeature.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/ThemeFeature.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -82304,11 +83880,10 @@ class ThemeFeature {
     }
 }
 
-// CONCATENATED MODULE: external "ol.source.ImageCanvas"
+;// CONCATENATED MODULE: external "ol.source.ImageCanvas"
 const external_ol_source_ImageCanvas_namespaceObject = ol.source.ImageCanvas;
 var external_ol_source_ImageCanvas_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_ImageCanvas_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/theme/Theme.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/Theme.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -82859,7 +84434,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/Graph.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Graph.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -83289,11 +84864,10 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 }
 
-// CONCATENATED MODULE: external "ol.style.RegularShape"
+;// CONCATENATED MODULE: external "ol.style.RegularShape"
 const external_ol_style_RegularShape_namespaceObject = ol.style.RegularShape;
 var external_ol_style_RegularShape_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_RegularShape_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/CloverShape.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/CloverShape.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -83423,7 +84997,7 @@ class CloverShape extends (external_ol_style_RegularShape_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/HitCloverShape.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/HitCloverShape.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -83483,11 +85057,10 @@ class HitCloverShape extends CloverShape {
     }
 }
 
-// CONCATENATED MODULE: external "ol.Object"
+;// CONCATENATED MODULE: external "ol.Object"
 const external_ol_Object_namespaceObject = ol.Object;
 var external_ol_Object_default = /*#__PURE__*/__webpack_require__.n(external_ol_Object_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/WebGLRenderer.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/WebGLRenderer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -83856,7 +85429,7 @@ class GraphicWebGLRenderer extends (external_ol_Object_default()) {
     }
 
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/CanvasRenderer.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/CanvasRenderer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -83906,11 +85479,10 @@ class GraphicCanvasRenderer extends (external_ol_Object_default()) {
         Util.extend(this, opt);
         this.highLightStyle = this.layer.highLightStyle;
 
-        this.mapWidth = this.size[0];
-        this.mapHeight = this.size[1];
+        this.mapWidth = this.size[0] / this.pixelRatio;
+        this.mapHeight = this.size[1] / this.pixelRatio;
         this.width = this.map.getSize()[0];
         this.height = this.map.getSize()[1];
-
         this.context = core_Util_Util.createCanvasContext2D(this.mapWidth, this.mapHeight);
         this.context.scale(this.pixelRatio, this.pixelRatio);
         this.canvas = this.context.canvas;
@@ -83938,7 +85510,6 @@ class GraphicCanvasRenderer extends (external_ol_Object_default()) {
         this.height = height;
         this.mapWidth = this.mapWidth * xRatio;
         this.mapHeight = this.mapHeight * yRatio;
-
         this.canvas.width = this.mapWidth;
         this.canvas.height = this.mapHeight;
         this.canvas.style.width = this.width + 'px';
@@ -83973,18 +85544,18 @@ class GraphicCanvasRenderer extends (external_ol_Object_default()) {
      */
     drawGraphics(graphics) {
         this.graphics_ = graphics || [];
-        let mapWidth = this.mapWidth / this.pixelRatio;
-        let mapHeight = this.mapHeight / this.pixelRatio;
+        let mapWidth = this.mapWidth;
+        let mapHeight = this.mapHeight;
 
         let vectorContext = external_ol_render_namespaceObject.toContext(this.context, {
             size: [mapWidth, mapHeight],
             pixelRatio: this.pixelRatio
         });
-        var defaultStyle = this.layer._getDefaultStyle();
+        let defaultStyle = this.layer._getDefaultStyle();
         let me = this,
             layer = me.layer,
             map = layer.map;
-        graphics.map(function(graphic) {
+        graphics.map(function (graphic) {
             let style = graphic.getStyle() || defaultStyle;
             if (me.selected === graphic) {
                 let defaultHighLightStyle = style;
@@ -84037,7 +85608,7 @@ class GraphicCanvasRenderer extends (external_ol_Object_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/Graphic.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/Graphic.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -84209,17 +85780,15 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 }
 
-// CONCATENATED MODULE: external "ol.extent"
+;// CONCATENATED MODULE: external "ol.extent"
 const external_ol_extent_namespaceObject = ol.extent;
-// CONCATENATED MODULE: external "ol.geom.Polygon"
+;// CONCATENATED MODULE: external "ol.geom.Polygon"
 const external_ol_geom_Polygon_namespaceObject = ol.geom.Polygon;
 var external_ol_geom_Polygon_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_Polygon_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.layer.Image"
+;// CONCATENATED MODULE: external "ol.layer.Image"
 const external_ol_layer_Image_namespaceObject = ol.layer.Image;
 var external_ol_layer_Image_default = /*#__PURE__*/__webpack_require__.n(external_ol_layer_Image_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/Graphic.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Graphic.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -84783,7 +86352,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/theme/GeoFeature.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/GeoFeature.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -85053,7 +86622,7 @@ class GeoFeature extends theme_Theme_Theme {
 
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/Label.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Label.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -86008,7 +87577,7 @@ class Label_Label extends GeoFeature {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvCanvasLayer.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvCanvasLayer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -86113,13 +87682,12 @@ class MapvCanvasLayer {
         return this.zIndex;
     }
 }
-// CONCATENATED MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
+;// CONCATENATED MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
 const external_function_try_return_mapv_catch_e_return_namespaceObject = function(){try{return mapv}catch(e){return {}}}();
-// CONCATENATED MODULE: external "ol.interaction.Pointer"
+;// CONCATENATED MODULE: external "ol.interaction.Pointer"
 const external_ol_interaction_Pointer_namespaceObject = ol.interaction.Pointer;
 var external_ol_interaction_Pointer_default = /*#__PURE__*/__webpack_require__.n(external_ol_interaction_Pointer_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvLayer.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvLayer.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -86526,7 +88094,7 @@ class MapvLayer extends BaiduMapLayer {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/Mapv.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Mapv.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -86667,7 +88235,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/Range.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Range.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -86792,7 +88360,7 @@ class Range extends GeoFeature {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/RankSymbol.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/RankSymbol.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -86884,9 +88452,9 @@ class RankSymbol_RankSymbol extends Graph_Graph {
         return Graph_Graph.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }
-// CONCATENATED MODULE: external "function(){try{return turf}catch(e){return {}}}()"
+;// CONCATENATED MODULE: external "function(){try{return turf}catch(e){return {}}}()"
 const external_function_try_return_turf_catch_e_return_namespaceObject = function(){try{return turf}catch(e){return {}}}();
-// CONCATENATED MODULE: ./src/openlayers/overlay/Turf.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Turf.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -87182,7 +88750,7 @@ class Turf extends (external_ol_source_Vector_default()) {
     }
 
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/Unique.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/Unique.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -87301,7 +88869,7 @@ class Unique extends GeoFeature {
         return GeoFeature.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/VectorTileStyles.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/VectorTileStyles.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -87841,19 +89409,16 @@ class VectorTileStyles extends (external_ol_Observable_default()) {
     }
 }
 
-// CONCATENATED MODULE: external "ol.source.VectorTile"
+;// CONCATENATED MODULE: external "ol.source.VectorTile"
 const external_ol_source_VectorTile_namespaceObject = ol.source.VectorTile;
 var external_ol_source_VectorTile_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_VectorTile_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.format.MVT"
+;// CONCATENATED MODULE: external "ol.format.MVT"
 const external_ol_format_MVT_namespaceObject = ol.format.MVT;
 var external_ol_format_MVT_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_MVT_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.proj.Projection"
+;// CONCATENATED MODULE: external "ol.proj.Projection"
 const external_ol_proj_Projection_namespaceObject = ol.proj.Projection;
 var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(external_ol_proj_Projection_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/VectorTileSuperMapRest.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/VectorTileSuperMapRest.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -87912,8 +89477,8 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
             tileClass: options.tileClass,
             tileGrid: options.tileGrid,
             tilePixelRatio: options.tilePixelRatio,
-            tileUrlFunction: options.format instanceof (external_ol_format_MVT_default()) && options.style ? zxyTileUrlFunction : tileUrlFunction,
-            tileLoadFunction: options.format instanceof (external_ol_format_MVT_default()) ? mvtTileLoadFunction : tileLoadFunction,
+            tileUrlFunction: options.tileUrlFunction || (options.format instanceof (external_ol_format_MVT_default()) && options.style ? zxyTileUrlFunction : tileUrlFunction),
+            tileLoadFunction: options.tileLoadFunction || (options.format instanceof (external_ol_format_MVT_default()) ? mvtTileLoadFunction : tileLoadFunction),
             wrapX: options.wrapX !== undefined ? options.wrapX : false,
             tileSize: options.tileSize || null,
             zDirection: ['4', '5'].indexOf(core_Util_Util.getOlVersion()) > -1 ? null : 0
@@ -88312,7 +89877,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/HeatMap.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/HeatMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -88748,7 +90313,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
 }
-// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/index.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -88758,24 +90323,23 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/index.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/theme/index.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
-// CONCATENATED MODULE: external "ol.geom.LineString"
+;// CONCATENATED MODULE: external "ol.geom.LineString"
 const external_ol_geom_LineString_namespaceObject = ol.geom.LineString;
 var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_LineString_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/olExtends.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/olExtends.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89161,8 +90725,7 @@ var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(ext
 // EXTERNAL MODULE: ./node_modules/lodash.remove/index.js
 var lodash_remove = __webpack_require__(794);
 var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
-
-// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/MapboxStyles.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/MapboxStyles.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89530,7 +91093,7 @@ class MapboxStyles extends (external_ol_Observable_default()) {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/index.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89538,7 +91101,7 @@ class MapboxStyles extends (external_ol_Observable_default()) {
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/overlay/index.js
+;// CONCATENATED MODULE: ./src/openlayers/overlay/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89557,7 +91120,7 @@ class MapboxStyles extends (external_ol_Observable_default()) {
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/services/AddressMatchService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/AddressMatchService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89635,7 +91198,7 @@ class AddressMatchService extends ServiceBase {
 
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/ChartService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/ChartService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89739,7 +91302,7 @@ class ChartService extends ServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/FieldService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/FieldService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -89853,7 +91416,7 @@ class FieldService extends ServiceBase {
         }
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/DatasetService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/DatasetService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -90010,7 +91573,7 @@ class DatasetService extends ServiceBase {
         datasetService.deleteDatasetService();
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/DatasourceService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/DatasourceService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -90126,7 +91689,7 @@ class DatasourceService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/GridCellInfosService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/GridCellInfosService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -90182,18 +91745,18 @@ class GridCellInfosService extends ServiceBase {
         gridCellQueryService.processAsync(params);
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/GeoprocessingService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/GeoprocessingService.js
 
 
 
 /** 
  * @class ol.supermap.GeoprocessingService
- * @classdesc 地理处理服务接口类。
+ * @classdesc 处理自动化服务接口类。
  * @version 10.1.0
- * @category  iServer GeoprocessingService
+ * @category  iServer ProcessingAutomationService
  * @extends  {ol.supermap.ServiceBase}
  * @example
- *  //为了安全访问受保护的地理处理服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。
+ *  //为了安全访问受保护的处理自动化服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。
  * SuperMap.SecurityManager.registerToken(serviceUrl, token);
  *  var geoprocessingService = new L.supermap.geoprocessingService("http://localhost:8090/iserver/services/geoprocessing/restjsr/gp/v2")
         geoprocessingService.submitJob(identifier,params, environments, function(serverResult) {
@@ -90223,7 +91786,7 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.getTools
-     * @description 获取地理处理工具列表。
+     * @description 获取处理自动化工具列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     getTools(callback) {
@@ -90244,8 +91807,8 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.getTool
-     * @description 获取地理处理工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     getTool(identifier, callback) {
@@ -90266,10 +91829,10 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.execute
-     * @description 同步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 同步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} callback 回调函数。
      */
     execute(identifier, parameter, environment, callback) {
@@ -90290,10 +91853,10 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.submitJob
-     * @description 异步执行地理处理工具。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {Object} parameter - 地理处理工具的输入参数。
-     * @param {Object} environment - 地理处理工具的环境参数。
+     * @description 异步执行处理自动化工具。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {Object} parameter - 处理自动化工具的输入参数。
+     * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} callback 回调函数。
      */
     submitJob(identifier, parameter, environment, callback) {
@@ -90314,9 +91877,9 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.waitForJobCompletion
-     * @description 获取地理处理异步执行状态信息。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} identifier - 地理处理工具ID。
+     * @description 获取处理自动化异步执行状态信息。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {Callback} options.statusCallback - 任务状态的回调函数。
@@ -90340,9 +91903,9 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.getJobInfo
-     * @description 获取地理处理任务的执行信息。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 获取处理自动化任务的执行信息。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      * @param {RequestCallback} callback 回调函数。
      */
     getJobInfo(identifier, jobId, callback) {
@@ -90363,9 +91926,9 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.cancelJob
-     * @description 取消地理处理任务的异步执行。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
+     * @description 取消处理自动化任务的异步执行。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
      * @param {RequestCallback} callback 回调函数。
      */
     cancelJob(identifier, jobId, callback) {
@@ -90386,8 +91949,8 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.getJobs
-     * @description 获取地理处理服务任务列表。
-     * @param {string} identifier - 地理处理工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @description 获取处理自动化服务任务列表。
+     * @param {string} identifier - 处理自动化工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      * @param {RequestCallback} callback 回调函数。
      */
     getJobs(identifier, callback) {
@@ -90408,10 +91971,10 @@ class GeoprocessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.GeoprocessingService.prototype.getResults
-     * @description 地理处理工具异步执行的结果,支持结果过滤。
-     * @param {string} identifier - 地理处理工具ID。
-     * @param {string} jobId - 地理处理任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该地理处理工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @description 处理自动化工具异步执行的结果,支持结果过滤。
+     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     getResults(identifier, jobId, filter, callback) {
@@ -90431,7 +91994,7 @@ class GeoprocessingService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/LayerInfoService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/LayerInfoService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -90568,7 +92131,7 @@ class LayerInfoService extends ServiceBase {
         setLayerStatusService.processAsync(params);
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/MeasureService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/MeasureService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -90647,7 +92210,7 @@ class MeasureService extends ServiceBase {
         return params;
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/NetworkAnalyst3DService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/NetworkAnalyst3DService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -90800,7 +92363,7 @@ class NetworkAnalyst3DService extends ServiceBase {
         facilityAnalystUpstream3DService.processAsync(params);
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/NetworkAnalystService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/NetworkAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -91164,7 +92727,7 @@ class NetworkAnalystService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/ProcessingService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/ProcessingService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92048,7 +93611,7 @@ class ProcessingService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/SpatialAnalystService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/SpatialAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92574,7 +94137,7 @@ class SpatialAnalystService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/ThemeService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/ThemeService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92627,7 +94190,7 @@ class ThemeService extends ServiceBase {
         themeService.processAsync(params);
     }
 }
-// CONCATENATED MODULE: ./src/openlayers/services/TrafficTransferAnalystService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/TrafficTransferAnalystService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92748,7 +94311,7 @@ class TrafficTransferAnalystService extends ServiceBase {
     }
 
 }
-// CONCATENATED MODULE: ./src/openlayers/services/WebPrintingJobService.js
+;// CONCATENATED MODULE: ./src/openlayers/services/WebPrintingJobService.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92907,7 +94470,250 @@ class WebPrintingJobService extends ServiceBase {
     }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/services/index.js
+;// CONCATENATED MODULE: ./src/openlayers/services/ImageService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class ol.supermap.ImageService
+ * @version 10.2.0
+ * @constructs ol.supermap.ImageService
+ * @classdesc 影像服务类
+ * @category  iServer Image
+ * @extends {ol.supermap.ServiceBase}
+ * @example
+ *      ol.supermap.ImageService(url,options)
+ *      .getCollections(function(result){
+ *          //doSomething
+ *      })
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+class ImageService extends ServiceBase {
+    constructor(url, options) {
+        super(url, options);
+    }
+
+    /**
+     * @function ol.supermap.ImageService.prototype.getCollections
+     * @description 返回当前影像服务中的影像集合列表（Collections）。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getCollections(callback) {
+        var me = this;
+        var ImageService = new ImageService_ImageService(this.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageService.getCollections();
+    }
+
+    /**
+     * @function ol.supermap.ImageService.prototype.getCollectionByID
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getCollectionByID(collectionId, callback) {
+        var me = this;
+        var ImageService = new ImageService_ImageService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageService.getCollectionByID(collectionId);
+    }
+
+    /**
+     * @function ol.supermap.ImageService.prototype.search
+     * @description 返回与过滤条件匹配的 STAC Items。此方式将作为标准的、全要素查询 API。 如果实现了`GET /search`，那么就必须实现此方法。 如果此端点在服务端实现，需要将其链接添加到 `GET /` 响应中的链接对象数组中， 此端点的链接对象的 `rel`属性值为`search`；链接对象中`method`属性值为`POST` 。
+     * @param {SuperMap.ImageSearchParameter} [itemSearch] 查询参数
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    search(itemSearch, callback) {
+        var me = this;
+        var ImageService = new ImageService_ImageService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageService.search(itemSearch);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/openlayers/services/ImageCollectionService.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class ol.supermap.ImageCollectionService
+ * @version 10.2.0
+ * @constructs ol.supermap.ImageCollectionService
+ * @classdesc 影像集合服务类
+ * @category  iServer Image
+ * @extends {ol.supermap.ServiceBase}
+ * @example
+ *      new ol.supermap.ImageCollectionService(url,options)
+ *      .getLegend(queryParams,function(result){
+ *          //doSomething
+ *      })
+ * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {Object} options - 参数。
+ * @param {string} options.collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+class ImageCollectionService extends ServiceBase {
+    constructor(url, options) {
+        super(url, options);
+    }
+
+    /**
+     * @function ol.supermap.ImageCollectionService.prototype.getLegend
+     * @param {Object} queryParams query参数
+     * @param {SuperMap.ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。不指定时，使用发布服务时所配置的风格。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getLegend(queryParams, callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(this.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getLegend(queryParams);
+    }
+
+    /**
+     * @function ol.supermap.ImageCollectionService.prototype.getStatistics
+     * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getStatistics(callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(me.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getStatistics();
+    }
+
+    /**
+     * @function ol.supermap.ImageCollectionService.prototype.getTileInfo
+     * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getTileInfo(callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(me.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getTileInfo();
+    }
+
+    /**
+     * @function ol.supermap.ImageCollectionService.prototype.deleteItemByID
+     * @description 删除影像集合中的指定ID（`featureId`）的Item对象，即从影像集合中删除指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    deleteItemByID(featureId, callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(this.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.deleteItemByID(featureId);
+    }
+
+    /**
+     * @function ol.supermap.ImageCollectionService.prototype.getItemByID
+     * @description 返回影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
+     * @param {string} featureId Feature 的本地标识符。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     */
+    getItemByID(featureId, callback) {
+        var me = this;
+        var ImageCollectionService = new ImageCollectionService_ImageCollectionService(me.url, {
+            collectionId: me.options.collectionId,
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        ImageCollectionService.getItemByID(featureId);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/openlayers/services/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92933,45 +94739,43 @@ class WebPrintingJobService extends ServiceBase {
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/mapping/webmap/config/ProvinceCenter.json
-const ProvinceCenter_namespaceObject = JSON.parse("[{\"name\":\"黑龙江省\",\"coord\":[127.64559817675396,48.48668098449708]},{\"name\":\"内蒙古自治区\",\"coord\":[118.34519572208615,45.370218276977525]},{\"name\":\"新疆维吾尔自治区\",\"coord\":[87.13479065593184,41.75497055053711]},{\"name\":\"吉林省\",\"coord\":[126.12985278813787,43.57983207702637]},{\"name\":\"辽宁省\",\"coord\":[124.02494773936439,41.105743408203125]},{\"name\":\"甘肃省\",\"coord\":[102.87785725633012,37.69582366943361]},{\"name\":\"河北省\",\"coord\":[115.66327227481898,39.33383178710938]},{\"name\":\"北京市\",\"coord\":[116.62199343603638,40.25053787231445]},{\"name\":\"山西省\",\"coord\":[112.45180235808988,37.666561126708984]},{\"name\":\"天津市\",\"coord\":[117.35711842642581,39.406789779663086]},{\"name\":\"陕西省\",\"coord\":[109.56294003056632,35.64754199981689]},{\"name\":\"宁夏回族自治区\",\"coord\":[105.96110877640074,37.3081169128418]},{\"name\":\"青海省\",\"coord\":[96.07301048277901,35.44417190551758]},{\"name\":\"山东省\",\"coord\":[118.03833752951093,36.29800605773925]},{\"name\":\"西藏自治区\",\"coord\":[87.47361520439412,31.6703872680664]},{\"name\":\"河南省\",\"coord\":[113.07832397097275,33.87751102447509]},{\"name\":\"江苏省\",\"coord\":[119.93926538201052,32.945452690124505]},{\"name\":\"安徽省\",\"coord\":[117.15146765881019,32.024482727050774]},{\"name\":\"四川省\",\"coord\":[102.28998890142759,30.182161331176758]},{\"name\":\"湖北省\",\"coord\":[112.87798261431585,31.157071113586426]},{\"name\":\"重庆市\",\"coord\":[107.870126637831,30.188085556030266]},{\"name\":\"上海市\",\"coord\":[121.42561166015514,31.276043891906745]},{\"name\":\"浙江省\",\"coord\":[119.75337092707514,29.175934791564945]},{\"name\":\"湖南省\",\"coord\":[111.52770282777405,27.38110256195069]},{\"name\":\"江西省\",\"coord\":[115.51091280655628,27.283511161804206]},{\"name\":\"云南省\",\"coord\":[101.27053825991308,25.19783210754396]},{\"name\":\"贵州省\",\"coord\":[106.49672346773299,26.92267990112305]},{\"name\":\"福建省\",\"coord\":[117.9976766946587,25.939599990844727]},{\"name\":\"广西壮族自治区\",\"coord\":[108.98706831086302,23.891559600830078]},{\"name\":\"台湾省\",\"coord\":[120.82468432537434,23.602651596069336]},{\"name\":\"香港特别行政区\",\"coord\":[114.21036850371561,22.374858856201172]},{\"name\":\"海南省\",\"coord\":[109.62792940960824,19.163116455078125]},{\"name\":\"广东省\",\"coord\":[113.32127888266032,22.873867034912106]},{\"name\":\"澳门特别行政区\",\"coord\":[113.56819996291901,22.160347992976]}]");
-// CONCATENATED MODULE: ./src/openlayers/mapping/webmap/config/MunicipalCenter.json
-const MunicipalCenter_namespaceObject = JSON.parse("[{\"name\":\"克拉玛依市\",\"coord\":[85.01486759299489,45.406422237230046]},{\"name\":\"昌吉回族自治州\",\"coord\":[88.7154624754753,44.26991024636568]},{\"name\":\"石河子市\",\"coord\":[86.0208600035924,44.239045558096805]},{\"name\":\"霍林郭勒市\",\"coord\":[114.73479243733115,44.16058374713977]},{\"name\":\"本溪市\",\"coord\":[124.64357865201586,41.177197783134275]},{\"name\":\"嘉峪关市\",\"coord\":[98.16891560537093,39.76279786284264]},{\"name\":\"莱芜市\",\"coord\":[117.65723565456207,36.27916499211527]},{\"name\":\"神农架林区\",\"coord\":[110.48296222218153,31.581260143666697]},{\"name\":\"天门市\",\"coord\":[113.00615321481195,30.64105781887143]},{\"name\":\"鄂州市\",\"coord\":[114.94764081970385,30.325634953844585]},{\"name\":\"潜江市\",\"coord\":[112.70703817700621,30.349210666019893]},{\"name\":\"仙桃市\",\"coord\":[113.34688900729822,30.315951161935402]},{\"name\":\"萍乡市\",\"coord\":[113.88072263074415,27.47193090553213]},{\"name\":\"台湾省\",\"coord\":[120.14338943402045,23.596002465926095]},{\"name\":\"东莞市\",\"coord\":[113.89443658529342,22.897826158636448]},{\"name\":\"中山市\",\"coord\":[113.37118387764659,22.501478858616522]},{\"name\":\"珠海市\",\"coord\":[113.21799258934986,22.23782602992192]},{\"name\":\"北海市\",\"coord\":[109.18248083043899,21.695773689750148]},{\"name\":\"香港\",\"coord\":[114.20689279508653,22.36016760139811]},{\"name\":\"舟山市\",\"coord\":[122.22514712841459,30.338633120695956]},{\"name\":\"克孜勒苏柯尔克孜\",\"coord\":[74.62910472637343,39.59886016069875]},{\"name\":\"喀什地区\",\"coord\":[77.19899922143753,37.85462871211595]},{\"name\":\"阿克苏地区\",\"coord\":[81.43930290016381,41.067304799230456]},{\"name\":\"和田地区\",\"coord\":[80.69780509160952,36.95287032287055]},{\"name\":\"阿里地区\",\"coord\":[82.536487505389,32.69566569631762]},{\"name\":\"日喀则地区\",\"coord\":[86.5996831353606,29.54861754814263]},{\"name\":\"那曲地区\",\"coord\":[88.32523292667608,33.20600450932715]},{\"name\":\"玉树藏族自治州\",\"coord\":[95.2107128446203,33.90320387919257]},{\"name\":\"迪庆藏族自治州\",\"coord\":[99.42465312188943,28.052797714348895]},{\"name\":\"怒江傈傈族自治州\",\"coord\":[98.85737910439825,26.98345757528851]},{\"name\":\"大理白族自治州\",\"coord\":[99.93934374816013,25.684737357453045]},{\"name\":\"德宏傣族景颇族自\",\"coord\":[98.13830877778075,24.593421919561205]},{\"name\":\"保山市\",\"coord\":[99.19031013453166,24.979380341662]},{\"name\":\"临沧市\",\"coord\":[99.62483778975081,24.058807858948214]},{\"name\":\"普洱市\",\"coord\":[100.94440267992684,23.44121660743221]},{\"name\":\"西双版纳傣族自治\",\"coord\":[100.86105801845994,21.882475641324206]},{\"name\":\"拉萨市\",\"coord\":[91.3684790613129,30.14176592960237]},{\"name\":\"山南地区\",\"coord\":[92.11665242621062,28.33000201578789]},{\"name\":\"林芝地区\",\"coord\":[94.9307847458166,29.125110156601963]},{\"name\":\"昌都地区\",\"coord\":[97.33912235873476,30.48520825551814]},{\"name\":\"丽江市\",\"coord\":[100.65713436205135,26.96190318191959]},{\"name\":\"攀枝花市\",\"coord\":[101.73355913301131,26.714486678752795]},{\"name\":\"凉山彝族自治州\",\"coord\":[102.08678551422615,27.683020519860396]},{\"name\":\"楚雄彝族自治州\",\"coord\":[101.68264761198458,25.369603845264024]},{\"name\":\"红河哈尼族彝族自\",\"coord\":[102.95101719613119,23.624860095239875]},{\"name\":\"文山壮族苗族自治\",\"coord\":[104.8708359910614,23.579587266862504]},{\"name\":\"百色市\",\"coord\":[106.69546907589859,23.98220841166522]},{\"name\":\"崇左市\",\"coord\":[107.3277087317123,22.49769755349952]},{\"name\":\"防城港市\",\"coord\":[107.88939931155171,21.94550204069006]},{\"name\":\"南宁市\",\"coord\":[108.67078983716917,23.12207641861882]},{\"name\":\"钦州市\",\"coord\":[108.8532307305186,22.157690108421384]},{\"name\":\"玉林市\",\"coord\":[110.26918466489103,22.391823643610415]},{\"name\":\"湛江市\",\"coord\":[109.93033457863683,21.086751055633457]},{\"name\":\"茂名市\",\"coord\":[110.80336192333934,22.069184739040775]},{\"name\":\"阳江市\",\"coord\":[111.70471342186183,22.108751366417575]},{\"name\":\"江门市\",\"coord\":[112.53715618649149,22.297368082806777]},{\"name\":\"广州市\",\"coord\":[113.4949302208309,23.28359314707863]},{\"name\":\"清远市\",\"coord\":[113.10957368131268,24.334444053233856]},{\"name\":\"肇庆市\",\"coord\":[112.11117530204233,23.60241158796112]},{\"name\":\"梧州市\",\"coord\":[111.01709510772797,23.518132876753846]},{\"name\":\"贺州市\",\"coord\":[111.50423061842756,24.4095096817199]},{\"name\":\"桂林市\",\"coord\":[110.44046163393094,25.353966673735407]},{\"name\":\"柳州市\",\"coord\":[109.34854449214147,24.972408051485047]},{\"name\":\"河池市\",\"coord\":[107.81191841865586,24.649291651298164]},{\"name\":\"黔东南苗族侗族自\",\"coord\":[108.39952601614591,26.429286420465576]},{\"name\":\"贵阳市\",\"coord\":[106.59784062851153,26.797907456479816]},{\"name\":\"安顺市\",\"coord\":[105.76161265300635,25.988644902171018]},{\"name\":\"黔西南布依族苗族\",\"coord\":[105.5954078788574,25.404850939549405]},{\"name\":\"曲靖市\",\"coord\":[103.9164335632742,25.697243690315265]},{\"name\":\"六盘水市\",\"coord\":[104.77723228072432,26.15402255629164]},{\"name\":\"毕节地区\",\"coord\":[105.03867422931839,27.077913968069666]},{\"name\":\"昭通市\",\"coord\":[104.29730513046874,27.62418247971078]},{\"name\":\"宜宾市\",\"coord\":[104.76748901448207,28.553501804266475]},{\"name\":\"乐山市\",\"coord\":[103.56027669102787,29.160754519210577]},{\"name\":\"自贡市\",\"coord\":[104.63272827056402,29.273152614922402]},{\"name\":\"内江市\",\"coord\":[104.82644562304716,29.61272653799929]},{\"name\":\"遵义市\",\"coord\":[106.82413636302059,28.191847588570702]},{\"name\":\"达州市\",\"coord\":[107.59704170009518,31.32138258839703]},{\"name\":\"遂宁市\",\"coord\":[105.48979445433736,30.677687821242678]},{\"name\":\"广安市\",\"coord\":[106.56708164098042,30.43500706741521]},{\"name\":\"泸州市\",\"coord\":[105.42591761727707,28.50277238478137]},{\"name\":\"资阳市\",\"coord\":[104.97995126874034,30.154251886139654]},{\"name\":\"雅安市\",\"coord\":[102.69931299964517,29.892630706195035]},{\"name\":\"眉山市\",\"coord\":[104.07052881858888,29.894202166560405]},{\"name\":\"甘孜藏族自治州\",\"coord\":[100.50721042614238,30.975216556269658]},{\"name\":\"果洛藏族自治州\",\"coord\":[99.30775565051923,34.03539865224808]},{\"name\":\"海南藏族自治州\",\"coord\":[100.39969108016373,35.90048272566899]},{\"name\":\"黄南藏族自治州\",\"coord\":[101.5360706381689,35.10286360841902]},{\"name\":\"赣南藏族自治州\",\"coord\":[102.97083885806067,34.326752803339026]},{\"name\":\"陇南市\",\"coord\":[105.24780098912132,33.57031117443431]},{\"name\":\"天水市\",\"coord\":[105.53503634660417,34.62320421368087]},{\"name\":\"定西市\",\"coord\":[104.58787768541339,35.08900966621695]},{\"name\":\"临夏回族自治州\",\"coord\":[103.2612870434902,35.591577124455235]},{\"name\":\"西宁市\",\"coord\":[101.57680657999033,36.84800271717157]},{\"name\":\"海东地区\",\"coord\":[102.30909850729282,36.287400615025646]},{\"name\":\"海北藏族自治州\",\"coord\":[100.27122484450717,37.892557516083826]},{\"name\":\"金昌市\",\"coord\":[102.02244049169511,38.497330414886164]},{\"name\":\"酒泉市\",\"coord\":[95.94486678270127,40.56891536586272]},{\"name\":\"海西蒙古族藏族自\",\"coord\":[94.67143298050689,36.022725148503724]},{\"name\":\"巴音郭楞蒙古自治\",\"coord\":[88.18116214759745,39.556478810319916]},{\"name\":\"哈密地区\",\"coord\":[93.84302392518026,42.95015211178875]},{\"name\":\"叶鲁番地区\",\"coord\":[89.82035217277885,42.399368632283505]},{\"name\":\"乌鲁木齐市\",\"coord\":[88.00048109561487,43.549986370786]},{\"name\":\"阿勒泰地区\",\"coord\":[88.11213933257655,47.05593413019629]},{\"name\":\"博尔塔拉蒙古自治\",\"coord\":[82.26402238163408,44.671135542630864]},{\"name\":\"伊犁哈萨克自治州\",\"coord\":[82.80778717477179,43.53783381365267]},{\"name\":\"阿拉善盟\",\"coord\":[103.29923966842289,40.10955801781495]},{\"name\":\"武威市\",\"coord\":[102.73362058791429,37.94211141321436]},{\"name\":\"兰州市\",\"coord\":[103.73793563506032,36.27379827886003]},{\"name\":\"中卫市\",\"coord\":[105.6943786030716,37.20654236148948]},{\"name\":\"银川市\",\"coord\":[106.20022174140034,38.52103167597483]},{\"name\":\"石嘴山市\",\"coord\":[106.41544011793628,38.84054137571417]},{\"name\":\"乌海市\",\"coord\":[106.8984175998405,39.54616572239788]},{\"name\":\"鄂尔多斯市\",\"coord\":[108.43285571424619,39.24036799350715]},{\"name\":\"巴彦淖尔市\",\"coord\":[107.45840392808307,41.30159860424196]},{\"name\":\"包头市\",\"coord\":[110.46472193224272,41.48017783644221]},{\"name\":\"呼和浩特市\",\"coord\":[111.48365173603975,40.498363056149884]},{\"name\":\"乌兰察布市\",\"coord\":[112.61568977597707,41.75789561273154]},{\"name\":\"大同市\",\"coord\":[113.7107192749083,39.898956799744184]},{\"name\":\"朔州市\",\"coord\":[112.65428748167508,39.681772914701924]},{\"name\":\"忻州市\",\"coord\":[112.36127575589583,38.88990233614568]},{\"name\":\"榆林市\",\"coord\":[109.68473112169593,38.19921027134876]},{\"name\":\"延安市\",\"coord\":[109.52425222161318,36.406522726136814]},{\"name\":\"庆阳市\",\"coord\":[107.73052193155061,36.183821532624464]},{\"name\":\"固原市\",\"coord\":[106.20191575442442,36.11634909496382]},{\"name\":\"白银市\",\"coord\":[104.68634478137065,36.51582865625868]},{\"name\":\"宝鸡市\",\"coord\":[107.33534779230747,34.3387216485855]},{\"name\":\"汉中市\",\"coord\":[107.03534754266246,33.00142998064871]},{\"name\":\"广元市\",\"coord\":[105.92928137563939,32.21872447205537]},{\"name\":\"巴中市\",\"coord\":[107.03422410306194,31.99874720836291]},{\"name\":\"南充市\",\"coord\":[106.32964805032347,31.156657700184095]},{\"name\":\"绵阳市\",\"coord\":[104.58949560201106,31.88628780630976]},{\"name\":\"德阳市\",\"coord\":[104.41542984932845,31.110558133718676]},{\"name\":\"成都市\",\"coord\":[103.8852290010473,30.777258040348634]},{\"name\":\"阿坝藏族羌族自治\",\"coord\":[102.26209319552814,32.45725845387284]},{\"name\":\"安康市\",\"coord\":[109.14236501848015,32.77467694678074]},{\"name\":\"十堰市\",\"coord\":[110.39934083416314,32.376209039347906]},{\"name\":\"襄阳市\",\"coord\":[111.97539147094662,31.93399822417465]},{\"name\":\"宜昌市\",\"coord\":[111.22204852395754,30.772457669035354]},{\"name\":\"恩施市\",\"coord\":[109.42158366502872,30.260366574390105]},{\"name\":\"张家界市\",\"coord\":[110.59760006538717,29.330107409240718]},{\"name\":\"吉首市\",\"coord\":[109.72176899848378,28.681903937242495]},{\"name\":\"铜仁地区\",\"coord\":[108.54247523485463,28.11736237519646]},{\"name\":\"重庆市\",\"coord\":[107.86007108564992,30.186253395053196]},{\"name\":\"怀化市\",\"coord\":[109.94325166787243,27.43919084801186]},{\"name\":\"益阳市\",\"coord\":[112.43060358108062,28.75127294553697]},{\"name\":\"娄底市\",\"coord\":[111.41891416951897,27.696312460064604]},{\"name\":\"常德市\",\"coord\":[111.72571610131646,29.27189463838195]},{\"name\":\"荆州市\",\"coord\":[112.65896596965268,30.05161542755362]},{\"name\":\"荆门市\",\"coord\":[112.6586855902184,31.01267124474617]},{\"name\":\"岳阳市\",\"coord\":[113.2595036144316,29.106247116930163]},{\"name\":\"长沙市\",\"coord\":[113.15415586456598,28.222934680488425]},{\"name\":\"湘潭市\",\"coord\":[112.51092596317824,27.69881544105668]},{\"name\":\"株州市\",\"coord\":[113.49665538546823,27.03993794610501]},{\"name\":\"衡阳市\",\"coord\":[112.48849636578527,26.783613569970782]},{\"name\":\"邵阳市\",\"coord\":[110.6723832117475,26.81652287086792]},{\"name\":\"永州市\",\"coord\":[111.8565364154186,25.768488267811968]},{\"name\":\"韶关市\",\"coord\":[113.53420325850979,24.69848878771937]},{\"name\":\"惠州市\",\"coord\":[114.32029589634925,23.25504544231892]},{\"name\":\"佛山市\",\"coord\":[112.95925897403649,23.10116677189257]},{\"name\":\"云浮市\",\"coord\":[111.78042514904234,22.840400494105687]},{\"name\":\"深圳市\",\"coord\":[114.13138648919008,22.649563063468342]},{\"name\":\"汕尾市\",\"coord\":[115.57412892884373,23.06989642104901]},{\"name\":\"河源市\",\"coord\":[114.89746229844398,23.97971937124767]},{\"name\":\"揭阳市\",\"coord\":[116.04290004239446,23.304802704715357]},{\"name\":\"汕头市\",\"coord\":[116.7008461897183,23.35898625947344]},{\"name\":\"潮州市\",\"coord\":[116.75405548481658,23.854381508863064]},{\"name\":\"梅州市\",\"coord\":[116.13719397345734,24.15633544812716]},{\"name\":\"漳州市\",\"coord\":[117.38279760543345,24.41111215459575]},{\"name\":\"厦门市\",\"coord\":[118.04275971554665,24.675908246507944]},{\"name\":\"龙岩市\",\"coord\":[116.69341144552507,25.20284542644492]},{\"name\":\"泉州市\",\"coord\":[118.12035864630246,25.22984144365049]},{\"name\":\"莆田市\",\"coord\":[118.82439690138142,25.439653480972687]},{\"name\":\"福州市\",\"coord\":[119.1608285845262,25.99117532466728]},{\"name\":\"三明市\",\"coord\":[117.51188176216434,26.318292906961602]},{\"name\":\"南平市\",\"coord\":[118.16153136678187,27.306303151805437]},{\"name\":\"抚州市\",\"coord\":[116.3455359885574,27.487043655935366]},{\"name\":\"鹰潭市\",\"coord\":[117.01082360702333,28.241253742969946]},{\"name\":\"吉安市\",\"coord\":[114.91377151807418,26.957486660664525]},{\"name\":\"赣州市\",\"coord\":[115.046455717572,25.81565075681663]},{\"name\":\"郴州市\",\"coord\":[113.1544526703492,25.871927095452524]},{\"name\":\"新余市\",\"coord\":[114.94161795877827,27.79044654578371]},{\"name\":\"宜春市\",\"coord\":[115.04574494880995,28.306428044943356]},{\"name\":\"南昌市\",\"coord\":[115.9963824234495,28.664803351584705]},{\"name\":\"九江市\",\"coord\":[115.53225905704193,29.362905920276297]},{\"name\":\"上饶市\",\"coord\":[117.8595355766598,28.765755150094634]},{\"name\":\"景德镇市\",\"coord\":[117.25387030721845,29.33426823662448]},{\"name\":\"黄山市\",\"coord\":[117.85476357809696,29.969632034273722]},{\"name\":\"池州市\",\"coord\":[117.34517113140791,30.208089337922335]},{\"name\":\"铜陵市\",\"coord\":[117.93160431300694,30.926442655001676]},{\"name\":\"安庆市\",\"coord\":[116.54307680610799,30.524265461641296]},{\"name\":\"黄石市\",\"coord\":[115.02354597728443,29.924060229331015]},{\"name\":\"咸宁市\",\"coord\":[114.26967602231792,29.652174021136048]},{\"name\":\"黄冈市\",\"coord\":[115.2859016705373,30.65856897065683]},{\"name\":\"武汉市\",\"coord\":[114.34552076948799,30.68836237966767]},{\"name\":\"随州市\",\"coord\":[113.3850627838818,31.87891659924412]},{\"name\":\"信阳市\",\"coord\":[114.81374730587638,32.0309685135914]},{\"name\":\"驻马店市\",\"coord\":[114.07756451509235,32.896720987266114]},{\"name\":\"商洛市\",\"coord\":[109.82044421310393,33.77403373563189]},{\"name\":\"西安市\",\"coord\":[109.11839808451401,34.225257215515896]},{\"name\":\"渭南市\",\"coord\":[109.75732444226935,35.025913644359306]},{\"name\":\"铜川市\",\"coord\":[108.98695328111377,35.19235092947735]},{\"name\":\"咸阳市\",\"coord\":[108.36398776446165,34.84311348287181]},{\"name\":\"三门峡市\",\"coord\":[110.80049688104964,34.31818709571671]},{\"name\":\"运城市\",\"coord\":[111.1736679525165,35.19010372283576]},{\"name\":\"洛阳市\",\"coord\":[111.87577573098216,34.33379926109848]},{\"name\":\"平顶山市\",\"coord\":[112.80931281928427,33.759895800153096]},{\"name\":\"漯河市\",\"coord\":[113.83505724178012,33.70034266174508]},{\"name\":\"许昌市\",\"coord\":[113.78762484088509,34.051835688452435]},{\"name\":\"郑州市\",\"coord\":[113.49619951867594,34.61181797865449]},{\"name\":\"焦作市\",\"coord\":[113.13404280173008,35.134167097471625]},{\"name\":\"晋城市\",\"coord\":[112.7495732073233,35.63186423091449]},{\"name\":\"长治市\",\"coord\":[112.85900842873183,36.45872910742828]},{\"name\":\"临汾市\",\"coord\":[111.49379787924448,36.22810800777857]},{\"name\":\"太原市\",\"coord\":[112.15628804033796,37.91704444063036]},{\"name\":\"吕梁市\",\"coord\":[111.31901105774872,37.712740463356496]},{\"name\":\"晋中市\",\"coord\":[113.08199599739676,37.36532613794343]},{\"name\":\"邯郸市\",\"coord\":[114.41824047234618,36.530119932543315]},{\"name\":\"安阳市\",\"coord\":[113.88883283163116,35.7797611183252]},{\"name\":\"鹤壁市\",\"coord\":[114.3654094911545,35.75770487428472]},{\"name\":\"新乡市\",\"coord\":[113.9184107718167,35.348471214026716]},{\"name\":\"开封市\",\"coord\":[114.52801677500626,34.61371216679872]},{\"name\":\"周口市\",\"coord\":[114.88509782391864,33.69999759722657]},{\"name\":\"阜阳市\",\"coord\":[115.44595951398213,32.98060371610532]},{\"name\":\"淮南市\",\"coord\":[116.68941991880993,32.79972275772595]},{\"name\":\"蚌埠市\",\"coord\":[117.38594715783302,33.106729536033896]},{\"name\":\"淮北市\",\"coord\":[116.69651711889378,33.69527529383458]},{\"name\":\"宿州市\",\"coord\":[117.30175405886838,33.943330421260015]},{\"name\":\"亳州市\",\"coord\":[116.12410804185097,33.46769392946132]},{\"name\":\"商丘市\",\"coord\":[115.59575176872548,34.28339840831147]},{\"name\":\"菏泽市\",\"coord\":[115.53631974831816,35.197319393220624]},{\"name\":\"濮阳市\",\"coord\":[115.3070485514902,35.775883510964334]},{\"name\":\"聊城市\",\"coord\":[115.8870069012884,36.40529594548765]},{\"name\":\"邢台市\",\"coord\":[114.74259008644859,37.251396750084155]},{\"name\":\"石家庄市\",\"coord\":[114.56923838363613,38.13141710980106]},{\"name\":\"阳泉市\",\"coord\":[113.39216149668508,38.09075470547468]},{\"name\":\"保定市\",\"coord\":[115.261524468934,39.09118520781398]},{\"name\":\"衡水市\",\"coord\":[115.8182936677897,37.715661598187154]},{\"name\":\"德州市\",\"coord\":[116.4582273790399,37.19372347888644]},{\"name\":\"沧州市\",\"coord\":[116.76192710911863,38.20240042039232]},{\"name\":\"廊坊市\",\"coord\":[116.50410772133856,39.27896741763884]},{\"name\":\"天津市\",\"coord\":[117.31988934444873,39.37154482470619]},{\"name\":\"北京市\",\"coord\":[116.59734730757869,40.237112944270976]},{\"name\":\"张家口市\",\"coord\":[115.1823606483226,40.83732566607167]},{\"name\":\"唐山市\",\"coord\":[117.8693184261954,39.71862889477249]},{\"name\":\"秦皇岛市\",\"coord\":[119.30467355367742,39.990574652162564]},{\"name\":\"承德市\",\"coord\":[117.16275671911026,41.36623845548547]},{\"name\":\"葫芦岛市\",\"coord\":[119.9342336210531,40.5628822626519]},{\"name\":\"朝阳市\",\"coord\":[120.11853493535794,41.471852354885755]},{\"name\":\"赤峰市\",\"coord\":[118.50943546234379,43.25452976059767]},{\"name\":\"锦州市\",\"coord\":[121.5167549323861,41.45933087433065]},{\"name\":\"营口市\",\"coord\":[122.58571915054674,40.42093503997384]},{\"name\":\"丹东市\",\"coord\":[124.33549382902183,40.46369290272115]},{\"name\":\"辽阳市\",\"coord\":[123.34064798039414,41.152331397771356]},{\"name\":\"盘锦市\",\"coord\":[122.06718005354679,41.05573599862555]},{\"name\":\"阜新市\",\"coord\":[121.93889757908204,42.27641773244204]},{\"name\":\"鞍山市\",\"coord\":[122.78904432242356,40.77781183142038]},{\"name\":\"沈阳市\",\"coord\":[122.99508899709724,42.1162195010079]},{\"name\":\"铁岭市\",\"coord\":[124.23100515588399,42.72666083611828]},{\"name\":\"扶顺市\",\"coord\":[124.46027188217573,41.82955407638859]},{\"name\":\"通辽市\",\"coord\":[122.0729370657937,43.90889130864869]},{\"name\":\"兴安盟\",\"coord\":[120.79456431092532,45.92003249442161]},{\"name\":\"白城市\",\"coord\":[123.10619907715235,45.25475749267784]},{\"name\":\"齐齐哈尔市\",\"coord\":[124.5462214659102,47.55395009317394]},{\"name\":\"大兴安岭地区\",\"coord\":[124.50992855161529,52.18438447846694]},{\"name\":\"黑河市\",\"coord\":[127.14721400335922,49.25080134026901]},{\"name\":\"大庆市\",\"coord\":[124.40329830095243,46.401048760966745]},{\"name\":\"绥化市\",\"coord\":[126.5214484055605,46.76992452194825]},{\"name\":\"松原市\",\"coord\":[124.21244334807682,44.75779381338502]},{\"name\":\"四平市\",\"coord\":[124.27839350328821,43.52139065090318]},{\"name\":\"通化市\",\"coord\":[125.67392830706305,41.91771808663852]},{\"name\":\"辽源市\",\"coord\":[125.33529527643432,42.758340204944986]},{\"name\":\"吉林市\",\"coord\":[126.83350281902375,43.60730120049175]},{\"name\":\"长春市\",\"coord\":[125.53597875970374,44.24624314701737]},{\"name\":\"白山市\",\"coord\":[127.16780160322108,42.093893880305075]},{\"name\":\"哈尔滨市\",\"coord\":[127.39125008786029,45.36200668820575]},{\"name\":\"鹤岗市\",\"coord\":[130.4703811258197,47.66520688940109]},{\"name\":\"伊春市\",\"coord\":[128.91240831703635,47.93833794565277]},{\"name\":\"七台河市\",\"coord\":[131.2677920224311,45.945099776108584]},{\"name\":\"鸡西市\",\"coord\":[132.38059153660274,45.722934218318535]},{\"name\":\"双鸭山市\",\"coord\":[132.3184817002743,46.65813679030265]},{\"name\":\"佳木斯市\",\"coord\":[132.26174446608726,47.17569713691394]},{\"name\":\"呼伦贝尔市\",\"coord\":[122.3210739998419,50.18176996070858]},{\"name\":\"孝感市\",\"coord\":[113.83749892135485,31.11757234692128]},{\"name\":\"贵港市\",\"coord\":[110.07354588052804,23.380735604767374]},{\"name\":\"黔南布依族苗族自\",\"coord\":[107.30931767543106,26.2976919432269]},{\"name\":\"宁德市\",\"coord\":[119.52482556634342,27.013151692716413]},{\"name\":\"温州市\",\"coord\":[120.30037042732202,27.8699145504001]},{\"name\":\"台州市\",\"coord\":[120.88886782713843,28.670799172772313]},{\"name\":\"丽水市\",\"coord\":[119.56796851966463,28.170268394477755]},{\"name\":\"衢州市\",\"coord\":[118.79479802644406,28.865874397158763]},{\"name\":\"金华市\",\"coord\":[119.99381920686633,29.093455548185744]},{\"name\":\"绍兴市\",\"coord\":[120.46546691682343,29.69382513836818]},{\"name\":\"宁波市\",\"coord\":[121.42142987830871,29.70001162878972]},{\"name\":\"杭州市\",\"coord\":[119.4405685790891,29.87218307296989]},{\"name\":\"宣城市\",\"coord\":[118.68748382914703,30.628143499626418]},{\"name\":\"湖州市\",\"coord\":[119.98261306633574,30.7945175862809]},{\"name\":\"嘉兴市\",\"coord\":[120.83889215988998,30.67538495499343]},{\"name\":\"上海市\",\"coord\":[121.37534147322967,31.25628247908459]},{\"name\":\"苏州市\",\"coord\":[120.6906182622391,31.381280695137775]},{\"name\":\"无锡市\",\"coord\":[120.32182300914366,31.54113306724517]},{\"name\":\"常州市\",\"coord\":[119.61953292830165,31.611878565375576]},{\"name\":\"南京市\",\"coord\":[118.71890548838064,31.910863187910323]},{\"name\":\"镇江市\",\"coord\":[119.42349332902813,31.97942313430778]},{\"name\":\"合肥市\",\"coord\":[117.30651975617157,31.79407863049138]},{\"name\":\"六安市\",\"coord\":[116.24668220575353,31.820846193819513]},{\"name\":\"滁州市\",\"coord\":[117.88422385307969,32.51792621904418]},{\"name\":\"泰州市\",\"coord\":[120.03124303305091,32.56503102346783]},{\"name\":\"南通市\",\"coord\":[120.85599446760912,32.18496706099728]},{\"name\":\"盐城市\",\"coord\":[120.01812490612667,33.54219948734023]},{\"name\":\"淮安市\",\"coord\":[119.0749424205415,33.39203631772854]},{\"name\":\"宿迁市\",\"coord\":[118.45404943216346,33.666258719120265]},{\"name\":\"徐州市\",\"coord\":[117.77482249295966,34.30847766157078]},{\"name\":\"济宁市\",\"coord\":[116.74147276546373,35.27488504351119]},{\"name\":\"枣庄市\",\"coord\":[117.43359942491492,34.884162021736]},{\"name\":\"连云港市\",\"coord\":[119.01553213785074,34.54316517587849]},{\"name\":\"临沂市\",\"coord\":[118.31478835349617,35.28173079028279]},{\"name\":\"日照市\",\"coord\":[119.14265350444272,35.54479073199592]},{\"name\":\"青岛市\",\"coord\":[120.27779044405756,36.3464117375903]},{\"name\":\"威海市\",\"coord\":[122.12963327195605,37.13879077904251]},{\"name\":\"烟台市\",\"coord\":[120.7689567423966,37.19772002195597]},{\"name\":\"潍坊市\",\"coord\":[119.02178548592039,36.49292234053931]},{\"name\":\"淄博市\",\"coord\":[117.92936024367185,36.60871347163638]},{\"name\":\"泰安市\",\"coord\":[116.93810893944303,36.0423330118612]},{\"name\":\"济南市\",\"coord\":[117.34560282551296,36.769574973846304]},{\"name\":\"东营市\",\"coord\":[118.4915054457184,37.52194690335787]},{\"name\":\"滨州市\",\"coord\":[117.67610299757533,37.4439597758601]},{\"name\":\"昆明市\",\"coord\":[102.93100245594789,25.481300763922075]},{\"name\":\"玉溪市\",\"coord\":[102.23080854291823,24.156168324611663]},{\"name\":\"塔城地区\",\"coord\":[83.60908162840168,45.3721852373893]},{\"name\":\"张掖市\",\"coord\":[100.47710030600572,38.704239320458385]},{\"name\":\"南阳市\",\"coord\":[112.1400670951149,33.03033276715801]},{\"name\":\"扬州市\",\"coord\":[119.48949608990988,32.80956776339646]},{\"name\":\"延边朝鲜族自治州\",\"coord\":[129.3577692895626,43.24968794080283]},{\"name\":\"牡丹江市\",\"coord\":[129.87240796405672,44.7073040108322]},{\"name\":\"澳门\",\"coord\":[113.56289691515346,22.14602596262204]},{\"name\":\"吴忠市\",\"coord\":[106.76894508116403,37.72566765880316]},{\"name\":\"来宾市\",\"coord\":[109.25592217010114,23.86346274681084]},{\"name\":\"平凉市\",\"coord\":[107.0708132782897,35.30329631658711]},{\"name\":\"马鞍山市\",\"coord\":[118.27245878467022,31.657727937739004]},{\"name\":\"芜湖市\",\"coord\":[118.32992684415504,31.081688223101658]},{\"name\":\"澄迈县\",\"coord\":[110.04198076060266,19.694955078668105]},{\"name\":\"保亭黎族苗族自治\",\"coord\":[109.6055304964257,18.6101488675304]},{\"name\":\"乐东黎族自治县\",\"coord\":[109.04051999525574,18.643137437909203]},{\"name\":\"儋州市\",\"coord\":[109.3431358337404,19.550974957403195]},{\"name\":\"定安县\",\"coord\":[110.38744429685676,19.47557074114284]},{\"name\":\"屯昌县\",\"coord\":[110.00574767630334,19.367175093044388]},{\"name\":\"白沙黎族自治县\",\"coord\":[109.36860737761768,19.214416393082217]},{\"name\":\"琼中黎族苗族自治\",\"coord\":[109.86691465937548,19.073671135862682]},{\"name\":\"东方市\",\"coord\":[108.86903802405428,19.017352815445214]},{\"name\":\"昌江黎族自治县\",\"coord\":[108.9686431884767,19.182594167127824]},{\"name\":\"海口市\",\"coord\":[110.420654296875,19.806565564640795]},{\"name\":\"济源市\",\"coord\":[112.38051465474433,35.07958362422394]},{\"name\":\"五指山市\",\"coord\":[109.53595187364496,18.832908264613966]},{\"name\":\"大连市\",\"coord\":[121.96662235866603,39.444150542439914]},{\"name\":\"文昌市三沙市\",\"coord\":[110.81828537536748,19.756501444162936]},{\"name\":\"三亚市\",\"coord\":[109.38424600793707,18.39186315877128]},{\"name\":\"万宁市\",\"coord\":[110.28485046979574,18.860240588635115]},{\"name\":\"陵水黎族自治县\",\"coord\":[109.95577603229562,18.594712684620465]},{\"name\":\"临高县\",\"coord\":[109.71915395436967,19.79420403032508]},{\"name\":\"琼海市\",\"coord\":[110.41650700703043,19.22315873149372]}]");
-// CONCATENATED MODULE: ./src/openlayers/mapping/webmap/config/SampleDataInfo.json
-const SampleDataInfo_namespaceObject = JSON.parse("[{\"id\":\"SalesJan2009\",\"fileName\":\"SalesJan2009\",\"xField\":\"Longitude\",\"yField\":\"Latitude\",\"type\":\"POINT\"},{\"id\":\"Sacramentorealestatetransactions\",\"fileName\":\"Ealestate transactions\",\"xField\":\"longitude\",\"yField\":\"latitude\",\"type\":\"POINT\"},{\"id\":\"BeijingResidentialDistrict\",\"fileName\":\"北京市住宅小区\",\"xField\":\"SmX\",\"yField\":\"SmY\",\"type\":\"POINT\"},{\"id\":\"GlobalRecordOfOver7Earthquakes\",\"fileName\":\"全球历史7级以上地震记录\",\"xField\":\"经度\",\"yField\":\"纬度\",\"type\":\"POINT\"},{\"id\":\"ChinaRecordOfOver6Earthquakes\",\"fileName\":\"中国历史6级以上地震记录\",\"xField\":\"经度\",\"yField\":\"纬度\",\"type\":\"POINT\"},{\"id\":\"ChinaMeteorologicalObservationStation\",\"fileName\":\"中国气象观测站\",\"xField\":\"经度\",\"yField\":\"纬度\",\"type\":\"POINT\"},{\"id\":\"BeijingSubwayLine\",\"fileName\":\"北京市地铁交通线路\",\"type\":\"LINE\"},{\"id\":\"ChinaEarthquakeIntensityZone\",\"fileName\":\"中国地震烈度区划面\",\"type\":\"POLYGON\"}]");
-// CONCATENATED MODULE: external "ol.View"
+
+;// CONCATENATED MODULE: ./src/openlayers/mapping/webmap/config/ProvinceCenter.json
+const ProvinceCenter_namespaceObject = JSON.parse('[{"name":"黑龙江省","coord":[127.64559817675396,48.48668098449708]},{"name":"内蒙古自治区","coord":[118.34519572208615,45.370218276977525]},{"name":"新疆维吾尔自治区","coord":[87.13479065593184,41.75497055053711]},{"name":"吉林省","coord":[126.12985278813787,43.57983207702637]},{"name":"辽宁省","coord":[124.02494773936439,41.105743408203125]},{"name":"甘肃省","coord":[102.87785725633012,37.69582366943361]},{"name":"河北省","coord":[115.66327227481898,39.33383178710938]},{"name":"北京市","coord":[116.62199343603638,40.25053787231445]},{"name":"山西省","coord":[112.45180235808988,37.666561126708984]},{"name":"天津市","coord":[117.35711842642581,39.406789779663086]},{"name":"陕西省","coord":[109.56294003056632,35.64754199981689]},{"name":"宁夏回族自治区","coord":[105.96110877640074,37.3081169128418]},{"name":"青海省","coord":[96.07301048277901,35.44417190551758]},{"name":"山东省","coord":[118.03833752951093,36.29800605773925]},{"name":"西藏自治区","coord":[87.47361520439412,31.6703872680664]},{"name":"河南省","coord":[113.07832397097275,33.87751102447509]},{"name":"江苏省","coord":[119.93926538201052,32.945452690124505]},{"name":"安徽省","coord":[117.15146765881019,32.024482727050774]},{"name":"四川省","coord":[102.28998890142759,30.182161331176758]},{"name":"湖北省","coord":[112.87798261431585,31.157071113586426]},{"name":"重庆市","coord":[107.870126637831,30.188085556030266]},{"name":"上海市","coord":[121.42561166015514,31.276043891906745]},{"name":"浙江省","coord":[119.75337092707514,29.175934791564945]},{"name":"湖南省","coord":[111.52770282777405,27.38110256195069]},{"name":"江西省","coord":[115.51091280655628,27.283511161804206]},{"name":"云南省","coord":[101.27053825991308,25.19783210754396]},{"name":"贵州省","coord":[106.49672346773299,26.92267990112305]},{"name":"福建省","coord":[117.9976766946587,25.939599990844727]},{"name":"广西壮族自治区","coord":[108.98706831086302,23.891559600830078]},{"name":"台湾省","coord":[120.82468432537434,23.602651596069336]},{"name":"香港特别行政区","coord":[114.21036850371561,22.374858856201172]},{"name":"海南省","coord":[109.62792940960824,19.163116455078125]},{"name":"广东省","coord":[113.32127888266032,22.873867034912106]},{"name":"澳门特别行政区","coord":[113.56819996291901,22.160347992976]}]');
+;// CONCATENATED MODULE: ./src/openlayers/mapping/webmap/config/MunicipalCenter.json
+const MunicipalCenter_namespaceObject = JSON.parse('[{"name":"克拉玛依市","coord":[85.01486759299489,45.406422237230046]},{"name":"昌吉回族自治州","coord":[88.7154624754753,44.26991024636568]},{"name":"石河子市","coord":[86.0208600035924,44.239045558096805]},{"name":"霍林郭勒市","coord":[114.73479243733115,44.16058374713977]},{"name":"本溪市","coord":[124.64357865201586,41.177197783134275]},{"name":"嘉峪关市","coord":[98.16891560537093,39.76279786284264]},{"name":"莱芜市","coord":[117.65723565456207,36.27916499211527]},{"name":"神农架林区","coord":[110.48296222218153,31.581260143666697]},{"name":"天门市","coord":[113.00615321481195,30.64105781887143]},{"name":"鄂州市","coord":[114.94764081970385,30.325634953844585]},{"name":"潜江市","coord":[112.70703817700621,30.349210666019893]},{"name":"仙桃市","coord":[113.34688900729822,30.315951161935402]},{"name":"萍乡市","coord":[113.88072263074415,27.47193090553213]},{"name":"台湾省","coord":[120.14338943402045,23.596002465926095]},{"name":"东莞市","coord":[113.89443658529342,22.897826158636448]},{"name":"中山市","coord":[113.37118387764659,22.501478858616522]},{"name":"珠海市","coord":[113.21799258934986,22.23782602992192]},{"name":"北海市","coord":[109.18248083043899,21.695773689750148]},{"name":"香港","coord":[114.20689279508653,22.36016760139811]},{"name":"舟山市","coord":[122.22514712841459,30.338633120695956]},{"name":"克孜勒苏柯尔克孜","coord":[74.62910472637343,39.59886016069875]},{"name":"喀什地区","coord":[77.19899922143753,37.85462871211595]},{"name":"阿克苏地区","coord":[81.43930290016381,41.067304799230456]},{"name":"和田地区","coord":[80.69780509160952,36.95287032287055]},{"name":"阿里地区","coord":[82.536487505389,32.69566569631762]},{"name":"日喀则地区","coord":[86.5996831353606,29.54861754814263]},{"name":"那曲地区","coord":[88.32523292667608,33.20600450932715]},{"name":"玉树藏族自治州","coord":[95.2107128446203,33.90320387919257]},{"name":"迪庆藏族自治州","coord":[99.42465312188943,28.052797714348895]},{"name":"怒江傈傈族自治州","coord":[98.85737910439825,26.98345757528851]},{"name":"大理白族自治州","coord":[99.93934374816013,25.684737357453045]},{"name":"德宏傣族景颇族自","coord":[98.13830877778075,24.593421919561205]},{"name":"保山市","coord":[99.19031013453166,24.979380341662]},{"name":"临沧市","coord":[99.62483778975081,24.058807858948214]},{"name":"普洱市","coord":[100.94440267992684,23.44121660743221]},{"name":"西双版纳傣族自治","coord":[100.86105801845994,21.882475641324206]},{"name":"拉萨市","coord":[91.3684790613129,30.14176592960237]},{"name":"山南地区","coord":[92.11665242621062,28.33000201578789]},{"name":"林芝地区","coord":[94.9307847458166,29.125110156601963]},{"name":"昌都地区","coord":[97.33912235873476,30.48520825551814]},{"name":"丽江市","coord":[100.65713436205135,26.96190318191959]},{"name":"攀枝花市","coord":[101.73355913301131,26.714486678752795]},{"name":"凉山彝族自治州","coord":[102.08678551422615,27.683020519860396]},{"name":"楚雄彝族自治州","coord":[101.68264761198458,25.369603845264024]},{"name":"红河哈尼族彝族自","coord":[102.95101719613119,23.624860095239875]},{"name":"文山壮族苗族自治","coord":[104.8708359910614,23.579587266862504]},{"name":"百色市","coord":[106.69546907589859,23.98220841166522]},{"name":"崇左市","coord":[107.3277087317123,22.49769755349952]},{"name":"防城港市","coord":[107.88939931155171,21.94550204069006]},{"name":"南宁市","coord":[108.67078983716917,23.12207641861882]},{"name":"钦州市","coord":[108.8532307305186,22.157690108421384]},{"name":"玉林市","coord":[110.26918466489103,22.391823643610415]},{"name":"湛江市","coord":[109.93033457863683,21.086751055633457]},{"name":"茂名市","coord":[110.80336192333934,22.069184739040775]},{"name":"阳江市","coord":[111.70471342186183,22.108751366417575]},{"name":"江门市","coord":[112.53715618649149,22.297368082806777]},{"name":"广州市","coord":[113.4949302208309,23.28359314707863]},{"name":"清远市","coord":[113.10957368131268,24.334444053233856]},{"name":"肇庆市","coord":[112.11117530204233,23.60241158796112]},{"name":"梧州市","coord":[111.01709510772797,23.518132876753846]},{"name":"贺州市","coord":[111.50423061842756,24.4095096817199]},{"name":"桂林市","coord":[110.44046163393094,25.353966673735407]},{"name":"柳州市","coord":[109.34854449214147,24.972408051485047]},{"name":"河池市","coord":[107.81191841865586,24.649291651298164]},{"name":"黔东南苗族侗族自","coord":[108.39952601614591,26.429286420465576]},{"name":"贵阳市","coord":[106.59784062851153,26.797907456479816]},{"name":"安顺市","coord":[105.76161265300635,25.988644902171018]},{"name":"黔西南布依族苗族","coord":[105.5954078788574,25.404850939549405]},{"name":"曲靖市","coord":[103.9164335632742,25.697243690315265]},{"name":"六盘水市","coord":[104.77723228072432,26.15402255629164]},{"name":"毕节地区","coord":[105.03867422931839,27.077913968069666]},{"name":"昭通市","coord":[104.29730513046874,27.62418247971078]},{"name":"宜宾市","coord":[104.76748901448207,28.553501804266475]},{"name":"乐山市","coord":[103.56027669102787,29.160754519210577]},{"name":"自贡市","coord":[104.63272827056402,29.273152614922402]},{"name":"内江市","coord":[104.82644562304716,29.61272653799929]},{"name":"遵义市","coord":[106.82413636302059,28.191847588570702]},{"name":"达州市","coord":[107.59704170009518,31.32138258839703]},{"name":"遂宁市","coord":[105.48979445433736,30.677687821242678]},{"name":"广安市","coord":[106.56708164098042,30.43500706741521]},{"name":"泸州市","coord":[105.42591761727707,28.50277238478137]},{"name":"资阳市","coord":[104.97995126874034,30.154251886139654]},{"name":"雅安市","coord":[102.69931299964517,29.892630706195035]},{"name":"眉山市","coord":[104.07052881858888,29.894202166560405]},{"name":"甘孜藏族自治州","coord":[100.50721042614238,30.975216556269658]},{"name":"果洛藏族自治州","coord":[99.30775565051923,34.03539865224808]},{"name":"海南藏族自治州","coord":[100.39969108016373,35.90048272566899]},{"name":"黄南藏族自治州","coord":[101.5360706381689,35.10286360841902]},{"name":"赣南藏族自治州","coord":[102.97083885806067,34.326752803339026]},{"name":"陇南市","coord":[105.24780098912132,33.57031117443431]},{"name":"天水市","coord":[105.53503634660417,34.62320421368087]},{"name":"定西市","coord":[104.58787768541339,35.08900966621695]},{"name":"临夏回族自治州","coord":[103.2612870434902,35.591577124455235]},{"name":"西宁市","coord":[101.57680657999033,36.84800271717157]},{"name":"海东地区","coord":[102.30909850729282,36.287400615025646]},{"name":"海北藏族自治州","coord":[100.27122484450717,37.892557516083826]},{"name":"金昌市","coord":[102.02244049169511,38.497330414886164]},{"name":"酒泉市","coord":[95.94486678270127,40.56891536586272]},{"name":"海西蒙古族藏族自","coord":[94.67143298050689,36.022725148503724]},{"name":"巴音郭楞蒙古自治","coord":[88.18116214759745,39.556478810319916]},{"name":"哈密地区","coord":[93.84302392518026,42.95015211178875]},{"name":"叶鲁番地区","coord":[89.82035217277885,42.399368632283505]},{"name":"乌鲁木齐市","coord":[88.00048109561487,43.549986370786]},{"name":"阿勒泰地区","coord":[88.11213933257655,47.05593413019629]},{"name":"博尔塔拉蒙古自治","coord":[82.26402238163408,44.671135542630864]},{"name":"伊犁哈萨克自治州","coord":[82.80778717477179,43.53783381365267]},{"name":"阿拉善盟","coord":[103.29923966842289,40.10955801781495]},{"name":"武威市","coord":[102.73362058791429,37.94211141321436]},{"name":"兰州市","coord":[103.73793563506032,36.27379827886003]},{"name":"中卫市","coord":[105.6943786030716,37.20654236148948]},{"name":"银川市","coord":[106.20022174140034,38.52103167597483]},{"name":"石嘴山市","coord":[106.41544011793628,38.84054137571417]},{"name":"乌海市","coord":[106.8984175998405,39.54616572239788]},{"name":"鄂尔多斯市","coord":[108.43285571424619,39.24036799350715]},{"name":"巴彦淖尔市","coord":[107.45840392808307,41.30159860424196]},{"name":"包头市","coord":[110.46472193224272,41.48017783644221]},{"name":"呼和浩特市","coord":[111.48365173603975,40.498363056149884]},{"name":"乌兰察布市","coord":[112.61568977597707,41.75789561273154]},{"name":"大同市","coord":[113.7107192749083,39.898956799744184]},{"name":"朔州市","coord":[112.65428748167508,39.681772914701924]},{"name":"忻州市","coord":[112.36127575589583,38.88990233614568]},{"name":"榆林市","coord":[109.68473112169593,38.19921027134876]},{"name":"延安市","coord":[109.52425222161318,36.406522726136814]},{"name":"庆阳市","coord":[107.73052193155061,36.183821532624464]},{"name":"固原市","coord":[106.20191575442442,36.11634909496382]},{"name":"白银市","coord":[104.68634478137065,36.51582865625868]},{"name":"宝鸡市","coord":[107.33534779230747,34.3387216485855]},{"name":"汉中市","coord":[107.03534754266246,33.00142998064871]},{"name":"广元市","coord":[105.92928137563939,32.21872447205537]},{"name":"巴中市","coord":[107.03422410306194,31.99874720836291]},{"name":"南充市","coord":[106.32964805032347,31.156657700184095]},{"name":"绵阳市","coord":[104.58949560201106,31.88628780630976]},{"name":"德阳市","coord":[104.41542984932845,31.110558133718676]},{"name":"成都市","coord":[103.8852290010473,30.777258040348634]},{"name":"阿坝藏族羌族自治","coord":[102.26209319552814,32.45725845387284]},{"name":"安康市","coord":[109.14236501848015,32.77467694678074]},{"name":"十堰市","coord":[110.39934083416314,32.376209039347906]},{"name":"襄阳市","coord":[111.97539147094662,31.93399822417465]},{"name":"宜昌市","coord":[111.22204852395754,30.772457669035354]},{"name":"恩施市","coord":[109.42158366502872,30.260366574390105]},{"name":"张家界市","coord":[110.59760006538717,29.330107409240718]},{"name":"吉首市","coord":[109.72176899848378,28.681903937242495]},{"name":"铜仁地区","coord":[108.54247523485463,28.11736237519646]},{"name":"重庆市","coord":[107.86007108564992,30.186253395053196]},{"name":"怀化市","coord":[109.94325166787243,27.43919084801186]},{"name":"益阳市","coord":[112.43060358108062,28.75127294553697]},{"name":"娄底市","coord":[111.41891416951897,27.696312460064604]},{"name":"常德市","coord":[111.72571610131646,29.27189463838195]},{"name":"荆州市","coord":[112.65896596965268,30.05161542755362]},{"name":"荆门市","coord":[112.6586855902184,31.01267124474617]},{"name":"岳阳市","coord":[113.2595036144316,29.106247116930163]},{"name":"长沙市","coord":[113.15415586456598,28.222934680488425]},{"name":"湘潭市","coord":[112.51092596317824,27.69881544105668]},{"name":"株州市","coord":[113.49665538546823,27.03993794610501]},{"name":"衡阳市","coord":[112.48849636578527,26.783613569970782]},{"name":"邵阳市","coord":[110.6723832117475,26.81652287086792]},{"name":"永州市","coord":[111.8565364154186,25.768488267811968]},{"name":"韶关市","coord":[113.53420325850979,24.69848878771937]},{"name":"惠州市","coord":[114.32029589634925,23.25504544231892]},{"name":"佛山市","coord":[112.95925897403649,23.10116677189257]},{"name":"云浮市","coord":[111.78042514904234,22.840400494105687]},{"name":"深圳市","coord":[114.13138648919008,22.649563063468342]},{"name":"汕尾市","coord":[115.57412892884373,23.06989642104901]},{"name":"河源市","coord":[114.89746229844398,23.97971937124767]},{"name":"揭阳市","coord":[116.04290004239446,23.304802704715357]},{"name":"汕头市","coord":[116.7008461897183,23.35898625947344]},{"name":"潮州市","coord":[116.75405548481658,23.854381508863064]},{"name":"梅州市","coord":[116.13719397345734,24.15633544812716]},{"name":"漳州市","coord":[117.38279760543345,24.41111215459575]},{"name":"厦门市","coord":[118.04275971554665,24.675908246507944]},{"name":"龙岩市","coord":[116.69341144552507,25.20284542644492]},{"name":"泉州市","coord":[118.12035864630246,25.22984144365049]},{"name":"莆田市","coord":[118.82439690138142,25.439653480972687]},{"name":"福州市","coord":[119.1608285845262,25.99117532466728]},{"name":"三明市","coord":[117.51188176216434,26.318292906961602]},{"name":"南平市","coord":[118.16153136678187,27.306303151805437]},{"name":"抚州市","coord":[116.3455359885574,27.487043655935366]},{"name":"鹰潭市","coord":[117.01082360702333,28.241253742969946]},{"name":"吉安市","coord":[114.91377151807418,26.957486660664525]},{"name":"赣州市","coord":[115.046455717572,25.81565075681663]},{"name":"郴州市","coord":[113.1544526703492,25.871927095452524]},{"name":"新余市","coord":[114.94161795877827,27.79044654578371]},{"name":"宜春市","coord":[115.04574494880995,28.306428044943356]},{"name":"南昌市","coord":[115.9963824234495,28.664803351584705]},{"name":"九江市","coord":[115.53225905704193,29.362905920276297]},{"name":"上饶市","coord":[117.8595355766598,28.765755150094634]},{"name":"景德镇市","coord":[117.25387030721845,29.33426823662448]},{"name":"黄山市","coord":[117.85476357809696,29.969632034273722]},{"name":"池州市","coord":[117.34517113140791,30.208089337922335]},{"name":"铜陵市","coord":[117.93160431300694,30.926442655001676]},{"name":"安庆市","coord":[116.54307680610799,30.524265461641296]},{"name":"黄石市","coord":[115.02354597728443,29.924060229331015]},{"name":"咸宁市","coord":[114.26967602231792,29.652174021136048]},{"name":"黄冈市","coord":[115.2859016705373,30.65856897065683]},{"name":"武汉市","coord":[114.34552076948799,30.68836237966767]},{"name":"随州市","coord":[113.3850627838818,31.87891659924412]},{"name":"信阳市","coord":[114.81374730587638,32.0309685135914]},{"name":"驻马店市","coord":[114.07756451509235,32.896720987266114]},{"name":"商洛市","coord":[109.82044421310393,33.77403373563189]},{"name":"西安市","coord":[109.11839808451401,34.225257215515896]},{"name":"渭南市","coord":[109.75732444226935,35.025913644359306]},{"name":"铜川市","coord":[108.98695328111377,35.19235092947735]},{"name":"咸阳市","coord":[108.36398776446165,34.84311348287181]},{"name":"三门峡市","coord":[110.80049688104964,34.31818709571671]},{"name":"运城市","coord":[111.1736679525165,35.19010372283576]},{"name":"洛阳市","coord":[111.87577573098216,34.33379926109848]},{"name":"平顶山市","coord":[112.80931281928427,33.759895800153096]},{"name":"漯河市","coord":[113.83505724178012,33.70034266174508]},{"name":"许昌市","coord":[113.78762484088509,34.051835688452435]},{"name":"郑州市","coord":[113.49619951867594,34.61181797865449]},{"name":"焦作市","coord":[113.13404280173008,35.134167097471625]},{"name":"晋城市","coord":[112.7495732073233,35.63186423091449]},{"name":"长治市","coord":[112.85900842873183,36.45872910742828]},{"name":"临汾市","coord":[111.49379787924448,36.22810800777857]},{"name":"太原市","coord":[112.15628804033796,37.91704444063036]},{"name":"吕梁市","coord":[111.31901105774872,37.712740463356496]},{"name":"晋中市","coord":[113.08199599739676,37.36532613794343]},{"name":"邯郸市","coord":[114.41824047234618,36.530119932543315]},{"name":"安阳市","coord":[113.88883283163116,35.7797611183252]},{"name":"鹤壁市","coord":[114.3654094911545,35.75770487428472]},{"name":"新乡市","coord":[113.9184107718167,35.348471214026716]},{"name":"开封市","coord":[114.52801677500626,34.61371216679872]},{"name":"周口市","coord":[114.88509782391864,33.69999759722657]},{"name":"阜阳市","coord":[115.44595951398213,32.98060371610532]},{"name":"淮南市","coord":[116.68941991880993,32.79972275772595]},{"name":"蚌埠市","coord":[117.38594715783302,33.106729536033896]},{"name":"淮北市","coord":[116.69651711889378,33.69527529383458]},{"name":"宿州市","coord":[117.30175405886838,33.943330421260015]},{"name":"亳州市","coord":[116.12410804185097,33.46769392946132]},{"name":"商丘市","coord":[115.59575176872548,34.28339840831147]},{"name":"菏泽市","coord":[115.53631974831816,35.197319393220624]},{"name":"濮阳市","coord":[115.3070485514902,35.775883510964334]},{"name":"聊城市","coord":[115.8870069012884,36.40529594548765]},{"name":"邢台市","coord":[114.74259008644859,37.251396750084155]},{"name":"石家庄市","coord":[114.56923838363613,38.13141710980106]},{"name":"阳泉市","coord":[113.39216149668508,38.09075470547468]},{"name":"保定市","coord":[115.261524468934,39.09118520781398]},{"name":"衡水市","coord":[115.8182936677897,37.715661598187154]},{"name":"德州市","coord":[116.4582273790399,37.19372347888644]},{"name":"沧州市","coord":[116.76192710911863,38.20240042039232]},{"name":"廊坊市","coord":[116.50410772133856,39.27896741763884]},{"name":"天津市","coord":[117.31988934444873,39.37154482470619]},{"name":"北京市","coord":[116.59734730757869,40.237112944270976]},{"name":"张家口市","coord":[115.1823606483226,40.83732566607167]},{"name":"唐山市","coord":[117.8693184261954,39.71862889477249]},{"name":"秦皇岛市","coord":[119.30467355367742,39.990574652162564]},{"name":"承德市","coord":[117.16275671911026,41.36623845548547]},{"name":"葫芦岛市","coord":[119.9342336210531,40.5628822626519]},{"name":"朝阳市","coord":[120.11853493535794,41.471852354885755]},{"name":"赤峰市","coord":[118.50943546234379,43.25452976059767]},{"name":"锦州市","coord":[121.5167549323861,41.45933087433065]},{"name":"营口市","coord":[122.58571915054674,40.42093503997384]},{"name":"丹东市","coord":[124.33549382902183,40.46369290272115]},{"name":"辽阳市","coord":[123.34064798039414,41.152331397771356]},{"name":"盘锦市","coord":[122.06718005354679,41.05573599862555]},{"name":"阜新市","coord":[121.93889757908204,42.27641773244204]},{"name":"鞍山市","coord":[122.78904432242356,40.77781183142038]},{"name":"沈阳市","coord":[122.99508899709724,42.1162195010079]},{"name":"铁岭市","coord":[124.23100515588399,42.72666083611828]},{"name":"扶顺市","coord":[124.46027188217573,41.82955407638859]},{"name":"通辽市","coord":[122.0729370657937,43.90889130864869]},{"name":"兴安盟","coord":[120.79456431092532,45.92003249442161]},{"name":"白城市","coord":[123.10619907715235,45.25475749267784]},{"name":"齐齐哈尔市","coord":[124.5462214659102,47.55395009317394]},{"name":"大兴安岭地区","coord":[124.50992855161529,52.18438447846694]},{"name":"黑河市","coord":[127.14721400335922,49.25080134026901]},{"name":"大庆市","coord":[124.40329830095243,46.401048760966745]},{"name":"绥化市","coord":[126.5214484055605,46.76992452194825]},{"name":"松原市","coord":[124.21244334807682,44.75779381338502]},{"name":"四平市","coord":[124.27839350328821,43.52139065090318]},{"name":"通化市","coord":[125.67392830706305,41.91771808663852]},{"name":"辽源市","coord":[125.33529527643432,42.758340204944986]},{"name":"吉林市","coord":[126.83350281902375,43.60730120049175]},{"name":"长春市","coord":[125.53597875970374,44.24624314701737]},{"name":"白山市","coord":[127.16780160322108,42.093893880305075]},{"name":"哈尔滨市","coord":[127.39125008786029,45.36200668820575]},{"name":"鹤岗市","coord":[130.4703811258197,47.66520688940109]},{"name":"伊春市","coord":[128.91240831703635,47.93833794565277]},{"name":"七台河市","coord":[131.2677920224311,45.945099776108584]},{"name":"鸡西市","coord":[132.38059153660274,45.722934218318535]},{"name":"双鸭山市","coord":[132.3184817002743,46.65813679030265]},{"name":"佳木斯市","coord":[132.26174446608726,47.17569713691394]},{"name":"呼伦贝尔市","coord":[122.3210739998419,50.18176996070858]},{"name":"孝感市","coord":[113.83749892135485,31.11757234692128]},{"name":"贵港市","coord":[110.07354588052804,23.380735604767374]},{"name":"黔南布依族苗族自","coord":[107.30931767543106,26.2976919432269]},{"name":"宁德市","coord":[119.52482556634342,27.013151692716413]},{"name":"温州市","coord":[120.30037042732202,27.8699145504001]},{"name":"台州市","coord":[120.88886782713843,28.670799172772313]},{"name":"丽水市","coord":[119.56796851966463,28.170268394477755]},{"name":"衢州市","coord":[118.79479802644406,28.865874397158763]},{"name":"金华市","coord":[119.99381920686633,29.093455548185744]},{"name":"绍兴市","coord":[120.46546691682343,29.69382513836818]},{"name":"宁波市","coord":[121.42142987830871,29.70001162878972]},{"name":"杭州市","coord":[119.4405685790891,29.87218307296989]},{"name":"宣城市","coord":[118.68748382914703,30.628143499626418]},{"name":"湖州市","coord":[119.98261306633574,30.7945175862809]},{"name":"嘉兴市","coord":[120.83889215988998,30.67538495499343]},{"name":"上海市","coord":[121.37534147322967,31.25628247908459]},{"name":"苏州市","coord":[120.6906182622391,31.381280695137775]},{"name":"无锡市","coord":[120.32182300914366,31.54113306724517]},{"name":"常州市","coord":[119.61953292830165,31.611878565375576]},{"name":"南京市","coord":[118.71890548838064,31.910863187910323]},{"name":"镇江市","coord":[119.42349332902813,31.97942313430778]},{"name":"合肥市","coord":[117.30651975617157,31.79407863049138]},{"name":"六安市","coord":[116.24668220575353,31.820846193819513]},{"name":"滁州市","coord":[117.88422385307969,32.51792621904418]},{"name":"泰州市","coord":[120.03124303305091,32.56503102346783]},{"name":"南通市","coord":[120.85599446760912,32.18496706099728]},{"name":"盐城市","coord":[120.01812490612667,33.54219948734023]},{"name":"淮安市","coord":[119.0749424205415,33.39203631772854]},{"name":"宿迁市","coord":[118.45404943216346,33.666258719120265]},{"name":"徐州市","coord":[117.77482249295966,34.30847766157078]},{"name":"济宁市","coord":[116.74147276546373,35.27488504351119]},{"name":"枣庄市","coord":[117.43359942491492,34.884162021736]},{"name":"连云港市","coord":[119.01553213785074,34.54316517587849]},{"name":"临沂市","coord":[118.31478835349617,35.28173079028279]},{"name":"日照市","coord":[119.14265350444272,35.54479073199592]},{"name":"青岛市","coord":[120.27779044405756,36.3464117375903]},{"name":"威海市","coord":[122.12963327195605,37.13879077904251]},{"name":"烟台市","coord":[120.7689567423966,37.19772002195597]},{"name":"潍坊市","coord":[119.02178548592039,36.49292234053931]},{"name":"淄博市","coord":[117.92936024367185,36.60871347163638]},{"name":"泰安市","coord":[116.93810893944303,36.0423330118612]},{"name":"济南市","coord":[117.34560282551296,36.769574973846304]},{"name":"东营市","coord":[118.4915054457184,37.52194690335787]},{"name":"滨州市","coord":[117.67610299757533,37.4439597758601]},{"name":"昆明市","coord":[102.93100245594789,25.481300763922075]},{"name":"玉溪市","coord":[102.23080854291823,24.156168324611663]},{"name":"塔城地区","coord":[83.60908162840168,45.3721852373893]},{"name":"张掖市","coord":[100.47710030600572,38.704239320458385]},{"name":"南阳市","coord":[112.1400670951149,33.03033276715801]},{"name":"扬州市","coord":[119.48949608990988,32.80956776339646]},{"name":"延边朝鲜族自治州","coord":[129.3577692895626,43.24968794080283]},{"name":"牡丹江市","coord":[129.87240796405672,44.7073040108322]},{"name":"澳门","coord":[113.56289691515346,22.14602596262204]},{"name":"吴忠市","coord":[106.76894508116403,37.72566765880316]},{"name":"来宾市","coord":[109.25592217010114,23.86346274681084]},{"name":"平凉市","coord":[107.0708132782897,35.30329631658711]},{"name":"马鞍山市","coord":[118.27245878467022,31.657727937739004]},{"name":"芜湖市","coord":[118.32992684415504,31.081688223101658]},{"name":"澄迈县","coord":[110.04198076060266,19.694955078668105]},{"name":"保亭黎族苗族自治","coord":[109.6055304964257,18.6101488675304]},{"name":"乐东黎族自治县","coord":[109.04051999525574,18.643137437909203]},{"name":"儋州市","coord":[109.3431358337404,19.550974957403195]},{"name":"定安县","coord":[110.38744429685676,19.47557074114284]},{"name":"屯昌县","coord":[110.00574767630334,19.367175093044388]},{"name":"白沙黎族自治县","coord":[109.36860737761768,19.214416393082217]},{"name":"琼中黎族苗族自治","coord":[109.86691465937548,19.073671135862682]},{"name":"东方市","coord":[108.86903802405428,19.017352815445214]},{"name":"昌江黎族自治县","coord":[108.9686431884767,19.182594167127824]},{"name":"海口市","coord":[110.420654296875,19.806565564640795]},{"name":"济源市","coord":[112.38051465474433,35.07958362422394]},{"name":"五指山市","coord":[109.53595187364496,18.832908264613966]},{"name":"大连市","coord":[121.96662235866603,39.444150542439914]},{"name":"文昌市三沙市","coord":[110.81828537536748,19.756501444162936]},{"name":"三亚市","coord":[109.38424600793707,18.39186315877128]},{"name":"万宁市","coord":[110.28485046979574,18.860240588635115]},{"name":"陵水黎族自治县","coord":[109.95577603229562,18.594712684620465]},{"name":"临高县","coord":[109.71915395436967,19.79420403032508]},{"name":"琼海市","coord":[110.41650700703043,19.22315873149372]}]');
+;// CONCATENATED MODULE: ./src/openlayers/mapping/webmap/config/SampleDataInfo.json
+const SampleDataInfo_namespaceObject = JSON.parse('[{"id":"SalesJan2009","fileName":"SalesJan2009","xField":"Longitude","yField":"Latitude","type":"POINT"},{"id":"Sacramentorealestatetransactions","fileName":"Ealestate transactions","xField":"longitude","yField":"latitude","type":"POINT"},{"id":"BeijingResidentialDistrict","fileName":"北京市住宅小区","xField":"SmX","yField":"SmY","type":"POINT"},{"id":"GlobalRecordOfOver7Earthquakes","fileName":"全球历史7级以上地震记录","xField":"经度","yField":"纬度","type":"POINT"},{"id":"ChinaRecordOfOver6Earthquakes","fileName":"中国历史6级以上地震记录","xField":"经度","yField":"纬度","type":"POINT"},{"id":"ChinaMeteorologicalObservationStation","fileName":"中国气象观测站","xField":"经度","yField":"纬度","type":"POINT"},{"id":"BeijingSubwayLine","fileName":"北京市地铁交通线路","type":"LINE"},{"id":"ChinaEarthquakeIntensityZone","fileName":"中国地震烈度区划面","type":"POLYGON"}]');
+;// CONCATENATED MODULE: external "ol.View"
 const external_ol_View_namespaceObject = ol.View;
 var external_ol_View_default = /*#__PURE__*/__webpack_require__.n(external_ol_View_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.proj.proj4"
+;// CONCATENATED MODULE: external "ol.interaction.MouseWheelZoom"
+const external_ol_interaction_MouseWheelZoom_namespaceObject = ol.interaction.MouseWheelZoom;
+var external_ol_interaction_MouseWheelZoom_default = /*#__PURE__*/__webpack_require__.n(external_ol_interaction_MouseWheelZoom_namespaceObject);
+;// CONCATENATED MODULE: external "ol.proj.proj4"
 const external_ol_proj_proj4_namespaceObject = ol.proj.proj4;
-// CONCATENATED MODULE: external "ol.proj.Units"
+;// CONCATENATED MODULE: external "ol.proj.Units"
 const external_ol_proj_Units_namespaceObject = ol.proj.Units;
 var external_ol_proj_Units_default = /*#__PURE__*/__webpack_require__.n(external_ol_proj_Units_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.layer"
+;// CONCATENATED MODULE: external "ol.layer"
 const external_ol_layer_namespaceObject = ol.layer;
-// CONCATENATED MODULE: external "ol.format.WMTSCapabilities"
+;// CONCATENATED MODULE: external "ol.format.WMTSCapabilities"
 const external_ol_format_WMTSCapabilities_namespaceObject = ol.format.WMTSCapabilities;
 var external_ol_format_WMTSCapabilities_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_WMTSCapabilities_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.format.WMSCapabilities"
+;// CONCATENATED MODULE: external "ol.format.WMSCapabilities"
 const external_ol_format_WMSCapabilities_namespaceObject = ol.format.WMSCapabilities;
 var external_ol_format_WMSCapabilities_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_WMSCapabilities_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.geom"
+;// CONCATENATED MODULE: external "ol.geom"
 const external_ol_geom_namespaceObject = ol.geom;
-// CONCATENATED MODULE: external "ol.source"
+;// CONCATENATED MODULE: external "ol.source"
 const external_ol_source_namespaceObject = ol.source;
-// CONCATENATED MODULE: external "ol.render.Feature"
+;// CONCATENATED MODULE: external "ol.render.Feature"
 const external_ol_render_Feature_namespaceObject = ol.render.Feature;
 var external_ol_render_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol_render_Feature_namespaceObject);
-
-// CONCATENATED MODULE: external "ol.Collection"
+;// CONCATENATED MODULE: external "ol.Collection"
 const external_ol_Collection_namespaceObject = ol.Collection;
 var external_ol_Collection_default = /*#__PURE__*/__webpack_require__.n(external_ol_Collection_namespaceObject);
-
-// CONCATENATED MODULE: ./src/openlayers/mapping/WebMap.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/WebMap.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92986,6 +94790,7 @@ var external_ol_Collection_default = /*#__PURE__*/__webpack_require__.n(external
 // eslint-disable-line import/extensions
 // eslint-disable-line import/extensions
 // eslint-disable-line import/extensions
+
 
 
 
@@ -93052,7 +94857,7 @@ const dpiConfig = {
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
- * @param {function} [options.mapSetting.overlays] - 地图的overlayer
+ * @param {function} [options.mapSetting.overlays] - 地图的overlays
  * @param {function} [options.mapSetting.controls] - 地图的控件
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数
  * @extends {ol/Observable}
@@ -93330,7 +95135,7 @@ class WebMap extends (external_ol_Observable_default()) {
         let that = this, handleResult = {};
         let newCrs = crs, action = "OpenMap";
 
-        if (crs === "EPSG:-1") {
+        if (this.isCustomProjection(crs)) {
             // 去iServer请求wkt  否则只能预览出图
             await FetchRequest.get(that.getRequestUrl(`${baseLayerUrl}/prjCoordSys.wkt`), null, {
                 withCredentials: that.withCredentials,
@@ -93339,7 +95144,7 @@ class WebMap extends (external_ol_Observable_default()) {
                 return response.text();
             }).then(async function (result) {
                 if(result.indexOf("<!doctype html>") === -1) {
-                    that.addProjctionFromWKT(result, "EPSG:-1");
+                    that.addProjctionFromWKT(result, crs);
                     handleResult = {action, newCrs};
                 } else {
                     throw 'ERROR';
@@ -93386,7 +95191,7 @@ class WebMap extends (external_ol_Observable_default()) {
             baseLayerInfo.visibleScales.forEach(scale => {
                 let value = 1 / scale;
                 res = this.getResFromScale(value, coordUnit);
-                scale = `1:${value.toLocaleString()}`;
+                scale = `1:${value}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
                 resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
@@ -93395,7 +95200,7 @@ class WebMap extends (external_ol_Observable_default()) {
         } else if (baseLayerInfo.layerType === 'WMTS') {
             baseLayerInfo.scales.forEach(scale => {
                 res = this.getResFromScale(scale, coordUnit, 90.7);
-                scale = `1:${scale.toLocaleString()}`;
+                scale = `1:${scale}`;
                 //多此一举转换，因为toLocalString会自动保留小数点后三位，and当第二位小数是0就会保存小数点后两位。所有为了统一。
                 resolutions[this.formatScale(scale)] = res;
                 resolutionArray.push(res);
@@ -93442,7 +95247,7 @@ class WebMap extends (external_ol_Observable_default()) {
     getScaleFromRes(resolution, coordUnit = "DEGREE", dpi = 96) {
         let scale, mpu = metersPerUnit[coordUnit.toUpperCase()];
         scale = resolution * dpi * mpu / .0254;
-        return '1:' + scale.toLocaleString();
+        return '1:' + scale;
     }
     /**
     * @private
@@ -93636,7 +95441,89 @@ class WebMap extends (external_ol_Observable_default()) {
             // 挂载带baseLayer上，便于删除
             baseLayer.labelLayer = labelLayer;
         }
+        this.limitScale(mapInfo, baseLayer);
     }
+
+    validScale(scale) {
+      if (!scale) {
+          return false;
+      }
+      const scaleNum = scale.split(':')[1];
+      if (!scaleNum) {
+          return false;
+      }
+      const res = 1 / +scaleNum;
+      if (res === Infinity || res >= 1) {
+          return false;
+      }
+      return true;
+  }
+
+  limitScale(mapInfo, baseLayer) {
+      if (this.validScale(mapInfo.minScale) && this.validScale(mapInfo.maxScale)) {
+          let visibleScales, minScale, maxScale;
+          if (baseLayer.layerType === 'WMTS') {
+              visibleScales = baseLayer.scales;
+              minScale = +mapInfo.minScale.split(':')[1];
+              maxScale = +mapInfo.maxScale.split(':')[1];
+          } else {
+              const scales = this.scales.map((scale) => {
+                  return 1 / scale.split(':')[1];
+              });
+              if (Array.isArray(baseLayer.visibleScales) && baseLayer.visibleScales.length && baseLayer.visibleScales) {
+                visibleScales = baseLayer.visibleScales;
+              } else {
+                visibleScales = scales;
+              }
+              minScale = 1 / +mapInfo.minScale.split(':')[1];
+              maxScale = 1 / +mapInfo.maxScale.split(':')[1];
+          }
+          const minVisibleScale = this.findNearest(visibleScales, minScale);
+          const maxVisibleScale = this.findNearest(visibleScales, maxScale);
+          let minZoom = visibleScales.indexOf(minVisibleScale);
+          let maxZoom = visibleScales.indexOf(maxVisibleScale);
+          if (minZoom > maxZoom) {
+              [minZoom, maxZoom] = [maxZoom, minZoom];
+          }
+          if (minZoom !== 0 || maxZoom !== visibleScales.length - 1) {
+              this.map.setView(
+                  new (external_ol_View_default())(
+                      Object.assign({}, this.map.getView().options_, {
+                          maxResolution: undefined,
+                          minResolution: undefined,
+                          minZoom,
+                          maxZoom,
+                          constrainResolution: false
+                      })
+                  )
+              );
+              this.map.addInteraction(
+                  new (external_ol_interaction_MouseWheelZoom_default())({
+                      constrainResolution: true
+                  })
+              );
+          }
+      }
+  }
+
+  parseNumber(scaleStr) {
+    return Number(scaleStr.split(":")[1])
+  }
+
+  findNearest(scales, target) {
+    let resultIndex = 0
+    let targetScaleD = target;
+    for (let i = 1, len = scales.length; i < len; i++) {
+      if (
+        Math.abs(scales[i] - targetScaleD) <
+        Math.abs(scales[resultIndex] - targetScaleD)
+      ) {
+        resultIndex = i
+      }
+    }
+    return scales[resultIndex]
+  }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.addMVTMapLayer
@@ -93715,6 +95602,7 @@ class WebMap extends (external_ol_Observable_default()) {
         // if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
         //     maxZoom = options.baseLayer.visibleScales.length;
         // }
+        this.map.setView(new (external_ol_View_default())({ zoom, center, projection, maxZoom, maxResolution }));
         let viewOptions = {};
 
         if (baseLayer.scales && baseLayer.scales.length > 0 && baseLayer.layerType === "WMTS" ||
@@ -94016,7 +95904,7 @@ class WebMap extends (external_ol_Observable_default()) {
             // prjCoordSys: {epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1]},
             format: layerInfo.format
         };
-        if(!isBaseLayer && this.baseProjection !== "EPSG:-1"){
+        if(!isBaseLayer && !this.isCustomProjection(this.baseProjection )){
             options.prjCoordSys = { epsgCode : this.baseProjection.split(':')[1]};
         }
         if (layerInfo.visibleScales && layerInfo.visibleScales.length > 0) {
@@ -94219,7 +96107,7 @@ class WebMap extends (external_ol_Observable_default()) {
             let projection = {
                 epsgCode: that.baseProjection.split(":")[1]
             }
-            if (that.baseProjection !== "EPSG:-1") {
+            if (!that.isCustomProjection(that.baseProjection)) {
                 // bug IE11 不会自动编码
                 url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
             }
@@ -94517,6 +96405,10 @@ class WebMap extends (external_ol_Observable_default()) {
             requestEncoding: layerInfo.requestEncoding || 'KVP',
             tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin, layerInfo.matrixIds),
             tileLoadFunction: function (imageTile, src) {
+                if (src.indexOf('tianditu.gov.cn') >= 0) {
+                    imageTile.getImage().src = `${src}&tk=${Util.getParameters(layerInfo.url)['tk']}`;
+                    return;
+                }
                 imageTile.getImage().src = src
             }
         })
@@ -95009,7 +96901,7 @@ class WebMap extends (external_ol_Observable_default()) {
         if (!this.excludePortalProxyUrl && !Util.isInTheSameDomain(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
         }
-        if(['EPSG:-1', 'EPSG:0', 'EPSG:-1000'].includes(layer.projection)) {
+        if(['EPSG:0'].includes(layer.projection)) {
             // 不支持动态投影restData服务
             that.layerAdded++;
             that.sendMapToUser(layerLength);
@@ -97998,9 +99890,113 @@ class WebMap extends (external_ol_Observable_default()) {
         }
         return lang;
     }
+    isCustomProjection(projection) {
+        if(core_Util_Util.isNumber(projection)){
+            return [-1000,-1].includes(+projection)
+        }
+        return ['EPSG:-1000','EPSG:-1'].includes(projection);
+    }
 }
 
-// CONCATENATED MODULE: ./src/openlayers/mapping/index.js
+;// CONCATENATED MODULE: ./src/openlayers/mapping/ImageTileSuperMapRest.js
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class ol.source.ImageTileSuperMapRest
+ * @version 10.2.0
+ * @category  iServer Image
+ * @classdesc iServer影像服务图层源。根据指定的请求参数，返回影像数据栅格瓦片并渲染。
+ * @param {Object} options - 参数。
+ * @param {string} options.url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} options.collectionId - 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+ * @param {string} [options.sqlFilter] 对所显示影像的过滤条件。相当于sql查询中的where子句。支持st_geometry空间函数过滤。11.0版本暂不支持通过ECQL进行过滤。
+ * @param {SuperMap.ImageRenderingRule} [options.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。不指定时，使用发布服务时所配置的风格。
+ * @param {Array.<number>} [options.ids] 返回影像集合中指定ID的影像，该id为系统维护的一个自增id，为SuperMap SDX引擎的SmID字段内容。
+ * @param {Array.<string>} [options.names] 返回影像集合中指定名称影像的瓦片资源。影像名称包含文件后缀，如S-60-45.tif。
+ * @param {string} [options.format='png'] - 瓦片表述类型，瓦片格式目前支持png、jpg和webp三种格式。
+ * @param {boolean} [options.transparent=true] - 瓦片是否透明。默认透明。
+ * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
+ * @param {string} [options.tileProxy] -  代理地址
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @extends {ol/source/XYZ}
+ */
+class ImageTileSuperMapRest extends (external_ol_source_XYZ_default()) {
+    constructor(options) {
+        options = options || {};
+        options.format = options.format || 'png';
+        options.transparent = options.transparent === undefined ? true : options.transparent === true;
+        options.cacheEnabled = options.cacheEnabled === undefined ? true : options.cacheEnabled === true;
+        var attributions = options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>";
+        var url = _createLayerUrl(options.url, options);
+        var superOptions = {
+            ...options,
+            attributions: attributions,
+            url: url
+        };
+        //需要代理时走自定义 tileLoadFunction，否则走默认的tileLoadFunction
+        if (!options.tileLoadFunction && options.tileProxy) {
+            superOptions.tileLoadFunction = tileLoadFunction;
+        }
+        super(superOptions);
+        var me = this;
+        this.options = options;
+        if (options.tileProxy) {
+            this.tileProxy = options.tileProxy;
+        }
+        function tileLoadFunction(imageTile, src) {
+            imageTile.getImage().src = me.tileProxy + encodeURIComponent(src);
+        }
+
+        function _createLayerUrl(url, options) {
+            var layerUrl = Util.urlPathAppend(
+                url,
+                `/collections/${options.collectionId}/tile.${options.format}?x={x}&y={y}&z={z}`
+            );
+            var requestParams = _getAllRequestParams(options);
+            layerUrl = Util.urlAppend(layerUrl, _getParamString(requestParams));
+            layerUrl = SecurityManager.appendCredential(layerUrl);
+        
+            if (!options.cacheEnabled) {
+                layerUrl += '&_t=' + new Date().getTime();
+            }
+            return layerUrl;
+        }
+
+        function _getAllRequestParams(options) {
+            var params = {};
+            params['transparent'] = options.transparent;
+            params['cacheEnabled'] = !(options.cacheEnabled === false);
+            if (options.sqlFilter) {
+                params['sqlFilter'] = options.sqlFilter;
+            }
+            if (options.renderingRule) {
+                params['renderingRule'] = JSON.stringify(options.renderingRule);
+            }
+            if (options.ids) {
+                params['ids'] = options.ids.join(',');
+            }
+            if (options.names) {
+                params['names'] = options.names.join(',');
+            }
+            return params;
+        }
+
+        function _getParamString(obj) {
+            var params = [];
+            for (var i in obj) {
+                params.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
+            }
+            return params.join('&');
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/openlayers/mapping/index.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -98010,7 +100006,9 @@ class WebMap extends (external_ol_Observable_default()) {
 
 
 
-// CONCATENATED MODULE: ./src/openlayers/namespace.js
+
+
+;// CONCATENATED MODULE: ./src/openlayers/namespace.js
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -98045,6 +100043,7 @@ if (window && window.ol) {
     ol.source.BaiduMap = BaiduMap;
     ol.source.ImageSuperMapRest = ImageSuperMapRest;
     ol.source.SuperMapCloud = SuperMapCloud;
+    ol.source.ImageTileSuperMapRest = ImageTileSuperMapRest;
     ol.source.Tianditu = Tianditu;
     ol.source.TileSuperMapRest = TileSuperMapRest;
     ol.supermap.WebMap = WebMap;
@@ -98090,6 +100089,8 @@ if (window && window.ol) {
     ol.supermap.ThemeService = ThemeService;
     ol.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
     ol.supermap.WebPrintingJobService = WebPrintingJobService;
+    ol.supermap.ImageService = ImageService;
+    ol.supermap.ImageCollectionService = ImageCollectionService;
 }
 
 
@@ -98100,16 +100101,96 @@ if (window && window.ol) {
 
 
 
-})();
 
-(() => {
-"use strict";
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/***/ })
 
-
-})();
-
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
+/******/ 	__webpack_require__(638);
+/******/ 	var __webpack_exports__ = __webpack_require__(371);
+/******/ 	
 /******/ })()
 ;
