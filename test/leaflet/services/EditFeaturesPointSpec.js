@@ -40,7 +40,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             try{
             expect(addFeaturesService).not.toBeNull();
             expect(addFeatureResult_POINT.type).toBe("processCompleted");
-            expect(addFeatureResult_POINT.object.isInTheSameDomain).toBeFalsy();
+            expect(addFeatureResult_POINT.object.isInTheSameDomain).toBeTruthy();
             expect(addFeatureResult_POINT.object.options.method).toBe("POST");
             expect(addFeatureResult_POINT.object.options.data).toContain("'parts':[1]");
             expect(addFeatureResult_POINT.object.options.data).toContain('"POINT"');
@@ -85,7 +85,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeaturesResult.type).toBe("processCompleted");
-                expect(addFeaturesResult.object.isInTheSameDomain).toBeFalsy();
+                expect(addFeaturesResult.object.isInTheSameDomain).toBeTruthy();
                 expect(addFeaturesResult.object.isUseBatch).toBeTruthy();
                 expect(addFeaturesResult.object.options.method).toBe("POST");
                 expect(addFeaturesResult.object.options.data).toContain("'x':100,'y':51");
@@ -165,7 +165,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             try {
                 expect(nullFeaturesService).not.toBeNull();
                 expect(featuresNullResult.type).toBe("processFailed");
-                expect(featuresNullResult.object.isInTheSameDomain).toBeFalsy();
+                expect(featuresNullResult.object.isInTheSameDomain).toBeTruthy();
                 expect(featuresNullResult.object.options.method).toBe("POST");
                 expect(featuresNullResult.error).not.toBeNull();
                 expect(featuresNullResult.error.code).toEqual(400);

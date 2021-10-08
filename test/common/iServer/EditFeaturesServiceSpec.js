@@ -28,7 +28,7 @@ describe('EditFeaturesService', () => {
             try {
                 var serviceResult = addFeatureSuccessEventArgsSystem.result;
                 expect(addFeatureService).not.toBeNull();
-                expect(addFeatureService.isInTheSameDomain).toBeFalsy();
+                expect(addFeatureService.isInTheSameDomain).toBeTruthy();
                 expect(addFeatureService.isUseBatch).toBeFalsy();
                 expect(addFeatureService.returnContent).toBeTruthy();
                 expect(addFeatureService.options.method).toBe("POST");
@@ -97,7 +97,7 @@ describe('EditFeaturesService', () => {
         var updateFeaturesCompleted = (updateSuccessEventArgsSystem) => {
             try {
                 expect(updateFeaturesService).not.toBeNull();
-                expect(updateFeaturesService.isInTheSameDomain).toBeFalsy();
+                expect(updateFeaturesService.isInTheSameDomain).toBeTruthy();
                 expect(updateFailedEventArgsSystem).toBeNull();
                 expect(updateSuccessEventArgsSystem.type).toBe("processCompleted");
                 expect(updateSuccessEventArgsSystem.object.options.method).toBe("PUT");

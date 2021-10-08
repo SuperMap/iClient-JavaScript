@@ -57,7 +57,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
                 expect(serviceResult.result[0]).not.toBeNull();
                 id = serviceResult.result[0];
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).toContain("'parts':[1]");
                 expect(serviceResult.object.options.data).toContain('"POINT"');
@@ -105,7 +105,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.object.isUseBatch).toBe(true);
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).toContain("'parts':[1]");
                 expect(serviceResult.object.options.data).toContain('"POINT"');

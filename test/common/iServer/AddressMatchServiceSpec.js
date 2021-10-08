@@ -19,7 +19,7 @@ describe('AddressMatchService', () => {
         var addressMatchService = new AddressMatchService(addressMatchURL_code);
         expect(addressMatchService).not.toBeNull();
         expect(addressMatchService.url).toEqual(addressMatchURL_code);
-        expect(addressMatchService.isInTheSameDomain).toBeFalsy();
+        expect(addressMatchService.isInTheSameDomain).toBeTruthy();
         addressMatchService.destroy();
         expect(addressMatchService.EVENT_TYPES).toBeNull();
         expect(addressMatchService.events).toBeNull();

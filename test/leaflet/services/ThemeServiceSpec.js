@@ -102,7 +102,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeDotDensityService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("DOTDENSITY");
@@ -157,7 +157,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeGraduatedSymbolService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("GRADUATEDSYMBOL");
@@ -238,7 +238,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeGraphService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("GRAPH");
@@ -320,7 +320,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeGridRangeService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("GRIDRANGE");
@@ -412,7 +412,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeLableService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("LABEL");
@@ -477,7 +477,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeRangeService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("RANGE");
@@ -541,7 +541,7 @@ describe('leaflet_ThemeService', () => {
             try {
                 expect(themeUniqueService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("POST");
                 expect(serviceResult.object.options.data).not.toBeNull();
                 expect(serviceResult.object.options.data).toContain("UNIQUE");

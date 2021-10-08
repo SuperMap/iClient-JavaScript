@@ -76,7 +76,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.featureCount).toEqual(1);
@@ -141,7 +141,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             serviceResult = result;
             try {
                 expect(serviceResult.type).toBe('processCompleted');
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.postResultType).toBe('CreateChild');
@@ -190,7 +190,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceResult.type).toBe('processFailed');
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe('数据源World1不存在，获取相应的数据服务组件失败');
@@ -234,7 +234,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceResult.type).toBe('processFailed');
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe('getFeatureByBuffer方法中传入的参数为空');

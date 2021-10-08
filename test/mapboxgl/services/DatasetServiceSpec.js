@@ -90,7 +90,7 @@ describe('mapboxgl_DatasetService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.dataset).not.toBeNull();
                 expect(serviceResult.datasource).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(404);

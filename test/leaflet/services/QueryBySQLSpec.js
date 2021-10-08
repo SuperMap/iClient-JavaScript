@@ -71,7 +71,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.customResponse).toBeNull();
@@ -127,7 +127,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.postResultType).toBe("CreateChild");
@@ -169,7 +169,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.postResultType).toBe("CreateChild");
@@ -206,7 +206,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe("查询目标图层不存在。(Capitals@World1)");
@@ -237,7 +237,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe("参数queryParameterSet.queryParams非法，不能为空。");

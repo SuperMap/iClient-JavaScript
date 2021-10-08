@@ -43,7 +43,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_REGION.type).toBe("processCompleted");
-                expect(addFeatureResult_REGION.object.isInTheSameDomain).toBeFalsy();
+                expect(addFeatureResult_REGION.object.isInTheSameDomain).toBeTruthy();
                 expect(addFeatureResult_REGION.object.options.method).toBe("POST");
                 expect(addFeatureResult_REGION.object.options.data).toContain("'parts':[4]");
                 expect(addFeatureResult_REGION.object.options.data).toContain('"REGION"');
@@ -88,7 +88,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult.type).toBe("processCompleted");
-                expect(addFeatureResult.object.isInTheSameDomain).toBeFalsy();
+                expect(addFeatureResult.object.isInTheSameDomain).toBeTruthy();
                 expect(addFeatureResult.object.options.method).toBe("POST");
                 expect(addFeatureResult.object.options.data).toContain("'parts':[4]");
                 expect(addFeatureResult.object.options.data).toContain('"REGION"');

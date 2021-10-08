@@ -36,7 +36,7 @@ describe('leaflet_FieldService', () => {
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.datasource).toBe("World");
                 expect(serviceResult.object.dataset).toBe("continent_T");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.fieldNames.length).toEqual(7);
@@ -71,7 +71,7 @@ describe('leaflet_FieldService', () => {
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.object.datasource).toBe("World1");
                 expect(serviceResult.object.dataset).toBe("continent_T");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(404);
                 expect(serviceResult.error.errorMsg).toBe("数据源World1不存在，获取相应的数据服务组件失败");

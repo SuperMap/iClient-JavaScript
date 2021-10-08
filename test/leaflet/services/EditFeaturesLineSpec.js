@@ -38,7 +38,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_LINE.type).toBe("processCompleted");
-                expect(addFeatureResult_LINE.object.isInTheSameDomain).toBeFalsy();
+                expect(addFeatureResult_LINE.object.isInTheSameDomain).toBeTruthy();
                 expect(addFeatureResult_LINE.object.options.method).toBe("POST");
                 expect(addFeatureResult_LINE.object.options.data).toContain("'parts':[2]");
                 expect(addFeatureResult_LINE.object.options.data).toContain('"LINE"');

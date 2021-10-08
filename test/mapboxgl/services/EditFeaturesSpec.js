@@ -86,7 +86,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.object.options.method).toBe("DELETE");
                 expect(serviceResult.object.options.data).toContain(id);
                 done();
