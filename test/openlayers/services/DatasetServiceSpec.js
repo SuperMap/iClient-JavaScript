@@ -182,7 +182,7 @@ describe('openlayers_DatasetService', () => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
-                expect(serviceResult.object.isInTheSameDomain).toBe(false);
+                expect(serviceResult.object.isInTheSameDomain).toBe(true);
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.element).toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
