@@ -3,7 +3,7 @@ var createWebPringintJobResultJson = [
         resourceConfigID: 'e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e',
         supportedMediaTypes: null,
         path:
-            'http://localhost:8090/iserver/services/webprinting/rest/webprinting/v1/jobs/e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e',
+            'http://localhost:9876/iserver/services/webprinting/rest/webprinting/v1/jobs/e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e',
         name: 'e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e',
         resourceType: null
     }
@@ -12,7 +12,7 @@ var createWebPringintJobResultJson = [
 var getPrintingJobResultJson = {
     result: {
         downloadUrl:
-            'http://localhost:8090/iserver/services/webprinting/rest/webprinting/v1/jobs/e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e/result'
+            'http://localhost:9876/iserver/services/webprinting/rest/webprinting/v1/jobs/e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e/result'
     },
     startTime: '2020-07-30 15:39:55',
     id: 'e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e',

@@ -73,7 +73,7 @@ describe('leaflet_ImageTileLayer', () => {
         var options = { format: 'png', collectionId: 'test' };
         var layer = imageTileLayer(url, options).addTo(map);
         expect(layer.getTileUrl({ x: 30, y: 24, z: 0 })).toBe(
-            'http://localhost:8090/iserver/services/imageservice-hainan2image/restjsr/collections/test/tile.png?transparent=true&cacheEnabled=true&z=2&x=30&y=24'
+            'http://localhost:9876/iserver/services/imageservice-hainan2image/restjsr/collections/test/tile.png?transparent=true&cacheEnabled=true&z=2&x=30&y=24'
         );
     });
 
@@ -83,12 +83,12 @@ describe('leaflet_ImageTileLayer', () => {
             collectionId: 'test'
         }).addTo(map);
         expect(layer.getTileUrl(coords)).toBe(
-            'http://localhost:8090/iserver/services/imageservice-hainan2image/restjsr/collections/test/tile.png?transparent=true&cacheEnabled=true&z=2&x=0&y=0'
+            'http://localhost:9876/iserver/services/imageservice-hainan2image/restjsr/collections/test/tile.png?transparent=true&cacheEnabled=true&z=2&x=0&y=0'
         );
         layer.remove();
         layer.addTo(map);
         expect(layer.getTileUrl(coords)).toBe(
-            'http://localhost:8090/iserver/services/imageservice-hainan2image/restjsr/collections/test/tile.png?transparent=true&cacheEnabled=true&z=2&x=0&y=0'
+            'http://localhost:9876/iserver/services/imageservice-hainan2image/restjsr/collections/test/tile.png?transparent=true&cacheEnabled=true&z=2&x=0&y=0'
         );
     });
 });

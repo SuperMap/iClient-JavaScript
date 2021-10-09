@@ -173,7 +173,7 @@ describe('openlayers_DatasetService', () => {
         var service = new DatasetService(url, options);
         spyOn(FetchRequest,'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe('http://localhost:8090/iserver/services/data-world/rest/data/datasources/name/World/datasets/name/continent_T');
+            expect(testUrl).toBe('http://localhost:9876/iserver/services/data-world/rest/data/datasources/name/World/datasets/name/continent_T');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });

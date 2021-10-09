@@ -321,7 +321,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
     })
 
     it('setDataServiceUrl', (done) => {
-        let url = 'http://localhost:8090/iserver/services/data-world/rest/data';
+        let url = 'http://localhost:9876/iserver/services/data-world/rest/data';
         dataServiceQuery.setDataServiceUrl(url);
         try{
             expect(dataServiceQuery.dataServiceUrl).toBe(url);
