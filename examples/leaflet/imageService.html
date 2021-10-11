@@ -3,795 +3,776 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html style="width: 100%; height: 100%">
-    <head>
-        <meta charset="UTF-8" />
-        <title data-i18n="resources.title_image_service"></title>
-        <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
-        <script
-            type="text/javascript"
-            include="proj4,turf,leaflet-geoman"
-            src="../../dist/leaflet/include-leaflet.js"
-        ></script>
-        <style>
-            .sidebar-config-wrap {
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 100vh;
-                width: 600px;
-                padding: 20px;
-                background: #fff;
-                font-family: Avenir, Helvetica, Arial, sans-serif;
-                box-shadow: -2px 0 8px rgb(0 0 0 / 15%);
-                z-index: 1000;
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_image_service"></title>
+    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+    <script
+      type="text/javascript"
+      include="proj4,turf,leaflet-geoman"
+      src="../../dist/leaflet/include-leaflet.js"
+    ></script>
+    <style>
+      .sidebar-config-wrap {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 600px;
+        padding: 20px;
+        background: #fff;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        box-shadow: -2px 0 8px rgb(0 0 0 / 15%);
+        z-index: 1000;
+      }
 
-            .sidebar-config-wrap .panel-group .panel {
-                border-color: transparent;
-                background: transparent;
-                color: rgba(0, 0, 0, 0.85);
-            }
+      .sidebar-config-wrap .panel-group .panel {
+        border-color: transparent;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.85);
+      }
 
-            .sidebar-config-wrap .panel .panel-heading {
-                background: #fafafa;
-                color: rgba(0, 0, 0, 0.85);
-                border-color: #e8e8e8 !important;
-                position: relative;
-            }
+      .sidebar-config-wrap .panel .panel-heading {
+        background: #fafafa;
+        color: rgba(0, 0, 0, 0.85);
+        border-color: #e8e8e8 !important;
+        position: relative;
+      }
 
-            .sidebar-config-wrap .panel .panel-heading::before {
-                content: '';
-                height: 100%;
-                width: 2px;
-                background: #3394dc;
-                position: absolute;
-                top: 0;
-                left: 0;
-                display: block;
-            }
+      .sidebar-config-wrap .panel .panel-heading::before {
+        content: '';
+        height: 100%;
+        width: 2px;
+        background: #3394dc;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+      }
 
-            .form-group {
-                overflow: hidden;
-            }
+      .form-group {
+        overflow: hidden;
+      }
 
-            .sidebar-config-wrap .form-group label {
-                margin-bottom: 0;
-                line-height: 34px;
-            }
-            .sidebar-config-wrap .button-group {
-                margin: 0 auto;
-                text-align: center;
-                margin-top: 20px;
-            }
+      .sidebar-config-wrap .form-group label {
+        margin-bottom: 0;
+        line-height: 34px;
+      }
+      .sidebar-config-wrap .button-group {
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 20px;
+      }
 
-            .sidebar-config-wrap .btn-search {
-                width: 100%;
-                outline: none;
-                height: 32px;
-                padding: 0 15px;
-                font-size: 14px;
-                border-radius: 4px;
-                color: rgba(0, 0, 0, 0.65);
-                border-color: #d9d9d9;
-                background-color: rgb(255, 255, 255);
-            }
-            .sidebar-config-wrap .btn-search:hover,
-            .sidebar-config-wrap .btn-search:active,
-            .sidebar-config-wrap .btn-search:focus {
-                color: #40a9ff;
-                border-color: #40a9ff;
-                background-color: rgb(255, 255, 255);
-                box-shadow: none;
-            }
-            .sidebar-config-wrap button {
-                width: 30%;
-                outline: none;
-            }
+      .sidebar-config-wrap .btn-search {
+        width: 100%;
+        outline: none;
+        height: 32px;
+        padding: 0 15px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: rgba(0, 0, 0, 0.65);
+        border-color: #d9d9d9;
+        background-color: rgb(255, 255, 255);
+      }
+      .sidebar-config-wrap .btn-search:hover,
+      .sidebar-config-wrap .btn-search:active,
+      .sidebar-config-wrap .btn-search:focus {
+        color: #40a9ff;
+        border-color: #40a9ff;
+        background-color: rgb(255, 255, 255);
+        box-shadow: none;
+      }
+      .sidebar-config-wrap button {
+        width: 30%;
+        outline: none;
+      }
 
-            .sidebar-config-wrap button:focus {
-                outline: none !important;
-            }
+      .sidebar-config-wrap button:focus {
+        outline: none !important;
+      }
 
-            .sidebar-config-wrap .panel-title a {
-                width: 100%;
-                display: block;
-                text-decoration: none !important;
-                overflow: hidden;
-            }
+      .sidebar-config-wrap .panel-title a {
+        width: 100%;
+        display: block;
+        text-decoration: none !important;
+        overflow: hidden;
+      }
 
-            .sidebar-config-wrap .panel-title a span.glyphicon {
-                float: right;
-            }
+      .sidebar-config-wrap .panel-title a span.glyphicon {
+        float: right;
+      }
 
-            .sidebar-config-wrap .panel-title a[aria-expanded='true'] .glyphicon-chevron-down {
-                display: none;
-            }
+      .sidebar-config-wrap .panel-title a[aria-expanded='true'] .glyphicon-chevron-down {
+        display: none;
+      }
 
-            .sidebar-config-wrap .panel-title a[aria-expanded='false'] .glyphicon-chevron-up {
-                display: none;
-            }
-            .table-bordered > thead > tr {
-                border-bottom: none !important;
-            }
-            .table-bordered > thead > tr > th,
-            .table-bordered > tbody > tr > td {
-                vertical-align: middle !important;
-            }
-            .table-bordered > thead > tr > th {
-                background: #fafafa;
-                color: rgba(0, 0, 0, 0.85);
-                font-weight: 500;
-                border-color: #e8e8e8 !important;
-                padding: 16px !important;
-                overflow-wrap: break-word;
-            }
-            .table-bordered > tbody > tr > td {
-                text-align: center;
-                color: rgba(0, 0, 0, 0.85);
-                font-weight: 500;
-                border-color: #e8e8e8 !important;
-                padding: 8px !important;
-                overflow-wrap: break-word;
-            }
-            .sidebar-config-wrap .navigation {
-                text-align: right !important;
-            }
-            .sidebar-config-wrap .pagination {
-                margin-top: 0;
-                box-sizing: content-box;
-            }
-            .sidebar-config-wrap .pagination > li {
-                display: inline-block;
-                box-sizing: content-box;
-                width: 30px;
-                height: 30px;
-                margin-right: 8px;
-            }
-            .sidebar-config-wrap .pagination > li > a,
-            .sidebar-config-wrap .pagination > li > span {
-                box-sizing: content-box;
-                padding: 0 6px;
-                width: 18px;
-                height: 30px;
-                border-radius: 4px;
-                line-height: 30px;
-                text-align: center;
-            }
+      .sidebar-config-wrap .panel-title a[aria-expanded='false'] .glyphicon-chevron-up {
+        display: none;
+      }
+      .table-bordered > thead > tr {
+        border-bottom: none !important;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > tbody > tr > td {
+        vertical-align: middle !important;
+      }
+      .table-bordered > thead > tr > th {
+        background: #fafafa;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+        border-color: #e8e8e8 !important;
+        padding: 16px !important;
+        overflow-wrap: break-word;
+      }
+      .table-bordered > tbody > tr > td {
+        text-align: center;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+        border-color: #e8e8e8 !important;
+        padding: 8px !important;
+        overflow-wrap: break-word;
+      }
+      .sidebar-config-wrap .navigation {
+        text-align: right !important;
+      }
+      .sidebar-config-wrap .pagination {
+        margin-top: 0;
+        box-sizing: content-box;
+      }
+      .sidebar-config-wrap .pagination > li {
+        display: inline-block;
+        box-sizing: content-box;
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+      }
+      .sidebar-config-wrap .pagination > li > a,
+      .sidebar-config-wrap .pagination > li > span {
+        box-sizing: content-box;
+        padding: 0 6px;
+        width: 18px;
+        height: 30px;
+        border-radius: 4px;
+        line-height: 30px;
+        text-align: center;
+      }
 
-            .btn.btn-default {
-                padding-right: 15px;
-            }
-            .glyphicon-eye-open {
-                color: #1890ff;
-                cursor: pointer;
-            }
-            .glyphicon-eye-closed {
-                color: rgba(0, 0, 0, 0.65);
-            }
-            .modal-dialog {
-                width: 800px !important;
-                top: 50px;
-            }
-            .modal-body {
-                border: 1px solid #e8e8e8;
-            }
-            .modal-body table {
-                margin: 0 auto;
-                border: 1px solid #e8e8e8;
+      .btn.btn-default {
+        padding-right: 15px;
+      }
+      .glyphicon-eye-open {
+        color: #1890ff;
+        cursor: pointer;
+      }
+      .glyphicon-eye-closed {
+        color: rgba(0, 0, 0, 0.65);
+      }
+      .modal-dialog {
+        width: 800px !important;
+        top: 50px;
+      }
+      .modal-body {
+        border: 1px solid #e8e8e8;
+      }
+      .modal-body table {
+        margin: 0 auto;
+        border: 1px solid #e8e8e8;
 
-                border-radius: 4px;
-            }
-            .modal-content-row {
-                border-bottom: 1px solid #e8e8e8;
-            }
-            .modal-content-item-label {
-                background-color: #fafafa;
-                color: rgba(0, 0, 0, 0.85);
-                font-weight: normal;
-                font-size: 14px;
-                line-height: 1.5;
-            }
-            .modal-content-item-label,
-            .modal-content-item-content {
-                padding: 16px 24px;
-                border-right: 1px solid #e8e8e8;
-                font-size: 14px;
-                line-height: 1.5;
-            }
-        </style>
-    </head>
+        border-radius: 4px;
+      }
+      .modal-content-row {
+        border-bottom: 1px solid #e8e8e8;
+      }
+      .modal-content-item-label {
+        background-color: #fafafa;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .modal-content-item-label,
+      .modal-content-item-content {
+        padding: 16px 24px;
+        border-right: 1px solid #e8e8e8;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
 
-    <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
-        <div id="map" style="width: calc(100% - 600px); height: 100%"></div>
-        <div class="panel-group sidebar-config-wrap" id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                        <a
-                            role="button"
-                            data-toggle="collapse"
-                            data-parent="#accordion"
-                            href="#collapseOne"
-                            aria-expanded="true"
-                            aria-controls="collapseOne"
-                        >
-                            <span data-i18n="resources.text_query"></span>
-                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="templateName">Collections</label>
-                            <div>
-                                <select
-                                    class="form-control"
-                                    id="collections"
-                                    style="width: 100%"
-                                    onchange="selectCollection()"
-                                >
-                                    <option value="-1" data-i18n="resources.text_select"></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="templateName" data-i18n="resources.text_district_search"></label>
-                            <div>
-                                <select
-                                    class="form-control"
-                                    id="provinces"
-                                    style="width: 100%"
-                                    onchange="selectProvince()"
-                                >
-                                    <option value="-1" data-i18n="resources.text_select"></option>
-                                </select>
-                            </div>
-                        </div>
-                        <button
-                            class="btn btn-search"
-                            id="polygon-search"
-                            data-i18n="resources.text_polygon_search"
-                            onclick="drawRegion('Polygon')"
-                        ></button>
-                        <button
-                            class="btn btn-search"
-                            id="rectangle-search"
-                            data-i18n="resources.text_rectangle_search"
-                            onclick="drawRegion('Box')"
-                        ></button>
-                        <div class="button-group">
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                                id="query"
-                                data-i18n="resources.text_query"
-                                onclick="query()"
-                            ></button>
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                                id="printBtn"
-                                data-i18n="resources.text_reset"
-                                onclick="clearSearchResult(true)"
-                            ></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="exportOptions">
-                    <h4 class="panel-title">
-                        <a
-                            class="collapsed"
-                            role="button"
-                            data-toggle="collapse"
-                            data-parent="#accordion"
-                            href="#collapseTwo"
-                            aria-expanded="false"
-                            aria-controls="collapseTwo"
-                        >
-                            <span data-i18n="resources.text_queryResult"></span>
-                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="exportOptions">
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                  <th>ID</th>
-                                  <th data-i18n="resources.text_filename"></th>
-                                  <th data-i18n="resources.text_addTime"></th>
-                                  <th data-i18n="resources.text_showImage"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="collectionsTbody"></tbody>
-                        </table>
-                        <nav class="page" aria-label="Page navigation">
-                            <ul id="pagination" class="pagination"></ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
+    <div id="map" style="width: calc(100% - 600px); height: 100%"></div>
+    <div class="panel-group sidebar-config-wrap" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            <a
+              role="button"
+              data-toggle="collapse"
+              data-parent="#accordion"
+              href="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              <span data-i18n="resources.text_query"></span>
+              <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+            </a>
+          </h4>
         </div>
-        <!-- 模态框（Modal） -->
-        <div
-            class="modal fade"
-            id="myModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="myModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <table>
-                            <tbody id="myModalContent"></tbody>
-                        </table>
-                    </div>
-                </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="templateName">Collections</label>
+              <div>
+                <select class="form-control" id="collections" style="width: 100%" onchange="selectCollection()">
+                  <option value="-1" data-i18n="resources.text_select"></option>
+                </select>
+              </div>
             </div>
+            <div class="form-group">
+              <label for="templateName" data-i18n="resources.text_district_search"></label>
+              <div>
+                <select class="form-control" id="provinces" style="width: 100%" onchange="selectProvince()">
+                  <option value="-1" data-i18n="resources.text_select"></option>
+                </select>
+              </div>
+            </div>
+            <button
+              class="btn btn-search"
+              id="polygon-search"
+              data-i18n="resources.text_polygon_search"
+              onclick="drawRegion('Polygon')"
+            ></button>
+            <button
+              class="btn btn-search"
+              id="rectangle-search"
+              data-i18n="resources.text_rectangle_search"
+              onclick="drawRegion('Box')"
+            ></button>
+            <div class="button-group">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="query"
+                data-i18n="resources.text_query"
+                onclick="query()"
+              ></button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="printBtn"
+                data-i18n="resources.text_reset"
+                onclick="clearSearchResult(true)"
+              ></button>
+            </div>
+          </div>
         </div>
-        <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
-        <script type="text/javascript">
-            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-            var mapUrl = host + '/iserver/services/map-world/rest/maps/World';
-            var root = host + '/iserver/services/imageservice-hainan/restjsr';
-            var url = host + '/iserver/services/data-china400/rest/data';
-            var map = L.map('map', {
-                crs: L.CRS.EPSG4326,
-                center: [19.2, 110],
-                maxZoom: 18,
-                zoom: 8
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="exportOptions">
+          <h4 class="panel-title">
+            <a
+              class="collapsed"
+              role="button"
+              data-toggle="collapse"
+              data-parent="#accordion"
+              href="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              <span data-i18n="resources.text_queryResult"></span>
+              <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="exportOptions">
+          <div class="panel-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th data-i18n="resources.text_filename"></th>
+                  <th data-i18n="resources.text_addTime"></th>
+                  <th data-i18n="resources.text_showImage"></th>
+                </tr>
+              </thead>
+              <tbody id="collectionsTbody"></tbody>
+            </table>
+            <nav class="page" aria-label="Page navigation">
+              <ul id="pagination" class="pagination"></ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"></h4>
+          </div>
+          <div class="modal-body">
+            <table>
+              <tbody id="myModalContent"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var mapUrl = host + '/iserver/services/map-world/rest/maps/World';
+      var root = host + '/iserver/services/imageservice-hainan/restjsr';
+      var url = host + '/iserver/services/data-china400/rest/data';
+      var map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [19.2, 110],
+        maxZoom: 18,
+        zoom: 8
+      });
+      L.supermap.tiledMapLayer(mapUrl).addTo(map);
+      var currentIndex = 0;
+      var features = [];
+      var pageMax = 10;
+      var tableMax = 10;
+      var collections = [];
+      var collectionId;
+      var provinces = [];
+      var provinceId = -1;
+      var provinceBbox;
+      var itemLayers = [];
+      var plotBbox;
+      var searchBoxLayer;
+      var provinceLayer;
+      var selectedFeature;
+      var result = queryFromDataService(url);
+      var drawControl = addDrawControl();
+      var plotLayer;
+      var imageService = ImageService();
+      function ImageService() {
+        var service = new L.supermap.imageService(root);
+        service.getCollections(getCollectionsCompleted);
+        return service;
+      }
+
+      function ImageSearchService(params) {
+        imageService.search(params, getSearchProcessCompleted);
+      }
+
+      function getCollectionsCompleted(res) {
+        var collectionsInfo = res.result || [];
+        collections = [];
+        collectionsInfo.forEach(function (collection) {
+          var split = collection['extent']['spatial']['crs'].split('/');
+          var EPSGCode = split[split.length - 1];
+          collections.push({
+            id: collection['id'],
+            title: collection['title'],
+            value: collection['id'],
+            extent: collection['extent']['spatial']['bbox'][0],
+            EPSG: EPSGCode
+          });
+        });
+        appendOptions('collections', collections, 'id', 'title');
+      }
+
+      function getSearchProcessCompleted(res) {
+        var result = res.result;
+        if (result && result.features) {
+          //id不能重复，否则相同id会被覆盖，显示不正确。重新设置id
+          result.features.forEach(function (feature) {
+            feature.id = feature.collection + '.' + feature.id;
+          });
+        }
+        features = (result && result.features) || [];
+        showSearchResultBox(result);
+        // 填充table
+        appendTable(features.slice(0, tableMax));
+        // 填充page
+        appendPage(features);
+        // 展开table
+        collapseTable();
+        setTimeout(() => {
+          // 显示所有影像
+          features.forEach((feature) => {
+            showSearchItemTile(feature.id, feature.properties.smfilename);
+          });
+        }, 2000);
+      }
+
+      function showSearchResultBox(searchResult) {
+        if (searchResult === undefined) {
+          removeLayer(map, searchBoxLayer);
+          return;
+        }
+        if (searchResult) {
+          var readFeatures = searchResult.features;
+          if (readFeatures.length > 0) {
+            addSearchBoxLayer(readFeatures, searchBoxLayer);
+          } else {
+            removeLayer(map, searchBoxLayer);
+          }
+        }
+      }
+
+      function addSearchBoxLayer(features, layer, style = undefined) {
+        removeLayer(map, layer);
+        searchBoxLayer = L.geoJSON(
+          { type: 'FeatureCollection', features },
+          { color: 'red', fillColor: 'rgba(0,0,0,0.2)' }
+        ).addTo(map);
+        var center = getPolygonCenter(features[0]);
+        map.setView({ lng: center[0], lat: center[1] });
+        bindEvent();
+      }
+
+      function bindEvent() {
+        searchBoxLayer.on('click', function (e) {
+          selectedFeature = e.layer.feature;
+          if (selectedFeature) {
+            $('#myModal').modal('show');
+            showTifInfo(selectedFeature.id);
+          }
+        });
+      }
+
+      function addProvinceLayer(feature) {
+        clearPlotLayer();
+        removeLayer(map, provinceLayer);
+        var layer = L.geoJSON({ type: 'FeatureCollection', features: [feature] }, { color: '#33adff' }).addTo(map);
+        provinceLayer = layer;
+        var center = getPolygonCenter(feature);
+        map.setView({ lng: center[0], lat: center[1] });
+      }
+
+      function drawCompleted(e) {
+        var bounds = e.layer._bounds;
+        var _northEast = bounds._northEast;
+        var _southWest = bounds._southWest;
+        plotBbox = [_southWest.lng, _southWest.lat, _northEast.lng, _northEast.lat];
+        return plotBbox;
+      }
+
+      function addDrawControl() {
+        var options = {
+          position: 'topleft',
+          drawMarker: false,
+          drawPolygon: true,
+          drawPolyline: false,
+          editPolygon: false,
+          drawCircle: false,
+          drawCircleMarker: false,
+          deleteLayer: false,
+          dragLayers: false,
+          cutLayers: false
+        };
+        map.pm.addControls(options);
+        $($('.leaflet-pm-toolbar').get(1)).hide();
+        $($('.leaflet-pm-toolbar').get(0)).hide();
+      }
+      function drawRegion(type) {
+        clearSearchResult(true);
+        map.on('pm:create', (e) => {
+          drawCompleted(e);
+          plotLayer = e.layer;
+        });
+        var className = type === 'Box' ? '.leaflet-pm-icon-rectangle' : '.leaflet-pm-icon-polygon';
+        $(className).trigger('click');
+      }
+
+      function clearPlotLayer() {
+        removeLayer(map, plotLayer);
+        plotBbox = null;
+      }
+
+      function queryFromDataService(url) {
+        var result = [];
+        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+          queryParameter: { attributeFilter: "PAC Like '46%'" },
+          datasetNames: ['China:City_R'],
+          targetPrj: { epsgCode: 4326 },
+          maxFeatures: 10000
+        });
+        new L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+          var featureResults = serviceResult.result;
+          if (featureResults) {
+            var features = featureResults.features;
+            features.features.forEach(function (feature) {
+              var item = {
+                value: feature['properties']['NAME'],
+                label: feature['properties']['NAME'],
+                feature
+              };
+              result.push(item);
             });
-            L.supermap.tiledMapLayer(mapUrl).addTo(map);
-            var currentIndex = 0;
-            var features = [];
-            var pageMax = 10;
-            var tableMax = 10;
-            var collections = [];
-            var collectionId;
-            var provinces = [];
-            var provinceId = -1;
-            var provinceBbox;
-            var itemLayers = [];
-            var plotBbox;
-            var searchBoxLayer;
-            var provinceLayer;
-            var selectedFeature;
-            var result = queryFromDataService(url);
-            var drawControl = addDrawControl();
-            var plotLayer;
-            var imageService = ImageService();
-            function ImageService() {
-                var service = new L.supermap.imageService(root);
-                service.getCollections(getCollectionsCompleted);
-                return service;
-            }
+          }
+          appendOptions('provinces', result, 'value', 'label');
+          provinces = result;
+          return result;
+        });
+      }
 
-            function ImageSearchService(params) {
-                imageService.search(params, getSearchProcessCompleted);
-            }
+      function showSearchItemTile(featureId, name) {
+        // 眼睛颜色变化
+        var isShow = showOrCloseEye(featureId);
+        if (!isShow) {
+          removeSearchItemTile(featureId);
+        } else {
+          var layer = L.supermap
+            .imageTileLayer(root, {
+              collectionId,
+              names: [name]
+            })
+            .addTo(map);
+          itemLayers.push({ layer: layer, featureId: featureId });
+        }
+      }
 
-            function getCollectionsCompleted(res) {
-                var collectionsInfo = res.result || [];
-                collections = [];
-                collectionsInfo.forEach(function (collection) {
-                    var split = collection['extent']['spatial']['crs'].split('/');
-                    var EPSGCode = split[split.length - 1];
-                    collections.push({
-                        id: collection['id'],
-                        title: collection['title'],
-                        value: collection['id'],
-                        extent: collection['extent']['spatial']['bbox'][0],
-                        EPSG: EPSGCode
-                    });
-                });
-                appendOptions('collections', collections, 'id', 'title');
-            }
+      function removeSearchItemTile(featureId) {
+        for (var i = 0; i < itemLayers.length; i++) {
+          if (itemLayers[i].featureId === featureId) {
+            removeLayer(map, itemLayers[i].layer);
+            itemLayers.splice(i, 1);
+            break;
+          }
+        }
+      }
 
-            function getSearchProcessCompleted(res) {
-                var result = res.result;
-                if (result && result.features) {
-                    //id不能重复，否则相同id会被覆盖，显示不正确。重新设置id
-                    result.features.forEach(function (feature) {
-                        feature.id = feature.collection + '.' + feature.id;
-                    });
-                }
-                features = (result && result.features) || [];
-                showSearchResultBox(result);
-                // 填充table
-                appendTable(features.slice(0, tableMax));
-                // 填充page
-                appendPage(features);
-                // 展开table
-                collapseTable();
-                setTimeout(() => {
-                    // 显示所有影像
-                    features.forEach((feature) => {
-                        showSearchItemTile(feature.id, feature.properties.smfilename);
-                    });
-                }, 2000);
-            }
+      function removeLayer(map, layer) {
+        if (map.hasLayer(layer)) {
+          map.removeLayer(layer);
+        }
+      }
 
-            function showSearchResultBox(searchResult) {
-                if (searchResult === undefined) {
-                    removeLayer(map, searchBoxLayer);
-                    return;
-                }
-                if (searchResult) {
-                    var readFeatures = searchResult.features;
-                    if (readFeatures.length > 0) {
-                        addSearchBoxLayer(readFeatures, searchBoxLayer);
-                    } else {
-                        removeLayer(map, searchBoxLayer);
-                    }
-                }
-            }
+      function getPolygonCenter(polygon) {
+        var centerOfMass = turf.centerOfMass(polygon);
+        return centerOfMass.geometry.coordinates;
+      }
 
-            function addSearchBoxLayer(features, layer, style = undefined) {
-                removeLayer(map, layer);
-                searchBoxLayer = L.geoJSON(
-                    { type: 'FeatureCollection', features },
-                    { color: 'red', fillColor: 'rgba(0,0,0,0.2)' }
-                ).addTo(map);
-                var center = getPolygonCenter(features[0]);
-                map.setView({ lng: center[0], lat: center[1] });
-                bindEvent();
-            }
+      function clearSearchResult(isReset) {
+        $('.page').hide();
+        $('tbody').empty();
+        $('#pagination').empty();
+        itemLayers.forEach(function ({ layer }) {
+          removeLayer(map, layer);
+        });
+        removeLayer(map, searchBoxLayer);
+        if (isReset) {
+          plotBbox = null;
+          provinceBbox = null;
+          provinceId = -1;
+          $('#provinces').val(provinceId);
+          clearPlotLayer();
+          removeLayer(map, provinceLayer);
+        }
+        itemLayers = [];
+        features = [];
+      }
 
-            function bindEvent() {
-                searchBoxLayer.on('click', function (e) {
-                    selectedFeature = e.layer.feature;
-                    if (selectedFeature) {
-                        $('#myModal').modal('show');
-                        showTifInfo(selectedFeature.id);
-                    }
-                });
-            }
+      function appendOptions(id, data, key, value) {
+        data.forEach(function (item) {
+          $('#' + id).append('<option value=' + item[key] + '>' + item[value] + '</option}');
+        });
+      }
 
-            function addProvinceLayer(feature) {
-                clearPlotLayer();
-                removeLayer(map, provinceLayer);
-                var layer = L.geoJSON({ type: 'FeatureCollection', features: [feature] }, { color: '#33adff' }).addTo(
-                    map
-                );
-                provinceLayer = layer;
-                var center = getPolygonCenter(feature);
-                map.setView({ lng: center[0], lat: center[1] });
-            }
+      function appendTable(features) {
+        $('#collectionsTbody').empty();
+        var tbodyHtml = '';
+        features.forEach(function (feature, index) {
+          tbodyHtml +=
+            '<tr>' +
+            '<td>' +
+            feature.id +
+            '</td>' +
+            '<td onclick="showTifInfo(' +
+            "'" +
+            feature.id +
+            "'" +
+            ')" data-toggle="modal" data-target="#myModal"><a href="#">' +
+            feature.properties.smfilename +
+            '</a></td>' +
+            '<td>' +
+            feature.properties.addtime +
+            '</td>' +
+            '<td>' +
+            '<span id="' +
+            feature.id +
+            '" class="glyphicon glyphicon-eye-closed glyphicon-eye-open" aria-hidden="true" onclick="showSearchItemTile(' +
+            "'" +
+            feature.id +
+            "'" +
+            ',' +
+            "'" +
+            feature.properties.smfilename +
+            "'" +
+            ')"></span>' +
+            '</td>' +
+            '</tr>';
+        });
+        $('#collectionsTbody').append(tbodyHtml);
+      }
 
-            function drawCompleted(e) {
-                var bounds = e.layer._bounds;
-                var _northEast = bounds._northEast;
-                var _southWest = bounds._southWest;
-                plotBbox = [_southWest.lng, _southWest.lat, _northEast.lng, _northEast.lat];
-                return plotBbox;
-            }
+      function appendPage(features) {
+        var pageHtml =
+          '<li id="previous-page" class="disabled" onclick="goPrevious()">' +
+          '<a href="#" aria-label="Previous">' +
+          '<span aria-hidden="true">&laquo;</span>' +
+          '</a>' +
+          '</li>';
+        for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
+          pageHtml += '<li onclick="clickPage(' + i - 1 + ')"><a href="#">' + i + '</a></li>';
+        }
+        pageHtml +=
+          '<li id="next-page" style="margin-right: 0">' +
+          '<a href="#" aria-label="Next" onclick="goNext()">' +
+          '<span aria-hidden="true">&raquo;</span>' +
+          '</a>' +
+          '</li>';
+        $('#pagination').append(pageHtml);
+        $('.page').show();
+        $($('#pagination').children('li').get(1)).addClass('active');
+      }
 
-            function addDrawControl() {
-                var options = {
-                    position: 'topleft',
-                    drawMarker: false,
-                    drawPolygon: true,
-                    drawPolyline: false,
-                    editPolygon: false,
-                    drawCircle: false,
-                    drawCircleMarker: false,
-                    deleteLayer: false,
-                    dragLayers: false,
-                    cutLayers: false
-                };
-                map.pm.addControls(options);
-                $($('.leaflet-pm-toolbar').get(1)).hide();
-                $($('.leaflet-pm-toolbar').get(0)).hide();
-            }
-            function drawRegion(type) {
-                clearSearchResult(true);
-                map.on('pm:create', (e) => {
-                    drawCompleted(e);
-                    plotLayer = e.layer;
-                });
-                var className = type === 'Box' ? '.leaflet-pm-icon-polygon' : '.leaflet-pm-icon-rectangle';
-                $(className).trigger('click');
-            }
+      function showTifInfo(featureId) {
+        var feature;
+        features.forEach(function (item) {
+          if (item.id === featureId) {
+            feature = item;
+          }
+        });
+        var title = '影像' + feature.id + '详情';
+        var properties = feature.properties;
+        var tbodyHtml = '';
+        var thHtml = '';
+        $('#myModalContent').empty();
+        for (var key in properties) {
+          if (thHtml) {
+            tbodyHtml +=
+              '<tr class="modal-content-row">' +
+              thHtml +
+              '<th class="modal-content-item-label">' +
+              key +
+              '</th><td class="modal-content-item-content">' +
+              properties[key] +
+              '</td></tr>';
+            thHtml = '';
+          } else {
+            thHtml =
+              '<th class="modal-content-item-label">' +
+              key +
+              '</th><td class="modal-content-item-content">' +
+              properties[key] +
+              '</td>';
+          }
+        }
+        document.getElementById('myModalLabel').innerHTML = title;
+        $('#myModalContent').append(tbodyHtml);
+      }
 
-            function clearPlotLayer() {
-                removeLayer(map, plotLayer);
-                plotBbox = null;
-            }
+      function clickPage(i) {
+        currentIndex = i;
+        var start = tableMax * currentIndex;
+        $($('#pagination').children('.active')).removeClass('active');
+        $(
+          $('#pagination')
+            .children('li')
+            .get(i + 1)
+        ).addClass('active');
+        pageDisable();
+        appendTable(features.slice(start, start + tableMax));
+      }
 
-            function queryFromDataService(url) {
-                var result = [];
-                var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
-                    queryParameter: { attributeFilter: "PAC Like '46%'" },
-                    datasetNames: ['China:City_R'],
-                    targetPrj: { epsgCode: 4326 },
-                    maxFeatures: 10000
-                });
-                new L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
-                    var featureResults = serviceResult.result;
-                    if (featureResults) {
-                        var features = featureResults.features;
-                        features.features.forEach(function (feature) {
-                            var item = {
-                                value: feature['properties']['NAME'],
-                                label: feature['properties']['NAME'],
-                                feature
-                            };
-                            result.push(item);
-                        });
-                    }
-                    appendOptions('provinces', result, 'value', 'label');
-                    provinces = result;
-                    return result;
-                });
-            }
+      function goPrevious() {
+        if (currentIndex >= 1) {
+          currentIndex -= 1;
+          clickPage(currentIndex);
+        }
+        pageDisable();
+      }
 
-            function showSearchItemTile(featureId, name) {
-                // 眼睛颜色变化
-                var isShow = showOrCloseEye(featureId);
-                if (!isShow) {
-                    removeSearchItemTile(featureId);
-                } else {
-                    var layer = L.supermap
-                        .imageTileLayer(root, {
-                            collectionId,
-                            names: [name]
-                        })
-                        .addTo(map);
-                    itemLayers.push({ layer: layer, featureId: featureId });
-                }
-            }
+      function goNext() {
+        pageDisable();
+        if (currentIndex + 1 < Math.ceil(features.length / pageMax)) {
+          currentIndex += 1;
+          clickPage(currentIndex);
+        }
+      }
 
-            function removeSearchItemTile(featureId) {
-                for (var i = 0; i < itemLayers.length; i++) {
-                    if (itemLayers[i].featureId === featureId) {
-                        removeLayer(map, itemLayers[i].layer);
-                        itemLayers.splice(i, 1);
-                        break;
-                    }
-                }
-            }
+      function pageDisable() {
+        if (currentIndex === 0) {
+          $('#previous-page').addClass('disabled');
+        } else {
+          $('#previous-page').removeClass('disabled');
+        }
+        if (currentIndex === Math.ceil(features.length / pageMax) - 1) {
+          $('#next-page').addClass('disabled');
+        } else {
+          $('#next-page').removeClass('disabled');
+        }
+      }
 
-            function removeLayer(map, layer) {
-                if (map.hasLayer(layer)) {
-                    map.removeLayer(layer);
-                }
-            }
+      function collapseTable() {
+        $('#collapseTwo').addClass('in');
+      }
 
-            function getPolygonCenter(polygon) {
-                var centerOfMass = turf.centerOfMass(polygon);
-                return centerOfMass.geometry.coordinates;
-            }
+      function showOrCloseEye(featureId) {
+        var closeClass = 'glyphicon-eye-closed';
+        var el = document.getElementById(featureId);
+        var classValues = $(el).attr('class');
+        if (classValues.includes(closeClass)) {
+          $(el).removeClass(closeClass);
+          return true;
+        } else {
+          $(el).addClass(closeClass);
+          return false;
+        }
+      }
 
-            function clearSearchResult(isReset) {
-                $('.page').hide();
-                $('tbody').empty();
-                $('#pagination').empty();
-                itemLayers.forEach(function ({ layer }) {
-                    removeLayer(map, layer);
-                });
-                removeLayer(map, searchBoxLayer);
-                if (isReset) {
-                    plotBbox = null;
-                    provinceBbox = null;
-                    provinceId = -1;
-                    $('#provinces').val(provinceId);
-                    clearPlotLayer();
-                    removeLayer(map, provinceLayer);
-                }
-                itemLayers = [];
-                features = [];
-            }
+      function selectCollection() {
+        collectionId = getSelectedValue('collections');
+      }
 
-            function appendOptions(id, data, key, value) {
-                data.forEach(function (item) {
-                    $('#' + id).append('<option value=' + item[key] + '>' + item[value] + '</option}');
-                });
-            }
+      function selectProvince() {
+        clearSearchResult();
+        provinceId = getSelectedValue('provinces');
+        var item;
+        for (var i = 0; i < provinces.length; i++) {
+          var province = provinces[i];
+          if (province.value === provinceId) {
+            item = province;
+            break;
+          }
+        }
+        addProvinceLayer(item.feature);
+        provinceBbox = turf.bbox(item.feature.geometry);
+      }
 
-            function appendTable(features) {
-                $('#collectionsTbody').empty();
-                var tbodyHtml = '';
-                features.forEach(function (feature, index) {
-                    tbodyHtml +=
-                        '<tr>' +
-                        '<td>' +
-                        feature.id +
-                        '</td>' +
-                        '<td onclick="showTifInfo(' +
-                        "'" +
-                        feature.id +
-                        "'" +
-                        ')" data-toggle="modal" data-target="#myModal"><a href="#">' +
-                        feature.properties.smfilename +
-                        '</a></td>' +
-                        '<td>' +
-                        feature.properties.addtime +
-                        '</td>' +
-                        '<td>' +
-                        '<span id="' +
-                        feature.id +
-                        '" class="glyphicon glyphicon-eye-closed glyphicon-eye-open" aria-hidden="true" onclick="showSearchItemTile(' +
-                        "'" +
-                        feature.id +
-                        "'" +
-                        ',' +
-                        "'" +
-                        feature.properties.smfilename +
-                        "'" +
-                        ')"></span>' +
-                        '</td>' +
-                        '</tr>';
-                });
-                $('#collectionsTbody').append(tbodyHtml);
-            }
+      function getSelectedValue(id) {
+        var el = document.getElementById(id);
+        var selIndex = el.selectedIndex; //获取当前选择的选项的index值
+        var value = el.options[selIndex].value; //获取当前选择项的值
+        return value;
+      }
 
-            function appendPage(features) {
-                var pageHtml =
-                    '<li id="previous-page" class="disabled" onclick="goPrevious()">' +
-                    '<a href="#" aria-label="Previous">' +
-                    '<span aria-hidden="true">&laquo;</span>' +
-                    '</a>' +
-                    '</li>';
-                for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
-                    pageHtml += '<li onclick="clickPage(' + i - 1 + ')"><a href="#">' + i + '</a></li>';
-                }
-                pageHtml +=
-                    '<li id="next-page" style="margin-right: 0">' +
-                    '<a href="#" aria-label="Next" onclick="goNext()">' +
-                    '<span aria-hidden="true">&raquo;</span>' +
-                    '</a>' +
-                    '</li>';
-                $('#pagination').append(pageHtml);
-                $('.page').show();
-                $($('#pagination').children('li').get(1)).addClass('active');
-            }
-
-            function showTifInfo(featureId) {
-                var feature;
-                features.forEach(function (item) {
-                    if (item.id === featureId) {
-                        feature = item;
-                    }
-                });
-                var title = '影像' + feature.id + '详情';
-                var properties = feature.properties;
-                var tbodyHtml = '';
-                var thHtml = '';
-                $('#myModalContent').empty();
-                for (var key in properties) {
-                    if (thHtml) {
-                        tbodyHtml +=
-                            '<tr class="modal-content-row">' +
-                            thHtml +
-                            '<th class="modal-content-item-label">' +
-                            key +
-                            '</th><td class="modal-content-item-content">' +
-                            properties[key] +
-                            '</td></tr>';
-                        thHtml = '';
-                    } else {
-                        thHtml =
-                            '<th class="modal-content-item-label">' +
-                            key +
-                            '</th><td class="modal-content-item-content">' +
-                            properties[key] +
-                            '</td>';
-                    }
-                }
-                document.getElementById('myModalLabel').innerHTML = title;
-                $('#myModalContent').append(tbodyHtml);
-            }
-
-            function clickPage(i) {
-                currentIndex = i;
-                var start = tableMax * currentIndex;
-                $($('#pagination').children('.active')).removeClass('active');
-                $(
-                    $('#pagination')
-                        .children('li')
-                        .get(i + 1)
-                ).addClass('active');
-                pageDisable();
-                appendTable(features.slice(start, start + tableMax));
-            }
-
-            function goPrevious() {
-                if (currentIndex >= 1) {
-                    currentIndex -= 1;
-                    clickPage(currentIndex);
-                }
-                pageDisable();
-            }
-
-            function goNext() {
-                pageDisable();
-                if (currentIndex + 1 < Math.ceil(features.length / pageMax)) {
-                    currentIndex += 1;
-                    clickPage(currentIndex);
-                }
-            }
-
-            function pageDisable() {
-                if (currentIndex === 0) {
-                    $('#previous-page').addClass('disabled');
-                } else {
-                    $('#previous-page').removeClass('disabled');
-                }
-                if (currentIndex === Math.ceil(features.length / pageMax) - 1) {
-                    $('#next-page').addClass('disabled');
-                } else {
-                    $('#next-page').removeClass('disabled');
-                }
-            }
-
-            function collapseTable() {
-                $('#collapseTwo').addClass('in');
-            }
-
-            function showOrCloseEye(featureId) {
-                var closeClass = 'glyphicon-eye-closed';
-                var el = document.getElementById(featureId);
-                var classValues = $(el).attr('class');
-                if (classValues.includes(closeClass)) {
-                    $(el).removeClass(closeClass);
-                    return true;
-                } else {
-                    $(el).addClass(closeClass);
-                    return false;
-                }
-            }
-
-            function selectCollection() {
-                collectionId = getSelectedValue('collections');
-            }
-
-            function selectProvince() {
-                clearSearchResult();
-                provinceId = getSelectedValue('provinces');
-                var item;
-                for (var i = 0; i < provinces.length; i++) {
-                    var province = provinces[i];
-                    if (province.value === provinceId) {
-                        item = province;
-                        break;
-                    }
-                }
-                addProvinceLayer(item.feature);
-                provinceBbox = turf.bbox(item.feature.geometry);
-            }
-
-            function getSelectedValue(id) {
-                var el = document.getElementById(id);
-                var selIndex = el.selectedIndex; //获取当前选择的选项的index值
-                var value = el.options[selIndex].value; //获取当前选择项的值
-                return value;
-            }
-
-            function query() {
-                var postData = {};
-                if (provinceId != -1) {
-                    postData.bbox = provinceBbox;
-                }
-                if (collectionId != -1) {
-                    postData.collections = [collectionId];
-                }
-                if (plotBbox) {
-                    postData.bbox = plotBbox;
-                }
-                ImageSearchService(postData);
-            }
-        </script>
-    </body>
+      function query() {
+        var postData = {};
+        if (provinceId != -1) {
+          postData.bbox = provinceBbox;
+        }
+        if (collectionId != -1) {
+          postData.collections = [collectionId];
+        }
+        if (plotBbox) {
+          postData.bbox = plotBbox;
+        }
+        ImageSearchService(postData);
+      }
+    </script>
+  </body>
 </html>
