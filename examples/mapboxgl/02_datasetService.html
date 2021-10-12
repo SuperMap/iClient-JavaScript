@@ -63,6 +63,7 @@
         datasetsSelect,
         datasourcesSelect,
         datasourceName,
+        popup;
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World Map/zxyTileImage.png?z={z}&x={x}&y={y}",
         dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
     let attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
@@ -120,6 +121,9 @@
 
     function datasetsPrint(){
         const datasetName = datasetsSelect.value;
+        if(popup) {
+            popup.remove();
+        }
         new mapboxgl.supermap.DatasetService(dataUrl).getDataset(datasourceName,datasetName,function (serviceResult) {
             let innerHTML = "(" + resources.text_datasetInfoPrint + ")" + "<br><br>";
             innerHTML += "dataSourceName：" + JSON.stringify(serviceResult.result.datasetInfo.dataSourceName, null, 2) + "<br>";
@@ -127,7 +131,7 @@
             innerHTML += "isFileCache:" + JSON.stringify(serviceResult.result.datasetInfo.isFileCache, null, 2) + "<br>";
             innerHTML += "name:" + JSON.stringify(serviceResult.result.datasetInfo.name, null, 2) + "<br>";
             innerHTML += "prjCoordSys:" + "(...)" + "<br>";
-            new mapboxgl.Popup({closeOnClick: false})
+            popup = new mapboxgl.Popup({closeOnClick: false})
                     .setLngLat([0,0])
                     .setHTML(innerHTML + "</br>")
                     .addTo(map);
