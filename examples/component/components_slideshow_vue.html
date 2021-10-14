@@ -24,7 +24,6 @@
             height: 380px;
             border-radius: 4px;
         }
-
     </style>
 </head>
 
@@ -33,7 +32,8 @@
         <sm-web-map map-id='567946816' :map-options="mapOptions" server-url='https://www.supermapol.com'
             tianditu-key='1d109683f4d84198e37a38c442d68311' @load="mapLoaded">
         </sm-web-map>
-        <sm-slideshow :collapsed="false" :autoplay="autoplay" :pagination="pagination" @change="slideChange">
+        <sm-slideshow v-if="content.length > 0" :collapsed="false" :autoplay="autoplay" :pagination="pagination"
+            @change="slideChange">
             <sm-slideshow-item v-for="item of content" :key="item.title">
                 <h3 style="margin-top: 8px;">{{ item.title }}</h3>
                 <p style="padding: 8px;">{{ item.description }}</p>
@@ -54,6 +54,7 @@
                     },
                     content: '',
                     pagination: {
+                        el: '.swiper-pagination',
                         type: 'bullets',
                         clickable: true
                     },
@@ -93,6 +94,7 @@
                 },
                 mapLoaded(e) {
                     this.map = e.map;
+                    this.slideChange({ realIndex: 0 });
                 }
             }
         })
