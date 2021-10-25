@@ -34,7 +34,7 @@ export class HitCloverShape extends CloverShape {
         // draw the circle on the canvas
         this._ctx.clearRect(0, 0, this.getImage().width, this.getImage().height);
         // reset transform
-        this._ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this._ctx.setTransform(this._pixelRatio, 0, 0, this._pixelRatio, 0, 0);
         this._ctx.translate(0, 0);
         this._ctx.beginPath();
 

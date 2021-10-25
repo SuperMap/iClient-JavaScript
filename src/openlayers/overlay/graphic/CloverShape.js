@@ -51,7 +51,8 @@ export class CloverShape extends RegularShape {
         this.strokeOpacity = options.strokeOpacity || 1;
         this.fillOpacity = options.fillOpacity || 1;
 
-        this._canvas = this.getImage();
+        this._pixelRatio = window ? window.devicePixelRatio : 1;
+        this._canvas = this.getImage(this._pixelRatio);
         this._ctx = this._canvas.getContext('2d');
         this._render();
     }
@@ -65,6 +66,7 @@ export class CloverShape extends RegularShape {
         if (this.spaceAngle < 0) {
             return;
         }
+        this._ctx.setTransform(this._pixelRatio, 0, 0, this._pixelRatio, 0, 0);
         this._ctx.translate(0, 0);
         this._ctx.beginPath();
         for (var i = 0; i < this.count_; i++) {

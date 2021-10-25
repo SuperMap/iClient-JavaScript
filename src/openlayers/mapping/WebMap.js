@@ -39,7 +39,10 @@ import WMSCapabilities from 'ol/format/WMSCapabilities';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import * as olGeometry from 'ol/geom';
-import * as olSource from 'ol/source';
+import Vector from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
+import WMTS from 'ol/source/WMTS';
+import TileWMS from 'ol/source/TileWMS';
 import Feature from 'ol/Feature';
 import olRenderFeature from 'ol/render/Feature';
 import Style from 'ol/style/Style';
@@ -1226,7 +1229,7 @@ export class WebMap extends Observable {
      */
     createBingSource(layerInfo, projection) {
         let url = 'https://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
-        return new olSource.XYZ({
+        return new XYZ({
             wrapX: false,
             projection: projection,
             crossOrigin: 'anonymous',
@@ -1258,7 +1261,7 @@ export class WebMap extends Observable {
      * @returns {ol/source/XYZ} xyz的source
      */
     createXYZSource(layerInfo) {
-        return new olSource.XYZ({
+        return new XYZ({
             url: layerInfo.url,
             wrapX: false,
             crossOrigin: 'anonymous'
@@ -1274,7 +1277,7 @@ export class WebMap extends Observable {
      */
     createWMSSource(layerInfo) {
         let that = this;
-        return new olSource.TileWMS({
+        return new TileWMS({
             url: layerInfo.url,
             wrapX: false,
             params: {
@@ -1579,7 +1582,7 @@ export class WebMap extends Observable {
                                     layerInfo.extent = bbox;
                                 }
                                 break;
-                            } 
+                            }
                         }
                     }
                 }
@@ -1629,7 +1632,7 @@ export class WebMap extends Observable {
 
         // 单位通过坐标系获取 （PS: 以前代码非4326 都默认是米）
         let unit = olProj.get(this.baseProjection).getUnits();
-        return new olSource.WMTS({
+        return new WMTS({
             url: layerInfo.tileUrl || layerInfo.url,
             layer: layerInfo.layer,
             format: layerInfo.layerFormat,
@@ -2847,7 +2850,7 @@ export class WebMap extends Observable {
         let style = StyleUtils.getSymbolStyle(layerInfo.style);
         return new olLayer.Vector({
             style: style,
-            source: new olSource.Vector({
+            source: new Vector({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             }),
@@ -2870,7 +2873,7 @@ export class WebMap extends Observable {
             declutter: true,
             styleOL: style,
             labelField: labelStyle.labelField,
-            source: new olSource.Vector({
+            source: new Vector({
                 features: features,
                 wrapX: false
             })
@@ -2984,7 +2987,7 @@ export class WebMap extends Observable {
         }
         return new olLayer.Vector({
             style: newStyle,
-            source: new olSource.Vector({
+            source: new Vector({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
@@ -3002,7 +3005,7 @@ export class WebMap extends Observable {
     createHeatLayer(layerInfo, features) {
         //因为热力图，随着过滤，需要重新计算权重
         features = layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features;
-        let source = new olSource.Vector({
+        let source = new Vector({
             features: features,
             wrapX: false
         });
@@ -3083,7 +3086,7 @@ export class WebMap extends Observable {
         let styleSource = this.createUniqueSource(layerInfo, features);
         let layer = new olLayer.Vector({
             styleSource: styleSource,
-            source: new olSource.Vector({
+            source: new Vector({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
@@ -3163,14 +3166,14 @@ export class WebMap extends Observable {
             let custom = customSettings[key];
             if(Util.isString(custom)) {
                 //兼容之前自定义只存储一个color
-                custom = this.getCustomSetting(style, custom, featureType); 
-                customSettings[key] = custom; 
-            } 
-            
+                custom = this.getCustomSetting(style, custom, featureType);
+                customSettings[key] = custom;
+            }
+
             // 转化成 ol 样式
             let olStyle, type = custom.type;
             if(type === 'SYMBOL_POINT') {
-                olStyle = StyleUtils.getSymbolStyle(custom);  
+                olStyle = StyleUtils.getSymbolStyle(custom);
             } else if(type === 'SVG_POINT') {
                 olStyle = StyleUtils.getSVGStyle(custom);
             } else if(type === 'IMAGE_POINT') {
@@ -3218,7 +3221,7 @@ export class WebMap extends Observable {
         let styleSource = this.createRangeSource(layerInfo, features);
         let layer = new olLayer.Vector({
             styleSource: styleSource,
-            source: new olSource.Vector({
+            source: new Vector({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
@@ -3398,7 +3401,7 @@ export class WebMap extends Observable {
     createMarkerLayer(features) {
         features && this.setEachFeatureDefaultStyle(features);
         return new olLayer.Vector({
-            source: new olSource.Vector({
+            source: new Vector({
                 features: features,
                 wrapX: false
             })
@@ -3418,7 +3421,7 @@ export class WebMap extends Observable {
         //获取样式
         style = StyleUtils.getOpenlayersStyle(layerStyle, layerInfo.featureType);
 
-        let source = new olSource.Vector({
+        let source = new Vector({
             wrapX: false
         }), labelLayer, labelSource, pathLayer, pathSource;
         let layer = new olLayer.Vector({
@@ -3594,7 +3597,7 @@ export class WebMap extends Observable {
      */
     createDataflowHeatSource(layerInfo) {
         let that = this,
-            source = new olSource.Vector({
+            source = new Vector({
                 wrapX: false
             });
         let featureCache = {};
@@ -3751,7 +3754,7 @@ export class WebMap extends Observable {
         let styleSource = this.createRankStyleSource(layerInfo, features, layerInfo.featureType);
         let layer = new olLayer.Vector({
             styleSource,
-            source: new olSource.Vector({
+            source: new Vector({
                 features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             }),
@@ -4895,7 +4898,7 @@ export class WebMap extends Observable {
             version = userAgent.match(/chrome\/([\d.]+)/);
         return +version[1];
     }
-    
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.addGraticule
@@ -4910,7 +4913,7 @@ export class WebMap extends Observable {
             this.sendMapToUser(lens);
         }
     }
-    
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createGraticuleLayer
@@ -5032,7 +5035,7 @@ export class WebMap extends Observable {
                 break;
             case 'el':
                 lang = 'el-GR';
-                break; 
+                break;
             case 'es':
                 lang = 'es-ES';
                 break;
@@ -5050,7 +5053,7 @@ export class WebMap extends Observable {
                 break;
             case 'he':
                 lang = 'he-IL';
-                break;   
+                break;
             case 'hu':
                 lang = 'hu-HU';
                 break;
@@ -5071,7 +5074,7 @@ export class WebMap extends Observable {
                 break;
             case 'ku':
                 lang = 'ku-IQ';
-                break; 
+                break;
             case 'mn':
                 lang = 'mn-MN';
                 break;
@@ -5089,10 +5092,10 @@ export class WebMap extends Observable {
                 break;
             case 'pt':
                 lang = 'pt-PT';
-                break; 
+                break;
             case 'ru':
                 lang = 'ru-RU';
-                break; 
+                break;
             case 'sk':
                 lang = 'sk-SK';
                 break;
@@ -5110,7 +5113,7 @@ export class WebMap extends Observable {
                 break;
             case 'tr':
                 lang = 'tr-TR';
-                break; 
+                break;
             case 'uk':
                 lang = 'uk-UA';
                 break;
@@ -5119,7 +5122,7 @@ export class WebMap extends Observable {
                 break;
             default:
                 lang = 'en-US';
-                break;    
+                break;
         }
         return lang;
     }
