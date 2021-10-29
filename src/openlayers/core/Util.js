@@ -1,15 +1,12 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-  Unit,
-  Bounds,
-  GeoJSON as GeoJSONFormat,
-  FilterParameter,
-  GetFeaturesBySQLParameters,
-  QueryBySQLParameters,
-  QueryOption
-} from '@supermap/iclient-common';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { QueryOption, Unit } from '@supermap/iclient-common/REST';
+import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQLParameters';
+import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
 import { QueryService } from '../services/QueryService';
 import { FeatureService } from '../services/FeatureService';
 import * as olUtil from 'ol/util';

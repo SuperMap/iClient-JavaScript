@@ -5,8 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
-import { SetDatasourceParameters, CommonUtil } from '@supermap/iclient-common';
-
+import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
  * @class mapboxgl.supermap.DatasourceService
  * @category  iServer Data Datasource

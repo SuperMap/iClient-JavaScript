@@ -1,12 +1,14 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import '../core/Base';
-import {Bounds, LonLat, CommonUtil, FeatureTheme} from '@supermap/iclient-common';
-import {ThemeLayer} from './theme/ThemeLayer';
-import {CommontypesConversion} from '../core/CommontypesConversion';
-
+ import L from 'leaflet';
+ import '../core/Base';
+ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
+ import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+ import { ThemeLayer } from './theme/ThemeLayer';
+ import { CommontypesConversion } from '../core/CommontypesConversion';
 /**
  * @class L.supermap.graphThemeLayer
  * @classdesc 统计专题图图层。

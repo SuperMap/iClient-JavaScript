@@ -2,7 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
-import { Unit, SecurityManager, CommonUtil, Bounds, Size, FetchRequest, GeometryPoint } from '@supermap/iclient-common';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { Unit } from '@supermap/iclient-common/REST';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { Size } from '@supermap/iclient-common/commontypes/Size';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
 import { VectorTileStyles } from './vectortile/VectorTileStyles';
 import VectorTile from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
@@ -70,8 +76,8 @@ export class VectorTileSuperMapRest extends VectorTile {
             if (Object.prototype.toString.call(options.style) == '[object String]') {
                 var url = SecurityManager.appendCredential(options.style);
                 FetchRequest.get(url, null, { withCredentials: options.withCredentials })
-                    .then(response => response.json())
-                    .then(mbStyle => {
+                    .then((response) => response.json())
+                    .then((mbStyle) => {
                         this._fillByStyleJSON(mbStyle, options.source);
                         this.setState('ready');
                     });
@@ -148,11 +154,11 @@ export class VectorTileSuperMapRest extends VectorTile {
                 return me._tileUrl
                     .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
-                    .replace(yRegEx, function() {
+                    .replace(yRegEx, function () {
                         var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
                         return y.toString();
                     })
-                    .replace(dashYRegEx, function() {
+                    .replace(dashYRegEx, function () {
                         var z = tileCoord[0];
                         var range = me.tileGrid.getFullTileRange(z);
                         var y = range.getHeight() + tileCoord[2];
@@ -173,18 +179,18 @@ export class VectorTileSuperMapRest extends VectorTile {
             var width = Number(tileUrl.match(regWidth)[2]);
             var height = Number(tileUrl.match(regHeight)[2]);
 
-            tile.setLoader(function(extent, resolution, projection) {
+            tile.setLoader(function (extent, resolution, projection) {
                 FetchRequest.get(tileUrl)
-                    .then(function(response) {
+                    .then(function (response) {
                         if (tile.getFormat() instanceof GeoJSON) {
                             return response.json();
                         }
                     })
-                    .then(function(tileFeatureJson) {
+                    .then(function (tileFeatureJson) {
                         var features = [];
                         if (tile.getFormat() instanceof GeoJSON) {
-                            tileFeatureJson.recordsets.map(function(recordset) {
-                                recordset.features.map(function(feature) {
+                            tileFeatureJson.recordsets.map(function (recordset) {
+                                recordset.features.map(function (feature) {
                                     var points = [];
                                     var startIndex = 0;
                                     for (var i = 0; i < feature.geometry.parts.length; i++) {
@@ -204,8 +210,8 @@ export class VectorTileSuperMapRest extends VectorTile {
                                 });
                                 return recordset;
                             });
-                            tileFeatureJson.recordsets.map(function(recordset) {
-                                recordset.features.map(function(feature) {
+                            tileFeatureJson.recordsets.map(function (recordset) {
+                                recordset.features.map(function (feature) {
                                     feature.layerName = recordset.layerName;
                                     feature.type = feature.geometry.type;
                                     features.push(feature);
@@ -247,7 +253,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             const format = tile.getFormat();
             const success = tile.onLoad.bind(tile);
             const failure = tile.onError.bind(tile);
-            tile.setLoader(function(extent, resolution, projection) {
+            tile.setLoader(function (extent, resolution, projection) {
                 const xhr = new XMLHttpRequest();
                 xhr.open(
                     'GET',
@@ -258,7 +264,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                     xhr.responseType = 'arraybuffer';
                 }
                 xhr.withCredentials = me.withCredentials;
-                xhr.onload = function() {
+                xhr.onload = function () {
                     if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
                         const type = format.getType();
                         let source = void 0;
@@ -297,7 +303,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                         failure.call(this);
                     }
                 }.bind(this);
-                xhr.onerror = function() {
+                xhr.onerror = function () {
                     failure.call(this);
                 }.bind(this);
                 xhr.send();

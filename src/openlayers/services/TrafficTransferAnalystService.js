@@ -3,7 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {StopQueryService, TransferPathService, TransferSolutionService} from '@supermap/iclient-common';
+import { StopQueryService } from '@supermap/iclient-common/iServer/StopQueryService';
+import { TransferPathService } from '@supermap/iclient-common/iServer/TransferPathService';
+import { TransferSolutionService } from '@supermap/iclient-common/iServer/TransferSolutionService';
 import Point from 'ol/geom/Point';
 
 /**

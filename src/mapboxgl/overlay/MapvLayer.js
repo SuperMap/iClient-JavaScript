@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { MapvRenderer } from './mapv/MapvRenderer';
-import { CommonUtil } from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class mapboxgl.supermap.MapvLayer

@@ -6,14 +6,12 @@ import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import {
-    GeometryPoint,
-    DataFormat,
-    QueryByBoundsService,
-    QueryByDistanceService,
-    QueryBySQLService,
-    QueryByGeometryService
-} from '@supermap/iclient-common';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { QueryByBoundsService } from '@supermap/iclient-common/iServer/QueryByBoundsService';
+import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryByDistanceService';
+import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
+import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 
 /**
  * @class  L.supermap.queryService

@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {GetGridCellInfosService} from '@supermap/iclient-common';
+import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGridCellInfosService';
 
 /**
  * @class mapboxgl.supermap.GridCellInfosService

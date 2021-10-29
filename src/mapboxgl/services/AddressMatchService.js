@@ -4,7 +4,8 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { AddressMatchService as CommonAddressMatchService, CommonUtil } from '@supermap/iclient-common';
+import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class mapboxgl.supermap.AddressMatchService

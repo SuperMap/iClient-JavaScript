@@ -1,20 +1,18 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {ComponentsViewBase} from '../ComponentsViewBase';
-import {DataServiceQueryViewModel} from './DataServiceQueryViewModel';
-import {
-    CommonContainer,
-    Select,
-    MessageBox,
-    GetFeaturesByIDsParameters,
-    GetFeaturesBySQLParameters,
-    GetFeaturesByBoundsParameters,
-    GetFeaturesByBufferParameters,
-    GetFeaturesByGeometryParameters,
-    Lang
-} from '@supermap/iclient-common';
+ import L from 'leaflet';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { DataServiceQueryViewModel } from './DataServiceQueryViewModel';
+ import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
+ import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
+ import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
+ import { GetFeaturesByBufferParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBufferParameters';
+ import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters';
+ import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermap/iclient-common/components/templates/Select';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
 
 /**
  * @class L.supermap.components.dataServiceQuery

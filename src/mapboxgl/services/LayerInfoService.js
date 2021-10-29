@@ -4,14 +4,11 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {
-    GetLayersInfoService,
-    SetLayerInfoService,
-    SetLayersInfoService,
-    SetLayerStatusService,
-    CommonUtil
-} from '@supermap/iclient-common';
-
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { GetLayersInfoService } from '@supermap/iclient-common/iServer/GetLayersInfoService';
+import { SetLayerInfoService } from '@supermap/iclient-common/iServer/SetLayerInfoService';
+import { SetLayersInfoService } from '@supermap/iclient-common/iServer/SetLayersInfoService';
+import { SetLayerStatusService } from '@supermap/iclient-common/iServer/SetLayerStatusService';
 /**
  * @class mapboxgl.supermap.LayerInfoService
  * @category  iServer Map Layer

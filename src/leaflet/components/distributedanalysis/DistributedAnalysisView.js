@@ -1,11 +1,16 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {ComponentsViewBase} from '../ComponentsViewBase';
-import {DistributedAnalysisViewModel} from "./DistributedAnalysisViewModel";
-import { CommonContainer, DropDownBox, Select, MessageBox, Lang, KernelDensityJobParameter, MappingParameters } from '@supermap/iclient-common';
-
+ import L from 'leaflet';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { DistributedAnalysisViewModel } from './DistributedAnalysisViewModel';
+ import { KernelDensityJobParameter } from '@supermap/iclient-common/iServer/KernelDensityJobParameter';
+ import { MappingParameters } from '@supermap/iclient-common/iServer/MappingParameters';
+ import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermap/iclient-common/components/templates/Select';
+ import { DropDownBox } from '@supermap/iclient-common/components/templates/DropDownBox';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
 /**
  * @class L.supermap.components.distributedAnalysis
  * @classdesc 分布式分析组件。

@@ -1,18 +1,15 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {
-    CommonUtil,
-    GeometryPoint,
-    ServerFeature,
-    GeometryVector as Vector,
-    GeoJSON as GeoJSONFormat,
-    LonLat,
-    GeometryPoint as Point,
-    GeoText
-} from '@supermap/iclient-common';
-import Attributions from '../core/Attributions';
+ import L from 'leaflet';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+ import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+ import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+ import { Vector } from '@supermap/iclient-common/commontypes/Vector';
+ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+ import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+ import Attributions from '../core/Attributions';
 
 /**
  * @class L.supermap.heatMapFeature
@@ -423,7 +420,7 @@ export var HeatMapLayer = L.Layer.extend({
             coor = L.point(coordinate[0], coordinate[1]);
         }
         if (!(coordinate instanceof L.Point)) {
-            if (coordinate instanceof Point || coordinate instanceof GeoText) {
+            if (coordinate instanceof GeometryPoint || coordinate instanceof GeoText) {
                 coor = L.point(coordinate.x, coordinate.y);
             } else {
                 coor = L.point(coordinate.lon, coordinate.lat);

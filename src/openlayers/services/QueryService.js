@@ -1,15 +1,13 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    DataFormat,
-    Bounds,
-    GeometryPoint,
-    QueryByBoundsService,
-    QueryByDistanceService,
-    QueryBySQLService,
-    QueryByGeometryService
-} from '@supermap/iclient-common';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { QueryByBoundsService } from '@supermap/iclient-common/iServer/QueryByBoundsService';
+import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryByDistanceService';
+import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
+import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import Point from 'ol/geom/Point';

@@ -3,9 +3,11 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L, { Util, Layer, ImageOverlay } from 'leaflet';
 import '../core/Base';
-import { ServerGeometry, SecurityManager, CommonUtil } from '@supermap/iclient-common';
+import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import Attributions from '../core/Attributions';
-import { toSuperMapGeometry } from "../core/Util";
+import { toSuperMapGeometry } from '../core/Util';
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。

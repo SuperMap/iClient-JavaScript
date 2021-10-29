@@ -5,20 +5,18 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {
-    DataFormat,
-    BurstPipelineAnalystService,
-    ComputeWeightMatrixService,
-    FacilityAnalystStreamService,
-    FindClosestFacilitiesService,
-    FindLocationService,
-    FindMTSPPathsService,
-    FindPathService,
-    FindServiceAreasService,
-    FindTSPPathsService,
-    UpdateEdgeWeightService,
-    UpdateTurnNodeWeightService
-} from '@supermap/iclient-common';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { BurstPipelineAnalystService } from '@supermap/iclient-common/iServer/BurstPipelineAnalystService';
+import { ComputeWeightMatrixService } from '@supermap/iclient-common/iServer/ComputeWeightMatrixService';
+import { FacilityAnalystStreamService } from '@supermap/iclient-common/iServer/FacilityAnalystStreamService';
+import { FindClosestFacilitiesService } from '@supermap/iclient-common/iServer/FindClosestFacilitiesService';
+import { FindLocationService } from '@supermap/iclient-common/iServer/FindLocationService';
+import { FindMTSPPathsService } from '@supermap/iclient-common/iServer/FindMTSPPathsService';
+import { FindPathService } from '@supermap/iclient-common/iServer/FindPathService';
+import { FindServiceAreasService } from '@supermap/iclient-common/iServer/FindServiceAreasService';
+import { FindTSPPathsService } from '@supermap/iclient-common/iServer/FindTSPPathsService';
+import { UpdateEdgeWeightService } from '@supermap/iclient-common/iServer/UpdateEdgeWeightService';
+import { UpdateTurnNodeWeightService } from '@supermap/iclient-common/iServer/UpdateTurnNodeWeightService';
 
 /**
  * @class mapboxgl.supermap.NetworkAnalystService

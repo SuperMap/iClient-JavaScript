@@ -1,23 +1,18 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import '../core/Base';
-import {
-    VectorGrid
-} from './vectortile/VectorGrid';
-import {
-    CartoCSSToLeaflet
-} from './carto/CartoCSSToLeaflet';
-import {
-    FetchRequest,
-    Unit,
-    Credential,
-    SecurityManager,
-    CommonUtil
-} from '@supermap/iclient-common';
-import * as Util from "../core/Util";
-import Attributions from '../core/Attributions'
+ import L from 'leaflet';
+ import '../core/Base';
+ import { VectorGrid } from './vectortile/VectorGrid';
+ import { CartoCSSToLeaflet } from './carto/CartoCSSToLeaflet';
+ import { Credential } from '@supermap/iclient-common/commontypes/Credential';
+ import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+ import { Unit } from '@supermap/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ 
+ import * as Util from '../core/Util';
+ import Attributions from '../core/Attributions';
 
 /**
  * @class L.supermap.tiledVectorLayer

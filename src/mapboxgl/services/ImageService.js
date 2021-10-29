@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import { ServiceBase } from './ServiceBase';
 import '../core/Base';
-import { ImageService as CommonMatchImageService } from '@supermap/iclient-common';
+import CommonMatchImageService  from '@supermap/iclient-common/iServer/ImageService';
 
 /**
  * @class mapboxgl.supermap.ImageService

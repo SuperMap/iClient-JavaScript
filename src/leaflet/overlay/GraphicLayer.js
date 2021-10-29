@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import '../core/Base';
 import { Detector } from '../core/Detector';
-import { CommonUtil } from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { GraphicCanvasRenderer, GraphicWebGLRenderer, CircleStyle } from './graphic';
 
 const Renderer = ['canvas', 'webgl'];

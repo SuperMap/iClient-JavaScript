@@ -4,7 +4,9 @@
 import L from "leaflet";
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from '@supermap/iclient-common';
+import { GetFieldsService } from '@supermap/iclient-common/iServer/GetFieldsService';
+import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldStatisticService';
+import { FieldStatisticsParameters } from '@supermap/iclient-common/iServer/FieldStatisticsParameters';
 
 /**
  * @class  L.supermap.fieldService

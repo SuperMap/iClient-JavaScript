@@ -5,7 +5,9 @@ import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
 import * as Util from '../core/Util';
-import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} from '@supermap/iclient-common';
+import { MeasureMode } from '@supermap/iclient-common/REST';
+import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
+import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParameters';
 
 /**
  * @class L.supermap.measureService

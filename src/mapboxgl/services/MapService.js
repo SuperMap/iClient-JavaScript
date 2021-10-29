@@ -4,7 +4,8 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient-common';
+import { MapService as CommonMapService } from '@supermap/iclient-common/iServer/MapService';
+import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
 
 /**
  * @class mapboxgl.supermap.MapService

@@ -4,7 +4,8 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {Geometry, MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
+import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
 
 /**
  * @class mapboxgl.supermap.MeasureService

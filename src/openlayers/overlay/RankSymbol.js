@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {FeatureTheme} from '@supermap/iclient-common';
+import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
 import {Graph} from './Graph';
 
 /**

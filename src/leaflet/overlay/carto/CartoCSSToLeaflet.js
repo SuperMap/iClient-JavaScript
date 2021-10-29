@@ -3,12 +3,10 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {
-    SuperMap,
-    CommonUtil as Util,
-    CartoCSS,
-    StringExt
-} from "@supermap/iclient-common";
+import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { SuperMap } from '@supermap/iclient-common/SuperMap';
+import { CartoCSS } from '@supermap/iclient-common/style/CartoCSS';
+import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
 import {
     DefaultStyle
 } from './CartoDefaultStyle';

@@ -2,15 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import {
-    CommonUtil,
-    GeometryPoint as Point,
-    ServerFeature,
-    GeoJSON as GeoJSONFormat,
-    GeometryVector,
-    GeoText,
-    LevelRenderer
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { LevelRenderer } from '@supermap/iclient-common/overlay/levelRenderer/LevelRenderer';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { Point  } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
 import {
     ThemeFeature
 } from './ThemeFeature';

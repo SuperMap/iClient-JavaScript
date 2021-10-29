@@ -2,12 +2,10 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
-import {DatasetService as CommonDatasetService} from '@supermap/iclient-common/iServer/DatasetService';
-import {
-    CreateDatasetParameters,
-    UpdateDatasetParameters,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
+import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
+import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
 
 /**
  * @class ol.supermap.DatasetService

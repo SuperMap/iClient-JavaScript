@@ -3,8 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L, { Util as LUtil } from 'leaflet';
 import '../core/Base';
-import { SecurityManager, CommonUtil } from '@supermap/iclient-common';
 import Attributions from '../core/Attributions';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
 
 /**
  * @class L.supermap.ImageTileLayer

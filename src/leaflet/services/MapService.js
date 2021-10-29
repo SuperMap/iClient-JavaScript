@@ -6,11 +6,8 @@ import '../core/Base';
 import {
     ServiceBase
 } from './ServiceBase';
-import {
-    MapService as CommonMapService,
-    TilesetsService
-} from '@supermap/iclient-common';
-
+import { MapService as CommonMapService } from '@supermap/iclient-common/iServer/MapService';
+import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
 /**
  * @class  L.supermap.mapService
  * @classdesc 地图信息服务类。

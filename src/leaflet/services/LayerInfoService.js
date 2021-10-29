@@ -2,18 +2,17 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
-import {ServiceBase} from './ServiceBase';
+import { ServiceBase } from './ServiceBase';
 import '../core/Base';
-import {
-    GetLayersInfoService,
-    SetLayerInfoService,
-    SetLayersInfoService,
-    SetLayerStatusService,
-    SetLayerStatusParameters,
-    SetLayerInfoParameters,
-    SetLayersInfoParameters,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { GetLayersInfoService } from '@supermap/iclient-common/iServer/GetLayersInfoService';
+import { SetLayerInfoService } from '@supermap/iclient-common/iServer/SetLayerInfoService';
+import { SetLayersInfoService } from '@supermap/iclient-common/iServer/SetLayersInfoService';
+import { SetLayerStatusService } from '@supermap/iclient-common/iServer/SetLayerStatusService';
+import { SetLayerStatusParameters } from '@supermap/iclient-common/iServer/SetLayerStatusParameters';
+import { SetLayerInfoParameters } from '@supermap/iclient-common/iServer/SetLayerInfoParameters';
+import { SetLayersInfoParameters } from '@supermap/iclient-common/iServer/SetLayersInfoParameters';
+
 
 /**
  * @class L.supermap.layerInfoService

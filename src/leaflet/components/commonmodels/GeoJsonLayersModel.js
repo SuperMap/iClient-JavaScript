@@ -3,9 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-// import {
-//     CommonUtil
-// } from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.components.GeoJsonLayersDataModel

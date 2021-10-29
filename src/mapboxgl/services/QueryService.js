@@ -5,17 +5,14 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import {
-    Bounds,
-    Geometry,
-    GeometryPoint,
-    DataFormat,
-    QueryByBoundsService,
-    QueryByDistanceService,
-    QueryBySQLService,
-    QueryByGeometryService
-} from '@supermap/iclient-common';
-
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { QueryByBoundsService } from '@supermap/iclient-common/iServer/QueryByBoundsService';
+import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryByDistanceService';
+import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
+import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 /**
  * @class mapboxgl.supermap.QueryService
  * @category  iServer Map QueryResults

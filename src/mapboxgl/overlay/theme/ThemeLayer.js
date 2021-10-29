@@ -4,16 +4,14 @@
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
 import {ThemeFeature} from './ThemeFeature';
-import {
-    ServerFeature,
-    LonLat,
-    GeoJSON as GeoJSONFormat,
-    GeometryVector,
-    GeometryPoint as Point,
-    GeoText,
-    LevelRenderer,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { LevelRenderer } from '@supermap/iclient-common/overlay/levelRenderer/LevelRenderer';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { Point  } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
 
 /**
  * @class mapboxgl.supermap.ThemeLayer

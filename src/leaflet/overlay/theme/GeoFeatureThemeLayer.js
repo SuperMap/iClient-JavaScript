@@ -1,15 +1,12 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {
-    CommonUtil,
-    ShapeFactory,
-    ThemeVector
-} from '@supermap/iclient-common';
-import {ThemeLayer} from './ThemeLayer';
-import {CommontypesConversion} from '../../core/CommontypesConversion';
-
+ import L from 'leaflet';
+ import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
+ import { ThemeVector } from '@supermap/iclient-common/overlay/ThemeVector';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { ThemeLayer } from './ThemeLayer';
+ import { CommontypesConversion } from '../../core/CommontypesConversion';
 /**
  * @class L.supermap.GeoFeatureThemeLayer
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。

@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import { ServiceBase } from './ServiceBase';
 import '../core/Base';
-import { ImageService as CommonMatchImageService } from '@supermap/iclient-common';
+import CommonMatchImageService from '@supermap/iclient-common/iServer/ImageService';
 
 /**
  * @class L.supermap.ImageService

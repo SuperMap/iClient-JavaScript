@@ -5,18 +5,16 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {
-    DataFormat,
-    KernelDensityJobsService,
-    SingleObjectQueryJobsService,
-    SummaryMeshJobsService,
-    SummaryRegionJobsService,
-    VectorClipJobsService,
-    OverlayGeoJobsService,
-    BuffersAnalystJobsService,
-    TopologyValidatorJobsService,
-    SummaryAttributesJobsService
-} from '@supermap/iclient-common';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { KernelDensityJobsService } from '@supermap/iclient-common/iServer/KernelDensityJobsService';
+import { SingleObjectQueryJobsService } from '@supermap/iclient-common/iServer/SingleObjectQueryJobsService';
+import { SummaryMeshJobsService } from '@supermap/iclient-common/iServer/SummaryMeshJobsService';
+import { VectorClipJobsService } from '@supermap/iclient-common/iServer/VectorClipJobsService';
+import { OverlayGeoJobsService } from '@supermap/iclient-common/iServer/OverlayGeoJobsService';
+import { SummaryRegionJobsService } from '@supermap/iclient-common/iServer/SummaryRegionJobsService';
+import { BuffersAnalystJobsService } from '@supermap/iclient-common/iServer/BuffersAnalystJobsService';
+import { TopologyValidatorJobsService } from '@supermap/iclient-common/iServer/TopologyValidatorJobsService';
+import { SummaryAttributesJobsService } from '@supermap/iclient-common/iServer/SummaryAttributesJobsService';
 
 /**
  * @class mapboxgl.supermap.ProcessingService

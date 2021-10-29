@@ -5,8 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { WebPrintingService, SuperMap } from '@supermap/iclient-common';
-
+import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
+import { SuperMap } from '@supermap/iclient-common/SuperMap';
 /**
  * @class mapboxgl.supermap.WebPrintingJobService
  * @category  iServer WebPrintingJob

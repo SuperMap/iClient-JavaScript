@@ -1,11 +1,14 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import { ComponentsViewBase } from '../ComponentsViewBase';
-import { ClientComputationViewModel } from "./ClientComputationViewModel";
-import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@supermap/iclient-common';
-
+ import L from 'leaflet';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { ClientComputationViewModel } from './ClientComputationViewModel';
+ import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
+ import { DropDownBox } from '@supermap/iclient-common/components/templates/DropDownBox';
+ import { Select } from '@supermap/iclient-common/components/templates/Select';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
 /**
  * @class L.supermap.components.clientComputation
  * @classdesc 客户端计算组件，用于进行叠加图层的客户端计算。

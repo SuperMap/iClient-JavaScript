@@ -4,7 +4,7 @@
 import L from "leaflet";
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {DataFlowService as DataFlow} from '@supermap/iclient-common';
+import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/DataFlowService';
 
 /**
  * @class L.supermap.dataFlowService

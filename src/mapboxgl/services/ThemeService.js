@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
+import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iServer/ThemeService';
 
 /**
  * @class mapboxgl.supermap.ThemeService

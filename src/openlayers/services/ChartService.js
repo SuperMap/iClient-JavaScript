@@ -2,7 +2,11 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
-import {Bounds, ChartQueryService, DataFormat, ChartFeatureInfoSpecsService, CommonUtil} from '@supermap/iclient-common';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { ChartQueryService } from '@supermap/iclient-common/iServer/ChartQueryService';
+import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/ChartFeatureInfoSpecsService';
 import {ServiceBase} from './ServiceBase';
 
 /**

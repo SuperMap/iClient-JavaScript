@@ -1,15 +1,12 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import "../../core/Base";
-import {
-    GeoJSON,
-    GeoText,
-    GeometryPoint,
-    GeometryVector as Vector
-} from '@supermap/iclient-common';
-
+ import L from 'leaflet';
+ import '../../core/Base';
+ import { GeoJSON } from '@supermap/iclient-common/format/GeoJSON';
+ import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+ import { Vector } from '@supermap/iclient-common/commontypes/Vector';
 /**
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。

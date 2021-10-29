@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {DataFlowService as DataFlow} from '@supermap/iclient-common';
+import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
 
 /**
  * @class mapboxgl.supermap.DataFlowService

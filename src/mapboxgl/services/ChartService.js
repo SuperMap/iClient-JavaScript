@@ -5,13 +5,11 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { Util } from '../core/Util';
-import {
-    Bounds,
-    DataFormat,
-    ChartQueryService,
-    ChartFeatureInfoSpecsService,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { ChartQueryService } from '@supermap/iclient-common/iServer/ChartQueryService';
+import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/ChartFeatureInfoSpecsService';
 
 /**
  * @class mapboxgl.supermap.ChartService

@@ -5,7 +5,7 @@ import L from "leaflet";
 import Pbf from 'pbf';
 import {VectorTile} from '@mapbox/vector-tile';
 import {VectorFeatureType} from './VectorFeatureType';
-import {FetchRequest} from '@supermap/iclient-common';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 /**
  * @class L.supermap.VectorTilePBF

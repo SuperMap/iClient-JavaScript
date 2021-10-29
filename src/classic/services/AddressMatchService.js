@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
 import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
-import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common/iServer/AddressMatchService';
+import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
 
 /**
  * @class SuperMap.REST.AddressMatchService

@@ -4,13 +4,11 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {
-    FacilityAnalystSinks3DService,
-    FacilityAnalystSources3DService,
-    FacilityAnalystTraceup3DService,
-    FacilityAnalystTracedown3DService,
-    FacilityAnalystUpstream3DService
-} from '@supermap/iclient-common';
+import { FacilityAnalystSinks3DService } from '@supermap/iclient-common/iServer/FacilityAnalystSinks3DService';
+import { FacilityAnalystSources3DService } from '@supermap/iclient-common/iServer/FacilityAnalystSources3DService';
+import { FacilityAnalystTraceup3DService } from '@supermap/iclient-common/iServer/FacilityAnalystTraceup3DService';
+import { FacilityAnalystTracedown3DService } from '@supermap/iclient-common/iServer/FacilityAnalystTracedown3DService';
+import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServer/FacilityAnalystUpstream3DService';
 
 /**
  * @class mapboxgl.supermap.NetworkAnalyst3DService

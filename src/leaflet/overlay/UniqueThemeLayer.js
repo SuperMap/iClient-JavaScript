@@ -1,11 +1,10 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import '../core/Base';
-import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
-import {CommonUtil} from '@supermap/iclient-common';
-
+ import L from 'leaflet';
+ import '../core/Base';
+ import { GeoFeatureThemeLayer } from './theme/GeoFeatureThemeLayer';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
  * @class L.supermap.uniqueThemeLayer
  * @classdesc 客户端单值专题图。

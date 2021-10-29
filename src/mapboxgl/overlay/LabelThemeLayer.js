@@ -3,15 +3,13 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    GeometryVector as FeatureVector,
-    GeoText,
-    Bounds,
-    CommonUtil as Util,
-    ShapeFactory,
-    ThemeVector as Vector
-} from '@supermap/iclient-common';
-import {
+import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVector';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+ import {
     GeoFeature
 } from './theme/GeoFeatureThemeLayer';
 

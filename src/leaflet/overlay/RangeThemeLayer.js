@@ -4,7 +4,7 @@
 import L from "leaflet";
 import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
-import {CommonUtil} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class L.supermap.rangeThemeLayer

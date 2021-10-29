@@ -10,7 +10,7 @@
  */
 
 import * as THREE from "three";
-import {CommonUtil as Util} from "@supermap/iclient-common";
+import { Util } from '@supermap/iclient-common/commontypes/Util';
 import {Transform} from "./Transform";
 
 const projection = Transform.projection;

@@ -2,14 +2,12 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import proj4 from "proj4";
-import {
-    FetchRequest,
-    SecurityManager,
-    ColorsPickerUtil,
-    ArrayStatistic,
-    Events,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { ArrayStatistic } from '@supermap/iclient-common/util/ArrayStatistic';
+import { ColorsPickerUtil } from '@supermap/iclient-common/util/ColorsPickerUtil';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Events } from '@supermap/iclient-common/commontypes/Events';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import {
     Util
 } from '../core/Util';

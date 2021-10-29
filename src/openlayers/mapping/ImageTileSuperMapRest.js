@@ -3,7 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 import XYZ from 'ol/source/XYZ';
-import { SecurityManager, CommonUtil } from '@supermap/iclient-common';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class ol.source.ImageTileSuperMapRest

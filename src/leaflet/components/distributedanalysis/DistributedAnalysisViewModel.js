@@ -4,8 +4,9 @@
 import L from "leaflet";
 import '../../core/Base';
 import { DistributedAnalysisModel } from "./DistributedAnalysisModel";
-import { FetchRequest, KernelDensityJobParameter } from "@supermap/iclient-common";
+import {  KernelDensityJobParameter } from "@supermap/iclient-common";
 import { ProcessingService } from '../../services/ProcessingService'
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 /**
  * @class L.supermap.components.distributedAnalysisViewModel
  * @classdesc 分布式分析组件功能类。

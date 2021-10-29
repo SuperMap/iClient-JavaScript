@@ -4,13 +4,10 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {DatasetService as CommonDatasetService} from '@supermap/iclient-common/iServer/DatasetService';
-import {
-    CreateDatasetParameters,
-    UpdateDatasetParameters,
-    CommonUtil
-} from '@supermap/iclient-common';
-
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
+import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
+import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
 /**
  * @class mapboxgl.supermap.DatasetService
  * @category  iServer Data Dataset

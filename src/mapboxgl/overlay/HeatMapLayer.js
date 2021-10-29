@@ -3,16 +3,13 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    GeoJSON as GeoJSONFormat,
-    ServerFeature,
-    GeometryVector,
-    LonLat,
-    GeometryPoint as Point,
-    GeoText,
-    CommonUtil
-} from '@supermap/iclient-common';
-
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 /**
  * @class mapboxgl.supermap.HeatMapLayer
  * @classdesc 热力图层类。

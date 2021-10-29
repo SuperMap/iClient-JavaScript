@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
 import GeoJSON from 'ol/format/GeoJSON';
 
 /**

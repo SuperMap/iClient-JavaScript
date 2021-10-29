@@ -5,7 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common';
+import { GetFieldsService } from '@supermap/iclient-common/iServer/GetFieldsService';
+import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldStatisticService';
 
 /**
  * @class mapboxgl.supermap.FieldService

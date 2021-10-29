@@ -5,17 +5,15 @@ import L from "leaflet";
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
 import "../core/Base";
-import {
-    FetchRequest as Request,
-    DataFormat,
-    GeoJSON as GeoJSONFormat,
-    ServerFeature,
-    ThemeStyle,
-    GeometryVector as Vector,
-    GeometryPoint as Point,
-    CommonUtil as Util,
-    GetFeaturesBySQLParameters
-} from '@supermap/iclient-common';
+import { FetchRequest as Request } from '@supermap/iclient-common/util/FetchRequest';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { ThemeStyle } from '@supermap/iclient-common/style/ThemeStyle';
+import { Vector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Util } from '@supermap/iclient-common/commontypes/Util';
 import {
     CartoCSSToLeaflet
 } from '../overlay/carto/CartoCSSToLeaflet';

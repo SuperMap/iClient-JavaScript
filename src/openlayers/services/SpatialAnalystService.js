@@ -1,25 +1,24 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import {Util} from '../core/Util';
-import {
-    GeometryPoint,
-    DataFormat,
-    AreaSolarRadiationService,
-    BufferAnalystService,
-    DensityAnalystService,
-    GenerateSpatialDataService,
-    GeoRelationAnalystService,
-    InterpolationAnalystService,
-    MathExpressionAnalysisService,
-    OverlayAnalystService,
-    RouteCalculateMeasureService,
-    RouteLocatorService,
-    SurfaceAnalystService,
-    TerrainCurvatureCalculationService,
-    ThiessenAnalystService,
-    GeometryBatchAnalystService
-} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { AreaSolarRadiationService } from '@supermap/iclient-common/iServer/AreaSolarRadiationService';
+import { BufferAnalystService } from '@supermap/iclient-common/iServer/BufferAnalystService';
+import { DensityAnalystService } from '@supermap/iclient-common/iServer/DensityAnalystService';
+import { GenerateSpatialDataService } from '@supermap/iclient-common/iServer/GenerateSpatialDataService';
+import { GeoRelationAnalystService } from '@supermap/iclient-common/iServer/GeoRelationAnalystService';
+import { InterpolationAnalystService } from '@supermap/iclient-common/iServer/InterpolationAnalystService';
+import { MathExpressionAnalysisService } from '@supermap/iclient-common/iServer/MathExpressionAnalysisService';
+import { OverlayAnalystService } from '@supermap/iclient-common/iServer/OverlayAnalystService';
+import { RouteCalculateMeasureService } from '@supermap/iclient-common/iServer/RouteCalculateMeasureService';
+import { RouteLocatorService } from '@supermap/iclient-common/iServer/RouteLocatorService';
+import { SurfaceAnalystService } from '@supermap/iclient-common/iServer/SurfaceAnalystService';
+import { TerrainCurvatureCalculationService } from '@supermap/iclient-common/iServer/TerrainCurvatureCalculationService';
+import { ThiessenAnalystService } from '@supermap/iclient-common/iServer/ThiessenAnalystService';
+import { GeometryBatchAnalystService } from '@supermap/iclient-common/iServer/GeometryBatchAnalystService';
+
 import {ServiceBase} from './ServiceBase';
 import LineString from 'ol/geom/LineString';
 import GeoJSON from 'ol/format/GeoJSON';

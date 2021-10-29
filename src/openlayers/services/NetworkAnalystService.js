@@ -1,20 +1,18 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import {
-    DataFormat,
-    BurstPipelineAnalystService,
-    ComputeWeightMatrixService,
-    FacilityAnalystStreamService,
-    FindClosestFacilitiesService,
-    FindLocationService,
-    FindMTSPPathsService,
-    FindPathService,
-    FindServiceAreasService,
-    FindTSPPathsService,
-    UpdateEdgeWeightService,
-    UpdateTurnNodeWeightService
-} from '@supermap/iclient-common';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { BurstPipelineAnalystService } from '@supermap/iclient-common/iServer/BurstPipelineAnalystService';
+import { ComputeWeightMatrixService } from '@supermap/iclient-common/iServer/ComputeWeightMatrixService';
+import { FacilityAnalystStreamService } from '@supermap/iclient-common/iServer/FacilityAnalystStreamService';
+import { FindClosestFacilitiesService } from '@supermap/iclient-common/iServer/FindClosestFacilitiesService';
+import { FindLocationService } from '@supermap/iclient-common/iServer/FindLocationService';
+import { FindMTSPPathsService } from '@supermap/iclient-common/iServer/FindMTSPPathsService';
+import { FindPathService } from '@supermap/iclient-common/iServer/FindPathService';
+import { FindServiceAreasService } from '@supermap/iclient-common/iServer/FindServiceAreasService';
+import { FindTSPPathsService } from '@supermap/iclient-common/iServer/FindTSPPathsService';
+import { UpdateEdgeWeightService } from '@supermap/iclient-common/iServer/UpdateEdgeWeightService';
+import { UpdateTurnNodeWeightService } from '@supermap/iclient-common/iServer/UpdateTurnNodeWeightService';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import Point from 'ol/geom/Point';

@@ -1,16 +1,15 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L, { Util as LUtil} from "leaflet";
-import "../core/Base";
-import {
-    SecurityManager,
-    Unit,
-    ServerGeometry,
-    CommonUtil
-} from '@supermap/iclient-common';
-import * as Util from "../core/Util";
-import Attributions from '../core/Attributions'
+ import L, { Util as LUtil } from 'leaflet';
+ import '../core/Base';
+ import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+ import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
+ import { Unit } from '@supermap/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ 
+ import * as Util from '../core/Util';
+ import Attributions from '../core/Attributions';
 
 /**
  * @class L.supermap.tiledMapLayer

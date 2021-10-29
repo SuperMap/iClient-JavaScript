@@ -9,7 +9,8 @@
  * thanks dereklieu, cloudybay
  */
 
-import { getWrapNum, conversionDegree, CommonUtil } from '@supermap/iclient-common';
+import { getWrapNum, conversionDegree } from '@supermap/iclient-common/util/MapCalculateUtil';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import mapboxgl from 'mapbox-gl';
 /**
  * @class mapboxgl.supermap.GraticuleLayer

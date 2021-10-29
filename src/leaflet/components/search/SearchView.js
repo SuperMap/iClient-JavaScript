@@ -1,26 +1,16 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {
-  ComponentsViewBase
-} from '../ComponentsViewBase';
-import {
-    config
-} from './CityConfig';
-import {
-    // ComponentSelect,
-    MessageBox,
-    NavTabsPage,
-    CityTabsPage,
-    PaginationContainer,
-    AttributesPopContainer,
-    Lang
-} from '@supermap/iclient-common';
-
-import {
-    SearchViewModel
-} from './SearchViewModel';
+ import L from 'leaflet';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { config } from './CityConfig';
+ import { NavTabsPage } from '@supermap/iclient-common/components/templates/NavTabsPage';
+ import { CityTabsPage } from '@supermap/iclient-common/components/templates/CityTabsPage';
+ import { PaginationContainer } from '@supermap/iclient-common/components/templates/PaginationContainer';
+ import { AttributesPopContainer } from '@supermap/iclient-common/components/templates/AttributesPopContainer';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { SearchViewModel } from './SearchViewModel';
 
 /**
  * @class L.supermap.components.search

@@ -3,9 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import {
-    FeatureTheme
-} from '@supermap/iclient-common';
+import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
 import {
     GraphThemeLayer
 } from './GraphThemeLayer';

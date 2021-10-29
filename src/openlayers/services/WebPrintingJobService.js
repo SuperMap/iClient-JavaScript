@@ -3,7 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { WebPrintingService, SuperMap } from '@supermap/iclient-common';
+import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
+import { SuperMap } from '@supermap/iclient-common/SuperMap';
 import Point from 'ol/geom/Point';
 
 /**

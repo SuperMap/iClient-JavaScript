@@ -5,18 +5,16 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import {
-    DataFormat,
-    Geometry,
-    GeometryPoint,
-    GetFeaturesByIDsService,
-    GetFeaturesBySQLService,
-    GetFeaturesByBoundsService,
-    GetFeaturesByBufferService,
-    GetFeaturesByGeometryService,
-    EditFeaturesService,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { GetFeaturesByIDsService } from '@supermap/iclient-common/iServer/GetFeaturesByIDsService';
+import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFeaturesBySQLService';
+import { GetFeaturesByBoundsService } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsService';
+import { GetFeaturesByBufferService } from '@supermap/iclient-common/iServer/GetFeaturesByBufferService';
+import { GetFeaturesByGeometryService } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryService';
+import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
 
 /**
  * @class mapboxgl.supermap.FeatureService

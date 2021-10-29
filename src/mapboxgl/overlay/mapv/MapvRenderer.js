@@ -7,7 +7,7 @@
 import mapboxgl from 'mapbox-gl';
 import {
     getMeterPerMapUnit
-} from '@supermap/iclient-common';
+} from '@supermap/iclient-common/util/MapCalculateUtil';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 

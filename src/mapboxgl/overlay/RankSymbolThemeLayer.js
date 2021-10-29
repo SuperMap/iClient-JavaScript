@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Graph} from './GraphThemeLayer';
-import {FeatureTheme} from '@supermap/iclient-common';
+import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
 
 /**
  * @class mapboxgl.supermap.RankSymbolThemeLayer

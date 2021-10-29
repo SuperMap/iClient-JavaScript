@@ -2,19 +2,17 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
-import {
-	FetchRequest,
-	CommonUtil,
-	StringExt,
-	FilterParameter,
-	GetFeaturesBySQLParameters,
-	GetFeaturesBySQLService,
-	QueryBySQLParameters,
-	QueryOption,
-	Lang,
-	ArrayStatistic,
-	ColorsPickerUtil
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { ArrayStatistic } from '@supermap/iclient-common/util/ArrayStatistic';
+import { ColorsPickerUtil } from '@supermap/iclient-common/util/ColorsPickerUtil';
+import { QueryOption } from '@supermap/iclient-common/REST';
+import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFeaturesBySQLService';
+import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQLParameters';
+import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
+import { Lang } from '@supermap/iclient-common/lang/Lang';
 import { Util } from '../core/Util';
 import convert from 'xml-js';
 import canvg from 'canvg';

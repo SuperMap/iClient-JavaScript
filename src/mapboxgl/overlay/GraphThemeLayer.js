@@ -3,11 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    CommonUtil,
-    FeatureTheme
-} from "@supermap/iclient-common";
-
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { Theme as FeatureTheme } from "@supermap/iclient-common/overlay/feature/Theme";
 import {
     Theme
 } from './theme/ThemeLayer';
