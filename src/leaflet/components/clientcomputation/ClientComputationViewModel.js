@@ -2,23 +2,27 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import L from "leaflet";
-import '../../core/Base';
-import {GeoJSONLayerWithName} from '../commonmodels/GeoJSONLayerWithName';
-import {GeoJsonLayersDataModel} from '../commonmodels/GeoJsonLayersModel';
-import {AttributesPopContainer} from '@supermap/iclient-common';
+ import L from 'leaflet';
+ import '../../core/Base';
+ import { GeoJSONLayerWithName } from '../commonmodels/GeoJSONLayerWithName';
+ import { GeoJsonLayersDataModel } from '../commonmodels/GeoJsonLayersModel';
+ import { AttributesPopContainer } from '@supermap/iclient-common/components/templates/AttributesPopContainer';
+ 
 
 /**
- * @class L.supermap.components.clientComputationViewModel
+ * @class ClientComputationViewModel
+ * @aliasclass Components.ClientComputationViewModel
+ * @deprecatedclassinstance L.supermap.components.clientComputationViewModel
  * @classdesc 客户端计算组件功能类。
  * @version 9.1.1
  * @category Components ClientComputation
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
- * @fires L.supermap.components.clientComputationViewModel#analysisfailed
- * @fires L.supermap.components.clientComputationViewModel#analysissucceeded
- * @fires L.supermap.components.clientComputationViewModel#layerloaded
- * @fires L.supermap.components.clientComputationViewModel#layersremoved
+ * @fires ClientComputationViewModel#analysisfailed
+ * @fires ClientComputationViewModel#analysissucceeded
+ * @fires ClientComputationViewModel#layerloaded
+ * @fires ClientComputationViewModel#layersremoved
  * @extends {L.Evented}
+ * @usage
  */
 export class ClientComputationViewModel extends L.Evented {
     initialize(workerUrl) {
@@ -27,7 +31,7 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.components.clientComputationViewModel.prototype.getLayersData
+     * @function ClientComputationViewModel.prototype.getLayersData
      * @description 获取填充到 view 的数据。
      * @param {Array.<L.GeoJSON>} layersArr - 图层数组。
      * @returns {Object} layers 数据。
@@ -97,8 +101,8 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.components.clientComputationViewModel.prototype.analysis
-     * @description 进行客户端计算。
+     * @function ClientComputationViewModel.prototype.analysis
+     * @description 客户端计算。
      * @param {Object} params - 客户端计算参数。
      * @param {L.Map} map - Leaflet Map 对象。
      */
@@ -125,13 +129,13 @@ export class ClientComputationViewModel extends L.Evented {
             this.worker.onmessage = (e) => {
                 if (e.data.features.length === 0) {
                     /**
-                     * @event L.supermap.components.clientComputationViewModel#analysisfailed
+                     * @event ClientComputationViewModel#analysisfailed
                      * @description 事件分析失败后触发，返回结果为空。
                      */
                     me.fire('analysisfailed');
                 } else {
                     /**
-                     * @event L.supermap.components.clientComputationViewModel#analysissucceeded
+                     * @event ClientComputationViewModel#analysissucceeded
                      * @description 事件分析成功后触发。 
                      * @property {Object} data - 分析成功后的数据。
                      */
@@ -161,7 +165,7 @@ export class ClientComputationViewModel extends L.Evented {
                     }).addTo(map);
                     me.turfLayers.push(turfLayer);
                     /**
-                     * @event L.supermap.components.clientComputationViewModel#layerloaded
+                     * @event ClientComputationViewModel#layerloaded
                      * @description 结果图层加载完成后触发。
                      * @property {L.GeoJSON} layer - 加载完成后的结果图层。
                      * @property {string} name - 加载完成后的结果图层名称。
@@ -224,7 +228,7 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.components.clientComputationViewModel.prototype.clearLayers
+     * @function ClientComputationViewModel.prototype.clearLayers
      * @description 清空分析图层。
      */
     clearLayers() {
@@ -232,7 +236,7 @@ export class ClientComputationViewModel extends L.Evented {
             this.turfLayers[i].clearLayers()
         }
         /**
-         * @event L.supermap.components.clientComputationViewModel#layersremoved
+         * @event ClientComputationViewModel#layersremoved
          * @description 图层删除之后触发。
          * @property {Array.<L.GeoJSON>} layer - 需要删除的图层数组。
          */
@@ -240,7 +244,7 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.components.clientComputationViewModel.prototype.cancelAnalysis
+     * @function ClientComputationViewModel.prototype.cancelAnalysis
      * @description 取消分析。
      */
     cancelAnalysis() {
@@ -251,4 +255,3 @@ export class ClientComputationViewModel extends L.Evented {
 export var clientComputationViewModel = function (options) {
     return new ClientComputationViewModel(options);
 };
-L.supermap.components.clientComputationViewModel = clientComputationViewModel;

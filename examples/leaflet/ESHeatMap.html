@@ -51,7 +51,7 @@
             return popup;
         };
         info.addTo(map);
-        liveESService = new SuperMap.ElasticSearch(dataUrl);
+        liveESService = new L.supermap.ElasticSearch(dataUrl);
     }
 
     function handleMapEvent(div, map) {
@@ -74,7 +74,7 @@
     function start() {
         var options = getControlOptions();
         if (!timeControl) {
-            timeControl = new SuperMap.TimeFlowControl(loadLiveData, options);
+            timeControl = new L.supermap.TimeFlowControl(loadLiveData, options);
         } else {
             timeControl.updateOptions(options);
         }
@@ -195,7 +195,7 @@
         }
         updateDataSet(data);
         if (!liveRenderer) {
-            liveRenderer = L.supermap.mapVLayer(liveDataSet, layerOptions, {noWrap: true}).addTo(map);
+            liveRenderer = new L.supermap.MapVLayer(liveDataSet, layerOptions, {noWrap: true}).addTo(map);
         } else {
             liveRenderer.update({data: liveDataSet, options: layerOptions});
         }
@@ -355,7 +355,7 @@
             var attr = 'Data © <a href="https://www.elastic.co/products/elasticsearch" target="_blank">Elasticsearch</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span>';
             var host = window.isLocal ? window.server : "https://iserver.supermap.io";
             var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
-            L.supermap.tiledMapLayer(url, {attribution: attr}).addTo(map);
+            new L.supermap.TiledMapLayer(url, {attribution: attr}).addTo(map);
         }
 
         initTimeControlView();

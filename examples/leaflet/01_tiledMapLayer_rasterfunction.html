@@ -20,11 +20,11 @@
         maxZoom: 12,
         zoom: 12
       });
-      L.supermap
-        .tiledMapLayer(url, {
+      new L.supermap
+        .TiledMapLayer(url, {
           cacheEnabled: false,
-          rasterfunction: new SuperMap.NDVIParameter({ redIndex: 0, nirIndex: 2 })
-          // rasterfunction: new SuperMap.HillshadeParameter({
+          rasterfunction: new L.supermap.NDVIParameter({ redIndex: 0, nirIndex: 2 })
+          // rasterfunction: new L.supermap.HillshadeParameter({
           //   altitude: 45,
           //   azimuth: 315,
           //   zFactor:1

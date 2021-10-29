@@ -55,11 +55,11 @@
         maxZoom: 18,
         minZoom: 6
     });
-    L.supermap.tiledMapLayer(baseurl).addTo(map);
+    new L.supermap.TiledMapLayer(baseurl).addTo(map);
     query();
 
     function query() {
-        var param = new SuperMap.QueryBySQLParameters({
+        var param = new L.supermap.QueryBySQLParameters({
             queryParams: {
                 name: "lj_xq_500gw@BJ_201802LJ",
                 attributeFilter: "SMID > 0"
@@ -68,7 +68,7 @@
             toIndex: 10000,
             maxFeatures: 10000
         });
-        L.supermap.queryService(dataUrl).queryBySQL(param, function (serviceResult) {
+        new L.supermap.QueryService(dataUrl).queryBySQL(param, function (serviceResult) {
             var result = serviceResult.result;
             var features = result.recordsets[0].features.features;
             //构造数据
@@ -153,7 +153,7 @@
                 var lngLat = L.CRS.EPSG3857.unproject(L.point(coords));
                 return [lngLat.lng, lngLat.lat];
             }
-            L.supermap.echartsLayer(option).addTo(map);
+            new L.supermap.EchartsLayer(option).addTo(map);
         });
     }
 </script>

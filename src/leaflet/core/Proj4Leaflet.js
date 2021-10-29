@@ -9,7 +9,7 @@ import proj4 from 'proj4';
 
 window.proj4 = proj4;
 window.Proj4js = proj4;
-L.Proj = {};
+L.Proj = L.Proj || {};
 
 L.Proj._isProj4Obj = function(a) {
     return typeof a.inverse !== 'undefined' && typeof a.forward !== 'undefined';
@@ -23,7 +23,7 @@ L.Proj._isProj4Obj = function(a) {
  * @extends {L.Class}
  * @param {string} code - proj srsCode
  * @param {string} def - 投影的 proj4 定义。{@link [详细]{https://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
- * @param {L.bounds} bounds -  投影范围参数
+ * @param {L.Bounds} bounds -  投影范围参数
  */
 L.Proj.Projection = L.Class.extend({
     initialize: function(code, def, bounds, wrapLng) {
@@ -52,7 +52,7 @@ L.Proj.Projection = L.Class.extend({
      * @function L.Proj.Projection.prototype.unproject
      * @description 通过投影坐标得到地理坐标。
      * @param {L.Point} point - 坐标点。
-     * @param {number} unbounded -  坐标点高程值等。
+     * @param {number} unbounded - 坐标点高程值等。
      * @returns {L.LatLng} 返回经纬度坐标
      */
     unproject: function(point, zoom) {
@@ -95,12 +95,15 @@ L.Proj.Projection = L.Class.extend({
 });
 
 /**
- * @class L.Proj.CRS
+ * @class CRS
+ * @aliasclass Proj.CRS
+ * @deprecatedclass L.Proj.CRS
+ * @deprecatedclassinstance L.supermap.Proj.crs
  * @classdesc 基于 Proj4 坐标系统扩展类。
  * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。
  * 当指定`options.bounds` 时，第 0 级为一张 256 切片包含整个 bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
  * 为保证切片行列号正确，`options.origin` `options.bounds` 必须指定一个。
- * 当指定`options.bounds` 时，切片原点为bounds的左上角。
+ * 当指定`options.bounds` 时，切片原点为 bounds 的左上角。
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
@@ -114,7 +117,7 @@ L.Proj.Projection = L.Class.extend({
  * @param {number} [options.dpi=96] - dpi。
  * @param {number} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
  * @example
- *    var crs =L.Proj.CRS("EPSG:4326",{
+ *    var crs =new CRS("EPSG:4326",{
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
  *    });
@@ -122,6 +125,7 @@ L.Proj.Projection = L.Class.extend({
  *       crs: crs
  *      ...
  *    })
+ * @usage
  */
 export var CRS = L.Class.extend({
     includes: L.CRS,
@@ -208,7 +212,7 @@ export var CRS = L.Class.extend({
         }
     },
     /**
-     * @function L.Proj.CRS.prototype.scale
+     * @function CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值。
      * @param {number} zoom - 缩放级别。
      * @returns 比例尺值。
@@ -232,7 +236,7 @@ export var CRS = L.Class.extend({
     },
 
     /**
-     * @function L.Proj.CRS.prototype.zoom
+     * @function CRS.prototype.zoom
      * @description 根据比例尺返回缩放级别。
      * @param {number} scale - 比例尺。
      * @returns {number} 缩放级别。
@@ -331,4 +335,4 @@ export var CRS = L.Class.extend({
 export var crs = function(srsCode, options) {
     return new CRS(srsCode, options);
 };
-L.Proj.CRS = crs;
+

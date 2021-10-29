@@ -44,7 +44,7 @@
 
     function densityAnalystProcess() {
         //创建点密度插值分析参数实例
-        var densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+        var densityAnalystParameters = new ol.supermap.DensityKernelAnalystParameters({
             //指定数据集
             dataset: "Railway@Changchun",
             //指定范围
@@ -64,39 +64,39 @@
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            var color1 = new SuperMap.ServerColor(255, 212, 170),
-                color2 = new SuperMap.ServerColor(255, 127, 0),
-                color3 = new SuperMap.ServerColor(191, 95, 0),
-                color4 = new SuperMap.ServerColor(255, 0, 0),
-                color5 = new SuperMap.ServerColor(191, 0, 0);
-            var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
+            var color1 = new ol.supermap.ServerColor(255, 212, 170),
+                color2 = new ol.supermap.ServerColor(255, 127, 0),
+                color3 = new ol.supermap.ServerColor(191, 95, 0),
+                color4 = new ol.supermap.ServerColor(255, 0, 0),
+                color5 = new ol.supermap.ServerColor(191, 0, 0);
+            var themeGridRangeIteme1 = new ol.supermap.ThemeGridRangeItem({
                     start: 0,
                     end: 0.05,
                     color: color1
                 }),
-                themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme2 = new ol.supermap.ThemeGridRangeItem({
                     start: 0.05,
                     end: 5,
                     color: color2
                 }),
-                themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme3 = new ol.supermap.ThemeGridRangeItem({
                     start: 5,
                     end: 10,
                     color: color3
                 }),
-                themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme4 = new ol.supermap.ThemeGridRangeItem({
                     start: 10,
                     end: 100,
                     color: color4
                 }),
-                themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme5 = new ol.supermap.ThemeGridRangeItem({
                     start: 100,
                     end: 360,
                     color: color5
                 });
-            var themeGridRange = new SuperMap.ThemeGridRange({
+            var themeGridRange = new ol.supermap.ThemeGridRange({
                 reverseColor: false,
-                rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+                rangeMode: ol.supermap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
                 items: [themeGridRangeIteme1,
                     themeGridRangeIteme2,
@@ -106,7 +106,7 @@
                 ]
             });
 
-            var themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new ol.supermap.ThemeParameters({
                 //制作专题图的数据集
                 datasetNames: [densityAnalystResult.dataset.split('@')[0]],
                 dataSourceNames: ["Changchun"],

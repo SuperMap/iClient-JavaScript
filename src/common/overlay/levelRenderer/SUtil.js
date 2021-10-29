@@ -16,14 +16,14 @@ import {Vector} from './Vector';
 
 export class SUtil {
     /**
-     * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothBezier
+     * @function LevelRenderer.SUtil.SUtil_smoothBezier
      * @description 贝塞尔平滑曲线。
-     * @private 
+     * @private
      * @param {Array} points - 线段顶点数组。
      * @param {number} smooth - 平滑等级, 0-1。
      * @param {boolean} isLoop - isLoop。
      * @param {Array} constraint - 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
-     * @param {Array} [originalPosition=[0, 0]] - 参考原点。
+     * @param {Array.<number>} [originalPosition=[0, 0]] - 参考原点。
      * @return {Array} 生成的平滑节点数组。
      */
     static SUtil_smoothBezier(points, smooth, isLoop, constraint, originalPosition) {
@@ -107,13 +107,13 @@ export class SUtil {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothSpline
+     * @function LevelRenderer.SUtil.SUtil_smoothSpline
      * @description 插值折线。
-     * @private 
+     * @private
      * @param {Array} points - 线段顶点数组。
      * @param {boolean} isLoop - isLoop。
      * @param {Array} constraint - 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
-     * @param {Array} originalPosition - 参考原点。默认值：[0, 0]。
+     * @param {Array.<number>} originalPosition - 参考原点。默认值：[0, 0]。
      * @return {Array} 生成的平滑节点数组。
      */
     static SUtil_smoothSpline(points, isLoop, constraint, originalPosition) {
@@ -174,7 +174,7 @@ export class SUtil {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.SUtil.SUtil_dashedLineTo
+     * @function LevelRenderer.SUtil.SUtil_dashedLineTo
      * @description 虚线 lineTo。
      */
     static SUtil_dashedLineTo(ctx, x1, y1, x2, y2, dashLength, customDashPattern) {

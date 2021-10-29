@@ -1,13 +1,12 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
 import {Util} from "../../core/Util";
 
 
 /**
- * @class mapboxgl.supermap.Graphic
+ * @class Graphic
  * @classdesc 高效率点图层点要素类。
  * @category  Visualization Graphic
  * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含{lng,lat}格式对象。
@@ -16,7 +15,7 @@ import {Util} from "../../core/Util";
  * @param {Object} [style.radius] - 点半径。
  * @param {Object} [attributes] - 属性信息。
  * @example
- * var graphic = new mapboxgl.supermap.Graphic(
+ * var graphic = new Graphic(
  *    {
  *         lng:116,
  *         lat:39
@@ -25,6 +24,7 @@ import {Util} from "../../core/Util";
  *         radius:30
  *    }
  * });
+ * @usage
  */
 export class Graphic {
     constructor(lngLat, style, attributes) {
@@ -34,7 +34,7 @@ export class Graphic {
         this.attributes = attributes;
     }
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.getId
+     * @function Graphic.prototype.getId
      * @description 获取当前 ID。
      * @returns {string} id
      */
@@ -43,7 +43,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.setId
+     * @function Graphic.prototype.setId
      * @description 设置当前要素 ID。
      * @param {string} id - 要素 ID。
      */
@@ -53,7 +53,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.getLngLat
+     * @function Graphic.prototype.getLngLat
      * @description 获取经纬度坐标。
      * @returns {Object} 经纬度坐标,数据格式{lng,lat}。
      */
@@ -62,7 +62,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.setLngLat
+     * @function Graphic.prototype.setLngLat
      * @description 设置经纬度坐标。
      * @param {Object} lngLat - 经纬度坐标,数据格式{lng,lat}。
      */
@@ -71,7 +71,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.setStyle
+     * @function Graphic.prototype.setStyle
      * @description 设置点样式。
      * @param {Object} style -样式选项。
      * @param {Array} [style.color] - 颜色。
@@ -82,7 +82,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.getStyle
+     * @function Graphic.prototype.getStyle
      * @description 获取样式。
      * @returns {Object} 点样式。
      */
@@ -91,7 +91,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.setAttributes
+     * @function Graphic.prototype.setAttributes
      * @description 设置属性信息。
      * @param {Object} [attributes] - 属性信息。
      */
@@ -100,7 +100,7 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.getAttributes
+     * @function Graphic.prototype.getAttributes
      * @description 获取属性信息。
      * @returns {Object} 属性信息。
      */
@@ -109,4 +109,3 @@ export class Graphic {
     }
 }
 
-mapboxgl.supermap.Graphic = Graphic;

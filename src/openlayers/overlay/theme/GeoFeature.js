@@ -1,7 +1,10 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {Bounds, CommonUtil, ShapeFactory, ThemeVector as Vector} from '@supermap/iclient-common';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector as Vector} from '@supermap/iclient-common/overlay/ThemeVector';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import {Theme} from './Theme';
 
 /**
@@ -10,20 +13,20 @@ import {Theme} from './Theme';
  * @classdesc 地理几何专题要素型专题图层基类。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
- * @param {ol/Map} opt_options.map - 当前 OpenLayers Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 OpenLayers Map 对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
- * @param {ol/proj/Projection} [opt_options.projection] - 投影信息。
+ * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_options.resolutions] - 分辨率数组。
- * @param {ol/source/State} [opt_option.state] - 资源状态。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {Object} [opt_options.style] - 专题图样式。
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {Theme}
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @extends {ol.source.Theme}
  */
 
 export class GeoFeature extends Theme {
@@ -64,7 +67,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
      * @description 添加要素。
-     * @param {SuperMap.ServerFeature|GeoJSONObject|ol/Feature} features - 要素对象。
+     * @param {ServerFeature|GeoJSONObject|ol.Feature} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -82,7 +85,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
+     * @param {FeatureVector} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -246,7 +249,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.setMaxCacheCount
+     * @function ol.source.GeoFeature.prototype.getShapesByFeatureID
      * @param {number} featureID - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */

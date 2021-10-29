@@ -600,7 +600,7 @@ var Channel = function(type, sticky) {
          * This holds up Cordova's "deviceready" event until the feature has been initialized
          * and Cordova.initComplete(feature) is called.
          *
-         * @param feature {String}     The unique feature name
+         * @param feature {string}     The unique feature name
          */
         waitForInitialization: function(feature) {
             if (feature) {
@@ -613,7 +613,7 @@ var Channel = function(type, sticky) {
         /**
          * Indicate that initialization code has completed and the feature is ready to be used.
          *
-         * @param feature {String}     The unique feature name
+         * @param feature {string}     The unique feature name
          */
         initializationComplete: function(feature) {
             var c = this.deviceReadyChannelsMap[feature];
@@ -793,10 +793,10 @@ define("cordova/exec", function(require, exports, module) {
  * If async, the native side will cordova.callbackSuccess or cordova.callbackError,
  * depending upon the result of the action.
  *
- * @param {Function} success    The success callback
- * @param {Function} fail       The fail callback
- * @param {String} service      The name of the service to use
- * @param {String} action       Action to be run in cordova
+ * @param {function} success    The success callback
+ * @param {function} fail       The fail callback
+ * @param {string} service      The name of the service to use
+ * @param {string} action       Action to be run in cordova
  * @param {String[]} [args]     Zero or more arguments to pass to the method
  */
 var cordova = require('cordova'),
@@ -1188,8 +1188,8 @@ for (var key in Camera) {
 
  * The defaults are sourceType=CAMERA and destinationType=FILE_URI.
  *
- * @param {Function} successCallback
- * @param {Function} errorCallback
+ * @param {function} successCallback
+ * @param {function} errorCallback
  * @param {Object} options
  */
 cameraExport.getPicture = function(successCallback, errorCallback, options) {
@@ -1863,8 +1863,8 @@ DirectoryEntry.prototype.createReader = function() {
  *
  * @param {DOMString} path either a relative or absolute path from this directory in which to look up or create a directory
  * @param {Flags} options to create or exclusively create the directory
- * @param {Function} successCallback is called with the new entry
- * @param {Function} errorCallback is called with a FileError
+ * @param {function} successCallback is called with the new entry
+ * @param {function} errorCallback is called with a FileError
  */
 DirectoryEntry.prototype.getDirectory = function(path, options, successCallback, errorCallback) {
     argscheck.checkArgs('sOFF', 'DirectoryEntry.getDirectory', arguments);
@@ -1881,8 +1881,8 @@ DirectoryEntry.prototype.getDirectory = function(path, options, successCallback,
 /**
  * Deletes a directory and all of it's contents
  *
- * @param {Function} successCallback is called with no parameters
- * @param {Function} errorCallback is called with a FileError
+ * @param {function} successCallback is called with no parameters
+ * @param {function} errorCallback is called with a FileError
  */
 DirectoryEntry.prototype.removeRecursively = function(successCallback, errorCallback) {
     argscheck.checkArgs('FF', 'DirectoryEntry.removeRecursively', arguments);
@@ -1897,8 +1897,8 @@ DirectoryEntry.prototype.removeRecursively = function(successCallback, errorCall
  *
  * @param {DOMString} path either a relative or absolute path from this directory in which to look up or create a file
  * @param {Flags} options to create or exclusively create the file
- * @param {Function} successCallback is called with the new entry
- * @param {Function} errorCallback is called with a FileError
+ * @param {function} successCallback is called with the new entry
+ * @param {function} errorCallback is called with a FileError
  */
 DirectoryEntry.prototype.getFile = function(path, options, successCallback, errorCallback) {
     argscheck.checkArgs('sOFF', 'DirectoryEntry.getFile', arguments);
@@ -1933,8 +1933,8 @@ function DirectoryReader(path) {
 /**
  * Returns a list of entries from a directory.
  *
- * @param {Function} successCallback is called with a list of entries
- * @param {Function} errorCallback is called with a FileError
+ * @param {function} successCallback is called with a list of entries
+ * @param {function} errorCallback is called with a FileError
  */
 DirectoryReader.prototype.readEntries = function(successCallback, errorCallback) {
     var win = typeof successCallback !== 'function' ? null : function(result) {
@@ -1999,9 +1999,9 @@ function Entry(isFile, isDirectory, name, fullPath, fileSystem) {
  * Look up the metadata of the entry.
  *
  * @param successCallback
- *            {Function} is called with a Metadata object
+ *            {function} is called with a Metadata object
  * @param errorCallback
- *            {Function} is called with a FileError
+ *            {function} is called with a FileError
  */
 Entry.prototype.getMetadata = function(successCallback, errorCallback) {
     argscheck.checkArgs('FF', 'Entry.getMetadata', arguments);
@@ -2020,9 +2020,9 @@ Entry.prototype.getMetadata = function(successCallback, errorCallback) {
  * Set the metadata of the entry.
  *
  * @param successCallback
- *            {Function} is called with a Metadata object
+ *            {function} is called with a Metadata object
  * @param errorCallback
- *            {Function} is called with a FileError
+ *            {function} is called with a FileError
  * @param metadataObject
  *            {Object} keys and values to set
  */
@@ -2039,9 +2039,9 @@ Entry.prototype.setMetadata = function(successCallback, errorCallback, metadataO
  * @param newName
  *            {DOMString} new name of the entry, defaults to the current name
  * @param successCallback
- *            {Function} called with the new DirectoryEntry object
+ *            {function} called with the new DirectoryEntry object
  * @param errorCallback
- *            {Function} called with a FileError
+ *            {function} called with a FileError
  */
 Entry.prototype.moveTo = function(parent, newName, successCallback, errorCallback) {
     argscheck.checkArgs('oSFF', 'Entry.moveTo', arguments);
@@ -2078,9 +2078,9 @@ Entry.prototype.moveTo = function(parent, newName, successCallback, errorCallbac
  * @param newName
  *            {DOMString} new name of the entry, defaults to the current name
  * @param successCallback
- *            {Function} called with the new Entry object
+ *            {function} called with the new Entry object
  * @param errorCallback
- *            {Function} called with a FileError
+ *            {function} called with a FileError
  */
 Entry.prototype.copyTo = function(parent, newName, successCallback, errorCallback) {
     argscheck.checkArgs('oSFF', 'Entry.copyTo', arguments);
@@ -2136,8 +2136,8 @@ Entry.prototype.toURI = function(mimeType) {
  * directory that is not empty. It is an error to attempt to delete a
  * root directory of a file system.
  *
- * @param successCallback {Function} called with no parameters
- * @param errorCallback {Function} called with a FileError
+ * @param successCallback {function} called with no parameters
+ * @param errorCallback {function} called with a FileError
  */
 Entry.prototype.remove = function(successCallback, errorCallback) {
     argscheck.checkArgs('FF', 'Entry.remove', arguments);
@@ -2150,8 +2150,8 @@ Entry.prototype.remove = function(successCallback, errorCallback) {
 /**
  * Look up the parent DirectoryEntry of this entry.
  *
- * @param successCallback {Function} called with the parent DirectoryEntry object
- * @param errorCallback {Function} called with a FileError
+ * @param successCallback {function} called with the parent DirectoryEntry object
+ * @param errorCallback {function} called with a FileError
  */
 Entry.prototype.getParent = function(successCallback, errorCallback) {
     argscheck.checkArgs('FF', 'Entry.getParent', arguments);
@@ -2179,7 +2179,7 @@ define("cordova/plugin/File", function(require, exports, module) {
  * fullPath {DOMString} the full path of the file, including the name
  * type {DOMString} mime type
  * lastModifiedDate {Date} last modified date
- * size {Number} size of the file in bytes
+ * size {number} size of the file in bytes
  */
 
 var File = function(name, fullPath, type, lastModifiedDate, size){
@@ -2198,8 +2198,8 @@ var File = function(name, fullPath, type, lastModifiedDate, size){
  * Returns a "slice" of the file. Since Cordova Files don't contain the actual
  * content, this really returns a File with adjusted start and end.
  * Slices of slices are supported.
- * start {Number} The index at which to start the slice (inclusive).
- * end {Number} The index at which to end the slice (exclusive).
+ * start {number} The index at which to start the slice (inclusive).
+ * end {number} The index at which to end the slice (exclusive).
  */
 File.prototype.slice = function(start, end) {
     var size = this.end - this.start;
@@ -2260,8 +2260,8 @@ utils.extend(FileEntry, Entry);
 /**
  * Creates a new FileWriter associated with the file that this FileEntry represents.
  *
- * @param {Function} successCallback is called with the new FileWriter
- * @param {Function} errorCallback is called with a FileError
+ * @param {function} successCallback is called with the new FileWriter
+ * @param {function} errorCallback is called with a FileError
  */
 FileEntry.prototype.createWriter = function(successCallback, errorCallback) {
     this.file(function(filePointer) {
@@ -2278,8 +2278,8 @@ FileEntry.prototype.createWriter = function(successCallback, errorCallback) {
 /**
  * Returns a File that represents the current state of the file that this FileEntry represents.
  *
- * @param {Function} successCallback is called with the new File object
- * @param {Function} errorCallback is called with a FileError
+ * @param {function} successCallback is called with the new File object
+ * @param {function} errorCallback is called with a FileError
  */
 FileEntry.prototype.file = function(successCallback, errorCallback) {
     var win = successCallback && function(f) {
@@ -2789,12 +2789,12 @@ var FileTransfer = function() {
 /**
 * Given an absolute file path, uploads a file on the device to a remote server
 * using a multipart HTTP request.
-* @param filePath {String}           Full path of the file on the device
-* @param server {String}             URL of the server to receive the file
-* @param successCallback (Function}  Callback to be invoked when upload has completed
-* @param errorCallback {Function}    Callback to be invoked upon error
+* @param filePath {string}           Full path of the file on the device
+* @param server {string}             URL of the server to receive the file
+* @param successCallback (function}  Callback to be invoked when upload has completed
+* @param errorCallback {function}    Callback to be invoked upon error
 * @param options {FileUploadOptions} Optional parameters such as file name and mimetype
-* @param trustAllHosts {Boolean} Optional trust all hosts (e.g. for self-signed certs), defaults to false
+* @param trustAllHosts {boolean} Optional trust all hosts (e.g. for self-signed certs), defaults to false
 */
 FileTransfer.prototype.upload = function(filePath, server, successCallback, errorCallback, options, trustAllHosts) {
     argscheck.checkArgs('ssFFO*', 'FileTransfer.upload', arguments);
@@ -2855,11 +2855,11 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
 
 /**
  * Downloads a file form a given URL and saves it to the specified directory.
- * @param source {String}          URL of the server to receive the file
- * @param target {String}         Full path of the file on the device
- * @param successCallback (Function}  Callback to be invoked when upload has completed
- * @param errorCallback {Function}    Callback to be invoked upon error
- * @param trustAllHosts {Boolean} Optional trust all hosts (e.g. for self-signed certs), defaults to false
+ * @param source {string}          URL of the server to receive the file
+ * @param target {string}         Full path of the file on the device
+ * @param successCallback (function}  Callback to be invoked when upload has completed
+ * @param errorCallback {function}    Callback to be invoked upon error
+ * @param trustAllHosts {boolean} Optional trust all hosts (e.g. for self-signed certs), defaults to false
  * @param options {FileDownloadOptions} Optional parameters such as headers
  */
 FileTransfer.prototype.download = function(source, target, successCallback, errorCallback, trustAllHosts, options) {
@@ -2949,9 +2949,9 @@ define("cordova/plugin/FileUploadOptions", function(require, exports, module) {
 /**
  * Options to customize the HTTP request used to upload files.
  * @constructor
- * @param fileKey {String}   Name of file request parameter.
- * @param fileName {String}  Filename to be used by the server. Defaults to image.jpg.
- * @param mimeType {String}  Mimetype of the uploaded file. Defaults to image/jpeg.
+ * @param fileKey {string}   Name of file request parameter.
+ * @param fileName {string}  Filename to be used by the server. Defaults to image.jpg.
+ * @param mimeType {string}  Mimetype of the uploaded file. Defaults to image/jpeg.
  * @param params {Object}    Object with key: value params to send to the server.
  * @param headers {Object}   Keys are header names, values are header values. Multiple
  *                           headers of the same name are not supported.
@@ -3621,7 +3621,7 @@ var utils = require('cordova/utils'),
  * fullPath {DOMString} the full path of the file, including the name
  * type {DOMString} mime type
  * lastModifiedDate {Date} last modified date
- * size {Number} size of the file in bytes
+ * size {number} size of the file in bytes
  */
 var MediaFile = function(name, fullPath, type, lastModifiedDate, size){
     MediaFile.__super__.constructor.apply(this, arguments);
@@ -3632,8 +3632,8 @@ utils.extend(MediaFile, File);
 /**
  * Request capture format data for a specific file and type
  *
- * @param {Function} successCB
- * @param {Function} errorCB
+ * @param {function} successCB
+ * @param {function} errorCB
  */
 MediaFile.prototype.getFormatData = function(successCallback, errorCallback) {
     if (typeof this.fullPath === "undefined" || this.fullPath === null) {
@@ -3847,8 +3847,8 @@ var accelerometer = {
     /**
      * Asynchronously acquires the current acceleration.
      *
-     * @param {Function} successCallback    The function to call when the acceleration data is available
-     * @param {Function} errorCallback      The function to call when there is an error getting the acceleration data. (OPTIONAL)
+     * @param {function} successCallback    The function to call when the acceleration data is available
+     * @param {function} errorCallback      The function to call when there is an error getting the acceleration data. (OPTIONAL)
      * @param {AccelerationOptions} options The options for getting the accelerometer data such as timeout. (OPTIONAL)
      */
     getCurrentAcceleration: function(successCallback, errorCallback, options) {
@@ -3875,8 +3875,8 @@ var accelerometer = {
     /**
      * Asynchronously acquires the acceleration repeatedly at a given interval.
      *
-     * @param {Function} successCallback    The function to call each time the acceleration data is available
-     * @param {Function} errorCallback      The function to call when there is an error getting the acceleration data. (OPTIONAL)
+     * @param {function} successCallback    The function to call each time the acceleration data is available
+     * @param {function} errorCallback      The function to call when there is an error getting the acceleration data. (OPTIONAL)
      * @param {AccelerationOptions} options The options for getting the accelerometer data such as timeout. (OPTIONAL)
      * @return String                       The watch id that must be passed to #clearWatch to stop watching.
      */
@@ -3919,7 +3919,7 @@ var accelerometer = {
     /**
      * Clears the specified accelerometer watch.
      *
-     * @param {String} id       The id of the watch returned from #watchAcceleration.
+     * @param {string} id       The id of the watch returned from #watchAcceleration.
      */
     clearWatch: function(id) {
         // Stop javascript timer & remove from timer list
@@ -4117,9 +4117,9 @@ module.exports = {
     /**
      * Display a progress dialog with progress bar that goes from 0 to 100.
      *
-     * @param {String}
+     * @param {string}
      *            title Title of the progress dialog.
-     * @param {String}
+     * @param {string}
      *            message Message to display in the dialog.
      */
     progressStart : function(title, message) {
@@ -4136,7 +4136,7 @@ module.exports = {
     /**
      * Set the progress dialog value.
      *
-     * @param {Number}
+     * @param {number}
      *            value 0-100
      */
     progressValue : function(value) {
@@ -4413,9 +4413,9 @@ var DatabaseShell = function() {
  * Start a transaction.
  * Does not support rollback in event of failure.
  *
- * @param process {Function}            The transaction function
- * @param successCallback {Function}
- * @param errorCallback {Function}
+ * @param process {function}            The transaction function
+ * @param successCallback {function}
+ * @param errorCallback {function}
  */
 DatabaseShell.prototype.transaction = function(process, errorCallback, successCallback) {
     var tx = new DroidDB_Tx();
@@ -4619,8 +4619,8 @@ var exec = require('cordova/exec'),
  * Launches a capture of different types.
  *
  * @param (DOMString} type
- * @param {Function} successCB
- * @param {Function} errorCB
+ * @param {function} successCB
+ * @param {function} errorCB
  * @param {CaptureVideoOptions} options
  */
 function _capture(type, successCallback, errorCallback, options) {
@@ -4652,8 +4652,8 @@ function Capture() {
 /**
  * Launch audio recorder application for recording audio clip(s).
  *
- * @param {Function} successCB
- * @param {Function} errorCB
+ * @param {function} successCB
+ * @param {function} errorCB
  * @param {CaptureAudioOptions} options
  */
 Capture.prototype.captureAudio = function(successCallback, errorCallback, options){
@@ -4663,8 +4663,8 @@ Capture.prototype.captureAudio = function(successCallback, errorCallback, option
 /**
  * Launch camera application for taking image(s).
  *
- * @param {Function} successCB
- * @param {Function} errorCB
+ * @param {function} successCB
+ * @param {function} errorCB
  * @param {CaptureImageOptions} options
  */
 Capture.prototype.captureImage = function(successCallback, errorCallback, options){
@@ -4674,8 +4674,8 @@ Capture.prototype.captureImage = function(successCallback, errorCallback, option
 /**
  * Launch device camera application for recording video(s).
  *
- * @param {Function} successCB
- * @param {Function} errorCB
+ * @param {function} successCB
+ * @param {function} errorCB
  * @param {CaptureVideoOptions} options
  */
 Capture.prototype.captureVideo = function(successCallback, errorCallback, options){
@@ -4715,9 +4715,9 @@ var argscheck = require('cordova/argscheck'),
     compass = {
         /**
          * Asynchronously acquires the current heading.
-         * @param {Function} successCallback The function to call when the heading
+         * @param {function} successCallback The function to call when the heading
          * data is available
-         * @param {Function} errorCallback The function to call when there is an error
+         * @param {function} errorCallback The function to call when there is an error
          * getting the heading data.
          * @param {CompassOptions} options The options for getting the heading data (not used).
          */
@@ -4739,9 +4739,9 @@ var argscheck = require('cordova/argscheck'),
 
         /**
          * Asynchronously acquires the heading repeatedly at a given interval.
-         * @param {Function} successCallback The function to call each time the heading
+         * @param {function} successCallback The function to call each time the heading
          * data is available
-         * @param {Function} errorCallback The function to call when there is an error
+         * @param {function} errorCallback The function to call when there is an error
          * getting the heading data.
          * @param {HeadingOptions} options The options for getting the heading data
          * such as timeout and the frequency of the watch. For iOS, filter parameter
@@ -4770,7 +4770,7 @@ var argscheck = require('cordova/argscheck'),
 
         /**
          * Clears the specified heading watch.
-         * @param {String} watchId The ID of the watch returned from #watchHeading.
+         * @param {string} watchId The ID of the watch returned from #watchHeading.
          */
         clearWatch:function(id) {
             // Stop javascript timer & remove from timer list
@@ -5099,8 +5099,8 @@ function Device() {
 /**
  * Get device info
  *
- * @param {Function} successCallback The function to call when the heading data is available
- * @param {Function} errorCallback The function to call when there is an error getting the heading data. (OPTIONAL)
+ * @param {function} successCallback The function to call when the heading data is available
+ * @param {function} errorCallback The function to call when there is an error getting the heading data. (OPTIONAL)
  */
 Device.prototype.getInfo = function(successCallback, errorCallback) {
     argscheck.checkArgs('fF', 'Device.getInfo', arguments);
@@ -5263,8 +5263,8 @@ var geolocation = {
     /**
    * Asynchronously acquires the current position.
    *
-   * @param {Function} successCallback    The function to call when the position data is available
-   * @param {Function} errorCallback      The function to call when there is an error getting the heading position. (OPTIONAL)
+   * @param {function} successCallback    The function to call when the position data is available
+   * @param {function} errorCallback      The function to call when there is an error getting the heading position. (OPTIONAL)
    * @param {PositionOptions} options     The options for getting the position data. (OPTIONAL)
    */
     getCurrentPosition:function(successCallback, errorCallback, options) {
@@ -5338,8 +5338,8 @@ var geolocation = {
      * Asynchronously watches the geolocation for changes to geolocation.  When a change occurs,
      * the successCallback is called with the new location.
      *
-     * @param {Function} successCallback    The function to call each time the location data is available
-     * @param {Function} errorCallback      The function to call when there is an error getting the location data. (OPTIONAL)
+     * @param {function} successCallback    The function to call each time the location data is available
+     * @param {function} errorCallback      The function to call when there is an error getting the location data. (OPTIONAL)
      * @param {PositionOptions} options     The options for getting the location data such as frequency. (OPTIONAL)
      * @return String                       The watch id that must be passed to #clearWatch to stop watching.
      */
@@ -5388,7 +5388,7 @@ var geolocation = {
     /**
      * Clears the specified heading watch.
      *
-     * @param {String} id       The ID of the watch returned from #watchPosition
+     * @param {string} id       The ID of the watch returned from #watchPosition
      */
     clearWatch:function(id) {
         if (id && timers[id] !== undefined) {
@@ -5431,10 +5431,10 @@ var globalization = {
 * properties object as a parameter. If there is an error getting the language,
 * then the errorCB callback is invoked.
 *
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 *
-* @return Object.value {String}: The language identifier
+* @return Object.value {string}: The language identifier
 *
 * @error GlobalizationError.UNKNOWN_ERROR
 *
@@ -5453,10 +5453,10 @@ getPreferredLanguage:function(successCB, failureCB) {
 * properties object as a parameter. If there is an error getting the locale,
 * then the errorCB callback is invoked.
 *
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 *
-* @return Object.value {String}: The locale identifier
+* @return Object.value {string}: The locale identifier
 *
 * @error GlobalizationError.UNKNOWN_ERROR
 *
@@ -5479,13 +5479,13 @@ getLocaleName:function(successCB, failureCB) {
 * The defaults are: formatLenght="short" and selector="date and time"
 *
 * @param {Date} date
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            formatLength {String}: 'short', 'medium', 'long', or 'full'
-*            selector {String}: 'date', 'time', or 'date and time'
+*            formatLength {string}: 'short', 'medium', 'long', or 'full'
+*            selector {string}: 'date', 'time', or 'date and time'
 *
-* @return Object.value {String}: The localized date string
+* @return Object.value {string}: The localized date string
 *
 * @error GlobalizationError.FORMATTING_ERROR
 *
@@ -5511,20 +5511,20 @@ dateToString:function(date, successCB, failureCB, options) {
 *
 * The defaults are: formatLength="short" and selector="date and time"
 *
-* @param {String} dateString
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {string} dateString
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            formatLength {String}: 'short', 'medium', 'long', or 'full'
-*            selector {String}: 'date', 'time', or 'date and time'
+*            formatLength {string}: 'short', 'medium', 'long', or 'full'
+*            selector {string}: 'date', 'time', or 'date and time'
 *
-* @return    Object.year {Number}: The four digit year
-*            Object.month {Number}: The month from (0 - 11)
-*            Object.day {Number}: The day from (1 - 31)
-*            Object.hour {Number}: The hour from (0 - 23)
-*            Object.minute {Number}: The minute from (0 - 59)
-*            Object.second {Number}: The second from (0 - 59)
-*            Object.millisecond {Number}: The milliseconds (from 0 - 999),
+* @return    Object.year {number}: The four digit year
+*            Object.month {number}: The month from (0 - 11)
+*            Object.day {number}: The day from (1 - 31)
+*            Object.hour {number}: The hour from (0 - 23)
+*            Object.minute {number}: The minute from (0 - 59)
+*            Object.second {number}: The second from (0 - 59)
+*            Object.millisecond {number}: The milliseconds (from 0 - 999),
 *                                        not available on all platforms
 *
 * @error GlobalizationError.PARSING_ERROR
@@ -5551,19 +5551,19 @@ stringToDate:function(dateString, successCB, failureCB, options) {
 *
 * The defaults are: formatLength="short" and selector="date and time"
 *
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            formatLength {String}: 'short', 'medium', 'long', or 'full'
-*            selector {String}: 'date', 'time', or 'date and time'
+*            formatLength {string}: 'short', 'medium', 'long', or 'full'
+*            selector {string}: 'date', 'time', or 'date and time'
 *
-* @return    Object.pattern {String}: The date and time pattern for formatting and parsing dates.
+* @return    Object.pattern {string}: The date and time pattern for formatting and parsing dates.
 *                                    The patterns follow Unicode Technical Standard #35
 *                                    http://unicode.org/reports/tr35/tr35-4.html
-*            Object.timezone {String}: The abbreviated name of the time zone on the client
-*            Object.utc_offset {Number}: The current difference in seconds between the client's
+*            Object.timezone {string}: The abbreviated name of the time zone on the client
+*            Object.utc_offset {number}: The current difference in seconds between the client's
 *                                        time zone and coordinated universal time.
-*            Object.dst_offset {Number}: The current daylight saving time offset in seconds
+*            Object.dst_offset {number}: The current daylight saving time offset in seconds
 *                                        between the client's non-daylight saving's time zone
 *                                        and the client's daylight saving's time zone.
 *
@@ -5589,13 +5589,13 @@ getDatePattern:function(successCB, failureCB, options) {
 *
 * The defaults are: type="wide" and item="months"
 *
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            type {String}: 'narrow' or 'wide'
-*            item {String}: 'months', or 'days'
+*            type {string}: 'narrow' or 'wide'
+*            item {string}: 'months', or 'days'
 *
-* @return Object.value {Array{String}}: The array of names starting from either
+* @return Object.value {Array{string}}: The array of names starting from either
 *                                        the first month in the year or the
 *                                        first day of the week.
 * @error GlobalizationError.UNKNOWN_ERROR
@@ -5618,10 +5618,10 @@ getDateNames:function(successCB, failureCB, options) {
 * reading the date, then the errorCB callback is invoked.
 *
 * @param {Date} date
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 *
-* @return Object.dst {Boolean}: The value "true" indicates that daylight savings time is
+* @return Object.dst {boolean}: The value "true" indicates that daylight savings time is
 *                                in effect for the given date and "false" indicate that it is not.
 *
 * @error GlobalizationError.UNKNOWN_ERROR
@@ -5643,10 +5643,10 @@ isDayLightSavingsTime:function(date, successCB, failureCB) {
 * It returns the day to the successCB callback with a properties object as a parameter.
 * If there is an error obtaining the pattern, then the errorCB callback is invoked.
 *
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 *
-* @return Object.value {Number}: The number of the first day of the week.
+* @return Object.value {number}: The number of the first day of the week.
 *
 * @error GlobalizationError.UNKNOWN_ERROR
 *
@@ -5668,13 +5668,13 @@ getFirstDayOfWeek:function(successCB, failureCB) {
 *
 * The defaults are: type="decimal"
 *
-* @param {Number} number
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {number} number
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            type {String}: 'decimal', "percent", or 'currency'
+*            type {string}: 'decimal', "percent", or 'currency'
 *
-* @return Object.value {String}: The formatted number string.
+* @return Object.value {string}: The formatted number string.
 *
 * @error GlobalizationError.FORMATTING_ERROR
 *
@@ -5697,13 +5697,13 @@ numberToString:function(number, successCB, failureCB, options) {
 *
 * The defaults are: type="decimal"
 *
-* @param {String} numberString
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {string} numberString
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            type {String}: 'decimal', "percent", or 'currency'
+*            type {string}: 'decimal', "percent", or 'currency'
 *
-* @return Object.value {Number}: The parsed number.
+* @return Object.value {number}: The parsed number.
 *
 * @error GlobalizationError.PARSING_ERROR
 *
@@ -5724,23 +5724,23 @@ stringToNumber:function(numberString, successCB, failureCB, options) {
 *
 * The defaults are: type="decimal"
 *
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {function} successCB
+* @param {function} errorCB
 * @param {Object} options {optional}
-*            type {String}: 'decimal', "percent", or 'currency'
+*            type {string}: 'decimal', "percent", or 'currency'
 *
-* @return    Object.pattern {String}: The number pattern for formatting and parsing numbers.
+* @return    Object.pattern {string}: The number pattern for formatting and parsing numbers.
 *                                    The patterns follow Unicode Technical Standard #35.
 *                                    http://unicode.org/reports/tr35/tr35-4.html
-*            Object.symbol {String}: The symbol to be used when formatting and parsing
+*            Object.symbol {string}: The symbol to be used when formatting and parsing
 *                                    e.g., percent or currency symbol.
-*            Object.fraction {Number}: The number of fractional digits to use when parsing and
+*            Object.fraction {number}: The number of fractional digits to use when parsing and
 *                                    formatting numbers.
-*            Object.rounding {Number}: The rounding increment to use when parsing and formatting.
-*            Object.positive {String}: The symbol to use for positive numbers when parsing and formatting.
-*            Object.negative: {String}: The symbol to use for negative numbers when parsing and formatting.
-*            Object.decimal: {String}: The decimal symbol to use for parsing and formatting.
-*            Object.grouping: {String}: The grouping symbol to use for parsing and formatting.
+*            Object.rounding {number}: The rounding increment to use when parsing and formatting.
+*            Object.positive {string}: The symbol to use for positive numbers when parsing and formatting.
+*            Object.negative: {string}: The symbol to use for negative numbers when parsing and formatting.
+*            Object.decimal: {string}: The decimal symbol to use for parsing and formatting.
+*            Object.grouping: {string}: The grouping symbol to use for parsing and formatting.
 *
 * @error GlobalizationError.PATTERN_ERROR
 *
@@ -5760,19 +5760,19 @@ getNumberPattern:function(successCB, failureCB, options) {
 * properties object as a parameter. If there is an error obtaining the pattern, then the errorCB
 * callback is invoked.
 *
-* @param {String} currencyCode
-* @param {Function} successCB
-* @param {Function} errorCB
+* @param {string} currencyCode
+* @param {function} successCB
+* @param {function} errorCB
 *
-* @return    Object.pattern {String}: The currency pattern for formatting and parsing currency values.
+* @return    Object.pattern {string}: The currency pattern for formatting and parsing currency values.
 *                                    The patterns follow Unicode Technical Standard #35
 *                                    http://unicode.org/reports/tr35/tr35-4.html
-*            Object.code {String}: The ISO 4217 currency code for the pattern.
-*            Object.fraction {Number}: The number of fractional digits to use when parsing and
+*            Object.code {string}: The ISO 4217 currency code for the pattern.
+*            Object.fraction {number}: The number of fractional digits to use when parsing and
 *                                    formatting currency.
-*            Object.rounding {Number}: The rounding increment to use when parsing and formatting.
-*            Object.decimal: {String}: The decimal symbol to use for parsing and formatting.
-*            Object.grouping: {String}: The grouping symbol to use for parsing and formatting.
+*            Object.rounding {number}: The rounding increment to use when parsing and formatting.
+*            Object.decimal: {string}: The decimal symbol to use for parsing and formatting.
+*            Object.grouping: {string}: The grouping symbol to use for parsing and formatting.
 *
 * @error GlobalizationError.FORMATTING_ERROR
 *
@@ -6172,8 +6172,8 @@ function NetworkConnection() {
 /**
  * Get connection info
  *
- * @param {Function} successCallback The function to call when the Connection data is available
- * @param {Function} errorCallback The function to call when there is an error getting the Connection data. (OPTIONAL)
+ * @param {function} successCallback The function to call when the Connection data is available
+ * @param {function} errorCallback The function to call when there is an error getting the Connection data. (OPTIONAL)
  */
 NetworkConnection.prototype.getInfo = function(successCallback, errorCallback) {
     exec(successCallback, errorCallback, "NetworkStatus", "getConnectionInfo", []);
@@ -6247,10 +6247,10 @@ module.exports = {
     /**
      * Open a native alert dialog, with a customizable title and button text.
      *
-     * @param {String} message              Message to print in the body of the alert
-     * @param {Function} completeCallback   The callback that is called when user clicks on a button.
-     * @param {String} title                Title of the alert dialog (default: Alert)
-     * @param {String} buttonLabel          Label of the close button (default: OK)
+     * @param {string} message              Message to print in the body of the alert
+     * @param {function} completeCallback   The callback that is called when user clicks on a button.
+     * @param {string} title                Title of the alert dialog (default: Alert)
+     * @param {string} buttonLabel          Label of the close button (default: OK)
      */
     alert: function(message, completeCallback, title, buttonLabel) {
         var _title = (title || "Alert");
@@ -6262,10 +6262,10 @@ module.exports = {
      * Open a native confirm dialog, with a customizable title and button text.
      * The result that the user selects is returned to the result callback.
      *
-     * @param {String} message              Message to print in the body of the alert
-     * @param {Function} resultCallback     The callback that is called when user clicks on a button.
-     * @param {String} title                Title of the alert dialog (default: Confirm)
-     * @param {Array} buttonLabels          Array of the labels of the buttons (default: ['OK', 'Cancel'])
+     * @param {string} message              Message to print in the body of the alert
+     * @param {function} resultCallback     The callback that is called when user clicks on a button.
+     * @param {string} title                Title of the alert dialog (default: Confirm)
+     * @param {Array.<string>} buttonLabels          Array of the labels of the buttons (default: ['OK', 'Cancel'])
      */
     confirm: function(message, resultCallback, title, buttonLabels) {
         var _title = (title || "Confirm");
@@ -6299,10 +6299,10 @@ module.exports = {
      *  buttonIndex     Index number of the button selected.
      *  input1          The text entered in the prompt dialog box.
      *
-     * @param {String} message              Dialog message to display (default: "Prompt message")
-     * @param {Function} resultCallback     The callback that is called when user clicks on a button.
-     * @param {String} title                Title of the dialog (default: "Prompt")
-     * @param {Array} buttonLabels          Array of strings for the button labels (default: ["OK","Cancel"])
+     * @param {string} message              Dialog message to display (default: "Prompt message")
+     * @param {function} resultCallback     The callback that is called when user clicks on a button.
+     * @param {string} title                Title of the dialog (default: "Prompt")
+     * @param {Array.<string>} buttonLabels          Array of strings for the button labels (default: ["OK","Cancel"])
      */
     prompt: function(message, resultCallback, title, buttonLabels) {
         var _message = (message || "Prompt message");

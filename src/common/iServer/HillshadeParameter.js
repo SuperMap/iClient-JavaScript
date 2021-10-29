@@ -1,16 +1,16 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { RasterFunctionParameter } from './RasterFunctionParameter';
 import { RasterFunctionType } from '../REST';
 
 /**
- * @class SuperMap.HillshadeParameter
- * @category iServer Map
+ * @class HillshadeParameter
+ * @deprecatedclass SuperMap.HillshadeParameter
+ * @category iServer Map Tile
  * @classdesc 阴影面分析参数类
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
  * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
  * @param {number} [options.zFactor=1] - 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
@@ -28,31 +28,32 @@ import { RasterFunctionType } from '../REST';
  *                                      60           0.00001792
  *                                      70           0.00002619
  *                                      80           0.00005156
- * @extends {SuperMap.RasterFunctionParameter}
+ * @extends {RasterFunctionParameter}
+ * @usage
  */
 export class HillshadeParameter extends RasterFunctionParameter {
     constructor(options) {
         super(options);
         /**
-         * @member {number} [SuperMap.HillshadeParameter.prototype.altitude = 45]
+         * @member {number} [HillshadeParameter.prototype.altitude = 45]
          * @description 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
          */
         this.altitude = 45;
 
         /**
-         * @member {number} [SuperMap.HillshadeParameter.prototype.azimuth = 315]
+         * @member {number} [HillshadeParameter.prototype.azimuth = 315]
          * @description 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
          */
         this.azimuth = 315;
 
         /**
-         * @member {number} [SuperMap.HillshadeParameter.prototype.zFactor = 1]
+         * @member {number} [HillshadeParameter.prototype.zFactor = 1]
          * @description 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
          */
         this.zFactor = 1;
 
         /**
-         * @member {SuperMap.RasterFunctionType} SuperMap.RasterFunctionParameter.prototype.type
+         * @member {RasterFunctionType} HillshadeParameter.prototype.type
          * @description 栅格分析方法。
          */
         this.type = RasterFunctionType.HILLSHADE;
@@ -62,7 +63,7 @@ export class HillshadeParameter extends RasterFunctionParameter {
     }
 
     /**
-     * @function SuperMap.HillshadeParameter.prototype.destroy
+     * @function HillshadeParameter.prototype.destroy
      * @override
      */
     destroy() {
@@ -72,7 +73,7 @@ export class HillshadeParameter extends RasterFunctionParameter {
         this.zFactor = null;
     }
     /**
-     * @function SuperMap.HillshadeParameter.prototype.toJSON
+     * @function HillshadeParameter.prototype.toJSON
      * @description 将 HillshadeParameter 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
@@ -86,4 +87,3 @@ export class HillshadeParameter extends RasterFunctionParameter {
     }
 }
 
-SuperMap.HillshadeParameter = HillshadeParameter;

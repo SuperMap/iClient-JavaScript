@@ -1,24 +1,24 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
 import { FindTSPPathsParameters } from './FindTSPPathsParameters';
 import { GeoJSON } from '../format/GeoJSON';
 
 /**
- * @class SuperMap.FindTSPPathsService
+ * @class FindTSPPathsService
+ * @deprecatedclass SuperMap.FindTSPPathsService
  * @category  iServer NetworkAnalyst TSPPath
  * @classdesc 旅行商分析服务类
  *            旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  *            旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
  *            该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  *            旅行商分析结果通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
  * (start code)
- * var myFindTSPPathsService = new SuperMap.FindTSPPathsService(url, {
+ * var myFindTSPPathsService = new FindTSPPathsService(url, {
  *     eventListeners: {
  *	      "processCompleted": findTSPPathsCompleted,
  *		  "processFailed": findTSPPathsError
@@ -32,6 +32,7 @@ import { GeoJSON } from '../format/GeoJSON';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class FindTSPPathsService extends NetworkAnalystServiceBase {
 
@@ -42,7 +43,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindTSPPathsService.prototype.destroy
+     * @function FindTSPPathsService.prototype.destroy
      * @override
      */
     destroy() {
@@ -50,9 +51,9 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindTSPPathsService.prototype.processAsync
+     * @function FindTSPPathsService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.FindTSPPathsParameters} params - 旅行商分析服务参数类。
+     * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
      */
     processAsync(params) {
         if (!(params instanceof FindTSPPathsParameters)) {
@@ -61,7 +62,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
         var me = this, jsonObject;
         me.url = Util.urlPathAppend(me.url, 'tsppath');
         jsonObject = {
-            parameter: SuperMap.Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             endNodeAssigned: params.endNodeAssigned,
             nodes: me.getNodesJson(params)
         };
@@ -75,9 +76,9 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindTSPPathsService.prototype.getNodesJson
+     * @function FindTSPPathsService.prototype.getNodesJson
      * @description 将节点对象转化为JSON字符串。
-     * @param {SuperMap.FindTSPPathsParameters} params - 旅行商分析服务参数类。
+     * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
      * @returns {string} 转化后的JSON字符串。
      */
     getNodesJson(params) {
@@ -106,7 +107,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindTSPPathsService.prototype.toGeoJSONResult
+     * @function FindTSPPathsService.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -133,5 +134,3 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
 }
-
-SuperMap.FindTSPPathsService = FindTSPPathsService;

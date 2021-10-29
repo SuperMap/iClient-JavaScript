@@ -2,24 +2,25 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import {AddressMatchService as CommonAddressMatchService, CommonUtil} from '@supermap/iclient-common';
-
+import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
- * @class ol.supermap.AddressMatchService
+ * @class AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务。
  * @example
- *      new ol.supermap.AddressMatchService(url,options)
+ *      new AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 与客户端交互的服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export class AddressMatchService extends ServiceBase {
 
@@ -28,10 +29,10 @@ export class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.AddressMatchService.prototype.code
+     * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback 请求结果的回调函数。
+     * @param {GeoCodingParameter} params - 正向匹配参数。
+     * @param {RequestCallback} callback 回调函数。
      */
     code(params, callback) {
         var me = this;
@@ -51,10 +52,10 @@ export class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.AddressMatchService.prototype.decode
+     * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback 请求结果的回调函数。
+     * @param {GeoDecodingParameter} params - 反向匹配参数。
+     * @param {RequestCallback} callback 回调函数。
      */
     decode(params, callback) {
         var me = this;

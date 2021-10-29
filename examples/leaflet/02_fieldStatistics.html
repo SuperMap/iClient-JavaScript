@@ -33,7 +33,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(mapURL).addTo(map);
+    new L.supermap.TiledMapLayer(mapURL).addTo(map);
     initResultInfoWin();
     showLayersInfo();
 
@@ -72,8 +72,8 @@
     //获取子图层信息
     function showLayersInfo() {
         var subLayer;
-        L.supermap
-            .layerInfoService(mapURL)
+        new L.supermap
+            .LayerInfoService(mapURL)
             .getLayersInfo(function (serviceResult) {
                 var result = serviceResult.result;
                 var layers = result.subLayers.layers;
@@ -104,11 +104,11 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                var param = new SuperMap.FieldParameters({
+                var param = new L.supermap.FieldParameters({
                     datasource: currentData.dataSourceName,
                     dataset: currentData.dataSetName,
                 });
-                L.supermap.fieldService(dataURL).getFields(param, function (serviceResult) {
+                new L.supermap.FieldService(dataURL).getFields(param, function (serviceResult) {
                     if (serviceResult.result && serviceResult.result.fieldNames) {
                         fieldStatistic(serviceResult.result.fieldNames[0]);
                     }
@@ -121,20 +121,20 @@
     function fieldStatistic(fieldName) {
 
         if (currentData) {
-            var param = new SuperMap.FieldStatisticsParameters({
+            var param = new L.supermap.FieldStatisticsParameters({
                 datasource: currentData.dataSourceName,
                 dataset: currentData.dataSetName,
                 fieldName: fieldName,
                 statisticMode: [
-                    SuperMap.StatisticMode.MAX,
-                    SuperMap.StatisticMode.MIN,
-                    SuperMap.StatisticMode.SUM,
-                    SuperMap.StatisticMode.AVERAGE,
-                    SuperMap.StatisticMode.STDDEVIATION,
-                    SuperMap.StatisticMode.VARIANCE
+                    L.supermap.StatisticMode.MAX,
+                    L.supermap.StatisticMode.MIN,
+                    L.supermap.StatisticMode.SUM,
+                    L.supermap.StatisticMode.AVERAGE,
+                    L.supermap.StatisticMode.STDDEVIATION,
+                    L.supermap.StatisticMode.VARIANCE
                 ]
             });
-            L.supermap.fieldService(dataURL).getFieldStatisticsInfo(param, function (serviceResult) {
+            new L.supermap.FieldService(dataURL).getFieldStatisticsInfo(param, function (serviceResult) {
                 info.update(serviceResult.result);
             });
         }

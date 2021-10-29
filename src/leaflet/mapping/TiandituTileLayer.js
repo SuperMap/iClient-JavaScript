@@ -7,20 +7,22 @@ import { WMTSLayer } from './TileLayer.WMTS';
 import Attributions from '../core/Attributions';
 
 /**
- * @class L.supermap.tiandituTileLayer
+ * @class TiandituTileLayer
+ * @deprecatedclassinstance L.supermap.tiandituTileLayer
  * @classdesc 天地图图层类。
  * @category ThirdPartyMap
- * @extends L.supermap.wmtsLayer
- * @param {Object} options - 切片图层参数。
- * @param {string} [options.url='https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 地图地址。
- * @param {string} options.key - 天地图服务密钥。详见{@link https://lbs.tianditu.gov.cn/server/MapService.html}
- * @param {string} [options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
+ * @extends WMTSLayer
+ * @param {Object} options - 参数。
+ * @param {string} [options.url='https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。
+ * @param {string} options.key - 天地图服务密钥。详见 {@link https://lbs.tianditu.gov.cn/server/MapService.html}
+ * @param {string} [options.layerType='vec'] - 图层类型。（ vec: 矢量图层，img: 影像图层，ter: 地形图层）
  * @param {string} [options.style='default'] - 图层风格。
  * @param {string} [options.format='tiles'] - 格式。
  * @param {boolean} [options.isLabel=false] - 是否是标注图层。
  * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
  * @param {string} [options.attribution='Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权信息
- * @param {string} [options.noWrap=true] - 图层是否X方向平铺。
+ * @param {string} [options.noWrap=true] - 图层是否 X 方向平铺。
+ * @usage
  */
 export var TiandituTileLayer = WMTSLayer.extend({
     layerLabelMap: {
@@ -89,4 +91,3 @@ export var tiandituTileLayer = function (options) {
     return new TiandituTileLayer(options);
 };
 
-L.supermap.tiandituTileLayer = tiandituTileLayer;

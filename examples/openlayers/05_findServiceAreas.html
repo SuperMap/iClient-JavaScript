@@ -59,7 +59,7 @@
         });
         map.addLayer(vectorLayer);
 
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new ol.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -69,11 +69,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new ol.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new ol.supermap.FindServiceAreasParameters({
             centers: [point],
             isAnalyzeById: false,
             parameter: analystParameter

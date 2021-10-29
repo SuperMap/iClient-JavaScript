@@ -114,7 +114,7 @@
             }
         });
 
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        mapboxgl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl, {
             withCredentials: window.isLocal
@@ -162,7 +162,7 @@
                     clipParam = "";
                 }
             }
-            var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
+            var vectorClipJobsParameter = new mapboxgl.supermap.VectorClipJobsParameter({
                 datasetName: $('#datasetName').val(),
                 datasetVectorClip: clipParam,
                 geometryClip: points,
@@ -177,7 +177,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        mapboxgl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

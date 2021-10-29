@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const LintExportWebpackPlugin = require('./lint-export-webpack-plugin');
 const pkg = require('../package.json');
 
 //包版本(ES6或者ES5)
@@ -78,6 +79,7 @@ module.exports = {
 
     plugins: function (libName, productName) {
         return [
+            new LintExportWebpackPlugin(libName),
             new webpack.BannerPlugin(this.bannerInfo(productName)),
             new MiniCssExtractPlugin({filename:`./${productName}.css`}),
             new ESLintPlugin({ failOnError: true, files: 'src' })

@@ -265,7 +265,7 @@
         if (!checkUrl(loginUrl)) {
             return;
         }
-        SuperMap.SecurityManager.loginiPortal(loginUrl, userName, password).then(function (result) {
+        L.supermap.SecurityManager.loginiPortal(loginUrl, userName, password).then(function (result) {
             if (result.succeed)
                 widgets.alert.showAlert(resources.msg_loginSuccess, true);
         });
@@ -274,7 +274,7 @@
     /*登出*/
     function logoutPortal() {
         var loginUrl = $("#loginUrl_iportal").val();
-        SuperMap.SecurityManager.logoutiPortal(loginUrl).then(function (succeed) {
+        L.supermap.SecurityManager.logoutiPortal(loginUrl).then(function (succeed) {
             if (succeed) {
                 widgets.alert.showAlert(resources.msg_logoutSuccess, true);
             }
@@ -290,16 +290,16 @@
         if (!checkUrl(serverTokenUrl)) {
             return;
         }
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new L.supermap.ServerInfo(L.supermap.ServerType.IPORTAL, {
             server: serverTokenUrl
         });
-        SuperMap.SecurityManager.registerServers([serverInfo]);
+        L.supermap.SecurityManager.registerServers([serverInfo]);
         var userName = $('#username_iportal').val();
         var password = $('#password_iportal').val();
         var clientType = $('#clientType_iportal').val();
         var referer = $('#referer_iportal').val();
         var expiration = $('#expiration_iportal').val();
-        SuperMap.SecurityManager.generateToken(serverTokenUrl, new SuperMap.TokenServiceParameter({
+        L.supermap.SecurityManager.generateToken(serverTokenUrl, new L.supermap.TokenServiceParameter({
             userName: userName,
             password: password,
             clientType: clientType,
@@ -320,9 +320,9 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        SuperMap.SecurityManager.destroyToken(serviceUrl);
-        SuperMap.SecurityManager.registerToken(serviceUrl, key);
-        var iPortalService = new SuperMap.iPortalService(serviceUrl);
+        L.supermap.SecurityManager.destroyToken(serviceUrl);
+        L.supermap.SecurityManager.registerToken(serviceUrl, key);
+        var iPortalService = new L.supermap.iPortalService(serviceUrl);
         iPortalService.load().then(function (json) {
             if (json && json.error) {
                 widgets.alert.showAlert(JSON.stringify(json.error), false);
@@ -347,8 +347,8 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        SuperMap.SecurityManager.destroyKey(serviceUrl);
-        SuperMap.SecurityManager.registerKey(serviceUrl, key);
+        L.supermap.SecurityManager.destroyKey(serviceUrl);
+        L.supermap.SecurityManager.registerKey(serviceUrl, key);
         requestService(serviceUrl);
     }
 
@@ -357,8 +357,8 @@
         if (!checkUrl(url)) {
             return;
         }
-        L.supermap.mapService(url, {
-            serverType: SuperMap.ServerType.IPORTAL
+        new L.supermap.MapService(url, {
+            serverType: L.supermap.ServerType.IPORTAL
         }).getMapInfo(function (json) {
             if (json.error) {
                 widgets.alert.showAlert(JSON.stringify(json.error), false);
@@ -383,7 +383,7 @@
         if (!checkUrl(mapUrl)) {
             return;
         }
-        SuperMap.SecurityManager.registerKey(mapUrl, key);
+        L.supermap.SecurityManager.registerKey(mapUrl, key);
 
         var onlineMap = L.map('iportal_map', {
             crs: L.CRS.EPSG4326,
@@ -391,8 +391,8 @@
             maxZoom: 18,
             zoom: 2
         });
-        L.supermap.tiledMapLayer(mapUrl, {
-            serverType: SuperMap.ServerType.IPORTAL
+        new L.supermap.TiledMapLayer(mapUrl, {
+            serverType: L.supermap.ServerType.IPORTAL
         }).addTo(onlineMap);
     }
 

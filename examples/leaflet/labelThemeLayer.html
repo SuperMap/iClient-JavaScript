@@ -45,15 +45,15 @@
             maxZoom: 18,
             zoom: 3
         });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        new L.supermap.TiledMapLayer(baseUrl).addTo(map);
         initThemeLayer();
         initLegendView();
     }
 
     function initThemeLayer() {
-        themeLayer = L.supermap.labelThemeLayer("ThemeLayer").addTo(map);
+        themeLayer = new L.supermap.LabelThemeLayer("ThemeLayer").addTo(map);
 
-        themeLayer.style = new SuperMap.ThemeStyle({
+        themeLayer.style = new L.supermap.ThemeStyle({
             labelRect: true,
             fontColor: "#000000",
             fontWeight: "bolder",
@@ -125,7 +125,7 @@
             var lng = parseFloat(lonlat[0]);
             var lat = parseFloat(lonlat[1]);
             var text = themeData[i].aqi;
-            feat = L.supermap.themeFeature([lat, lng, text], themeData[i]);
+            feat = new L.supermap.ThemeFeature([lat, lng, text], themeData[i]);
             labelFeatures.push(feat);
         }
         themeLayer.addFeatures(labelFeatures);

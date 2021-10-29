@@ -58,7 +58,7 @@
                             //redirect: 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流,默认为false；
                             //layersID:要显示的图层id字符串；
                             //tileversion: 切片版本名称，cacheEnabled 为 true 时有效；
-                            //rasterfunction: 栅格分析参数,类型为SuperMap.NDVIParameter或SuperMap.HillshadeParameter；
+                            //rasterfunction: 栅格分析参数,类型为mapboxgl.supermap.NDVIParameter或mapboxgl.supermap.HillshadeParameter；
                             //format:瓦片格式，默认为'png'；
                             tiles: [host + '/iserver/services/map-world/rest/maps/World'],
                             rasterSource: 'iserver'
@@ -81,7 +81,7 @@
             });
             map.on('load', function() {
                 //从 iServer 查询
-                var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+                var idsParam = new mapboxgl.supermap.GetFeaturesByIDsParameters({
                     IDs: [234],
                     datasetNames: ['World:Countries']
                 });

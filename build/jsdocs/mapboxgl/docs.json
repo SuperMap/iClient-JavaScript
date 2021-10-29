@@ -22,16 +22,22 @@
             "src/common","src/mapboxgl"
         ],
         "exclude": [
-            "src/common/overlay/levelRenderer"
+            "src/common/overlay/levelRenderer",
+            "src/common/lang/locales"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/usage"],
+    "markdown": {
+        "tags": ["usage"]
+    },
     "templates": {
         "cleverLinks": true,
         "monospaceLinks": true,
         "default": {
             "outputSourceFiles": false
-        }
-        //"applicationName": "iClient for MapboxGL"
+        },
+        "namespace": "mapboxgl.supermap",
+        "npm":"@supermap/iclient-mapboxgl",
+        "cdn":"https://iclient.supermap.io/dist/mapboxgl/iclient-mapboxgl.js"
     }
 }

@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { FetchRequest } from '../util/FetchRequest';
 import { Events } from '../commontypes/Events';
 import { SecurityManager } from '../security/SecurityManager';
@@ -10,8 +9,9 @@ import { JSONFormat } from '../format/JSON';
 import { FunctionExt } from '../commontypes/BaseTypes';
 
 /**
- * @class SuperMap.CommonServiceBase
- * @category  iServer
+ * @class CommonServiceBase
+ * @deprecatedclass SuperMap.CommonServiceBase
+ * @category  iServer Core
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -20,6 +20,7 @@ import { FunctionExt } from '../commontypes/BaseTypes';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class CommonServiceBase {
     constructor(url, options) {
@@ -91,7 +92,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.destroy
+     * @function CommonServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
@@ -119,7 +120,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function  SuperMap.CommonServiceBase.prototype.request
+     * @function  CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
@@ -156,7 +157,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
+     * @function CommonServiceBase.prototype.getUrlCompleted
      * @description 请求成功后执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -166,7 +167,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
+     * @function CommonServiceBase.prototype.getUrlFailed
      * @description 请求失败后执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -182,7 +183,7 @@ export class CommonServiceBase {
 
     /**
      *
-     * @function SuperMap.CommonServiceBase.prototype.ajaxPolling
+     * @function CommonServiceBase.prototype.ajaxPolling
      * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求
      */
     ajaxPolling() {
@@ -198,7 +199,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.calculatePollingTimes
+     * @function CommonServiceBase.prototype.calculatePollingTimes
      * @description 计算剩余请求失败执行次数。
      */
     calculatePollingTimes() {
@@ -224,7 +225,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.isServiceSupportPolling
+     * @function CommonServiceBase.prototype.isServiceSupportPolling
      * @description 判断服务是否支持轮询。
      */
     isServiceSupportPolling() {
@@ -235,7 +236,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
+     * @function CommonServiceBase.prototype.serviceProcessCompleted
      * @description 状态完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -247,7 +248,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
+     * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -313,8 +314,7 @@ export class CommonServiceBase {
                 return requestResult;
             })
             .catch(function (e) {
-                var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                failure(e);
+                return { error: e };
             })
             .then((requestResult) => {
                 if (requestResult.error) {
@@ -329,11 +329,11 @@ export class CommonServiceBase {
     }
 }
 
-SuperMap.CommonServiceBase = CommonServiceBase;
 
 /**
  * 服务器请求回调函数
  * @callback RequestCallback
+ * @category BaseTypes Util
  * @example
  * var requestCallback = function (serviceResult){
  *      console.log(serviceResult.result);

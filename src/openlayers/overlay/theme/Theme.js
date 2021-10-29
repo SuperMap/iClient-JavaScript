@@ -2,16 +2,14 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../../core/Util';
-import {
-    CommonUtil,
-    ServerFeature,
-    GeometryVector,
-    GeoJSON as GeoJSONFormat,
-    LonLat,
-    GeometryPoint,
-    GeoText,
-    LevelRenderer
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { LevelRenderer } from '@supermap/iclient-common/overlay/levelRenderer/LevelRenderer';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
 import {ThemeFeature} from './ThemeFeature';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 import Feature from 'ol/Feature';
@@ -23,16 +21,16 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。
- * @param {ol/Map} opt_option.map - 当前 openlayers 的 Map 对象。
+ * @param {ol.Map} opt_option.map - 当前 openlayers 的 Map 对象。
  * @param {string} [opt_option.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_option.opacity=1] - 图层透明度。
  * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
- * @param {ol/proj/Projection} [opt_option.projection] - 投影信息。
+ * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
- * @param {ol/source/State} [opt_option.state] - 资源状态。
+ * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol/source/ImageCanvas}
+ * @extends {ol.source.ImageCanvas}
  */
 export class Theme extends ImageCanvasSource {
 
@@ -149,7 +147,7 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
      * @description 销毁某个要素。
-     * @param {SuperMap.Feature.Vector} features - 将被销毁的要素。
+     * @param {FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -184,9 +182,9 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
+     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
-     *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
+     *              专题图仅接收 FeatureVector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
      */
     addFeatures(features) { // eslint-disable-line no-unused-vars
@@ -195,7 +193,7 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function ol.source.Theme.prototype.removeFeatures
-     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除 feature 的数组。
+     * @param {Array.<FeatureVector>} features - 要删除 feature 的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
@@ -254,7 +252,7 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {SuperMap.Feature.Vector} 用户加入图层的有效数据。
+     * @returns {FeatureVector} 用户加入图层的有效数据。
      */
     getFeatures() {
         var len = this.features.length;
@@ -272,7 +270,7 @@ export class Theme extends ImageCanvasSource {
      *              返回此 feature（并且只返回第一个）。
      * @param {string} property - feature 的某个属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
+     * @returns {FeatureVector} 第一个匹配属性和值的矢量要素。
      */
     getFeatureBy(property, value) {
         var feature = null;
@@ -290,7 +288,7 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.getFeatureById
      * @description 通过给定一个 ID，返回对应的矢量要素。
      * @param {string} featureId - 矢量要素的属性 ID。
-     * @returns {SuperMap.Feature.Vector} 对应 ID 的 feature，如果不存在则返回 null。
+     * @returns {FeatureVector} 对应 ID 的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -301,7 +299,7 @@ export class Theme extends ImageCanvasSource {
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性的 key。
      * @param {string} attrValue - 矢量要素的属性 ID。
-     * @returns {Array.<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
+     * @returns {Array.<FeatureVector>} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -508,8 +506,8 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
-     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
+     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -520,16 +518,16 @@ export class Theme extends ImageCanvasSource {
         for (let i = 0; i < features.length; i++) {
 
             if (features[i] instanceof ThemeFeature) {
-                //ol.supermap.ThemeFeature 类型
+                // ThemeFeature 类型
                 featuresTemp.push(features[i].toFeature());
                 continue;
             } else if (features[i] instanceof Feature) {
-                //ol/Feature 数据类型
-                //_toFeature 统一处理 ol/Feature 所有 geometry 类型
+                //ol.Feature 数据类型
+                //_toFeature 统一处理 ol.Feature 所有 geometry 类型
                 featuresTemp.push(this._toFeature(features[i]));
                 continue;
-            } else if (features[i] instanceof GeometryVector) {
-                // 若是 GeometryVector 直接返回
+            } else if (features[i] instanceof FeatureVector) {
+                // 若是 FeatureVector 直接返回
                 featuresTemp.push(features[i]);
                 continue;
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -551,14 +549,14 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
-     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
+     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);
     }
 
-    //统一处理 ol/feature所有 geometry 类型
+    //统一处理 ol.feature所有 geometry 类型
     _toFeature(feature) {
         let geoFeature = (new GeoJSON()).writeFeature(feature);
         return new GeoJSONFormat().read(geoFeature, "Feature");

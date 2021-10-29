@@ -23,16 +23,16 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
-        var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+        var idsParam = new L.supermap.GetFeaturesByIDsParameters({
             IDs: [233, 234],
             datasetNames: ["World:Countries"]
         });
-        L.supermap
-            .featureService(url)
+        new L.supermap
+            .FeatureService(url)
             .getFeaturesByIDs(idsParam, function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {

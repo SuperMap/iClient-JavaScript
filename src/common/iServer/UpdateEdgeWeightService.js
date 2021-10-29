@@ -1,30 +1,31 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
 import { UpdateEdgeWeightParameters } from './UpdateEdgeWeightParameters';
 
 /**
- * @class SuperMap.UpdateEdgeWeightService
+ * @class UpdateEdgeWeightService
+ * @deprecatedclass SuperMap.UpdateEdgeWeightService
  * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 更新边的边的耗费权重服务
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
  *(start code)
- * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
+ * var updateEdgeWeightService = new UpdateEdgeWeightService(url, {
  *     eventListeners: {
- *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.UpdateEdgeWeightEventArgs
- *		   "processFailed": UpdateEdgeWeightError             //参数为SuperMap.ServiceFailedEventArgs
+ *         "processCompleted": UpdateEdgeWeightCompleted,
+ *		   "processFailed": UpdateEdgeWeightError
  *		   }
  * });
  * (end)
- * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 
@@ -41,9 +42,9 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.UpdateEdgeWeightService.prototype.processAsync
+     * @function UpdateEdgeWeightService.prototype.processAsync
      * @description 开始异步执行边的边的耗费权重的更新
-     * @param {SuperMap.UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
+     * @param {UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
      * @example
      * (code)
      *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
@@ -75,7 +76,7 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
     }
 
     /**
-    * @function SuperMap.UpdateEdgeWeightService.prototype.parse
+    * @function UpdateEdgeWeightService.prototype.parse
     * @description 将更新服务参数解析为用‘/’做分隔的字符串
     */
     parse(params) {
@@ -108,5 +109,3 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
     }
 
 }
-
-SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;

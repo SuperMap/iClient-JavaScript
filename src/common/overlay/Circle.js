@@ -1,22 +1,25 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Theme} from './feature/Theme';
 import {Circle as RenderCircle} from './feature/Circle';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {RankSymbol} from './RankSymbol';
 
 /**
- * @class SuperMap.Feature.Theme.Circle
+ * @class FeatureThemeCircle
+ * @aliasclass Feature.Theme.Circle
+ * @deprecatedclass SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
  * @category Visualization Theme
- * @extends SuperMap.Feature.Theme.RankSymbol
- * @param {SuperMap.Feature.Vector} data - 用户数据。
+ * @extends FeatureThemeRankSymbol
+ * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
- * @param {SuperMap.Feature.Theme.Circle.setting} setting - 图表配置对象。
- * @param {SuperMap.LonLat} [lonlat] - 专题要素地理位置，默认为 data 指代的地理要素 Bounds 中心。
+ * @param {FeatureThemeCircle.setting} setting - 图表配置对象。
+ * @param {LonLat} [lonlat] - 专题要素地理位置，默认为 data 指代的地理要素 Bounds 中心。
+ * @usage
+ * @private
  */
 export class Circle extends RankSymbol {
 
@@ -26,7 +29,7 @@ export class Circle extends RankSymbol {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Circle.prototype.destroy
+     * @function FeatureThemeCircle.prototype.destroy
      * @override
      */
     destroy() {
@@ -34,7 +37,7 @@ export class Circle extends RankSymbol {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Circle.prototype.assembleShapes
+     * @function FeatureThemeCircle.prototype.assembleShapes
      * @description 装配图形（扩展接口）。
      */
     assembleShapes() {
@@ -141,19 +144,3 @@ export class Circle extends RankSymbol {
     }
 
 }
-
-/**
- * @typedef {Object} SuperMap.Feature.Theme.Circle.setting
- * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
- * @property {number} [maxR] - 圆形的最大半径。
- * @property {number} [minR] - 圆形的最小半径。
- * @property {string} [fillColor] - 圆形的填充色，如：fillColor: "#FFB980"。
- * @property {Object} [circleStyle] - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
- * @property {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @property {Object} [circleHoverStyle] - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
- * @property {boolean} [circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- * @property {boolean} [circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- * 
- */
-
-SuperMap.Feature.Theme.Circle = Circle;

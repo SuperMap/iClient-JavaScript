@@ -74,6 +74,9 @@ function addSignatureParams(f) {
     var params = helper.getSignatureParams(f, 'optional');
 
     f.signature = (f.signature || '') + '(' + params.join(', ') + ')';
+    if (f.usage) {
+      f.usage.paramsNames = params;
+    }
 }
 
 function addSignatureReturns(f) {
@@ -244,7 +247,7 @@ function buildNav(members, view, templatePath) {
 }
 
 function sortNav(members) {
-    var merged = members.namespaces.concat(members.classes);
+    var merged = members.namespaces.concat(members.classes, members.globals);
     merged.sort(function (a, b) {
         return a.longname.toLowerCase() > b.longname.toLowerCase()
     });
@@ -316,8 +319,7 @@ function buildNavMap(members) {
                     memberof: v.longname
                 })
             };
-        }
-        if (v.kind == 'class') {
+        } else if (v.kind == 'class') {
             nav = {
                 type: 'class',
                 longname: v.longname,
@@ -341,6 +343,29 @@ function buildNavMap(members) {
                     memberof: v.longname
                 })
             };
+        } else if (v.scope === 'global') {
+          nav = {
+              type: 'global',
+              longname: v.longname,
+              version:v.version,
+              name: v.name,
+              members: find({
+                  kind: 'member',
+                  memberof: v.longname
+              }),
+              methods: find({
+                  kind: 'function',
+                  memberof: v.longname
+              }),
+              typedefs: find({
+                  kind: 'typedef',
+                  memberof: v.longname
+              }),
+              events: find({
+                  kind: 'event',
+                  memberof: v.longname
+              })
+          };
         }
         navMap[v.longname] = nav;
 
@@ -504,14 +529,16 @@ exports.publish = function (taffyData, opts, tutorials) {
         if (doclet.kind === 'member') {
             addSignatureTypes(doclet);
         }
-
-        if (doclet.kind === 'constant') {
-            addSignatureTypes(doclet);
+        var docMemberParent = find({ longname: doclet.memberof})[0];
+        if (doclet.kind === 'constant' || (docMemberParent && docMemberParent.kind === 'class' && doclet.scope === 'static')) {
+            doclet.kind === 'constant' && addSignatureTypes(doclet);
             var attribs = helper.getAttribs(doclet);
             var attribsString = buildAttribsString(attribs);
-
+            if(!attribs.length) {
+                return;
+            };
             doclet.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
-            doclet.kind = 'member';
+            doclet.kind === 'constant' && (doclet.kind = 'member');
         }
     });
     for (const typeLink in view.typeLinks) {
@@ -641,6 +668,9 @@ exports.publish = function (taffyData, opts, tutorials) {
 
         if (attribs && attribs.length) {
             attribsString = htmlsafe(util.format('(%s) ', attribs.join(', ')));
+        }
+        if(attribs.length === 1) {
+            attribsString = attribsString.replace(/\(|\)/g,'');
         }
 
         return attribsString;

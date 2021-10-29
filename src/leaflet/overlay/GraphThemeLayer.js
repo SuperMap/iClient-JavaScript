@@ -1,23 +1,25 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import '../core/Base';
-import {Bounds, LonLat, CommonUtil, FeatureTheme} from '@supermap/iclient-common';
-import {ThemeLayer} from './theme/ThemeLayer';
-import {CommontypesConversion} from '../core/CommontypesConversion';
-
+ import L from 'leaflet';
+ import '../core/Base';
+ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
+ import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+ import { ThemeLayer } from './theme/ThemeLayer';
+ import { CommontypesConversion } from '../core/CommontypesConversion';
 /**
- * @class L.supermap.graphThemeLayer
- * @classdesc 统计专题图图层。
+ * @class GraphThemeLayer
+ * @deprecatedclassinstance L.supermap.graphThemeLayer
  * @category Visualization Theme
- * @extends L.supermap.ThemeLayer
- * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。
- *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
- *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
+ * @classdesc 统计专题图图层。统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。
+ * 统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
+ * 目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
+ * @extends ThemeLayer
  * @param {string} name - 专题图表名称。
  * @param {string} chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
- * @param {Object} options - 待设置的参数。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {string} options.themeFields - 指定创建专题图字段。 
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
@@ -30,11 +32,12 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
  * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。 
  * @param {number} options.chartsSetting.height - 专题要素（图表）高度。 
  * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。 
- * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。 
- * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。 
+ * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。 
+ * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。 
  * @param {Array.<number>} [options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。 
  * @param {number} [options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
+ * @usage
 */
 export var GraphThemeLayer = ThemeLayer.extend({
     
@@ -57,7 +60,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.setChartsType
+     * @function GraphThemeLayer.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Bar3D", "Line","Point","Pie","Ring"。
      * @param {string} chartsType - 图表类型。目前可用："Bar", "Bar3D", "Line","Point","Pie","Ring"。
      */
@@ -67,16 +70,16 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.addFeatures 
+     * @function GraphThemeLayer.prototype.addFeatures 
      * @description 向专题图图层中添加数据。
-     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待添加的要素。
+     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
         /**
-         * @event L.supermap.GraphThemeLayer#beforefeaturesadded
+         * @event GraphThemeLayer#beforefeaturesadded
          * @description 向专题图图层中添加数据之前触发。
-         * @property {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features  - 待添加的要素。
+         * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features  - 待添加的要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 
@@ -97,9 +100,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.redrawThematicFeatures
+     * @function GraphThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素 此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
-     * @param {L.bounds} bounds - 重绘的范围。
+     * @param {L.Bounds} bounds - 重绘的范围。
      */
     redrawThematicFeatures: function (bounds) {
         var me = this;
@@ -144,7 +147,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.createThematicFeature
+     * @function GraphThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素（图表）。
      * @param {Object} feature - 待创建的要素。
      */
@@ -166,7 +169,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.drawCharts
+     * @function GraphThemeLayer.prototype.drawCharts
      * @description 绘制图表。包含压盖处理。
      */
     drawCharts: function () {
@@ -192,7 +195,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
+     * @function GraphThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
@@ -214,7 +217,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.isQuadrilateralOverLap
+     * @function GraphThemeLayer.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。
      * @example
@@ -261,7 +264,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.isPointInPoly
+     * @function GraphThemeLayer.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。
@@ -277,9 +280,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.isChartInMap
+     * @function GraphThemeLayer.prototype.isChartInMap
      * @description 判断图表是否在地图里。
-     * @param {SuperMap.Bounds} mapPxBounds - 地图像素范围。
+     * @param {Bounds} mapPxBounds - 地图像素范围。
      * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
      *        例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
@@ -300,7 +303,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.clearCache
+     * @function GraphThemeLayer.prototype.clearCache
      * @description 清除缓存数据。
      */
     clearCache: function () {
@@ -309,9 +312,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.removeFeatures
+     * @function GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 待删除的要素。
+     * @param {Array.<FeatureVector>} features - 待删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
@@ -320,7 +323,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.removeAllFeatures
+     * @function GraphThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures: function () {
@@ -330,7 +333,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.redraw
+     * @function GraphThemeLayer.prototype.redraw
      * @description 重绘该图层，成功则返回 true，否则返回 false。
      */
     redraw: function () {
@@ -340,7 +343,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.clear
+     * @function GraphThemeLayer.prototype.clear
      * @description 清除图层。清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear: function () {
@@ -354,9 +357,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue
+     * @function GraphThemeLayer.prototype.getWeightFieldValue
      * @description 获取权重字段的值。
-     * @param {SuperMap.Feature.Vector} feature - 矢量要素。
+     * @param {FeatureVector} feature - 矢量要素。
      * @param {Array.<string>} weightField - 字段名数组。
      * @param {number} defaultValue - 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */
@@ -477,5 +480,3 @@ export var GraphThemeLayer = ThemeLayer.extend({
 export var graphThemeLayer = function (name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);
 };
-
-L.supermap.graphThemeLayer = graphThemeLayer;

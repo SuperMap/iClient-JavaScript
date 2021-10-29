@@ -31,6 +31,9 @@ describe('ChartViewModel', () => {
     var chartViewModel = new ChartViewModel(options);
     beforeAll(() => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if(url === options.datasets.url + '/content.json?pageSize=9999999&currentPage=1') {
+              return Promise.resolve(new Response((JSON.stringify(getFeaturesBySQLService))));
+            }
             if(url.indexOf('Rivers@World@@World') > -1){
                 return Promise.resolve(new Response(JSON.stringify(layerInfo)));
             }
@@ -67,6 +70,7 @@ describe('ChartViewModel', () => {
         var successed = function () {};
         chartViewModel.getDatasetInfo(successed);
         expect(chartViewModel.createChart).toBe(successed);
+        expect(chartViewModel.features).not.toBeNull();
     });
     it('_getDatasetInfoSuccess, _getLayerFeatures', () => {
         var datasetInf = {

@@ -18,8 +18,8 @@
                 zoom: 11
             });
             // iclient-leaflet添加tilelayer
-            L.supermap
-                .tiledMapLayer(url, {
+            new L.supermap
+                .TiledMapLayer(url, {
                     attribution:
                         "<a href='https://github.com/manubb/Leaflet.PixiOverlay' target='_blank' >© Leaflet.PixiOverlay</a>"
                 })

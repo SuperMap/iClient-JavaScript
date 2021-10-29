@@ -46,7 +46,7 @@
         projection: 'EPSG:4326'
     });
     map.addLayer(layer);
-    var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+    var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
         queryParameter: {
             name: "Countries@World",
             attributeFilter: "SMID = 234"

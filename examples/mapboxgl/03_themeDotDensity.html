@@ -48,15 +48,15 @@
 
 
     function createTheme() {
-        var themeDotDensity = new SuperMap.ThemeDotDensity({
+        var themeDotDensity = new mapboxgl.supermap.ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
-            style: new SuperMap.ServerStyle({
+            style: new mapboxgl.supermap.ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new mapboxgl.supermap.ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]

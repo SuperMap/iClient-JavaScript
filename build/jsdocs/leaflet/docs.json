@@ -23,17 +23,23 @@
             "src/common","src/leaflet"
         ],
         "exclude": [
-            "src/common/overlay/levelRenderer"
+            "src/common/overlay/levelRenderer",
+            "src/common/lang/locales"
         ]
-        
+
     },
-    "plugins": ["plugins/markdown","../plugins/factoryFunction"],
+    "plugins": ["plugins/markdown","../plugins/usage"],
+    "markdown": {
+        "tags": ["usage"]
+    },
     "templates": {
         "cleverLinks": true,
         "monospaceLinks": true,
         "default": {
             "outputSourceFiles": false
-        }
-        //"applicationName": "iClient for Leaflet"
+        },
+        "namespace": "L.supermap",
+        "npm":"@supermap/iclient-leaflet",
+        "cdn":"https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"
     }
 }

@@ -23,20 +23,20 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]], {color: 'red'});
         polygon.addTo(map);
         polygon.bindPopup(resources.text_boundsQueryMode+'：INTERSECT').openPopup();
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+        var geometryParam = new L.supermap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        L.supermap
-            .featureService(url)
+        new L.supermap
+            .FeatureService(url)
             .getFeaturesByGeometry(geometryParam, function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {

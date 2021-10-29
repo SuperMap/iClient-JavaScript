@@ -2,15 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
-import {
-    GeoJSON as GeoJSONFormat,
-    GeometryVector,
-    ServerFeature,
-    CommonUtil,
-    LonLat,
-    GeometryPoint,
-    GeoText
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
@@ -19,16 +17,16 @@ import Point from 'ol/geom/Point';
  * @class ol.source.HeatMap
  * @classdesc 热力图层类。
  * @category Visualization HeatMap
- * @param {string} name - 图层名称s
- * @param {Object} options - 构造参数。
- * @param {ol/Map} options.map - openlayers 的 map 对象。
+ * @param {string} name - 图层名称
+ * @param {Object} options - 参数。
+ * @param {ol.Map} options.map - openlayers 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
  * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
- * @extends {ol/source/ImageCanvas}
+ * @extends {ol.source.ImageCanvas}
  */
 export class HeatMap extends ImageCanvasSource {
 
@@ -98,7 +96,7 @@ export class HeatMap extends ImageCanvasSource {
     /**
      * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(GeoJSONObject|Array.<ol/Feature>)} features - 待添加的要素数组。
+     * @param {(GeoJSONObject|Array.<ol.Feature>)} features - 待添加的要素数组。
      * @example
      * var geojson = {
      *      "type": "FeatureCollection",
@@ -368,7 +366,7 @@ export class HeatMap extends ImageCanvasSource {
     /**
      * @function ol.source.HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -410,8 +408,8 @@ export class HeatMap extends ImageCanvasSource {
     /**
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {GeoJSONObject|Array.<ol/Feature>} features - 待添加的要素数组。
-     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
+     * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
+     * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {
@@ -425,7 +423,7 @@ export class HeatMap extends ImageCanvasSource {
                     geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
                     //固定属性字段为 "Properties"
                     attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                    featuresTemp.push(new GeometryVector(geometry, attributes));
+                    featuresTemp.push(new FeatureVector(geometry, attributes));
                 }
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 let format = new GeoJSONFormat();

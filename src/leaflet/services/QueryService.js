@@ -6,41 +6,41 @@ import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import {
-    GeometryPoint,
-    DataFormat,
-    QueryByBoundsService,
-    QueryByDistanceService,
-    QueryBySQLService,
-    QueryByGeometryService
-} from '@supermap/iclient-common';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { QueryByBoundsService } from '@supermap/iclient-common/iServer/QueryByBoundsService';
+import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryByDistanceService';
+import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
+import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 
 /**
- * @class  L.supermap.queryService
+ * @class  QueryService
+ * @deprecatedclassinstance L.supermap.queryService
  * @classdesc 地图查询服务类。
  * @category  iServer Map QueryResults
- * @extends {L.supermap.ServiceBase}
- * @param {string} url -  地图查询服务访问地址。
+ * @extends {ServiceBase}
+ * @param {string} url -  服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * L.supermap.queryService(url).queryByBounds(param,function(result){
+ * new QueryService(url).queryByBounds(param,function(result){
  *   //doSomething
  * })
+ * @usage
  */
 export var QueryService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },
     /**
-     * @function L.supermap.queryService.prototype.queryByBounds
+     * @function QueryService.prototype.queryByBounds
      * @description bounds 查询地图服务。
-     * @param {SuperMap.QueryByBoundsParameters} params - 通过 Bounds 查询的相关参数类。
+     * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByBounds: function(params, callback, resultFormat) {
         var me = this;
@@ -62,11 +62,11 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.prototype.queryByDistance
+     * @function QueryService.prototype.queryByDistance
      * @description 地图距离查询服务。
-     * @param {SuperMap.QueryByDistanceParameters} params - Distance 查询相关参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {QueryByDistanceParameters} params - Distance 查询参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByDistance: function(params, callback, resultFormat) {
         var me = this;
@@ -88,11 +88,11 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.prototype.queryBySQL
+     * @function QueryService.prototype.queryBySQL
      * @description 地图 SQL 查询服务。
-     * @param {SuperMap.QueryBySQLParameters} params - SQL 查询相关参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {QueryBySQLParameters} params - SQL 查询参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL: function(params, callback, resultFormat) {
         var me = this;
@@ -114,11 +114,11 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.prototype.queryByGeometry
+     * @function QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务。
-     * @param {SuperMap.QueryByGeometryParameters} params - Geometry 查询相关参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {QueryByGeometryParameters} params - Geometry 查询相关参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry: function(params, callback, resultFormat) {
         var me = this;
@@ -171,4 +171,3 @@ export var queryService = function(url, options) {
     return new QueryService(url, options);
 };
 
-L.supermap.queryService = queryService;

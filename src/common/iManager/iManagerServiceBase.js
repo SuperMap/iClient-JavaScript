@@ -1,18 +1,20 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {SecurityManager} from '../security/SecurityManager';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class SuperMap.iManagerServiceBase
+ * @class IManagerServiceBase
+ * @aliasclass iManagerServiceBase
+ * @deprecatedclass SuperMap.iManagerServiceBase
  * @classdesc iManager 服务基类（有权限限制的类需要实现此类）。
  * @category iManager
  * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
- * @param {Object} options - 服务参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class IManagerServiceBase {
 
@@ -26,7 +28,7 @@ export class IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManagerServiceBase.prototype.request
+     * @function IManagerServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求。
      * @param {string} url - 请求 URL。
      * @param {string} [method='GET'] - 请求类型。
@@ -64,4 +66,3 @@ export class IManagerServiceBase {
 
 }
 
-SuperMap.iManagerServiceBase = IManagerServiceBase;

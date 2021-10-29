@@ -107,21 +107,21 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-    getFeatureParam = new SuperMap.FilterParameter({
+    var getFeatureParam, getFeatureBySQLParams;
+    getFeatureParam = new mapboxgl.supermap.FilterParameter({
         name: "Jingjin",
         attributeFilter: "SMID > -1"
     });
-    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+    getFeatureBySQLParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
         queryParameter: getFeatureParam,
         toIndex: 500,
         datasetNames: ["Jingjin:BaseMap_R"]
     });
-    getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-        format: SuperMap.DataFormat.ISERVER,
-        eventListeners: {"processCompleted": processCompleted}
-    });
-    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+        getFeatureBySQLParams,
+        processCompleted,
+        mapboxgl.supermap.DataFormat.ISERVER
+    );
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;

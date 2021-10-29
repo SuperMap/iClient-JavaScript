@@ -19,7 +19,7 @@
         maxZoom: 18,
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var grade=[
         resources.text_strong,
         resources.text_middle,
@@ -113,7 +113,7 @@
                 data: weiboData[2]
             }]
         };
-       layer= L.supermap.echartsLayer(option,{loadWhileAnimating:false}).addTo(map);
+       layer= new L.supermap.EchartsLayer(option,{loadWhileAnimating:false}).addTo(map);
     });
 </script>
 </body>

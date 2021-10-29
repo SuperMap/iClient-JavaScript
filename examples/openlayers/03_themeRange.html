@@ -38,39 +38,39 @@
     function createTheme() {
         var themeRangeItem1, themeRangeItem2,
             themeRangeItem3, themeRange;
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
+        themeRangeItem1 = new ol.supermap.ThemeRangeItem({
             start: 0,
             end: 500000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(211, 255, 250),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(211, 255, 250),
+                lineColor: new ol.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        themeRangeItem2 = new ol.supermap.ThemeRangeItem({
             start: 500000000000,
             end: 1000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(178, 218, 199),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(178, 218, 199),
+                lineColor: new ol.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem3 = new SuperMap.ThemeRangeItem({
+        themeRangeItem3 = new ol.supermap.ThemeRangeItem({
             start: 1000000000000,
             end: 3000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(58, 178, 166),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(58, 178, 166),
+                lineColor: new ol.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRange = new SuperMap.ThemeRange({
+        themeRange = new ol.supermap.ThemeRange({
             rangeExpression: "SMAREA",
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: ol.supermap.RangeMode.EQUALINTERVAL,
             items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             joinItems: null,

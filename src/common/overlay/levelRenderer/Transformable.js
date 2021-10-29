@@ -5,50 +5,45 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Transformable
+ * @class  LevelRenderer.Transformable
  * @category Visualization Theme
  * @classdesc 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。此类不可实例化。
  */
 export class Transformable {
-
-    /**
-     * @function SuperMap.LevelRenderer.Transformable.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
-         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.position 
+         * @member {Array.<number>} LevelRenderer.Transformable.prototype.position
          * @description 平移， 默认值：[0, 0]。
          */
         this.position = [0, 0];
 
         /**
-         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.rotation
+         * @member {Array.<number>} LevelRenderer.Transformable.prototype.rotation
          * @description 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
          */
         this.rotation = [0, 0, 0];
 
         /**
-         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.scale
+         * @member {Array.<number>} LevelRenderer.Transformable.prototype.scale
          * @description 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
          */
         this.scale = [1, 1, 0, 0];
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Transformable.prototype.needLocalTransform
+         * @member {boolean} LevelRenderer.Transformable.prototype.needLocalTransform
          * @description 是否变换。默认值：false。
          */
         this.needLocalTransform = false;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Transformable.prototype.needTransform
+         * @member {boolean} LevelRenderer.Transformable.prototype.needTransform
          * @description 是否有坐标变换。默认值：false。
          */
         this.needTransform = false;
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Transformable";
         /**
-         * @function SuperMap.LevelRenderer.Transformable.prototype.lookAt
+         * @function LevelRenderer.Transformable.prototype.lookAt
          * @description 设置图形的朝向。
          */
         this.lookAt = (function () {
@@ -86,7 +81,7 @@ export class Transformable {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Transformable.prototype.destroy
+     * @function LevelRenderer.Transformable.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -99,7 +94,7 @@ export class Transformable {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Transformable.prototype.updateNeedTransform
+     * @function LevelRenderer.Transformable.prototype.updateNeedTransform
      * @description 更新 needLocalTransform
      */
     updateNeedTransform() {
@@ -117,7 +112,7 @@ export class Transformable {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Transformable.prototype.updateTransform
+     * @function LevelRenderer.Transformable.prototype.updateTransform
      * @description 判断是否需要有坐标变换，更新 needTransform 属性。如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
      */
     updateTransform() {
@@ -215,9 +210,9 @@ export class Transformable {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Transformable.prototype.setTransform
+     * @function LevelRenderer.Transformable.prototype.setTransform
      * @description 将自己的 transform 应用到 context 上。
-     * 
+     *
      * @param {Context2D} ctx - Context2D 上下文。
      */
     setTransform(ctx) {
@@ -234,7 +229,7 @@ export class Transformable {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Transformable.prototype.decomposeTransform
+     * @function LevelRenderer.Transformable.prototype.decomposeTransform
      * @description 分解`transform`矩阵到`position`, `rotation`, `scale` 。
      */
     decomposeTransform() {

@@ -19,8 +19,8 @@ export class MapVLayer extends SuperMap.Layer {
         super(name, options);
 
         /**
-         * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
-         * @description mapv dataset 对象。
+         * @member {Mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @description mapv 的 dataset 对象。
          */
         this.dataSet = null;
 
@@ -50,7 +50,7 @@ export class MapVLayer extends SuperMap.Layer {
         this.canvasContext = null;
 
         if (options) {
-            SuperMap.Util.extend(this, options);
+          SuperMap.Util.extend(this, options);
         }
         
         //MapV图要求使用canvas绘制，判断是否支持
@@ -80,6 +80,7 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.destroy
+     * @description 销毁此图层，销毁后此图层的所有属性为 null。
      * @override
      */
     destroy() {
@@ -101,8 +102,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {mapv.DataSet} dataSet - mapv 数据集。
-     * @param {Object} options - mapv 绘图参数。
+     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
+     * @param {Object} options - mapv 绘图风格配置信息。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -111,8 +112,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {mapv.DataSet} dataSet - mapv 数据集。
-     * @param {Object} options - mapv 绘图参数。
+     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
+     * @param {Object} options - mapv 绘图风格配置信息。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -121,7 +122,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} - mapv 数据集。
+     * @returns {Mapv.DataSet} mapv 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {
@@ -220,7 +221,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
-     * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
+     * @param {SuperMap.LonLat} latLng - 经纬度坐标。
      * @deprecated
      */
     transferToMapLatLng(latLng) {
@@ -233,5 +234,4 @@ export class MapVLayer extends SuperMap.Layer {
         return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 }
-
 SuperMap.Layer.MapVLayer = MapVLayer;

@@ -61,12 +61,12 @@
                 ]]
             }
         };
-        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
-            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+        surfaceAnalystParameters = new mapboxgl.supermap.DatasetSurfaceAnalystParameters({
+            extractParameter: new mapboxgl.supermap.SurfaceAnalystParametersSetting({
                 datumValue: 0,
                 interval: 2,
                 resampleTolerance: 0,
-                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothMethod: mapboxgl.supermap.SmoothMethod.BSPLINE,
                 smoothness: 3,
                 clipRegion: region
             }),

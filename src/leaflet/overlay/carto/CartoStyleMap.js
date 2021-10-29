@@ -1,11 +1,10 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @constant L.supermap.CartoStyleMap
+ * @constant CartoStyleMap
  * @description CartoCSS 中的 style 属性名与 leaflet 的 style 属性名的对应表。
  * @category BaseTypes Style
  * @private
@@ -13,7 +12,7 @@ import '../../core/Base';
 export var CartoStyleMap = {
 
     /*
-     * @constant L.supermap.CartoStyleMap.prototype.TEXT
+     * @constant CartoStyleMap.prototype.TEXT
      * @description 默认文本样式。
      */
     "TEXT": {
@@ -28,7 +27,7 @@ export var CartoStyleMap = {
     },
 
     /*
-     * @constant L.supermap.CartoStyleMap.prototype.POINT
+     * @constant CartoStyleMap.prototype.POINT
      * @description 默认点样式。
      */
     "POINT": {
@@ -40,7 +39,7 @@ export var CartoStyleMap = {
     },
 
     /*
-     * @constant L.supermap.CartoStyleMap.prototype.LINE
+     * @constant CartoStyleMap.prototype.LINE
      * @description 默认线样式。
      */
     "LINE": {
@@ -55,7 +54,7 @@ export var CartoStyleMap = {
     },
 
     /*
-     * @constant L.supermap.CartoStyleMap.prototype.REGION
+     * @constant CartoStyleMap.prototype.REGION
      * @description 默认多边形样式。
      */
     "REGION": {
@@ -73,14 +72,14 @@ export var CartoStyleMap = {
 };
 
 /**
- * @constant L.supermap.ServerStyleMap
+ * @constant ServerStyleMap
  * @description 服务端传过来的 style 属性名与 leaflet 的 style 属性名的对应表。
  * @private
  */
 export var ServerStyleMap = {
 
     /**
-     * @member L.supermap.ServerStyleMap.prototype.lineWidth
+     * @member ServerStyleMap.prototype.lineWidth
      * @description 线宽。
      */
     lineWidth: {
@@ -91,7 +90,7 @@ export var ServerStyleMap = {
     },
 
     /**
-     * @member L.supermap.ServerStyleMap.prototype.fillForeColor
+     * @member ServerStyleMap.prototype.fillForeColor
      * @description 填充前景色。
      */
     fillForeColor: {
@@ -101,7 +100,7 @@ export var ServerStyleMap = {
     },
 
     /**
-     * @member L.supermap.ServerStyleMap.prototype.foreColor
+     * @member ServerStyleMap.prototype.foreColor
      * @description 前景色。
      */
     foreColor: {
@@ -111,7 +110,7 @@ export var ServerStyleMap = {
     },
 
     /**
-     * @member L.supermap.ServerStyleMap.prototype.markerSize
+     * @member ServerStyleMap.prototype.markerSize
      * @description 图标大小。
      */
     markerSize: {
@@ -122,7 +121,7 @@ export var ServerStyleMap = {
     },
 
     /**
-     * @member L.supermap.ServerStyleMap.prototype.lineColor
+     * @member ServerStyleMap.prototype.lineColor
      * @description 线要素颜色。
      */
     lineColor: {
@@ -133,7 +132,7 @@ export var ServerStyleMap = {
 };
 
 /**
- * @constant L.supermap.CompOpMap
+ * @constant CompOpMap
  * @description Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。
  * @private
  */
@@ -173,7 +172,3 @@ export var CompOpMap = {
     "color": "",
     "value": ""
 };
-
-L.supermap.CartoStyleMap = CartoStyleMap;
-L.supermap.ServerStyleMap = ServerStyleMap;
-L.supermap.CompOpMap = CompOpMap;

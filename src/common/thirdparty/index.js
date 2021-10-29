@@ -3,4 +3,4 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ElasticSearch } from './elasticsearch';
 
-export { ElasticSearch } ;
+export { ElasticSearch };

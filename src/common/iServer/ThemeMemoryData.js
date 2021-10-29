@@ -1,26 +1,27 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 
 /**
- * @class SuperMap.ThemeMemoryData
+ * @class ThemeMemoryData
+ * @deprecatedclass SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
+ * @usage
  */
 export class ThemeMemoryData {
 
     constructor(srcData, targetData) {
         /**
-         * @member {Array} SuperMap.ThemeMemoryData.prototype.srcData
+         * @member {Array} ThemeMemoryData.prototype.srcData
          * @description 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
          */
         this.srcData = srcData;
 
         /**
-         * @member {Array} SuperMap.ThemeMemoryData.prototype.targetData
+         * @member {Array} ThemeMemoryData.prototype.targetData
          * @description 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
          */
         this.targetData = targetData;
@@ -29,7 +30,7 @@ export class ThemeMemoryData {
     }
 
     /**
-     * @function SuperMap.ThemeMemoryData.prototype.destroy
+     * @function ThemeMemoryData.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -40,8 +41,8 @@ export class ThemeMemoryData {
 
 
     /**
-     * @function SuperMap.ThemeMemoryData.prototype.toJSON
-     * @description 将 SuperMap.ThemeMemoryData 对象转化为 JSON 字符串。
+     * @function ThemeMemoryData.prototype.toJSON
+     * @description 将 ThemeMemoryData 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
@@ -62,5 +63,3 @@ export class ThemeMemoryData {
     }
 
 }
-
-SuperMap.ThemeMemoryData = ThemeMemoryData;

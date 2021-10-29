@@ -39,46 +39,46 @@
     });
 
     function createTheme() {
-        var themeGraph = new SuperMap.ThemeGraph({
+        var themeGraph = new ol.supermap.ThemeGraph({
             items: [
-                new SuperMap.ThemeGraphItem({
+                new ol.supermap.ThemeGraphItem({
                     caption: "1992-1995人口增长率",
                     graphExpression: "Pop_Rate95",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(92, 73, 234),
+                    uniformStyle: new ol.supermap.ServerStyle({
+                        fillForeColor: new ol.supermap.ServerColor(92, 73, 234),
                         lineWidth: 0.1
                     })
                 }),
-                new SuperMap.ThemeGraphItem({
+                new ol.supermap.ThemeGraphItem({
                     caption: "1995-1999人口增长率",
                     graphExpression: "Pop_Rate99",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(211, 111, 240),
+                    uniformStyle: new ol.supermap.ServerStyle({
+                        fillForeColor: new ol.supermap.ServerColor(211, 111, 240),
                         lineWidth: 0.1
                     })
                 })
             ],
             barWidth: 0.03,
-            graduatedMode: SuperMap.GraduatedMode.SQUAREROOT,
-            graphAxes: new SuperMap.ThemeGraphAxes({
+            graduatedMode: ol.supermap.GraduatedMode.SQUAREROOT,
+            graphAxes: new ol.supermap.ThemeGraphAxes({
                 axesDisplayed: true
             }),
-            graphSize: new SuperMap.ThemeGraphSize({
+            graphSize: new ol.supermap.ThemeGraphSize({
                 maxGraphSize: 1,
                 minGraphSize: 0.35
             }),
-            graphText: new SuperMap.ThemeGraphText({
+            graphText: new ol.supermap.ThemeGraphText({
                 graphTextDisplayed: true,
-                graphTextFormat: SuperMap.ThemeGraphTextFormat.VALUE,
-                graphTextStyle: new SuperMap.ServerTextStyle({
+                graphTextFormat: ol.supermap.ThemeGraphTextFormat.VALUE,
+                graphTextStyle: new ol.supermap.ServerTextStyle({
                     sizeFixed: true,
                     fontHeight: 9,
                     fontWidth: 5
                 })
             }),
-            graphType: SuperMap.ThemeGraphType.BAR3D
+            graphType: ol.supermap.ThemeGraphType.BAR3D
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeGraph],
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]

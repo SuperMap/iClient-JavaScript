@@ -10,9 +10,9 @@ import Style from 'ol/style/Style';
  * @class ol.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类。
- * @param {ol/geom/Point} geometry - 几何对象。
+ * @param {ol.geom.Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。
- * @extends {ol/Object}
+ * @extends {ol.Object}
  */
 export class Graphic extends BaseObject {
 
@@ -60,7 +60,7 @@ export class Graphic extends BaseObject {
     /**
      * @function ol.Graphic.prototype.getGeometry
      * @description 获取当前要素几何信息。
-     * @returns {ol/geom/Point} 要素几何信息。
+     * @returns {ol.geom.Point} 要素几何信息。
      */
     getGeometry() {
         return this.geometry_;
@@ -69,7 +69,7 @@ export class Graphic extends BaseObject {
     /**
      * @function ol.Graphic.prototype.setGeometry
      * @description 设置当前要素几何信息。
-     * @param {ol/geom/Point} geometry - 要素几何信息。
+     * @param {ol.geom.Point} geometry - 要素几何信息。
      */
     setGeometry(geometry) {
         this.geometry_ = geometry;
@@ -96,7 +96,7 @@ export class Graphic extends BaseObject {
     /**
      * @function ol.Graphic.prototype.getStyle
      * @description 获取样式。
-     * @returns {ol/style/Image} ol/style/Image 子类样式对象。
+     * @returns {ol.style.Image} ol.style.Image 子类样式对象。
      */
     getStyle() {
         return this.style_;
@@ -105,7 +105,7 @@ export class Graphic extends BaseObject {
     /**
      * @function ol.Graphic.prototype.setStyle
      * @description 设置样式。
-     * @param {ol/style/Image} style - 样式，ol/style/Image 子类样式对象。
+     * @param {ol.style.Image} style - 样式，ol/style/Image 子类样式对象。
      */
     setStyle(style) {
         if (!this.style && !style) {
@@ -122,7 +122,7 @@ export class Graphic extends BaseObject {
     /**
      * @function ol.Graphic.prototype.getStyleFunction
      * @description 获取样式函数。
-     * @returns {Function} 样式函数。
+     * @returns {function} 样式函数。
      */
     getStyleFunction() {
         return this.styleFunction_;

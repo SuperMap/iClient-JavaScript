@@ -17,7 +17,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -25,13 +25,13 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     findServiceAreas();
 
     function findServiceAreas() {
         //添加中心点
         marker = L.marker([-3375, 5605]).addTo(map);
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new L.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -41,16 +41,16 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new L.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        parameter = new SuperMap.FindServiceAreasParameters({
+        parameter = new L.supermap.FindServiceAreasParameters({
             centers: [marker.getLatLng()],
             isAnalyzeById: false,
             parameter: analystParameter
         });
-        service = L.supermap.networkAnalystService(serviceUrl);
+        service = new L.supermap.NetworkAnalystService(serviceUrl);
         resultLayer = L.featureGroup().addTo(map);
         parameter.weights = [400 + Math.random() * 100];
         service.findServiceAreas(parameter, function (serviceResult) {

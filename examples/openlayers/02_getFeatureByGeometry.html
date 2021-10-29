@@ -56,7 +56,7 @@
         });
         map.addLayer(vectorLayer);
 
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+        var geometryParam = new ol.supermap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"

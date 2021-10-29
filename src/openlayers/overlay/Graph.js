@@ -1,12 +1,10 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    CommonUtil,
-    Bounds,
-    LonLat,
-    FeatureTheme
-} from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { Theme as FeatureTheme } from "@supermap/iclient-common/overlay/feature/Theme";
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
 import {
     Theme
 } from './theme/Theme';
@@ -18,7 +16,7 @@ import {
  * @param {string} chartsType - 图表类别。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
- * @param {ol/Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
  * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下几个基础可设属性。
  * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度。
@@ -28,16 +26,16 @@ import {
  * @param {number} [opt_options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
  * @param {Array.<number>} [opt_options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox（由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  * @param {number} [opt_options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @param {string} opt_options.themeFields - 指定创建专题图字段。 
+ * @param {string} opt_options.themeFields - 指定创建专题图字段。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity = 1] - 图层透明度。
- * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
- * @param {ol/proj/Projection} [opt_options.projection] - {@link ol/proj/Projection} 投影信息。
+ * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {ol.proj.Projection} [opt_options.projection] - {@link ol.proj.Projection} 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比, 1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {ol/source/State} [opt_options.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.Theme}
  */
 export class Graph extends Theme {
@@ -82,7 +80,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据。
-     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature)} features - 待添加的要素。
+     * @param {(ServerFeature|ThemeFeature)} features - 待添加的要素。
      */
     addFeatures(features) {
         var ret = this.dispatchEvent({
@@ -150,7 +148,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.createThematicFeature
      * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
-     * @param {SuperMap.ServerFeature} feature - 待添加的要素。
+     * @param {ServerFeature} feature - 待添加的要素。
      *
      */
     createThematicFeature(feature) {
@@ -358,7 +356,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.isChartInMap
      * @description  判断图表是否在地图里。
-     * @param {SuperMap.Bounds} mapPxBounds - 地图像素范围。
+     * @param {Bounds} mapPxBounds - 地图像素范围。
      * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
      */
     isChartInMap(mapPxBounds, chartPxBounds) {
@@ -387,7 +385,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素。
+     * @param {FeatureVector} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();

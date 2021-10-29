@@ -1,31 +1,30 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
-import './JoinItem';
-import './LinkItem';
 
 /**
- * @class SuperMap.FilterParameter
- * @category iServer
+ * @class FilterParameter
+ * @deprecatedclass SuperMap.FilterParameter
+ * @category iServer Data FeatureResults
  * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。
- * @param {Object} options - 参数。 
- * @param {string} options.attributeFilter - 属性过滤条件。 
- * @param {string} options.name - 查询数据集名称或者图层名称。 
- * @param {Array.<SuperMap.JoinItem>} [options.joinItems] - 与外部表的连接信息 SuperMap.JoinItem 数组。 
- * @param {Array.<SuperMap.LinkItem>} [options.linkItems] - 与外部表的关联信息 SuperMap.LinkItem 数组。 
- * @param {Array.<string>} [options.ids] - 查询 id 数组，即属性表中的 SmID 值。 
- * @param {string} [options.orderBy] - 查询排序的字段，orderBy 的字段须为数值型的。 
- * @param {string} [options.groupBy] - 查询分组条件的字段。 
- * @param {Array.<string>} [options.fields] - 查询字段数组。 
+ * @param {Object} options - 参数。
+ * @param {string} options.attributeFilter - 属性过滤条件。
+ * @param {string} options.name - 查询数据集名称或者图层名称。
+ * @param {Array.<JoinItem>} [options.joinItems] - 与外部表的连接信息 JoinItem 数组。
+ * @param {Array.<LinkItem>} [options.linkItems] - 与外部表的关联信息 LinkItem 数组。
+ * @param {Array.<string>} [options.ids] - 查询 id 数组，即属性表中的 SmID 值。
+ * @param {string} [options.orderBy] - 查询排序的字段，orderBy 的字段须为数值型的。
+ * @param {string} [options.groupBy] - 查询分组条件的字段。
+ * @param {Array.<string>} [options.fields] - 查询字段数组。
+ * @usage
  */
 export class FilterParameter {
 
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.FilterParameter.prototype.attributeFilter
+         * @member {string} FilterParameter.prototype.attributeFilter
          * @description 属性过滤条件。
          * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，
          * attributeFilter 就是其中的“条件表达式”。
@@ -36,7 +35,7 @@ export class FilterParameter {
         this.attributeFilter = null;
 
         /**
-         * @member {string} SuperMap.FilterParameter.prototype.name
+         * @member {string} FilterParameter.prototype.name
          * @description 查询数据集名称或者图层名称，根据实际的查询对象而定。
          * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，
          * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。
@@ -48,25 +47,25 @@ export class FilterParameter {
         this.name = null;
 
         /**
-         * @member {Array.<SuperMap.JoinItem>} [SuperMap.FilterParameter.prototype.joinItems]
-         * @description 与外部表的连接信息 SuperMap.JoinItem 数组。
+         * @member {Array.<JoinItem>} [FilterParameter.prototype.joinItems]
+         * @description 与外部表的连接信息 JoinItem 数组。
          */
         this.joinItems = null;
 
         /**
-         * @member {Array.<SuperMap.LinkItem>} [SuperMap.FilterParameter.prototype.linkItems]
+         * @member {Array.<LinkItem>} [FilterParameter.prototype.linkItems]
          * @description 与外部表的关联信息 LinkItem 数组。
          */
         this.linkItems = null;
 
         /**
-         * @member {Array.<string>} [SuperMap.FilterParameter.prototype.ids]
+         * @member {Array.<string>} [FilterParameter.prototype.ids]
          * @description 查询 id 数组，即属性表中的 SmID 值。
          */
         this.ids = null;
 
         /**
-         * @member {string} [SuperMap.FilterParameter.prototype.orderBy]
+         * @member {string} [FilterParameter.prototype.orderBy]
          * @description 查询排序的字段，orderBy的字段须为数值型的。
          * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，
          * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。
@@ -81,7 +80,7 @@ export class FilterParameter {
 
 
         /**
-         * @member {string} [SuperMap.FilterParameter.prototype.groupBy]
+         * @member {string} [FilterParameter.prototype.groupBy]
          * @description 查询分组条件的字段。
          * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，
          * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。
@@ -95,7 +94,7 @@ export class FilterParameter {
         this.groupBy = null;
 
         /**
-         * @member {Array.<string>} [SuperMap.FilterParameter.prototype.fields]
+         * @member {Array.<string>} [FilterParameter.prototype.fields]
          * @description 查询字段数组，如果不设置则使用系统返回的所有字段。
          */
         this.fields = null;
@@ -108,7 +107,7 @@ export class FilterParameter {
 
 
     /**
-     * @function SuperMap.FilterParameter.prototype.destroy
+     * @function FilterParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -135,5 +134,3 @@ export class FilterParameter {
 
 
 }
-
-SuperMap.FilterParameter = FilterParameter;

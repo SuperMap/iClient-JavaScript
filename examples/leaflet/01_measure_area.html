@@ -22,16 +22,16 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     resultLayer = L.featureGroup().addTo(map);
     measureArea();
 
     function measureArea() {
         var polygon = L.polygon([[24, 100], [40, 100], [40, 120], [24, 120], [24, 100]], {color: "red"});
         resultLayer.addLayer(polygon);
-        var areaMeasureParam = new SuperMap.MeasureParameters(polygon);
-        L.supermap
-            .measureService(url)
+        var areaMeasureParam = new L.supermap.MeasureParameters(polygon);
+        new L.supermap
+            .MeasureService(url)
             .measureArea(areaMeasureParam, function (serviceResult) {
                 var content = resources.text_area + serviceResult.result.area + resources.msg_sqm;
                 polygon.bindPopup(content).openPopup(polygon.getCenter());

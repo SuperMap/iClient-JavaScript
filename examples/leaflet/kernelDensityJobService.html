@@ -26,7 +26,7 @@
             info = L.control({
                 position: 'topright'
             });
-        L.supermap.tiledMapLayer(mapURL).addTo(map);
+        new L.supermap.TiledMapLayer(mapURL).addTo(map);
 
         info.onAdd = function () {
             var popup = L.DomUtil.create('div');
@@ -110,10 +110,10 @@
         };
         info.addTo(map);
 
-        var processingService = new L.supermap.processingService(processingUrl, {
+        var processingService = new L.supermap.ProcessingService(processingUrl, {
             withCredentials: window.isLocal
         });
-        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+        L.supermap.SecurityManager.registerToken(processingUrl, window.exampleToken);
 
 
         function getQuery() {
@@ -135,7 +135,7 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
+            var kernelDensityJobParameter = new L.supermap.KernelDensityJobParameter({
                 datasetName: $('#datasetName').val(),
                 resolution: $('#resolution').val(),
                 method: $('#method option:selected').attr('value'),
@@ -156,12 +156,12 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        L.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                            layer = new L.supermap.TiledMapLayer(mapUrl, {
                                 noWrap: true,
                                 transparent: true
                             });

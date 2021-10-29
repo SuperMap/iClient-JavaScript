@@ -45,7 +45,7 @@
 
     function interpolationAnalystProcess() {
         //创建点密度插值分析参数实例
-        var interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
+        var interpolationAnalystParameters = new ol.supermap.InterpolationDensityAnalystParameters({
             //用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
             //插值分析结果数据集的名称
@@ -53,7 +53,7 @@
             //插值分析结果数据源的名称
             outputDatasourceName: "Interpolation",
             //结果栅格数据集存储的像素格式
-            pixelFormat: SuperMap.PixelFormat.DOUBLE,
+            pixelFormat: ol.supermap.PixelFormat.DOUBLE,
             //插值结果栅格数据集的分辨率
             resolution: 9000,
             // 存储用于进行插值分析的字段名称
@@ -69,131 +69,131 @@
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            var color1 = new SuperMap.ServerColor(170, 240, 233),
-                color2 = new SuperMap.ServerColor(176, 244, 188),
-                color3 = new SuperMap.ServerColor(218, 251, 178),
-                color4 = new SuperMap.ServerColor(220, 236, 145),
-                color5 = new SuperMap.ServerColor(96, 198, 66),
-                color6 = new SuperMap.ServerColor(20, 142, 53),
-                color7 = new SuperMap.ServerColor(85, 144, 55),
-                color8 = new SuperMap.ServerColor(171, 168, 38),
-                color9 = new SuperMap.ServerColor(235, 165, 9),
-                color10 = new SuperMap.ServerColor(203, 89, 2),
-                color11 = new SuperMap.ServerColor(157, 25, 1),
-                color12 = new SuperMap.ServerColor(118, 15, 3),
-                color13 = new SuperMap.ServerColor(112, 32, 7),
-                color14 = new SuperMap.ServerColor(106, 45, 12),
-                color15 = new SuperMap.ServerColor(129, 80, 50),
-                color16 = new SuperMap.ServerColor(160, 154, 146),
-                color17 = new SuperMap.ServerColor(107, 47, 14),
-                color18 = new SuperMap.ServerColor(125, 75, 44),
-                color19 = new SuperMap.ServerColor(146, 110, 88),
-                color20 = new SuperMap.ServerColor(166, 153, 146);
+            var color1 = new ol.supermap.ServerColor(170, 240, 233),
+                color2 = new ol.supermap.ServerColor(176, 244, 188),
+                color3 = new ol.supermap.ServerColor(218, 251, 178),
+                color4 = new ol.supermap.ServerColor(220, 236, 145),
+                color5 = new ol.supermap.ServerColor(96, 198, 66),
+                color6 = new ol.supermap.ServerColor(20, 142, 53),
+                color7 = new ol.supermap.ServerColor(85, 144, 55),
+                color8 = new ol.supermap.ServerColor(171, 168, 38),
+                color9 = new ol.supermap.ServerColor(235, 165, 9),
+                color10 = new ol.supermap.ServerColor(203, 89, 2),
+                color11 = new ol.supermap.ServerColor(157, 25, 1),
+                color12 = new ol.supermap.ServerColor(118, 15, 3),
+                color13 = new ol.supermap.ServerColor(112, 32, 7),
+                color14 = new ol.supermap.ServerColor(106, 45, 12),
+                color15 = new ol.supermap.ServerColor(129, 80, 50),
+                color16 = new ol.supermap.ServerColor(160, 154, 146),
+                color17 = new ol.supermap.ServerColor(107, 47, 14),
+                color18 = new ol.supermap.ServerColor(125, 75, 44),
+                color19 = new ol.supermap.ServerColor(146, 110, 88),
+                color20 = new ol.supermap.ServerColor(166, 153, 146);
 
-            var themeGridRangeItem1 = new SuperMap.ThemeGridRangeItem({
+            var themeGridRangeItem1 = new ol.supermap.ThemeGridRangeItem({
                     start: -5,
                     end: -3.4,
                     color: color1
                 }),
-                themeGridRangeItem2 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem2 = new ol.supermap.ThemeGridRangeItem({
                     start: -3.4,
                     end: -1.8,
                     color: color2
                 }),
-                themeGridRangeItem3 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem3 = new ol.supermap.ThemeGridRangeItem({
                     start: -1.8,
                     end: -0.2,
                     color: color3
                 }),
-                themeGridRangeItem4 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem4 = new ol.supermap.ThemeGridRangeItem({
                     start: -0.2,
                     end: 1.4,
                     color: color4
                 }),
-                themeGridRangeItem5 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem5 = new ol.supermap.ThemeGridRangeItem({
                     start: 1.4,
                     end: 3,
                     color: color5
                 }),
-                themeGridRangeItem6 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem6 = new ol.supermap.ThemeGridRangeItem({
                     start: 3,
                     end: 4.6,
                     color: color6
                 }),
-                themeGridRangeItem7 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem7 = new ol.supermap.ThemeGridRangeItem({
                     start: 4.6,
                     end: 6.2,
                     color: color7
                 }),
-                themeGridRangeItem8 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem8 = new ol.supermap.ThemeGridRangeItem({
                     start: 6.2,
                     end: 7.8,
                     color: color8
                 }),
-                themeGridRangeItem9 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem9 = new ol.supermap.ThemeGridRangeItem({
                     start: 7.8,
                     end: 9.4,
                     color: color9
                 }),
-                themeGridRangeItem10 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem10 = new ol.supermap.ThemeGridRangeItem({
                     start: 9.4,
                     end: 11,
                     color: color10
                 }),
-                themeGridRangeItem11 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem11 = new ol.supermap.ThemeGridRangeItem({
                     start: 11,
                     end: 12.6,
                     color: color11
                 }),
-                themeGridRangeItem12 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem12 = new ol.supermap.ThemeGridRangeItem({
                     start: 12.6,
                     end: 14.2,
                     color: color12
                 }),
-                themeGridRangeItem13 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem13 = new ol.supermap.ThemeGridRangeItem({
                     start: 14.2,
                     end: 35.8,
                     color: color13
                 }),
-                themeGridRangeItem14 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem14 = new ol.supermap.ThemeGridRangeItem({
                     start: 35.8,
                     end: 57.4,
                     color: color14
                 }),
-                themeGridRangeItem15 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem15 = new ol.supermap.ThemeGridRangeItem({
                     start: 57.4,
                     end: 79,
                     color: color15
                 }),
-                themeGridRangeItem16 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem16 = new ol.supermap.ThemeGridRangeItem({
                     start: 79,
                     end: 90.6,
                     color: color16
                 }),
-                themeGridRangeItem17 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem17 = new ol.supermap.ThemeGridRangeItem({
                     start: 90.6,
                     end: 112.2,
                     color: color17
                 }),
-                themeGridRangeItem18 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem18 = new ol.supermap.ThemeGridRangeItem({
                     start: 112.2,
                     end: 123.8,
                     color: color18
                 }),
-                themeGridRangeItem19 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem19 = new ol.supermap.ThemeGridRangeItem({
                     start: 123.8,
                     end: 125.4,
                     color: color19
                 }),
-                themeGridRangeItem20 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeItem20 = new ol.supermap.ThemeGridRangeItem({
                     start: 125.4,
                     end: 135,
                     color: color20
                 });
 
-            var themeGridRange = new SuperMap.ThemeGridRange({
+            var themeGridRange = new ol.supermap.ThemeGridRange({
                 reverseColor: false,
-                rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+                rangeMode: ol.supermap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
                 items: [themeGridRangeItem1, themeGridRangeItem2,
                     themeGridRangeItem3, themeGridRangeItem4,
@@ -208,7 +208,7 @@
                 ]
             });
 
-            var themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new ol.supermap.ThemeParameters({
                 //制作专题图的数据集
                 datasetNames: [interpolationAnalystResult.dataset.split('@')[0]],
                 dataSourceNames: ["Interpolation"],

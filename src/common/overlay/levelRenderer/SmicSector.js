@@ -6,12 +6,12 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicSector
+ * @class  LevelRenderer.Shape.SmicSector
  * @category Visualization Theme
  * @classdesc 扇形。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
+ *   var shape = new LevelRenderer.Shape.SmicSector({
  *         style: {
  *             x: 100,
  *             y: 100,
@@ -22,53 +22,14 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- *
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  *
  */
 export class SmicSector extends Shape {
-
-    /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicSector.prototype.style
-     * @description 绘制样式。
-     *
-     * @param {number} style.x - 圆心 x 坐标，必设参数。
-     * @param {number} style.y - 圆心 y 坐标，必设参数。
-     * @param {number} style.r - 外圆半径，必设参数。
-     * @param {number} style.r0 - 内圆半径，指定后将出现内弧，同时扇边长度为`r - r0`。取值范围[0, r)，默认值：0。
-     * @param {number} style.startAngle - 起始角度，必设参数。取值范围[0, 360)。
-     * @param {number} style.endAngle - 结束角度，必设参数。取值范围(0, 360。
-     * @param {boolean} style.clockWise - 是否是顺时针。默认值：false。
-     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * @param {string} style.color - 填充颜色。默认值："#000000'"。
-     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
-     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * @param {number} style.lineWidth - 描边宽度。默认值：1。
-     * @param {number} style.opacity - 绘制透明度。默认值：1。
-     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
-     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
-     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
-     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
-     * @param {string} style.text - 图形中的附加文本。默认值：""。
-     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
-     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
-     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     */
-    //打开接口 style
-
-
-    /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.constructor
-     * @description 构造函数。
-     * 
-     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
-     *
-     */
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicSector.protptype.type
+         * @member {string} LevelRenderer.Shape.SmicSector.protptype.type
          * @description 图形类型。
          */
         this.type = 'smicsector';
@@ -79,7 +40,7 @@ export class SmicSector extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.destroy
+     * @function LevelRenderer.Shape.SmicSector.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -88,9 +49,9 @@ export class SmicSector extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicSector.prototype.buildPath
      * @description 创建扇形路径。
-     * 
+     *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
      * @param {Object} style - style。
      *
@@ -148,12 +109,12 @@ export class SmicSector extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.getRect
+     * @function LevelRenderer.Shape.SmicSector.prototype.getRect
      * @description 返回扇形包围盒矩形
      *
      * @param {Object} style - style
      * @return {Object} 边框对象。包含属性：x，y，width，height。
-     * 
+     *
      */
     getRect(style) {
         if (style.__rect) {

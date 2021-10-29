@@ -18,7 +18,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -26,7 +26,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     geoBufferAnalystProcess();
 
     function geoBufferAnalystProcess() {
@@ -71,25 +71,25 @@
         }
         //将离散gps信号点生成线路
         var roadLine = L.polyline(pointsList, {color: 'red'}).addTo(map);
-        bufferAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        bufferAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
         //对生成的线路进行缓冲区分析
-        geoBufferAnalystParams = new SuperMap.GeometryBufferAnalystParameters({
+        geoBufferAnalystParams = new L.supermap.GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
-                leftDistance: new SuperMap.BufferDistance({value: 250}),
-                rightDistance: new SuperMap.BufferDistance({value: 250}),
+            bufferSetting: new L.supermap.BufferSetting({
+                endType: L.supermap.BufferEndType.ROUND,
+                leftDistance: new L.supermap.BufferDistance({value: 250}),
+                rightDistance: new L.supermap.BufferDistance({value: 250}),
                 semicircleLineSegment: 10
             })
         });
         bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.resultGeometry).addTo(map);
             //查询出缓冲区内信号影响范围内的工厂
-            queryService = L.supermap.queryService(baseUrl);
-            queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
-                queryParams: [new SuperMap.FilterParameter({name: "Company@Changchun.2"})],
+            queryService = new L.supermap.QueryService(baseUrl);
+            queryByGeometryParameters = new L.supermap.QueryByGeometryParameters({
+                queryParams: [new L.supermap.FilterParameter({name: "Company@Changchun.2"})],
                 geometry: resultLayer,
-                spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT
+                spatialQueryMode: L.supermap.SpatialQueryMode.INTERSECT
             });
             queryService.queryByGeometry(queryByGeometryParameters, function (serviceResult) {
                 var result = serviceResult.result;

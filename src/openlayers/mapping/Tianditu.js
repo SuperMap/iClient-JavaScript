@@ -21,7 +21,7 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
  * @param {boolean} [opt_options.isLabel] - 是否是标注图层。
  * @param {boolean} [opt_options.opaque=true] - 是否透明。
  * @param {string} [opt_options.tileProxy] - 代理地址。
- * @extends {ol/source/WMTS}
+ * @extends {ol.source.WMTS}
  */
 export class Tianditu extends WMTS {
   constructor(opt_options) {
@@ -94,7 +94,7 @@ export class Tianditu extends WMTS {
    * @function ol.source.Tianditu.getTileGrid
    * @description 获取瓦片网格。
    * @param {string} projection - 投影参考对象。
-   * @returns {ol/tilegrid/WMTS} 返回瓦片网格对象
+   * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
    */
   static getTileGrid(projection) {
     if (projection === "EPSG:4326" || projection === "EPSG:4490") {
@@ -106,7 +106,7 @@ export class Tianditu extends WMTS {
   /**
    * @function ol.source.Tianditu.default4326TileGrid
    * @description 获取默认 4326 网格瓦片。
-   * @returns {ol/tilegrid/WMTS} 返回默认 4326 网格瓦片对象。
+   * @returns {ol.tilegrid.WMTS} 返回默认 4326 网格瓦片对象。
    */
   static default4326TileGrid() {
     var tdt_WGS84_resolutions = [];
@@ -128,7 +128,7 @@ export class Tianditu extends WMTS {
   /**
    * @function ol.source.Tianditu.default3857TileGrid
    * @description 获取默认 3857 网格瓦片。
-   * @returns {ol/tilegrid/WMTS} 返回默认 3857 网格瓦片对象。
+   * @returns {ol.tilegrid.WMTS} 返回默认 3857 网格瓦片对象。
    */
   static default3857TileGrid() {
     var tdt_Mercator_resolutions = [];

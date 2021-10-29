@@ -6,6 +6,10 @@
 .pln {
   color: #4d4d4c; }
 
+.nopretty span {
+  color: #8e908c;
+}
+
 @media screen {
   /* string content */
   .str {

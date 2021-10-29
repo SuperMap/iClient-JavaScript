@@ -1,27 +1,29 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
-import {GetGridCellInfosService, GetGridCellInfosParameters} from '@supermap/iclient-common';
+import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGridCellInfosService';
+import { GetGridCellInfosParameters } from '@supermap/iclient-common/iServer/GetGridCellInfosParameters';
 
 /**
- * @class L.supermap.gridCellInfosService
+ * @class GridCellInfosService
+ * @deprecatedclassinstance L.supermap.gridCellInfosService
  * @classdesc 数据栅格查询服务。
  * @category  iServer Data Grid
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      L.supermap.gridCellInfosService(url)
+ *      new GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param {string} url - 数据栅格查询服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var GridCellInfosService = ServiceBase.extend({
 
@@ -30,8 +32,8 @@ export var GridCellInfosService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.gridCellInfosService.prototype.getGridCellInfos
-     * @param {SuperMap.GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
+     * @function GridCellInfosService.prototype.getGridCellInfos
+     * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getGridCellInfos: function (params, callback) {
@@ -56,5 +58,3 @@ export var GridCellInfosService = ServiceBase.extend({
 export var gridCellInfosService = function (url, options) {
     return new GridCellInfosService(url, options);
 };
-
-L.supermap.gridCellInfosService = gridCellInfosService;

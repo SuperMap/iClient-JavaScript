@@ -90,21 +90,29 @@
         map.addLayer(layer);
 
         var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new SuperMap.FilterParameter({
+        getFeatureParam = new ol.supermap.FilterParameter({
             name: "Jingjin",
             attributeFilter: "SMID > -1"
         });
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        getFeatureBySQLParams = new ol.supermap.GetFeaturesBySQLParameters({
             queryParameter: getFeatureParam,
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_R"]
         });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
-            format: SuperMap.DataFormat.ISERVER,
-            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService = new ol.supermap.FeatureService(url2).getFeaturesBySQL(
+            getFeatureBySQLParams,
+            processAsync,
+            ol.supermap.DataFormat.ISERVER
+        );
     });
+
+    function processAsync(result) {
+        if(result.type === 'processCompleted') {
+            processCompleted(result);
+        } else {
+            processFailed(result);
+        }
+    }
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;

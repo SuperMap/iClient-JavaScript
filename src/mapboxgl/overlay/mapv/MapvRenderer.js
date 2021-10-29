@@ -7,7 +7,7 @@
 import mapboxgl from 'mapbox-gl';
 import {
     getMeterPerMapUnit
-} from '@supermap/iclient-common';
+} from '@supermap/iclient-common/util/MapCalculateUtil';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -17,8 +17,8 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @classdesc MapV图层渲染。
  * @param {Object} map - 地图。
  * @param {Object} layer - 图层。
- * @param {MapV.DataSet} dataSet - 数据集。
- * @param {Object} options - 交互时所需可选参数。
+ * @param {Mapv.DataSet} dataSet - 数据集。
+ * @param {Object} options - 参数。
  * @extends {MapV.BaseLayer}
  *
  */
@@ -107,8 +107,8 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 添加数据。
-     * @param {oject} data - 待添加的数据。
-     * @param {oject} options - 待添加的数据信息。
+     * @param {Object} data - 待添加的数据。
+     * @param {Object} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;
@@ -307,7 +307,7 @@ export class MapvRenderer extends BaseLayer {
         this.initAnimator();
     }
     /**
-     * @function L.supermap.MapVRenderer.prototype.bindMapEvent
+     * @function MapVRenderer.prototype.bindMapEvent
      * @description 绑定鼠标移动事件。
      */
     bindMapEvent() {
@@ -337,7 +337,7 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.unbindMapEvent
+     * @function MapVRenderer.prototype.unbindMapEvent
      * @description 解绑鼠标移动事件。
      */
     unbindMapEvent() {
@@ -354,7 +354,7 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @function MapVRenderer.prototype.destroy
      * @description 释放资源。
      */
     destroy() {

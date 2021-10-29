@@ -5,35 +5,34 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import {
-    DataFormat,
-    Geometry,
-    GeometryPoint,
-    GetFeaturesByIDsService,
-    GetFeaturesBySQLService,
-    GetFeaturesByBoundsService,
-    GetFeaturesByBufferService,
-    GetFeaturesByGeometryService,
-    EditFeaturesService,
-    CommonUtil
-} from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { GetFeaturesByIDsService } from '@supermap/iclient-common/iServer/GetFeaturesByIDsService';
+import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFeaturesBySQLService';
+import { GetFeaturesByBoundsService } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsService';
+import { GetFeaturesByBufferService } from '@supermap/iclient-common/iServer/GetFeaturesByBufferService';
+import { GetFeaturesByGeometryService } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryService';
+import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
 
 /**
- * @class mapboxgl.supermap.FeatureService
+ * @class FeatureService
  * @category  iServer Data Feature
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，bounds 查询，缓冲区查询，地物编辑。
+ * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、几何查询、bounds 查询、缓冲区查询、地物编辑。
  * @example
- * new mapboxgl.supermap.FeatureService(url)
+ * new FeatureService(url)
  *  .getFeaturesByIDs(param,function(result){
  *     //doSomething
  * })
- * @extends {mapboxgl.supermap.ServiceBase}
- * @param {string} url - 要素数据集服务地址。
- * @param {Object} options - 创建要素数据集服务类可选参数。
+ * @extends {ServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options -参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class FeatureService extends ServiceBase {
     constructor(url, options) {
@@ -41,11 +40,11 @@ export class FeatureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByIDs
+     * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
-     * @param {SuperMap.GetFeaturesByIDsParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
@@ -65,11 +64,11 @@ export class FeatureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByBounds
+     * @function FeatureService.prototype.getFeaturesByBounds
      * @description 数据集 Bounds 查询服务。
-     * @param {SuperMap.GetFeaturesByBoundsParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
@@ -89,11 +88,11 @@ export class FeatureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByBuffer
+     * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 Buffer 查询服务。
-     * @param {SuperMap.GetFeaturesByBufferParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
@@ -113,11 +112,11 @@ export class FeatureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesBySQL
+     * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
-     * @param {SuperMap.GetFeaturesBySQLParameters} params - 查询所需参数类。
+     * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
@@ -138,11 +137,11 @@ export class FeatureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByGeometry
+     * @function FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类。
-     * @param {SuperMap.GetFeaturesByGeometryParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -162,9 +161,9 @@ export class FeatureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.editFeatures
+     * @function FeatureService.prototype.editFeatures
      * @description 地物编辑服务。
-     * @param {SuperMap.EditFeaturesParameters} params - 查询所需参数类。
+     * @param {EditFeaturesParameters} params - 数据集添加、修改、删除参数类。
      * @param {RequestCallback} callback 回调函数。
      */
     editFeatures(params, callback) {
@@ -194,7 +193,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @private
      * @description 参数类型转换。
-     * @param {Object} params - 服务参数 。
+     * @param {Object} params - 参数 。
      * @returns {Object} params - 转换后的对接 SuperMap 服务的参数。
      */
     _processParams(params) {
@@ -266,4 +265,3 @@ export class FeatureService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.FeatureService = FeatureService;

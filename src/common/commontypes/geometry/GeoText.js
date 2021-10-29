@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {Geometry} from '../Geometry';
 import {Bounds} from '../Bounds';
 import {Util} from '../Util';
@@ -11,38 +10,41 @@ import '../Pixel';
 import '../LonLat';
 
 /**
- * @class SuperMap.Geometry.GeoText
+ * @class GeometryGeoText
+ * @aliasclass Geometry.GeoText
+ * @deprecatedclass SuperMap.Geometry.GeoText
  * @classdesc 文本标签类。
  * @category BaseTypes Geometry
- * @extends {SuperMap.Geometry}
+ * @extends {Geometry}
  * @param {number} x - x 坐标。
  * @param {number} y - y 坐标。
  * @param {string} text - 标签中的文本内容。
+ * @usage
  */
 export class GeoText extends Geometry {
 
     constructor(x, y, text) {
         super(x, y, text);
         /**
-         * @member {number} SuperMap.Geometry.GeoText.prototype.x
+         * @member {number} GeometryGeoText.prototype.x
          * @description 横坐标。
          */
         this.x = parseFloat(x);
 
         /**
-         * @member {number} SuperMap.Geometry.GeoText.prototype.y
+         * @member {number} GeometryGeoText.prototype.y
          * @description 纵坐标。
          */
         this.y = parseFloat(y);
 
         /**
-         * @member {string} SuperMap.Geometry.GeoText.prototype.text
+         * @member {string} GeometryGeoText.prototype.text
          * @description 标签中的文本内容。
          */
         this.text = text.toString();
 
         /**
-         * @member {Object} SuperMap.Geometry.GeoText.prototype.bsInfo
+         * @member {Object} GeometryGeoText.prototype.bsInfo
          * @description 标签范围的基础信息。
          * @property {number} w - bounds 的宽。
          * @property {number} h - bounds 的高度。
@@ -57,7 +59,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.destroy
+     * @function GeometryGeoText.prototype.destroy
      * @description 销毁文本标签类。
      */
     destroy() {
@@ -68,18 +70,18 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.getCentroid
+     * @function GeometryGeoText.prototype.getCentroid
      * @description 获取标签对象的质心。
-     * @returns {SuperMap.Geometry.Point} 标签对象的质心。
+     * @returns {GeometryPoint} 标签对象的质心。
      */
     getCentroid() {
         return new Point(this.x, this.y);
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.clone
+     * @function GeometryGeoText.prototype.clone
      * @description 克隆标签对象。
-     * @returns {SuperMap.Geometry.GeoText} 克隆后的标签对象。
+     * @returns {GeometryGeoText} 克隆后的标签对象。
      */
     clone(obj) {
         if (obj == null) {
@@ -90,7 +92,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.calculateBounds
+     * @function GeometryGeoText.prototype.calculateBounds
      * @description 计算标签对象的范围。
      */
     calculateBounds() {
@@ -99,13 +101,13 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByLabel
+     * @function GeometryGeoText.prototype.getLabelPxBoundsByLabel
      * @description 根据绘制好的标签获取文字标签的像素范围，参数的单位是像素；此方法相对于 getLabelPxBoundsByText 效率较低，但支持所有格式的文本。
      * @param {Object} locationPixel - 标签的位置点，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {string} labelWidth - 标签的宽度，如：“90px”。
      * @param {string} labelHeight - 标签的高度。
      * @param {Object} style - 标签的 style。
-     * @returns {SuperMap.Bounds} 标签的像素范围。
+     * @returns {Bounds} 标签的像素范围。
      */
     getLabelPxBoundsByLabel(locationPixel, labelWidth, labelHeight, style) {
         var labelPxBounds, left, bottom, top, right;
@@ -172,11 +174,11 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByText
+     * @function GeometryGeoText.prototype.getLabelPxBoundsByText
      * @description 根据文本内容获取文字标签的像素范围。
      * @param {Object} locationPixel - 标签的位置点，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Object} style - 标签的样式。
-     * @returns {SuperMap.Bounds} 标签的像素范围。
+     * @returns {Bounds} 标签的像素范围。
      */
     getLabelPxBoundsByText(locationPixel, style) {
         var labelPxBounds, left, bottom, top, right;
@@ -239,7 +241,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.getLabelPxSize
+     * @function GeometryGeoText.prototype.getLabelPxSize
      * @description 获取 label 的像素大小。
      * @param {Object} style - 标签样式。
      * @returns {Object} 标签大小对象，属性 w 表示标签的宽度，属性 h 表示标签的高度。
@@ -291,7 +293,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.GeoText.prototype.getTextCount
+     * @function GeometryGeoText.prototype.getTextCount
      * @description 获取 text 中的字符个数。
      * @param {string} text - 字符串。
      * @returns {Object} 字符个数统计结果，属性 cnC 表示中文字符个数，属性 enC 表示英文字符个数，属性 textC 表示字符总个数。
@@ -321,5 +323,3 @@ export class GeoText extends Geometry {
 
 
 }
-
-SuperMap.Geometry.GeoText = GeoText;

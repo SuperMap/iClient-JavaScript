@@ -55,7 +55,7 @@
         });
         map.addLayer(vectorLayer);
 
-        var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
+        var bufferParam = new ol.supermap.GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 30,
             geometry: polygon

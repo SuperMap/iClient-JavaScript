@@ -19,7 +19,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     loadData();
 
     //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
@@ -33,7 +33,7 @@
                 draw: 'simple'
             };
             var dataAttr = resources.text_dataSources + "<a target='_blank' href='https://mapv.baidu.com/examples/csv-car.html'> MapV</a>,";
-            L.supermap.mapVLayer(dataSet, options, {attributionPrefix: dataAttr}).addTo(map);
+            new L.supermap.MapVLayer(dataSet, options, {attributionPrefix: dataAttr}).addTo(map);
             setTimeout(function () {
                 map.openPopup(resources.text_iClient, map.getCenter());
             }, 1000)

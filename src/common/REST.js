@@ -1,33 +1,53 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from './SuperMap';
 
-/**
+ /**
  * @enum DataFormat
- * @memberOf SuperMap
  * @description 服务请求返回结果数据类型
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataFormat.GEOJSON;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataFormat } from '{npm}';
+ *
+ * const result = DataFormat.GEOJSON;
+ * ```
  */
-var DataFormat = SuperMap.DataFormat = {
+var DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
     ISERVER: "ISERVER"
 };
-export {
-    DataFormat
-};
 
 /**
  * @enum ServerType
- * @memberOf SuperMap
  * @description 服务器类型
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ServerType.ISERVER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ServerType } from '{npm}';
+ *
+ * const result = ServerType.ISERVER;
+ * ```
  */
-var ServerType = SuperMap.ServerType = {
+var ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
@@ -35,17 +55,27 @@ var ServerType = SuperMap.ServerType = {
     /** ONLINE */
     ONLINE: "ONLINE"
 };
-export {
-    ServerType
-};
 
 /**
  * @enum GeometryType
- * @memberOf SuperMap
  * @description 几何对象枚举,定义了一系列几何对象类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GeometryType.LINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GeometryType } from '{npm}';
+ *
+ * const result = GeometryType.LINE;
+ * ```
  */
-var GeometryType = SuperMap.GeometryType = {
+var GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -73,17 +103,27 @@ var GeometryType = SuperMap.GeometryType = {
     /** GEOCOMPOUND */
     GEOCOMPOUND:"GEOCOMPOUND"
 };
-export {
-    GeometryType
-};
 
 /**
  * @enum QueryOption
- * @memberOf SuperMap
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.QueryOption.ATTRIBUTE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { QueryOption } from '{npm}';
+ *
+ * const result = QueryOption.ATTRIBUTE;
+ * ```
  */
-var QueryOption = SuperMap.QueryOption = {
+var QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -91,35 +131,54 @@ var QueryOption = SuperMap.QueryOption = {
     /** 几何对象 */
     GEOMETRY: "GEOMETRY"
 };
-export {
-    QueryOption
-}
 
 /**
  * @enum JoinType
- * @memberOf SuperMap
  * @description 关联查询时的关联类型常量。
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.JoinType.INNERJOIN;
+ *
+ * </script>
+ * // ES6 Import
+ * import { JoinType } from '{npm}';
+ *
+ * const result = JoinType.INNERJOIN;
+ * ```
  */
-var JoinType = SuperMap.JoinType = {
-    /** INNERJOIN */
+var JoinType = {
+    /** 内连接 */
     INNERJOIN: "INNERJOIN",
-    /** LEFTJOIN */
+    /** 左连接 */
     LEFTJOIN: "LEFTJOIN"
 };
-export {
-    JoinType
-}
-
 
 /**
  * @enum SpatialQueryMode
- * @memberOf SuperMap
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SpatialQueryMode.CONTAIN;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SpatialQueryMode } from '{npm}';
+ *
+ * const result = SpatialQueryMode.CONTAIN;
+ * ```
  */
-var SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -139,17 +198,28 @@ var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 被包含空间查询模式 */
     WITHIN: "WITHIN"
 };
-export {
-    SpatialQueryMode
-}
+
 /**
  * @enum SpatialRelationType
- * @memberOf SuperMap
  * @description  数据集对象间的空间关系枚举。
  * 该类定义了数据集对象间的空间关系类型常量。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SpatialRelationType.CONTAIN;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SpatialRelationType } from '{npm}';
+ *
+ * const result = {namespace}.SpatialRelationType.CONTAIN;
+ * ```
  */
-var SpatialRelationType = SuperMap.SpatialRelationType = {
+var SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -157,35 +227,55 @@ var SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 被包含关系 */
     WITHIN: "WITHIN"
 };
-export {
-    SpatialRelationType
-}
 
 /**
  * @enum MeasureMode
- * @memberOf SuperMap
  * @type {string}
  * @description  量算模式枚举。
+ * @category BaseTypes Constant
  * 该类定义了两种测量模式：距离测量和面积测量。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.MeasureMode.DISTANCE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { MeasureMode } from '{npm}';
+ *
+ * const result = MeasureMode.DISTANCE;
+ * ```
  */
-var MeasureMode = SuperMap.MeasureMode = {
+var MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
     AREA: "AREA"
 };
-export {
-    MeasureMode
-}
 
 /**
  * @enum Unit
- * @memberOf SuperMap
  * @description  距离单位枚举。
  * 该类定义了一系列距离单位类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.Unit.METER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { Unit } from '{npm}';
+ *
+ * const result = Unit.METER;
+ * ```
  */
-var Unit = SuperMap.Unit = {
+var Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -213,18 +303,27 @@ var Unit = SuperMap.Unit = {
     /**  弧度 */
     RADIAN: "RADIAN"
 };
-export {
-    Unit
-}
 
 /**
  * @enum BufferRadiusUnit
- * @memberOf SuperMap
- * @description  缓冲区距离单位枚举。
- * 该类定义了一系列缓冲距离单位类型。
+ * @description  缓冲区距离单位枚举。该类定义了一系列缓冲距离单位类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BufferRadiusUnit.CENTIMETER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BufferRadiusUnit } from '{npm}';
+ *
+ * const result = BufferRadiusUnit.CENTIMETER;
+ * ```
  */
-var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -244,17 +343,27 @@ var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  码 */
     YARD: "YARD"
 }
-export {
-    BufferRadiusUnit
-}
 
 /**
  * @enum EngineType
- * @memberOf SuperMap
  * @description  数据源引擎类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.EngineType.IMAGEPLUGINS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { EngineType } from '{npm}';
+ *
+ * const result = EngineType.IMAGEPLUGINS;
+ * ```
  */
-var EngineType = SuperMap.EngineType = {
+var EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -268,17 +377,27 @@ var EngineType = SuperMap.EngineType = {
     /**  UDB 引擎类型，文件引擎。 */
     UDB: "UDB"
 };
-export {
-    EngineType
-}
 
 /**
  * @enum ThemeGraphTextFormat
- * @memberOf SuperMap
  * @description  统计专题图文本显示格式枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ThemeGraphTextFormat.CAPTION;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ThemeGraphTextFormat } from '{npm}';
+ *
+ * const result = ThemeGraphTextFormat.CAPTION;
+ * ```
  */
-var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -291,17 +410,27 @@ var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     VALUE: "VALUE"
 
 };
-export {
-    ThemeGraphTextFormat
-}
 
 /**
  * @enum ThemeGraphType
- * @memberOf SuperMap
  * @description  统计专题图类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ThemeGraphType.AREA;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ThemeGraphType } from '{npm}';
+ *
+ * const result = ThemeGraphType.AREA;
+ * ```
  */
-var ThemeGraphType = SuperMap.ThemeGraphType = {
+var ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -329,17 +458,27 @@ var ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  阶梯图。 */
     STEP: "STEP"
 };
-export {
-    ThemeGraphType
-}
 
 /**
  * @enum GraphAxesTextDisplayMode
- * @memberOf SuperMap
  * @description  统计专题图坐标轴文本显示模式。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GraphAxesTextDisplayMode.ALL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GraphAxesTextDisplayMode } from '{npm}';
+ *
+ * const result = GraphAxesTextDisplayMode.ALL;
+ * ```
  */
-var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -347,18 +486,27 @@ var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示Y轴的文本。 */
     YAXES: "YAXES"
 };
-export {
-    GraphAxesTextDisplayMode
-}
 
 /**
  * @enum GraduatedMode
- * @memberOf SuperMap
  * @description  专题图分级模式枚举。
- *
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GraduatedMode.CONSTANT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GraduatedMode } from '{npm}';
+ *
+ * const result = GraduatedMode.CONSTANT;
+ * ```
  */
-var GraduatedMode = SuperMap.GraduatedMode = {
+var GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -366,17 +514,27 @@ var GraduatedMode = SuperMap.GraduatedMode = {
     /**  平方根分级模式。 */
     SQUAREROOT: "SQUAREROOT"
 };
-export {
-    GraduatedMode
-}
 
 /**
  * @enum RangeMode
- * @memberOf SuperMap
  * @description  范围分段专题图分段方式枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.RangeMode.CUSTOMINTERVAL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { RangeMode } from '{npm}';
+ *
+ * const result = RangeMode.CUSTOMINTERVAL;
+ * ```
  */
-var RangeMode = SuperMap.RangeMode = {
+var RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -390,17 +548,27 @@ var RangeMode = SuperMap.RangeMode = {
     /**  标准差分段法。 */
     STDDEVIATION: "STDDEVIATION"
 };
-export {
-    RangeMode
-}
 
 /**
  * @enum ThemeType
- * @memberOf SuperMap
  * @description  专题图类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ThemeType.DOTDENSITY;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ThemeType } from '{npm}';
+ *
+ * const result = ThemeType.DOTDENSITY;
+ * ```
  */
-var ThemeType = SuperMap.ThemeType = {
+var ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -414,17 +582,27 @@ var ThemeType = SuperMap.ThemeType = {
     /** 単值专题图。 */
     UNIQUE: "UNIQUE"
 };
-export {
-    ThemeType
-}
 
 /**
  * @enum ColorGradientType
- * @memberOf SuperMap
  * @description  渐变颜色枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorGradientType.BLACK_WHITE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ColorGradientType } from '{npm}';
+ *
+ * const result = ColorGradientType.BLACK_WHITE;
+ * ```
  */
-var ColorGradientType = SuperMap.ColorGradientType = {
+var ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -480,17 +658,27 @@ var ColorGradientType = SuperMap.ColorGradientType = {
     /** 黄白渐变色。 */
     YELLOW_WHITE: "YELLOWWHITE"
 };
-export {
-    ColorGradientType
-}
 
 /**
  * @enum TextAlignment
- * @memberOf SuperMap
  * @description  文本对齐枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TextAlignment.TOPLEFT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TextAlignment } from '{npm}';
+ *
+ * const result = TextAlignment.TOPLEFT;
+ * ```
  */
-var TextAlignment = SuperMap.TextAlignment = {
+var TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -516,16 +704,27 @@ var TextAlignment = SuperMap.TextAlignment = {
     /** 右中对齐。 */
     MIDDLERIGHT: "MIDDLERIGHT"
 };
-export {
-    TextAlignment
-}
+
 /**
  * @enum FillGradientMode
- * @memberOf SuperMap
  * @description  渐变填充风格的渐变类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FillGradientMode.NONE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { FillGradientMode } from '{npm}';
+ *
+ * const result = FillGradientMode.NONE;
+ * ```
  */
-var FillGradientMode = SuperMap.FillGradientMode = {
+var FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -537,17 +736,27 @@ var FillGradientMode = SuperMap.FillGradientMode = {
     /** 四角渐变填充。 */
     SQUARE: "SQUARE"
 };
-export {
-    FillGradientMode
-}
 
 /**
  * @enum AlongLineDirection
- * @memberOf SuperMap
  * @description  标签沿线标注方向枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AlongLineDirection.NORMAL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AlongLineDirection } from '{npm}';
+ *
+ * const result = AlongLineDirection.NORMAL;
+ * ```
  */
-var AlongLineDirection = SuperMap.AlongLineDirection = {
+var AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -559,17 +768,27 @@ var AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 从上到下，从右到左放置。 */
     RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
 };
-export {
-    AlongLineDirection
-}
 
 /**
  * @enum LabelBackShape
- * @memberOf SuperMap
  * @description  标签专题图中标签背景的形状枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.LabelBackShape.DIAMOND;
+ *
+ * </script>
+ * // ES6 Import
+ * import { LabelBackShape } from '{npm}';
+ *
+ * const result = LabelBackShape.DIAMOND;
+ * ```
  */
-var LabelBackShape = SuperMap.LabelBackShape = {
+var LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -585,17 +804,27 @@ var LabelBackShape = SuperMap.LabelBackShape = {
     /** 三角形背景，即标签背景的形状为三角形。 */
     TRIANGLE: "TRIANGLE"
 };
-export {
-    LabelBackShape
-}
 
 /**
  * @enum LabelOverLengthMode
- * @memberOf SuperMap
  * @description  标签专题图中超长标签的处理模式枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.LabelOverLengthMode.NEWLINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { LabelOverLengthMode } from '{npm}';
+ *
+ * const result = LabelOverLengthMode.NEWLINE;
+ * ```
  */
-var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -603,18 +832,28 @@ var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 省略超出部分。 */
     OMIT: "OMIT"
 };
-export {
-    LabelOverLengthMode
-}
 
 /**
  * @enum DirectionType
- * @memberOf SuperMap
  * @description  网络分析中方向枚举。
  * 在行驶引导子项中使用。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DirectionType.EAST;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DirectionType } from '{npm}';
+ *
+ * const result = DirectionType.EAST;
+ * ```
  */
-var DirectionType = SuperMap.DirectionType = {
+var DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -626,19 +865,28 @@ var DirectionType = SuperMap.DirectionType = {
     /** 西。 */
     WEST: "WEST"
 };
-export {
-    DirectionType
-}
-
 
 /**
  * @enum SideType
- * @memberOf SuperMap
  * @description  行驶位置枚举。
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SideType.LEFT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SideType } from '{npm}';
+ *
+ * const result = SideType.LEFT;
+ * ```
  */
-var SideType = SuperMap.SideType = {
+var SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -648,19 +896,29 @@ var SideType = SuperMap.SideType = {
     /** 路的右侧。 */
     RIGHT: "RIGHT"
 };
-export {
-    SideType
-}
 
 /**
  * @enum SupplyCenterType
- * @memberOf SuperMap
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SupplyCenterType.FIXEDCENTER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SupplyCenterType } from '{npm}';
+ *
+ * const result = SupplyCenterType.FIXEDCENTER;
+ * ```
  */
-var SupplyCenterType = SuperMap.SupplyCenterType = {
+var SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -668,18 +926,28 @@ var SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 可选中心点。 */
     OPTIONALCENTER: "OPTIONALCENTER"
 };
-export {
-    SupplyCenterType
-}
 
 /**
  * @enum TurnType
- * @memberOf SuperMap
  * @description  转弯方向枚举。
  * 用在行驶引导子项类中，表示转弯的方向。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TurnType.AHEAD;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TurnType } from '{npm}';
+ *
+ * const result = TurnType.AHEAD;
+ * ```
  */
-var TurnType = SuperMap.TurnType = {
+var TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -693,32 +961,52 @@ var TurnType = SuperMap.TurnType = {
     /** 右转弯。 */
     RIGHT: "RIGHT"
 };
-export {
-    TurnType
-}
 
 /**
  * @enum BufferEndType
- * @memberOf SuperMap
  * @description  缓冲区分析BufferEnd类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BufferEndType.FLAT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BufferEndType } from '{npm}';
+ *
+ * const result = BufferEndType.FLAT;
+ * ```
  */
-var BufferEndType = SuperMap.BufferEndType = {
+var BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
     ROUND: "ROUND"
 };
-export {
-    BufferEndType
-}
 /**
  * @enum OverlayOperationType
- * @memberOf SuperMap
  * @description  叠加分析类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OverlayOperationType.CLIP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OverlayOperationType } from '{npm}';
+ *
+ * const result = OverlayOperationType.CLIP;
+ * ```
  */
-var OverlayOperationType = SuperMap.OverlayOperationType = {
+ var OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
     /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
@@ -734,17 +1022,27 @@ var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 对两个面数据集（几何对象）进行对称差操作。 */
     XOR: "XOR"
 };
-export {
-    OverlayOperationType
-}
 
 /**
  * @enum OutputType
- * @memberOf SuperMap
  * @description  分布式分析输出类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OutputType.INDEXEDHDFS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OutputType } from '{npm}';
+ *
+ * const result = OutputType.INDEXEDHDFS;
+ * ```
  */
-var OutputType = SuperMap.OutputType = {
+var OutputType =  {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -754,50 +1052,82 @@ var OutputType = SuperMap.OutputType = {
     /** PG */
     PG: "PG"
 };
-export {
-    OutputType
-}
 
 /**
  * @enum SmoothMethod
- * @memberOf SuperMap
  * @description  光滑方法枚举。
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SmoothMethod.BSPLINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SmoothMethod } from '{npm}';
+ *
+ * const result = SmoothMethod.BSPLINE;
+ * ```
  */
-var SmoothMethod = SuperMap.SmoothMethod = {
+ var SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
     POLISH: "POLISH"
 };
-export {
-    SmoothMethod
-}
+
 /**
  * @enum SurfaceAnalystMethod
- * @memberOf SuperMap
  * @description  表面分析方法枚举。
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SurfaceAnalystMethod.ISOLINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SurfaceAnalystMethod } from '{npm}';
+ *
+ * const result = SurfaceAnalystMethod.ISOLINE;
+ * ```
  */
-var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
     ISOREGION: "ISOREGION"
 };
-export {
-    SurfaceAnalystMethod
-}
+
 /**
  * @enum DataReturnMode
- * @memberOf SuperMap
  * @description  数据返回模式枚举。
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataReturnMode.DATASET_AND_RECORDSET;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataReturnMode } from '{npm}';
+ *
+ * const result = DataReturnMode.DATASET_AND_RECORDSET;
+ * ```
  */
-var DataReturnMode = SuperMap.DataReturnMode = {
+var DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -805,17 +1135,28 @@ var DataReturnMode = SuperMap.DataReturnMode = {
     /** 只返回记录集（RecordSet）。 */
     RECORDSET_ONLY: "RECORDSET_ONLY"
 };
-export {
-    DataReturnMode
-}
+
 /**
  * @enum EditType
- * @memberOf SuperMap
  * @description  要素集更新模式枚举。
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.EditType.ADD;
+ *
+ * </script>
+ * // ES6 Import
+ * import { EditType } from '{npm}';
+ *
+ * const result = {namespace}.EditType.ADD;
+ * ```
  */
-var EditType = SuperMap.EditType = {
+var EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -823,18 +1164,28 @@ var EditType = SuperMap.EditType = {
     /** 删除操作。 */
     DELETE: "delete"
 };
-export {
-    EditType
-}
 
 /**
  * @enum TransferTactic
- * @memberOf SuperMap
  * @description  公交换乘策略枚举。
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TransferTactic.LESS_TIME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TransferTactic } from '{npm}';
+ *
+ * const result = TransferTactic.LESS_TIME;
+ * ```
  */
-var TransferTactic = SuperMap.TransferTactic = {
+var TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -844,18 +1195,28 @@ var TransferTactic = SuperMap.TransferTactic = {
     /** 距离最短。 */
     MIN_DISTANCE: "MIN_DISTANCE"
 };
-export {
-    TransferTactic
-}
 
 /**
  * @enum TransferPreference
- * @memberOf SuperMap
  * @description  公交换乘策略枚举。
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TransferPreference.BUS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TransferPreference } from '{npm}';
+ *
+ * const result = TransferPreference.BUS;
+ * ```
  */
-var TransferPreference = SuperMap.TransferPreference = {
+var TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -865,17 +1226,27 @@ var TransferPreference = SuperMap.TransferPreference = {
     /** 无乘车偏好。 */
     NONE: "NONE"
 };
-export {
-    TransferPreference
-}
 
 /**
  * @enum GridType
- * @memberOf SuperMap
  * @description  地图背景格网类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GridType.CROSS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GridType } from '{npm}';
+ *
+ * const result = GridType.CROSS;
+ * ```
  */
-var GridType = SuperMap.GridType = {
+var GridType =  {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -883,36 +1254,57 @@ var GridType = SuperMap.GridType = {
     /** 点。 */
     POINT: "POINT"
 };
-export {
-    GridType
-}
 
 /**
  * @enum ColorSpaceType
- * @memberOf SuperMap
  * @description  色彩空间枚举。
  * 由于成色原理的不同，决定了显示器、投影仪这类靠色光直接合成颜色的颜色设备和打印机、
  * 印刷机这类靠使用颜料的印刷设备在生成颜色方式上的区别。
  * 针对上述不同成色方式，SuperMap 提供两种色彩空间，
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorSpaceType.CMYK;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ColorSpaceType } from '{npm}';
+ *
+ * const result = ColorSpaceType.CMYK;
+ * ```
  */
-var ColorSpaceType = SuperMap.ColorSpaceType = {
+var ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
     RGB: "RGB"
 };
-export {
-    ColorSpaceType
-}
+
 /**
  * @enum LayerType
- * @memberOf SuperMap
  * @description  图层类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.LayerType.UGC;
+ *
+ * </script>
+ * // ES6 Import
+ * import { LayerType } from '{npm}';
+ *
+ * const result = LayerType.UGC;
+ * ```
  */
-var LayerType = SuperMap.LayerType = {
+var LayerType = {
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
@@ -922,17 +1314,27 @@ var LayerType = SuperMap.LayerType = {
     /** 自定义图层。 */
     CUSTOM: "CUSTOM"
 };
-export {
-    LayerType
-}
 
 /**
  * @enum UGCLayerType
- * @memberOf SuperMap
  * @description  UGC图层类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.UGCLayerType.THEME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { UGCLayerType } from '{npm}';
+ *
+ * const result = UGCLayerType.THEME;
+ * ```
  */
-var UGCLayerType = SuperMap.UGCLayerType = {
+var UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -942,17 +1344,27 @@ var UGCLayerType = SuperMap.UGCLayerType = {
     /** 影像图层。 */
     IMAGE: "IMAGE"
 };
-export {
-    UGCLayerType
-}
 
 /**
  * @enum StatisticMode
- * @memberOf SuperMap
  * @description  字段统计方法类型。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.StatisticMode.AVERAGE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { StatisticMode } from '{npm}';
+ *
+ * const result = StatisticMode.AVERAGE;
+ * ```
  */
-var StatisticMode = SuperMap.StatisticMode = {
+var StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -966,17 +1378,27 @@ var StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的方差。 */
     VARIANCE: "VARIANCE"
 };
-export {
-    StatisticMode
-}
 
 /**
  * @enum PixelFormat
- * @memberOf SuperMap
  * @description  栅格与影像数据存储的像素格式枚举。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.PixelFormat.BIT16;
+ *
+ * </script>
+ * // ES6 Import
+ * import { PixelFormat } from '{npm}';
+ *
+ * const result = PixelFormat.BIT16;
+ * ```
  */
-var PixelFormat = SuperMap.PixelFormat = {
+var PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -998,17 +1420,27 @@ var PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用32个比特(即4个字节)来表示。 */
     UBIT32: "UBIT32"
 };
-export {
-    PixelFormat
-}
 
 /**
  * @enum SearchMode
- * @memberOf SuperMap
  * @description  内插时使用的样本点的查找方式枚举
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SearchMode.KDTREE_FIXED_COUNT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SearchMode } from '{npm}';
+ *
+ * const result = SearchMode.KDTREE_FIXED_COUNT;
+ * ```
  */
-var SearchMode = SuperMap.SearchMode = {
+var SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -1018,17 +1450,27 @@ var SearchMode = SuperMap.SearchMode = {
     /** 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用。 */
     QUADTREE: "QUADTREE"
 };
-export {
-    SearchMode
-}
 
 /**
  * @enum InterpolationAlgorithmType
- * @memberOf SuperMap
  * @description  插值分析的算法的类型
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.InterpolationAlgorithmType.KRIGING;
+ *
+ * </script>
+ * // ES6 Import
+ * import { InterpolationAlgorithmType } from '{npm}';
+ *
+ * const result = InterpolationAlgorithmType.KRIGING;
+ * ```
  */
-var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -1036,17 +1478,27 @@ var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 泛克吕金插值法。 */
     UniversalKriging: "UniversalKriging"
 };
-export {
-    InterpolationAlgorithmType
-}
 
 /**
  * @enum VariogramMode
- * @memberOf SuperMap
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.VariogramMode.EXPONENTIAL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { VariogramMode } from '{npm}';
+ *
+ * const result = VariogramMode.EXPONENTIAL;
+ * ```
  */
-var VariogramMode = SuperMap.VariogramMode = {
+var VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -1054,33 +1506,53 @@ var VariogramMode = SuperMap.VariogramMode = {
     /** 球型函数。 */
     SPHERICAL: "SPHERICAL"
 };
-export {
-    VariogramMode
-}
 
 /**
  * @enum Exponent
- * @memberOf SuperMap
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.Exponent.EXP1;
+ *
+ * </script>
+ * // ES6 Import
+ * import { Exponent } from '{npm}';
+ *
+ * const result = Exponent.EXP1;
+ * ```
  */
-var Exponent = SuperMap.Exponent = {
+var Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
     EXP2: "EXP2"
 };
-export {
-    Exponent
-}
 
 /**
  * @enum ClientType
- * @memberOf SuperMap
  * @description token申请的客户端标识类型
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ClientType.IP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ClientType } from '{npm}';
+ *
+ * const result = ClientType.IP;
+ * ```
  */
-var ClientType = SuperMap.ClientType = {
+var ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -1094,17 +1566,27 @@ var ClientType = SuperMap.ClientType = {
     /** WEB。 */
     WEB: "WEB"
 };
-export {
-    ClientType
-}
 
 /**
  * @enum ChartType
- * @memberOf SuperMap
  * @description 客户端专题图图表类型
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ChartType.BAR;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ChartType } from '{npm}';
+ *
+ * const result = ChartType.BAR;
+ * ```
  */
-var ChartType = SuperMap.ChartType = {
+var ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -1120,32 +1602,53 @@ var ChartType = SuperMap.ChartType = {
     /** 环状图。 */
     RING: "Ring"
 };
-export {
-    ChartType
-}
 
 /**
  * @enum ClipAnalystMode
- * @memberOf SuperMap
  * @description  裁剪分析模式
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ClipAnalystMode.CLIP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ClipAnalystMode } from '{npm}';
+ *
+ * const result = ClipAnalystMode.CLIP;
+ * ```
  */
-var ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
     INTERSECT: "intersect"
 };
-export {
-    ClipAnalystMode
-}
+
 /**
  * @enum AnalystAreaUnit
- * @memberOf SuperMap
  * @description 分布式分析面积单位
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AnalystAreaUnit.SQUAREMETER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AnalystAreaUnit } from '{npm}';
+ *
+ * const result = AnalystAreaUnit.SQUAREMETER;
+ * ```
  */
-var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -1163,16 +1666,27 @@ var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方英里。 */
     "SQUAREMILE": "SquareMile"
 };
-export {
-    AnalystAreaUnit
-}
+
 /**
  * @enum AnalystSizeUnit
- * @memberOf SuperMap
  * @description 分布式分析单位
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AnalystSizeUnit.METER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AnalystSizeUnit } from '{npm}';
+ *
+ * const result = AnalystSizeUnit.METER;
+ * ```
  */
-var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -1184,17 +1698,27 @@ var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 英里。 */
     "MILE": "Mile"
 };
-export {
-    AnalystSizeUnit
-}
 
 /**
  * @enum StatisticAnalystMode
- * @memberOf SuperMap
  * @description 分布式分析统计模式
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.StatisticAnalystMode.MAX;
+ *
+ * </script>
+ * // ES6 Import
+ * import { StatisticAnalystMode } from '{npm}';
+ *
+ * const result = StatisticAnalystMode.MAX;
+ * ```
  */
-var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -1208,31 +1732,53 @@ var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的标准差 */
     "STDDEVIATION": "stdDeviation"
 };
-export {
-    StatisticAnalystMode
-}
+
 /**
  * @enum SummaryType
- * @memberOf SuperMap
  * @description 分布式分析聚合类型
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SummaryType.SUMMARYMESH;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SummaryType } from '{npm}';
+ *
+ * const result = SummaryType.SUMMARYMESH;
+ * ```
  */
-var SummaryType = SuperMap.SummaryType = {
+var SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
     "SUMMARYREGION": "SUMMARYREGION"
 };
-export {
-    SummaryType
-}
+
 /**
  * @enum TopologyValidatorRule
- * @memberOf SuperMap
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TopologyValidatorRule.REGIONNOOVERLAP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TopologyValidatorRule } from '{npm}';
+ *
+ * const result = TopologyValidatorRule.REGIONNOOVERLAP;
+ * ```
  */
-var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -1248,30 +1794,51 @@ var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 点不相同，用于对点数据进行拓扑检查。 */
     POINTNOIDENTICAL: "POINTNOIDENTICAL"
 };
-export {
-    TopologyValidatorRule
-}
 
 /**
  * @enum BucketAggType
- * @memberOf SuperMap
  * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BucketAggType.GEOHASH_GRID;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BucketAggType } from '{npm}';
+ *
+ * const result = BucketAggType.GEOHASH_GRID;
+ * ```
  */
-var BucketAggType = SuperMap.BucketAggType = {
+var BucketAggType = {
     /** 格网聚合类型 */
     GEOHASH_GRID: "geohash_grid"
 };
-export {
-  BucketAggType
-}
+
 /**
  * @enum MetricsAggType
- * @memberOf SuperMap
  * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.MetricsAggType.AVG;
+ *
+ * </script>
+ * // ES6 Import
+ * import { MetricsAggType } from '{npm}';
+ *
+ * const result = MetricsAggType.AVG;
+ * ```
  */
-var MetricsAggType = SuperMap.MetricsAggType = {
+var MetricsAggType = {
   /** 平均值聚合类型 */
   AVG:'avg',
   /** 最大值聚合类型 */
@@ -1281,17 +1848,27 @@ var MetricsAggType = SuperMap.MetricsAggType = {
   /** 求和聚合类型 */
   SUM:'sum'
 };
-export {
-  MetricsAggType
-}
 
 /**
  * @enum GetFeatureMode
- * @memberOf SuperMap
  * @description feature 查询方式。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GetFeatureMode.BOUNDS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GetFeatureMode } from '{npm}';
+ *
+ * const result = GetFeatureMode.BOUNDS;
+ * ```
  */
-var GetFeatureMode = SuperMap.GetFeatureMode = {
+var GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -1303,34 +1880,54 @@ var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过 SQL 查询来获取要素。 */
     SQL: 'SQL'
 }
-export {
-    GetFeatureMode
-}
 
 /**
  * @enum RasterFunctionType
- * @memberOf SuperMap
  * @description 栅格分析方法。
+ * @category BaseTypes Constant
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GetFeatureMode.NDVI;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GetFeatureMode } from '{npm}';
+ *
+ * const result = GetFeatureMode.NDVI;
+ * ```
  */
-var RasterFunctionType = SuperMap.RasterFunctionType = {
+var RasterFunctionType = {
     /** 归一化植被指数。 */
     NDVI: "NDVI",
     /** 阴影面分析。 */
     HILLSHADE: "HILLSHADE"
 }
-export {
-    RasterFunctionType
-}
 
 /**
  * @enum ResourceType
- * @memberOf SuperMap
  * @description iportal资源类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GetFeatureMode.MAP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GetFeatureMode } from '{npm}';
+ *
+ * const result = GetFeatureMode.MAP;
+ * ```
  */
-var ResourceType = SuperMap.ResourceType = {
+var ResourceType = {
     /** 地图。 */
     MAP: "MAP",
     /** 服务。 */
@@ -1344,18 +1941,28 @@ var ResourceType = SuperMap.ResourceType = {
     /** 大屏。 */
     MAP_DASHBOARD: "MAP_DASHBOARD"
 }
-export {
-    ResourceType
-}
 
 /**
  * @enum OrderBy
- * @memberOf SuperMap
  * @description iportal资源排序字段。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OrderBy.UPDATETIME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OrderBy } from '{npm}';
+ *
+ * const result = OrderBy.UPDATETIME;
+ * ```
  */
-var OrderBy = SuperMap.OrderBy = {
+var OrderBy = {
     /** 按更新时间排序 */
     UPDATETIME: "UPDATETIME",
     /** 按热度(可能是访问量、下载量)排序 */
@@ -1363,35 +1970,55 @@ var OrderBy = SuperMap.OrderBy = {
     /** 按相关性排序 */
     RELEVANCE: "RELEVANCE"
 }
-export {
-    OrderBy
-}
 
 /**
  * @enum OrderType
- * @memberOf SuperMap
  * @description iportal资源升序还是降序过滤
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OrderType.ASC;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OrderType } from '{npm}';
+ *
+ * const result = OrderType.ASC;
+ * ```
  */
-var OrderType = SuperMap.OrderType = {
+var OrderType = {
     /** 升序 */
     ASC: "ASC",
     /** 降序 */
     DESC: "DESC"
 }
-export {
-    OrderType
-}
 
 /**
  * @enum SearchType
- * @memberOf SuperMap
  * @description iportal资源查询的范围进行过滤
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SearchType.PUBLIC;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SearchType } from '{npm}';
+ *
+ * const result = SearchType.PUBLIC;
+ * ```
  */
-var SearchType = SuperMap.SearchType = {
+var SearchType = {
     /** 公开资源。 */
     PUBLIC: "PUBLIC",
     /** 我的资源。 */
@@ -1403,35 +2030,55 @@ var SearchType = SuperMap.SearchType = {
     /** 分享给我的资源。 */
     SHARETOME_RES: "SHARETOME_RES"
 }
-export {
-    SearchType
-}
 
 /**
  * @enum AggregationTypes
- * @memberOf SuperMap
  * @description iportal资源聚合查询的类型
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AggregationTypes.TAG;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AggregationTypes } from '{npm}';
+ *
+ * const result = AggregationTypes.TAG;
+ * ```
  */
-var AggregationTypes = SuperMap.AggregationTypes = {
+var AggregationTypes = {
     /** 标签 */
     TAG: "TAG",
     /** 资源类型 */
     TYPE: "TYPE"
 }
-export {
-    AggregationTypes
-}
 
 /**
  * @enum PermissionType
- * @memberOf SuperMap
  * @description iportal资源权限类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.PermissionType.SEARCH;
+ *
+ * </script>
+ * // ES6 Import
+ * import { PermissionType } from '{npm}';
+ *
+ * const result = PermissionType.SEARCH;
+ * ```
  */
-var PermissionType = SuperMap.PermissionType = {
+var PermissionType = {
     /** 可检索 */
     SEARCH:"SEARCH",
     /** 可查看 */
@@ -1443,18 +2090,28 @@ var PermissionType = SuperMap.PermissionType = {
     /** 可下载，包括可读、可检索 */
     DOWNLOAD:"DOWNLOAD"
 }
-export {
-    PermissionType
-}
 
 /**
  * @enum EntityType
- * @memberOf SuperMap
  * @description iportal资源实体类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.EntityType.DEPARTMENT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { EntityType } from '{npm}';
+ *
+ * const result = EntityType.DEPARTMENT;
+ * ```
  */
-var EntityType = SuperMap.EntityType = {
+var EntityType = {
     /** 部门 */
     DEPARTMENT: "DEPARTMENT",
     /** 用户组 */
@@ -1466,74 +2123,134 @@ var EntityType = SuperMap.EntityType = {
     /** 用户 */
     USER: "USER"
 }
-export {
-    EntityType
-}
 
 /**
  * @enum DataItemType
- * @memberOf SuperMap
  * @description iportal数据类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataItemType.GEOJSON;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataItemType } from '{npm}';
+ *
+ * const result = DataItemType.GEOJSON;
+ * ```
  */
-var DataItemType = SuperMap.DataItemType = {
-    /** 工作空间 sxwu, smwu, sxw, smw */
-    WORKSPACE: "WORKSPACE",
-    /** udb 数据源 */
-    UDB: "UDB",
-    /** shp空间数据 */
-    SHP: "SHP",
-    /** excel数据 */
-    EXCEL: "EXCEL",
-    /** csv数据 */
-    CSV: "CSV",
+var DataItemType = {
     /** geojson数据。 */
     GEOJSON: "GEOJSON",
-    /** smtiles */
-    SMTILES: "SMTILES",
-    /** svtiles */
-    SVTILES: "SVTILES",
-    /** mbtiles */
-    MBTILES: "MBTILES",
-    /** tpk */
-    TPK: "TPK",
-    /** ugc v5 */
-    UGCV5: "UGCV5",
     /** UGCV5_MVT  */
     UGCV5_MVT: "UGCV5_MVT",
     /** json数据  */
-    JSON: "JSON"
-}
-export {
-    DataItemType
+    JSON: "JSON",
+    /** AUDIO */
+    AUDIO: "AUDIO",
+    /** COLOR */
+    COLOR: "COLOR",
+    /** COLORSCHEME */
+    COLORSCHEME: "COLORSCHEME",
+    /** CSV */
+    CSV: "CSV",
+    /** EXCEL */
+    EXCEL: "EXCEL",
+    /** FILLSYMBOL */
+    FILLSYMBOL: "FILLSYMBOL",
+    /** IMAGE */
+    IMAGE: "IMAGE",
+    /** LAYERTEMPLATE */
+    LAYERTEMPLATE: "LAYERTEMPLATE",
+    /** LAYOUTTEMPLATE */
+    LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
+    /** LINESYMBOL */
+    LINESYMBOL: "LINESYMBOL",
+    /** MAPTEMPLATE */
+    MAPTEMPLATE: "MAPTEMPLATE",
+    /** MARKERSYMBOL */
+    MARKERSYMBOL: "MARKERSYMBOL",
+    /** MBTILES */
+    MBTILES: "MBTILES",
+    /** PHOTOS */
+    PHOTOS: "PHOTOS",
+    /** SHP */
+    SHP: "SHP",
+    /** SMTILES */
+    SMTILES: "SMTILES",
+    /** SVTILES */
+    SVTILES: "SVTILES",
+    /** THEMETEMPLATE */
+    THEMETEMPLATE: "THEMETEMPLATE",
+    /** TPK */
+    TPK: "TPK",
+    /** UDB */
+    UDB: "UDB",
+    /** UGCV5 */
+    UGCV5: "UGCV5",
+    /** UNKNOWN */
+    UNKNOWN: "UNKNOWN",
+    /** VIDEO */
+    VIDEO: "VIDEO",
+    /** WORKENVIRONMENT */
+    WORKENVIRONMENT: "WORKENVIRONMENT",
+    /** WORKSPACE */
+    WORKSPACE: "WORKSPACE"
 }
 
 /**
  * @enum WebExportFormatType
- * @memberOf SuperMap
  * @description Web 打印输出的格式。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebExportFormatType.PNG;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebExportFormatType } from '{npm}';
+ *
+ * const result = WebExportFormatType.PNG;
+ * ```
  */
-var WebExportFormatType = SuperMap.WebExportFormatType = {
+var WebExportFormatType = {
     /** png */
     PNG: "PNG",
     /** pdf */
     PDF: "PDF"
 }
-export {
-    WebExportFormatType
-}
 
 /**
  * @enum WebScaleOrientationType
- * @memberOf SuperMap
  * @description Web 比例尺的方位样式。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebScaleOrientationType.HORIZONTALLABELSBELOW;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebScaleOrientationType } from '{npm}';
+ *
+ * const result = WebScaleOrientationType.HORIZONTALLABELSBELOW;
+ * ```
  */
-var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
+var WebScaleOrientationType = {
     /** horizontal labels below */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
     /** horizontal labels above */
@@ -1543,18 +2260,28 @@ var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
     /** vertical labels right */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
 }
-export {
-    WebScaleOrientationType
-}
 
 /**
  * @enum WebScaleType
- * @memberOf SuperMap
  * @description Web 比例尺的样式。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebScaleType.LINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebScaleType } from '{npm}';
+ *
+ * const result = WebScaleType.LINE;
+ * ```
  */
-var WebScaleType = SuperMap.WebScaleType = {
+var WebScaleType = {
     /** line */
     LINE: "LINE",
     /** bar */
@@ -1562,25 +2289,104 @@ var WebScaleType = SuperMap.WebScaleType = {
     /** bar sub */
     BAR_SUB: "BAR_SUB"
 }
-export {
-    WebScaleType
-}
 
 /**
  * @enum WebScaleUnit
- * @memberOf SuperMap
  * @description Web 比例尺的单位制。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebScaleUnit.METER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebScaleUnit } from '{npm}';
+ *
+ * const result = WebScaleUnit.METER;
+ * ```
  */
-var WebScaleUnit = SuperMap.WebScaleUnit = {
-    /** meter */
+var WebScaleUnit = {
+    /** 米 */
     METER: "METER",
-    /** foot */
+    /** 英尺 */
     FOOT: "FOOT",
-    /** degrees */
+    /** 度 */
     DEGREES: "DEGREES"
 }
 export {
+    DataFormat,
+    ServerType,
+    GeometryType,
+    QueryOption,
+    JoinType,
+    SpatialQueryMode,
+    SpatialRelationType,
+    MeasureMode,
+    Unit,
+    BufferRadiusUnit,
+    EngineType,
+    ThemeGraphTextFormat,
+    ThemeGraphType,
+    GraphAxesTextDisplayMode,
+    GraduatedMode,
+    RangeMode,
+    ThemeType,
+    ColorGradientType,
+    TextAlignment,
+    FillGradientMode,
+    AlongLineDirection,
+    LabelBackShape,
+    LabelOverLengthMode,
+    DirectionType,
+    SideType,
+    SupplyCenterType,
+    TurnType,
+    BufferEndType,
+    OverlayOperationType,
+    OutputType,
+    SmoothMethod,
+    SurfaceAnalystMethod,
+    DataReturnMode,
+    EditType,
+    TransferTactic,
+    TransferPreference,
+    GridType,
+    ColorSpaceType,
+    LayerType,
+    UGCLayerType,
+    StatisticMode,
+    PixelFormat,
+    SearchMode,
+    InterpolationAlgorithmType,
+    VariogramMode,
+    Exponent,
+    ClientType,
+    ChartType,
+    ClipAnalystMode,
+    AnalystAreaUnit,
+    AnalystSizeUnit,
+    StatisticAnalystMode,
+    SummaryType,
+    TopologyValidatorRule,
+    BucketAggType,
+    MetricsAggType,
+    GetFeatureMode,
+    RasterFunctionType,
+    ResourceType,
+    OrderBy,
+    OrderType,
+    SearchType,
+    AggregationTypes,
+    PermissionType,
+    EntityType,
+    DataItemType,
+    WebExportFormatType,
+    WebScaleOrientationType,
+    WebScaleType,
     WebScaleUnit
 }

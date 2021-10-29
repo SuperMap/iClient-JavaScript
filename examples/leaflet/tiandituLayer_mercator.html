@@ -16,16 +16,16 @@
       var map = L.map('map', {
         center: [0, 0],
         zoom: 0,
-        crs: L.CRS.TianDiTu_Mercator
+        crs: L.supermap.CRS.TianDiTu_Mercator
       });
-      L.supermap
-        .tiandituTileLayer({
+      new L.supermap
+        .TiandituTileLayer({
           layerType: 'img',
           key: '1d109683f4d84198e37a38c442d68311'
         })
         .addTo(map);
-      L.supermap
-        .tiandituTileLayer({
+      new L.supermap
+        .TiandituTileLayer({
           layerType: 'img',
           isLabel: true,
           key: '1d109683f4d84198e37a38c442d68311'

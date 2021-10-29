@@ -23,7 +23,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
     map.on("click", function (evt) {
         var x = evt.latlng.lng;
@@ -31,14 +31,14 @@
         if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
             return;
         }
-        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
+        var getGridCellInfosParam = new L.supermap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: x,
             Y: y
         });
-        L.supermap
-                .gridCellInfosService(url)
+        new L.supermap
+                .GridCellInfosService(url)
                 .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
                     if (!serviceResult.result) {
                         return;

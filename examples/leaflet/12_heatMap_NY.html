@@ -22,7 +22,7 @@
     });
 
     var attribution = resources.text_dataSources+'<a target="_blank" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi('+resources.text_NYTaxiCarPoint+')</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span> with <span>© <a href="https://iclient.supermap.io" target="_blank">SuperMap iClient</a></span>';
-    L.supermap.tiledMapLayer(url, {attribution: attribution}).addTo(map);
+    new L.supermap.tiledMapLayer(url, {attribution: attribution}).addTo(map);
     loadHeatMap();
 
     function loadHeatMap() {

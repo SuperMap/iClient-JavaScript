@@ -22,16 +22,16 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {transparent: true, cacheEnabled: false, noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {transparent: true, cacheEnabled: false, noWrap: true}).addTo(map);
     overlayAnalystProcess();
 
     function overlayAnalystProcess() {
-        overlayAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
+        overlayAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        datasetOverlayAnalystParameters = new L.supermap.DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
             tolerance: 0,
-            operation: SuperMap.OverlayOperationType.UNION
+            operation: L.supermap.OverlayOperationType.UNION
         });
         overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
             var result = serviceResult.result;

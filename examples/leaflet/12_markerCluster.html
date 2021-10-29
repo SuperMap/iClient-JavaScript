@@ -22,14 +22,14 @@
         maxZoom: 18,
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     resultLayer = L.markerClusterGroup({
         spiderfyOnMaxZoom: false,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: false
     });
-    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-        queryParameter: new SuperMap.FilterParameter({
+    getFeatureBySQLParams = new L.supermap.GetFeaturesBySQLParameters({
+        queryParameter: new L.supermap.FilterParameter({
             name: "Train@DynamicData",
             attributeFilter: "SmID>100 and SmID < 800"
         }),
@@ -39,8 +39,8 @@
     loadMarkerCluster();
 
     function loadMarkerCluster() {
-        L.supermap
-            .featureService(dataUrl)
+        new L.supermap
+            .FeatureService(dataUrl)
             .getFeaturesBySQL(getFeatureBySQLParams, function (serviceResult) {
                 createLayers(serviceResult.result.features);
             });

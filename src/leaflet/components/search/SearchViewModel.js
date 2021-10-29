@@ -1,28 +1,27 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import '../../core/Base';
-import {
-    FetchRequest
-} from '@supermap/iclient-common';
-import {
-    GeoJsonLayersDataModel
-} from '../commonmodels/GeoJsonLayersModel';
+ import L from 'leaflet';
+ import '../../core/Base';
+ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+ import { GeoJsonLayersDataModel } from '../commonmodels/GeoJsonLayersModel';
 
 /**
- * @class L.supermap.components.searchViewModel
+ * @class SearchViewModel
+ * @aliasclass Components.SearchViewModel
+ * @deprecatedclassinstance L.supermap.components.searchViewModel
  * @classdesc 图层查询组件功能类。
  * @version 9.1.1
  * @category Components Search
  * @param {L.Map} map - Leaflet Map 对象。
- * @param {Object} options - 可选参
+ * @param {Object} options - 参数。
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""}，默认为 online 本地搜索服务。
- * @fires L.supermap.components.searchViewModel#newlayeradded
- * @fires L.supermap.components.searchViewModel#searchlayersucceeded
- * @fires L.supermap.components.searchViewModel#searchfailed
- * @fires L.supermap.components.searchViewModel#geocodesucceeded
+ * @fires SearchViewModel#newlayeradded
+ * @fires SearchViewModel#searchlayersucceeded
+ * @fires SearchViewModel#searchfailed
+ * @fires SearchViewModel#geocodesucceeded
  * @extends {L.Evented}
+ * @usage
  */
 export var SearchViewModel = L.Evented.extend({
     options: {
@@ -35,7 +34,7 @@ export var SearchViewModel = L.Evented.extend({
     initialize(map, options) {
         if (map) {
             /**
-             * @member {L.Map} L.supermap.components.searchViewModel.prototype.map
+             * @member {L.Map} SearchViewModel.prototype.map
              * @description 当前组件所在的地图。
              */
             this.map = map;
@@ -59,7 +58,7 @@ export var SearchViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.searchViewModel.prototype.search
+     * @function SearchViewModel.prototype.search
      * @description 查询。
      * @param {string} keyWords - 查询的关键字。
      * @param {string} [searchLayerName] - 执行的查询类型，支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配。
@@ -73,7 +72,7 @@ export var SearchViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.searchViewModel.prototype.searchFromLayer
+     * @function SearchViewModel.prototype.searchFromLayer
      * @description 图层属性查询。
      * @param {string} searchLayerName - 查询的图层名。
      * @param {string} keyWord - 图层属性搜索关键字。
@@ -83,7 +82,7 @@ export var SearchViewModel = L.Evented.extend({
             let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 /**
-                 * @event L.supermap.components.searchViewModel#searchlayersucceeded
+                 * @event SearchViewModel#searchlayersucceeded
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
@@ -92,7 +91,7 @@ export var SearchViewModel = L.Evented.extend({
                 });
             } else {
                 /**
-                 * @event L.supermap.components.searchViewModel#searchfailed
+                 * @event SearchViewModel#searchfailed
                  * @description 图层属性查询失败后触发。
                  * @property {string} searchType - 图层属性查询状态。
                  */
@@ -104,7 +103,7 @@ export var SearchViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.searchViewModel.prototype.searchFromCityLocalSearchService
+     * @function SearchViewModel.prototype.searchFromCityLocalSearchService
      * @description 城市地址匹配查询。
      * @param {string} keyWords - 城市地址匹配查询关键字。
      */
@@ -112,7 +111,7 @@ export var SearchViewModel = L.Evented.extend({
         //todo 是否保留缓存？请求过的数据保留一份缓存？
         if (this.searchCache[keyWords]) {
             /**
-             * @event L.supermap.components.searchViewModel#geocodesucceeded
+             * @event SearchViewModel#geocodesucceeded
              * @description 城市地址匹配成功后触发。
              * @property {Object} result - 城市匹配成功后返回的数据。
              */
@@ -143,14 +142,14 @@ export var SearchViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.searchViewModel.prototype.addSearchLayers
+     * @function SearchViewModel.prototype.addSearchLayers
      * @description 添加新的可查询图层。
      * @param {Array.<L.GeoJSON>} layers - 新添加的图层对象。
      */
     addSearchLayers(layers) {
         this.dataModel.addLayers(layers, (e) => {
             /**
-             * @event L.supermap.components.searchViewModel#newlayeradded
+             * @event SearchViewModel#newlayeradded
              * @description 添加查询图层事件。
              * @property {Object} result  - 事件返回的新的查询图层对象。
              * @property {string} layerName  - 事件返回的新的查询图层对象名。
@@ -162,7 +161,7 @@ export var SearchViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.searchViewModel.prototype.panToLayer
+     * @function SearchViewModel.prototype.panToLayer
      * @description 缩放到指定图层。
      * @param {string} layerName - 指定缩放的图层名。
      */
@@ -173,7 +172,7 @@ export var SearchViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.searchViewModel.prototype.panToCity
+     * @function SearchViewModel.prototype.panToCity
      * @description 缩放到指定城市。
      * @param {string} city - 指定缩放的城市名。
      */
@@ -224,7 +223,7 @@ export var SearchViewModel = L.Evented.extend({
     },
 
      /**
-     * @function L.supermap.components.searchViewModel.prototype._getSearchUrl
+     * @function SearchViewModel.prototype._getSearchUrl
      * @description 获取地理编码查询地址。
      * @param {Object} geoCodeParam - 地理编码查询参数。
      * @private
@@ -238,5 +237,3 @@ export var SearchViewModel = L.Evented.extend({
 export var searchViewModel = function (options) {
     return new SearchViewModel(options);
 };
-
-L.supermap.components.searchViewModel = searchViewModel;

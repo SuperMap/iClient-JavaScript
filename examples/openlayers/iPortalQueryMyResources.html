@@ -243,6 +243,7 @@
     </div>
 <script type="text/javascript" include="jquery,bootstrap,plottingPanel,widgets" src="../js/include-web.js"></script>
 <script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript" include="iPortalStylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
@@ -251,7 +252,7 @@
     //默认请求资源类型
     var resourceType = "MAP";
     //全局变量，承载请求后，一共有多少页数
-    var queryParams = new SuperMap.iPortalQueryParam({
+    var queryParams = new ol.supermap.iPortalQueryParam({
         resourceType: resourceType,
         pageSize: 15,
         currentPage: 1,
@@ -286,15 +287,15 @@
     });
     // 申请，注册token并查询
     function generatePortalToken() {
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new ol.supermap.ServerInfo(ol.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        ol.supermap.SecurityManager.registerServers([serverInfo]);
+        ol.supermap.SecurityManager.destroyToken(iPortalUrl);
+        ol.supermap.SecurityManager.registerToken(iPortalUrl, token);
         //加载完DOM后，开始资源数据查询并添加
-        iPortal = new SuperMap.iPortal(iPortalUrl);
+        iPortal = new ol.supermap.iPortal(iPortalUrl);
         queryResouces(queryParams);
     }
 
@@ -379,7 +380,7 @@
             resourceType: resourceType,
             ids: resourceIds
         };
-        new SuperMap.iPortalUser(iPortalUrl).deleteResources(deleteParams).then(result=>{
+        new ol.supermap.iPortalUser(iPortalUrl).deleteResources(deleteParams).then(result=>{
             $('#deleteModel').modal('hide');
             widgets.alert.showAlert(resources.text_deleteSuccess, true);
             deleteIds = [];
@@ -421,7 +422,7 @@
     //点击查看详情按钮
     function viewResource(ids){
         $("#edit-and-detail-plot").tabs('select',0);
-        var item = new SuperMap.iPortalResource(iPortalUrl,{resourceId:ids,resourceType:resourceType});
+        var item = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:ids,resourceType:resourceType});
         item.load().then(()=>{
             //创建详情面板
             L.supermap.plotting.initIportalStylePanel("iPortalDetailPanel",resourceType,item.sourceJSON,'detail');
@@ -431,7 +432,7 @@
     function editResource(ids){
         viewResource(ids)
         $("#edit-and-detail-plot").tabs('select',1);
-        var item = new SuperMap.iPortalResource(iPortalUrl,{resourceId:ids,resourceType:resourceType});
+        var item = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:ids,resourceType:resourceType});
         item.load().then(()=>{
             //创建属性面板 
             L.supermap.plotting.initIportalStylePanel("plotPanel", resourceType, item.sourceJSON,'edit');
@@ -673,7 +674,7 @@
                 attributes.dataMetaInfo.providers = updated.value;
                 break;
         }
-        var item = new SuperMap.iPortalResource(iPortalUrl,{resourceId:data.id,resourceType:resourceType});
+        var item = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:data.id,resourceType:resourceType});
         item.load().then(()=>{
             switch (resourceType) {
                 case 'MAP':
@@ -1153,7 +1154,7 @@
         initDepartmentUserGroupThead("group",resources.text_group);
 
         $("#public").append(sharePublicDOM)
-        var item = new SuperMap.iPortalResource(iPortalUrl,{resourceId:shareIds[0],resourceType:resourceType});
+        var item = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:shareIds[0],resourceType:resourceType});
         item.load().then(()=>{
             if(item.sourceJSON.authorizeSetting && item.sourceJSON.authorizeSetting.length > 0){
                 for(let entity of item.sourceJSON.authorizeSetting){
@@ -1275,7 +1276,7 @@
     function requestShareUrl(){
         var resourceIds = shareIds;
         var entities = getShareEntities();
-        queryShareParams = new SuperMap.iPortalShareParam({
+        queryShareParams = new ol.supermap.iPortalShareParam({
             ids:resourceIds,
             entities:entities,
             resourceType:resourceType
@@ -1615,10 +1616,10 @@
     
     // 选择资源类型  查询资源
     function onSelectResourcesType(){
-        iPortal = new SuperMap.iPortal(iPortalUrl);
+        iPortal = new ol.supermap.iPortal(iPortalUrl);
         let type = $("#typeSelect").val();
         resourceType = type;
-        queryParams = new SuperMap.iPortalQueryParam({
+        queryParams = new ol.supermap.iPortalQueryParam({
             resourceType: type,
             searchType:'MY_RES',
             pageSize: 15,

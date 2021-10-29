@@ -25,7 +25,7 @@
             mixZoom: 2,
             zoom: 4
         });
-    L.supermap.tiledMapLayer(mapUrl, {
+    new L.supermap.TiledMapLayer(mapUrl, {
         noWrap: true,
         prjCoordSys: {"epsgCode": "4326"},
         minZoom: 3
@@ -105,17 +105,17 @@
                     }
                 }
             };
-            turfLayer = L.supermap.turfLayer(interpolationAnalyst.turfLayerOptions).addTo(map);
+            turfLayer = new L.supermap.TurfLayer(interpolationAnalyst.turfLayerOptions).addTo(map);
 
-            var param = new SuperMap.QueryBySQLParameters({
+            var param = new L.supermap.QueryBySQLParameters({
                 queryParams: {
                     name: "Town_P@Jingjin.2",
                 }
             });
 
             if (!tinQueryResultLayer) {
-                L.supermap
-                    .queryService(tinDataUrl)
+                new L.supermap
+                    .QueryService(tinDataUrl)
                     .queryBySQL(param, function (serviceResult) {
                         interpolationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
                         tinQueryResultLayer = L.geoJSON(interpolationAnalyst.sourcePoints, {

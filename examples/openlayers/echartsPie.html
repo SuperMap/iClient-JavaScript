@@ -224,7 +224,7 @@
         function query() {
             clearLayer();
             var queryService = new ol.supermap.QueryService(host + "/iserver/services/map-china400/rest/maps/China");
-            var param = new SuperMap.QueryBySQLParameters({
+            var param = new ol.supermap.QueryBySQLParameters({
                 queryParams: [{
                     name: "China_ProCenCity_pt@China",
                     attributeFilter: "NAME = '广州市' or NAME = '上海市'"

@@ -1,10 +1,6 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
-
-mapboxgl.supermap = mapboxgl.supermap || {};
-mapboxgl.supermap.map = mapboxgl.supermap.map || {};
 
 export var getDefaultVectorTileStyle = function (urlTemplate, options) {
     options = options || {};
@@ -76,7 +72,3 @@ function getLayer(id, type, source, sourceLayer, paint) {
     return layer;
 }
 
-
-mapboxgl.supermap.map.getDefaultVectorTileStyle = getDefaultVectorTileStyle;
-mapboxgl.supermap.map.setBackground = setBackground;
-mapboxgl.supermap.map.setPaintProperty = setPaintProperty;

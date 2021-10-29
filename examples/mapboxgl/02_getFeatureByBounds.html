@@ -86,7 +86,7 @@
         var ne = new mapboxgl.LngLat(20, 20);
         var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
 
-        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+        var boundsParam = new mapboxgl.supermap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: lngLatBounds
         });

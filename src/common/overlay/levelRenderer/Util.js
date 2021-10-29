@@ -3,22 +3,15 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Tool.Util
+ * @class  LevelRenderer.Tool.Util
  * @category Visualization Theme
  * LevelRenderer 基础工具类
  *
  */
 export class Util {
-
-
-    /**
-     * @function SuperMap.LevelRenderer.Tool.Util.constructor
-     * @description 构造函数。
-     *
-     */
     constructor() {
         /**
-         * @member {Object} SuperMap.LevelRenderer.Tool.Util.prototype.BUILTIN_OBJECT
+         * @member {Object} LevelRenderer.Tool.Util.prototype.BUILTIN_OBJECT
          * @description 用于处理merge时无法遍历Date等对象的问题
          */
         this.BUILTIN_OBJECT = {
@@ -30,7 +23,7 @@ export class Util {
         };
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Tool.Util.prototype._ctx
+         * @member {Object} LevelRenderer.Tool.Util.prototype._ctx
          */
         this._ctx = null;
 
@@ -76,9 +69,9 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.clone
+     * @function LevelRenderer.Tool.Util.prototype.clone
      * @description 对一个object进行深度拷贝。
-     * 
+     *
      * @param {Object} source - 需要进行拷贝的对象。
      * @return {Object} 拷贝后的新对象。
      */
@@ -108,7 +101,7 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.mergeItem
+     * @function LevelRenderer.Tool.Util.prototype.mergeItem
      * @description 合并源对象的单个属性到目标对象。
      *
      * @param {Object} target - 目标对象。
@@ -138,9 +131,9 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.merge
+     * @function LevelRenderer.Tool.Util.prototype.merge
      * @description 合并源对象的属性到目标对象。
-     * 
+     *
      * @param {Object} target - 目标对象。
      * @param {Object} source - 源对象。
      * @param {boolean} overwrite - 是否覆盖。
@@ -156,7 +149,7 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.getContext
+     * @function LevelRenderer.Tool.Util.prototype.getContext
      * @description 获取 Canvas 上下文。
      * @return {Object} 上下文。
      */
@@ -169,7 +162,7 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.getPixelContext
+     * @function LevelRenderer.Tool.Util.prototype.getPixelContext
      * @description 获取像素拾取专用的上下文。
      * @return {Object} 像素拾取专用的上下文。
      */
@@ -185,7 +178,7 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.adjustCanvasSize
+     * @function LevelRenderer.Tool.Util.prototype.adjustCanvasSize
      * @description 如果坐标处在_canvas外部，改变_canvas的大小，修改canvas的大小 需要重新设置translate
      *
      * @param {number} x - 横坐标。
@@ -237,7 +230,7 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.getPixelOffset
+     * @function LevelRenderer.Tool.Util.prototype.getPixelOffset
      * @description 获取像素canvas的偏移量。
      * @return {Object} 偏移量。
      */
@@ -250,7 +243,7 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.indexOf
+     * @function LevelRenderer.Tool.Util.prototype.indexOf
      * @description 查询数组中元素的index
      * @return {Object} 偏移量。
      */
@@ -268,11 +261,11 @@ export class Util {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Util.prototype.inherits
+     * @function LevelRenderer.Tool.Util.prototype.inherits
      * @description 构造类继承关系
-     * 
-     * @param {Function} clazz - 源类。
-     * @param {Function} baseClazz - 基类。
+     *
+     * @param {function} clazz - 源类。
+     * @param {function} baseClazz - 基类。
      * @return {Object} 偏移量。
      */
     inherits(clazz, baseClazz) {

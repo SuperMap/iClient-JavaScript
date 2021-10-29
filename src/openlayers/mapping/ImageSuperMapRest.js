@@ -1,7 +1,10 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Unit, SecurityManager, ServerGeometry, CommonUtil } from '@supermap/iclient-common';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Unit } from '@supermap/iclient-common/REST';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
 import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
 import Geometry from 'ol/geom/Geometry';
@@ -12,25 +15,25 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 
 /**
  * @class ol.source.ImageSuperMapRest
- * @category iServer Map
+ * @category iServer Map Tile
  * @classdesc SuperMap iServer Image 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。
+ * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存，true 表示使用服务端的缓存。
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
- * @param {(ol/geom/Geometry|ol/geom/Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {ol.geom.Geometry} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
- * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
- * @param {string} [options.tileProxy] - 代理地址。
- * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {string} [options.tileProxy] - 服务代理地址。
+ * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
- * @extends {ol/source/TileImage}
+ * @extends {ol.source.TileImage}
  */
 export class ImageSuperMapRest extends TileImage {
   constructor(options) {
@@ -181,7 +184,7 @@ export class ImageSuperMapRest extends TileImage {
 
   /**
    * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
-   * @param {string} url - 地址。
+   * @param {string} url - 服务地址。
    * @param {Object} mapJSONObj - 地图 JSON。
    * @description 获取地图 JSON 信息。
    */
@@ -241,7 +244,7 @@ export class ImageSuperMapRest extends TileImage {
    * @param {number} tileSize - 瓦片的尺寸。
    * @param {number} origin - 原点。
    * @description 创建网格切片。
-   * @returns {ol/tilegrid/TileGrid} 创建的网格切片
+   * @returns {ol.tilegrid.TileGrid} 创建的网格切片
    */
   static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
     var tilegrid = olTilegrid.createXYZ({

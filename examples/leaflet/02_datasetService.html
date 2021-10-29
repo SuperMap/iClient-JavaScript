@@ -69,11 +69,11 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     dataSetService();
 
     function dataSetService() {
-        L.supermap.datasourceService(url).getDatasources(function (serviceResult) {
+        new L.supermap.DatasourceService(url).getDatasources(function (serviceResult) {
         datasourcesSelect = document.getElementById("datasourcesSelect");
         const datasourceNames = serviceResult.result.datasourceNames;
         for (let i = 0, len = datasourceNames.length; i < len; i++) {
@@ -85,7 +85,7 @@
     }
     //数据集信息
     function datasetsService(datasourceName){
-         L.supermap.datasetService(url).getDatasets(datasourceName,function (serviceResult) {
+        new L.supermap.DatasetService(url).getDatasets(datasourceName,function (serviceResult) {
             const datasetNames = serviceResult.result.datasetNames;
             datasetsSelect = document.getElementById("datasetsSelect");
         for (let i = 0,len = datasetNames.length; i < len; i++) {
@@ -96,7 +96,7 @@
 
     function datasetsPrint(){
         const datasetName = datasetsSelect.value;
-        L.supermap.datasetService(url).getDataset(datasourceName,datasetName,function (serviceResult) {
+        new L.supermap.DatasetService(url).getDataset(datasourceName,datasetName,function (serviceResult) {
             let innerHTML = "(" + resources.text_datasetInfoPrint + ")" + "<br><br>";
             innerHTML += "dataSourceName：" + JSON.stringify(serviceResult.result.datasetInfo.dataSourceName, null, 2) + "<br>";
             innerHTML += "description:" + JSON.stringify(serviceResult.result.datasetInfo.description, null, 2) + "<br>";

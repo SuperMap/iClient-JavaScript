@@ -7,12 +7,14 @@ import * as turf from '@turf/turf';
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.turfLayer
+ * @class TurfLayer
+ * @deprecatedclassinstance L.supermap.turfLayer
  * @classdesc Turf 图层。
  * @category Visualization Turf
  * @extends {L.Layer}
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
+ * @usage
  */
 export var TurfLayer = L.GeoJSON.extend({
 
@@ -225,12 +227,12 @@ export var TurfLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.turfLayer.prototype.process
+     * @function TurfLayer.prototype.process
      * @description 执行 Turf.js 提供的相关空间分析方法。
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
-     * @param {Function} callback - 空间分析完成执行的回调函数，返回执行的结果。
-     * @param {boolean} [addFeaturesToMap=true] - 是否添加到 map。
+     * @param {function} callback - 空间分析完成执行的回调函数，返回执行的结果。
+     * @param {boolean} [addFeaturesToMap=true] - 是否添加到地图。
      */
     process: function (type, args, callback, addFeaturesToMap) {
         // 兼容版本4到5
@@ -285,5 +287,3 @@ export var TurfLayer = L.GeoJSON.extend({
 export var turfLayer = function (options) {
     return new TurfLayer(options);
 };
-
-L.supermap.turfLayer = turfLayer;

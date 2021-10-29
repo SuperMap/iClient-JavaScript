@@ -36,7 +36,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -44,7 +44,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
     startMarker = L.marker([-5527.73795456, 3111.42533851])
         .addTo(map).bindTooltip(resources.text_startPoint, {
@@ -119,13 +119,13 @@
     function execTransSolutionsQuery(tactic) {
         info.remove();
         paths.points = [26, 180];
-        var params = new SuperMap.TransferSolutionParameters({
+        var params = new L.supermap.TransferSolutionParameters({
             solutionCount: 6,//最大换乘导引数量
             transferTactic: tactic,//公交换乘策略类型
             walkingRatio: 10,//步行与公交的消耗权重比
             points: paths.points //起始点坐标
         });
-        L.supermap.trafficTransferAnalystService(serviceUrl)
+        new L.supermap.TrafficTransferAnalystService(serviceUrl)
             .analysisTransferSolution(params, function (serviceResult) {
                 if (serviceResult.error) {
                     alert(resources.msg_errorMsg + ":" + serviceResult.error.errorMsg);
@@ -169,7 +169,7 @@
             var items = transGuide.items;
             for (var itemIndex = 0, itemLen = items.length; itemIndex < itemLen; itemIndex++) {
                 var geometry = items[itemIndex].route;
-                routeFeatureGroup.addLayer(L.geoJSON(L.Util.toGeoJSON(geometry)).addTo(map));
+                routeFeatureGroup.addLayer(L.geoJSON(L.supermap.Util.toGeoJSON(geometry)).addTo(map));
             }
         }
         var table = $("<table id='trafficRes' border='1'></table>");
@@ -282,12 +282,12 @@
     }
 
     function execTransPathQuery(id, transLines) {
-        var params = new SuperMap.TransferPathParameters({
+        var params = new L.supermap.TransferPathParameters({
             points: paths["points"],
             transferLines: transLines
         });
-        L.supermap
-            .trafficTransferAnalystService(serviceUrl)
+        new L.supermap
+            .TrafficTransferAnalystService(serviceUrl)
             .analysisTransferPath(params, function (serviceResult) {
                 $("#transferInfo-" + id).empty();
                 var transGuide = serviceResult.result;

@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_image_service"></title>
-    
+
     <script
       type="text/javascript"
       include="proj4,turf,leaflet-geoman"
@@ -357,7 +357,7 @@
       var drawControl = addDrawControl();
       var imageService = ImageService();
       function ImageService() {
-        var service = new L.supermap.imageService(root);
+        var service = new L.supermap.ImageService(root);
         service.getCollections(getCollectionsCompleted);
         return service;
       }
@@ -494,13 +494,13 @@
 
       function queryFromDataService(url) {
         var result = [];
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
           queryParameter: { attributeFilter: "PAC Like '46%'" },
           datasetNames: ['China:City_R'],
           targetPrj: { epsgCode: 4326 },
           maxFeatures: 10000
         });
-        new L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
           var featureResults = serviceResult.result;
           if (featureResults) {
             var features = featureResults.features;
@@ -526,8 +526,8 @@
         if (!isShow) {
           removeSearchItemTile(featureId);
         } else {
-          var layer = L.supermap
-            .imageTileLayer(root, {
+          var layer = new L.supermap
+            .ImageTileLayer(root, {
               collectionId,
               names: [name]
             })

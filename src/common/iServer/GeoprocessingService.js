@@ -1,16 +1,17 @@
-import { SuperMap } from '../SuperMap';
 import { CommonServiceBase } from './CommonServiceBase';
 
 /**
- * @class SuperMap.GeoprocessingService
+ * @class GeoprocessingService
+ * @deprecatedclass SuperMap.GeoprocessingService
  * @category  iServer ProcessingAutomationService
  * @classdesc 处理自动化服务接口的基类。
  * @version 10.1.0
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {Events} options.events - 处理所有事件的对象。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
+ * @usage
  */
 export class GeoprocessingService extends CommonServiceBase {
     constructor(url, options) {
@@ -22,14 +23,14 @@ export class GeoprocessingService extends CommonServiceBase {
         this.crossOrigin = true;
     }
     /**
-     * @function SuperMap.GeoprocessingService.prototype.getTools
+     * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
      */
     getTools() {
         this._get(`${this.url}/list`);
     }
     /**
-     * @function SuperMap.GeoprocessingService.prototype.getTool
+     * @function GeoprocessingService.prototype.getTool
      * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
      */
@@ -37,7 +38,7 @@ export class GeoprocessingService extends CommonServiceBase {
         this._get(`${this.url}/${identifier}`);
     }
     /**
-     * @function SuperMap.GeoprocessingService.prototype.execute
+     * @function GeoprocessingService.prototype.execute
      * @description 同步执行处理自动化工具。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
@@ -50,7 +51,7 @@ export class GeoprocessingService extends CommonServiceBase {
         this._get(`${this.url}/${identifier}/execute`, executeParamter);
     }
     /**
-     * @function SuperMap.GeoprocessingService.prototype.submitJob
+     * @function GeoprocessingService.prototype.submitJob
      * @description 异步执行处理自动化工具。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
@@ -72,7 +73,7 @@ export class GeoprocessingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GeoprocessingService.prototype.waitForJobCompletion
+     * @function GeoprocessingService.prototype.waitForJobCompletion
      * @description 获取处理自动化异步执行状态信息。
      * @param {string} jobId - 处理自动化任务ID。
      * @param {string} identifier - 处理自动化工具ID。
@@ -114,7 +115,7 @@ export class GeoprocessingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GeoprocessingService.prototype.getJobInfo
+     * @function GeoprocessingService.prototype.getJobInfo
      * @description 获取处理自动化任务的执行信息。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
@@ -124,7 +125,7 @@ export class GeoprocessingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GeoprocessingService.prototype.cancelJob
+     * @function GeoprocessingService.prototype.cancelJob
      * @description 取消处理自动化任务的异步执行。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
@@ -133,7 +134,7 @@ export class GeoprocessingService extends CommonServiceBase {
         this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
     }
     /**
-     * @function SuperMap.GeoprocessingService.prototype.getJobs
+     * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
      * @param {string} identifier - 处理自动化工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      */
@@ -145,7 +146,7 @@ export class GeoprocessingService extends CommonServiceBase {
         this._get(url);
     }
     /**
-     * @function SuperMap.GeoprocessingService.prototype.getResults
+     * @function GeoprocessingService.prototype.getResults
      * @description 处理自动化工具执行的结果等,支持结果过滤。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
@@ -170,4 +171,3 @@ export class GeoprocessingService extends CommonServiceBase {
         });
     }
 }
-SuperMap.GeoprocessingService = GeoprocessingService;

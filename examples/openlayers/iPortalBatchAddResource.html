@@ -95,9 +95,8 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" include="jquery,bootstrap,plottingPanel,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript" include="iPortalStylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+<script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
     var iPortalUrl = "https://iportal.supermap.io/iportal";
@@ -114,23 +113,23 @@
         "authorizeList": []
     }
     function getDefaultUrl(){
-        iPortalUser = new SuperMap.iPortalUser(iPortalUrl);
+        iPortalUser = new ol.supermap.iPortalUser(iPortalUrl);
     }
     // 注册token
     function generatePortalToken() {
-        let serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        let serverInfo = new ol.supermap.ServerInfo(ol.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        ol.supermap.SecurityManager.registerServers([serverInfo]);
+        ol.supermap.SecurityManager.destroyToken(iPortalUrl);
+        ol.supermap.SecurityManager.registerToken(iPortalUrl, token);
     }
     // 添加地图/场景
     function addMapOrScene() {
         generatePortalToken();
-        iPortalUser = new SuperMap.iPortalUser(iPortalUrl);
-        let params = new SuperMap.iPortalAddResourceParam({
+        iPortalUser = new ol.supermap.iPortalUser(iPortalUrl);
+        let params = new ol.supermap.iPortalAddResourceParam({
             rootUrl: $("#address").val(),
             tags: $("#tags").val(),
             entities: getShareEntities()

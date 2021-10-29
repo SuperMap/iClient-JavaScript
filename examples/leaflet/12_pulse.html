@@ -26,19 +26,19 @@
         maxZoom: 18,
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     loadPulse();
 
     function loadPulse() {
         var point1 = L.CRS.EPSG3857.project(L.latLng(22, 96));
         var point2 = L.CRS.EPSG3857.project(L.latLng(42, 124));
         var bounds = L.latLngBounds(L.latLng(point1.y, point1.x), L.latLng(point2.y, point2.x));
-        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+        var boundsParam = new L.supermap.GetFeaturesByBoundsParameters({
             datasetNames: ["DynamicData:Point"],
             bounds: bounds
         });
-        L.supermap
-            .featureService(dataUrl)
+        new L.supermap
+            .FeatureService(dataUrl)
             .getFeaturesByBounds(boundsParam, function (serviceResult) {
                 createLayers(serviceResult.result.features);
             });

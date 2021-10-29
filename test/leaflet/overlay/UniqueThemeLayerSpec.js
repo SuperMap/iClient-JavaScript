@@ -400,7 +400,9 @@ describe('leaflet_UniqueThemeLayer', () => {
                 }
             }, 6000);
         } else {
+            expect(false).toBeTruthy();
             console.log("'addFeatures'案例未获取到待添加的数据");
+            done();
         }
     });
 });

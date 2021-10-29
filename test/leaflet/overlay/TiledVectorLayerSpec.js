@@ -1,11 +1,11 @@
 import {
     tiledVectorLayer
-} from '../../../src/leaflet/overlay/TileVectorLayer';
+} from '../../../src/leaflet/overlay/TiledVectorLayer';
 import {
     FetchRequest
-} from '../../../src/common/util/FetchRequest';
+} from '@supermap/iclient-common/util/FetchRequest';
 
-describe('leaflet_TileVectorLayer', () => {
+describe('leaflet_TiledVectorLayer', () => {
     var originalTimeout;
     var testDiv, map;
     var ChinaURL = GlobeParameter.ChinaURL;

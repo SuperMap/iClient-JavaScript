@@ -178,13 +178,13 @@
         //缓冲区分析参数
         var geoBufferAnalystParams = {
             analystName: "buffer",
-            param: new SuperMap.GeometryBufferAnalystParameters({
+            param: new ol.supermap.GeometryBufferAnalystParameters({
                 sourceGeometry: bufferLine,
                 sourceGeometrySRID: 4326,
-                bufferSetting: new SuperMap.BufferSetting({
-                    endType: SuperMap.BufferEndType.ROUND,
-                    leftDistance: new SuperMap.BufferDistance({value: 5000}),
-                    rightDistance: new SuperMap.BufferDistance({value: 5000}),
+                bufferSetting: new ol.supermap.BufferSetting({
+                    endType: ol.supermap.BufferEndType.ROUND,
+                    leftDistance: new ol.supermap.BufferDistance({value: 5000}),
+                    rightDistance: new ol.supermap.BufferDistance({value: 5000}),
                     semicircleLineSegment: 10
                 })
 
@@ -192,13 +192,13 @@
         };
         var geoBufferAnalystParams_Point = {
             analystName: "buffer",
-            param: new SuperMap.GeometryBufferAnalystParameters({
+            param: new ol.supermap.GeometryBufferAnalystParameters({
                 sourceGeometry: bufferPoint,
                 sourceGeometrySRID: 4326,
-                bufferSetting: new SuperMap.BufferSetting({
-                    endType: SuperMap.BufferEndType.ROUND,
-                    leftDistance: new SuperMap.BufferDistance({value: 5000}),
-                    rightDistance: new SuperMap.BufferDistance({value: 5000}),
+                bufferSetting: new ol.supermap.BufferSetting({
+                    endType: ol.supermap.BufferEndType.ROUND,
+                    leftDistance: new ol.supermap.BufferDistance({value: 5000}),
+                    rightDistance: new ol.supermap.BufferDistance({value: 5000}),
                     radiusUnit: "METER",
                     semicircleLineSegment: 10
                 })
@@ -209,10 +209,10 @@
         //叠加分析参数
         var OverlayBatchAnalystParameters = {
             analystName: "overlay",
-            param: new SuperMap.GeometryOverlayAnalystParameters({
+            param: new ol.supermap.GeometryOverlayAnalystParameters({
                 sourceGeometry: sourceGeometry,
                 operateGeometry: operateGeometry,
-                operation: SuperMap.OverlayOperationType.CLIP
+                operation: ol.supermap.OverlayOperationType.CLIP
             })
         };
 

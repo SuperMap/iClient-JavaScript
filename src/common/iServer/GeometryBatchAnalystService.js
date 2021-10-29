@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters';
@@ -10,25 +9,27 @@ import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParame
 import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
- * @class SuperMap.GeometryBatchAnalystService
+ * @class GeometryBatchAnalystService
+ * @deprecatedclass SuperMap.GeometryBatchAnalystService
  * @category iServer SpatialAnalyst BatchAnalyst
  * @classdesc 批量空间分析服务类
  * @description 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
- *              叠加分析结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.OverlayAnalystEventArgs>}; 获取的结果数据包括 originResult 、result 两种，
+ *              获取的结果数据包括 originResult 、result 两种，
  *              其中，originResult 为服务端返回的用 JSON 对象表示的量算结果数据，result 为服务端返回的量算结果数据。
- * @extends {SuperMap.SpatialAnalystBase}
- * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+ * @extends {SpatialAnalystBase}
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myOverlayAnalystService = new SuperMap.REST.GeometryBatchAnalystService(url, {
+ * var myOverlayAnalystService = new GeometryBatchAnalystService(url, {
  *     eventListeners: {
  *	       "processCompleted": OverlayCompleted,
  *		   "processFailed": OverlayFailed
  *		   }
  * });
+ * @usage
  */
 export class GeometryBatchAnalystService extends SpatialAnalystBase {
 
@@ -43,9 +44,9 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.GeometryBatchAnalystService.prototype.processAsync
+     * @function GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
+     * @param {GeometryOverlayAnalystParameter} parameter - 批量几何对象叠加分析参数类
      *
      */
     processAsync(parameters) {
@@ -132,5 +133,3 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
 
 
 }
-
-SuperMap.GeometryBatchAnalystService = GeometryBatchAnalystService;

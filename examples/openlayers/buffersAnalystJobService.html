@@ -103,7 +103,7 @@
 
         info.setMap(map);
         map.addControl(info);
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function getBounds() {
             if ($('#bounds').val() === "") {
@@ -124,7 +124,7 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            var buffersAnalystJobsParameter = new SuperMap.BuffersAnalystJobsParameter({
+            var buffersAnalystJobsParameter = new ol.supermap.BuffersAnalystJobsParameter({
                 datasetName: $('#datasetName').val(),
                 bounds: getBounds(),
                 distance: $('#distace').val(),
@@ -141,7 +141,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

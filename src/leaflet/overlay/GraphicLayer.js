@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import '../core/Base';
 import { Detector } from '../core/Detector';
-import { CommonUtil } from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { GraphicCanvasRenderer, GraphicWebGLRenderer, CircleStyle } from './graphic';
 
 const Renderer = ['canvas', 'webgl'];
@@ -29,24 +29,26 @@ const DEFAULT_ZOOM_OFFSET = {
 };
 
 /**
- * @class L.supermap.graphicLayer
+ * @class GraphicLayer
+ * @deprecatedclassinstance L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
  * @extends {L.Path}
- * @param {Array.<L.supermap.graphic>} graphics - 要素对象。
- * @param {Object} options - 图层参数。
- * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值：“webgl”，“canvas”（webgl 渲染目前只支持散点）。
+ * @param {Array.<Graphic>} graphics - 要素对象。
+ * @param {Object} options - 参数。
+ * @param {string}   [options.render='canvas'] - 指定使用的渲染器。可选值：'webgl'，'canvas'（ webgl 渲染目前只支持散点）。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
- * @param {number} [options.radius=10] - 要素半径，单位像素。
+ * @param {number} [options.radius=10] - 要素半径，单位为像素。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
- * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值(像素)。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
+ * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {Function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
- * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件（支持 webgl、canvas 渲染）。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只支持 webgl 渲染）。
+ * @usage
  */
 export var GraphicLayer = L.Path.extend({
     initialize: function (graphics, options) {
@@ -68,7 +70,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @private
-     * @function L.supermap.graphicLayer.prototype.getEvents
+     * @function GraphicLayer.prototype.getEvents
      * @description 获取事件。
      * @returns {Object} 返回该图层支持的事件对象。
      */
@@ -82,7 +84,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @private
-     * @function L.supermap.graphicLayer.prototype.onAdd
+     * @function GraphicLayer.prototype.onAdd
      * @description 添加图形。
      */
     onAdd: function (map) {
@@ -98,7 +100,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @private
      * @override
-     * @function L.supermap.graphicLayer.prototype.onRemove
+     * @function GraphicLayer.prototype.onRemove
      * @description 移除图层。
      */
     onRemove: function () {
@@ -107,9 +109,9 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.setGraphics
+     * @function GraphicLayer.prototype.setGraphics
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
-     * @param {Array.<L.supermap.graphic>} graphics - 点要素对象数组。
+     * @param {Array.<Graphic>} graphics - 点要素对象数组。
      */
     setGraphics: function (graphics) {
         this.graphics = this.graphics || [];
@@ -120,9 +122,9 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.addGraphics
+     * @function GraphicLayer.prototype.addGraphics
      * @description 追加点要素，不会覆盖之前的要素。
-     * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<Graphic>}  graphics - 点要素对象数组。
      */
     addGraphics: function (graphics) {
         this.graphics = this.graphics || [];
@@ -132,11 +134,11 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.getGraphicBy
-     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {string} property - graphic 的某个属性名称。
-     * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @function GraphicLayer.prototype.getGraphicBy
+     * @description 指定属性名和属性值，获取第一个匹配的要素数组。
+     * @param {string} property - 属性名称。
+     * @param {string} value - 属性值。
+     * @returns {Graphic} 返回匹配的 graphic 。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -150,21 +152,21 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @function GraphicLayer.prototype.getGraphicById
+     * @description 获取指定 id 的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {Graphic} 返回匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy('id', graphicId);
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - graphic 的某个属性名称。
-     * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @function GraphicLayer.prototype.getGraphicsByAttribute
+     * @description 指定属性名和属性值，获取所有匹配的要素数组。
+     * @param {string} attrName - 属性名称。
+     * @param {string} attrValue - 属性值。
+     * @returns {Array.<Graphic>} 返回匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -181,9 +183,9 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.removeGraphics
-     * @description 删除要素数组，默认将删除所有要素。
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组。
+     * @function GraphicLayer.prototype.removeGraphics
+     * @description 删除要素数组，默认删除所有要素。
+     * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -214,7 +216,7 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.setStyle
+     * @function GraphicLayer.prototype.setStyle
      * @description 设置图层要素整体样式。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
@@ -222,8 +224,8 @@ export var GraphicLayer = L.Path.extend({
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
      * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
@@ -246,7 +248,7 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.update
+     * @function GraphicLayer.prototype.update
      * @description 更新图层，数据或者样式改变后调用。
      */
     update: function () {
@@ -254,7 +256,7 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.clear
+     * @function GraphicLayer.prototype.clear
      * @description 释放图层资源。
      */
     clear: function () {
@@ -262,7 +264,7 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.getRenderer
+     * @function GraphicLayer.prototype.getRenderer
      * @description 获取渲染器。
      * @returns {Object} 内部渲染器。
      */
@@ -271,9 +273,9 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicLayer.prototype.getState
-     * @description 获取当前地图及图层状态。
-     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+     * @function GraphicLayer.prototype.getState
+     * @description 获取当前地图和图层状态。
+     * @returns {Object} 地图和图层状态，包含地图状态信息和本图层相关状态。
      */
     getState: function () {
         let map = this._map;
@@ -460,4 +462,3 @@ export let graphicLayer = function (graphics, options) {
     return new GraphicLayer(graphics, options);
 };
 
-L.supermap.graphicLayer = graphicLayer;

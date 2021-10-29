@@ -3,4 +3,4 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 export {MapvDataSet} from './MapvDataSet'
 export {MapvRenderer} from './MapvRenderer'
-export * from './MapExtend'
+export { getDefaultVectorTileStyle, setBackground, setPaintProperty } from './MapExtend'

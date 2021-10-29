@@ -34,7 +34,7 @@
             mixZoom: 2,
             zoom: 4
         });
-    L.supermap.tiledMapLayer(mapUrl, {
+    new L.supermap.TiledMapLayer(mapUrl, {
         noWrap: true,
         prjCoordSys: {"epsgCode": "4326"},
         minZoom: 3
@@ -258,7 +258,7 @@
             map.flyTo(center, 4);
 
             //初始化turfLayer
-            turfLayer = L.supermap.turfLayer(gridAnalyst.turfLayerOptions).addTo(map);
+            turfLayer = new L.supermap.TurfLayer(gridAnalyst.turfLayerOptions).addTo(map);
 
             //添加画图控件：
             gridAnalyst.editableLayers = new L.FeatureGroup();

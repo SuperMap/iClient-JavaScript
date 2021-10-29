@@ -34,29 +34,29 @@
             minZoom: 3,
             zoom: 7
         });
-        var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
+        var baseLayer = new L.supermap.TiledMapLayer(url).addTo(map);
 
         var control = L.control.layers().addTo(map).setPosition('topleft').addBaseLayer(baseLayer, 'baseLayer');
         
         // worker 路径，默认为 dist/leaflet/workers/TurfWorker.js
         var workerUrl = '../../dist/leaflet/workers/TurfWorker.js';
-        var clientComputation = L.supermap.components.clientComputation(workerUrl).addTo(map);
+        var clientComputation = new L.supermap.Components.ClientComputation(workerUrl).addTo(map);
 
         query();
         function query() {
 
             var queryUrl = "https://www.supermapol.com/iserver/services/map_ShiLiShuJu/rest/maps/中国历史5级以上地震_1900至2016@自然气候数据"
-            var params = new SuperMap.QueryBySQLParameters({
+            var params = new L.supermap.QueryBySQLParameters({
                 queryParams: {
                     name: "中国历史5级以上地震_1900至2016@自然气候数据",
                     attributeFilter: "SMID>0"
                 }
             })
 
-            L.supermap
-                .queryService(queryUrl)
+            new L.supermap
+                .QueryService(queryUrl)
                 .queryBySQL(params, function (serviceResult) {
-                    var result = L.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
+                    var result = L.supermap.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
                     var resultLayer = L.geoJSON(result, {
                         style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 },
                         pointToLayer: function (geoJsonPoint, latLng) {
@@ -72,13 +72,13 @@
                         'layer': resultLayer,
                         'fields': ['震级', '深度', '经度', '纬度', 'SmID', 'SmX', 'SmY']
                     };
-                    var clientComputationLayer = L.supermap.components.clientComputationLayer(setLayer);
+                    var clientComputationLayer = new L.supermap.Components.ClientComputationLayer(setLayer);
                     clientComputation.addLayer(clientComputationLayer);
                 });
         }
 
         // 打开文件
-        var openFile = L.supermap.components.openFile().addTo(map).setPosition('bottomleft');
+        var openFile = new L.supermap.Components.OpenFile().addTo(map).setPosition('bottomleft');
 
         openFile.viewModel.on('openfilesucceeded', function (e) {
             var layer = L.geoJSON(e.result, {
@@ -90,7 +90,7 @@
             };
             map.flyToBounds(layer.getBounds());
             control.addOverlay(layer, e.layerName);
-            var clientComputationLayer = L.supermap.components.clientComputationLayer(setLayer);
+            var clientComputationLayer = new L.supermap.Components.ClientComputationLayer(setLayer);
             clientComputation.addLayer(clientComputationLayer);
         })
 

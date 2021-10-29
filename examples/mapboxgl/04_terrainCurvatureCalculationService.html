@@ -54,7 +54,7 @@
         //创建地形曲率计算服务实例
         terrainCurvatureCalculationService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
         //创建地形曲率计算参数实例
-        terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+        terrainCurvatureCalculationParameters = new mapboxgl.supermap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: "CurvatureA",
@@ -70,34 +70,34 @@
 
     function showAnalysisResult_ThemeGridRange() {
         themeService = new mapboxgl.supermap.ThemeService(dataUrl);
-        var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
+        var themeGridRangeIteme1 = new mapboxgl.supermap.ThemeGridRangeItem({
                 start: -9000000,
                 end: -1000,
-                color: new SuperMap.ServerColor(0, 0, 255)
+                color: new mapboxgl.supermap.ServerColor(0, 0, 255)
             }),
-            themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme2 = new mapboxgl.supermap.ThemeGridRangeItem({
                 start: -1000,
                 end: -1,
-                color: new SuperMap.ServerColor(0, 0, 125)
+                color: new mapboxgl.supermap.ServerColor(0, 0, 125)
             }),
-            themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme3 = new mapboxgl.supermap.ThemeGridRangeItem({
                 start: -1,
                 end: 1,
-                color: new SuperMap.ServerColor(0, 125, 125)
+                color: new mapboxgl.supermap.ServerColor(0, 125, 125)
             }),
-            themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme4 = new mapboxgl.supermap.ThemeGridRangeItem({
                 start: 1,
                 end: 1000,
-                color: new SuperMap.ServerColor(0, 125, 0)
+                color: new mapboxgl.supermap.ServerColor(0, 125, 0)
             }),
-            themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme5 = new mapboxgl.supermap.ThemeGridRangeItem({
                 start: 1000,
                 end: 20000000,
-                color: new SuperMap.ServerColor(0, 255, 0)
+                color: new mapboxgl.supermap.ServerColor(0, 255, 0)
             });
-        themeGridRange = new SuperMap.ThemeGridRange({
+        themeGridRange = new mapboxgl.supermap.ThemeGridRange({
             reverseColor: false,
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: mapboxgl.supermap.RangeMode.EQUALINTERVAL,
             //栅格分段专题图子项数组
             items: [themeGridRangeIteme1,
                 themeGridRangeIteme2,
@@ -106,7 +106,7 @@
                 themeGridRangeIteme5
             ]
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new mapboxgl.supermap.ThemeParameters({
             //制作专题图的数据集（地形曲率计算的结果数据集）
             datasetNames: [terrainCurvatureCalculationResult.averageCurvatureResult.dataset.split('@')[0]],
             dataSourceNames: ["Jingjin"],

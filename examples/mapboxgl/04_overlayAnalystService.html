@@ -48,11 +48,11 @@
     });
 
     function overlayAnalystProcess() {
-        var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
+        var datasetOverlayAnalystParameters = new mapboxgl.supermap.DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
             tolerance: 0,
-            operation: SuperMap.OverlayOperationType.UNION
+            operation: mapboxgl.supermap.OverlayOperationType.UNION
         });
         new mapboxgl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
             map.addSource("analystDatas", {

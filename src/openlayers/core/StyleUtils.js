@@ -1,7 +1,8 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap, CommonUtil, StringExt } from '@supermap/iclient-common';
+import { Util as CommonUtil, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
+import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
 import { StyleMap } from '../overlay/vectortile/StyleMap';
 import { DeafultCanvasStyle } from '../overlay/vectortile/DeafultCanvasStyle';
 import { Util } from '../core/Util';
@@ -17,19 +18,19 @@ var padding = 8, doublePadding = padding * 2;
 const ZERO = 0.0000001;
 
 /**
- * @class ol.supermap.StyleUtils
+ * @class StyleUtils
  * @classdesc 样式工具类。
  * @private
  */
 export class StyleUtils {
 
   /**
-   * @function ol.supermap.StyleUtils.getValidStyleFromLayerInfo
+   * @function StyleUtils.getValidStyleFromLayerInfo
    * @description 通过图层信息获取有效的样式。
    * @param {Object} layerInfo - 图层信息。
    * @param {ol.Feature} feature - 要素。
    * @param {string} url - 图层数据地址。
-   * @returns {ol/style/Style} 返回图层样式。
+   * @returns {ol.style.Style} 返回图层样式。
    */
   static getValidStyleFromLayerInfo(layerInfo, feature, url) {
     var type = feature.getGeometry().getType().toUpperCase(),
@@ -40,8 +41,8 @@ export class StyleUtils {
         var symbolParameters = {
           "transparent": true,
           "resourceType": "SYMBOLMARKER",
-          "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 13,
-          "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 13,
+          "picWidth": Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 13,
+          "picHeight": Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 13,
           "style": JSON.stringify(shader)
         };
         var imageUrl = CommonUtil.urlAppend(url + "/symbol.png", CommonUtil.getParameterString(symbolParameters));
@@ -69,7 +70,7 @@ export class StyleUtils {
         style.fontWeight = shader.bold ? shader.fontWeight : "normal";
         //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
         //固定大小的时候单位是毫米
-        var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
+        var text_h = shader.fontHeight * DOTS_PER_INCH * INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
         style.fontSize = text_h + "px";
 
         //设置文本字体类型
@@ -145,7 +146,7 @@ export class StyleUtils {
               value = shader[attr];
               if (obj.unit) {
                 //将单位转换为像素单位
-                value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+                value = value * DOTS_PER_INCH * INCHES_PER_UNIT[obj.unit] * 2.5;
               }
               style[canvasStyle] = value;
               break;
@@ -239,11 +240,11 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getStyleFromCarto
+   * @function StyleUtils.getStyleFromCarto
    * @description 从 Carto 中获取有效的样式。
    * @param {number} zoom -缩放级别。
    * @param {number} scale - 比例尺。
-   * @param {Array} shader - 渲染器对象数组。
+   * @param {Array.<Object>} shader - 渲染器对象数组。
    * @param {Object} feature - 要素。
    * @param {string} fromServer - 服务源。
    * @param {string} url - 地址。
@@ -319,10 +320,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.toOLPointStyle
+   * @function StyleUtils.toOLPointStyle
    * @description 点样式。
    * @param {Object} style - 样式参数。
-   * @returns {ol/style/Style} 获取点样式。
+   * @returns {ol.style.Style} 获取点样式。
    */
   static toOLPointStyle(style) {
     if (style.pointFile !== '') {
@@ -347,10 +348,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.toOLLineStyle
+   * @function StyleUtils.toOLLineStyle
    * @description 线样式。
    * @param {Object} style - 样式参数。
-   * @returns {ol/style/Style} 获取线的样式。
+   * @returns {ol.style.Style} 获取线的样式。
    */
   static toOLLineStyle(style) {
     return new Style({
@@ -367,10 +368,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.toOLPolygonStyle
+   * @function StyleUtils.toOLPolygonStyle
    * @description 面样式。
    * @param {Object} style - 样式参数。
-   * @returns {ol/style/Style} 获取面的样式。
+   * @returns {ol.style.Style} 获取面的样式。
    */
   static toOLPolygonStyle(style) {
     var fill = new FillStyle({
@@ -392,11 +393,11 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.toOLTextStyle
+   * @function StyleUtils.toOLTextStyle
    * @description 文本样式。
    * @param {Object} style - 样式对象。
    * @param {string} text - 文本参数。
-   * @returns {ol/style/Style} 获取的文本样式。
+   * @returns {ol.style.Style} 获取的文本样式。
    */
   static toOLTextStyle(style, text) {
     return new Style({
@@ -418,7 +419,7 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.dashStyle
+   * @function StyleUtils.dashStyle
    * @description 符号样式。
    * @param {Object} style - 样式参数。
    * @param {number} widthFactor - 宽度系数。
@@ -455,7 +456,7 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getStyleFromiPortalMarker
+   * @function StyleUtils.getStyleFromiPortalMarker
    * @description 从 iPortal 标记获取样式。
    * @param {Object} icon - 图标参数。
    */
@@ -478,7 +479,7 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getStyleFromiPortalStyle
+   * @function StyleUtils.getStyleFromiPortalStyle
    * @description 从 iPortal 标记获取样式。
    * @param {Object} iPortalStyle - iportal 样式。
    * @param {string} type - 样式类型。
@@ -549,7 +550,7 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.hexToRgba
+   * @function StyleUtils.hexToRgba
    * @description 十六进制转 RGBA 格式。
    * @param {Object} hex - 十六进制格式参数。
    * @param {number} opacity -Alpha 参数。
@@ -574,10 +575,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getDefaultStyle
+   * @function StyleUtils.getDefaultStyle
    * @description 获取默认风格
    * @param {string} type - 类型参数。
-   * @returns {string} 
+   * @returns {string}
    */
   static getDefaultStyle(type) {
     var style = {};
@@ -590,11 +591,11 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getDefaultStyle
+   * @function StyleUtils.getDefaultStyle
    * @description 将样式对象转换成openlayer要求的ol.style
    * @param {string} style - 样式对象
    * @param {string} type - feature的类型
-   * @returns {ol/style/Style}
+   * @returns {ol.style.Style}
    */
   static toOpenLayersStyle(style, type) {
     style = style || this.getDefaultStyle();
@@ -696,41 +697,41 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getIconAnchor
+   * @function StyleUtils.getIconAnchor
    * @description 获取图标的锚点
    * @param {number} offsetX - X方向偏移分数
    * @param {number} offsetY - Y方向偏移分数
-   * @returns {array}
+   * @returns {Array.<number>}
    */
   static getIconAnchor(offsetX=0.5, offsetY=0.5) {
     return [offsetX, offsetY];
   }
   /**
-   * @function ol.supermap.StyleUtils.getCircleDisplacement
+   * @function StyleUtils.getCircleDisplacement
    * @description 获取圆圈的偏移
    * @param {number} radius - 圆圈半径
    * @param {number} offsetX - X方向偏移分数
    * @param {number} offsetY - Y方向偏移分数
-   * @returns {array}
+   * @returns {Array.<number>}
    */
   static getCircleDisplacement(radius, offsetX=0, offsetY=0) {
       const dispX = radius*offsetX, dispY = radius*offsetY;
       return [dispX, -dispY];
   }
   /**
-   * @function ol.supermap.StyleUtils.getTextOffset
+   * @function StyleUtils.getTextOffset
    * @description 获取字体图标的偏移值
    * @param {string} fontSize - 字体大小，如12px
    * @param {number} offsetX - X方向偏移分数
    * @param {number} offsetY - Y方向偏移分数
-   * @returns {object}
+   * @returns {Object}
    */
   static getTextOffset(fontSize, offsetX=0, offsetY=0) {
     const radius = fontSize.substr(0, fontSize.length - 2) / 2;
     return {
-          x: radius*offsetX, 
+          x: radius*offsetX,
           y: radius*offsetY
-    };     
+    };
   }
 
   /**
@@ -779,7 +780,7 @@ export class StyleUtils {
   }
   /**
    * 创建当前feature对应的canvas
-   * @param style  {object}
+   * @param {Object} style
    * @returns {HTMLElement}
    */
   static createCanvas(style) {
@@ -917,7 +918,7 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.hexToRgb
+   * @function StyleUtils.hexToRgb
    * @description 将16进制的颜色，转换成rgb格式
    * @param {string} hexColor 16进制颜色
    * @returns {string} rgb格式的颜色
@@ -935,10 +936,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.formatRGB
+   * @function StyleUtils.formatRGB
    * @description 将颜色数组转换成标准的rgb颜色格式
    * @param {Array} colorArray - 颜色数组
-   * @returns {String} 'rgb(0,0,0)'或者 rgba(0,0,0,0)
+   * @returns {string} 'rgb(0,0,0)'或者 'rgba(0,0,0,0)'
    */
   static formatRGB(colorArray) {
     let rgb;
@@ -958,10 +959,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getCanvasFromSVG
+   * @function StyleUtils.getCanvasFromSVG
    * @description 将SVG转换成Canvas
    * @param {string} svgUrl - 颜色数组
-   * @param {object} divDom - div的dom对象
+   * @param {Object} divDom - div的dom对象
    * @param {function} callBack - 转换成功执行的回调函数
    */
   static getCanvasFromSVG(svgUrl, divDom, callBack) {
@@ -992,9 +993,9 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getMarkerDefaultStyle 获取默认标注图层feature的样式
-   * @param featureType {String} feature的类型
-   * @param server {String}  当前地图前缀
+   * @function StyleUtils.getMarkerDefaultStyle 获取默认标注图层feature的样式
+   * @param {string} featureType feature的类型
+   * @param {string} server 当前地图前缀
    * @returns {Object} style对象
    */
   static getMarkerDefaultStyle(featureType, server) {
@@ -1036,10 +1037,10 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getOpenlayerStyle 获取专题图对应的openlayers格式的style
-   * @param styleParams {String} 样式参数
-   * @param featureType {String} feature类型
-   * @param isRank {Boolean} 是否为等级符号
+   * @function StyleUtils.getOpenlayerStyle 获取专题图对应的openlayers格式的style
+   * @param {string} styleParams 样式参数
+   * @param {string} featureType feature类型
+   * @param {boolean} isRank 是否为等级符号
    * @returns {Object} style对象
    */
   static getOpenlayersStyle(styleParams, featureType, isRank) {
@@ -1057,8 +1058,8 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.getSymbolStyle 获取符号样式
-   * @param {object} parameters - 样式参数
+   * @function StyleUtils.getSymbolStyle 获取符号样式
+   * @param {Object} parameters - 样式参数
    * @returns {Object} style对象
    */
   static getSymbolStyle(parameters, isRank) {
@@ -1100,8 +1101,8 @@ export class StyleUtils {
     });
   }
   /**
-   * @function ol.supermap.StyleUtils.getSVGStyle 获取svg的样式
-   * @param {object} styleParams - 样式参数
+   * @function StyleUtils.getSVGStyle 获取svg的样式
+   * @param {Object} styleParams - 样式参数
    * @returns {Object} style对象
    */
   static getSVGStyle(styleParams) {
@@ -1129,9 +1130,9 @@ export class StyleUtils {
   }
 
   /**
-   * @function ol.supermap.StyleUtils.setColorToCanvas 将颜色，透明度等样式设置到canvas上
-   * @param {object} canvas - 渲染的canvas对象
-   * @param {object} parameters - 样式参数
+   * @function StyleUtils.setColorToCanvas 将颜色，透明度等样式设置到canvas上
+   * @param {Object} canvas - 渲染的canvas对象
+   * @param {Object} parameters - 样式参数
    * @returns {Object} style对象
    */
   static setColorToCanvas(canvas, parameters) {
@@ -1148,8 +1149,8 @@ export class StyleUtils {
     return canvas;
   }
   /**
-   * @function ol.supermap.StyleUtils.getImageStyle 获取图片样式
-   * @param {object} styleParams - 样式参数
+   * @function StyleUtils.getImageStyle 获取图片样式
+   * @param {Object} styleParams - 样式参数
    * @returns {Object} style对象
    */
   static getImageStyle(styleParams) {
@@ -1176,9 +1177,9 @@ export class StyleUtils {
       });
   }
   /**
-   * @function ol.supermap.StyleUtils.getRoadPath 获取道路样式
-   * @param {object} style - 样式参数
-   * @param {object} outlineStyle - 轮廓样式参数
+   * @function StyleUtils.getRoadPath 获取道路样式
+   * @param {Object} style - 样式参数
+   * @param {Object} outlineStyle - 轮廓样式参数
    * @returns {Object} style对象
    */
   static getRoadPath(style, outlineStyle) {
@@ -1194,7 +1195,7 @@ export class StyleUtils {
             lineDash: [0]
         })
     });
-    
+
     const { strokeColor: outlineColor } = outlineStyle;
     let outlineColorArray = this.hexToRgb(outlineColor);
     // opacity使用style的透明度。保持两根线透明度一致
@@ -1211,9 +1212,9 @@ export class StyleUtils {
     return [outlineStroke, stroke];
   }
   /**
-   * @function ol.supermap.StyleUtils.getPathway 获取铁路样式
-   * @param {object} style - 样式参数
-   * @param {object} outlineStyle - 轮廓样式参数
+   * @function StyleUtils.getPathway 获取铁路样式
+   * @param {Object} style - 样式参数
+   * @param {Object} outlineStyle - 轮廓样式参数
    * @returns {Object} style对象
    */
   static getPathway(style, outlineStyle) {
@@ -1230,14 +1231,14 @@ export class StyleUtils {
               lineDash
           })
       });
-    
+
     const { strokeColor: outlineColor } = outlineStyle;
     let outlineColorArray = this.hexToRgb(outlineColor);
     // opacity使用style的透明度。保持两根线透明度一致
     outlineColorArray && outlineColorArray.push(strokeOpacity);
     var outlineStroke = new Style({
         stroke: new StrokeStyle({
-          width: strokeWidth || ZERO, 
+          width: strokeWidth || ZERO,
             color: outlineColorArray,
             lineCap
         })

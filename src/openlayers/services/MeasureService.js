@@ -3,20 +3,21 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
 import GeoJSON from 'ol/format/GeoJSON';
 
 /**
- * @class ol.supermap.MeasureService
+ * @class MeasureService
  * @category  iServer Map Measure
- * @classdesc 测量服务。
- * @extends ol.supermap.ServiceBase
- * @param {string} url -  服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param {Object} options -  交互服务时所需可选参数。
+ * @classdesc 量算服务。
+ * @extends {ServiceBase}
+ * @param {string} url -  服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {Object} options -  参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class MeasureService extends ServiceBase {
 
@@ -25,9 +26,9 @@ export class MeasureService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MeasureService.prototype.measureDistance
+     * @function MeasureService.prototype.measureDistance
      * @description 测距。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measureDistance(params, callback) {
@@ -35,9 +36,9 @@ export class MeasureService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MeasureService.prototype.measureArea
+     * @function MeasureService.prototype.measureArea
      * @description 测面积。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measureArea(params, callback) {
@@ -45,12 +46,12 @@ export class MeasureService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MeasureService.prototype.measure
+     * @function MeasureService.prototype.measure
      * @description 测量。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 类型。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.MeasureService} 测量服务。
+     * @returns {MeasureService} 量算服务。
      */
     measure(params, type, callback) {
         var me = this;

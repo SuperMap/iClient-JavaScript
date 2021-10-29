@@ -24,15 +24,15 @@
             maxZoom: 18,
             zoom: 12
         });
-        var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
+        var baseLayer = new L.supermap.TiledMapLayer(url).addTo(map);
 
         var control = L.control.layers().addTo(map).setPosition('topleft').addBaseLayer(baseLayer, 'baseLayer');
         var distributedHost = window.isLocal ? window.server : "https://iserver.supermap.io";
         var distributedAnalystUrl = distributedHost + "/iserver/services/distributedanalyst/rest/v1/jobs";
         
-        SuperMap.SecurityManager.registerToken(distributedAnalystUrl, window.exampleToken);
+        L.supermap.SecurityManager.registerToken(distributedAnalystUrl, window.exampleToken);
 
-        var distributedAnalysis = L.supermap.components.distributedAnalysis(distributedAnalystUrl);
+        var distributedAnalysis = new L.supermap.Components.DistributedAnalysis(distributedAnalystUrl);
         distributedAnalysis.addTo(map);
 
 

@@ -22,16 +22,22 @@
             "src/common","src/openlayers"
         ],
         "exclude": [
-            "src/common/overlay/levelRenderer"
+            "src/common/overlay/levelRenderer",
+            "src/common/lang/locales"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/usage"],
+    "markdown": {
+        "tags": ["usage"]
+    },
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,
         "default": {
             "outputSourceFiles": false
-        }
-        //"applicationName": "iClient for OpenLayers"
+        },
+        "namespace": "ol.supermap",
+        "npm":"@supermap/iclient-ol",
+        "cdn":"https://iclient.supermap.io/dist/openlayers/iclient-ol.js"
     }
 }

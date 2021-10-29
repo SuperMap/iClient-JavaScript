@@ -11,7 +11,7 @@ import XYZ from 'ol/source/XYZ';
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
- * @extends {ol/source/XYZ}
+ * @extends {ol.source.XYZ}
  */
 export class SuperMapCloud extends XYZ {
 

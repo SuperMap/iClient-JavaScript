@@ -3,12 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {
-    SuperMap,
-    CommonUtil as Util,
-    CartoCSS,
-    StringExt
-} from "@supermap/iclient-common";
+import { Util, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
+import { CartoCSS } from '@supermap/iclient-common/style/CartoCSS';
+import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
 import {
     DefaultStyle
 } from './CartoDefaultStyle';
@@ -19,10 +16,10 @@ import {
 } from './CartoStyleMap';
 
 /**
- * @class L.supermap.CartoCSSToLeaflet
+ * @class CartoCSSToLeaflet
  * @classdesc CartoCSS 样式转 Leaflet 样式类。
  * @category BaseTypes Style
- * @param {string} url - 地图服务地址。
+ * @param {string} url - 服务地址。
  * @private
  */
 export class CartoCSSToLeaflet {
@@ -30,20 +27,20 @@ export class CartoCSSToLeaflet {
 
     constructor(url) {
         /**
-         * @member L.supermap.CartoCSSToLeaflet.prototype.cartoCSS
+         * @member CartoCSSToLeaflet.prototype.cartoCSS
          * @description CartoCSS 样式。
          */
         this.cartoCSS = null;
 
         /**
-         * @member L.supermap.CartoCSSToLeaflet.prototype.mapUrl
+         * @member CartoCSSToLeaflet.prototype.mapUrl
          * @description 地图服务地址。
          */
         this.mapUrl = url;
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
+     * @function CartoCSSToLeaflet.prototype.pretreatedCartoCSS
      * @description CartoCSS 样式预处理。
      * @param {string} cartoStr - Carto 信息。
      * @param {Object} processCharacters - 需要处理的特征对象。
@@ -67,9 +64,9 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
+     * @function CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号。
-     * @param {string} cartoCSSStr - cartoCSSS信息。
+     * @param {string} cartoCSSStr - cartoCSSS 信息。
      */
     processCharacters(cartoCSSStr) {
         var style = cartoCSSStr;
@@ -102,7 +99,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
+     * @function CartoCSSToLeaflet.prototype.pickShader
      * @description 拾取着色对象。
      * @param {string} layerName - 图层名称。
      */
@@ -115,7 +112,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
+     * @function CartoCSSToLeaflet.prototype.getDefaultStyle
      * @description 获取默认风格。
      * @param {string} type - 默认风格类型。
      */
@@ -131,7 +128,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
+     * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从 iPortalMarker 中获取样式。
      * @param {string} icon - iPortal 图标。
      */
@@ -152,7 +149,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
+     * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
      * @description 从 iPortal 的风格中获取样式。
      * @param {Object} iPortalStyle - iPortal 的样式对象。
      * @param {string} type - 样式类型。
@@ -213,7 +210,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
+     * @function CartoCSSToLeaflet.prototype.dashStyle
      * @description 符号样式。
      * @param {Object} style - 样式参数。
      * @param {number} widthFactor - 宽度系数。
@@ -250,7 +247,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
+     * @function CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从 Carto 中获取有效的样式。
      * @param {number} zoom - 缩放级别。
      * @param {number} scale - 比例尺。
@@ -310,9 +307,9 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
+     * @function CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
      * @description 通过图层信息获取有效的样式。
-     * @param {SuperMap.Feature} feature - 要素。
+     * @param {Feature} feature - 要素。
      * @param {Object} layerInfo - 图层信息。
      */
     getValidStyleFromLayerInfo(feature, layerInfo) {
@@ -323,7 +320,7 @@ export class CartoCSSToLeaflet {
             return style;
         }
         if (type === "POINT") {
-            var size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
+            var size = Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 8;
             var symbolParameters = {
                 "transparent": true,
                 "resourceType": "SYMBOLMARKER",
@@ -342,7 +339,7 @@ export class CartoCSSToLeaflet {
             //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
             //固定大小的时候单位是毫米
             if (shader.fontHeight) {
-                var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85; //毫米转像素,服务端的字体貌似要稍微小一点
+                var text_h = shader.fontHeight * DOTS_PER_INCH * INCHES_PER_UNIT["mm"] * 0.85; //毫米转像素,服务端的字体貌似要稍微小一点
                 style.fontSize = text_h + "px";
                 style.textHeight = text_h;
             }
@@ -390,7 +387,7 @@ export class CartoCSSToLeaflet {
                     {
                         let value = shader[attr];
                         if (obj.unit) {
-                            value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+                            value = value * DOTS_PER_INCH * INCHES_PER_UNIT[obj.unit] * 2.5;
                         }
                         style[leafletStyle] = value;
                         break;
@@ -449,5 +446,3 @@ export class CartoCSSToLeaflet {
     }
 
 }
-
-L.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;

@@ -81,7 +81,7 @@
 
                     var data = draw.getAll();
                     var feature = data.features[data.features.length - 1];
-                    var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+                    var geometryParam = new mapboxgl.supermap.GetFeaturesByGeometryParameters({
                         datasetNames: ['World:Countries'],
                         geometry: feature,
                         spatialQueryMode: 'INTERSECT'

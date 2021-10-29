@@ -68,13 +68,13 @@
     });
 
     function bufferAnalystProcess() {
-        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+        var dsBufferAnalystParameters = new ol.supermap.DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new ol.supermap.FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new ol.supermap.BufferSetting({
+                endType: ol.supermap.BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10

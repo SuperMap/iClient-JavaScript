@@ -1,23 +1,20 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {
-    CommonUtil,
-    ShapeFactory,
-    ThemeVector
-} from '@supermap/iclient-common';
-import {ThemeLayer} from './ThemeLayer';
-import {CommontypesConversion} from '../../core/CommontypesConversion';
-
+ import L from 'leaflet';
+ import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
+ import { ThemeVector } from '@supermap/iclient-common/overlay/ThemeVector';
+ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { ThemeLayer } from './ThemeLayer';
+ import { CommontypesConversion } from '../../core/CommontypesConversion';
 /**
- * @class L.supermap.GeoFeatureThemeLayer
+ * @class GeoFeatureThemeLayer
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
  * @category Visualization Theme
- * @extends L.supermap.ThemeLayer
+ * @extends ThemeLayer
  * @category Visualization Graphic
  * @param {string} name - 专题图名。
- * @param {Object} options - 需要设置的参数对象。
+ * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
@@ -31,7 +28,8 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
- * @fires L.supermap.GeoFeatureThemeLayer#beforefeaturesadded
+ * @fires GeoFeatureThemeLayer#beforefeaturesadded
+ * @usage
  */
 export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
@@ -66,17 +64,17 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据。
-     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待填加的要素。
+     * @function GeoFeatureThemeLayer.prototype.addFeatures
+     * @description 添加数据。
+     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
      */
     addFeatures: function (features) {
         var me = this;
 
         /**
-         * @event L.supermap.GeoFeatureThemeLayer#beforefeaturesadded
-         * @description 向专题图图层中添加数据之前触发。
-         * @property {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 事件对象。
+         * @event GeoFeatureThemeLayer#beforefeaturesadded
+         * @description 添加数据之前触发。
+         * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 事件对象。
          */
         me.fire("beforefeaturesadded", {features: features});
 
@@ -99,9 +97,9 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素。
+     * @function GeoFeatureThemeLayer.prototype.removeFeatures
+     * @description 删除专题图中 features。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @param {FeatureVector} features - 待删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -109,7 +107,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.removeAllFeatures
+     * @function GeoFeatureThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures: function () {
@@ -118,11 +116,11 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.redrawThematicFeatures
+     * @function GeoFeatureThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param {L.bounds} bounds - 重绘的范围。
+     * @param {L.Bounds} bounds - 重绘的范围。
      */
     redrawThematicFeatures: function (bounds) {
         var me = this;
@@ -189,9 +187,9 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.createThematicFeature
+     * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
-     * @param {SuperMap.Feature.Vector} feature - 要创建的要素。
+     * @param {FeatureVector} feature - 要创建的要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -220,7 +218,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.redraw
+     * @function GeoFeatureThemeLayer.prototype.redraw
      * @description 重绘该图层。
      */
     redraw: function () {
@@ -229,7 +227,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.clearCache
+     * @function GeoFeatureThemeLayer.prototype.clearCache
      * @description 清除缓存数据。
      */
     clearCache: function () {
@@ -238,7 +236,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.clear
+     * @function GeoFeatureThemeLayer.prototype.clear
      * @description 清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear: function () {
@@ -250,7 +248,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.getCacheCount
+     * @function GeoFeatureThemeLayer.prototype.getCacheCount
      * @description 获取当前缓存数量。
      * @returns {number} 返回当前缓存数量。
      */
@@ -259,7 +257,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
+     * @function GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @description 设置最大缓存数量。
      * @param {number} cacheCount - 最大缓存量。
      */
@@ -272,7 +270,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GeoFeatureThemeLayer.prototype.getShapesByFeatureID
+     * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */

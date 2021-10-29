@@ -69,7 +69,7 @@
     });
 
     function query() {
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+        var geometryParam = new mapboxgl.supermap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: queryPolygonGeometry,
             spatialQueryMode: "INTERSECT"

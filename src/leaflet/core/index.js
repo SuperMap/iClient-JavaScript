@@ -25,8 +25,10 @@ import {
     getMeterPerMapUnit,
     resolutionToScale,
     scaleToResolution,
-    GetResolutionFromScaleDpi,
-    NormalizeScale
+    getResolutionFromScaleDpi,
+    getResolutionFromScaleDpi as GetResolutionFromScaleDpi,
+    normalizeScale,
+    normalizeScale as NormalizeScale
 } from './Util';
 import {
     transform
@@ -54,7 +56,9 @@ export {
     getMeterPerMapUnit,
     resolutionToScale,
     scaleToResolution,
+    getResolutionFromScaleDpi,
     GetResolutionFromScaleDpi,
+    normalizeScale,
     NormalizeScale
 } ;
 export {

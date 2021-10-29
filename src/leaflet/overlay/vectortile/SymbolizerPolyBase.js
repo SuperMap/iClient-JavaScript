@@ -4,7 +4,7 @@
 import L from "leaflet";
 
 /**
- * @class L.supermap.PolyBase
+ * @class PolyBase
  * @classdesc 多边形基类。
  * @category Visualization VectorTile
  * @private
@@ -29,7 +29,7 @@ export var PolyBase = {
     },
 
     /**
-         * @function L.supermap.PolyBase.prototype.makeInteractive
+         * @function PolyBase.prototype.makeInteractive
          * @description 设置交互。
          */
     makeInteractive: function () {

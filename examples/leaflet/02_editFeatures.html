@@ -37,15 +37,15 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     featureGroup = L.featureGroup().addTo(map);
-    featureService = L.supermap.featureService(url);
+    featureService = new L.supermap.FeatureService(url);
     initFeature();
     initEditView();
 
     function initFeature() {
         var polygon = L.polygon([[20, 118], [20, 120], [50, 120], [50, -120], [20, 118]]);
-        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeatureParams = new L.supermap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon
@@ -151,7 +151,7 @@
         if (featureGroup.hasLayer(marker)) {
             marker = marker.toGeoJSON();
             marker.properties = {POP: 1, CAPITAL: 'test'};
-            var addFeatureParams = new SuperMap.EditFeaturesParameters({
+            var addFeatureParams = new L.supermap.EditFeaturesParameters({
                 dataSourceName: "World",
                 dataSetName: "Capitals",
                 features: marker,
@@ -184,7 +184,7 @@
     }
 
     function layerClickListener(e) {
-        var deleteParams = new SuperMap.EditFeaturesParameters({
+        var deleteParams = new L.supermap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [e.layer.feature.id],

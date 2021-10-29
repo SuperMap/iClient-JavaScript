@@ -1,19 +1,21 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {PopContainer} from './PopContainer';
 
 /**
- * @class SuperMap.Components.AttributesPopContainer
+ * @class AttributesPopContainer
+ * @aliasclass Components.AttributesPopContainer
+ * @deprecatedclass SuperMap.Components.AttributesPopContainer
  * @classdesc 属性弹框组件
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
- * @extends {SuperMap.Components.PopContainer}
+ * @extends {PopContainer}
  * @category Components Common
+ * @usage
  */
 export class AttributesPopContainer extends PopContainer {
     constructor(options) {
@@ -55,5 +57,3 @@ export class AttributesPopContainer extends PopContainer {
         this.appendContent(table);
     }
 }
-
-SuperMap.Components.AttributesPopContainer = AttributesPopContainer;

@@ -3,15 +3,18 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import {GeometryPoint as Point, GeoText, GeometryVector as Vector} from '@supermap/iclient-common';
+import { Vector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 import {Util} from '../../core/Util';
 
 /**
- * @class mapboxgl.supermap.ThemeFeature
+ * @class ThemeFeature
  * @category  Visualization Theme
  * @classdesc 专题图要素类。
  * @param {GeoJSONObject} geometry - 专题图要素几何对象。
  * @param {Object} [attributes] - 几何对象属性。
+ * @usage
  */
 export class ThemeFeature {
 
@@ -21,7 +24,7 @@ export class ThemeFeature {
     }
 
     /**
-     * @function mapboxgl.supermap.ThemeFeature.prototype.toFeature
+     * @function ThemeFeature.prototype.toFeature
      * @description 转为矢量要素。
      */
     toFeature() {
@@ -40,5 +43,3 @@ export class ThemeFeature {
         return new Vector(geometry, this.attributes);
     }
 }
-
-mapboxgl.supermap.ThemeFeature = ThemeFeature;

@@ -1,34 +1,34 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {DataFlowService as DataFlow} from '@supermap/iclient-common';
+import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
 
 /**
- * @class mapboxgl.supermap.DataFlowService
+ * @class DataFlowService
  * @category  iServer DataFlow
  * @classdesc 数据流服务。
- * @extends {mapboxgl.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- * new mapboxgl.supermap.DataFlowService(url)
+ * new DataFlowService(url)
  *  .queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 与客户端交互的实时数据服务地址。
- * @param {Object} options - 加载实时数据可选参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
- * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
- * @fires mapboxgl.supermap.DataFlowService#broadcastFailed
- * @fires mapboxgl.supermap.DataFlowService#broadcastSucceeded
- * @fires mapboxgl.supermap.DataFlowService#subscribeSocketError
- * @fires mapboxgl.supermap.DataFlowService#messageSucceeded
- * @fires mapboxgl.supermap.DataFlowService#setFilterParamSucceeded
+ * @fires DataFlowService#broadcastSocketConnected
+ * @fires DataFlowService#broadcastSocketError
+ * @fires DataFlowService#broadcastFailed
+ * @fires DataFlowService#broadcastSucceeded
+ * @fires DataFlowService#subscribeSocketError
+ * @fires DataFlowService#messageSucceeded
+ * @fires DataFlowService#setFilterParamSucceeded
+ * @usage
  */
 export class DataFlowService extends ServiceBase {
 
@@ -41,35 +41,35 @@ export class DataFlowService extends ServiceBase {
         super(url, options);
         this.dataFlow = new DataFlow(url, options);
         /**
-         * @event mapboxgl.supermap.DataFlowService#broadcastSocketConnected
+         * @event DataFlowService#broadcastSocketConnected
          * @description broadcast Socket 连接成功。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#broadcastSocketError
+         * @event DataFlowService#broadcastSocketError
          * @description broadcast Socket 连接失败。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#broadcastFailed
+         * @event DataFlowService#broadcastFailed
          * @description 广播失败。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#broadcastSucceeded
+         * @event DataFlowService#broadcastSucceeded
          * @description 广播成功。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#subscribeSocketConnected
+         * @event DataFlowService#subscribeSocketConnected
          * @description 订阅数据连接成功。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#subscribeSocketError
+         * @event DataFlowService#subscribeSocketError
          * @description 订阅数据连接失败。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#messageSucceeded
+         * @event DataFlowService#messageSucceeded
          * @description 获取信息成功。
          */
         /**
-         * @event mapboxgl.supermap.DataFlowService#setFilterParamSucceeded
+         * @event DataFlowService#setFilterParamSucceeded
          * @description 设置过滤参数成功。
          */
 
@@ -87,7 +87,7 @@ export class DataFlowService extends ServiceBase {
         var me = this;
         me.on('subscribeSocketConnected', function (e) {
             /**
-             * @event mapboxgl.supermap.DataFlowService#subscribesucceeded
+             * @event DataFlowService#subscribesucceeded
              * @description 数据流服务订阅成功后触发。
              * @property {Object} e - 事件对象。
              */
@@ -98,9 +98,9 @@ export class DataFlowService extends ServiceBase {
 
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.initBroadcast
+     * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {mapboxgl.supermap.DataFlowService}
+     * @returns {DataFlowService}
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -108,16 +108,16 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.broadcast
+     * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
-     * @param {JSON} obj - JSON 格式的要素数据。
+     * @param {JSONObject} obj - 要素数据。
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);
     }
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.initSubscribe
+     * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据。
      */
     initSubscribe() {
@@ -127,7 +127,7 @@ export class DataFlowService extends ServiceBase {
 
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.setExcludeField
+     * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段。
      * @param {Object} excludeField - 排除字段。
      */
@@ -138,7 +138,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
+     * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
@@ -149,7 +149,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.unSubscribe
+     * @function DataFlowService.prototype.unSubscribe
      * @description 结束订阅数据。
      */
     unSubscribe() {
@@ -157,7 +157,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DataFlowService.prototype.unBroadcast
+     * @function DataFlowService.prototype.unBroadcast
      * @description 结束加载广播。
      */
     unBroadcast() {
@@ -168,5 +168,3 @@ export class DataFlowService extends ServiceBase {
         this.fire(e.eventType || e.type, e);
     }
 }
-
-mapboxgl.supermap.DataFlowService = DataFlowService;

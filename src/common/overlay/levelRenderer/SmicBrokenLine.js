@@ -7,12 +7,12 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicBrokenLine
+ * @class  LevelRenderer.Shape.SmicBrokenLine
  * @category Visualization Theme
  * @classdesc 折线(ic)。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+ *   var shape = new LevelRenderer.Shape.SmicBrokenLine({
  *         style: {
  *             pointList: [[0, 0], [100, 100], [100, 0]],
  *             smooth: 'bezier',
@@ -20,66 +20,26 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * 
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  *
  */
 export class SmicBrokenLine extends Shape {
-
-    /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.style
-     * @description 绘制样式。
-     *
-     * @param {Array} pointList - 节点数组，二维数组。默认值：null，必设参数。其形式如下：
-     * (code)
-     * (start code)
-     *  [
-     *  [10, 20],         //单个节点
-     *  [30, 40],
-     *  [25, 30]
-     *   ]
-     * (end)
-     * @param {string} smooth - 是否做平滑插值, 平滑算法可以选择 "bezier", "spline"。默认值："";
-     * @param {number} smoothConstraint - 平滑约束。
-     * @param {string} strokeColor - 描边颜色。默认值："#000000'"。
-     * @param {string} lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * @param {number} lineWidth - 描边宽度。默认值：1。
-     * @param {number} opacity - 绘制透明度。默认值：1。
-     * @param {number} shadowBlur - 阴影模糊度，大于0有效。默认值：0。
-     * @param {number} shadowColor - 阴影颜色。默认值："#000000'"。
-     * @param {number} shadowOffsetX - 阴影横向偏移。默认值：0。
-     * @param {number} shadowOffsetY - 阴影纵向偏移。默认值：0。
-     * @param {string} text - 图形中的附加文本。默认值：""。
-     * @param {string} textColor - 文本颜色。默认值："#000000'"。
-     * @param {string} textFont - 附加文本样式。示例:'bold 18px verdana'。
-     * @param {string} textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * @param {string} textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * @param {string} textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     */
-    //打开接口 style
-
-    /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.constructor
-     * @description 构造函数。
-     *
-     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
-     *
-     */
     constructor(options) {
         super(options);
         /**
-         * @member {string}  SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.brushTypeOnly
+         * @member {string}  LevelRenderer.Shape.SmicBrokenLine.prototype.brushTypeOnly
          * @description 线条只能描边。
          */
         this.brushTypeOnly = 'stroke';
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.textPosition
+         * @member {string} LevelRenderer.Shape.SmicBrokenLine.prototype.textPosition
          * @description 文本位置。
          */
         this.textPosition = 'end';
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicBrokenLine.prototype.type
          * @description 图形类型.
          */
         this.type = 'smicbroken-line';
@@ -92,7 +52,7 @@ export class SmicBrokenLine extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.destroy
+     * @function LevelRenderer.Shape.SmicBrokenLine.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -105,7 +65,7 @@ export class SmicBrokenLine extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicBrokenLine.prototype.buildPath
      * @description 创建折线路径。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -275,7 +235,7 @@ export class SmicBrokenLine extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.getRect
+     * @function LevelRenderer.Shape.SmicBrokenLine.prototype.getRect
      * @description 计算返回折线包围盒矩形。该包围盒是直接从四个控制点计算，并非最小包围盒。
      *
      * @param {Object} style - style

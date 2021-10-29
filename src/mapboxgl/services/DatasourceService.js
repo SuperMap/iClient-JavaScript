@@ -1,23 +1,23 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
-import { SetDatasourceParameters, CommonUtil } from '@supermap/iclient-common';
-
+import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
- * @class mapboxgl.supermap.DatasourceService
+ * @class DatasourceService
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。
- * @param {string} url - 与客户端交互的服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {mapboxgl.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export class DatasourceService extends ServiceBase {
     constructor(url, options) {
@@ -25,10 +25,10 @@ export class DatasourceService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasourceService.prototype.getDatasources
+     * @function DatasourceService.prototype.getDatasources
      * @description 数据源集查询服务。
      * @example
-     *   new mapboxgl.supermap.DatasourceService(url).getDatasources(function(result){
+     *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
      * @param {RequestCallback} callback - 回调函数。
@@ -51,10 +51,10 @@ export class DatasourceService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasourceService.prototype.getDatasource
+     * @function DatasourceService.prototype.getDatasource
      * @description 数据源信息查询服务。
      * @example
-     *   new mapboxgl.supermap.DatasourceService(url).getDatasource(datasourceName,function(result){
+     *   new DatasourceService(url).getDatasource(datasourceName,function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
@@ -81,13 +81,13 @@ export class DatasourceService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasourceService.prototype.setDatasource
+     * @function DatasourceService.prototype.setDatasource
      * @description 数据源信息设置服务。可实现更改当前数据源信息。
      * @example
-     *  new mapboxgl.supermap.DatasourceService(url).setDatasource(params, function(result){
+     *  new DatasourceService(url).setDatasource(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.SetDatasourceParameters} params - 数据源信息设置参数类。
+     * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setDatasource(params, callback) {
@@ -115,4 +115,3 @@ export class DatasourceService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.DatasourceService = DatasourceService;

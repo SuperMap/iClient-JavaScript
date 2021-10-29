@@ -2,10 +2,9 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
-import '../core/Base';
 
 /**
- * @function mapboxgl.supermap.MapExtend
+ * @function MapExtend
  * @description  扩展了 mapboxgl.Map 对图层相关的操作。
  * @private
  */
@@ -104,7 +103,7 @@ export var MapExtend = function () {
     }
 
     /**
-     * @function mapboxgl.supermap.MapExtend.prototype.removeFromMap
+     * @function MapExtend.prototype.removeFromMap
      * @description  移除事件。
      */
     function removeLayer(layer) {
@@ -112,7 +111,7 @@ export var MapExtend = function () {
     }
 
     /**
-     * @function mapboxgl.supermap.MapExtend.prototype.setVisibility
+     * @function MapExtend.prototype.setVisibility
      * @description  设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
@@ -121,7 +120,7 @@ export var MapExtend = function () {
     }
 
     /**
-     * @function mapboxgl.supermap.MapExtend.prototype.moveTo
+     * @function MapExtend.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID -待插入的图层 ID。
      * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。

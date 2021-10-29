@@ -22,7 +22,7 @@
             zoom: 12
         });
         var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
-        L.supermap.tiledMapLayer(url).addTo(map);
+        new L.supermap.TiledMapLayer(url).addTo(map);
         addGraphicLayer();
 
         function addGraphicLayer() {
@@ -40,7 +40,7 @@
                 var img = new Image();
                 img.src = imagePath;
                 img.onload = function () {
-                    imageStyles.push(L.supermap.imageStyle({
+                    imageStyles.push(new L.supermap.ImageStyle({
                         img: img,
                         anchor: [16, 16]
                     }));
@@ -51,13 +51,13 @@
                         if (coordinates[0] === coordinates[1]) {
                             continue;
                         }
-                        graphics[i] = L.supermap.graphic({
+                        graphics[i] = new L.supermap.Graphic({
                             latLng: L.latLng(coordinates[1], coordinates[0]),
                             style: imageStyles[0].getStyle()
                         });
                     }
                     //绘制图层
-                    L.supermap.graphicLayer(graphics, {
+                    new L.supermap.GraphicLayer(graphics, {
                         render: 'canvas',
                         onClick: function (graphic, evt) {
                             L.popup().setLatLng(evt.latlng)

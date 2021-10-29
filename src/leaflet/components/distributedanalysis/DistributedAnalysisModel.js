@@ -1,18 +1,20 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import '../../core/Base';
-import { FetchRequest } from '@supermap/iclient-common';
+ import L from 'leaflet';
+ import '../../core/Base';
+ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 /**
- * @class L.supermap.components.DistributedAnalysisModel
+ * @class DistributedAnalysisModel
+ * @aliasclass Components.DistributedAnalysisModel
+ * @deprecatedclassinstance L.supermap.components.DistributedAnalysisModel
  * @classdesc 分布式分析组件数据模型。
  * @private
  * @category Components DistributedAnalysis
  * @param {string} processingUrl - 分布式分析地址。
- * @fires L.supermap.components.DistributedAnalysisModel#datasetsloaded
- * @fires L.supermap.components.DistributedAnalysisModel#datasetinfoloaded
+ * @fires DistributedAnalysisModel#datasetsloaded
+ * @fires DistributedAnalysisModel#datasetinfoloaded
  * @extends {L.Evented}
  */
 export class DistributedAnalysisModel extends L.Evented {
@@ -21,9 +23,9 @@ export class DistributedAnalysisModel extends L.Evented {
         this.processingUrl = processingUrl
     }
     /**
-     * @function L.supermap.components.DistributedAnalysisModel.prototype.getDatasetsName
-     * @description 获取所有可进行分布式分析的数据集。
-     * @param {string} url - 分布式分析服务地址。
+     * @function DistributedAnalysisModel.prototype.getDatasetsName
+     * @description 获取所有可进行分布式分析的数据集名称。
+     * @param {string} url - 服务地址。
      */
     getDatasetsName() {
         let url = this.processingUrl;
@@ -52,7 +54,7 @@ export class DistributedAnalysisModel extends L.Evented {
                     datasetHash[_me.dataset.datasetNames[i]] = _me.dataset.childUrl[i]
                 }
                 /**
-                 * @event L.supermap.components.DistributedAnalysisModel#datasetsloaded
+                 * @event DistributedAnalysisModel#datasetsloaded
                  * @description 数据集获取完成之后触发。
                  * @property {Object} result - 数据集数据。
                  * @property {Array.<string>} result.dataset - 数据集名称数组。
@@ -64,8 +66,8 @@ export class DistributedAnalysisModel extends L.Evented {
         });
     }
     /**
-     * @function L.supermap.components.DistributedAnalysisModel.prototype.getDatasetInfo
-     * @description 获得数据集类型与 fields。
+     * @function DistributedAnalysisModel.prototype.getDatasetInfo
+     * @description 获取数据集类型和字段。
      * @param {string} datasetUrl - 数据集资源地址。
      */
     getDatasetInfo(datasetUrl) {
@@ -89,7 +91,7 @@ export class DistributedAnalysisModel extends L.Evented {
                     fields.push(fieldInfos[i].name)
                 }
                 /**
-                 * @event L.supermap.components.DistributedAnalysisModel#datasetinfoloaded
+                 * @event DistributedAnalysisModel#datasetinfoloaded
                  * @description 数据集查询完成之后触发。
                  * @property {Object} result - 数据集数据。
                  * @property {string} result.type - 数据集类型。
@@ -112,4 +114,3 @@ export class DistributedAnalysisModel extends L.Evented {
         })
     }
 }
-L.supermap.components.DistributedAnalysisModel = DistributedAnalysisModel;

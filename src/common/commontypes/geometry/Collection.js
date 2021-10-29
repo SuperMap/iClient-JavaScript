@@ -1,23 +1,25 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {Bounds} from '../Bounds';
 import {Geometry} from '../Geometry';
 import {Util} from '../Util';
 
 /**
- * @class SuperMap.Geometry.Collection
+ * @class GeometryCollection
+ * @aliasclass Geometry.Collection
+ * @deprecatedclass SuperMap.Geometry.Collection
  * @classdesc 几何对象集合类，存储在本地的 components 属性中（可作为参数传递给构造函数）。<br>
  *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>
  *            getArea 和 getLength 函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
  * @category BaseTypes Geometry
- * @extends {SuperMap.Geometry}
- * @param {Array.<SuperMap.Geometry>} components - 几何对象数组。
+ * @extends {Geometry}
+ * @param {Array.<Geometry>} components - 几何对象数组。
  * @example
- * var point1 = new SuperMap.Geometry.Point(10,20);
- * var point2 = new SuperMap.Geometry.Point(30,40);
- * var col = new SuperMap.Geometry.Collection([point1,point2]);
+ * var point1 = new GeometryPoint(10,20);
+ * var point2 = new GeometryPoint(30,40);
+ * var col = new GeometryCollection([point1,point2]);
+ * @usage
  */
 export class Collection extends Geometry {
 
@@ -27,12 +29,12 @@ export class Collection extends Geometry {
 
         /**
          * @description 存储几何对象的数组。
-         * @member {Array.<SuperMap.Geometry>} SuperMap.Geometry.Collection.prototype.components
+         * @member {Array.<Geometry>} GeometryCollection.prototype.components
          */
         this.components = [];
 
         /**
-         * @member {Array.<string>} SuperMap.Geometry.Collection.prototype.componentTypes
+         * @member {Array.<string>} GeometryCollection.prototype.componentTypes
          * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          */
         this.componentTypes = null;
@@ -44,7 +46,7 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.destroy
+     * @function GeometryCollection.prototype.destroy
      * @description 销毁几何图形。
      */
     destroy() {
@@ -54,9 +56,9 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.clone
+     * @function GeometryCollection.prototype.clone
      * @description 克隆当前几何对象。
-     * @returns {SuperMap.Geometry.Collection} 克隆的几何对象集合。
+     * @returns {GeometryCollection} 克隆的几何对象集合。
      */
     clone() {
         var geometry = new Collection();
@@ -71,7 +73,7 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.getComponentsString
+     * @function GeometryCollection.prototype.getComponentsString
      * @description 获取 components 字符串。
      * @returns {string} components 字符串。
      */
@@ -84,7 +86,7 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.calculateBounds
+     * @function GeometryCollection.prototype.calculateBounds
      * @description 通过遍历数组重新计算边界，在遍历每一子项中时调用 extend 方法。
      */
     calculateBounds() {
@@ -105,12 +107,12 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.addComponents
+     * @function GeometryCollection.prototype.addComponents
      * @description 给几何图形对象添加元素。
-     * @param {Array.<SuperMap.Geometry>} components - 几何对象组件。
+     * @param {Array.<Geometry>} components - 几何对象组件。
      * @example
-     * var collection = new SuperMap.Geometry.Collection();
-     * collection.addComponents(new SuerpMap.Geometry.Point(10,10));
+     * var geometryCollection = new GeometryCollection();
+     * geometryCollection.addComponents(new SuerpMap.Geometry.Point(10,10));
      */
     addComponents(components) {
         if (!(Util.isArray(components))) {
@@ -122,9 +124,9 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.addComponent
-     * @description 添加一个几何对象到集合中。如果设置了 componentTypes 类型，则添加的几何对象必须是 componentTypes 中的类型。
-     * @param {SuperMap.Geometry} component - 待添加的几何对象。
+     * @function GeometryCollection.prototype.addComponent
+     * @description 添加几何对象到集合中。如果设置了 componentTypes 类型，则添加的几何对象必须是 componentTypes 中的类型。
+     * @param {Geometry} component - 待添加的几何对象。
      * @param {number} [index] - 几何对象插入的位置。
      * @returns {boolean} 是否添加成功。
      */
@@ -153,9 +155,9 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.removeComponents
+     * @function GeometryCollection.prototype.removeComponents
      * @description 清除几何对象。
-     * @param {Array.<SuperMap.Geometry>} components - 需要清除的几何对象。
+     * @param {Array.<Geometry>} components - 需要清除的几何对象。
      * @returns {boolean} 元素是否被删除。
      */
     removeComponents(components) {
@@ -171,9 +173,9 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.removeComponent
-     * @description 从集合中移除一个几何对象。
-     * @param {SuperMap.Geometry} component - 要移除的几何对象。
+     * @function GeometryCollection.prototype.removeComponent
+     * @description 从集合中移除几何对象。
+     * @param {Geometry} component - 要移除的几何对象。
      * @returns {boolean} 几何对象是否移除成功。
      */
     removeComponent(component) {
@@ -186,8 +188,8 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.getArea
-     * @description 计算几何对象的面积。注意，这个方法在 {@link SuperMap.Geometry.Polygon} 类中需要重写。
+     * @function GeometryCollection.prototype.getArea
+     * @description 计算几何对象的面积。注意，这个方法在 {@link GeometryPolygon} 类中需要重写。
      * @returns {number} 几何图形的面积，是几何对象中所有组成部分的面积之和。
      */
     getArea() {
@@ -199,9 +201,9 @@ export class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.equals
+     * @function GeometryCollection.prototype.equals
      * @description 判断两个几何图形是否相等。如果所有的 components 具有相同的坐标，则认为是相等的。
-     * @param {SuperMap.Geometry} geometry - 需要判断的几何图形。
+     * @param {Geometry} geometry - 需要判断的几何图形。
      * @returns {boolean} 输入的几何图形与当前几何图形是否相等。
      */
     equals(geometry) {
@@ -225,7 +227,7 @@ export class Collection extends Geometry {
 
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.getVertices
+     * @function GeometryCollection.prototype.getVertices
      * @description 返回几何对象的所有结点的列表。
      * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象的顶点列表。
@@ -241,5 +243,3 @@ export class Collection extends Geometry {
     }
 
 }
-
-SuperMap.Geometry.Collection = Collection;

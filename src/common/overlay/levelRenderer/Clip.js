@@ -4,27 +4,22 @@
 import {Easing as AEasing} from './Easing';
 
 /**
- * @class  SuperMap.LevelRenderer.Animation.Clip
+ * @class  LevelRenderer.Animation.Clip
  * @category Visualization Theme
- * @classdec 动画片段
- * @private 
+ * @classdesc 动画片段
+ * @param {Object} options - 参数。
+ * @param {Object} options.target - 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
+ * @param {number} [options.life=1000] - 动画时长。
+ * @param {number} [options.delay=0] - 动画延迟时间。
+ * @param {boolean} [options.loop=true] - 是否循环。
+ * @param {number} [options.gap=0] - 循环的间隔时间。
+ * @param {Object} options.onframe -  帧。
+ * @param {boolean} options.easing - 是否消除。
+ * @param {boolean} options.ondestroy - 是否销毁。
+ * @param {boolean} options.onrestart - 是否重播。
+ * @private
  */
 export class Clip {
-    
-    /**
-     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.constructor
-     * @description 构造函数。
-     * @param {Object} options - 参数。
-     * @param {Object} options.target - 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
-     * @param {number} [options.life=1000] - 动画时长。
-     * @param {number} [options.delay=0] - 动画延迟时间。
-     * @param {boolean} [options.loop=true] - 是否循环。
-     * @param {number} [options.gap=0] - 循环的间隔时间。
-     * @param {Object} options.onframe -  帧。
-     * @param {boolean} options.easing - 是否消除。
-     * @param {boolean} options.ondestroy - 是否销毁。
-     * @param {boolean} options.onrestart - 是否重播。
-     */
     constructor(options) {
         this._targetPool = options.target || {};
         if (!(this._targetPool instanceof Array)) {
@@ -56,7 +51,7 @@ export class Clip {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.destroy
+     * @function LevelRenderer.Animation.Clip.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {

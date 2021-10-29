@@ -9,12 +9,15 @@ import {LabelThemeLayer, labelThemeLayer} from './LabelThemeLayer';
 import {MapVLayer, mapVLayer} from './MapVLayer';
 import {RangeThemeLayer, rangeThemeLayer} from './RangeThemeLayer';
 import {RankSymbolThemeLayer, rankSymbolThemeLayer} from './RankSymbolThemeLayer';
-import {TileVectorLayer, tiledVectorLayer} from './TileVectorLayer';
+import {TiledVectorLayer, tiledVectorLayer, TiledVectorLayer as TileVectorLayer } from './TiledVectorLayer';
 import {TurfLayer, turfLayer} from './TurfLayer';
 import {UnicodeMarker, unicodeMarker} from './UnicodeMarker';
 import {UniqueThemeLayer, uniqueThemeLayer} from './UniqueThemeLayer';
 import {HeatMapLayer, heatMapLayer, HeatMapFeature, heatMapFeature} from './HeatMapLayer';
 import {VectorTileFormat} from './VectorTileFormat';
+
+import {NormalRenderer} from './dataflow/NormalRenderer';
+import {MapvRenderer} from './dataflow/MapvRenderer';
 
 import {
     CartoCSSToLeaflet, DefaultStyle,
@@ -52,12 +55,15 @@ export {LabelThemeLayer, labelThemeLayer};
 export {MapVLayer, mapVLayer};
 export {RangeThemeLayer, rangeThemeLayer};
 export {RankSymbolThemeLayer, rankSymbolThemeLayer};
-export {TileVectorLayer, tiledVectorLayer};
+export {TiledVectorLayer, tiledVectorLayer, TileVectorLayer};
 export {TurfLayer, turfLayer};
 export {UnicodeMarker, unicodeMarker};
 export {UniqueThemeLayer, uniqueThemeLayer};
 export {HeatMapLayer, heatMapLayer,HeatMapFeature,heatMapFeature};
 export {VectorTileFormat};
+
+export {NormalRenderer};
+export {MapvRenderer};
 
 export {
     CartoCSSToLeaflet, DefaultStyle,

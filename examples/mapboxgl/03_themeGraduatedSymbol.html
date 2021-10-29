@@ -47,21 +47,21 @@
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
     function createTheme() {
-        var themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
+        var themeGraduatedSymbol = new mapboxgl.supermap.ThemeGraduatedSymbol({
             expression: "SMAREA",
             baseValue: 3000000000000,
-            graduatedMode: SuperMap.GraduatedMode.CONSTANT,
-            style: new SuperMap.ThemeGraduatedSymbolStyle({
-                positiveStyle: new SuperMap.ServerStyle({
+            graduatedMode: mapboxgl.supermap.GraduatedMode.CONSTANT,
+            style: new mapboxgl.supermap.ThemeGraduatedSymbolStyle({
+                positiveStyle: new mapboxgl.supermap.ServerStyle({
                     markerSize: 50,
                     markerSymbolID: 0,
-                    lineColor: new SuperMap.ServerColor(255, 165, 0),
-                    fillBackColor: new SuperMap.ServerColor(255, 0, 0)
+                    lineColor: new mapboxgl.supermap.ServerColor(255, 165, 0),
+                    fillBackColor: new mapboxgl.supermap.ServerColor(255, 0, 0)
                 })
             })
         });
 
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new mapboxgl.supermap.ThemeParameters({
             themes: [themeGraduatedSymbol],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]

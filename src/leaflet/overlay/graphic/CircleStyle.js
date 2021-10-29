@@ -5,11 +5,12 @@ import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.circleStyle
+ * @class CircleStyle
+ * @deprecatedclassinstance L.supermap.circleStyle
  * @classdesc 圆形要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 圆形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.stroke=true] - 是否描边。
  * @param {string} [options.color='#3388ff'] - 颜色。
  * @param {number} [options.weight=1] - 线宽。
@@ -21,6 +22,7 @@ import '../../core/Base';
  * @param {number} [options.fillOpacity=0.2] - 填充透明度。
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
  * @param {number} [options.radius=3] - 半径。
+ * @usage
  */
 export var CircleStyle = L.Class.extend({
 
@@ -50,7 +52,7 @@ export var CircleStyle = L.Class.extend({
 
     /**
      * @deprecated
-     * @function L.supermap.circleStyle.prototype.getCanvas
+     * @function CircleStyle.prototype.getCanvas
      * @description 获取画布，已弃用该设置，请使用 getStyle 接口。
      */
     getCanvas: function () {
@@ -58,7 +60,7 @@ export var CircleStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.circleStyle.prototype.getStyle
+     * @function CircleStyle.prototype.getStyle
      * @description 获取画布。
      */
     getStyle: function () {
@@ -93,5 +95,3 @@ export var CircleStyle = L.Class.extend({
 export var circleStyle = function (options) {
     return new CircleStyle(options);
 };
-
-L.supermap.circleStyle = circleStyle;

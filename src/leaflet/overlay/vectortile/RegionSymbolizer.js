@@ -6,7 +6,7 @@ import {Symbolizer} from './Symbolizer';
 import {PolyBase} from './SymbolizerPolyBase';
 
 /**
- * @class L.supermap.RegionSymbolizer
+ * @class RegionSymbolizer
  * @classdesc 面符号类。
  * @category Visualization VectorTile
  * @private
@@ -17,8 +17,8 @@ import {PolyBase} from './SymbolizerPolyBase';
 export var RegionSymbolizer = L.Polygon.extend({
 
     /**
-     * @member L.supermap.RegionSymbolizer.prototype.includes
-     * @description 包含符号。
+     * @member RegionSymbolizer.prototype.includes
+     * @description 包含的符号。
      */
     includes: [Symbolizer.prototype, PolyBase],
 
@@ -28,7 +28,7 @@ export var RegionSymbolizer = L.Polygon.extend({
     },
 
     /**
-     * @function L.supermap.RegionSymbolizer.prototype.render
+     * @function RegionSymbolizer.prototype.render
      * @description 绘制面符号。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。

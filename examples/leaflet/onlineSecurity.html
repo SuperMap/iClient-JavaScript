@@ -134,7 +134,7 @@
     /*登录*/
     function loginOnline() {
         var href = window.location.href;
-        SuperMap.SecurityManager.loginOnline(href, true);
+        L.supermap.SecurityManager.loginOnline(href, true);
     }
 
     /*登录 end*/
@@ -146,8 +146,8 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        L.supermap.mapService(serviceUrl, {
-            serverType: SuperMap.ServerType.ONLINE
+        new L.supermap.MapService(serviceUrl, {
+            serverType: L.supermap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
                 widgets.alert.showAlert(JSON.stringify(json.error), false);
@@ -163,8 +163,8 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        SuperMap.SecurityManager.destroyKey(serviceUrl);
-        SuperMap.SecurityManager.registerKey(serviceUrl, key);
+        L.supermap.SecurityManager.destroyKey(serviceUrl);
+        L.supermap.SecurityManager.registerKey(serviceUrl, key);
         requestOnlineKeyService();
     }
 
@@ -181,7 +181,7 @@
         if (!checkUrl(mapUrl)) {
             return;
         }
-        SuperMap.SecurityManager.registerKey(mapUrl, key);
+        L.supermap.SecurityManager.registerKey(mapUrl, key);
 
         var onlineMap = L.map('online_map', {
             crs: L.CRS.EPSG4326,
@@ -189,8 +189,8 @@
             maxZoom: 18,
             zoom: 1
         });
-        L.supermap.tiledMapLayer(mapUrl, {
-            serverType: SuperMap.ServerType.ONLINE
+        new L.supermap.TiledMapLayer(mapUrl, {
+            serverType: L.supermap.ServerType.ONLINE
         }).addTo(onlineMap);
     }
 

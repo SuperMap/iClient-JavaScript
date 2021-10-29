@@ -1,20 +1,22 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.Select
+ * @class Select
+ * @aliasclass Components.Select
+ * @deprecatedclass SuperMap.Components.Select
  * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
- * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
+ * @param {Array.<string|Array>} options - 组件配置参数数组。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
- * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
- * @extends {SuperMap.Components.TemplateBase}
+ * @param {function} [options.optionsClickCb] - option 点击事件回调函数。
+ * @extends {TemplateBase}
  * @category Components Common
+ * @usage
  */
 export class Select extends TemplateBase {
     constructor(options) {
@@ -51,7 +53,7 @@ export class Select extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.Select.prototype.createOptions
+     * @function Select.prototype.createOptions
      * @description 创建所属下拉框选项。
      */
     createOptions(container, optionsArr) {
@@ -63,7 +65,7 @@ export class Select extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.Select.prototype._selectClickEvent
+     * @function Select.prototype._selectClickEvent
      * @description select 点击显示&隐藏事件。
      * @private
      */
@@ -107,7 +109,7 @@ export class Select extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.Select.prototype.optionClickEvent
+     * @function Select.prototype.optionClickEvent
      * @description 下拉框的 option 的点击事件。
      */
     optionClickEvent(optionEleArr, selectNameEle, optionsClickCb) {
@@ -124,5 +126,3 @@ export class Select extends TemplateBase {
         }
     }
 }
-
-SuperMap.Components.Select = Select;

@@ -51,7 +51,7 @@
         if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
             return;
         }
-        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
+        var getGridCellInfosParam = new mapboxgl.supermap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: x,

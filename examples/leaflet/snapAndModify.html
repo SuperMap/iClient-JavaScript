@@ -18,7 +18,7 @@
         center: [33, 114],
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var options = {
         position: 'topleft',
         drawMarker: true,

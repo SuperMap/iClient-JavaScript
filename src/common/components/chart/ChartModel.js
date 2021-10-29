@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import { SuperMap } from "../../SuperMap";
 import { FetchRequest } from "../../util/FetchRequest";
 import { GetFeaturesBySQLParameters } from "../../iServer/GetFeaturesBySQLParameters";
 import { FilterParameter } from "../../iServer/FilterParameter";
@@ -14,12 +13,12 @@ import { Lang } from "../../lang/Lang";
 import { FileReaderUtil } from "../util/FileReaderUtil";
 import { Events } from "../../commontypes/Events";
 /**
- * @class SuperMap.Components.ChartModel
+ * @class ChartModel
  * @classdesc 图表组件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
  * @category Components Chart
- * @fires SuperMap.Components.ChartModel#getdatafailed
+ * @fires ChartModel#getdatafailed
  */
 
 export class ChartModel {
@@ -30,7 +29,7 @@ export class ChartModel {
     }
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getDatasetInfo
+     * @function ChartModel.prototype.getDatasetInfo
      * @description 获得数据集数据。
      * @param {string} datasetUrl - 数据集资源地址。
      */
@@ -62,7 +61,7 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getDataFeatures
+     * @function ChartModel.prototype.getDataFeatures
      * @description 请求数据集的数据信息
      * @param {Object} results - 数据集信息。
      * @param {function} success - 成功回调函数。
@@ -74,14 +73,14 @@ export class ChartModel {
             name: datasetsInfo.datasetName + '@' + datasetsInfo.dataSourceName
         };
         Object.assign(params, this.datasets.queryInfo);
-        getFeatureParam = new SuperMap.FilterParameter(params);
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        getFeatureParam = new FilterParameter(params);
+        getFeatureBySQLParams = new GetFeaturesBySQLParameters({
             queryParameter: getFeatureParam,
             datasetNames: [datasetsInfo.dataSourceName + ':' + datasetsInfo.datasetName],
             fromIndex: 0,
             toIndex: 100000
         });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(datasetsInfo.dataUrl, {
+        getFeatureBySQLService = new GetFeaturesBySQLService(datasetsInfo.dataUrl, {
             eventListeners: {
                 processCompleted: success,
                 processFailed: function () {}
@@ -92,7 +91,7 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getLayerFeatures
+     * @function ChartModel.prototype.getLayerFeatures
      * @description 请求图层要素的数据信息
      * @param {Object} results - 数据集信息。
      * @param {Callbacks} success - 成功回调函数。
@@ -104,12 +103,12 @@ export class ChartModel {
             name: datasetsInfo.mapName
         };
         Object.assign(params, this.datasets.queryInfo);
-        queryParam = new SuperMap.FilterParameter(params);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryParam = new FilterParameter(params);
+        queryBySQLParams = new QueryBySQLParameters({
             queryParams: [queryParam],
             expectCount: 100000
         });
-        queryBySQLService = new SuperMap.QueryBySQLService(datasetsInfo.dataUrl, {
+        queryBySQLService = new QueryBySQLService(datasetsInfo.dataUrl, {
             eventListeners: {
                 processCompleted: success,
                 processFailed: function () {}
@@ -120,9 +119,9 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getDataInfoByIptl
+     * @function ChartModel.prototype.getDataInfoByIptl
      * @description 用dataId获取iportal的数据。
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      *
      */
     getDataInfoByIptl(success) {
@@ -132,10 +131,10 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getServiceInfo
+     * @function ChartModel.prototype.getServiceInfo
      * @description 用iportal获取dataItemServices。
-     * @param {String} url
-     * @param {Callbacks} success - getdatachart。
+     * @param {string} url
+     * @param {Callbacks} success - 成功回调函数。
      * */
     getServiceInfo(url, success) {
         let me = this;
@@ -183,10 +182,10 @@ export class ChartModel {
     }
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getDatafromURL
+     * @function ChartModel.prototype.getDatafromURL
      * @description 用iportal获取数据。（通过固定的url来请求，但是不能请求工作空间的数据）
-     * @param {String} url
-     * @param {Callbacks} success - getdatachart。
+     * @param {string} url
+     * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromContent(url, success) {
         // 成功回调传入的results
@@ -241,13 +240,13 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype._getDataSource
+     * @function ChartModel.prototype._getDataSource
      * @description 获取数据源名和数据集名。
      * @param {string} serviceType 服务类型
      * @param {string} address 地址
-     * @param {Callbacks} success - getdatachart。
-     * @return{array} [数据源名:数据集名]
-     * @return{string} 图层名
+     * @param {Callbacks} success - 成功回调函数。
+     * @return {Array.<string>} ["数据源名:数据集名"]
+     * @return {string} 图层名
      */
     getDatafromRest(serviceType, address, success) {
         let me = this,
@@ -328,11 +327,11 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getDatafromRestData
+     * @function ChartModel.prototype.getDatafromRestData
      * @description 请求restdata服务
-     * @param {String} url
+     * @param {string} url
      * @param {Array<string>} dataSource [数据源名:数据集名]
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromRestData(url, dataSource, success) {
         let me = this;
@@ -354,11 +353,11 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype.getDatafromRestMap
+     * @function ChartModel.prototype.getDatafromRestMap
      * @description 请求restmap服务
-     * @param {String} dataSource layerName
-     * @param {String} path - map服务地址。
-     * @param {Callbacks} success - getdatachart。
+     * @param {string} dataSource layerName
+     * @param {string} path - map服务地址。
+     * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromRestMap(dataSource, path, success) {
         let me = this;
@@ -382,7 +381,7 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype._getFeatureBySQL
+     * @function ChartModel.prototype._getFeatureBySQL
      * @description 通过 sql 方式查询数据。
      */
     _getFeatureBySQL(url, datasetNames, queryInfo, processCompleted, processFaild) {
@@ -415,7 +414,7 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype._queryFeatureBySQL
+     * @function ChartModel.prototype._queryFeatureBySQL
      * @description 通过 sql 方式查询数据。
      */
     _queryFeatureBySQL(
@@ -458,11 +457,11 @@ export class ChartModel {
         });
     }
     /**
-     * @function SuperMap.Components.ChartModel.prototype._queryBySQL
+     * @function ChartModel.prototype._queryBySQL
      * @description  SQL 查询服务。
-     * @param {SuperMap.QueryBySQLParameters} params - SQL 查询相关参数类。
+     * @param {QueryBySQLParameters} params - SQL 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 结果类型。
      */
     _queryBySQL(url, params, callback, resultFormat) {
         var me = this;
@@ -478,10 +477,10 @@ export class ChartModel {
         queryBySQLService.processAsync(params);
     }
     /**
-     * @function SuperMap.Components.ChartModel.prototype._processFormat
+     * @function ChartModel.prototype._processFormat
      * @description 将数据转换成geojson。
-     * @param {object} resultFormat - 返回结果集。
-     * @return {object} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {Object} resultFormat - 返回结果集。
+     * @return {Object} [resultFormat=DataFormat.GEOJSON] - 结果类型。
      */
     _processFormat(resultFormat) {
         return resultFormat ? resultFormat : DataFormat.GEOJSON;
@@ -489,7 +488,7 @@ export class ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Components.ChartModel.prototype._formatGeoJSON
+     * @function ChartModel.prototype._formatGeoJSON
      * @description 格式 GeoJSON。
      * @param {GeoJSON} data - GeoJSON 数据。
      */
@@ -504,7 +503,7 @@ export class ChartModel {
     /**
      * @private
      * @description 将 csv 和 xls 文件内容转换成 geojson
-     * @function SuperMap.Components.ChartModel.prototype._excelData2Feature
+     * @function ChartModel.prototype._excelData2Feature
      * @param content  文件内容
      * @param layerInfo  图层信息
      * @returns {Array}  feature的数组集合
@@ -554,8 +553,8 @@ export class ChartModel {
     /**
      * @private
      * @description 请求数据失败的事件
-     * @function SuperMap.Components.ChartModel.prototype._fireFailedEvent
-     * @param {object} error  错误信息
+     * @function ChartModel.prototype._fireFailedEvent
+     * @param {Object} error  错误信息
      */
     _fireFailedEvent(error) {
         let errorData = error
@@ -567,7 +566,7 @@ export class ChartModel {
                   message: Lang.i18n('msg_getdatafailed')
               };
         /**
-         * @event SuperMap.Components.Chart#getdatafailed
+         * @event ChartModel#getdatafailed
          * @description 监听到获取数据失败事件后触发
          * @property {Object} error  - 事件对象。
          */

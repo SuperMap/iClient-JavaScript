@@ -1,20 +1,21 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import {ProcessingServiceBase} from './ProcessingServiceBase';
 import {KernelDensityJobParameter} from './KernelDensityJobParameter';
 
 /**
- * @class SuperMap.KernelDensityJobsService
+ * @class KernelDensityJobsService
+ * @deprecatedclass SuperMap.KernelDensityJobsService
  * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类
- * @extends {SuperMap.ProcessingServiceBase}
- * @param {string} url -核密度分析服务地址。
- * @param {Object} options - 交互服务时所需可选参数。
+ * @extends {ProcessingServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class KernelDensityJobsService extends ProcessingServiceBase {
 
@@ -25,7 +26,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.KernelDensityJobsService.prototype.destroy
+     * @function KernelDensityJobsService.prototype.destroy
      * @override
      */
     destroy() {
@@ -33,7 +34,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
+     * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取核密度分析任务
      */
     getKernelDensityJobs() {
@@ -41,7 +42,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
+     * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取指定id的核密度分析服务
      * @param {string} id - 指定要获取数据的id
      */
@@ -50,9 +51,9 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
+     * @function KernelDensityJobsService.prototype.addKernelDensityJob
      * @description 新建核密度分析服务
-     * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
+     * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addKernelDensityJob(params, seconds) {
@@ -60,5 +61,3 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     }
 
 }
-
-SuperMap.KernelDensityJobsService = KernelDensityJobsService;

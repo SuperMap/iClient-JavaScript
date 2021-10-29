@@ -62,8 +62,14 @@ $(function () {
         });
         // // Show an item related a current documentation automatically
         var filename = $('.page-title').data('filename').replace(/\.[a-z]+$/, '');
+        var isGlobal = window.location.href.indexOf('global.html') > -1;
+        if (isGlobal) {
+          filename = window.location.hash.substring(1);
+          // global.html#GraduatedMode#.CONSTANT
+          var secIndex = filename.indexOf('#');
+          filename = secIndex > -1 ? filename.substring(0, secIndex) : filename;
+        }
         var $currentItem = $('.main-sidebar .item[data-name="' + filename + '"]:eq(0)');
-
         if ($currentItem.length) {
             //$("section#sidebar #ul").addClass("active");
             $currentItem.parent('ul').parents('li.treeview').addClass("active");
@@ -93,4 +99,8 @@ $(function () {
         })
 
     });
+    $(window).resize(function () {
+      var height = $('.navigationDiv .sidebar').height();
+      $('.main-sidebar #categories').css('height', height - 50 + 'px');
+    })
 });

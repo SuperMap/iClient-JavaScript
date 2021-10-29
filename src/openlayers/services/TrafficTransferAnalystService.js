@@ -3,17 +3,18 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {StopQueryService, TransferPathService, TransferSolutionService} from '@supermap/iclient-common';
+import { StopQueryService } from '@supermap/iclient-common/iServer/StopQueryService';
+import { TransferPathService } from '@supermap/iclient-common/iServer/TransferPathService';
+import { TransferSolutionService } from '@supermap/iclient-common/iServer/TransferSolutionService';
 import Point from 'ol/geom/Point';
 
 /**
- * @class ol.supermap.TrafficTransferAnalystService
- * @extends {ol.supermap.ServiceBase}
+ * @class TrafficTransferAnalystService
+ * @extends {ServiceBase}
  * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类。
  * @example
- *      new ol.supermap.TrafficTransferAnalystService(url)
- *      .queryStop(params,function(result){
+ *      new TrafficTransferAnalystService(url).queryStop(params,function(result){
  *           //doSomething
  *      })
  * @param {string} url - 服务地址。
@@ -22,6 +23,7 @@ import Point from 'ol/geom/Point';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class TrafficTransferAnalystService extends ServiceBase {
 
@@ -30,9 +32,9 @@ export class TrafficTransferAnalystService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.TrafficTransferAnalystService.prototype.queryStop
+     * @function TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
-     * @param {SuperMap.StopQueryParameters} params - 查询相关参数类。
+     * @param {StopQueryParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop(params, callback) {
@@ -53,9 +55,9 @@ export class TrafficTransferAnalystService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
+     * @function TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
-     * @param {SuperMap.TransferPathParameters} params - 查询相关参数类。
+     * @param {TransferPathParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath(params, callback) {
@@ -76,9 +78,9 @@ export class TrafficTransferAnalystService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
+     * @function TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
-     * @param {SuperMap.TransferSolutionParameters} params - 查询相关参数类。
+     * @param {TransferSolutionParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution(params, callback) {

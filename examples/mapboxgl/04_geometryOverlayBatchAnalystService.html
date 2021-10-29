@@ -114,10 +114,10 @@
             },
         });
 
-        var OverlayBatchAnalystParameters = new SuperMap.GeometryOverlayAnalystParameters({
+        var OverlayBatchAnalystParameters = new mapboxgl.supermap.GeometryOverlayAnalystParameters({
             sourceGeometries: [sourceGeometry1, sourceGeometry2],
             operateGeometries: [operateGeometry1, operateGeometry2],
-            operation: SuperMap.OverlayOperationType.INTERSECT
+            operation: mapboxgl.supermap.OverlayOperationType.INTERSECT
         });
 
         new mapboxgl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {

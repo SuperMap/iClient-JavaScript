@@ -22,7 +22,7 @@
         zoom: 2,
         zoomControl:false,
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     L.control.scale().addTo(map);
 </script>
 </body>

@@ -28,8 +28,8 @@
   let ctx = canvas.getContext('2d');
   let predictBtn = document.querySelector('#predict');
   ctx.drawImage(img, 0, 0, 640, 640);
-  let webMachineLearning = new SuperMap.WebMachineLearning();
-  let landcoverClassification = new SuperMap.LandcoverClassification({ modelUrl, image: img });
+  let webMachineLearning = new mapboxgl.supermap.WebMachineLearning();
+  let landcoverClassification = new mapboxgl.supermap.LandcoverClassification({ modelUrl, image: img });
   const colorMap = [[0,0,0], [255,0,0],[0,255,0],[0,255,255],[255,255,0],[0,0,255]];
   predictBtn.addEventListener('click', function() {
     webMachineLearning.execute(landcoverClassification).then((res) => {

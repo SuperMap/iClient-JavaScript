@@ -1,12 +1,11 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Theme3DLayer} from './theme/Theme3DLayer';
 
 /**
- * @class mapboxgl.supermap.RangeTheme3DLayer
+ * @class RangeTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维分段专题图。
  * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
@@ -16,7 +15,7 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @param  {number} [layerOptions.base] - 新增参数，数据分段线性增量。
  * @param  {number} [layerOptions.legendRatio=1] - 新增参数，图例数值扩大系数。
  * @example
- * new mapboxgl.supermap.RangeTheme3DLayer(layerId, map, {
+ * new RangeTheme3DLayer(layerId, map, {
  *      enableHighlight:true,
  *      // 设置分段
  *      heightField: "floor",
@@ -27,30 +26,31 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  *      legendTheme: 'dark',
  *      legendTitle: "图例"
  * });
+ * @usage
  */
 export class RangeTheme3DLayer extends Theme3DLayer {
 
     constructor(id, layerOptions) {
         super(id, layerOptions);
         /**
-         * @member  {Array} mapboxgl.supermap.RangeTheme3DLayer.prototype.heightStops 
+         * @member  {Array} RangeTheme3DLayer.prototype.heightStops 
          * @description 数据高度分段数组。
          */
         this.heightStops = null;
 
         /**
-         * @member  {Array} mapboxgl.supermap.RangeTheme3DLayer.prototype.colorStops 
+         * @member  {Array} RangeTheme3DLayer.prototype.colorStops 
          * @description 数据颜色分段数组。
          */
         this.colorStops = null;
         /**
-         * @member  {number} mapboxgl.supermap.RangeTheme3DLayer.prototype.base 
+         * @member  {number} RangeTheme3DLayer.prototype.base 
          * @description 数据分段线性增量。
          */
         this.base = null;
 
         /**
-         * @member  {number} [mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio=1]
+         * @member  {number} [RangeTheme3DLayer.prototype.legendRatio=1]
          * @description 图例数值扩大系数。
          */
         this.legendRatio = 1;
@@ -59,7 +59,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function  mapboxgl.supermap.RangeTheme3DLayer.prototype.getLayerStyleOptions
+     * @function  RangeTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -101,7 +101,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.RangeTheme3DLayer.prototype.getHighlightStyleOptions
+     * @function RangeTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式。
      * @returns {Object} mapboxgl 样式对象。
      */
@@ -152,5 +152,3 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     }
 
 }
-
-mapboxgl.supermap.RangeTheme3DLayer = RangeTheme3DLayer;

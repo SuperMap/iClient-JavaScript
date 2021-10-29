@@ -49,7 +49,7 @@
     });
 
     function query() {
-        var param = new SuperMap.QueryBySQLParameters({
+        var param = new mapboxgl.supermap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World.1",
                 attributeFilter: "SMID < 10"

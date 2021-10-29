@@ -114,23 +114,23 @@
         "authorizeList": []
     }
     function getDefaultUrl(){
-        iPortalUser = new SuperMap.iPortalUser(iPortalUrl);
+        iPortalUser = new L.supermap.iPortalUser(iPortalUrl);
     }
     // 注册token
     function generatePortalToken() {
-        let serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        let serverInfo = new L.supermap.ServerInfo(L.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        L.supermap.SecurityManager.registerServers([serverInfo]);
+        L.supermap.SecurityManager.destroyToken(iPortalUrl);
+        L.supermap.SecurityManager.registerToken(iPortalUrl, token);
     }
     // 添加地图/场景
     function addMapOrScene() {
         generatePortalToken();
-        iPortalUser = new SuperMap.iPortalUser(iPortalUrl);
-        let params = new SuperMap.iPortalAddResourceParam({
+        iPortalUser = new L.supermap.iPortalUser(iPortalUrl);
+        let params = new L.supermap.iPortalAddResourceParam({
             rootUrl: $("#address").val(),
             tags: $("#tags").val(),
             entities: getShareEntities()

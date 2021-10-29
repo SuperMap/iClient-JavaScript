@@ -1,26 +1,26 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters';
 
 /**
- * @class SuperMap.RouteCalculateMeasureService
+ * @class RouteCalculateMeasureService
+ * @deprecatedclass SuperMap.RouteCalculateMeasureService
  * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc 基于路由对象计算指定点 M 值操作的服务类。
  *            该类负责将客户设置的计算指定点的 M 值参数传递给服务端，并接收服务端返回的
  *            指定点的 M 值。通过该类支持的事件的监听函数参数获取。
- * @extends {SuperMap.SpatialAnalystBase}
- * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
+ * @extends {SpatialAnalystBase}
+ * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
  * (start code)
- * var parameters = new SuperMap.RouteCalculateMeasureParameters({
+ * var parameters = new RouteCalculateMeasureParameters({
      *     "sourceRoute":{
      *         "type":"LINEM",
      *        "parts":[4],
@@ -55,7 +55,7 @@ import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters
      *     "isIgnoreGap":false
      * });
  *
- * var routeCalculateMeasureService = new SuperMap.RouteCalculateMeasureService(spatialAnalystURL, {
+ * var routeCalculateMeasureService = new RouteCalculateMeasureService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:calculateCompleted,
      *         processFailed:calculateFailded
@@ -67,7 +67,7 @@ import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters
      * function calculateCompleted(){todo}
      * function calculateFailded(){todo}
      * (end)
-     *
+     * @usage
      */
 export class RouteCalculateMeasureService extends SpatialAnalystBase {
 
@@ -84,9 +84,9 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.RouteCalculateMeasureService.prototype.processAsync
+     * @function RouteCalculateMeasureService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
-     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
+     * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
      */
     processAsync(params) {
         if (!(params instanceof RouteCalculateMeasureParameters)) {
@@ -106,9 +106,9 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.RouteCalculateMeasureService.prototype.getJsonParameters
+     * @function RouteCalculateMeasureService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
-     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
+     * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
@@ -121,4 +121,3 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
 
 }
 
-SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService;

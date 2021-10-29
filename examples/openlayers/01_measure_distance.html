@@ -48,7 +48,7 @@
         feature = evt.feature;
     });
     interaction.on('drawend', function () {
-        var distanceMeasureParam = new SuperMap.MeasureParameters(feature.getGeometry());
+        var distanceMeasureParam = new ol.supermap.MeasureParameters(feature.getGeometry());
         new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam, function (serviceResult) {
             widgets.alert.showAlert(serviceResult.result.distance + resources.msg_m, true);
         });

@@ -171,7 +171,7 @@
     function initFeature() {
         var polygon = new ol.geom.Polygon([[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]);
         var featureService = new ol.supermap.FeatureService(url);
-        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeatureParams = new ol.supermap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon,
@@ -285,7 +285,7 @@
             closeSelectListener();
         }
         if (pointFeature) {
-            var addFeatureParams = new SuperMap.EditFeaturesParameters({
+            var addFeatureParams = new ol.supermap.EditFeaturesParameters({
                 features: pointFeature,
                 dataSourceName: "World",
                 dataSetName: "Capitals",
@@ -319,7 +319,7 @@
             //只删选中第一个要素：
             if (!deletedId) {
                 deletedId = feature.getId();
-                var deleteParams = new SuperMap.EditFeaturesParameters({
+                var deleteParams = new ol.supermap.EditFeaturesParameters({
                     dataSourceName: "World",
                     dataSetName: "Capitals",
                     IDs: [deletedId],

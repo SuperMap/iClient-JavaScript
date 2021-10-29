@@ -17,7 +17,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
         .addTo(map)
         .on('load', function () {
             findClosetFacilitiesProcess();
@@ -47,9 +47,9 @@
         var marker4 = L.marker([-3700, 5000], {icon: myIcon}).addTo(map);
         marker4.bindPopup(resources.text_input_value_eventPoint);
         //创建最近设施分析服务实例
-        findClosetFacilitiesService = L.supermap.networkAnalystService(serviceUrl);
+        findClosetFacilitiesService = new L.supermap.NetworkAnalystService(serviceUrl);
         //创建最近设施分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new L.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -59,12 +59,12 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new L.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             turnWeightField: "TurnCost",
             weightFieldName: "length"  //length,time
         });
-        findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
+        findClosetFacilitiesParameter = new L.supermap.FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: L.latLng(-3700, 5000),
             //要查找的设施点数量。默认值为1

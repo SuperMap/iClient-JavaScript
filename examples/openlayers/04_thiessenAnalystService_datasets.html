@@ -43,7 +43,7 @@
     });
 
     function thiessenAnalystProcess() {
-        var dThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        var dThiessenAnalystParameters = new ol.supermap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
         new ol.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {

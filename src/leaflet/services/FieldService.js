@@ -4,23 +4,27 @@
 import L from "leaflet";
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from '@supermap/iclient-common';
+import { GetFieldsService } from '@supermap/iclient-common/iServer/GetFieldsService';
+import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldStatisticService';
+import { FieldStatisticsParameters } from '@supermap/iclient-common/iServer/FieldStatisticsParameters';
 
 /**
- * @class  L.supermap.fieldService
+ * @class  FieldService
+ * @deprecatedclassinstance L.supermap.fieldService
  * @classdesc 字段服务类。
  * @category iServer Data Field
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *   L.supermap.fieldService(url).getFields(function(result){
+ *   new FieldService(url).getFields(function(result){
  *     //doSomething
  *   });
- * @param {string} url - 字段服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var FieldService = ServiceBase.extend({
 
@@ -29,9 +33,9 @@ export var FieldService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.fieldService.prototype.getFields
+     * @function FieldService.prototype.getFields
      * @description 字段查询服务。
-     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类。
+     * @param {FieldParameters} params - 字段信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getFields: function (params, callback) {
@@ -53,9 +57,9 @@ export var FieldService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.fieldService.prototype.getFieldStatisticsInfo
+     * @function FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务。
-     * @param {SuperMap.FieldStatisticsParameters} params - 字段统计信息查询参数类。
+     * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getFieldStatisticsInfo: function (params, callback) {
@@ -119,5 +123,3 @@ export var FieldService = ServiceBase.extend({
 export var fieldService = function (url, options) {
     return new FieldService(url, options);
 };
-
-L.supermap.fieldService = fieldService;

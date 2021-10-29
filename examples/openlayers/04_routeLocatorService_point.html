@@ -99,9 +99,9 @@
     function routeLocatorProcess_point() {
         //通过SQL查询的方法建立路由,并添加到地图上
         queryBySQLService = new ol.supermap.QueryService(baseUrl);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryBySQLParams = new ol.supermap.QueryBySQLParameters({
             queryParams: [
-                new SuperMap.FilterParameter({
+                new ol.supermap.FilterParameter({
                     name: "RouteDT_road@Changchun",
                     attributeFilter: "RouteID=1690"
                 })
@@ -133,7 +133,7 @@
 
             //里程定点服务
             routeLocatorService = new ol.supermap.SpatialAnalystService(serviceUrl);
-            routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+            routeLocatorParameters_point = new ol.supermap.RouteLocatorParameters({
                 "sourceRoute": routeLine,
                 "type": "POINT",
                 "measure": 800,

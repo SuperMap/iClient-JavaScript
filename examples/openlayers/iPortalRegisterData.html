@@ -49,7 +49,7 @@
         </div>
     </div>
 <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
     var iPortalUrl = "https://iportal.supermap.io/iportal";
@@ -65,13 +65,13 @@
     
     //获取token
     function generatePortalToken() {
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new ol.supermap.ServerInfo(ol.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        ol.supermap.SecurityManager.registerServers([serverInfo]);
+        ol.supermap.SecurityManager.destroyToken(iPortalUrl);
+        ol.supermap.SecurityManager.registerToken(iPortalUrl, token);
     }
     
     //选中数据类型函数
@@ -93,15 +93,15 @@
             case "HDFS":
                 var tags = $("#hdfs-tags").val();
                 var HDFSCatalog = $("#hdfs-address").val();
-                var dataStoreInfoParams = new SuperMap.iPortalDataStoreInfoParam({
+                var dataStoreInfoParams = new ol.supermap.iPortalDataStoreInfoParam({
                     type:dataType,
                     url:HDFSCatalog
                 })
-                var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam({
+                var dataMetaParams = new ol.supermap.iPortalDataMetaInfoParam({
                     url:HDFSCatalog,
                     dataStoreInfo:dataStoreInfoParams
                 })
-                params = new SuperMap.iPortalAddDataParam({
+                params = new ol.supermap.iPortalAddDataParam({
                     type:dataType,
                     fileName:$("#hdfs-name").val(),
                     tags:tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
@@ -111,18 +111,18 @@
             case "HBASE":
                 var tags = $("#hbase-tags").val();
                 var serviceAddress = $("#hbase-address").val();
-                var connectionInfoParam =  new SuperMap.iPortalDataConnectionInfoParam({
+                var connectionInfoParam =  new ol.supermap.iPortalDataConnectionInfoParam({
                     dataBase:$("#hbase-name").val(),
                     server:serviceAddress
                 })
-                var dataStoreInfoParams = new SuperMap.iPortalDataStoreInfoParam({
+                var dataStoreInfoParams = new ol.supermap.iPortalDataStoreInfoParam({
                     type:dataType,
                     connectionInfo:connectionInfoParam
                 })
-                var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam({
+                var dataMetaParams = new ol.supermap.iPortalDataMetaInfoParam({
                     dataStoreInfo:dataStoreInfoParams
                 })
-                params = new SuperMap.iPortalAddDataParam({
+                params = new ol.supermap.iPortalAddDataParam({
                     type:dataType,
                     fileName:$("#hbase-name").val(),
                     tags:tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
@@ -130,7 +130,7 @@
                 });
                 break;
         }
-        new SuperMap.iPortalUser(iPortalUrl).addData(params).then(res=>{
+        new ol.supermap.iPortalUser(iPortalUrl).addData(params).then(res=>{
             if(res.childID) {
                 widgets.alert.showAlert(resources.msg_register_success, true);
             }else {

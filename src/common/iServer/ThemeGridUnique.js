@@ -2,9 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
-    SuperMap
-} from '../SuperMap';
-import {
     Util
 } from '../commontypes/Util';
 import {
@@ -18,29 +15,30 @@ import {
 } from './ThemeGridUniqueItem';
 
 /**
- * @class SuperMap.ThemeGridUnique
+ * @class ThemeGridUnique
+ * @deprecatedclass SuperMap.ThemeGridUnique
  * @category  iServer Map Theme
- * @classdesc 栅格单值专题图类。
- * @description 栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。<br>
- *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。
- * @extends {SuperMap.Theme}
+ * @classdesc 栅格单值专题图类。栅格单值专题图是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。
+ * 适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
- * @param {Array.<SuperMap.ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。
- * @param {SuperMap.ServerColor} [options.defaultcolor] - 栅格单值专题图的默认颜色。
+ * @param {Array.<ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。
+ * @param {ServerColor} [options.defaultcolor] - 栅格单值专题图的默认颜色。
+ * @usage
  */
 export class ThemeGridUnique extends Theme {
 
     constructor(options) {
         super("GRIDUNIQUE", options);
         /**
-         * @member {SuperMap.ServerColor} SuperMap.ThemeGridUnique.prototype.defaultcolor
+         * @member {ServerColor} ThemeGridUnique.prototype.defaultcolor
          * @description 栅格单值专题图的默认颜色。
          *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
          */
         this.defaultcolor = new ServerColor();
 
         /**
-         * @member {Array.<SuperMap.ThemeGridUniqueItem>} SuperMap.ThemeGridUnique.prototype.items
+         * @member {Array.<ThemeGridUniqueItem>} ThemeGridUnique.prototype.items
          * @description 栅格单值专题图子项数组。
          *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
          */
@@ -54,7 +52,7 @@ export class ThemeGridUnique extends Theme {
     }
 
     /**
-     * @function SuperMap.ThemeGridUnique.prototype.destroy
+     * @function ThemeGridUnique.prototype.destroy
      * @override
      */
     destroy() {
@@ -77,7 +75,7 @@ export class ThemeGridUnique extends Theme {
     }
 
     /**
-     * @function SuperMap.ThemeGridUnique.prototype.toServerJSONObject
+     * @function ThemeGridUnique.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      * @returns {Object} 对应的 JSON 格式对象
      */
@@ -101,10 +99,10 @@ export class ThemeGridUnique extends Theme {
     }
 
     /**
-     * @function SuperMap.ThemeGridUnique.fromObj
+     * @function ThemeGridUnique.fromObj
      * @description 从传入对象获取栅格单值专题图类。
      * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGridUnique} ThemeGridUnique 对象
+     * @returns {ThemeGridUnique} ThemeGridUnique 对象
      */
     static fromObj(obj) {
         var res = new ThemeGridUnique();
@@ -120,5 +118,3 @@ export class ThemeGridUnique extends Theme {
     }
 
 }
-
-SuperMap.ThemeGridUnique = ThemeGridUnique;

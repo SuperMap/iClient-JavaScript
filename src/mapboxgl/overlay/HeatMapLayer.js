@@ -3,35 +3,32 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    GeoJSON as GeoJSONFormat,
-    ServerFeature,
-    GeometryVector,
-    LonLat,
-    GeometryPoint as Point,
-    GeoText,
-    CommonUtil
-} from '@supermap/iclient-common';
-
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 /**
- * @class mapboxgl.supermap.HeatMapLayer
+ * @class HeatMapLayer
  * @classdesc 热力图层类。
  * @category  Visualization HeatMap
  * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
- * @param {mapboxgl.Map} options.map - mapboxgl map 对象。
- * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {mapboxgl.Evented}
- * @fires mapboxgl.supermap.HeatMapLayer#featuresadded
- * @fires mapboxgl.supermap.HeatMapLayer#changelayer
- * @fires mapboxgl.supermap.HeatMapLayer#featuresremoved
- *
+ * @fires HeatMapLayer#featuresadded
+ * @fires HeatMapLayer#changelayer
+ * @fires HeatMapLayer#featuresremoved
+ * @usage
  */
 export class HeatMapLayer extends mapboxgl.Evented {
 
@@ -40,54 +37,54 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
         var _options = options ? options : {};
         /**
-         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.name
+         * @member {string} HeatMapLayer.prototype.name
          * @description 图层名字。
          */
         this.name = name;
 
         /**
-         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.id
+         * @member {string} HeatMapLayer.prototype.id
          * @description 热力图图层 id。
          */
         this.id = _options.id ? _options.id : CommonUtil.createUniqueID("HeatMapLayer_");
 
         /**
-         * @member {mapboxgl.Map} mapboxgl.supermap.HeatMapLayer.prototype.map
-         * @description 热力图图层 map。
+         * @member {mapboxgl.Map} HeatMapLayer.prototype.map
+         * @description MapBoxGL Map 对象。
          */
         this.map = _options.map ? _options.map : null;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.loadWhileAnimating=true]
+         * @member {boolean} [HeatMapLayer.prototype.loadWhileAnimating=true]
          * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
          */
         this.loadWhileAnimating = _options.loadWhileAnimating === undefined ? true : _options.loadWhileAnimating;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.visibility=true]
+         * @member {boolean} [HeatMapLayer.prototype.visibility=true]
          * @description 图层显示状态属性。
          */
         this.visibility = true;
         /**
-         * @member {number} [mapboxgl.supermap.HeatMapLayer.prototype.opacity=1]
-         * @description 图层透明度，取值范围[0,1]。
+         * @member {number} [HeatMapLayer.prototype.opacity=1]
+         * @description 图层不透明度，取值范围[0,1]。
          */
         this.opacity = _options.opacity ? _options.opacity : 1;
 
         /**
-         * @member {Array.<string>} [mapboxgl.supermap.HeatMapLayer.prototype.colors=['blue','cyan','lime','yellow','red']]
-         * @description 颜色线性渐变数组,颜色值必须为 canvas 所支。
+         * @member {Array.<string>} [HeatMapLayer.prototype.colors=['blue','cyan','lime','yellow','red']]
+         * @description 颜色线性渐变数组 。
          */
         this.colors = _options.colors ? _options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.useGeoUnit=false]
+         * @member {boolean} [HeatMapLayer.prototype.useGeoUnit=false]
          * @description 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
          */
         this.useGeoUnit = _options.useGeoUnit ? _options.useGeoUnit : false;
 
         /**
-         * @member {number} [mapboxgl.supermap.HeatMapLayer.prototype.radius=50]
+         * @member {number} [HeatMapLayer.prototype.radius=50]
          * @description 热点渲染的最大半径（热点像素半径）,
          *              热点显示的时候以精确点为中心点开始往四周辐射衰减，
          *              其衰减半径和权重值成比列。
@@ -95,89 +92,85 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.radius = _options.radius ? _options.radius : 50;
 
         /**
-         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.featureWeight
-         * @description 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
+         * @member {string} HeatMapLayer.prototype.featureWeight
+         * @description 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
          * @example
          * //feature.attributes中表示权重的字段为 height,则在 HeatMapLayer 的 featureWeight 参数赋值为 "height"。
          * feature1.attributes.height = 7.0;
          * feature2.attributes.height = 6.0;
-         * var heatMapLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
+         * var heatMapLayer = new HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
          * heatMapLayer.addFeatures([feature1,feature2]);
          */
         this.featureWeight = _options.featureWeight ? _options.featureWeight : null;
 
         /**
-         * @member {Array.<SuperMap.Feature.Vector>} mapboxgl.supermap.HeatMapLayer.prototype.features
+         * @member {Array.<FeatureVector>} HeatMapLayer.prototype.features
          * @description 热点信息数组，记录存储图层上添加的所有热点信息。
          */
         this.features = [];
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxWeight
-         * @description 设置权重最大值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最大值绘制热点图。
+         * @member {number} HeatMapLayer.prototype.maxWeight
+         * @description 设置权重最大值。默认将按照当前屏幕范围内热点所拥有的权重最大值绘制热点图。
          */
         this.maxWeight = null;
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.minWeight
-         * @description 设置权重最小值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
+         * @member {number} HeatMapLayer.prototype.minWeight
+         * @description 设置权重最小值。默认将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
          */
         this.minWeight = null;
 
         /**
-         * @member mapboxgl.supermap.HeatMapLayer.prototype.EVENT_TYPES
+         * @member HeatMapLayer.prototype.EVENT_TYPES
          * @description 监听一个自定义事件可用如下方式:
          *              热点图自定义事件信息，事件调用时的属性与具体事件类型相对应。
          *
-         * All event objects have at least the following properties:
-         * {Object} object - A reference to layer.events.object.
-         * {DOMElement} element - A reference to layer.events.element.
-         *
-         * 支持的事件如下 (另外包含 <SuperMap.Layer 中定义的其他事件>):
-         * featuresadded - 热点添加完成时触发。传递参数为添加的热点信息数组和操作成功与否信息。
+         * 支持的事件如下 (另外包含 <Layer 中定义的其他事件>):
+         * featuresadded - 热点添加完成时触发。回调参数为添加的热点信息数组和操作成功与否信息。
          * 参数类型：{features: features, succeed: succeed}
-         * featuresremoved - 热点被删除时触发。传递参数为删除的热点信息数组和操作成功与否信息。
+         * featuresremoved - 热点被删除时触发。回调参数为删除的热点信息数组和操作成功与否信息。
          * 参数类型：{features: features, succeed: succeed}
-         * featuresdrawcompleted - 热点图渲染完成时触发，没有额外属性。
+         * featuresdrawcompleted - 热点图渲染完成时触发。
          */
         this.EVENT_TYPES = ["featuresadded", "featuresremoved", "featuresdrawcompleted"];
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.supported=false]
+         * @member {boolean} [HeatMapLayer.prototype.supported=false]
          * @description 当前浏览器是否支持 canvas 绘制，
          *              决定了热点图是否可用，内部判断使用。
          */
         this.supported = false;
 
         /**
-         * @member {Object} mapboxgl.supermap.HeatMapLayer.prototype.rootCanvas
+         * @member {Object} HeatMapLayer.prototype.rootCanvas
          * @description 热点图主绘制面板。
          */
         this.rootCanvas = null;
 
         /**
-         * @member {Object} mapboxgl.supermap.HeatMapLayer.prototype.canvasContext
+         * @member {Object} HeatMapLayer.prototype.canvasContext
          * @description 热点图主绘制对象。
          */
         this.canvasContext = null;
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxWidth
-         * @description 当前绘制面板宽度。和当前 map 窗口宽度一致。
+         * @member {number} HeatMapLayer.prototype.maxWidth
+         * @description 当前绘制面板宽度。默认和当前 map 窗口宽度一致。
          */
         this.maxWidth = null;
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxHeight
-         * @description 当前绘制面板宽度。和当前 map 窗口高度一致。
+         * @member {number} HeatMapLayer.prototype.maxHeight
+         * @description 当前绘制面板宽度。默认和当前 map 窗口高度一致。
          */
         this.maxHeight = null;
 
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.onAdd
-     * @description 向底图添加该图层
+     * @function HeatMapLayer.prototype.onAdd
+     * @description 添加该图层
      */
     onAdd(map) {
         this.map = map;
@@ -203,8 +196,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.removeFromMap
-     * @description 从底图删除该图层。
+     * @function HeatMapLayer.prototype.removeFromMap
+     * @description 删除该图层。
      */
     removeFromMap() {
         this.removeAllFeatures();
@@ -212,31 +205,31 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype._createCanvasContainer
+     * @function HeatMapLayer.prototype._createCanvasContainer
      * @description 创建热力图绘制容器。
      * @private
      */
     _createCanvasContainer() {
-        this.supported = true;
-        //构建绘图面板
-        this.mapContainer = this.map.getCanvasContainer();
-        //热点图要求使用canvas绘制，判断是否支持
-        this.rootCanvas = document.createElement("canvas");
-        this.rootCanvas.id = this.id;
-        var mapCanvas = this.map.getCanvas();
-        this.rootCanvas.width = this.maxWidth = parseInt(mapCanvas.style.width);
-        this.rootCanvas.height = this.maxHeight = parseInt(mapCanvas.style.height);
-        this.canvasContext = this.rootCanvas.getContext('2d');
-        const devicePixelRatio = window.devicePixelRatio || 1;
-        devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
+      this.supported = true;
+      //构建绘图面板
+      this.mapContainer = this.map.getCanvasContainer();
+      //热点图要求使用canvas绘制，判断是否支持
+      this.rootCanvas = document.createElement("canvas");
+      this.rootCanvas.id = this.id;
+      var mapCanvas = this.map.getCanvas();
+      this.rootCanvas.width = this.maxWidth = parseInt(mapCanvas.style.width);
+      this.rootCanvas.height = this.maxHeight = parseInt(mapCanvas.style.height);
+      this.canvasContext = this.rootCanvas.getContext('2d');
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
 
-        CommonUtil.modifyDOMElement(this.rootCanvas, null, {x: 0, y: 0}, {w: this.maxWidth, h: this.maxHeight},
-            "absolute", null, null, this.opacity);
-        this.mapContainer.appendChild(this.rootCanvas);
+      CommonUtil.modifyDOMElement(this.rootCanvas, null, {x: 0, y: 0}, {w: this.maxWidth, h: this.maxHeight},
+          "absolute", null, null, this.opacity);
+      this.mapContainer.appendChild(this.rootCanvas);
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.addFeatures
+     * @function HeatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
      * @param {GeoJSONObject} features - 待添加的要素数组。
      *
@@ -257,14 +250,14 @@ export class HeatMapLayer extends mapboxgl.Evented {
      *          }
      *      ]
      *   };
-     * var heatMapLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   pLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
+     * var heatMapLayer = new HeatMapLayer("heatmaplayer",{"featureWeight":"height"});                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   pLayer = new HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
      * heatMapLayer.addFeatures(geojson);
      * map.addLayer(heatMapLayer);
      */
     addFeatures(features) {
         this.features = this.toiClientFeature(features);
         /**
-         * @event mapboxgl.supermap.HeatMapLayer#featuresadded
+         * @event HeatMapLayer#featuresadded
          * @description 要素添加完成之后触发。
          * @property {GeoJSONObject} features - 被添加的要素。
          * @property {boolean} succeed - 要素是否成功添加。
@@ -275,7 +268,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.refresh
+     * @function HeatMapLayer.prototype.refresh
      * @description 强制刷新当前热点显示，在图层热点数组发生变化后调用，更新显示。
      */
     refresh() {
@@ -289,9 +282,9 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.setOpacity
+     * @function HeatMapLayer.prototype.setOpacity
      * @description 设置图层的不透明度，取值[0-1]之间。
-     * @param {number} [opacity] - 透明度。
+     * @param {number} [opacity] - 不透明度。
      */
     setOpacity(opacity) {
         if (opacity !== this.opacity) {
@@ -301,7 +294,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
             if (this.map !== null) {
                 /**
-                 * @event mapboxgl.supermap.HeatMapLayer#changelayer
+                 * @event HeatMapLayer#changelayer
                  * @description 图层属性改变之后触发。
                  * @property {Object} layer - 图层。
                  * @property {string} property - 被改变的图层属性。
@@ -312,7 +305,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.updateHeatPoints
+     * @function HeatMapLayer.prototype.updateHeatPoints
      * @description 刷新热点图显示。
      * @param {mapboxgl.LngLatBounds} bounds - 当前显示范围。
      */
@@ -325,7 +318,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.convertFastToPixelPoints
+     * @function HeatMapLayer.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
      * @param {mapboxgl.LngLatBounds} bounds - 当前显示范围。
      * @private
@@ -388,7 +381,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.draw
+     * @function HeatMapLayer.prototype.draw
      * @description 绘制热点图。
      * @param {Array} data - convertToPixelPoints方法计算出的点。
      * @private
@@ -418,7 +411,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.colorize
+     * @function HeatMapLayer.prototype.colorize
      * @description 根据渐变色重置热点图rgb值。
      * @param {Array} pixels - 像素 RGBA 值。
      * @param {Array} gradient - 渐变 canvas.getImageData.data。
@@ -436,7 +429,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.drawCircle
+     * @function HeatMapLayer.drawCircle
      * @description 绘制热点半径圆。
      * @param {number} r - 热点半径。
      * @private
@@ -460,8 +453,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.createGradient
-     * @description 根据 this.colors 设置渐变并 getImageData。
+     * @function HeatMapLayer.createGradient
+     * @description 根据 options.colors 设置渐变。
      * @private
      */
     createGradient() {
@@ -486,7 +479,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.getPixelXY
+     * @function HeatMapLayer.prototype.getPixelXY
      * @description 转换地理坐标为相对于当前窗口左上角的像素坐标。
      * @param {number} x - 热点的像素 x 坐标。
      * @param {number} y - 热点的像素 y 坐标。
@@ -505,7 +498,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.toiClientFeature
+     * @function HeatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {GeoJSONObject} features - 待添加的要素数组。
      */
@@ -515,8 +508,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
         }
         let featuresTemp = [];
         for (let i = 0; i < features.length; i++) {
-            if (features[i] instanceof GeometryVector) {
-                // 若是 GeometryVector 直接返回
+            if (features[i] instanceof FeatureVector) {
+                // 若是 FeatureVector 直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 //GeoJSON 规范数据类型
@@ -533,9 +526,9 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.removeFeatures
+     * @function HeatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -562,9 +555,9 @@ export class HeatMapLayer extends mapboxgl.Evented {
         var succeed = heatPointsFailedRemoved.length == 0 ? true : false;
         //派发删除features成功的事件
         /**
-         * @event mapboxgl.supermap.HeatMapLayer#featuresremoved
+         * @event HeatMapLayer#featuresremoved
          * @description 要素删除之后触发。
-         * @property {Array.<SuperMap.Feature.Vector>} features - 需要被删除的要素。
+         * @property {Array.<FeatureVector>} features - 需要被删除的要素。
          * @property {boolean} succeed - 要素删除成功与否。
          */
         this.fire(this.EVENT_TYPES[1], {features: heatPointsFailedRemoved, succeed: succeed});
@@ -572,7 +565,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.removeAllFeatures
+     * @function HeatMapLayer.prototype.removeAllFeatures
      * @description 移除全部的热点信息。
      */
     removeAllFeatures() {
@@ -581,7 +574,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.moveTo
+     * @function HeatMapLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层ID。
      * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
@@ -607,9 +600,9 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.setVisibility
-     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @function HeatMapLayer.prototype.setVisibility
+     * @description 设置图层可见性。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
         if (this.rootCanvas && visibility !== this.visibility) {
@@ -731,5 +724,3 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
 }
-
-mapboxgl.supermap.HeatMapLayer = HeatMapLayer;

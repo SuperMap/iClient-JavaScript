@@ -1,27 +1,28 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 /**
- * @class SuperMap.WebPrintingJobNorthArrowOptions
+ * @class WebPrintingJobNorthArrowOptions
+ * @deprecatedclass SuperMap.WebPrintingJobNorthArrowOptions
  * @classdesc Web 打印地图指北针参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} option.picAsUrl - 指北针的图片 url 地址。
  * @param {string} [option.picAsBase64] - 指北针的base64位图片信息。
+ * @usage
  */
 export class WebPrintingJobNorthArrowOptions {
     constructor(option) {
         /**
-         * @member {string} SuperMap.WebPrintingJobNorthArrowOptions.prototype.picAsUrl
+         * @member {string} WebPrintingJobNorthArrowOptions.prototype.picAsUrl
          * @description 指北针的图片 url 地址。
          */
         this.picAsUrl = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobNorthArrowOptions.prototype.picAsBase64]
+         * @member {string} [WebPrintingJobNorthArrowOptions.prototype.picAsBase64]
          * @description 指北针的base64位图片信息。
          */
         this.picAsBase64 = null;
@@ -31,7 +32,7 @@ export class WebPrintingJobNorthArrowOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobNorthArrowOptions.prototype.destroy
+     * @function WebPrintingJobNorthArrowOptions.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -40,9 +41,9 @@ export class WebPrintingJobNorthArrowOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobNorthArrowOptions.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobNorthArrowOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @function WebPrintingJobNorthArrowOptions.prototype.toJSON
+     * @description 将 WebPrintingJobNorthArrowOptions 对象转化为 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {};
@@ -55,4 +56,3 @@ export class WebPrintingJobNorthArrowOptions {
     }
 }
 
-SuperMap.WebPrintingJobNorthArrowOptions = WebPrintingJobNorthArrowOptions;

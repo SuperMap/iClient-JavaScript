@@ -19,7 +19,7 @@
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var url = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
 
-            L.supermap.tiledMapLayer(url).addTo(map);
+            new L.supermap.TiledMapLayer(url).addTo(map);
 
             loadData();
 
@@ -98,7 +98,7 @@
                 };
 
                 //创建MapV图层
-                L.supermap.mapVLayer(dataSet, options).addTo(map);
+                new L.supermap.MapVLayer(dataSet, options).addTo(map);
             }
         </script>
     </body>

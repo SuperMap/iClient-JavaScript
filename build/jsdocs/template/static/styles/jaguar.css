@@ -66,11 +66,13 @@ a:hover, a:active, a:focus{
 
 .main-sidebar .search {
     padding: 10px 15px;
+    z-index: 1;
+    position: relative;
 }
 
 .main-sidebar .list {
     height: 100%;
-    padding: 5px 5px 0 5px;
+    padding: 5px 5px 10px 5px;
     position: relative;
     overflow: auto;
     width: 100%;
@@ -88,7 +90,7 @@ a:hover, a:active, a:focus{
 }
 
 .main-sidebar li.item a:hover {
-    color: #282828 ;
+    color: #A1A1A1;
 }
 
 .main-sidebar li.item .title {
@@ -140,6 +142,7 @@ a:hover, a:active, a:focus{
 
 .main-sidebar li.item .itemMembers {
     display: none;
+    text-indent: 1em;
 }
 
 .main {
@@ -221,26 +224,6 @@ a:hover, a:active, a:focus{
     font-size: 0.4em;
     padding: 2px 2px;
     margin-right: 4px;
-}
-
-.main span.number {
-    background-color: gray !important;
-}
-
-.main span.string {
-    background-color: gray !important;
-}
-
-.main span.object {
-    background-color: #2a6496 !important;
-}
-
-.main span.array {
-    background-color: #2a6496 !important;
-}
-
-.main span.boolean {
-    background-color: #ee7d7d !important;
 }
 
 .main .subsection-title {
@@ -356,6 +339,10 @@ a:hover, a:active, a:focus{
     color: #fff;
 }
 
+.main .nameContainer .attribs {
+    margin-right: 5px;
+}
+
 .main pre {
     font-size: 11px;
 }
@@ -449,6 +436,10 @@ a:hover, a:active, a:focus{
     margin-bottom: 5px;
     margin-top: 20px;
     list-style-type: none;
+}
+
+.params tbody>tr:hover {
+    background-color: rgba(0,0,0,0.04);
 }
 
 .treeview > a {

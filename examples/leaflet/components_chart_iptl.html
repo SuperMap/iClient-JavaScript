@@ -101,7 +101,7 @@
             maxZoom: 18,
             zoom: 6
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        new L.supermap.TiledMapLayer(url).addTo(map);
         //图表组件
         var options = {
             type: 'bar',
@@ -123,7 +123,7 @@
                 }
             }]
         }
-        var barChart = new SuperMap.Components.Chart("chart", options);
+        var barChart = new L.supermap.Components.Chart("chart", options);
         //加载图表之后，将要素添加到地图上
         barChart.onAdd(addDataToMap);
 

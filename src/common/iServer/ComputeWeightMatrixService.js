@@ -1,21 +1,21 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {ComputeWeightMatrixParameters} from './ComputeWeightMatrixParameters';
 import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
 
 /**
- * @class SuperMap.ComputeWeightMatrixService
+ * @class ComputeWeightMatrixService
+ * @deprecatedclass SuperMap.ComputeWeightMatrixService
  * @category  iServer NetworkAnalyst WeightMatrix
  * @classdesc 耗费矩阵分析服务类。
  *            耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  *            用来存储指定的任意两点间的资源消耗。
  *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
- * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
+ * var mycomputeWeightMatrixService = new ComputeWeightMatrixService(url,{
  *     eventListeners: {
  *	       "processCompleted": computeWeightMatrixCompleted,
  *		   "processFailed": computeWeightMatrixnError
@@ -28,6 +28,7 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
@@ -38,7 +39,7 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
 
     /**
-     * @function SuperMap.ComputeWeightMatrixService.prototype.destroy
+     * @function ComputeWeightMatrixService.prototype.destroy
      * @override
      */
     destroy() {
@@ -47,9 +48,9 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
 
     /**
-     * @function SuperMap.ComputeWeightMatrixService.prototype.processAsync
+     * @function ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类
+     * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类
      */
     processAsync(params) {
         if (!(params instanceof ComputeWeightMatrixParameters)) {
@@ -72,10 +73,10 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.ComputeWeightMatrixService.prototype.getJson
+     * @function ComputeWeightMatrixService.prototype.getJson
      * @description 将对象转化为JSON字符串。
      * @param {boolean} isAnalyzeById - 是否通过id分析
-     * @param {Array.<SuperMap.ComputeWeightMatrixParameters>} params - 分析参数数组
+     * @param {Array.<ComputeWeightMatrixParameters>} params - 分析参数数组
      * @returns {string} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
@@ -101,5 +102,3 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
         return jsonString;
     }
 }
-
-SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;

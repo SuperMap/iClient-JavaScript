@@ -20,44 +20,44 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
+    new L.supermap.TiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
     createTheme();
 
     function createTheme() {
-        themeService = L.supermap.themeService(url);
-        var themeRangeItem1 = new SuperMap.ThemeRangeItem({
+        themeService = new L.supermap.ThemeService(url);
+        var themeRangeItem1 = new L.supermap.ThemeRangeItem({
             start: 0,
             end: 500000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(211, 255, 250),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new L.supermap.ServerStyle({
+                fillForeColor: new L.supermap.ServerColor(211, 255, 250),
+                lineColor: new L.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        var themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem2 = new L.supermap.ThemeRangeItem({
             start: 500000000000,
             end: 1000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(178, 218, 199),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new L.supermap.ServerStyle({
+                fillForeColor: new L.supermap.ServerColor(178, 218, 199),
+                lineColor: new L.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        var themeRangeItem3 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem3 = new L.supermap.ThemeRangeItem({
             start: 1000000000000,
             end: 3000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(58, 178, 166),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new L.supermap.ServerStyle({
+                fillForeColor: new L.supermap.ServerColor(58, 178, 166),
+                lineColor: new L.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRange = new SuperMap.ThemeRange({
+        themeRange = new L.supermap.ThemeRange({
             rangeExpression: "SMAREA",
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: L.supermap.RangeMode.EQUALINTERVAL,
             items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             joinItems: null,
@@ -66,7 +66,7 @@
         themeService.getThemeInfo(themeParameters, function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(url, {
+                themeLayer = new L.supermap.TiledMapLayer(url, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

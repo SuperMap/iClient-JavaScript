@@ -30,7 +30,7 @@
         zoom: 2,
         crs: L.CRS.EPSG3857
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     init();
 
     function init() {
@@ -80,7 +80,7 @@
     function start() {
         var options = getControlOptions();
         if (!timeControl) {
-            timeControl = new SuperMap.TimeFlowControl(loadLiveData, options);
+            timeControl = new L.supermap.TimeFlowControl(loadLiveData, options);
         } else {
             timeControl.updateOptions(options);
         }
@@ -106,12 +106,12 @@
 
     function query(startTime, endTime) {
         var esmode = $("#esmode").val();
-        var geoHashAggegation = new SuperMap.GeoHashGridAggParameter({
+        var geoHashAggegation = new L.supermap.GeoHashGridAggParameter({
             aggName: "aggName",
             aggFieldName: "pin.location",
             precision: 5
         });
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "flight",
             },
@@ -124,7 +124,7 @@
         } else {
             sqlParam.queryParameter.attributeFilter = "id>0";
         }
-        L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
             renderLive(serviceResult.result.aggregations[0].buckets);
         });
     }
@@ -136,7 +136,7 @@
         }
         updateDataSet(data);
         if (!liveRenderer) {
-            liveRenderer = L.supermap.mapVLayer(liveDataSet, layerOptions, {noWrap: true}).addTo(map);
+            liveRenderer = new L.supermap.MapVLayer(liveDataSet, layerOptions, {noWrap: true}).addTo(map);
         } else {
             liveRenderer.update({data: liveDataSet, options: layerOptions});
         }

@@ -1,5 +1,26 @@
 import { Unit } from '../REST';
 
+/**
+ * @function getMeterPerMapUnit
+ * @description 单位换算，把米|度|千米|英寸|英尺换成米。
+ * @category BaseTypes Util
+ * @param {string} mapUnit 地图单位。
+ * @returns {number} 返回地图的距离单位。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getMeterPerMapUnit(mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getMeterPerMapUnit } from '{npm}';
+ *
+ * const result = getMeterPerMapUnit(mapUnit);
+ * ```
+ */
 export var getMeterPerMapUnit = function(mapUnit) {
     var earchRadiusInMeters = 6378137;
     var meterPerMapUnit;
@@ -20,6 +41,30 @@ export var getMeterPerMapUnit = function(mapUnit) {
     return meterPerMapUnit;
 };
 
+/**
+ * @function getWrapNum
+ * @description 获取该坐标系的经纬度范围的经度或纬度。
+ * @category BaseTypes Util
+ * @param {number} x 经度或纬度。
+ * @param {boolean} includeMax 是否获取经度或纬度的最大值。
+ * @param {boolean} includeMin 是否获取经度或纬度的最小值。
+ * @param {number} range 坐标系的经纬度范围。
+ * @returns {number} 返回经度或纬度的值。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getWrapNum(x, includeMax, includeMin, range);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getWrapNum } from '{npm}';
+ *
+ * const result = getWrapNum(x, includeMax, includeMin, range);
+ * ```
+ */
 export function getWrapNum(x, includeMax = true, includeMin = true, range = [-180, 180]) {
     var max = range[1],
         min = range[0],
@@ -37,6 +82,27 @@ export function getWrapNum(x, includeMax = true, includeMin = true, range = [-18
     return ((((x - min) % d) + d) % d) + min;
 }
 
+/**
+ * @function conversionDegree
+ * @description 转换经纬度。
+ * @category BaseTypes Util
+ * @param {number} degrees 经度或纬度。
+ * @returns {string} 返回度分秒。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.conversionDegree(degrees);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { conversionDegree } from '{npm}';
+ *
+ * const result = conversionDegree(degrees);
+ * ```
+ */
 export function conversionDegree(degrees) {
     const degree = parseInt(degrees);
     let fraction = parseInt((degrees - degree) * 60);

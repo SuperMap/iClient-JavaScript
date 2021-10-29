@@ -21,7 +21,7 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     resultLayer = L.featureGroup().addTo(map);
     measureDistance();
 
@@ -31,9 +31,9 @@
         resultLayer.addLayer(polyLine);
         resultLayer.addLayer(marker1);
         resultLayer.addLayer(marker2);
-        var distanceMeasureParam = new SuperMap.MeasureParameters(polyLine);
-        L.supermap
-            .measureService(url)
+        var distanceMeasureParam = new L.supermap.MeasureParameters(polyLine);
+        new L.supermap
+            .MeasureService(url)
             .measureDistance(distanceMeasureParam, function (serviceResult) {
                 var content = resources.text_distance+"：" + serviceResult.result.distance + resources.msg_m;
                 marker1.bindPopup(content).openPopup(marker1.getLatLng());

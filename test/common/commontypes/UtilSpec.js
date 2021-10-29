@@ -1,9 +1,10 @@
-import {
-    SuperMap
-} from "../../../src/common/SuperMap";
-import {
-    Util
-} from '../../../src/common/commontypes/Util';
+import { Util } from '../../../src/common/commontypes/Util';
+import { Pixel } from '../../../src/common/commontypes/Pixel';
+import { Size } from '../../../src/common/commontypes/Size';
+import { Bounds } from '../../../src/common/commontypes/Bounds';
+import { Point as GeometryPoint } from '../../../src/common/commontypes/geometry/Point';
+import { ThemeStyle } from '../../../src/common/style/ThemeStyle';
+
 
 describe('Util', () => {
 
@@ -114,8 +115,8 @@ describe('Util', () => {
     it('modifyDOMElement', () => {
         var testDom = document.createElement("div");
         var id = "box";
-        var px = new SuperMap.Pixel(99, 80);
-        var sz = new SuperMap.Size(99, 80);
+        var px = new Pixel(99, 80);
+        var sz = new Size(99, 80);
         var position = "absolute";
         var border = "1px solid red";
         var overflow = "hidden";
@@ -216,8 +217,8 @@ describe('Util', () => {
     });
 
     it("calculateDpi", () => {
-        var viewBounds = new SuperMap.Bounds(-65.71902951325971, -65.71902951331374, 65.71902951333179, 65.71902951327776);
-        var viewer = new SuperMap.Size(256, 256);
+        var viewBounds = new Bounds(-65.71902951325971, -65.71902951331374, 65.71902951333179, 65.71902951327776);
+        var viewer = new Size(256, 256);
         var scale = 4.629244301712164E-9;
         var coordUnit = "DEGREE";
         var datumAxis = 6378137;
@@ -341,23 +342,23 @@ describe('Util', () => {
 
     it('lineIntersection', () => {
         //重合
-        var a1 = new SuperMap.Geometry.Point(-111.04, 45.68);
-        var a2 = new SuperMap.Geometry.Point(-152, 89);
-        var a3 = new SuperMap.Geometry.Point(-111.04, 45.68);
-        var a4 = new SuperMap.Geometry.Point(-152, 89);
+        var a1 = new GeometryPoint(-111.04, 45.68);
+        var a2 = new GeometryPoint(-152, 89);
+        var a3 = new GeometryPoint(-111.04, 45.68);
+        var a4 = new GeometryPoint(-152, 89);
         var intersectValue = Util.lineIntersection(a1, a2, a3, a4);
         expect(intersectValue).toEqual("Coincident");
         //平行
-        var a5 = new SuperMap.Geometry.Point(20, 80);
-        var a6 = new SuperMap.Geometry.Point(140, 160);
-        var a7 = new SuperMap.Geometry.Point(20, 20);
-        var a8 = new SuperMap.Geometry.Point(140, 100);
+        var a5 = new GeometryPoint(20, 80);
+        var a6 = new GeometryPoint(140, 160);
+        var a7 = new GeometryPoint(20, 20);
+        var a8 = new GeometryPoint(140, 100);
         var intersectValue1 = Util.lineIntersection(a5, a6, a7, a8);
         expect(intersectValue1).toEqual("Parallel");
     });
 
     it('getTextBounds', () => {
-        var style = new SuperMap.ThemeStyle({
+        var style = new ThemeStyle({
             width: 200,
             height: 300,
             fontSize: 12,

@@ -30,7 +30,7 @@
             for (var zoom = 0; zoom < 22; zoom++) {
                 resolutions.push(topResolution / Math.pow(2, zoom));
             }
-            var crs = L.Proj.CRS('EPSG:4326', {
+            var crs = new L.supermap.Proj.CRS('EPSG:4326', {
                 origin: [-180, 90],
                 resolutions: resolutions
             });
@@ -41,7 +41,7 @@
                 minZoom: 11,
                 maxZoom: 14
             });
-            L.supermap.tiledMapLayer(url).addTo(map);
+            new L.supermap.TiledMapLayer(url).addTo(map);
             $.get(
                 host +
                     '/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',

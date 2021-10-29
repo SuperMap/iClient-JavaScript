@@ -34,9 +34,9 @@
         var url = host + '/iserver/services/map-china400/rest/maps/China';
         var sqlurl = host + "/iserver/services/map-world/rest/maps/World";
 
-        L.supermap.tiledMapLayer(url).addTo(map);
+        new L.supermap.TiledMapLayer(url).addTo(map);
         //添加组件：
-        var poiSearch = L.supermap.components.search({
+        var poiSearch = new L.supermap.Components.Search({
             isGeoCoding: !window.isLocal,
             perPageDataNum: 8  // 每页显示数据个数
             //设置结果图层样式：
@@ -60,12 +60,12 @@
         function query() {
             //查询数据构建示例图层：
             var polygon = L.polygon([[90, 180], [90, -180], [-90, -180], [-90, 180], [90, 180]]);
-            var param = new SuperMap.QueryByBoundsParameters({
+            var param = new L.supermap.QueryByBoundsParameters({
                 queryParams: { name: "Capitals@World.1" },
                 bounds: polygon.getBounds()
             });
-            L.supermap
-                .queryService(sqlurl)
+            new L.supermap
+                .QueryService(sqlurl)
                 .queryByBounds(param, function (serviceResult) {
                     var result = serviceResult.result;
                     var resultLayer = L.geoJSON(result.recordsets[0].features, {
@@ -79,7 +79,7 @@
                             });
                         },
                     }).addTo(map);
-                    poiSearch.addSearchLayer([L.supermap.components.geoJSONLayerWithName("首都", resultLayer)]);
+                    poiSearch.addSearchLayer([new L.supermap.Components.GeoJSONLayerWithName("首都", resultLayer)]);
                 });
         }
     </script>

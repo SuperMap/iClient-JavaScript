@@ -1,33 +1,34 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {DatasetOverlayAnalystParameters} from './DatasetOverlayAnalystParameters';
 import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParameters';
 
 /**
- * @class SuperMap.OverlayAnalystService
+ * @class OverlayAnalystService
+ * @deprecatedclass SuperMap.OverlayAnalystService
  * @category iServer SpatialAnalyst OverlayAnalyst
  * @classdesc 叠加分析服务类。
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
- * @param {string} url - 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
- * @param {Object} options - 参数。</br>
+ * @param {string} url - 服务地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
+ * var myOverlayAnalystService = new OverlayAnalystService(url, {
  *     eventListeners: {
  *	       "processCompleted": OverlayCompleted,
  *		   "processFailed": OverlayFailed
  *		   }
  * });
  * (end)
+ * @usage
  */
 
 export class OverlayAnalystService extends SpatialAnalystBase {
@@ -36,7 +37,7 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         super(url, options);
 
         /**
-         * @member {string} SuperMap.OverlayAnalystService.prototype.mode
+         * @member {string} OverlayAnalystService.prototype.mode
          * @description 叠加分析类型
          */
         this.mode = null;
@@ -57,9 +58,9 @@ export class OverlayAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.OverlayAnalystService.prototype.processAsync
+     * @function OverlayAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.OverlayAnalystParameters} parameter - 叠加分析参数类。
+     * @param {OverlayAnalystParameters} parameter - 叠加分析参数类。
      */
     processAsync(parameter) {
         var parameterObject = {};
@@ -91,5 +92,3 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         });
     }
 }
-
-SuperMap.OverlayAnalystService = OverlayAnalystService;

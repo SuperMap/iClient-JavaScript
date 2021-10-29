@@ -17,7 +17,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
         .addTo(map)
         .once("load", function () {
             findTSPPathsProcess();
@@ -41,9 +41,9 @@
         marker6.bindPopup(resources.text_retailStation3);
 
         //创建多旅行商分析服务实例
-        findTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
+        findTSPPathsService = new L.supermap.NetworkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new L.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -53,11 +53,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new L.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findTSPPathsParameter = new SuperMap.FindTSPPathsParameters({
+        findTSPPathsParameter = new L.supermap.FindTSPPathsParameters({
             //是否指定终止点,
             endNodeAssigned: false,
             isAnalyzeById: false,

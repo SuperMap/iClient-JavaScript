@@ -37,7 +37,7 @@
               type: 'raster',
               tileSize: 256,
               tiles: [host + '/iserver/services/map-ndvi/rest/maps/ndvi'],
-              rasterfunction: new SuperMap.NDVIParameter({ redIndex: 0, nirIndex: 2 }),
+              rasterfunction: new mapboxgl.supermap.NDVIParameter({ redIndex: 0, nirIndex: 2 }),
               cacheEnabled: false,
               rasterSource: 'iserver'
             }

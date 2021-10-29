@@ -4,14 +4,14 @@
 import L from "leaflet";
 
 /**
- * @class L.supermap.CanvasRenderer
+ * @class CanvasRenderer
  * @private
  * @classdesc 画布渲染器。
  * @category Visualization VectorTile
  * @extends {L.Canvas}
- * @param {Object} tileCoord - 切片坐标系
- * @param {number} tileSize - 切片大小
- * @param {Object} options - 渲染器参数
+ * @param {Object} tileCoord - 切片坐标系。
+ * @param {number} tileSize - 切片大小。
+ * @param {Object} options - 渲染器参数。
  */
 export var CanvasRenderer = L.Canvas.extend({
 
@@ -33,7 +33,7 @@ export var CanvasRenderer = L.Canvas.extend({
     },
 
     /**
-     * @function L.supermap.CanvasRenderer.prototype.getCoord
+     * @function CanvasRenderer.prototype.getCoord
      * @description 获取坐标。
      */
     getCoord: function () {
@@ -41,7 +41,7 @@ export var CanvasRenderer = L.Canvas.extend({
     },
 
     /**
-     * @function L.supermap.CanvasRenderer.prototype.getContainer
+     * @function CanvasRenderer.prototype.getContainer
      * @description 获取容器。
      */
     getContainer: function () {
@@ -49,7 +49,7 @@ export var CanvasRenderer = L.Canvas.extend({
     },
 
     /**
-     * @function L.supermap.CanvasRenderer.prototype.getOffset
+     * @function CanvasRenderer.prototype.getOffset
      * @description 停止渲染。
      */
     getOffset: function () {
@@ -59,18 +59,18 @@ export var CanvasRenderer = L.Canvas.extend({
     onAdd: L.Util.falseFn,
 
     /**
-     * @function L.supermap.CanvasRenderer.prototype.addTo
+     * @function CanvasRenderer.prototype.addTo
      * @description 添加到地图。
-     * @param {L.Map} map - map 对象。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     addTo: function (map) {
         this._map = map;
     },
 
     /**
-     * @function L.supermap.CanvasRenderer.prototype.removeFrom
+     * @function CanvasRenderer.prototype.removeFrom
      * @description 从地图移除。
-     * @param {L.Map} map - map 对象。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     removeFrom: function (map) { // eslint-disable-line no-unused-vars
         delete this._map;

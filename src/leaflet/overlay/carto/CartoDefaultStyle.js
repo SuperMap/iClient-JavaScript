@@ -1,11 +1,10 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @constant L.supermap.DefaultStyle
+ * @constant DefaultStyle
  * @description 这个 style 对应的是默认设置。
  * @category BaseTypes Style
  * @private
@@ -13,7 +12,7 @@ import '../../core/Base';
 export var DefaultStyle = {
 
     /**
-     * @constant L.supermap.DefaultStyle.prototype.TEXT
+     * @constant DefaultStyle.prototype.TEXT
      * @description 默认文本样式。
      */
     "TEXT": {
@@ -27,7 +26,7 @@ export var DefaultStyle = {
     },
 
     /**
-     * @constant L.supermap.DefaultStyle.prototype.POINT
+     * @constant DefaultStyle.prototype.POINT
      * @description 默认点样式。
      */
     "POINT": {
@@ -39,7 +38,7 @@ export var DefaultStyle = {
     },
 
     /**
-     * @constant L.supermap.DefaultStyle.prototype.LINE
+     * @constant DefaultStyle.prototype.LINE
      * @description 默认线样式。
      */
     "LINE": {
@@ -54,7 +53,7 @@ export var DefaultStyle = {
     },
 
     /**
-     * @constant L.supermap.DefaultStyle.prototype.REGION
+     * @constant DefaultStyle.prototype.REGION
      * @description 默认多边形样式。
      */
     "REGION": {
@@ -69,5 +68,3 @@ export var DefaultStyle = {
         dashArray: []
     }
 };
-
-L.supermap.DefaultStyle = DefaultStyle

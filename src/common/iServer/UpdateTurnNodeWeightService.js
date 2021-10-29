@@ -1,29 +1,30 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
 import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters';
 
 /**
- * @class SuperMap.UpdateTurnNodeWeightService
+ * @class UpdateTurnNodeWeightService
+ * @deprecatedclass SuperMap.UpdateTurnNodeWeightService
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务类
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
- * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
+ * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url, {
  *     eventListeners: {
- *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
- *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
+ *         "processCompleted": UpdateTurnNodeWeightCompleted,
+ *		   "processFailed": UpdateTurnNodeWeightError
  *		   }
  * });
- * @param {string} url - 服务的访问地址。如:
+ * @param {string} url - 服务地址。如:
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
@@ -40,12 +41,12 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.UpdateTurnNodeWeightService.prototype.processAsync
+     * @function UpdateTurnNodeWeightService.prototype.processAsync
      * @description 开始异步执行转向耗费权重的更新
-     * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
+     * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
      * @example
      * (code)
-     *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
+     *  var updateTurnNodeWeightParam=new UpdateTurnNodeWeightParameters({
      *           nodeId:"106",
      *           fromEdgeId:"6508",
      *           toEdgeId:"6504",
@@ -73,7 +74,7 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.UpdateTurnNodeWeightService.prototype.parse
+     * @function UpdateTurnNodeWeightService.prototype.parse
      * @description 将更新服务参数解析为用‘/’做分隔的字符串
      */
     parse(params) {
@@ -106,5 +107,3 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
     }
 
 }
-
-SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;

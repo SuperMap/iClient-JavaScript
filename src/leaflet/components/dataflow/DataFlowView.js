@@ -1,19 +1,22 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {ComponentsViewBase} from '../ComponentsViewBase';
-import {MessageBox, CommonContainer, Lang} from '@supermap/iclient-common';
-import {DataFlowViewModel} from './DataFlowViewModel';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { DataFlowViewModel } from './DataFlowViewModel';
+ import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
 
 /**
- * @class L.supermap.components.dataFlow
+ * @class DataFlowView
+ * @aliasclass Components.DataFlowView
+ * @deprecatedclassinstance L.supermap.components.dataFlow
  * @classdesc 数据流组件。
  * @version 9.1.1
  * @category Components DataFlow
- * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
- * @param {Function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。<br>
+ * @param {Object} options - 参数。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
+ * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。<br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",
@@ -22,9 +25,10 @@ import {DataFlowViewModel} from './DataFlowViewModel';
                                                         weight: 0
                                                     };
                                             }`
- * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.dataFlow#dataupdated
- * @extends {L.supermap.components.componentsViewBase}
+ * @param {function} [options.onEachFeature] - 给该元素绑定事件和弹窗。
+ * @fires DataFlowView#dataupdated
+ * @extends {ComponentsViewBase}
+ * @usage
  */
 export var DataFlowView = ComponentsViewBase.extend({
     initialize(options) {
@@ -32,8 +36,8 @@ export var DataFlowView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlow.prototype.onAdd
-     * @description 向底图添加组件
+     * @function DataFlowView.prototype.onAdd
+     * @description 给地图添加组件。
      * @override
      * @private
      */
@@ -51,8 +55,8 @@ export var DataFlowView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlow.prototype._initView
-     * @description 创建打开本地文件数据组件
+     * @function DataFlowView.prototype._initView
+     * @description 创建数据组件，用于打开本地文件。
      * @returns {HTMLElement}
      * @private
      * @override
@@ -161,7 +165,7 @@ export var DataFlowView = ComponentsViewBase.extend({
         });
 
         /**
-         * @event L.supermap.components.dataFlow#dataupdated
+         * @event DataFlowView#dataupdated
          * @description 数据流服务成功返回数据后触发。
          * @property {Object} result  - 事件返回的数据对象。
          */
@@ -182,4 +186,3 @@ export var dataFlowView = function (options) {
     return new DataFlowView(options);
 };
 
-L.supermap.components.dataFlow = dataFlowView;

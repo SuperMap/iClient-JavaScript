@@ -13,6 +13,7 @@ import {ChartViewModel} from './chart/ChartViewModel';
 //公用模板：
 import {CommonContainer} from './templates/CommonContainer';
 import {Select} from './templates/Select';
+import {TemplateBase} from './templates/TemplateBase';
 import {DropDownBox} from './templates/DropDownBox';
 import {AttributesPopContainer} from './templates/AttributesPopContainer';
 import {PopContainer} from './templates/PopContainer';
@@ -32,6 +33,7 @@ export {ChartView};
 export {ChartViewModel};
 export {CommonContainer};
 export {Select};
+export {TemplateBase};
 export {DropDownBox};
 export {AttributesPopContainer};
 export {PopContainer};

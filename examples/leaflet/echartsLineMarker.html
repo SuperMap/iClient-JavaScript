@@ -22,7 +22,7 @@
         zoomControl: false,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(url, {zoomControl: false}).addTo(map);
+    new L.supermap.TiledMapLayer(url, {zoomControl: false}).addTo(map);
     var option = {
         title: {
             subtext: resources.text_fictitiou
@@ -131,7 +131,7 @@
 
     function query() {
         clearLayer();
-        var param = new SuperMap.QueryBySQLParameters({
+        var param = new L.supermap.QueryBySQLParameters({
             queryParams: [{
                 name: "China_ProCenCity_pt@China",
                 attributeFilter: "1 = 1"
@@ -141,8 +141,8 @@
             }]
         });
 
-        L.supermap
-                .queryService(url2)
+        new L.supermap
+                .QueryService(url2)
                 .queryBySQL(param, function (serviceResult) {
                     serviceResult.result.recordsets.map(function (record) {
                         resultLayer = L.geoJSON(record.features, {

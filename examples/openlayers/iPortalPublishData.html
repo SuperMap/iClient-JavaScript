@@ -131,12 +131,12 @@
     </div>
 </div>
 <script type="text/javascript" include="jquery,bootstrap-css,bootstrap,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
     var iPortalUrl = "https://iportal.supermap.io/iportal";
     var token = "MFEKl8kVmkvEDrDFcgnjodlPCudIO83mBSwvdjiUlWNnySGD-FCEyYEk4CsY2WnSCujfAs8HI0ZkSL6Vxa-njg..";
-    var queryParams = new SuperMap.iPortalQueryParam({
+    var queryParams = new ol.supermap.iPortalQueryParam({
         resourceType: "DATA",
         pageSize: 12,
         currentPage: 1,
@@ -145,22 +145,22 @@
         searchType:'MY_RES'
     });
     //资源查询初始化工作
-    var iPortal = new SuperMap.iPortal(iPortalUrl);
+    var iPortal = new ol.supermap.iPortal(iPortalUrl);
     $(document).ready(function () {
         generatePortalToken();
     });
     var publishDataId,serviceType;
     // 申请，注册token并查询
     function generatePortalToken() {
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new ol.supermap.ServerInfo(ol.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        ol.supermap.SecurityManager.registerServers([serverInfo]);
+        ol.supermap.SecurityManager.destroyToken(iPortalUrl);
+        ol.supermap.SecurityManager.registerToken(iPortalUrl, token);
         //加载完DOM后，开始资源数据查询并添加
-        iPortal = new SuperMap.iPortal(iPortalUrl);
+        iPortal = new ol.supermap.iPortal(iPortalUrl);
         queryResouces(queryParams);
     }
 
@@ -203,7 +203,7 @@
         publishDataId = dataId;
         $('#publishModal').modal('show');
         $("#serviceType").empty();
-        var items = new SuperMap.iPortalResource(iPortalUrl,{resourceId:dataId,resourceType:"DATA"});
+        var items = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:dataId,resourceType:"DATA"});
         items.load().then(()=>{
             var item = items.sourceJSON;
             switch (item.type) {
@@ -300,10 +300,10 @@
             serviceType:serviceType,
             dataServiceId:dataServiceId
         }
-        new SuperMap.iPortalUser(iPortalUrl).publishDataService(options,forPublish).then(res=>{
+        new ol.supermap.iPortalUser(iPortalUrl).publishDataService(options,forPublish).then(res=>{
             var serviceIdList = res.split(",");
             for (var i = 0; i < serviceIdList.length; i++) {
-                new SuperMap.iPortalUser(iPortalUrl).getDataPublishedStatus(dataId,serviceIdList[i]).then(res=>{
+                new ol.supermap.iPortalUser(iPortalUrl).getDataPublishedStatus(dataId,serviceIdList[i]).then(res=>{
                     if(res.succeed){
                         widgets.alert.showAlert(resources.msg_publish_success, true);
                     }else {
@@ -328,7 +328,7 @@
         return false;
     }
     function showPublishedDataService(id,index) {
-        var items = new SuperMap.iPortalResource(iPortalUrl,{resourceId:id,resourceType:"DATA"});
+        var items = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:id,resourceType:"DATA"});
         items.load().then(()=>{
             var template = "";
             if(items.sourceJSON.dataItemServices.length) {
@@ -350,7 +350,7 @@
     }
     //取消发布
     function unPublishData(option){
-        new SuperMap.iPortalUser(iPortalUrl).unPublishDataService(option).then(res=>{
+        new ol.supermap.iPortalUser(iPortalUrl).unPublishDataService(option).then(res=>{
             if(res.succeed) {
                 widgets.alert.showAlert(resources.msg_unpublish_success, true);
             }else {

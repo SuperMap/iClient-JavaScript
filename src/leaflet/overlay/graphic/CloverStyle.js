@@ -5,11 +5,12 @@ import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.cloverStyle
+ * @class CloverStyle
+ * @deprecatedclassinstance L.supermap.cloverStyle
  * @classdesc 三叶草要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 三叶草形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {number} [options.angle=60] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {number} [options.spaceAngle=0] - 扇叶间隔角度，通过计算获取。
  * @param {number} [options.count=3] - 扇叶数量。
@@ -25,6 +26,7 @@ import '../../core/Base';
  * @param {number} [options.fillOpacity=0.2] - 填充透明度。
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
  * @param {number} [options.radius=10] - 半径。
+ * @usage
  */
 export var CloverStyle = L.Class.extend({
 
@@ -62,7 +64,7 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.cloverStyle.prototype.getStyle
+     * @function CloverStyle.prototype.getStyle
      * @description 获取画布。
      */
     getStyle: function () {
@@ -70,7 +72,7 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.cloverStyle.prototype.drawSector
+     * @function CloverStyle.prototype.drawSector
      * @description 绘制扇形。
      * @param  {CanvasRenderingContext2D} ctx - context 对象。
      * @param {number} x - 中心点 x。
@@ -129,5 +131,3 @@ export var CloverStyle = L.Class.extend({
 export var cloverStyle = function (options) {
     return new CloverStyle(options);
 };
-
-L.supermap.cloverStyle = cloverStyle;

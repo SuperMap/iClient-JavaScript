@@ -3,13 +3,10 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {
-    CommonUtil
-} from "@supermap/iclient-common";
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import {
     Util
 } from "../core/Util";
-import './graphic';
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -23,12 +20,12 @@ const defaultProps = {
 };
 
 /**
- * @class mapboxgl.supermap.GraphicLayer
+ * @class GraphicLayer
  * @category  Visualization Graphic
  * @classdesc 高效率点图层。
  * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
- * @param {Object} options -  图层配置项。
- * @param {Array.<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 。
+ * @param {Object} options - 参数。
+ * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
@@ -38,33 +35,34 @@ const defaultProps = {
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
+ * @usage
  */
 export class GraphicLayer {
 
     constructor(id, options) {
         let opt = Util.extend(this, defaultProps, options);
         /**
-         * @member {string} mapboxgl.supermap.GraphicLayer.prototype.id
+         * @member {string} GraphicLayer.prototype.id
          * @description 高效率点图层 id。
          */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
         /**
-         * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.GraphicLayer.prototype.graphics
+         * @member {Array.<Graphic>} GraphicLayer.prototype.graphics
          * @description 点要素对象数组。
          */
         this.graphics = [].concat(opt.graphics);
 
         /**
-         * @member {boolean} [mapboxgl.supermap.GraphicLayer.prototype.visibility=true]
+         * @member {boolean} [GraphicLayer.prototype.visibility=true]
          * @description 图层显示状态属性。
          */
         this.visibility = true;
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.addTo
-     * @description 图层添加到地图，将在下个版本废弃，请使用 onAdd() 代替。
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
+     * @function GraphicLayer.prototype.addTo
+     * @description 添加该图层，将在下个版本废弃，请使用 onAdd() 代替。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
      * @returns this
      */
     addTo(map) {
@@ -72,10 +70,10 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.onAdd
-     * @description 图层添加到地图。
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
-     * @returns {mapboxgl.supermap.GraphicLayer}
+     * @function GraphicLayer.prototype.onAdd
+     * @description 添加该图层。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
+     * @returns {GraphicLayer}
      */
     onAdd(map) {
         this.map = map;
@@ -162,13 +160,13 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.setStyle
+     * @function GraphicLayer.prototype.setStyle
      * @description 设置图层整体样式。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
+     * @param {Array.<number>}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
@@ -193,9 +191,9 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.setGraphics
+     * @function GraphicLayer.prototype.setGraphics
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
-     * @param {Array.<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组。
+     * @param {Array.<Graphic>} graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -213,9 +211,9 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.addGraphics
+     * @function GraphicLayer.prototype.addGraphics
      * @description 添加点要素，不会覆盖之前的要素。
-     * @param {Array.<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组。
+     * @param {Array.<Graphic>} graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -231,11 +229,11 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.getGraphicBy
+     * @function GraphicLayer.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
      * @param {string} property - graphic 的某个属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -249,21 +247,21 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.getGraphicById
+     * @function GraphicLayer.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy("id", graphicId);
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.getGraphicsByAttribute
+     * @function GraphicLayer.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - graphic 的某个属性名称。
      * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @returns {Array.<Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -280,9 +278,9 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.removeGraphics
+     * @function GraphicLayer.prototype.removeGraphics
      * @description 删除要素数组，默认将删除所有要素
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
+     * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -318,7 +316,7 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.update
+     * @function GraphicLayer.prototype.update
      * @description 更新图层。
      */
     update() {
@@ -335,7 +333,7 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.clear
+     * @function GraphicLayer.prototype.clear
      * @description 释放图层资源。
      */
     clear() {
@@ -344,7 +342,7 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.remove
+     * @function GraphicLayer.prototype.remove
      * @description 删除该图层。
      */
     remove() {
@@ -354,9 +352,9 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.removeFromMap
+     * @function GraphicLayer.prototype.removeFromMap
      * @deprecated
-     * @description 删除该图层。
+     * @description 删除该图层，并释放图层资源。
      */
     removeFromMap() {
         this.remove();
@@ -364,10 +362,10 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.moveTo
+     * @function GraphicLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -390,8 +388,8 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.setVisibility
-     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @function GraphicLayer.prototype.setVisibility
+     * @description 设置图层可见性。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
@@ -403,7 +401,7 @@ export class GraphicLayer {
 
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.getState
+     * @function GraphicLayer.prototype.getState
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
@@ -452,7 +450,7 @@ export class GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.draw
+     * @function GraphicLayer.prototype.draw
      * @description 绘制图层。
      */
     draw() {
@@ -505,5 +503,3 @@ export class GraphicLayer {
     }
 
 }
-
-mapboxgl.supermap.GraphicLayer = GraphicLayer;

@@ -21,73 +21,73 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
+    new L.supermap.TiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
     createTheme();
 
     function createTheme() {
-        themeService = L.supermap.themeService(url);
-        var style1 = new SuperMap.ServerTextStyle({
+        themeService = new L.supermap.ThemeService(url);
+        var style1 = new L.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(100, 20, 50),
+            foreColor: new L.supermap.ServerColor(100, 20, 50),
             sizeFixed: true,
             bold: true
 
         });
-        var style2 = new SuperMap.ServerTextStyle({
+        var style2 = new L.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(250, 0, 0),
+            foreColor: new L.supermap.ServerColor(250, 0, 0),
             sizeFixed: true,
             bold: true
         });
-        var style3 = new SuperMap.ServerTextStyle({
+        var style3 = new L.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(93, 95, 255),
+            foreColor: new L.supermap.ServerColor(93, 95, 255),
             sizeFixed: true,
             bold: true
         });
-        var themeLabelItem1 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem1 = new L.supermap.ThemeLabelItem({
             start: 0.0,
             end: 7800000,
             style: style1
         });
-        var themeLabelItem2 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem2 = new L.supermap.ThemeLabelItem({
             start: 7800000,
             end: 15000000,
             style: style2
         });
-        var themeLabelItem3 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem3 = new L.supermap.ThemeLabelItem({
             start: 15000000,
             end: 30000000,
             style: style3
         });
-        var themeLabelItem4 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem4 = new L.supermap.ThemeLabelItem({
             start: 0.0,
             end: 55,
             style: style1
         });
-        var themeLabelItem5 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem5 = new L.supermap.ThemeLabelItem({
             start: 55,
             end: 109,
             style: style2
         });
-        var themeLabelItem6 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem6 = new L.supermap.ThemeLabelItem({
             start: 109,
             end: 300,
             style: style3
         });
 
-        themeLabel = new SuperMap.ThemeLabel({
+        themeLabel = new L.supermap.ThemeLabel({
             matrixCells: [
-                [new SuperMap.LabelThemeCell({
-                    themeLabel: new SuperMap.ThemeLabel({
+                [new L.supermap.LabelThemeCell({
+                    themeLabel: new L.supermap.ThemeLabel({
                         labelExpression: "CAP_POP",
                         rangeExpression: "CAP_POP",
                         numericPrecision: 0,
                         items: [themeLabelItem1, themeLabelItem2, themeLabelItem3]
                     })
                 })],
-                [new SuperMap.LabelThemeCell({
-                    themeLabel: new SuperMap.ThemeLabel({
+                [new L.supermap.LabelThemeCell({
+                    themeLabel: new L.supermap.ThemeLabel({
                         labelExpression: "CAPITAL",
                         rangeExpression: "SmID",
                         numericPrecision: 0,
@@ -95,16 +95,16 @@
                     })
                 })]
             ],
-            background: new SuperMap.ThemeLabelBackground({
-                backStyle: new SuperMap.ServerStyle({
-                    fillForeColor: new SuperMap.ServerColor(179, 209, 193),
+            background: new L.supermap.ThemeLabelBackground({
+                backStyle: new L.supermap.ServerStyle({
+                    fillForeColor: new L.supermap.ServerColor(179, 209, 193),
                     fillOpaqueRate: 60,
                     lineWidth: 0.1
                 }),
                 labelBackShape: "RECT"
             })
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["Capitals"],
             dataSourceNames: ["World"]
@@ -112,7 +112,7 @@
         themeService.getThemeInfo(themeParameters, function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(url, {
+                themeLayer = new L.supermap.TiledMapLayer(url, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

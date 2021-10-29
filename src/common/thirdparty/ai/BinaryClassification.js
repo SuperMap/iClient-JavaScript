@@ -1,11 +1,12 @@
-import { SuperMap } from '../../SuperMap';
 import MachineLearningBase from './MachineLearningBase';
 
 /**
- * @class SuperMap.BinaryClassification
+ * @class BinaryClassification
+ * @deprecatedclass SuperMap.BinaryClassification
  * @classdesc 二元分类类。
  * @category BinaryClassification
- * @extends {SuperMap.MachineLearningBase}
+ * @extends {MachineLearningBase}
+ * @usage
  */
 
 export class BinaryClassification extends MachineLearningBase {
@@ -13,7 +14,7 @@ export class BinaryClassification extends MachineLearningBase {
       super(options);
     }
     /**
-     * @function  SuperMap.BinaryClassification.prototype.handleResult
+     * @function  BinaryClassification.prototype.handleResult
      * @description 对预测数据进行处理
      * @param {Object} prediction - 模型预测后的张量。
      * @returns {Object} 处理返回的数据
@@ -26,4 +27,3 @@ export class BinaryClassification extends MachineLearningBase {
     }
 }
 
-SuperMap.BinaryClassification = BinaryClassification;

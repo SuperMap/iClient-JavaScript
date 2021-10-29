@@ -1,45 +1,46 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 /**
- * @class SuperMap.WebPrintingJobScaleBarOptions
+ * @class WebPrintingJobScaleBarOptions
+ * @deprecatedclass SuperMap.WebPrintingJobScaleBarOptions
  * @classdesc Web 打印比例尺参数类。
  * @category iServer WebPrintingJob
  * @version 10.1.0
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} [option.scaleText] - 比例尺文本信息。例如：1:1000000
- * @param {SuperMap.WebScaleOrientationType} [option.orientation] - 比例尺的方位样式。
- * @param {SuperMap.WebScaleType} [option.type] - 比例尺的样式。
+ * @param {WebScaleOrientationType} [option.orientation] - 比例尺的方位样式。
+ * @param {WebScaleType} [option.type] - 比例尺的样式。
  * @param {number} [option.intervals] - 比例尺条的段数。
- * @param {SuperMap.WebScaleUnit} [option.unit] - 比例尺的单位制。
+ * @param {WebScaleUnit} [option.unit] - 比例尺的单位制。
+ * @usage
  */
 export class WebPrintingJobScaleBarOptions {
     constructor(option) {
         /**
-         * @member {string} SuperMap.WebPrintingJobScaleBarOptions.prototype.scaleText
+         * @member {string} WebPrintingJobScaleBarOptions.prototype.scaleText
          * @description 比例尺文本信息。
          */
         this.scaleText = null;
         /**
-         * @member {SuperMap.WebScaleOrientationType} [SuperMap.WebPrintingJobScaleBarOptions.prototype.orientation]
+         * @member {WebScaleOrientationType} [WebPrintingJobScaleBarOptions.prototype.orientation]
          * @description 比例尺的方位样式。
          */
         this.orientation = null;
         /**
-         * @member {SuperMap.WebScaleType} [SuperMap.WebPrintingJobScaleBarOptions.prototype.type]
+         * @member {WebScaleType} [WebPrintingJobScaleBarOptions.prototype.type]
          * @description 比例尺的样式。
          */
         this.type = null;
         /**
-         * @member {object} [SuperMap.WebPrintingJobScaleBarOptions.prototype.intervals]
+         * @member {Object} [WebPrintingJobScaleBarOptions.prototype.intervals]
          * @description 比例尺条的段数。
          */
         this.intervals = null;
         /**
-         * @member {SuperMap.WebScaleUnit} [SuperMap.WebPrintingJobScaleBarOptions.prototype.unit]
+         * @member {WebScaleUnit} [WebPrintingJobScaleBarOptions.prototype.unit]
          * @description 比例尺的单位制。
          */
         this.unit = null;
@@ -49,7 +50,7 @@ export class WebPrintingJobScaleBarOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobScaleBarOptions.prototype.destroy
+     * @function WebPrintingJobScaleBarOptions.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -61,9 +62,9 @@ export class WebPrintingJobScaleBarOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobScaleBarOptions.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobScaleBarOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @function WebPrintingJobScaleBarOptions.prototype.toJSON
+     * @description 将 WebPrintingJobScaleBarOptions 对象转化为 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {
@@ -79,4 +80,3 @@ export class WebPrintingJobScaleBarOptions {
     }
 }
 
-SuperMap.WebPrintingJobScaleBarOptions = WebPrintingJobScaleBarOptions;

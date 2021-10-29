@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
- * @class ol.supermap.MapvCanvasLayer
+ * @class MapvCanvasLayer
  * @classdesc Mapv 渲染器。
  * @private
  * @param {Object} options - 参数。
@@ -48,7 +48,7 @@ export class MapvCanvasLayer {
     }
 
     /**
-     * @function ol.supermap.MapvCanvasLayer.prototype.draw
+     * @function MapvCanvasLayer.prototype.draw
      * @description 生成地图。
      */
     draw() {
@@ -56,7 +56,7 @@ export class MapvCanvasLayer {
     }
 
     /**
-     * @function ol.supermap.MapvCanvasLayer.prototype.resize
+     * @function MapvCanvasLayer.prototype.resize
      * @param {number} mapWidth - 地图宽度。
      * @param {number} mapHeight - 地图高度。
      * @description 调整地图大小。
@@ -77,16 +77,16 @@ export class MapvCanvasLayer {
     }
 
     /**
-     * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
+     * @function MapvCanvasLayer.prototype.getContainer
      * @description 获取容器。
-     * @returns {Element} 包含 Mapv 图层的 DOM 对象。
+     * @returns {HTMLElement} 包含 Mapv 图层的 DOM 对象。
      */
     getContainer() {
         return this.canvas;
     }
 
     /**
-     * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
+     * @function MapvCanvasLayer.prototype.setZIndex
      * @param {number} zIndex - 层级参数。
      * @description 设置图层层级。
      */
@@ -95,7 +95,7 @@ export class MapvCanvasLayer {
     }
 
     /**
-     * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
+     * @function MapvCanvasLayer.prototype.getZIndex
      * @description 获取图层层级。
      */
     getZIndex() {
