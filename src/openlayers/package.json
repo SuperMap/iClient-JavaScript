@@ -20,7 +20,7 @@
     "ol": "6.9.0",
     "@supermap/iclient-common": "11.0.0-dev",
     "proj4": "2.7.5",
-    "xlsx": "0.17.2",
+    "xlsx": "0.17.3",
     "canvg": "3.0.7",
     "lodash.remove": "^4.7.0"
   }
