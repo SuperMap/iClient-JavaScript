@@ -768,5 +768,3 @@ export var SearchView = ComponentsViewBase.extend({
 export var searchView = function (options) {
     return new SearchView(options);
 };
-
-L.supermap.components.search = searchView;

@@ -343,5 +343,3 @@ LeafletMapCoordSys.create = function (ecModel) {
 export const echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
-
-L.supermap.echartsLayer = echartsLayer;

@@ -162,5 +162,3 @@ export var DataFlowService = ServiceBase.extend({
 export var dataFlowService = function (url, options) {
     return new DataFlowService(url, options);
 };
-
-L.supermap.dataFlowService = dataFlowService;

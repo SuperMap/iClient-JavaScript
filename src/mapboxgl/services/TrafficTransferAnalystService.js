@@ -121,5 +121,3 @@ export class TrafficTransferAnalystService extends ServiceBase {
     }
 
 }
-
-mapboxgl.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;

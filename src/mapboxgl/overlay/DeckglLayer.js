@@ -592,4 +592,3 @@ export class DeckglLayer {
     }
 }
 
-mapboxgl.supermap.DeckglLayer = DeckglLayer;

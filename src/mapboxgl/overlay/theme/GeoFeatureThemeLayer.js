@@ -291,5 +291,3 @@ export class GeoFeature extends Theme {
     }
 
 }
-
-mapboxgl.supermap.GeoFeatureThemeLayer = GeoFeature;

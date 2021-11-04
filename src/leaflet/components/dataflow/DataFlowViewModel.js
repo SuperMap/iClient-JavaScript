@@ -212,5 +212,3 @@ export var DataFlowViewModel = L.Evented.extend({
 export var dataFlowViewModel = function (options) {
     return new DataFlowViewModel(options);
 };
-
-L.supermap.components.dataFlowViewModel = dataFlowViewModel;

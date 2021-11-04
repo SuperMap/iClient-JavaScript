@@ -521,4 +521,3 @@ export var spatialAnalystService = function(url, options) {
     return new SpatialAnalystService(url, options);
 };
 
-L.supermap.spatialAnalystService = spatialAnalystService;

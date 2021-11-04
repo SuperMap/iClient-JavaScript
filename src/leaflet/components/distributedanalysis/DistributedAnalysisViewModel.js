@@ -144,4 +144,3 @@ export class DistributedAnalysisViewModel extends L.Evented {
 export var distributedAnalysisViewModel = function (options) {
     return new DistributedAnalysisViewModel(options);
 };
-L.supermap.components.distributedAnalysisViewModel = distributedAnalysisViewModel;

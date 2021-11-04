@@ -114,4 +114,3 @@ export var trafficTransferAnalystService = function(url, options) {
     return new TrafficTransferAnalystService(url, options);
 };
 
-L.supermap.trafficTransferAnalystService = trafficTransferAnalystService;

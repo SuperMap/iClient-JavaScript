@@ -724,5 +724,3 @@ export class HeatMapLayer extends mapboxgl.Evented {
     }
 
 }
-
-mapboxgl.supermap.HeatMapLayer = HeatMapLayer;

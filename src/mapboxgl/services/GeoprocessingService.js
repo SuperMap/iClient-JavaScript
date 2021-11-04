@@ -1,4 +1,3 @@
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { GeoprocessingService as CommonGeoprocessingService } from '@supermap/iclient-common/iServer/GeoprocessingService';
 import { ServiceBase } from './ServiceBase';
@@ -246,4 +245,3 @@ export class GeoprocessingService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.GeoprocessingService = GeoprocessingService;

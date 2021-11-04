@@ -108,4 +108,3 @@ export class DataServiceQueryViewModel extends L.Evented {
 export var dataServiceQueryViewModel = function (dataserviceUrl) {
     return new dataServiceQueryViewModel(dataserviceUrl);
 };
-L.supermap.components.dataServiceQueryViewModel = dataServiceQueryViewModel;

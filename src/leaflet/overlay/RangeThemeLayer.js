@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
 import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
@@ -114,5 +113,3 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 export var rangeThemeLayer = function (name, options) {
     return new RangeThemeLayer(name, options);
 };
-
-L.supermap.rangeThemeLayer = rangeThemeLayer;

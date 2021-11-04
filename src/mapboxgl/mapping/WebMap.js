@@ -17,7 +17,6 @@ import { Util } from '../core/Util';
 import convert from 'xml-js';
 import canvg from 'canvg';
 
-mapboxgl.supermap = mapboxgl.supermap || {};
 
 const MB_SCALEDENOMINATOR_3857 = [
 	'559082264.0287178',
@@ -2120,4 +2119,3 @@ export class WebMap extends mapboxgl.Evented {
     }
 }
 
-mapboxgl.supermap.WebMap = WebMap;

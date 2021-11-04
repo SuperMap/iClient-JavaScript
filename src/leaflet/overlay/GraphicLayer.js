@@ -460,4 +460,3 @@ export let graphicLayer = function (graphics, options) {
     return new GraphicLayer(graphics, options);
 };
 
-L.supermap.graphicLayer = graphicLayer;

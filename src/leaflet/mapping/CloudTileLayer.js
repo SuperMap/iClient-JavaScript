@@ -64,5 +64,3 @@ export var CloudTileLayer = L.TileLayer.extend({
 export var cloudTileLayer = function (url, options) {
     return new CloudTileLayer(url, options);
 };
-
-L.supermap.cloudTileLayer = cloudTileLayer;

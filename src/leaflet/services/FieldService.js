@@ -121,5 +121,3 @@ export var FieldService = ServiceBase.extend({
 export var fieldService = function (url, options) {
     return new FieldService(url, options);
 };
-
-L.supermap.fieldService = fieldService;

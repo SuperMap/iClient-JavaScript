@@ -112,5 +112,3 @@ export var OpenFileView = ComponentsViewBase.extend({
 export var openFileView = function (options) {
     return new OpenFileView(options);
 };
-
-L.supermap.components.openFile = openFileView;

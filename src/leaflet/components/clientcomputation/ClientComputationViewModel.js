@@ -252,4 +252,3 @@ export class ClientComputationViewModel extends L.Evented {
 export var clientComputationViewModel = function (options) {
     return new ClientComputationViewModel(options);
 };
-L.supermap.components.clientComputationViewModel = clientComputationViewModel;

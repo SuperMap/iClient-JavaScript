@@ -364,5 +364,3 @@ export var TiledMapLayer = L.TileLayer.extend({
 export var tiledMapLayer = function (url, options) {
     return new TiledMapLayer(url, options);
 };
-
-L.supermap.tiledMapLayer = tiledMapLayer;

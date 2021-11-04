@@ -447,5 +447,3 @@ export class CartoCSSToLeaflet {
     }
 
 }
-
-L.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;

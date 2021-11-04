@@ -1324,5 +1324,3 @@ export var WebMap = L.LayerGroup.extend({
 export var webMap = function (id, options) {
     return new WebMap(id, options);
 };
-
-L.supermap.webmap = webMap;

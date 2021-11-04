@@ -116,5 +116,3 @@ export var ComponentsViewBase = L.Control.extend({
 export var componentsViewBase = function (options) {
     return new ComponentsViewBase(options);
 };
-
-L.supermap.components.componentsViewBase = componentsViewBase;

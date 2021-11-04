@@ -479,5 +479,3 @@ export var GraphThemeLayer = ThemeLayer.extend({
 export var graphThemeLayer = function (name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);
 };
-
-L.supermap.graphThemeLayer = graphThemeLayer;

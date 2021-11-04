@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
@@ -115,4 +114,3 @@ export class DatasourceService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.DatasourceService = DatasourceService;

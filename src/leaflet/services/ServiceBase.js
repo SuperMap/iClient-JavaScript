@@ -57,4 +57,3 @@ export var ServiceBase = L.Evented.extend({
     }
 
 });
-L.supermap.ServiceBase = ServiceBase;

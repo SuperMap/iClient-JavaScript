@@ -30,5 +30,3 @@ export class ServiceBase extends mapboxgl.Evented {
         this.fire('initialized', this);
     }
 }
-
-mapboxgl.supermap.ServiceBase = ServiceBase;

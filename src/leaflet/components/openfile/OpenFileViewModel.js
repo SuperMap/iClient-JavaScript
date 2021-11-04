@@ -123,6 +123,3 @@ export var OpenFileViewModel = L.Evented.extend({
 export var openFileViewModel = function (options) {
     return new OpenFileViewModel(options);
 };
-
-L.supermap.components.openFileViewModel = openFileViewModel;
-L.supermap.components.util = ComponentsUtil;

@@ -986,5 +986,3 @@ export class Label extends GeoFeature {
     }
 
 }
-
-mapboxgl.supermap.LabelThemeLayer = Label;

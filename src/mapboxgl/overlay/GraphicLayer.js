@@ -503,5 +503,3 @@ export class GraphicLayer {
     }
 
 }
-
-mapboxgl.supermap.GraphicLayer = GraphicLayer;

@@ -423,4 +423,3 @@ export class ThreeLayer extends mapboxgl.Evented {
 }
 
 
-mapboxgl.supermap.ThreeLayer = ThreeLayer;

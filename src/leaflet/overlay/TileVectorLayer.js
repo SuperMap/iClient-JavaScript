@@ -502,5 +502,3 @@ export var TileVectorLayer = VectorGrid.extend({
 export var tiledVectorLayer = function (url, options) {
     return new TileVectorLayer(url, options);
 };
-
-L.supermap.tiledVectorLayer = tiledVectorLayer;

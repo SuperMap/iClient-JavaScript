@@ -188,4 +188,3 @@ export class QueryService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.QueryService = QueryService;

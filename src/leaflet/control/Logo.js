@@ -100,5 +100,3 @@ L.Map.addInitHook(function () {
 export var logo = function (options) {
     return new Logo(options);
 };
-
-L.supermap.control.logo = logo;

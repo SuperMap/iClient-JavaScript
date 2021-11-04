@@ -234,5 +234,3 @@ export var SearchViewModel = L.Evented.extend({
 export var searchViewModel = function (options) {
     return new SearchViewModel(options);
 };
-
-L.supermap.components.searchViewModel = searchViewModel;

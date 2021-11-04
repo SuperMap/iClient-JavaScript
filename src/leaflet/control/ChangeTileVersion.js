@@ -357,5 +357,3 @@ L.Map.addInitHook(function () {
 export var changeTileVersion = function (options) {
     return new ChangeTileVersion(options);
 };
-
-L.supermap.control.changeTileVersion = changeTileVersion;

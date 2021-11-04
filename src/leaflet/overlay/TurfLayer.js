@@ -285,5 +285,3 @@ export var TurfLayer = L.GeoJSON.extend({
 export var turfLayer = function (options) {
     return new TurfLayer(options);
 };
-
-L.supermap.turfLayer = turfLayer;

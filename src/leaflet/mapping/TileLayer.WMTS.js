@@ -114,5 +114,3 @@ export var WMTSLayer = L.TileLayer.extend({
 export var wmtsLayer = function (url, options) {
     return new WMTSLayer(url, options);
 };
-
-L.supermap.wmtsLayer = wmtsLayer;

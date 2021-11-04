@@ -1,7 +1,6 @@
     /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import L from 'leaflet';
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
  import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
@@ -117,5 +116,3 @@ export var DatasourceService = ServiceBase.extend({
 export var datasourceService = function (url, options) {
     return new DatasourceService(url, options);
 };
-
-L.supermap.datasourceService = datasourceService;

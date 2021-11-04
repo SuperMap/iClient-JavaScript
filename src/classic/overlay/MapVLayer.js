@@ -234,4 +234,3 @@ export class MapVLayer extends SuperMap.Layer {
     }
 }
 
-SuperMap.Layer.MapVLayer = MapVLayer;

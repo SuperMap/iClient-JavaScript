@@ -245,4 +245,3 @@ export const geoprocessingService = function (url, options) {
     return new GeoprocessingService(url, options);
 };
 
-L.supermap.geoprocessingService = geoprocessingService;

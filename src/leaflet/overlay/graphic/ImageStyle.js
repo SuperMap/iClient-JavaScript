@@ -48,5 +48,3 @@ export var ImageStyle = L.Class.extend({
 export var imageStyle = function (options) {
     return new ImageStyle(options);
 };
-
-L.supermap.imageStyle = imageStyle;

@@ -165,4 +165,3 @@ export var webPrintingJobService = function(url, options) {
     return new WebPrintingJobService(url, options);
 };
 
-L.supermap.webPrintingJobService = webPrintingJobService;

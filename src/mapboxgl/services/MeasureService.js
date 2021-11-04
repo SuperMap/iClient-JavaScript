@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
@@ -81,5 +80,3 @@ export class MeasureService extends ServiceBase {
     }
 
 }
-
-mapboxgl.supermap.MeasureService = MeasureService;

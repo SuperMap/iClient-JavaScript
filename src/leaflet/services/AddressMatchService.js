@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from 'leaflet';
 import { ServiceBase } from './ServiceBase';
 import '../core/Base';
 import { AddressMatchService as CommonMatchAddressService } from '@supermap/iclient-common/iServer/AddressMatchService';
@@ -79,5 +78,3 @@ export var AddressMatchService = ServiceBase.extend({
 export var addressMatchService = function (url, options) {
     return new AddressMatchService(url, options);
 };
-
-L.supermap.addressMatchService = addressMatchService;

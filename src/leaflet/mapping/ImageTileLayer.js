@@ -129,4 +129,3 @@ export var imageTileLayer = function (url, options) {
     return new ImageTileLayer(url, options);
 };
 
-L.supermap.imageTileLayer = imageTileLayer;

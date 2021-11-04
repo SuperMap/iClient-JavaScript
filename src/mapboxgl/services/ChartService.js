@@ -114,4 +114,3 @@ export class ChartService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.ChartService = ChartService;

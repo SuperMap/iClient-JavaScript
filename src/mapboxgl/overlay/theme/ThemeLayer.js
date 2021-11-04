@@ -598,5 +598,3 @@ export class Theme {
         this.renderer.painter.root.style.display = 'block';
     }
 }
-
-mapboxgl.supermap.ThemeLayer = Theme;

@@ -247,5 +247,3 @@ export var MapVLayer = L.Layer.extend({
 export var mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer(dataSet, mapVOptions, options);
 };
-
-L.supermap.mapVLayer = mapVLayer;

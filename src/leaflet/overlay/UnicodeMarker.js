@@ -163,5 +163,3 @@ L.Canvas.include({
         }
     }
 });
-
-L.supermap.unicodeMarker = unicodeMarker;

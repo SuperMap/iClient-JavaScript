@@ -169,4 +169,3 @@ export var queryService = function(url, options) {
     return new QueryService(url, options);
 };
 
-L.supermap.queryService = queryService;

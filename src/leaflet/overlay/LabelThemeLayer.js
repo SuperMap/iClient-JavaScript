@@ -979,5 +979,3 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 export var labelThemeLayer = function (name, options) {
     return new LabelThemeLayer(name, options);
 };
-
-L.supermap.labelThemeLayer = labelThemeLayer;

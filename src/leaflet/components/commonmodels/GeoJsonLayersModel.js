@@ -48,7 +48,6 @@ export class GeoJsonLayersDataModel {
     }
 }
 
-L.supermap.components.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
 
 /**
  * @class L.supermap.components.GeoJsonLayerDataModel

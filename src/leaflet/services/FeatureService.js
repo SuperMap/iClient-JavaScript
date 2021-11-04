@@ -246,5 +246,3 @@ export var FeatureService = ServiceBase.extend({
 export var featureService = function (url, options) {
     return new FeatureService(url, options);
 };
-
-L.supermap.featureService = featureService;

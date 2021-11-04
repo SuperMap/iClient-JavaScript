@@ -161,5 +161,3 @@ export var DataFlowLayer = L.LayerGroup.extend({
 export var dataFlowLayer = function (url, options) {
   return new DataFlowLayer(url, options);
 };
-
-L.supermap.dataFlowLayer = dataFlowLayer;

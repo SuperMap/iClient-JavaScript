@@ -402,4 +402,3 @@ export var ImageMapLayer = Layer.extend({
 export var imageMapLayer = function(url, options) {
     return new ImageMapLayer(url, options);
 };
-L.supermap.imageMapLayer = imageMapLayer;

@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import L from "leaflet";
 import '../../core/Base';
 
 /**
@@ -25,4 +24,3 @@ export class ClientComputationLayer{
 export var clientComputationLayer = function(layerObject){
     return new ClientComputationLayer(layerObject)
 }
-L.supermap.components.clientComputationLayer = clientComputationLayer;

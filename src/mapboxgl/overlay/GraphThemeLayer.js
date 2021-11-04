@@ -407,5 +407,3 @@ export class Graph extends Theme {
         this.clearCache();
     }
 }
-
-mapboxgl.supermap.GraphThemeLayer = Graph;

@@ -57,7 +57,6 @@ export var heatMapFeature = function (geometry, attributes) {
     return new HeatMapFeature(geometry, attributes);
 };
 
-L.supermap.heatMapFeature = heatMapFeature;
 /**
  * @class L.supermap.heatMapLayer
  * @classdesc 热力图层类。
@@ -623,4 +622,3 @@ export var HeatMapLayer = L.Layer.extend({
 export var heatMapLayer = function (name, options) {
     return new HeatMapLayer(name, options);
 };
-L.supermap.heatMapLayer = heatMapLayer;

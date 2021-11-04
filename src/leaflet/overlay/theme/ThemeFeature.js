@@ -68,5 +68,3 @@ export var ThemeFeature = L.Class.extend({
 export var themeFeature = function (geometry, attributes) {
     return new ThemeFeature(geometry, attributes);
 };
-
-L.supermap.themeFeature = themeFeature;

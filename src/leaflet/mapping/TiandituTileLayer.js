@@ -89,4 +89,3 @@ export var tiandituTileLayer = function (options) {
     return new TiandituTileLayer(options);
 };
 
-L.supermap.tiandituTileLayer = tiandituTileLayer;

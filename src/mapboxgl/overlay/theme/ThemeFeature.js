@@ -42,5 +42,3 @@ export class ThemeFeature {
         return new Vector(geometry, this.attributes);
     }
 }
-
-mapboxgl.supermap.ThemeFeature = ThemeFeature;

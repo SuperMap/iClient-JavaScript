@@ -917,4 +917,3 @@ export class GraticuleLayer {
     }
 }
 
-mapboxgl.supermap.GraticuleLayer = GraticuleLayer;

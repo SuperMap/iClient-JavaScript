@@ -70,4 +70,3 @@ export var baiduTileLayer = function (url, options) {
     return new BaiduTileLayer(url, options);
 };
 
-L.supermap.baiduTileLayer = baiduTileLayer;

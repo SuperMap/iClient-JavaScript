@@ -514,5 +514,3 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
 export var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
     return new DataServiceQueryView(dataServiceUrl, dataSetNames, options);
 };
-
-L.supermap.components.dataServiceQuery = dataServiceQueryView;

@@ -112,4 +112,3 @@ export class DistributedAnalysisModel extends L.Evented {
         })
     }
 }
-L.supermap.components.DistributedAnalysisModel = DistributedAnalysisModel;

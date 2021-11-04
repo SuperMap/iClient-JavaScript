@@ -129,5 +129,3 @@ export var CloverStyle = L.Class.extend({
 export var cloverStyle = function (options) {
     return new CloverStyle(options);
 };
-
-L.supermap.cloverStyle = cloverStyle;

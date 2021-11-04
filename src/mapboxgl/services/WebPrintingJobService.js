@@ -160,4 +160,3 @@ export class WebPrintingJobService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.WebPrintingJobService = WebPrintingJobService;

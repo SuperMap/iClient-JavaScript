@@ -102,5 +102,3 @@ export var ChartService = ServiceBase.extend({
 export var chartService = function (url, options) {
     return new ChartService(url, options);
 };
-
-L.supermap.chartService = chartService;

@@ -604,5 +604,3 @@ export var ClientComputationView = ComponentsViewBase.extend({
 export var clientComputationView = function (options) {
     return new ClientComputationView(options);
 };
-
-L.supermap.components.clientComputation = clientComputationView;

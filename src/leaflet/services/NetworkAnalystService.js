@@ -358,5 +358,3 @@ export var NetworkAnalystService = ServiceBase.extend({
 export var networkAnalystService = function (url, options) {
     return new NetworkAnalystService(url, options);
 };
-
-L.supermap.networkAnalystService = networkAnalystService;

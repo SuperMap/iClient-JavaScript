@@ -904,4 +904,3 @@ export var processingService = function(url, options) {
     return new ProcessingService(url, options);
 };
 
-L.supermap.processingService = processingService;

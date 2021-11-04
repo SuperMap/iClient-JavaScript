@@ -495,5 +495,3 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
 export var distributedAnalysisView = function (options) {
     return new DistributedAnalysisView(options);
 };
-
-L.supermap.components.distributedAnalysis = distributedAnalysisView;

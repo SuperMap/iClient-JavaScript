@@ -264,4 +264,3 @@ export class FeatureService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.FeatureService = FeatureService;

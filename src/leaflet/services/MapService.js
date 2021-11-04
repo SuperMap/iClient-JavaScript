@@ -88,5 +88,3 @@ export var MapService = ServiceBase.extend({
 export var mapService = function (url, options) {
     return new MapService(url, options);
 };
-
-L.supermap.mapService = mapService;

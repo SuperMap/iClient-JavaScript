@@ -387,5 +387,3 @@ export class NetworkAnalystService extends ServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
-
-mapboxgl.supermap.NetworkAnalystService = NetworkAnalystService;
