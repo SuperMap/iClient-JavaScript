@@ -178,5 +178,3 @@ export class Pixel {
     }
 }
 
-SuperMap.Pixel = Pixel;
-

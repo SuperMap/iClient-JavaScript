@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { ProcessingServiceBase } from './ProcessingServiceBase';
 import { VectorClipJobsParameter } from './VectorClipJobsParameter';
@@ -58,4 +57,3 @@ export class VectorClipJobsService extends ProcessingServiceBase {
     }
 }
 
-SuperMap.VectorClipJobsService = VectorClipJobsService;

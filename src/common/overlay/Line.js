@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {Point} from './feature/Point';
 import {Line as RenderLine} from './feature/Line';
@@ -298,5 +297,3 @@ export class Line extends Graph {
  * @property {boolean} [pointClickAble=true] - 是否允许折线节点被点击。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。
  
  */
-
-SuperMap.Feature.Theme.Line = Line;

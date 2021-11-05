@@ -215,4 +215,3 @@ export default class ImageRenderingRule {
     }
 }
 
-SuperMap.ImageRenderingRule = ImageRenderingRule;

@@ -59,5 +59,3 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
     }
 
 }
-
-SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;

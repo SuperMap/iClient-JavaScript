@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Pixel} from './Pixel';
 import {Event} from './Event';
 import {FunctionExt} from './BaseTypes';
@@ -515,15 +514,3 @@ export class Events {
     }
 
 }
-
-SuperMap.Events = Events;
-SuperMap.Events.prototype.BROWSER_EVENTS = [
-    "mouseover", "mouseout",
-    "mousedown", "mouseup", "mousemove",
-    "click", "dblclick", "rightclick", "dblrightclick",
-    "resize", "focus", "blur",
-    "touchstart", "touchmove", "touchend",
-    "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
-    "MSGestureStart", "MSGestureChange", "MSGestureEnd",
-    "contextmenu"
-];

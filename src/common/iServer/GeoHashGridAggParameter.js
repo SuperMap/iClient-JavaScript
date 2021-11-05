@@ -54,4 +54,3 @@ export class GeoHashGridAggParameter extends BucketAggParameter {
     }
 }
 
-SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter;

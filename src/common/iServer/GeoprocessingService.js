@@ -1,4 +1,3 @@
-import { SuperMap } from '../SuperMap';
 import { CommonServiceBase } from './CommonServiceBase';
 
 /**
@@ -170,4 +169,3 @@ export class GeoprocessingService extends CommonServiceBase {
         });
     }
 }
-SuperMap.GeoprocessingService = GeoprocessingService;

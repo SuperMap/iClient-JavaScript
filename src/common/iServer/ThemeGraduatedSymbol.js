@@ -146,4 +146,3 @@ export class ThemeGraduatedSymbol extends Theme {
 
 }
 
-SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol;

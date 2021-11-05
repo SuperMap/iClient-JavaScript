@@ -393,4 +393,4 @@ export {
     PaginationContainer,
     ComponentsUtil,
     FileReaderUtil
-} from '@supermap/iclient-common';
+} from '@supermap/iclient-common/namespace';

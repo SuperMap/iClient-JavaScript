@@ -1,7 +1,3 @@
-import {
-    SuperMap
-} from '../SuperMap';
-
 export class ArrayStatistic {
 
     // geostatsInstance: null,
@@ -199,4 +195,3 @@ export class ArrayStatistic {
     }
 
 }
-SuperMap.ArrayStatistic = ArrayStatistic;

@@ -18,4 +18,3 @@ export class WebMachineLearning {
     }
 }
 
-SuperMap.WebMachineLearning = WebMachineLearning;

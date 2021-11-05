@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../../SuperMap';
 import { ShapeParameters } from './ShapeParameters';
 
 /**
@@ -76,6 +75,3 @@ export class Point extends ShapeParameters {
  * @property {number} shadowOffsetX - 阴影 X 方向偏移值; 默认值 0。
  * @property {number} shadowOffsetY - 阴影 Y 方向偏移值; 默认值 0。
  */
-
-SuperMap.Feature = SuperMap.Feature || {};
-SuperMap.Feature.ShapeParameters.Point = Point;

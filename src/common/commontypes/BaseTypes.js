@@ -1,7 +1,8 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
+ import {SuperMap} from '../SuperMap';
+ import {Util} from './Util';
 /**
  *@namespace SuperMap
  *@category BaseTypes Namespace
@@ -14,7 +15,7 @@ import {SuperMap} from '../SuperMap';
  * @param {Object} C - 继承的类。
  * @param {Object} P - 被继承的父类。
  */
-SuperMap.inherit = function (C, P) {
+export var inheritExt = function (C, P) {
     var F = function () {
     };
     F.prototype = P.prototype;
@@ -25,7 +26,7 @@ SuperMap.inherit = function (C, P) {
         if (typeof o === "function") {
             o = o.prototype;
         }
-        SuperMap.Util.extend(C.prototype, o);
+        Util.extend(C.prototype, o);
     }
 };
 
@@ -36,7 +37,7 @@ SuperMap.inherit = function (C, P) {
  * @memberOf SuperMap
  * @param {Class|Object} ...mixins - 继承的类。
  */
-SuperMap.mixin = function (...mixins) {
+export var mixinExt = function (...mixins) {
 
     class Mix {
         constructor(options) {
@@ -82,7 +83,7 @@ SuperMap.mixin = function (...mixins) {
  * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
-export var StringExt = SuperMap.String = {
+export var StringExt = {
 
     /**
      * @function SuperMap.String.startsWith
@@ -263,7 +264,7 @@ export var StringExt = SuperMap.String = {
  * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
-export var NumberExt = SuperMap.Number = {
+export var NumberExt = {
 
     /**
      * @member {string} [SuperMap.Number.decimalSeparator='.']
@@ -362,7 +363,7 @@ if (!Number.prototype.limitSigDigs) {
  * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
-export var FunctionExt = SuperMap.Function = {
+export var FunctionExt = {
     /**
      * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
@@ -435,7 +436,7 @@ export var FunctionExt = SuperMap.Function = {
  * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
-export var ArrayExt = SuperMap.Array = {
+export var ArrayExt = {
 
     /**
      * @function SuperMap.Array.filter

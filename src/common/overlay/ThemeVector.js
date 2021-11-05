@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Geometry} from '../commontypes/Geometry';
 import {Util as CommonUtil} from '../commontypes/Util';
 import {Theme} from './feature/Theme';
@@ -664,5 +663,3 @@ export class ThemeVector extends Theme {
     }
 
 }
-
-SuperMap.Feature.Theme.ThemeVector = ThemeVector;

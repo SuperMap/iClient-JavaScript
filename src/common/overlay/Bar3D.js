@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util as CommonUtil} from '../commontypes/Util';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {Polygon} from './feature/Polygon';
@@ -433,5 +432,3 @@ export class Bar3D extends Graph {
  * @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} [barTopStyleByFields=barFaceStyleByFields] - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为柱条顶面赋 style，此参数按字段控制柱条顶面样式，优先级低于 barTopStyleByCodomain，高于 barTopStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barTopStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条顶面使用 style1，字段 POP_1995 对应的柱条顶面使用 style2 ，字段 POP_1999 对应的柱条顶面使用 style3。
  * @property {Array.<Object>} [barTopStyleByCodomain=barFaceStyleByCodomain] - 按柱条顶面代表的数据值所在值域范围控制柱条顶面样式，优先级高于 barTopStyle 和 barTopStyleByFields。
  */
-
-SuperMap.Feature.Theme.Bar3D = Bar3D;

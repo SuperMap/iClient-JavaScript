@@ -26,4 +26,3 @@ export class BinaryClassification extends MachineLearningBase {
     }
 }
 
-SuperMap.BinaryClassification = BinaryClassification;

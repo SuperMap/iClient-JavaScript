@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 /**
@@ -63,5 +62,4 @@ export default class FieldsFilter {
 
 
 
-SuperMap.FieldsFilter = FieldsFilter;
 

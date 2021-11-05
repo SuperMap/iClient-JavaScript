@@ -33,4 +33,3 @@ export class MetricsAggParameter extends AggregationParameter {
     }
 }
 
-SuperMap.MetricsAggParameter = MetricsAggParameter;

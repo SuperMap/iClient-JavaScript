@@ -285,7 +285,7 @@ import {
   FileReaderUtil,
   ChartView,
   ChartViewModel
-} from '@supermap/iclient-common';
+} from '@supermap/iclient-common/namespace';
 
 import { Logo, logo, ChangeTileVersion, changeTileVersion } from './control';
 
@@ -308,6 +308,7 @@ import {
   GetResolutionFromScaleDpi,
   NormalizeScale
 } from './core';
+
 import {
   BaiduTileLayer,
   baiduTileLayer,
@@ -326,6 +327,7 @@ import {
   ImageTileLayer,
   imageTileLayer
 } from './mapping';
+
 import {
   DataFlowLayer,
   dataFlowLayer,
@@ -387,6 +389,7 @@ import {
   VectorTileJSON,
   VectorTilePBF
 } from './overlay';
+
 import {
   AddressMatchService,
   addressMatchService,
@@ -468,6 +471,7 @@ import {
 } from './components';
 
 import L from "leaflet";
+
 L.supermap = L.supermap || {};
 L.supermap.components = L.supermap.components || {};
 L.supermap.control = L.supermap.control || {};

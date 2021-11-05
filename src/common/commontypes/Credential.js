@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.Credential
@@ -18,7 +17,7 @@ import {SuperMap} from '../SuperMap';
  */
 export class Credential {
 
-
+    static CREDENTIAL = null;
     constructor(value, name) {
 
         /**
@@ -91,5 +90,3 @@ export class Credential {
  *
  */
 
-Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential;

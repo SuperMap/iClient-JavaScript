@@ -15,6 +15,8 @@ import {
     Rectangle
 } from './geometry/index' ;
 import {
+    inheritExt,
+    mixinExt,
     StringExt,
     NumberExt,
     FunctionExt,
@@ -47,6 +49,8 @@ export {
     Rectangle
 };
 export {
+    inheritExt,
+    mixinExt,
     StringExt,
     NumberExt,
     FunctionExt,

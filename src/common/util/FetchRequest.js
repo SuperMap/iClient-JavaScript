@@ -16,7 +16,7 @@ export var setFetch = function (newFetch) {
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
  */
-export var setCORS = SuperMap.setCORS = function (cors) {
+export var setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
@@ -24,7 +24,7 @@ export var setCORS = SuperMap.setCORS = function (cors) {
  * @description 是是否允许跨域请求。
  * @returns {boolean} 是否允许跨域请求。
  */
-export var isCORS = SuperMap.isCORS = function () {
+export var isCORS = function () {
     if (SuperMap.CORS != undefined) {
         return SuperMap.CORS;
     }
@@ -35,7 +35,7 @@ export var isCORS = SuperMap.isCORS = function () {
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
-export var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
+export var setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
@@ -43,10 +43,10 @@ export var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
  */
-export var getRequestTimeout = SuperMap.getRequestTimeout = function () {
+export var getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
 }
-export var FetchRequest = SuperMap.FetchRequest = {
+export var FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -83,7 +83,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url,
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.GET(config);
+            return Util.RequestJSONPPromise.GET(config);
         }
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
@@ -103,7 +103,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=DELETE",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
+            return Util.RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -118,7 +118,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=POST",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.POST(config);
+            return Util.RequestJSONPPromise.POST(config);
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
@@ -132,7 +132,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.PUT(config);
+            return Util.RequestJSONPPromise.PUT(config);
         }
         return this._fetch(url, params, options, 'PUT');
     },
@@ -271,7 +271,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
         return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
     }
 }
-SuperMap.Util.RequestJSONPPromise = {
+export var RequestJSONPPromise = {
     limitLength: 1500,
     queryKeys: [],
     queryValues: [],
@@ -281,7 +281,7 @@ SuperMap.Util.RequestJSONPPromise = {
         for (var key in values) {
             me.queryKeys.push(key);
             if (typeof values[key] !== 'string') {
-                values[key] = SuperMap.Util.toJSON(values[key]);
+                values[key] = Util.toJSON(values[key]);
             }
             var tempValue = encodeURIComponent(values[key]);
             me.queryValues.push(tempValue);

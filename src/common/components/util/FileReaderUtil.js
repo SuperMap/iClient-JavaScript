@@ -217,5 +217,4 @@ export let FileReaderUtil = {
 
 };
 
-// SuperMap.Components.FileReaderUtil = FileReaderUtil;
 

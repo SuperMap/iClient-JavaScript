@@ -1,24 +1,18 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from './SuperMap';
 
-/**
+ /**
  * @enum DataFormat
  * @memberOf SuperMap
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
-var DataFormat = SuperMap.DataFormat = {
+var DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
     ISERVER: "ISERVER"
-};
-export {
-    DataFormat
 };
 
 /**
@@ -27,16 +21,13 @@ export {
  * @description 服务器类型
  * @type {string}
  */
-var ServerType = SuperMap.ServerType = {
+var ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
     IPORTAL: "IPORTAL",
     /** ONLINE */
     ONLINE: "ONLINE"
-};
-export {
-    ServerType
 };
 
 /**
@@ -45,7 +36,7 @@ export {
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
-var GeometryType = SuperMap.GeometryType = {
+var GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -73,9 +64,6 @@ var GeometryType = SuperMap.GeometryType = {
     /** GEOCOMPOUND */
     GEOCOMPOUND:"GEOCOMPOUND"
 };
-export {
-    GeometryType
-};
 
 /**
  * @enum QueryOption
@@ -83,7 +71,7 @@ export {
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
-var QueryOption = SuperMap.QueryOption = {
+var QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -91,9 +79,6 @@ var QueryOption = SuperMap.QueryOption = {
     /** 几何对象 */
     GEOMETRY: "GEOMETRY"
 };
-export {
-    QueryOption
-}
 
 /**
  * @enum JoinType
@@ -102,16 +87,12 @@ export {
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
  */
-var JoinType = SuperMap.JoinType = {
+var JoinType = {
     /** INNERJOIN */
     INNERJOIN: "INNERJOIN",
     /** LEFTJOIN */
     LEFTJOIN: "LEFTJOIN"
 };
-export {
-    JoinType
-}
-
 
 /**
  * @enum SpatialQueryMode
@@ -119,7 +100,7 @@ export {
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
-var SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -139,9 +120,7 @@ var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 被包含空间查询模式 */
     WITHIN: "WITHIN"
 };
-export {
-    SpatialQueryMode
-}
+
 /**
  * @enum SpatialRelationType
  * @memberOf SuperMap
@@ -149,7 +128,7 @@ export {
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
  */
-var SpatialRelationType = SuperMap.SpatialRelationType = {
+var SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -157,9 +136,6 @@ var SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 被包含关系 */
     WITHIN: "WITHIN"
 };
-export {
-    SpatialRelationType
-}
 
 /**
  * @enum MeasureMode
@@ -168,15 +144,12 @@ export {
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var MeasureMode = SuperMap.MeasureMode = {
+var MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
     AREA: "AREA"
 };
-export {
-    MeasureMode
-}
 
 /**
  * @enum Unit
@@ -185,7 +158,7 @@ export {
  * 该类定义了一系列距离单位类型。
  * @type {string}
  */
-var Unit = SuperMap.Unit = {
+var Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -213,9 +186,6 @@ var Unit = SuperMap.Unit = {
     /**  弧度 */
     RADIAN: "RADIAN"
 };
-export {
-    Unit
-}
 
 /**
  * @enum BufferRadiusUnit
@@ -224,7 +194,7 @@ export {
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
  */
-var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -244,9 +214,6 @@ var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  码 */
     YARD: "YARD"
 }
-export {
-    BufferRadiusUnit
-}
 
 /**
  * @enum EngineType
@@ -254,7 +221,7 @@ export {
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
-var EngineType = SuperMap.EngineType = {
+var EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -268,9 +235,6 @@ var EngineType = SuperMap.EngineType = {
     /**  UDB 引擎类型，文件引擎。 */
     UDB: "UDB"
 };
-export {
-    EngineType
-}
 
 /**
  * @enum ThemeGraphTextFormat
@@ -278,7 +242,7 @@ export {
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
-var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -291,9 +255,6 @@ var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     VALUE: "VALUE"
 
 };
-export {
-    ThemeGraphTextFormat
-}
 
 /**
  * @enum ThemeGraphType
@@ -301,7 +262,7 @@ export {
  * @description  统计专题图类型枚举。
  * @type {string}
  */
-var ThemeGraphType = SuperMap.ThemeGraphType = {
+var ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -329,9 +290,6 @@ var ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  阶梯图。 */
     STEP: "STEP"
 };
-export {
-    ThemeGraphType
-}
 
 /**
  * @enum GraphAxesTextDisplayMode
@@ -339,7 +297,7 @@ export {
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
-var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -347,9 +305,6 @@ var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示Y轴的文本。 */
     YAXES: "YAXES"
 };
-export {
-    GraphAxesTextDisplayMode
-}
 
 /**
  * @enum GraduatedMode
@@ -358,7 +313,7 @@ export {
  *
  * @type {string}
  */
-var GraduatedMode = SuperMap.GraduatedMode = {
+var GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -366,9 +321,6 @@ var GraduatedMode = SuperMap.GraduatedMode = {
     /**  平方根分级模式。 */
     SQUAREROOT: "SQUAREROOT"
 };
-export {
-    GraduatedMode
-}
 
 /**
  * @enum RangeMode
@@ -376,7 +328,7 @@ export {
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
-var RangeMode = SuperMap.RangeMode = {
+var RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -390,9 +342,6 @@ var RangeMode = SuperMap.RangeMode = {
     /**  标准差分段法。 */
     STDDEVIATION: "STDDEVIATION"
 };
-export {
-    RangeMode
-}
 
 /**
  * @enum ThemeType
@@ -400,7 +349,7 @@ export {
  * @description  专题图类型枚举。
  * @type {string}
  */
-var ThemeType = SuperMap.ThemeType = {
+var ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -414,9 +363,6 @@ var ThemeType = SuperMap.ThemeType = {
     /** 単值专题图。 */
     UNIQUE: "UNIQUE"
 };
-export {
-    ThemeType
-}
 
 /**
  * @enum ColorGradientType
@@ -424,7 +370,7 @@ export {
  * @description  渐变颜色枚举。
  * @type {string}
  */
-var ColorGradientType = SuperMap.ColorGradientType = {
+var ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -480,9 +426,6 @@ var ColorGradientType = SuperMap.ColorGradientType = {
     /** 黄白渐变色。 */
     YELLOW_WHITE: "YELLOWWHITE"
 };
-export {
-    ColorGradientType
-}
 
 /**
  * @enum TextAlignment
@@ -490,7 +433,7 @@ export {
  * @description  文本对齐枚举。
  * @type {string}
  */
-var TextAlignment = SuperMap.TextAlignment = {
+var TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -516,16 +459,14 @@ var TextAlignment = SuperMap.TextAlignment = {
     /** 右中对齐。 */
     MIDDLERIGHT: "MIDDLERIGHT"
 };
-export {
-    TextAlignment
-}
+
 /**
  * @enum FillGradientMode
  * @memberOf SuperMap
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
-var FillGradientMode = SuperMap.FillGradientMode = {
+var FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -537,9 +478,6 @@ var FillGradientMode = SuperMap.FillGradientMode = {
     /** 四角渐变填充。 */
     SQUARE: "SQUARE"
 };
-export {
-    FillGradientMode
-}
 
 /**
  * @enum AlongLineDirection
@@ -547,7 +485,7 @@ export {
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
-var AlongLineDirection = SuperMap.AlongLineDirection = {
+var AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -559,9 +497,6 @@ var AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 从上到下，从右到左放置。 */
     RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
 };
-export {
-    AlongLineDirection
-}
 
 /**
  * @enum LabelBackShape
@@ -569,7 +504,7 @@ export {
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
-var LabelBackShape = SuperMap.LabelBackShape = {
+var LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -585,9 +520,6 @@ var LabelBackShape = SuperMap.LabelBackShape = {
     /** 三角形背景，即标签背景的形状为三角形。 */
     TRIANGLE: "TRIANGLE"
 };
-export {
-    LabelBackShape
-}
 
 /**
  * @enum LabelOverLengthMode
@@ -595,7 +527,7 @@ export {
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
-var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -603,9 +535,6 @@ var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 省略超出部分。 */
     OMIT: "OMIT"
 };
-export {
-    LabelOverLengthMode
-}
 
 /**
  * @enum DirectionType
@@ -614,7 +543,7 @@ export {
  * 在行驶引导子项中使用。
  * @type {string}
  */
-var DirectionType = SuperMap.DirectionType = {
+var DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -626,10 +555,6 @@ var DirectionType = SuperMap.DirectionType = {
     /** 西。 */
     WEST: "WEST"
 };
-export {
-    DirectionType
-}
-
 
 /**
  * @enum SideType
@@ -638,7 +563,7 @@ export {
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
  */
-var SideType = SuperMap.SideType = {
+var SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -648,9 +573,6 @@ var SideType = SuperMap.SideType = {
     /** 路的右侧。 */
     RIGHT: "RIGHT"
 };
-export {
-    SideType
-}
 
 /**
  * @enum SupplyCenterType
@@ -660,7 +582,7 @@ export {
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
  */
-var SupplyCenterType = SuperMap.SupplyCenterType = {
+var SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -668,9 +590,6 @@ var SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 可选中心点。 */
     OPTIONALCENTER: "OPTIONALCENTER"
 };
-export {
-    SupplyCenterType
-}
 
 /**
  * @enum TurnType
@@ -679,7 +598,7 @@ export {
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
  */
-var TurnType = SuperMap.TurnType = {
+var TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -693,9 +612,6 @@ var TurnType = SuperMap.TurnType = {
     /** 右转弯。 */
     RIGHT: "RIGHT"
 };
-export {
-    TurnType
-}
 
 /**
  * @enum BufferEndType
@@ -703,22 +619,19 @@ export {
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
-var BufferEndType = SuperMap.BufferEndType = {
+var BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
     ROUND: "ROUND"
 };
-export {
-    BufferEndType
-}
 /**
  * @enum OverlayOperationType
  * @memberOf SuperMap
  * @description  叠加分析类型枚举。
  * @type {string}
  */
-var OverlayOperationType = SuperMap.OverlayOperationType = {
+ var OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
     /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
@@ -734,9 +647,6 @@ var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 对两个面数据集（几何对象）进行对称差操作。 */
     XOR: "XOR"
 };
-export {
-    OverlayOperationType
-}
 
 /**
  * @enum OutputType
@@ -744,7 +654,7 @@ export {
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
-var OutputType = SuperMap.OutputType = {
+var OutputType =  {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -754,9 +664,6 @@ var OutputType = SuperMap.OutputType = {
     /** PG */
     PG: "PG"
 };
-export {
-    OutputType
-}
 
 /**
  * @enum SmoothMethod
@@ -765,15 +672,13 @@ export {
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
  */
-var SmoothMethod = SuperMap.SmoothMethod = {
+ var SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
     POLISH: "POLISH"
 };
-export {
-    SmoothMethod
-}
+
 /**
  * @enum SurfaceAnalystMethod
  * @memberOf SuperMap
@@ -781,15 +686,13 @@ export {
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
  */
-var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
     ISOREGION: "ISOREGION"
 };
-export {
-    SurfaceAnalystMethod
-}
+
 /**
  * @enum DataReturnMode
  * @memberOf SuperMap
@@ -797,7 +700,7 @@ export {
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
  */
-var DataReturnMode = SuperMap.DataReturnMode = {
+var DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -805,9 +708,7 @@ var DataReturnMode = SuperMap.DataReturnMode = {
     /** 只返回记录集（RecordSet）。 */
     RECORDSET_ONLY: "RECORDSET_ONLY"
 };
-export {
-    DataReturnMode
-}
+
 /**
  * @enum EditType
  * @memberOf SuperMap
@@ -815,7 +716,7 @@ export {
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var EditType = SuperMap.EditType = {
+var EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -823,9 +724,6 @@ var EditType = SuperMap.EditType = {
     /** 删除操作。 */
     DELETE: "delete"
 };
-export {
-    EditType
-}
 
 /**
  * @enum TransferTactic
@@ -834,7 +732,7 @@ export {
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var TransferTactic = SuperMap.TransferTactic = {
+var TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -844,9 +742,6 @@ var TransferTactic = SuperMap.TransferTactic = {
     /** 距离最短。 */
     MIN_DISTANCE: "MIN_DISTANCE"
 };
-export {
-    TransferTactic
-}
 
 /**
  * @enum TransferPreference
@@ -855,7 +750,7 @@ export {
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
  */
-var TransferPreference = SuperMap.TransferPreference = {
+var TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -865,9 +760,6 @@ var TransferPreference = SuperMap.TransferPreference = {
     /** 无乘车偏好。 */
     NONE: "NONE"
 };
-export {
-    TransferPreference
-}
 
 /**
  * @enum GridType
@@ -875,7 +767,7 @@ export {
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
-var GridType = SuperMap.GridType = {
+var GridType =  {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -883,9 +775,6 @@ var GridType = SuperMap.GridType = {
     /** 点。 */
     POINT: "POINT"
 };
-export {
-    GridType
-}
 
 /**
  * @enum ColorSpaceType
@@ -897,22 +786,20 @@ export {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
  */
-var ColorSpaceType = SuperMap.ColorSpaceType = {
+var ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
     RGB: "RGB"
 };
-export {
-    ColorSpaceType
-}
+
 /**
  * @enum LayerType
  * @memberOf SuperMap
  * @description  图层类型。
  * @type {string}
  */
-var LayerType = SuperMap.LayerType = {
+var LayerType = {
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
@@ -922,9 +809,6 @@ var LayerType = SuperMap.LayerType = {
     /** 自定义图层。 */
     CUSTOM: "CUSTOM"
 };
-export {
-    LayerType
-}
 
 /**
  * @enum UGCLayerType
@@ -932,7 +816,7 @@ export {
  * @description  UGC图层类型。
  * @type {string}
  */
-var UGCLayerType = SuperMap.UGCLayerType = {
+var UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -942,9 +826,6 @@ var UGCLayerType = SuperMap.UGCLayerType = {
     /** 影像图层。 */
     IMAGE: "IMAGE"
 };
-export {
-    UGCLayerType
-}
 
 /**
  * @enum StatisticMode
@@ -952,7 +833,7 @@ export {
  * @description  字段统计方法类型。
  * @type {string}
  */
-var StatisticMode = SuperMap.StatisticMode = {
+var StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -966,9 +847,6 @@ var StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的方差。 */
     VARIANCE: "VARIANCE"
 };
-export {
-    StatisticMode
-}
 
 /**
  * @enum PixelFormat
@@ -976,7 +854,7 @@ export {
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
-var PixelFormat = SuperMap.PixelFormat = {
+var PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -998,9 +876,6 @@ var PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用32个比特(即4个字节)来表示。 */
     UBIT32: "UBIT32"
 };
-export {
-    PixelFormat
-}
 
 /**
  * @enum SearchMode
@@ -1008,7 +883,7 @@ export {
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
-var SearchMode = SuperMap.SearchMode = {
+var SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -1018,9 +893,6 @@ var SearchMode = SuperMap.SearchMode = {
     /** 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用。 */
     QUADTREE: "QUADTREE"
 };
-export {
-    SearchMode
-}
 
 /**
  * @enum InterpolationAlgorithmType
@@ -1028,7 +900,7 @@ export {
  * @description  插值分析的算法的类型
  * @type {string}
  */
-var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -1036,9 +908,6 @@ var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 泛克吕金插值法。 */
     UniversalKriging: "UniversalKriging"
 };
-export {
-    InterpolationAlgorithmType
-}
 
 /**
  * @enum VariogramMode
@@ -1046,7 +915,7 @@ export {
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
-var VariogramMode = SuperMap.VariogramMode = {
+var VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -1054,9 +923,6 @@ var VariogramMode = SuperMap.VariogramMode = {
     /** 球型函数。 */
     SPHERICAL: "SPHERICAL"
 };
-export {
-    VariogramMode
-}
 
 /**
  * @enum Exponent
@@ -1064,15 +930,12 @@ export {
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
-var Exponent = SuperMap.Exponent = {
+var Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
     EXP2: "EXP2"
 };
-export {
-    Exponent
-}
 
 /**
  * @enum ClientType
@@ -1080,7 +943,7 @@ export {
  * @description token申请的客户端标识类型
  * @type {string}
  */
-var ClientType = SuperMap.ClientType = {
+var ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -1094,9 +957,6 @@ var ClientType = SuperMap.ClientType = {
     /** WEB。 */
     WEB: "WEB"
 };
-export {
-    ClientType
-}
 
 /**
  * @enum ChartType
@@ -1104,7 +964,7 @@ export {
  * @description 客户端专题图图表类型
  * @type {string}
  */
-var ChartType = SuperMap.ChartType = {
+var ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -1120,9 +980,6 @@ var ChartType = SuperMap.ChartType = {
     /** 环状图。 */
     RING: "Ring"
 };
-export {
-    ChartType
-}
 
 /**
  * @enum ClipAnalystMode
@@ -1130,22 +987,20 @@ export {
  * @description  裁剪分析模式
  * @type {string}
  */
-var ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
     INTERSECT: "intersect"
 };
-export {
-    ClipAnalystMode
-}
+
 /**
  * @enum AnalystAreaUnit
  * @memberOf SuperMap
  * @description 分布式分析面积单位
  * @type {string}
  */
-var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -1163,16 +1018,14 @@ var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方英里。 */
     "SQUAREMILE": "SquareMile"
 };
-export {
-    AnalystAreaUnit
-}
+
 /**
  * @enum AnalystSizeUnit
  * @memberOf SuperMap
  * @description 分布式分析单位
  * @type {string}
  */
-var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -1184,9 +1037,6 @@ var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 英里。 */
     "MILE": "Mile"
 };
-export {
-    AnalystSizeUnit
-}
 
 /**
  * @enum StatisticAnalystMode
@@ -1194,7 +1044,7 @@ export {
  * @description 分布式分析统计模式
  * @type {string}
  */
-var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -1208,31 +1058,27 @@ var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的标准差 */
     "STDDEVIATION": "stdDeviation"
 };
-export {
-    StatisticAnalystMode
-}
+
 /**
  * @enum SummaryType
  * @memberOf SuperMap
  * @description 分布式分析聚合类型
  * @type {string}
  */
-var SummaryType = SuperMap.SummaryType = {
+var SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
     "SUMMARYREGION": "SUMMARYREGION"
 };
-export {
-    SummaryType
-}
+
 /**
  * @enum TopologyValidatorRule
  * @memberOf SuperMap
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
-var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -1248,9 +1094,6 @@ var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 点不相同，用于对点数据进行拓扑检查。 */
     POINTNOIDENTICAL: "POINTNOIDENTICAL"
 };
-export {
-    TopologyValidatorRule
-}
 
 /**
  * @enum BucketAggType
@@ -1258,20 +1101,18 @@ export {
  * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
-var BucketAggType = SuperMap.BucketAggType = {
+var BucketAggType = {
     /** 格网聚合类型 */
     GEOHASH_GRID: "geohash_grid"
 };
-export {
-  BucketAggType
-}
+
 /**
  * @enum MetricsAggType
  * @memberOf SuperMap
  * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
-var MetricsAggType = SuperMap.MetricsAggType = {
+var MetricsAggType = {
   /** 平均值聚合类型 */
   AVG:'avg',
   /** 最大值聚合类型 */
@@ -1281,9 +1122,6 @@ var MetricsAggType = SuperMap.MetricsAggType = {
   /** 求和聚合类型 */
   SUM:'sum'
 };
-export {
-  MetricsAggType
-}
 
 /**
  * @enum GetFeatureMode
@@ -1291,7 +1129,7 @@ export {
  * @description feature 查询方式。
  * @type {string}
  */
-var GetFeatureMode = SuperMap.GetFeatureMode = {
+var GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -1303,9 +1141,6 @@ var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过 SQL 查询来获取要素。 */
     SQL: 'SQL'
 }
-export {
-    GetFeatureMode
-}
 
 /**
  * @enum RasterFunctionType
@@ -1313,14 +1148,11 @@ export {
  * @description 栅格分析方法。
  * @type {string}
  */
-var RasterFunctionType = SuperMap.RasterFunctionType = {
+var RasterFunctionType = {
     /** 归一化植被指数。 */
     NDVI: "NDVI",
     /** 阴影面分析。 */
     HILLSHADE: "HILLSHADE"
-}
-export {
-    RasterFunctionType
 }
 
 /**
@@ -1330,7 +1162,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var ResourceType = SuperMap.ResourceType = {
+var ResourceType = {
     /** 地图。 */
     MAP: "MAP",
     /** 服务。 */
@@ -1344,9 +1176,6 @@ var ResourceType = SuperMap.ResourceType = {
     /** 大屏。 */
     MAP_DASHBOARD: "MAP_DASHBOARD"
 }
-export {
-    ResourceType
-}
 
 /**
  * @enum OrderBy
@@ -1355,16 +1184,13 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var OrderBy = SuperMap.OrderBy = {
+var OrderBy = {
     /** 按更新时间排序 */
     UPDATETIME: "UPDATETIME",
     /** 按热度(可能是访问量、下载量)排序 */
     HEATLEVEL: "HEATLEVEL",
     /** 按相关性排序 */
     RELEVANCE: "RELEVANCE"
-}
-export {
-    OrderBy
 }
 
 /**
@@ -1374,14 +1200,11 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var OrderType = SuperMap.OrderType = {
+var OrderType = {
     /** 升序 */
     ASC: "ASC",
     /** 降序 */
     DESC: "DESC"
-}
-export {
-    OrderType
 }
 
 /**
@@ -1391,7 +1214,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var SearchType = SuperMap.SearchType = {
+var SearchType = {
     /** 公开资源。 */
     PUBLIC: "PUBLIC",
     /** 我的资源。 */
@@ -1403,9 +1226,6 @@ var SearchType = SuperMap.SearchType = {
     /** 分享给我的资源。 */
     SHARETOME_RES: "SHARETOME_RES"
 }
-export {
-    SearchType
-}
 
 /**
  * @enum AggregationTypes
@@ -1414,14 +1234,11 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var AggregationTypes = SuperMap.AggregationTypes = {
+var AggregationTypes = {
     /** 标签 */
     TAG: "TAG",
     /** 资源类型 */
     TYPE: "TYPE"
-}
-export {
-    AggregationTypes
 }
 
 /**
@@ -1431,7 +1248,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var PermissionType = SuperMap.PermissionType = {
+var PermissionType = {
     /** 可检索 */
     SEARCH:"SEARCH",
     /** 可查看 */
@@ -1443,9 +1260,6 @@ var PermissionType = SuperMap.PermissionType = {
     /** 可下载，包括可读、可检索 */
     DOWNLOAD:"DOWNLOAD"
 }
-export {
-    PermissionType
-}
 
 /**
  * @enum EntityType
@@ -1454,7 +1268,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var EntityType = SuperMap.EntityType = {
+var EntityType = {
     /** 部门 */
     DEPARTMENT: "DEPARTMENT",
     /** 用户组 */
@@ -1466,9 +1280,6 @@ var EntityType = SuperMap.EntityType = {
     /** 用户 */
     USER: "USER"
 }
-export {
-    EntityType
-}
 
 /**
  * @enum DataItemType
@@ -1477,7 +1288,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var DataItemType = SuperMap.DataItemType = {
+var REST_DataItemType = {
     /** 工作空间 sxwu, smwu, sxw, smw */
     WORKSPACE: "WORKSPACE",
     /** udb 数据源 */
@@ -1505,9 +1316,6 @@ var DataItemType = SuperMap.DataItemType = {
     /** json数据  */
     JSON: "JSON"
 }
-export {
-    DataItemType
-}
 
 /**
  * @enum WebExportFormatType
@@ -1516,14 +1324,11 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var WebExportFormatType = SuperMap.WebExportFormatType = {
+var WebExportFormatType = {
     /** png */
     PNG: "PNG",
     /** pdf */
     PDF: "PDF"
-}
-export {
-    WebExportFormatType
 }
 
 /**
@@ -1533,7 +1338,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
+var WebScaleOrientationType = {
     /** horizontal labels below */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
     /** horizontal labels above */
@@ -1543,9 +1348,6 @@ var WebScaleOrientationType = SuperMap.WebScaleOrientationType = {
     /** vertical labels right */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
 }
-export {
-    WebScaleOrientationType
-}
 
 /**
  * @enum WebScaleType
@@ -1554,16 +1356,13 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var WebScaleType = SuperMap.WebScaleType = {
+var WebScaleType = {
     /** line */
     LINE: "LINE",
     /** bar */
     BAR: "BAR",
     /** bar sub */
     BAR_SUB: "BAR_SUB"
-}
-export {
-    WebScaleType
 }
 
 /**
@@ -1573,7 +1372,7 @@ export {
  * @version 10.0.1
  * @type {string}
  */
-var WebScaleUnit = SuperMap.WebScaleUnit = {
+var WebScaleUnit = {
     /** meter */
     METER: "METER",
     /** foot */
@@ -1582,5 +1381,74 @@ var WebScaleUnit = SuperMap.WebScaleUnit = {
     DEGREES: "DEGREES"
 }
 export {
+    DataFormat,
+    ServerType,
+    GeometryType,
+    QueryOption,
+    JoinType,
+    SpatialQueryMode,
+    SpatialRelationType,
+    MeasureMode,
+    Unit,
+    BufferRadiusUnit,
+    EngineType,
+    ThemeGraphTextFormat,
+    ThemeGraphType,
+    GraphAxesTextDisplayMode,
+    GraduatedMode,
+    RangeMode,
+    ThemeType,
+    ColorGradientType,
+    TextAlignment,
+    FillGradientMode,
+    AlongLineDirection,
+    LabelBackShape,
+    LabelOverLengthMode,
+    DirectionType,
+    SideType,
+    SupplyCenterType,
+    TurnType,
+    BufferEndType,
+    OverlayOperationType,
+    OutputType,
+    SmoothMethod,
+    SurfaceAnalystMethod,
+    DataReturnMode,
+    EditType,
+    TransferTactic,
+    TransferPreference,
+    GridType,
+    ColorSpaceType,
+    LayerType,
+    UGCLayerType,
+    StatisticMode,
+    PixelFormat,
+    SearchMode,
+    InterpolationAlgorithmType,
+    VariogramMode,
+    Exponent,
+    ClientType,
+    ChartType,
+    ClipAnalystMode,
+    AnalystAreaUnit,
+    AnalystSizeUnit,
+    StatisticAnalystMode,
+    SummaryType,
+    TopologyValidatorRule,
+    BucketAggType,
+    MetricsAggType,
+    GetFeatureMode,
+    RasterFunctionType,
+    ResourceType,
+    OrderBy,
+    OrderType,
+    SearchType,
+    AggregationTypes,
+    PermissionType,
+    EntityType,
+    REST_DataItemType,
+    WebExportFormatType,
+    WebScaleOrientationType,
+    WebScaleType,
     WebScaleUnit
 }

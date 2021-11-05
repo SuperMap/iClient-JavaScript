@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
+import {mixinExt as mixin} from '../../commontypes';
 import {Eventful} from './Eventful';
 import {Transformable} from './Transformable';
 import {Util as CommonUtil} from '../../commontypes/Util';
@@ -15,7 +15,7 @@ import {SUtil} from './SUtil';
  * @extends SuperMap.LevelRenderer.Eventful
  * @extends SuperMap.LevelRenderer.Transformable
  */
-export class Shape extends SuperMap.mixin(Eventful, Transformable) {
+export class Shape extends mixin(Eventful, Transformable) {
 
     /**
      * @function SuperMap.LevelRenderer.Shape.constructor

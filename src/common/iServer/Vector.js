@@ -67,4 +67,3 @@ export class Vector extends UGCSubLayer {
     }
 }
 
-SuperMap.Vector = Vector;

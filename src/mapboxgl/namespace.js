@@ -394,7 +394,7 @@ export {
   ImageRenderingRule,
   Sortby,
   ImageStretchOption
-} from '@supermap/iclient-common';
+} from '@supermap/iclient-common/namespace';
 export * from './control';
 export * from './core';
 export * from './overlay';

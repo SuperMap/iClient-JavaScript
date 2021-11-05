@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 /**
@@ -98,16 +97,3 @@ export default class ImageStretchOption {
     }
 }
 
-SuperMap.ImageStretchOption = ImageStretchOption;
-/**
- * @enum SuperMap.ImageStretchOption.StretchType
- * @readonly
- * @type {string}
- */
-SuperMap.ImageStretchOption.StretchType = {
-    NONE: 'NONE',
-    GAUSSIAN: 'GAUSSIAN',
-    PERCENTCLIP: 'PERCENTCLIP',
-    MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
-    STANDARDDEVIATION: 'STANDARDDEVIATION'
-};

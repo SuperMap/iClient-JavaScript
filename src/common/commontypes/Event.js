@@ -10,7 +10,7 @@ import {Util} from './Util';
  * @namespace
  * @description 事件处理函数.
  */
-export var Event = SuperMap.Event = {
+export var Event = {
 
     /**
      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -339,7 +339,4 @@ export var Event = SuperMap.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-SuperMap.Event = Event;
-/* prevent memory leaks in IE */
-SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 

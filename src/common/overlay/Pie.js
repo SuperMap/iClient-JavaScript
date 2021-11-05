@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {Sector} from './feature/Sector';
 import {Graph} from './Graph';
@@ -207,5 +206,3 @@ export class Pie extends Graph {
  * @property {boolean} [sectorHoverAble=true] 是否允许饼图扇形使用 hover 状态。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
  * @property {boolean} [sectorClickAble=true] 是否允许饼图扇形被点击。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
  */
-
-SuperMap.Feature.Theme.Pie = Pie;

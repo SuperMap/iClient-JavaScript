@@ -27,4 +27,3 @@ export class LandcoverClassification extends MachineLearningBase {
     }
 }
 
-SuperMap.LandcoverClassification = LandcoverClassification;

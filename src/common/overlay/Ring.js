@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {Sector} from './feature/Sector';
 import {Graph} from './Graph';
@@ -213,5 +212,3 @@ export class Ring extends Graph {
  * @property {Array.<SuperMap.Feature.ShapeParameters.Sector.style>} [sectorStyleByCodomain] - 按环状图扇形代表的数据值所在值域范围控制环状图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
  
  */
-
-SuperMap.Feature.Theme.Ring = Ring;

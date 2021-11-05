@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
 import { FindTSPPathsParameters } from './FindTSPPathsParameters';
@@ -61,7 +60,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
         var me = this, jsonObject;
         me.url = Util.urlPathAppend(me.url, 'tsppath');
         jsonObject = {
-            parameter: SuperMap.Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             endNodeAssigned: params.endNodeAssigned,
             nodes: me.getNodesJson(params)
         };
@@ -133,5 +132,3 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
 }
-
-SuperMap.FindTSPPathsService = FindTSPPathsService;

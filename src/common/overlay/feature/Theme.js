@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {Point} from '../../commontypes/geometry/Point';
 import {GeoText} from '../../commontypes/geometry/GeoText';
 import {LonLat} from '../../commontypes/LonLat';
@@ -113,5 +112,3 @@ export class Theme {
     }
 
 }
-SuperMap.Feature = SuperMap.Feature || {};
-SuperMap.Feature.Theme = Theme;

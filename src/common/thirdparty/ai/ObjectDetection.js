@@ -229,4 +229,3 @@ export class ObjectDetection extends MachineLearningBase {
     }
 }
 
-SuperMap.ObjectDetection = ObjectDetection;

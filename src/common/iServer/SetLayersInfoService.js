@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 import './SetLayersInfoParameters';
@@ -41,7 +40,7 @@ export class SetLayersInfoService extends CommonServiceBase {
         this.isTempLayers = false;
 
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SetLayersInfoService";
@@ -122,4 +121,3 @@ export class SetLayersInfoService extends CommonServiceBase {
 
 }
 
-SuperMap.SetLayersInfoService = SetLayersInfoService;

@@ -1,9 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from '../SuperMap';
 
 /**
  * @enum ServiceStatus
@@ -11,7 +8,7 @@ import {
  * @category iPortal/Online
  * @description 服务发布状态。
  */
-var ServiceStatus = SuperMap.ServiceStatus = {
+var ServiceStatus = {
     /** 不涉及，不可发布。 */
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     /** 发布失败。 */
@@ -25,9 +22,7 @@ var ServiceStatus = SuperMap.ServiceStatus = {
     /** 取消服务失败。 */
     UNPUBLISHED_FAILED: "UNPUBLISHED_FAILED"
 };
-export {
-    ServiceStatus
-}
+
 
 /**
  * 
@@ -36,7 +31,7 @@ export {
  * @category iPortal/Online
  * @description 数据项类型。
  */
-var DataItemType = SuperMap.DataItemType = {
+var DataItemType = {
     /** AUDIO */
     AUDIO: "AUDIO",
     /** COLOR */
@@ -88,14 +83,13 @@ var DataItemType = SuperMap.DataItemType = {
     /** WORKSPACE */
     WORKSPACE: "WORKSPACE"
 };
-export {DataItemType}
 /**
  * @enum DataItemOrderBy
  * @memberOf SuperMap
  * @category iPortal/Online
  * @description 数据排序字段。
  */
-var DataItemOrderBy = SuperMap.DataItemOrderBy = {
+var DataItemOrderBy = {
     /** FILENAME */
     FILENAME: "FILENAME",
     /** ID */
@@ -117,9 +111,6 @@ var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     /** USERNAME */
     USERNAME: "USERNAME"
 };
-export {
-    DataItemOrderBy
-}
 
 /**
  * @enum FilterField
@@ -127,7 +118,7 @@ export {
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段。
  */
-var FilterField = SuperMap.FilterField = {
+var FilterField = {
     /** LINKPAGE */
     LINKPAGE: "LINKPAGE",
     /** LINKPAGE */
@@ -140,5 +131,8 @@ var FilterField = SuperMap.FilterField = {
     USERNAME: "USERNAME"
 };
 export {
+    ServiceStatus,
+    DataItemType,
+    DataItemOrderBy,
     FilterField
 }

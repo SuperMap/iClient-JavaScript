@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 import {ThemeParameters} from './ThemeParameters';
@@ -29,7 +28,7 @@ export class ThemeService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.url = Util.urlPathAppend(this.url, 'tempLayersSet');
         this.CLASS_NAME = 'SuperMap.ThemeService';
@@ -130,5 +129,3 @@ export class ThemeService extends CommonServiceBase {
     }
 
 }
-
-SuperMap.ThemeService = ThemeService;

@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Theme} from './feature/Theme';
 import {Circle as RenderCircle} from './feature/Circle';
 import {ShapeFactory} from './feature/ShapeFactory';
@@ -155,5 +154,3 @@ export class Circle extends RankSymbol {
  * @property {boolean} [circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * 
  */
-
-SuperMap.Feature.Theme.Circle = Circle;

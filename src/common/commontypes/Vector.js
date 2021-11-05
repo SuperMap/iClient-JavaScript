@@ -315,6 +315,5 @@ export class Vector extends Feature {
  *          vectorLayer.addFeatures([pointFeature]);
  * }
      */
-SuperMap.Feature.Vector = Vector;
 
 

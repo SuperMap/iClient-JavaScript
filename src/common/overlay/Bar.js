@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {Polygon} from './feature/Polygon';
 import {Color} from './levelRenderer/Color';
@@ -357,5 +356,3 @@ export class Bar extends Graph {
 * @property {Object} [barHoverAble] - 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。
 * @property {Object} [barClickAble] - 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。
 */
-
-SuperMap.Feature.Theme.Bar = Bar;
