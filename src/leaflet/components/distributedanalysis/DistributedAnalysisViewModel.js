@@ -5,7 +5,8 @@ import L from "leaflet";
 import '../../core/Base';
 import { DistributedAnalysisModel } from "./DistributedAnalysisModel";
 import {  KernelDensityJobParameter } from "@supermap/iclient-common";
-import { ProcessingService } from '../../services/ProcessingService'
+import { ProcessingService } from '../../services/ProcessingService';
+import { tiledMapLayer } from '../../mapping/TiledMapLayer';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 /**
  * @class L.supermap.components.distributedAnalysisViewModel
@@ -103,7 +104,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
                              * @description 分析成功后服务器返回的数据。
                              */
                             me.fire('analysissucceed', { 'result': result });
-                            let layer = L.supermap.tiledMapLayer(mapUrl, { noWrap: true, transparent: true });
+                            let layer = tiledMapLayer(mapUrl, { noWrap: true, transparent: true });
                             me.resultLayers.push(layer);
                             layer.addTo(map);
                             /**

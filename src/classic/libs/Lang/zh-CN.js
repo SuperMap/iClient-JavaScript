@@ -8,7 +8,7 @@
  *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
  *     strings formatted for use with <SuperMap.String.format> calls.
  */
- export var zh = {
+ SuperMap.Lang["zh-CN"] = {
 
     'unhandledRequest': "未处理的请求，返回值为 ${statusText}",
 

@@ -2,16 +2,12 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import { en } from './libs/Lang/en';
-import { zh } from './libs/Lang/zh-CN';
 import { MapVLayer } from './overlay';
 import { AddressMatchService, DatasetService, DatasourceService, ProcessingService } from './services';
 
 if (window && window.SuperMap) {
   var SuperMap = (window.SuperMap = window.SuperMap || {});
   SuperMap.REST = SuperMap.REST || {};
-  SuperMap.Lang.en = en;
-  SuperMap.Lang['zh-CN'] = zh;
   SuperMap.Layer.MapVLayer = MapVLayer;
   SuperMap.REST.AddressMatchService = AddressMatchService;
   SuperMap.REST.DatasetService = DatasetService;

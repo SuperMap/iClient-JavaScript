@@ -14,6 +14,7 @@ import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQ
 import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
 import { Lang } from '@supermap/iclient-common/lang/Lang';
 import { Util } from '../core/Util';
+import { QueryService } from '../services/QueryService';
 import convert from 'xml-js';
 import canvg from 'canvg';
 
@@ -2073,7 +2074,7 @@ export class WebMap extends mapboxgl.Evented {
 			};
 		}
 		queryBySQLParams = new QueryBySQLParameters(params);
-		queryBySQLService = new mapboxgl.supermap.QueryService(url);
+		queryBySQLService = new QueryService(url);
 		queryBySQLService.queryBySQL(queryBySQLParams, data => {
 			data.type === 'processCompleted' ? processCompleted(data) : processFaild(data);
 		});

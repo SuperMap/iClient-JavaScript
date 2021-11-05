@@ -8,7 +8,7 @@
  *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
  *     strings formatted for use with <SuperMap.String.format> calls.
  */
-export var en = {
+ SuperMap.Lang.en = {
 
 	'unhandledRequest': "Unhandled request return ${statusText}",
 

@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../SuperMap';
+import { Util } from '@supermap/iclient-common/commontypes/Util'
 import { MapVRenderer } from './mapv/MapVRenderer';
 
 /**
@@ -50,7 +51,7 @@ export class MapVLayer extends SuperMap.Layer {
         this.canvasContext = null;
 
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         
         //MapV图要求使用canvas绘制，判断是否支持
