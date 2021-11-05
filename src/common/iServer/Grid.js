@@ -6,7 +6,6 @@ import {UGCSubLayer} from './UGCSubLayer';
 import {ServerColor} from './ServerColor';
 import {ServerStyle} from './ServerStyle';
 import {ColorDictionary} from './ColorDictionary';
-import '../REST';
 
 /**
  * @class SuperMap.Grid

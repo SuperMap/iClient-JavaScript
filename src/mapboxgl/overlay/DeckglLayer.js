@@ -5,7 +5,6 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import { Util } from '../core/Util';
-import './graphic';
 
 /**
  * @class mapboxgl.supermap.DeckglLayer

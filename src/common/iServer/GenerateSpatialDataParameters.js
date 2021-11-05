@@ -4,7 +4,6 @@
 import {
     Util
 } from '../commontypes/Util';
-import './DataReturnOption';
 
 /**
  * @class SuperMap.GenerateSpatialDataParameters

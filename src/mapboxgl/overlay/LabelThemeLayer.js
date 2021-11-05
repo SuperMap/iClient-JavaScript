@@ -9,9 +9,7 @@ import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
 import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
 import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVector';
 import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
- import {
-    GeoFeature
-} from './theme/GeoFeatureThemeLayer';
+import { GeoFeature } from './theme/GeoFeatureThemeLayer';
 
 /**
  * @class mapboxgl.supermap.LabelThemeLayer

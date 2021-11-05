@@ -7,7 +7,6 @@ import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import {
     Util
 } from "../core/Util";
-import './graphic';
 
 const defaultProps = {
     color: [0, 0, 0, 255],

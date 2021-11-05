@@ -4,7 +4,6 @@
 import {
     Util
 } from '../commontypes/Util';
-import './FilterParameter';
 import {
     GeometryType,
     QueryOption

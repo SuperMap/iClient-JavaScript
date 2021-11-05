@@ -4,7 +4,6 @@
 import {UGCSubLayer} from './UGCSubLayer';
 import {ServerColor} from './ServerColor';
 import {Util} from '../commontypes/Util';
-import '../REST';
 
 /**
  * @class SuperMap.Image
