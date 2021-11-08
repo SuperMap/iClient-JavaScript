@@ -11,6 +11,7 @@ import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import {
     Util
 } from '../core/Util';
+import { getFeatureBySQL, queryFeatureBySQL, getFeatureProperties} from './webmap/Util'
 import {
     StyleUtils
 } from '../core/StyleUtils';
@@ -1909,7 +1910,7 @@ export class WebMap extends Observable {
                     that.getFeaturesFromRestData(layer, layerIndex, len);
                 } else if (dataSource && dataSource.type === "REST_MAP" && dataSource.url) {
                     //示例数据
-                    Util.queryFeatureBySQL(dataSource.url, dataSource.layerName, 'smid=1', null, null, function (result) {
+                    queryFeatureBySQL(dataSource.url, dataSource.layerName, 'smid=1', null, null, function (result) {
                         var recordsets = result && result.result.recordsets;
                         var recordset = recordsets && recordsets[0];
                         var attributes = recordset.fields;
@@ -2143,7 +2144,7 @@ export class WebMap extends Observable {
             return;
         }
         //因为itest上使用的https，iserver是http，所以要加上代理
-        Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
+        getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
             let features = that.parseGeoJsonData2Feature({
                 allDatas: {
                     features: result.result.features.features
@@ -2174,7 +2175,7 @@ export class WebMap extends Observable {
         var that = this;
         var source = layerInfo.dataSource;
         var fileCode = layerInfo.projection;
-        Util.queryFeatureBySQL(source.url, source.layerName, null, fields, null, function (result) {
+        queryFeatureBySQL(source.url, source.layerName, null, fields, null, function (result) {
             var recordsets = result.result.recordsets[0];
             var features = recordsets.features.features;
 
@@ -2628,7 +2629,7 @@ export class WebMap extends Observable {
                 serviceOptions.proxy = this.getProxy();
             }
             //因为itest上使用的https，iserver是http，所以要加上代理
-            Util.getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
+            getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, function (result) {
                 let features = that.parseGeoJsonData2Feature({
                     allDatas: {
                         features: result.result.features.features
@@ -4110,7 +4111,7 @@ export class WebMap extends Observable {
                 }
             }
         }
-        let properties = Util.getFeatureProperties(features);
+        let properties = getFeatureProperties(features);
         let lineData = this.createLinesData(layerInfo, properties);
         let pointData = this.createPointsData(lineData, layerInfo, properties);
         let options = this.createOptions(layerInfo, lineData, pointData);

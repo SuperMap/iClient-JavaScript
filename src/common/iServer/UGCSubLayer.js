@@ -5,7 +5,6 @@ import {Util} from '../commontypes/Util';
 import {UGCMapLayer} from './UGCMapLayer';
 import {JoinItem} from './JoinItem';
 import {DatasetInfo} from './DatasetInfo';
-import '../REST';
 
 /**
  * @class SuperMap.UGCSubLayer

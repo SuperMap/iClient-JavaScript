@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
 import {UGCLayer} from './UGCLayer';
-import './OverlapDisplayedOptions';
 
 /**
  * @class SuperMap.UGCMapLayer

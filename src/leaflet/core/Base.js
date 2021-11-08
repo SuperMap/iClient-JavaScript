@@ -15,14 +15,8 @@
  * 提供公共模块
  */
 import L from "leaflet";
-import './NonEarthCRS';
 import './Proj4Leaflet';
-import './ExtendsCRS';
 import Attributions from './Attributions';
-
-L.supermap = L.supermap || {};
-L.supermap.control = L.supermap.control || {};
-L.supermap.components = L.supermap.components || {};
 
 L.Control.Attribution.include({
     options: {

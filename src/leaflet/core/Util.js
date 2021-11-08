@@ -9,8 +9,6 @@
  * @namespace L.Util
  * @category BaseTypes Util
  */
-export var supermap_callbacks = {};
-L.Util.supermap_callbacks = supermap_callbacks;
 export var toGeoJSON = function(feature) {
     if (!feature) {
         return feature;
@@ -70,7 +68,7 @@ export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
     datumAxis = datumAxis || 6378137;
     coordUnit = coordUnit || '';
     if (scale > 0 && dpi > 0) {
-        scale = L.Util.NormalizeScale(scale);
+        scale = NormalizeScale(scale);
         if (
             coordUnit.toLowerCase() === 'degree' ||
             coordUnit.toLowerCase() === 'degrees' ||
@@ -89,11 +87,3 @@ export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
 export var NormalizeScale = function(scale) {
     return scale > 1.0 ? 1.0 / scale : scale;
 };
-
-L.Util.toGeoJSON = toGeoJSON;
-L.Util.toSuperMapGeometry = toSuperMapGeometry;
-L.Util.resolutionToScale = resolutionToScale;
-L.Util.scaleToResolution = scaleToResolution;
-L.Util.getMeterPerMapUnit = getMeterPerMapUnit;
-L.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
-L.Util.NormalizeScale = NormalizeScale;

@@ -4,20 +4,24 @@
  import L from 'leaflet';
  import './Base';
  import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+
+ const isArray = function(obj) {
+  return Object.prototype.toString.call(obj) == '[object Array]';
+}
 /**
  * @class L.supermap.CommontypesConversion
  * @category BaseTypes Util
  * @namespace
  * @classdesc Leaflet 对象和 SuperMap 对象转换工具。
  */
-export class CommontypesConversion {
+export const CommontypesConversion = {
     /**
      * @function L.supermap.CommontypesConversion.toSuperMapBounds
      * @description 将 Leaflet 对象的 bounds 转成 SuperMap 的 bounds对象。
      * @param {(L.Bounds|L.LatLngBounds)} bounds - 图层显示范围。
      * @returns {SuperMap.Bounds} SuperMap 的 bounds 对象。
      */
-    static toSuperMapBounds(bounds) {
+    toSuperMapBounds(bounds) {
         if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
             bounds = L.geoJSON(bounds).getBounds();
         }
@@ -37,7 +41,7 @@ export class CommontypesConversion {
                 bounds.max.y
             );
         }
-        if (this.isArray(bounds)) {
+        if (isArray(bounds)) {
             return new Bounds(
                 bounds[0],
                 bounds[1],
@@ -47,7 +51,7 @@ export class CommontypesConversion {
         }
 
         return new Bounds();
-    }
+    },
 
     /**
      * @function L.supermap.Util.isArray
@@ -55,9 +59,7 @@ export class CommontypesConversion {
      * @param {Object} obj - 待判断对象。
      * @returns {boolean} 是否是数组。
      */
-    static isArray(obj) {
-        return Object.prototype.toString.call(obj) == '[object Array]';
-    }
+    isArray,
 
     /**
      * @function L.supermap.CommontypesConversion.toProcessingParam
@@ -65,7 +67,7 @@ export class CommontypesConversion {
      * @param {Array} points - Region 各个节点数组。
      * @returns processing 服务裁剪、查询分析的分析参数。
      */
-    static toProcessingParam(points) {
+      toProcessingParam(points) {
         var geometryParam = {};
         if (points.length < 1) {
             geometryParam = "";
@@ -84,4 +86,3 @@ export class CommontypesConversion {
     }
 }
 
-L.supermap.CommontypesConversion = CommontypesConversion;

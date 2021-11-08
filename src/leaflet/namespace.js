@@ -475,6 +475,28 @@ import L from "leaflet";
 L.supermap = L.supermap || {};
 L.supermap.components = L.supermap.components || {};
 L.supermap.control = L.supermap.control || {};
+
+// ./core
+// L.Util.supermap_callbacks = coreUtil.supermap_callbacks;
+L.Util.toGeoJSON = toGeoJSON;
+L.Util.toSuperMapGeometry = toSuperMapGeometry;
+L.Util.resolutionToScale = resolutionToScale;
+L.Util.scaleToResolution = scaleToResolution;
+L.Util.getMeterPerMapUnit = getMeterPerMapUnit;
+L.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+L.Util.NormalizeScale = NormalizeScale;
+// core/NonEarthCRS
+L.Projection = {};
+L.Projection.NonProjection = nonProjection;
+L.CRS.NonEarthCRS = nonEarthCRS;
+// core/ExtendsCRS
+L.CRS.BaiduCRS = BaiduCRS;
+L.CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
+L.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
+L.CRS.TianDiTu_Mercator = TianDiTu_MercatorCRS;
+L.CRS.TianDiTu_WGS84 = TianDiTu_WGS84CRS;
+L.CRS.Baidu = BaiduCRS;
+L.supermap.CommontypesConversion = CommontypesConversion;
 // components
 L.supermap.components.clientComputationLayer = clientComputationLayer;
 L.supermap.components.clientComputation = clientComputationView;

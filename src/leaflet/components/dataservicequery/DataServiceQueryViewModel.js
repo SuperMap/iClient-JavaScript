@@ -4,7 +4,7 @@
 
 import L from "leaflet";
 import '../../core/Base';
-import { featureService } from '../../services/FeatureService';
+import { featureService as FeatureService} from '../../services/FeatureService';
 import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
 import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
 import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
@@ -37,7 +37,7 @@ export class DataServiceQueryViewModel extends L.Evented {
     getFeatures(queryParam, map) {
         let dataserviceUrl = this.dataserviceUrl;
         let me = this;
-        let featureService = featureService(dataserviceUrl);
+        let featureService = FeatureService(dataserviceUrl);
         if (queryParam instanceof GetFeaturesByIDsParameters) {
             featureService.getFeaturesByIDs(queryParam, function (serviceResult) {
                 me._getQureyResult(serviceResult, map);

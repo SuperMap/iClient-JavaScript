@@ -2,52 +2,62 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import "../core/Base";
-import { Bounds, GeometryPoint, Polygon, LinearRing, GeoJSON as GeoJSONFormat } from "@supermap/iclient-common";
+import { Bounds } from "@supermap/iclient-common/commontypes/Bounds";
+import { Point as GeometryPoint } from "@supermap/iclient-common/commontypes/geometry/Point";
+import { Polygon } from "@supermap/iclient-common/commontypes/geometry/Polygon";
+import { LinearRing } from "@supermap/iclient-common/commontypes/geometry/LinearRing";
+import { GeoJSON as GeoJSONFormat } from "@supermap/iclient-common/format/GeoJSON";
 
+const isArray = function (obj){
+  return Object.prototype.toString.call(obj) == "[object Array]";
+}
+const isString = function (str) {
+  return (typeof str === 'string') && str.constructor === String;
+}
 /**
  * @class mapboxgl.supermap.Util
  * @category BaseTypes Util
  * @classdesc 工具类。
  */
-export class Util {
+export const Util = {
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
      * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
      * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
      * @returns {SuperMap.Geometry}
      */
-    static toSuperMapGeometry(geoJSON) {
+    toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
             var format = new GeoJSONFormat();
             var result = format.read(geoJSON, "FeatureCollection");
             return result[0].geometry;
         }
-    }
+    },
 
-    static toSuperMapBounds(bounds) {
-        if (this.isArray(bounds)) {
+    toSuperMapBounds(bounds) {
+        if (isArray(bounds)) {
             //左下右上
             return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
         return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
-    }
+    },
 
-    static toSuperMapPoint(lnglat) {
+    toSuperMapPoint(lnglat) {
         //客户端可传入 geojson 对象 或者 mapboxgl lnglat 点对象,或者是点数组
-        if (this.isArray(lnglat)) {
+        if (isArray(lnglat)) {
             return new GeometryPoint(lnglat[0], lnglat[1]);
         } else if (lnglat.lng && lnglat.lat) {
             return new GeometryPoint(lnglat.lng, lnglat.lat);
         }
         return new GeometryPoint(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
-    }
+    },
     /**
      * @function mapboxgl.supermap.Util.toSuperMapPolygon
      * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
      * @param {Mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
      * @returns {SuperMap.Geometry.Polygon}
      */
-    static toSuperMapPolygon(lnglatBounds) {
+    toSuperMapPolygon(lnglatBounds) {
         const west = lnglatBounds.getWest();
         const east = lnglatBounds.getEast();
         const sourth = lnglatBounds.getSouth();
@@ -60,7 +70,7 @@ export class Util {
                 new GeometryPoint(west, north)
             ])
         ]);
-    }
+    },
 
     /**
      * @function mapboxgl.supermap.Util.isArray
@@ -68,21 +78,19 @@ export class Util {
      * @param {Object} obj - 待判断对象。
      * @returns {boolean} 是否是数组。
      */
-    static isArray(obj) {
-        return Object.prototype.toString.call(obj) == "[object Array]";
-    }
+    isArray,
 
     /**
      * @function mapboxgl.supermap.Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式。
      * @param {Object} smObj - 待转参数。
      */
-    static toGeoJSON(smObj) {
+    toGeoJSON(smObj) {
         if (smObj) {
             var format = new GeoJSONFormat();
             return format.toGeoJSON(smObj);
         }
-    }
+    },
 
     /**
      * @function mapboxgl.supermap.Util.toProcessingParam
@@ -90,7 +98,7 @@ export class Util {
      * @param {Array} points - Region 各个节点数组。
      * @returns {Object} processing 服务裁剪、查询分析的分析参数。
      */
-    static toProcessingParam(points) {
+    toProcessingParam(points) {
         var geometryParam = {};
         if (points.length < 1) {
             geometryParam = "";
@@ -106,7 +114,7 @@ export class Util {
             geometryParam.points = results;
         }
         return geometryParam;
-    }
+    },
 
     /**
      * @function mapboxgl.supermap.Util.extend
@@ -115,7 +123,7 @@ export class Util {
      * @param {Object} arguments - 待拷贝的对象。
      * @returns {Object} 赋值后的目标对象。
      */
-    static extend(dest) {
+    extend(dest) {
         for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
             var arg = Object.getOwnPropertyNames(arguments)[index];
             if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
@@ -133,14 +141,14 @@ export class Util {
             }
         }
         return dest;
-    }
+    },
 
     /**
      * 检测数据是否为number
      * @param value 值，未知数据类型
      * @returns {boolean}
      */
-    static isNumber(value) {
+    isNumber(value) {
         if (value === "") {
             return false;
         }
@@ -149,17 +157,15 @@ export class Util {
             return true;
         }
         return !isNaN(mdata);
-    }
+    },
 
-    static isString(str) {
-      return (typeof str === 'string') && str.constructor === String;
-  }
+    isString: isString,
     /**
      * 随机生成id
      * @param attr
      * @returns {string}
      */
-    static newGuid(attr) {
+    newGuid(attr) {
         let len = attr || 32;
         let guid = "";
         for (let i = 1; i < len; i++) {
@@ -167,14 +173,14 @@ export class Util {
             guid += n;
         }
         return guid;
-    }
+    },
     /**
      * @description 十六进制转 RGBA 格式。
      * @param {Object} hex - 十六进制格式参数。
      * @param {number} opacity -Alpha 参数。
      * @returns {string} 生成的 RGBA 格式。
      */
-    static hexToRgba(hex, opacity) {
+    hexToRgba(hex, opacity) {
         var color = [],
             rgba = [];
         hex = hex.replace(/#/, "");
@@ -191,15 +197,15 @@ export class Util {
         }
         rgba.push(opacity);
         return "rgba(" + rgba.join(",") + ")";
-    }
+    },
 
     /**
      * @param {string} featureName 原始数据中的地名
      * @param {string} fieldName 需要匹配的地名
      * @returns {boolean} 是否匹配
      */
-    static isMatchAdministrativeName(featureName, fieldName) {
-      if (this.isString(fieldName)) {
+    isMatchAdministrativeName(featureName, fieldName) {
+      if (isString(fieldName)) {
           let shortName = featureName.substr(0, 2);
           // 张家口市和张家界市 特殊处理
           if (shortName === '张家') {
@@ -210,4 +216,3 @@ export class Util {
       return false;
   }
 }
-

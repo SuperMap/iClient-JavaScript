@@ -3,8 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
 
-L.Projection = {};
-
 /**
  * @private
  * @class L.Projection.NonProjection
@@ -115,6 +113,3 @@ export var NonEarthCRS = L.Class.extend({
 export var nonEarthCRS = function (options) {
     return new NonEarthCRS(options);
 };
-L.Projection.NonProjection = nonProjection;
-
-L.CRS.NonEarthCRS = nonEarthCRS;
