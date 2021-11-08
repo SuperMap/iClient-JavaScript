@@ -17,7 +17,6 @@
  */
 export class Credential {
 
-    static CREDENTIAL = null;
     constructor(value, name) {
 
         /**
@@ -90,3 +89,4 @@ export class Credential {
  *
  */
 
+ Credential.CREDENTIAL = null;

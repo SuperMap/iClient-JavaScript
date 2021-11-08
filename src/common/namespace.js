@@ -106,6 +106,12 @@ import {
   Pixel,
   Size,
   CommonUtil,
+  Browser,
+  INCHES_PER_UNIT,
+  METERS_PER_INCH,
+  DOTS_PER_INCH,
+  IS_GECKO,
+  isSupportCanvas,
   GeometryVector
 } from './commontypes';
 import { Format, GeoJSON, JSONFormat, WKT } from './format';
@@ -503,173 +509,12 @@ if (window && window.SuperMap) {
 
   // CommonUtil
   SuperMap.Util = CommonUtil || {};
-  SuperMap.Browser = (function () {
-    var name = '',
-      version = '',
-      device = 'pc',
-      uaMatch;
-    //以下进行测试
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf('msie') > -1 || (ua.indexOf('trident') > -1 && ua.indexOf('rv') > -1)) {
-      name = 'msie';
-      uaMatch = ua.match(/msie ([\d.]+)/) || ua.match(/rv:([\d.]+)/);
-    } else if (ua.indexOf('chrome') > -1) {
-      name = 'chrome';
-      uaMatch = ua.match(/chrome\/([\d.]+)/);
-    } else if (ua.indexOf('firefox') > -1) {
-      name = 'firefox';
-      uaMatch = ua.match(/firefox\/([\d.]+)/);
-    } else if (ua.indexOf('opera') > -1) {
-      name = 'opera';
-      uaMatch = ua.match(/version\/([\d.]+)/);
-    } else if (ua.indexOf('safari') > -1) {
-      name = 'safari';
-      uaMatch = ua.match(/version\/([\d.]+)/);
-    }
-    version = uaMatch ? uaMatch[1] : '';
-
-    if (ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1 || ua.indexOf('iphone') > -1) {
-      device = 'apple';
-    } else if (ua.indexOf('android') > -1) {
-      uaMatch = ua.match(/version\/([\d.]+)/);
-      version = uaMatch ? uaMatch[1] : '';
-      device = 'android';
-    }
-    return { name: name, version: version, device: device };
-  })();
-  SuperMap.INCHES_PER_UNIT = {
-    inches: 1.0,
-    ft: 12.0,
-    mi: 63360.0,
-    m: 39.3701,
-    km: 39370.1,
-    dd: 4374754,
-    yd: 36
-  };
-  SuperMap.INCHES_PER_UNIT['in'] = SuperMap.INCHES_PER_UNIT.inches;
-  SuperMap.INCHES_PER_UNIT['degrees'] = SuperMap.INCHES_PER_UNIT.dd;
-  SuperMap.INCHES_PER_UNIT['nmi'] = 1852 * SuperMap.INCHES_PER_UNIT.m;
-
-  // Units from CS-Map
-  SuperMap.METERS_PER_INCH = 0.0254000508001016002;
-  SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
-    Inch: SuperMap.INCHES_PER_UNIT.inches,
-    Meter: 1.0 / SuperMap.METERS_PER_INCH, //EPSG:9001
-    Foot: 0.30480060960121920243 / SuperMap.METERS_PER_INCH, //EPSG:9003
-    IFoot: 0.3048 / SuperMap.METERS_PER_INCH, //EPSG:9002
-    ClarkeFoot: 0.3047972651151 / SuperMap.METERS_PER_INCH, //EPSG:9005
-    SearsFoot: 0.30479947153867624624 / SuperMap.METERS_PER_INCH, //EPSG:9041
-    GoldCoastFoot: 0.30479971018150881758 / SuperMap.METERS_PER_INCH, //EPSG:9094
-    IInch: 0.0254 / SuperMap.METERS_PER_INCH,
-    MicroInch: 0.0000254 / SuperMap.METERS_PER_INCH,
-    Mil: 0.0000000254 / SuperMap.METERS_PER_INCH,
-    Centimeter: 0.01 / SuperMap.METERS_PER_INCH,
-    Kilometer: 1000.0 / SuperMap.METERS_PER_INCH, //EPSG:9036
-    Yard: 0.91440182880365760731 / SuperMap.METERS_PER_INCH,
-    SearsYard: 0.914398414616029 / SuperMap.METERS_PER_INCH, //EPSG:9040
-    IndianYard: 0.91439853074444079983 / SuperMap.METERS_PER_INCH, //EPSG:9084
-    IndianYd37: 0.91439523 / SuperMap.METERS_PER_INCH, //EPSG:9085
-    IndianYd62: 0.9143988 / SuperMap.METERS_PER_INCH, //EPSG:9086
-    IndianYd75: 0.9143985 / SuperMap.METERS_PER_INCH, //EPSG:9087
-    IndianFoot: 0.30479951 / SuperMap.METERS_PER_INCH, //EPSG:9080
-    IndianFt37: 0.30479841 / SuperMap.METERS_PER_INCH, //EPSG:9081
-    IndianFt62: 0.3047996 / SuperMap.METERS_PER_INCH, //EPSG:9082
-    IndianFt75: 0.3047995 / SuperMap.METERS_PER_INCH, //EPSG:9083
-    Mile: 1609.34721869443738887477 / SuperMap.METERS_PER_INCH,
-    IYard: 0.9144 / SuperMap.METERS_PER_INCH, //EPSG:9096
-    IMile: 1609.344 / SuperMap.METERS_PER_INCH, //EPSG:9093
-    NautM: 1852.0 / SuperMap.METERS_PER_INCH, //EPSG:9030
-    'Lat-66': 110943.316488932731 / SuperMap.METERS_PER_INCH,
-    'Lat-83': 110946.25736872234125 / SuperMap.METERS_PER_INCH,
-    Decimeter: 0.1 / SuperMap.METERS_PER_INCH,
-    Millimeter: 0.001 / SuperMap.METERS_PER_INCH,
-    Dekameter: 10.0 / SuperMap.METERS_PER_INCH,
-    Decameter: 10.0 / SuperMap.METERS_PER_INCH,
-    Hectometer: 100.0 / SuperMap.METERS_PER_INCH,
-    GermanMeter: 1.0000135965 / SuperMap.METERS_PER_INCH, //EPSG:9031
-    CaGrid: 0.999738 / SuperMap.METERS_PER_INCH,
-    ClarkeChain: 20.1166194976 / SuperMap.METERS_PER_INCH, //EPSG:9038
-    GunterChain: 20.11684023368047 / SuperMap.METERS_PER_INCH, //EPSG:9033
-    BenoitChain: 20.116782494375872 / SuperMap.METERS_PER_INCH, //EPSG:9062
-    SearsChain: 20.11676512155 / SuperMap.METERS_PER_INCH, //EPSG:9042
-    ClarkeLink: 0.201166194976 / SuperMap.METERS_PER_INCH, //EPSG:9039
-    GunterLink: 0.2011684023368047 / SuperMap.METERS_PER_INCH, //EPSG:9034
-    BenoitLink: 0.20116782494375872 / SuperMap.METERS_PER_INCH, //EPSG:9063
-    SearsLink: 0.2011676512155 / SuperMap.METERS_PER_INCH, //EPSG:9043
-    Rod: 5.02921005842012 / SuperMap.METERS_PER_INCH,
-    IntnlChain: 20.1168 / SuperMap.METERS_PER_INCH, //EPSG:9097
-    IntnlLink: 0.201168 / SuperMap.METERS_PER_INCH, //EPSG:9098
-    Perch: 5.02921005842012 / SuperMap.METERS_PER_INCH,
-    Pole: 5.02921005842012 / SuperMap.METERS_PER_INCH,
-    Furlong: 201.1684023368046 / SuperMap.METERS_PER_INCH,
-    Rood: 3.778266898 / SuperMap.METERS_PER_INCH,
-    CapeFoot: 0.3047972615 / SuperMap.METERS_PER_INCH,
-    Brealey: 375.0 / SuperMap.METERS_PER_INCH,
-    ModAmFt: 0.304812252984505969011938 / SuperMap.METERS_PER_INCH,
-    Fathom: 1.8288 / SuperMap.METERS_PER_INCH,
-    'NautM-UK': 1853.184 / SuperMap.METERS_PER_INCH,
-    '50kilometers': 50000.0 / SuperMap.METERS_PER_INCH,
-    '150kilometers': 150000.0 / SuperMap.METERS_PER_INCH
-  });
-
-  //unit abbreviations supported by PROJ.4
-  SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
-    mm: SuperMap.INCHES_PER_UNIT['Meter'] / 1000.0,
-    cm: SuperMap.INCHES_PER_UNIT['Meter'] / 100.0,
-    dm: SuperMap.INCHES_PER_UNIT['Meter'] * 100.0,
-    km: SuperMap.INCHES_PER_UNIT['Meter'] * 1000.0,
-    kmi: SuperMap.INCHES_PER_UNIT['nmi'], //International Nautical Mile
-    fath: SuperMap.INCHES_PER_UNIT['Fathom'], //International Fathom
-    ch: SuperMap.INCHES_PER_UNIT['IntnlChain'], //International Chain
-    link: SuperMap.INCHES_PER_UNIT['IntnlLink'], //International Link
-    'us-in': SuperMap.INCHES_PER_UNIT['inches'], //U.S. Surveyor's Inch
-    'us-ft': SuperMap.INCHES_PER_UNIT['Foot'], //U.S. Surveyor's Foot
-    'us-yd': SuperMap.INCHES_PER_UNIT['Yard'], //U.S. Surveyor's Yard
-    'us-ch': SuperMap.INCHES_PER_UNIT['GunterChain'], //U.S. Surveyor's Chain
-    'us-mi': SuperMap.INCHES_PER_UNIT['Mile'], //U.S. Surveyor's Statute Mile
-    'ind-yd': SuperMap.INCHES_PER_UNIT['IndianYd37'], //Indian Yard
-    'ind-ft': SuperMap.INCHES_PER_UNIT['IndianFt37'], //Indian Foot
-    'ind-ch': 20.11669506 / SuperMap.METERS_PER_INCH //Indian Chain
-  });
-
-  SuperMap.IS_GECKO = (function () {
-    var ua = navigator.userAgent.toLowerCase();
-    return ua.indexOf('webkit') === -1 && ua.indexOf('gecko') !== -1;
-  })();
-  /**
-   * @description 浏览器是否支持 Canvas。
-   * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
-   */
-  SuperMap.Util.isSupportCanvas = (function () {
-    var checkRes = true,
-      broz = SuperMap.Util.getBrowser();
-    if (document.createElement('canvas').getContext) {
-      if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
-        checkRes = false;
-      }
-      if (broz.name === 'safari' && parseFloat(broz.version) < 4) {
-        checkRes = false;
-      }
-      if (broz.name === 'opera' && parseFloat(broz.version) < 10) {
-        checkRes = false;
-      }
-      if (broz.name === 'msie' && parseFloat(broz.version) < 9) {
-        checkRes = false;
-      }
-    } else {
-      checkRes = false;
-    }
-    return checkRes;
-  })();
-
-  //将服务端的地图单位转成SuperMap的地图单位
-  SuperMap.INCHES_PER_UNIT['degree'] = SuperMap.INCHES_PER_UNIT.dd;
-  SuperMap.INCHES_PER_UNIT['meter'] = SuperMap.INCHES_PER_UNIT.m;
-  SuperMap.INCHES_PER_UNIT['foot'] = SuperMap.INCHES_PER_UNIT.ft;
-  SuperMap.INCHES_PER_UNIT['inch'] = SuperMap.INCHES_PER_UNIT.inches;
-  SuperMap.INCHES_PER_UNIT['mile'] = SuperMap.INCHES_PER_UNIT.mi;
-  SuperMap.INCHES_PER_UNIT['kilometer'] = SuperMap.INCHES_PER_UNIT.km;
-  SuperMap.INCHES_PER_UNIT['yard'] = SuperMap.INCHES_PER_UNIT.yd;
+  SuperMap.Browser = Browser;
+  SuperMap.INCHES_PER_UNIT = INCHES_PER_UNIT;
+  SuperMap.METERS_PER_INCH = METERS_PER_INCH;
+  SuperMap.DOTS_PER_INCH = DOTS_PER_INCH;
+  SuperMap.IS_GECKO = IS_GECKO;
+  SuperMap.Util.isSupportCanvas = isSupportCanvas;
 
   // FetchRequest
   SuperMap.setCORS = setCORS;
