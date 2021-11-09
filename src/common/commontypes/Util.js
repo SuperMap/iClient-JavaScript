@@ -41,7 +41,7 @@ const Browser = (function () {
 
 const isSupportCanvas = (function () {
   var checkRes = true,
-    broz = Browser();
+    broz = Browser;
   if (document.createElement('canvas').getContext) {
     if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
       checkRes = false;
