@@ -1,5 +1,3 @@
-import { SuperMap } from '../../SuperMap';
-
 /**
  * @class SuperMap.WebMachineLearning
  * @classdesc WebMachineLearning 分析类。

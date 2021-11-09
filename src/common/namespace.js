@@ -874,6 +874,7 @@ if (window && window.SuperMap) {
   SuperMap.Vector = Vector;
   SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
   SuperMap.VectorClipJobsService = VectorClipJobsService;
+  SuperMap.WebPrintingJobContent = WebPrintingJobContent;
   SuperMap.WebPrintingJobCustomItems = WebPrintingJobCustomItems;
   SuperMap.WebPrintingJobExportOptions = WebPrintingJobExportOptions;
   SuperMap.WebPrintingJobImage = WebPrintingJobImage;

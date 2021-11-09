@@ -1,4 +1,3 @@
-import { SuperMap } from '../../SuperMap';
 import MachineLearningBase from './MachineLearningBase';
 
 /**

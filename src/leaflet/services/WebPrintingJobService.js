@@ -5,7 +5,7 @@
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
  import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
- import { SuperMap } from '@supermap/iclient-common/SuperMap';
+ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
 
 /**
  * @class L.supermap.WebPrintingJobService
@@ -146,7 +146,7 @@ export var WebPrintingJobService = ServiceBase.extend({
                 x: point[0],
                 y: point[1]
             };
-        } else if (point instanceof SuperMap.Geometry.Point || point instanceof L.Point) {
+        } else if (point instanceof GeometryPoint || point instanceof L.Point) {
             return {
                 x: point.x,
                 y: point.y

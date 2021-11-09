@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../SuperMap';
 import { Util } from '@supermap/iclient-common/commontypes/Util'
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat'
 import { MapVRenderer } from './mapv/MapVRenderer';
 
 /**
@@ -231,7 +232,7 @@ export class MapVLayer extends SuperMap.Layer {
         if (['m', 'meter'].indexOf(unit.toLowerCase()) > -1) {
             dest = 'EPSG:3857';
         }
-        return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
+        return new LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 }
 

@@ -1,5 +1,4 @@
 import * as tf from '@tensorflow/tfjs';
-import { SuperMap } from '../../SuperMap';
 import MachineLearningBase from './MachineLearningBase';
 
 /**

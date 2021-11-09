@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import { SuperMap } from "../../SuperMap";
 import { FetchRequest } from "../../util/FetchRequest";
 import { GetFeaturesBySQLParameters } from "../../iServer/GetFeaturesBySQLParameters";
 import { FilterParameter } from "../../iServer/FilterParameter";
@@ -74,14 +73,14 @@ export class ChartModel {
             name: datasetsInfo.datasetName + '@' + datasetsInfo.dataSourceName
         };
         Object.assign(params, this.datasets.queryInfo);
-        getFeatureParam = new SuperMap.FilterParameter(params);
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        getFeatureParam = new FilterParameter(params);
+        getFeatureBySQLParams = new GetFeaturesBySQLParameters({
             queryParameter: getFeatureParam,
             datasetNames: [datasetsInfo.dataSourceName + ':' + datasetsInfo.datasetName],
             fromIndex: 0,
             toIndex: 100000
         });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(datasetsInfo.dataUrl, {
+        getFeatureBySQLService = new GetFeaturesBySQLService(datasetsInfo.dataUrl, {
             eventListeners: {
                 processCompleted: success,
                 processFailed: function () {}
@@ -104,12 +103,12 @@ export class ChartModel {
             name: datasetsInfo.mapName
         };
         Object.assign(params, this.datasets.queryInfo);
-        queryParam = new SuperMap.FilterParameter(params);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryParam = new FilterParameter(params);
+        queryBySQLParams = new QueryBySQLParameters({
             queryParams: [queryParam],
             expectCount: 100000
         });
-        queryBySQLService = new SuperMap.QueryBySQLService(datasetsInfo.dataUrl, {
+        queryBySQLService = new QueryBySQLService(datasetsInfo.dataUrl, {
             eventListeners: {
                 processCompleted: success,
                 processFailed: function () {}

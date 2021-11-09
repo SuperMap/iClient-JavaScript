@@ -6,7 +6,7 @@ import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
 import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
-import { SuperMap } from '@supermap/iclient-common/SuperMap';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
 /**
  * @class mapboxgl.supermap.WebPrintingJobService
  * @category  iServer WebPrintingJob
@@ -145,7 +145,7 @@ export class WebPrintingJobService extends ServiceBase {
                 x: point[0],
                 y: point[1]
             };
-        } else if (point instanceof SuperMap.Geometry.Point || point instanceof mapboxgl.Point) {
+        } else if (point instanceof GeometryPoint || point instanceof mapboxgl.Point) {
             return {
                 x: point.x,
                 y: point.y
