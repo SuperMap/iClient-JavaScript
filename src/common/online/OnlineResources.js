@@ -25,65 +25,6 @@ var ServiceStatus = {
 
 
 /**
- * 
- * @enum DataItemType
- * @memberOf SuperMap
- * @category iPortal/Online
- * @description 数据项类型。
- */
-var DataItemType = {
-    /** AUDIO */
-    AUDIO: "AUDIO",
-    /** COLOR */
-    COLOR: "COLOR",
-    /** COLORSCHEME */
-    COLORSCHEME: "COLORSCHEME",
-    /** CSV */
-    CSV: "CSV",
-    /** EXCEL */
-    EXCEL: "EXCEL",
-    /** FILLSYMBOL */
-    FILLSYMBOL: "FILLSYMBOL",
-    /** IMAGE */
-    IMAGE: "IMAGE",
-    /** LAYERTEMPLATE */
-    LAYERTEMPLATE: "LAYERTEMPLATE",
-    /** LAYOUTTEMPLATE */
-    LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
-    /** LINESYMBOL */
-    LINESYMBOL: "LINESYMBOL",
-    /** MAPTEMPLATE */
-    MAPTEMPLATE: "MAPTEMPLATE",
-    /** MARKERSYMBOL */
-    MARKERSYMBOL: "MARKERSYMBOL",
-    /** MBTILES */
-    MBTILES: "MBTILES",
-    /** PHOTOS */
-    PHOTOS: "PHOTOS",
-    /** SHP */
-    SHP: "SHP",
-    /** SMTILES */
-    SMTILES: "SMTILES",
-    /** SVTILES */
-    SVTILES: "SVTILES",
-    /** THEMETEMPLATE */
-    THEMETEMPLATE: "THEMETEMPLATE",
-    /** TPK */
-    TPK: "TPK",
-    /** UDB */
-    UDB: "UDB",
-    /** UGCV5 */
-    UGCV5: "UGCV5",
-    /** UNKNOWN */
-    UNKNOWN: "UNKNOWN",
-    /** VIDEO */
-    VIDEO: "VIDEO",
-    /** WORKENVIRONMENT */
-    WORKENVIRONMENT: "WORKENVIRONMENT",
-    /** WORKSPACE */
-    WORKSPACE: "WORKSPACE"
-};
-/**
  * @enum DataItemOrderBy
  * @memberOf SuperMap
  * @category iPortal/Online
@@ -132,7 +73,6 @@ var FilterField = {
 };
 export {
     ServiceStatus,
-    DataItemType,
     DataItemOrderBy,
     FilterField
 }

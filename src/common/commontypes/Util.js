@@ -1157,4 +1157,4 @@ function canBeJsonified(str) {
   }
 }
 
-export { Util, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO, isSupportCanvas };
+export { Util, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO };

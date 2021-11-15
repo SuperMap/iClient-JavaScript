@@ -1,8 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { SuperMap } from '@supermap/iclient-common/SuperMap';
+import { Util as CommonUtil, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
 import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
 import { StyleMap } from '../overlay/vectortile/StyleMap';
 import { DeafultCanvasStyle } from '../overlay/vectortile/DeafultCanvasStyle';
@@ -42,8 +41,8 @@ export class StyleUtils {
         var symbolParameters = {
           "transparent": true,
           "resourceType": "SYMBOLMARKER",
-          "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 13,
-          "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 13,
+          "picWidth": Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 13,
+          "picHeight": Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 13,
           "style": JSON.stringify(shader)
         };
         var imageUrl = CommonUtil.urlAppend(url + "/symbol.png", CommonUtil.getParameterString(symbolParameters));
@@ -71,7 +70,7 @@ export class StyleUtils {
         style.fontWeight = shader.bold ? shader.fontWeight : "normal";
         //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
         //固定大小的时候单位是毫米
-        var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
+        var text_h = shader.fontHeight * DOTS_PER_INCH * INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
         style.fontSize = text_h + "px";
 
         //设置文本字体类型
@@ -147,7 +146,7 @@ export class StyleUtils {
               value = shader[attr];
               if (obj.unit) {
                 //将单位转换为像素单位
-                value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+                value = value * DOTS_PER_INCH * INCHES_PER_UNIT[obj.unit] * 2.5;
               }
               style[canvasStyle] = value;
               break;

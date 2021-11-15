@@ -60,7 +60,8 @@ import {
     MetricsAggType,
     BucketAggType,
     GetFeatureMode,
-    RasterFunctionType
+    RasterFunctionType,
+    DataItemType
 } from './REST';
 import {
     Collection,
@@ -367,7 +368,6 @@ import {
     OnlineData,
     OnlineQueryDatasParameter,
     ServiceStatus,
-    DataItemType,
     DataItemOrderBy,
     FilterField,
     OnlineServiceBase
@@ -549,7 +549,8 @@ export {
     MetricsAggType,
     BucketAggType,
     GetFeatureMode,
-    RasterFunctionType
+    RasterFunctionType,
+    DataItemType
 };
 export {
     Collection,
@@ -867,7 +868,6 @@ export {
     OnlineData,
     OnlineQueryDatasParameter,
     ServiceStatus,
-    DataItemType,
     DataItemOrderBy,
     FilterField,
     OnlineServiceBase

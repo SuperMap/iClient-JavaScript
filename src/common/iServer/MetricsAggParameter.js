@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { AggregationParameter } from './AggregationParameter';
 import { Util } from '../commontypes/Util';
+import { MetricsAggType } from '../REST';
+
 
 /**
  * @class SuperMap.MetricsAggParameter
@@ -20,7 +21,7 @@ export class MetricsAggParameter extends AggregationParameter {
          * @member {SuperMap.MetricsAggType} [SuperMap.MetricsAggParameter.prototype.aggType=SuperMap.MetricsAggType.AVG]
          * @description 指标聚合类型。
          */
-        this.aggType = SuperMap.MetricsAggType.AVG;
+        this.aggType = MetricsAggType.AVG;
 
         Util.extend(this, option);
         this.CLASS_NAME = 'SuperMap.MetricsAggParameter';

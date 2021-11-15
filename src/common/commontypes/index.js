@@ -31,8 +31,7 @@ import {
   INCHES_PER_UNIT,
   METERS_PER_INCH,
   DOTS_PER_INCH,
-  IS_GECKO,
-  isSupportCanvas
+  IS_GECKO
 } from './Util';
 import { Vector as GeometryVector } from './Vector';
 
@@ -60,5 +59,5 @@ export { Geometry };
 export { LonLat };
 export { Pixel };
 export { Size };
-export { CommonUtil, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO, isSupportCanvas };
+export { CommonUtil, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO };
 export { GeometryVector };

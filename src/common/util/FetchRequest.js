@@ -4,20 +4,22 @@
 import 'promise-polyfill/dist/polyfill';
 import 'fetch-ie8';
 import fetchJsonp from 'fetch-jsonp';
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 let fetch = window.fetch;
 export var setFetch = function (newFetch) {
     fetch = newFetch;
 }
+
+var CORS;
+var RequestTimeout;
 /**
  * @function SuperMap.setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
  */
 export var setCORS = function (cors) {
-    SuperMap.CORS = cors;
+    CORS = cors;
 }
 /**
  * @function SuperMap.isCORS
@@ -25,8 +27,8 @@ export var setCORS = function (cors) {
  * @returns {boolean} 是否允许跨域请求。
  */
 export var isCORS = function () {
-    if (SuperMap.CORS != undefined) {
-        return SuperMap.CORS;
+    if (CORS != undefined) {
+        return CORS;
     }
     return window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
 }
@@ -36,7 +38,7 @@ export var isCORS = function () {
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
 export var setRequestTimeout = function (timeout) {
-    return SuperMap.RequestTimeout = timeout;
+    return RequestTimeout = timeout;
 }
 /**
  * @function SuperMap.getRequestTimeout
@@ -44,7 +46,7 @@ export var setRequestTimeout = function (timeout) {
  * @returns {number} 请求超时时间。
  */
 export var getRequestTimeout = function () {
-    return SuperMap.RequestTimeout || 45000;
+    return RequestTimeout || 45000;
 }
 export var FetchRequest = {
     commit: function (method, url, params, options) {

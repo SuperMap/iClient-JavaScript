@@ -1288,33 +1288,63 @@ var EntityType = {
  * @version 10.0.1
  * @type {string}
  */
-var REST_DataItemType = {
-    /** 工作空间 sxwu, smwu, sxw, smw */
-    WORKSPACE: "WORKSPACE",
-    /** udb 数据源 */
-    UDB: "UDB",
-    /** shp空间数据 */
-    SHP: "SHP",
-    /** excel数据 */
-    EXCEL: "EXCEL",
-    /** csv数据 */
-    CSV: "CSV",
+var DataItemType = {
     /** geojson数据。 */
     GEOJSON: "GEOJSON",
-    /** smtiles */
-    SMTILES: "SMTILES",
-    /** svtiles */
-    SVTILES: "SVTILES",
-    /** mbtiles */
-    MBTILES: "MBTILES",
-    /** tpk */
-    TPK: "TPK",
-    /** ugc v5 */
-    UGCV5: "UGCV5",
     /** UGCV5_MVT  */
     UGCV5_MVT: "UGCV5_MVT",
     /** json数据  */
-    JSON: "JSON"
+    JSON: "JSON",
+    /** AUDIO */
+    AUDIO: "AUDIO",
+    /** COLOR */
+    COLOR: "COLOR",
+    /** COLORSCHEME */
+    COLORSCHEME: "COLORSCHEME",
+    /** CSV */
+    CSV: "CSV",
+    /** EXCEL */
+    EXCEL: "EXCEL",
+    /** FILLSYMBOL */
+    FILLSYMBOL: "FILLSYMBOL",
+    /** IMAGE */
+    IMAGE: "IMAGE",
+    /** LAYERTEMPLATE */
+    LAYERTEMPLATE: "LAYERTEMPLATE",
+    /** LAYOUTTEMPLATE */
+    LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
+    /** LINESYMBOL */
+    LINESYMBOL: "LINESYMBOL",
+    /** MAPTEMPLATE */
+    MAPTEMPLATE: "MAPTEMPLATE",
+    /** MARKERSYMBOL */
+    MARKERSYMBOL: "MARKERSYMBOL",
+    /** MBTILES */
+    MBTILES: "MBTILES",
+    /** PHOTOS */
+    PHOTOS: "PHOTOS",
+    /** SHP */
+    SHP: "SHP",
+    /** SMTILES */
+    SMTILES: "SMTILES",
+    /** SVTILES */
+    SVTILES: "SVTILES",
+    /** THEMETEMPLATE */
+    THEMETEMPLATE: "THEMETEMPLATE",
+    /** TPK */
+    TPK: "TPK",
+    /** UDB */
+    UDB: "UDB",
+    /** UGCV5 */
+    UGCV5: "UGCV5",
+    /** UNKNOWN */
+    UNKNOWN: "UNKNOWN",
+    /** VIDEO */
+    VIDEO: "VIDEO",
+    /** WORKENVIRONMENT */
+    WORKENVIRONMENT: "WORKENVIRONMENT",
+    /** WORKSPACE */
+    WORKSPACE: "WORKSPACE"
 }
 
 /**
@@ -1446,7 +1476,7 @@ export {
     AggregationTypes,
     PermissionType,
     EntityType,
-    REST_DataItemType,
+    DataItemType,
     WebExportFormatType,
     WebScaleOrientationType,
     WebScaleType,

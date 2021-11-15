@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import ImageStretchOption from './ImageStretchOption';
 
@@ -113,7 +112,7 @@ export default class ImageRenderingRule {
          * @readonly
          * @type {string}
          */
-        SuperMap.ImageRenderingRule.DisplayMode = {
+        ImageRenderingRule.DisplayMode = {
             COMPOSITE: 'COMPOSITE',
             STRETCHED: 'Stretched'
         };
@@ -123,7 +122,7 @@ export default class ImageRenderingRule {
          * @readonly
          * @type {string}
          */
-        SuperMap.ImageRenderingRule.InterpolationMode = {
+        ImageRenderingRule.InterpolationMode = {
             NEARESTNEIGHBOR: 'NEARESTNEIGHBOR',
             HIGHQUALITYBILINEAR: 'HIGHQUALITYBILINEAR',
             DEFAULT: 'DEFAULT'

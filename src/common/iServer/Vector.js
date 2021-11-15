@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {UGCSubLayer} from './UGCSubLayer';
 import {ServerStyle} from './ServerStyle';
@@ -57,7 +56,7 @@ export class Vector extends UGCSubLayer {
      * @returns {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
-        var jsonObject = SuperMap.toServerJSONObject();
+        var jsonObject = super.toServerJSONObject();
         if (jsonObject.style) {
             if (jsonObject.style.toServerJSONObject) {
                 jsonObject.style = jsonObject.style.toServerJSONObject();

@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Feature} from './Feature';
 import {Util} from './Util';
 
@@ -28,6 +27,14 @@ import {Util} from './Util';
  *  var pointFeature = new SuperMap.Feature.Vector(geometry,null,style);
  *  vectorLayer.addFeatures(pointFeature);
  */
+// TRASH THIS
+const State = {
+  /** states */
+  UNKNOWN: 'Unknown',
+  INSERT: 'Insert',
+  UPDATE: 'Update',
+  DELETE: 'Delete'
+};
 export class Vector extends Feature {
 
 
@@ -85,14 +92,6 @@ export class Vector extends Feature {
         this.lonlat = null;
 
         this.CLASS_NAME = "SuperMap.Feature.Vector";
-        // TRASH THIS
-        SuperMap.State = {
-            /** states */
-            UNKNOWN: 'Unknown',
-            INSERT: 'Insert',
-            UPDATE: 'Update',
-            DELETE: 'Delete'
-        };
 
         Vector.style = {
             'default': {
@@ -206,37 +205,37 @@ export class Vector extends Feature {
      * @param {string} state - 状态。
      */
     toState(state) {
-        if (state === SuperMap.State.UPDATE) {
+        if (state === State.UPDATE) {
             switch (this.state) {
-                case SuperMap.State.UNKNOWN:
-                case SuperMap.State.DELETE:
+                case State.UNKNOWN:
+                case State.DELETE:
                     this.state = state;
                     break;
-                case SuperMap.State.UPDATE:
-                case SuperMap.State.INSERT:
+                case State.UPDATE:
+                case State.INSERT:
                     break;
             }
-        } else if (state === SuperMap.State.INSERT) {
+        } else if (state === State.INSERT) {
             switch (this.state) {
-                case SuperMap.State.UNKNOWN:
+                case State.UNKNOWN:
                     break;
                 default:
                     this.state = state;
                     break;
             }
-        } else if (state === SuperMap.State.DELETE) {
+        } else if (state === State.DELETE) {
             switch (this.state) {
-                case SuperMap.State.INSERT:
+                case State.INSERT:
                     // the feature should be destroyed
                     break;
-                case SuperMap.State.DELETE:
+                case State.DELETE:
                     break;
-                case SuperMap.State.UNKNOWN:
-                case SuperMap.State.UPDATE:
+                case State.UNKNOWN:
+                case State.UPDATE:
                     this.state = state;
                     break;
             }
-        } else if (state === SuperMap.State.UNKNOWN) {
+        } else if (state === State.UNKNOWN) {
             this.state = state;
         }
     }

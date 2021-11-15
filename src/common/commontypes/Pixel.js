@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.Pixel
@@ -48,7 +47,7 @@ export class Pixel {
          * @type {string}
          */
 
-        SuperMap.Pixel.Mode = {
+        Pixel.Mode = {
             /** 左上模式。*/
             LeftTop: "lefttop",
             /** 右上模式。 */

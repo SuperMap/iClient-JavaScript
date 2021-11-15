@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import {SuperMap} from '../SuperMap';
  import {Util} from './Util';
 /**
  *@namespace SuperMap
@@ -213,7 +212,7 @@ export var StringExt = {
             }
         };
 
-        return template.replace(SuperMap.String.tokenRegEx, replacer);
+        return template.replace(StringExt.tokenRegEx, replacer);
     },
 
     /**
@@ -243,7 +242,7 @@ export var StringExt = {
      * @returns {boolean} 字符串包含唯一的数值，返回 true；否则返回 false。
      */
     isNumeric: function (value) {
-        return SuperMap.String.numberRegEx.test(value);
+        return StringExt.numberRegEx.test(value);
     },
 
     /**
@@ -252,7 +251,7 @@ export var StringExt = {
      * @returns {(number|string)} 如果能转换为数值则返回数值，否则返回字符串本身。
      */
     numericIf: function (value) {
-        return SuperMap.String.isNumeric(value) ? parseFloat(value) : value;
+        return StringExt.isNumeric(value) ? parseFloat(value) : value;
     }
 
 };
@@ -307,9 +306,9 @@ export var NumberExt = {
     format: function (num, dec, tsep, dsep) {
         dec = (typeof dec != "undefined") ? dec : 0;
         tsep = (typeof tsep != "undefined") ? tsep :
-            SuperMap.Number.thousandsSeparator;
+        NumberExt.thousandsSeparator;
         dsep = (typeof dsep != "undefined") ? dsep :
-            SuperMap.Number.decimalSeparator;
+        NumberExt.decimalSeparator;
 
         if (dec != null) {
             num = parseFloat(num.toFixed(dec));

@@ -1,8 +1,8 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
+import { BucketAggType } from '../REST';
 import { BucketAggParameter } from './BucketAggParameter';
 
 /**
@@ -26,7 +26,7 @@ export class GeoHashGridAggParameter extends BucketAggParameter {
          * @member {SuperMap.BucketAggType} [SuperMap.GeoHashGridAggParameter.prototype.aggType=SuperMap.BucketAggType.GEOHASH_GRID]
          * @description 格网聚合类型。
          */
-        this.aggType = SuperMap.BucketAggType.GEOHASH_GRID;
+        this.aggType = BucketAggType.GEOHASH_GRID;
 
         this.CLASS_NAME = 'SuperMap.GeoHashGridAggParameter';
     }

@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {Theme} from './Theme';
 import {ThemeOffset} from './ThemeOffset';
@@ -49,7 +48,7 @@ export class ThemeGraduatedSymbol extends Theme {
          *              不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；
          *              平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。
          */
-        this.graduatedMode = SuperMap.GraduatedMode.CONSTAN;
+        this.graduatedMode = GraduatedMode.CONSTAN;
 
         /**
          * @member {SuperMap.ThemeOffset} [SuperMap.ThemeGraduatedSymbol.prototype.offset]
@@ -137,7 +136,7 @@ export class ThemeGraduatedSymbol extends Theme {
         if (!obj) {
             return;
         }
-        var res = new SuperMap.ThemeGraduatedSymbol();
+        var res = new ThemeGraduatedSymbol();
         Util.copy(res, obj);
         res.offset = ThemeOffset.fromObj(obj);
         res.style = ThemeGraduatedSymbolStyle.fromObj(obj);

@@ -3,8 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
-import { SuperMap } from '@supermap/iclient-common/SuperMap';
+import { Util, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
 import { CartoCSS } from '@supermap/iclient-common/style/CartoCSS';
 import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
 import {
@@ -321,7 +320,7 @@ export class CartoCSSToLeaflet {
             return style;
         }
         if (type === "POINT") {
-            var size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
+            var size = Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 8;
             var symbolParameters = {
                 "transparent": true,
                 "resourceType": "SYMBOLMARKER",
@@ -340,7 +339,7 @@ export class CartoCSSToLeaflet {
             //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
             //固定大小的时候单位是毫米
             if (shader.fontHeight) {
-                var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85; //毫米转像素,服务端的字体貌似要稍微小一点
+                var text_h = shader.fontHeight * DOTS_PER_INCH * INCHES_PER_UNIT["mm"] * 0.85; //毫米转像素,服务端的字体貌似要稍微小一点
                 style.fontSize = text_h + "px";
                 style.textHeight = text_h;
             }
@@ -388,7 +387,7 @@ export class CartoCSSToLeaflet {
                     {
                         let value = shader[attr];
                         if (obj.unit) {
-                            value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+                            value = value * DOTS_PER_INCH * INCHES_PER_UNIT[obj.unit] * 2.5;
                         }
                         style[leafletStyle] = value;
                         break;

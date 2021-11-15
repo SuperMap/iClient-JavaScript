@@ -71,11 +71,11 @@ import {
   AggregationTypes,
   PermissionType,
   EntityType,
-  REST_DataItemType,
   WebExportFormatType,
   WebScaleOrientationType,
   WebScaleType,
-  WebScaleUnit
+  WebScaleUnit,
+  DataItemType
 } from './REST';
 import {
   Collection,
@@ -111,7 +111,6 @@ import {
   METERS_PER_INCH,
   DOTS_PER_INCH,
   IS_GECKO,
-  isSupportCanvas,
   GeometryVector
 } from './commontypes';
 import { Format, GeoJSON, JSONFormat, WKT } from './format';
@@ -392,7 +391,6 @@ import {
   OnlineData,
   OnlineQueryDatasParameter,
   ServiceStatus,
-  DataItemType,
   DataItemOrderBy,
   FilterField,
   OnlineServiceBase
@@ -514,7 +512,6 @@ if (window && window.SuperMap) {
   SuperMap.METERS_PER_INCH = METERS_PER_INCH;
   SuperMap.DOTS_PER_INCH = DOTS_PER_INCH;
   SuperMap.IS_GECKO = IS_GECKO;
-  SuperMap.Util.isSupportCanvas = isSupportCanvas;
 
   // FetchRequest
   SuperMap.setCORS = setCORS;
@@ -568,7 +565,7 @@ if (window && window.SuperMap) {
   SuperMap.Geometry = Geometry;
   SuperMap.Pixel = Pixel;
   SuperMap.Size = Size;
-  SuperMap.Feature.Vector = Vector;
+  SuperMap.Feature.Vector = GeometryVector;
   SuperMap.Geometry.Collection = Collection;
   SuperMap.Geometry.Curve = Curve;
   SuperMap.Geometry.GeoText = GeoText;
@@ -891,6 +888,7 @@ if (window && window.SuperMap) {
   SuperMap.OnlineData = OnlineData;
   SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;
   SuperMap.ServiceStatus = ServiceStatus;
+  // 包含online中的DataItemType数据类型
   SuperMap.DataItemType = DataItemType;
   SuperMap.DataItemOrderBy = DataItemOrderBy;
   SuperMap.FilterField = FilterField;
@@ -928,6 +926,7 @@ if (window && window.SuperMap) {
   SuperMap.TokenServiceParameter = TokenServiceParameter;
   // style
   SuperMap.ThemeStyle = ThemeStyle;
+  SuperMap.CartoCSS = CartoCSS;
   // thirdparty
   SuperMap.BinaryClassification = BinaryClassification;
   SuperMap.LandcoverClassification = LandcoverClassification;
@@ -964,6 +963,7 @@ if (window && window.SuperMap) {
   SuperMap.LabelOverLengthMode = LabelOverLengthMode;
   SuperMap.DirectionType = DirectionType;
   SuperMap.OverlayOperationType = OverlayOperationType;
+  SuperMap.OutputType = OutputType;
   SuperMap.SideType = SideType;
   SuperMap.SupplyCenterType = SupplyCenterType;
   SuperMap.TurnType = TurnType;
@@ -1003,7 +1003,6 @@ if (window && window.SuperMap) {
   SuperMap.AggregationTypes = AggregationTypes;
   SuperMap.PermissionType = PermissionType;
   SuperMap.EntityType = EntityType;
-  SuperMap.REST_DataItemType = REST_DataItemType;
   SuperMap.WebExportFormatType = WebExportFormatType;
   SuperMap.WebScaleOrientationType = WebScaleOrientationType;
   SuperMap.WebScaleType = WebScaleType;
@@ -1088,7 +1087,8 @@ export {
   MetricsAggType,
   BucketAggType,
   GetFeatureMode,
-  RasterFunctionType
+  RasterFunctionType,
+  DataItemType
 };
 export {
   Collection,
@@ -1406,7 +1406,6 @@ export {
   OnlineData,
   OnlineQueryDatasParameter,
   ServiceStatus,
-  DataItemType,
   DataItemOrderBy,
   FilterField,
   OnlineServiceBase
