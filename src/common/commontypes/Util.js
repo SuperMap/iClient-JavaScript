@@ -41,7 +41,7 @@ const Browser = (function () {
 
 const isSupportCanvas = (function () {
   var checkRes = true,
-    broz = Browser;
+    broz = Util.getBrowser();
   if (document.createElement('canvas').getContext) {
     if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
       checkRes = false;
@@ -70,20 +70,6 @@ const IS_GECKO = (function () {
   var ua = navigator.userAgent.toLowerCase();
   return ua.indexOf('webkit') === -1 && ua.indexOf('gecko') !== -1;
 })();
-
-/**
- * @description 为了避免浮点精度错误而保留的有效位数。
- * @type {number}
- * @default 14
- */
-const DEFAULT_PRECISION = 14;
-
-/**
- * @description 不断递增计数变量，用于生成唯一 ID。
- * @type {number}
- * @default 0
- */
-var lastSeqID = 0;
 
 /**
  * @memberOf SuperMap
@@ -422,7 +408,7 @@ const Util = {
    * @type {number}
    * @default 14
    */
-  DEFAULT_PRECISION,
+  DEFAULT_PRECISION: 14,
 
   /**
    * @description 将字符串以接近的精度转换为数字。
@@ -432,7 +418,7 @@ const Util = {
    */
   toFloat: function (number, precision) {
     if (precision == null) {
-      precision = DEFAULT_PRECISION;
+      precision = Util.DEFAULT_PRECISION;
     }
     if (typeof number !== 'number') {
       number = parseFloat(number);
@@ -506,7 +492,7 @@ const Util = {
    * @type {number}
    * @default 0
    */
-  lastSeqID,
+  lastSeqID: 0,
 
   /**
    * @description 创建唯一 ID 值。
@@ -517,8 +503,8 @@ const Util = {
     if (prefix == null) {
       prefix = 'id_';
     }
-    lastSeqID += 1;
-    return prefix + lastSeqID;
+    Util.lastSeqID += 1;
+    return prefix + Util.lastSeqID;
   },
 
   /**
@@ -565,7 +551,7 @@ const Util = {
    * @returns {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
    */
   getBrowser: function () {
-    return Browser;
+    return Util.Browser;
   },
 
   /**
@@ -579,7 +565,7 @@ const Util = {
    * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
    */
   supportCanvas: function () {
-    return isSupportCanvas;
+    return Util.isSupportCanvas;
   },
 
   /**
@@ -914,6 +900,12 @@ const Util = {
   }
 };
 
+/**
+ * @memberOf SuperMap
+ * @description 每单位的英尺数。
+ * @type {Object}
+ * @constant
+ */
 const INCHES_PER_UNIT = {
   inches: 1.0,
   ft: 12.0,
