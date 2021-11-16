@@ -2,8 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import { SuperMap } from '../SuperMap';
-
 /**
  * @name Lang
  * @memberOf SuperMap
@@ -31,10 +29,10 @@ let Lang = {
      * @returns {string} 当前的语言代码。
      */
     getCode: function () {
-        if (!SuperMap.Lang.code) {
-            SuperMap.Lang.setCode();
+        if (!Lang.code) {
+            Lang.setCode();
         }
-        return SuperMap.Lang.code;
+        return Lang.code;
     },
 
     /**
@@ -45,10 +43,10 @@ let Lang = {
     setCode: function () {
         var lang = this.getLanguageFromCookie();
         if (lang) {
-            SuperMap.Lang.code = lang;
+            Lang.code = lang;
             return;
         }
-        lang = SuperMap.Lang.defaultCode;
+        lang = Lang.defaultCode;
         if (navigator.appName === 'Netscape') {
             lang = navigator.language;
         } else {
@@ -61,7 +59,7 @@ let Lang = {
             lang = 'en-US';
         }
 
-        SuperMap.Lang.code = lang;
+        Lang.code = lang;
     },
     /**
      * @function SuperMap.Lang.getLanguageFromCookie
@@ -89,7 +87,7 @@ let Lang = {
      * @returns {string} 国际化的字符串。
      */
     i18n: function (key) {
-        var dictionary = SuperMap.Lang[SuperMap.Lang.getCode()];
+        var dictionary = Lang[Lang.getCode()];
         var message = dictionary && dictionary[key];
         if (!message) {
             // Message not found, fall back to message key
@@ -100,5 +98,4 @@ let Lang = {
 
 };
 export { Lang };
-SuperMap.Lang = Lang;
-SuperMap.i18n = SuperMap.Lang.i18n;
+

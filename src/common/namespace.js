@@ -504,7 +504,11 @@ import { Lang, en, zh } from './lang';
 
 if (window && window.SuperMap) {
   let SuperMap = (window.SuperMap = window.SuperMap || {});
-
+  // Lang
+  SuperMap.Lang = Lang;
+  SuperMap.i18n = SuperMap.Lang.i18n;
+  SuperMap.Lang['en-US'] = en;
+  SuperMap.Lang["zh-CN"] = zh;
   // CommonUtil
   SuperMap.Util = CommonUtil || {};
   SuperMap.Browser = Browser;

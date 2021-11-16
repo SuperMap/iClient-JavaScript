@@ -4,6 +4,16 @@
 import { StringExt } from './BaseTypes';
 import { Geometry } from './Geometry';
 
+/**
+ * @memberOf SuperMap
+ * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：
+ *     * "opera" -- Opera
+ *     * "msie"  -- Internet Explorer
+ *     * "safari" -- Safari
+ *     * "firefox" -- Firefox
+ *     * "mozilla" -- Mozilla
+ * @constant
+ */
 const Browser = (function () {
   var name = '',
     version = '',
@@ -41,7 +51,7 @@ const Browser = (function () {
 
 const isSupportCanvas = (function () {
   var checkRes = true,
-    broz = Util.getBrowser();
+  broz = Browser;
   if (document.createElement('canvas').getContext) {
     if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
       checkRes = false;
