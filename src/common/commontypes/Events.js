@@ -17,7 +17,6 @@ import {Util} from './Util';
  */
 export class Events {
 
-
     constructor(object, element, eventTypes, fallThrough, options) {
         /**
          * @member {Array.<string>} SuperMap.Events.prototype.BROWSER_EVENTS
@@ -514,3 +513,13 @@ export class Events {
     }
 
 }
+Events.prototype.BROWSER_EVENTS = [
+  "mouseover", "mouseout",
+  "mousedown", "mouseup", "mousemove",
+  "click", "dblclick", "rightclick", "dblrightclick",
+  "resize", "focus", "blur",
+  "touchstart", "touchmove", "touchend",
+  "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
+  "MSGestureStart", "MSGestureChange", "MSGestureEnd",
+  "contextmenu"
+];

@@ -25,6 +25,15 @@ export default class Sortby {
 
     this.CLASS_NAME = 'SuperMap.Sortby';
     Util.extend(this, options);
+    /**
+     * @enum SuperMap.Sortby.Direction
+     * @readonly
+     * @type {string}
+     */
+    Sortby.Direction = {
+      ASC: 'ASC',
+      DESC: 'DESC'
+    }
   }
 
   /**

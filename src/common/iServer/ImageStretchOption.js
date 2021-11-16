@@ -46,9 +46,21 @@ export default class ImageStretchOption {
          * @member {number} SuperMap.ImageStretchOption.prototype.maxPercent
          */
         this.maxPercent = undefined;
-
+        
         this.CLASS_NAME = 'SuperMap.ImageStretchOption';
         Util.extend(this, options);
+        /**
+         * @enum SuperMap.ImageStretchOption.StretchType
+         * @readonly
+         * @type {string}
+         */
+         ImageStretchOption.StretchType = {
+          NONE: 'NONE',
+          GAUSSIAN: 'GAUSSIAN',
+          PERCENTCLIP: 'PERCENTCLIP',
+          MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
+          STANDARDDEVIATION: 'STANDARDDEVIATION'
+        }
     }
 
     /**

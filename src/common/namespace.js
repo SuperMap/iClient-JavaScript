@@ -530,37 +530,9 @@ if (window && window.SuperMap) {
   SuperMap.Array = ArrayExt;
   SuperMap.Date = DateExt;
   SuperMap.Event = Event;
-  /* prevent memory leaks in IE */
-  SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
   SuperMap.Bounds = Bounds;
   SuperMap.Credential = Credential;
   SuperMap.Events = Events;
-  SuperMap.Events.prototype.BROWSER_EVENTS = [
-    'mouseover',
-    'mouseout',
-    'mousedown',
-    'mouseup',
-    'mousemove',
-    'click',
-    'dblclick',
-    'rightclick',
-    'dblrightclick',
-    'resize',
-    'focus',
-    'blur',
-    'touchstart',
-    'touchmove',
-    'touchend',
-    'keydown',
-    'MSPointerDown',
-    'MSPointerUp',
-    'pointerdown',
-    'pointerup',
-    'MSGestureStart',
-    'MSGestureChange',
-    'MSGestureEnd',
-    'contextmenu'
-  ];
   SuperMap.Feature = Feature;
   SuperMap.Geometry = Geometry;
   SuperMap.Pixel = Pixel;
@@ -729,13 +701,6 @@ if (window && window.SuperMap) {
   SuperMap.ImageSearchParameter = ImageSearchParameter;
   SuperMap.ImageService = ImageService;
   SuperMap.ImageStretchOption = ImageStretchOption;
-  SuperMap.ImageStretchOption.StretchType = {
-    NONE: 'NONE',
-    GAUSSIAN: 'GAUSSIAN',
-    PERCENTCLIP: 'PERCENTCLIP',
-    MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
-    STANDARDDEVIATION: 'STANDARDDEVIATION'
-  };
   SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters;
   SuperMap.InterpolationAnalystService = InterpolationAnalystService;
   SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;
@@ -800,11 +765,7 @@ if (window && window.SuperMap) {
   SuperMap.SetLayerStatusService = SetLayerStatusService;
   SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
   SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
-  SuperMap.Sortby = Sortby || {};
-  SuperMap.Sortby.Direction = {
-    ASC: 'ASC',
-    DESC: 'DESC'
-  };
+  SuperMap.Sortby = Sortby;
   SuperMap.SpatialAnalystBase = SpatialAnalystBase;
   SuperMap.StopQueryParameters = StopQueryParameters;
   SuperMap.StopQueryService = StopQueryService;
