@@ -12,14 +12,9 @@ import {Lang} from '../../lang/Lang';
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
 export let FileReaderUtil = {
-    // rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
-    // rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
-    // rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
-    rABS() {
-      return typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
-    },
-    rABF() {return typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer},
-    rAT() {return typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText},
+    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
+    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
+    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
     /**
      * @function SuperMap.Components.FileReaderUtil.prototype.readFile
      * @description 读取文件
@@ -53,7 +48,7 @@ export let FileReaderUtil = {
         reader.onerror = function (error) {
             failed && failed.call(context, error)
         };
-        this.rAT() ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
+        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
     },
 
     /**
@@ -82,7 +77,7 @@ export let FileReaderUtil = {
         reader.onerror = function (error) {
             failed && failed.call(context, error)
         };
-        this.rABF() && reader.readAsArrayBuffer(file.file);
+        this.rABF && reader.readAsArrayBuffer(file.file);
     },
 
     /**

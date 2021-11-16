@@ -61,6 +61,10 @@ export var scaleToResolution = function(scale, dpi, mapUnit) {
     return resolution;
 };
 
+export var NormalizeScale = function(scale) {
+  return scale > 1.0 ? 1.0 / scale : scale;
+};
+
 export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
@@ -84,6 +88,4 @@ export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
     }
     return -1;
 };
-export var NormalizeScale = function(scale) {
-    return scale > 1.0 ? 1.0 / scale : scale;
-};
+
