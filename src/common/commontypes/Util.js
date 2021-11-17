@@ -15,7 +15,10 @@ import { Geometry } from './Geometry';
  * @constant
  */
 const Browser = (function () {
-  var name = '', version = '', device = 'pc', uaMatch;
+  var name = '',
+    version = '',
+    device = 'pc',
+    uaMatch;
   //以下进行测试
   var ua = navigator.userAgent.toLowerCase();
   if (ua.indexOf('msie') > -1 || (ua.indexOf('trident') > -1 && ua.indexOf('rv') > -1)) {
@@ -48,7 +51,7 @@ const Browser = (function () {
 
 const isSupportCanvas = (function () {
   var checkRes = true,
-  broz = Browser;
+    broz = Browser;
   if (document.createElement('canvas').getContext) {
     if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
       checkRes = false;
@@ -86,16 +89,17 @@ const IS_GECKO = (function () {
  */
 const DOTS_PER_INCH = 96;
 
+/**
+ * @name Util
+ * @memberOf SuperMap
+ * @namespace
+ * @category BaseTypes Util
+ * @description common 工具类。
+ */
+
 const Util = {
   /**
-   * @name Util
-   * @memberOf SuperMap
-   * @namespace
-   * @category BaseTypes Util
-   * @description common 工具类。
-   */
-
-  /**
+   * @memberOf SuperMap.Util
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
    * @example
    * 要复制 SuperMap.Size 对象的所有属性到自定义对象上，使用方法如下:
@@ -332,8 +336,13 @@ const Util = {
      * properties with the for(property in object) syntax.  Explicitly check if
      * the source has its own toString property.
      */
-    if (!fromIsEvt && from && from.hasOwnProperty
-      && from.hasOwnProperty('toString') && !to.hasOwnProperty('toString')) {
+    if (
+      !fromIsEvt &&
+      from &&
+      from.hasOwnProperty &&
+      from.hasOwnProperty('toString') &&
+      !to.hasOwnProperty('toString')
+    ) {
       to.toString = from.toString;
     }
 
@@ -514,7 +523,7 @@ const Util = {
    * @returns {number} 返回正常的 scale 值。
    */
   normalizeScale: function (scale) {
-    var normScale = (scale > 1.0) ? (1.0 / scale) : scale;
+    var normScale = scale > 1.0 ? 1.0 / scale : scale;
     return normScale;
   },
 
@@ -668,71 +677,89 @@ const Util = {
    * @param {Object} obj - 要转换成 JSON 的 Object 对象。
    * @returns {string} 返回转换后的 JSON 对象。
    */
-  toJSON:function (obj) {
+  toJSON: function (obj) {
     var objInn = obj;
     if (objInn == null) {
-        return null;
+      return null;
     }
     switch (objInn.constructor) {
-        case String:
-            //s = "'" + str.replace(/(["\\])/g, "\\$1") + "'";   string含有单引号出错
-            objInn = '"' + objInn.replace(/(["\\])/g, '\\$1') + '"';
-            objInn = objInn.replace(/\n/g, "\\n");
-            objInn = objInn.replace(/\r/g, "\\r");
-            objInn = objInn.replace("<", "&lt;");
-            objInn = objInn.replace(">", "&gt;");
-            objInn = objInn.replace(/%/g, "%25");
-            objInn = objInn.replace(/&/g, "%26");
-            return objInn;
-        case Array:
-            var arr = [];
-            for (var i = 0, len = objInn.length; i < len; i++) {
-                arr.push(Util.toJSON(objInn[i]));
+      case String:
+        //s = "'" + str.replace(/(["\\])/g, "\\$1") + "'";   string含有单引号出错
+        objInn = '"' + objInn.replace(/(["\\])/g, '\\$1') + '"';
+        objInn = objInn.replace(/\n/g, '\\n');
+        objInn = objInn.replace(/\r/g, '\\r');
+        objInn = objInn.replace('<', '&lt;');
+        objInn = objInn.replace('>', '&gt;');
+        objInn = objInn.replace(/%/g, '%25');
+        objInn = objInn.replace(/&/g, '%26');
+        return objInn;
+      case Array:
+        var arr = [];
+        for (var i = 0, len = objInn.length; i < len; i++) {
+          arr.push(Util.toJSON(objInn[i]));
+        }
+        return '[' + arr.join(',') + ']';
+      case Number:
+        return isFinite(objInn) ? String(objInn) : null;
+      case Boolean:
+        return String(objInn);
+      case Date:
+        var dateStr =
+          '{' +
+          '\'__type\':"System.DateTime",' +
+          "'Year':" +
+          objInn.getFullYear() +
+          ',' +
+          "'Month':" +
+          (objInn.getMonth() + 1) +
+          ',' +
+          "'Day':" +
+          objInn.getDate() +
+          ',' +
+          "'Hour':" +
+          objInn.getHours() +
+          ',' +
+          "'Minute':" +
+          objInn.getMinutes() +
+          ',' +
+          "'Second':" +
+          objInn.getSeconds() +
+          ',' +
+          "'Millisecond':" +
+          objInn.getMilliseconds() +
+          ',' +
+          "'TimezoneOffset':" +
+          objInn.getTimezoneOffset() +
+          '}';
+        return dateStr;
+      default:
+        if (objInn['toJSON'] != null && typeof objInn['toJSON'] === 'function') {
+          return objInn.toJSON();
+        }
+        if (typeof objInn === 'object') {
+          if (objInn.length) {
+            let arr = [];
+            for (let i = 0, len = objInn.length; i < len; i++) {
+              arr.push(Util.toJSON(objInn[i]));
             }
-            return "[" + arr.join(",") + "]";
-        case Number:
-            return isFinite(objInn) ? String(objInn) : null;
-        case Boolean:
-            return String(objInn);
-        case Date:
-            var dateStr = "{" + "'__type':\"System.DateTime\"," +
-                "'Year':" + objInn.getFullYear() + "," +
-                "'Month':" + (objInn.getMonth() + 1) + "," +
-                "'Day':" + objInn.getDate() + "," +
-                "'Hour':" + objInn.getHours() + "," +
-                "'Minute':" + objInn.getMinutes() + "," +
-                "'Second':" + objInn.getSeconds() + "," +
-                "'Millisecond':" + objInn.getMilliseconds() + "," +
-                "'TimezoneOffset':" + objInn.getTimezoneOffset() + "}";
-            return dateStr;
-        default:
-            if (objInn["toJSON"] != null && typeof objInn["toJSON"] === "function") {
-                return objInn.toJSON();
+            return '[' + arr.join(',') + ']';
+          }
+          let arr = [];
+          for (let attr in objInn) {
+            //为解决SuperMap.Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
+            if (typeof objInn[attr] !== 'function' && attr !== 'CLASS_NAME' && attr !== 'parent') {
+              arr.push("'" + attr + "':" + Util.toJSON(objInn[attr]));
             }
-            if (typeof objInn === "object") {
-                if (objInn.length) {
-                    let arr = [];
-                    for (let i = 0, len = objInn.length; i < len; i++) {
-                        arr.push(Util.toJSON(objInn[i]));
-                    }
-                    return "[" + arr.join(",") + "]";
-                }
-                let arr = [];
-                for (let attr in objInn) {
-                    //为解决SuperMap.Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
-                    if (typeof objInn[attr] !== "function" && attr !== "CLASS_NAME" && attr !== "parent") {
-                        arr.push("'" + attr + "':" + Util.toJSON(objInn[attr]));
-                    }
-                }
+          }
 
-                if (arr.length > 0) {
-                    return "{" + arr.join(",") + "}";
-                } else {
-                    return "{}";
-                }
-            }
-            return objInn.toString();
-      }
+          if (arr.length > 0) {
+            return '{' + arr.join(',') + '}';
+          } else {
+            return '{}';
+          }
+        }
+        return objInn.toString();
+    }
   },
 
   /**
@@ -867,34 +894,34 @@ const Util = {
    * @param {Object} obj - 需要克隆的对象。
    * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
    */
-  cloneObject:function (obj) {
+  cloneObject: function (obj) {
     // Handle the 3 simple types, and null or undefined
-    if (null === obj || "object" !== typeof obj) {
-        return obj;
+    if (null === obj || 'object' !== typeof obj) {
+      return obj;
     }
 
     // Handle Date
     if (obj instanceof Date) {
-        let copy = new Date();
-        copy.setTime(obj.getTime());
-        return copy;
+      let copy = new Date();
+      copy.setTime(obj.getTime());
+      return copy;
     }
 
     // Handle Array
     if (obj instanceof Array) {
-        let copy = obj.slice(0);
-        return copy;
+      let copy = obj.slice(0);
+      return copy;
     }
 
     // Handle Object
     if (obj instanceof Object) {
-        let copy = {};
-        for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) {
-                copy[attr] = Util.cloneObject(obj[attr]);
-            }
+      let copy = {};
+      for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) {
+          copy[attr] = Util.cloneObject(obj[attr]);
         }
-        return copy;
+      }
+      return copy;
     }
 
     throw new Error("Unable to copy obj! Its type isn't supported.");
@@ -1103,13 +1130,13 @@ Util.extend(INCHES_PER_UNIT, {
 });
 
 //将服务端的地图单位转成SuperMap的地图单位
-INCHES_PER_UNIT["degree"] = INCHES_PER_UNIT.dd;
-INCHES_PER_UNIT["meter"] = INCHES_PER_UNIT.m;
-INCHES_PER_UNIT["foot"] = INCHES_PER_UNIT.ft;
-INCHES_PER_UNIT["inch"] = INCHES_PER_UNIT.inches;
-INCHES_PER_UNIT["mile"] = INCHES_PER_UNIT.mi;
-INCHES_PER_UNIT["kilometer"] = INCHES_PER_UNIT.km;
-INCHES_PER_UNIT["yard"] = INCHES_PER_UNIT.yd;
+INCHES_PER_UNIT['degree'] = INCHES_PER_UNIT.dd;
+INCHES_PER_UNIT['meter'] = INCHES_PER_UNIT.m;
+INCHES_PER_UNIT['foot'] = INCHES_PER_UNIT.ft;
+INCHES_PER_UNIT['inch'] = INCHES_PER_UNIT.inches;
+INCHES_PER_UNIT['mile'] = INCHES_PER_UNIT.mi;
+INCHES_PER_UNIT['kilometer'] = INCHES_PER_UNIT.km;
+INCHES_PER_UNIT['yard'] = INCHES_PER_UNIT.yd;
 
 function paramToString(param) {
   if (param == undefined || param == null) {

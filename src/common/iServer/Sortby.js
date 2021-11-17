@@ -12,15 +12,6 @@ import { Util } from '../commontypes/Util';
 export default class Sortby {
   constructor(options) {
     /**
-     * @enum SuperMap.Sortby.Direction
-     * @readonly
-     * @type {string}
-     */
-     Sortby.Direction = {
-      ASC: 'ASC',
-      DESC: 'DESC'
-    }
-    /**
      * @description 属性名称
      * @member {string} SuperMap.Sortby.prototype.field
      */
@@ -65,3 +56,13 @@ export default class Sortby {
     return obj;
   }
 }
+/**
+ * @enum Direction
+ * @memberOf SuperMap
+ * @readonly
+ * @type {string}
+ */
+Sortby.Direction = {
+  ASC: 'ASC',
+  DESC: 'DESC'
+};
