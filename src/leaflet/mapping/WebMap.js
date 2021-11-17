@@ -5,6 +5,9 @@ import L from "leaflet";
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
 import "../core/Base";
+import { BaiduCRS, TianDiTu_WGS84CRS, TianDiTu_MercatorCRS} from '../core/ExtendsCRS'
+import { crs as CRS } from '../core/Proj4Leaflet'
+import { toGeoJSON, GetResolutionFromScaleDpi } from '../core/Util'
 import { FetchRequest as Request } from '@supermap/iclient-common/util/FetchRequest';
 import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
 import { DataFormat } from '@supermap/iclient-common/REST';
@@ -227,7 +230,7 @@ export var WebMap = L.LayerGroup.extend({
         }
 
         if (epsgCode === 910112 || epsgCode === 910102) {
-            return L.CRS.BaiduCRS;
+            return BaiduCRS;
         }
         if (epsgCode === 910111) {
             epsgCode = 3857
@@ -237,7 +240,7 @@ export var WebMap = L.LayerGroup.extend({
             epsgCode = 4326
             //todo 火星
         }
-        return L.Proj.CRS("EPSG:" + epsgCode, {
+        return CRS("EPSG:" + epsgCode, {
             origin: origin,
             resolutions: resolutions,
             bounds: bounds
@@ -285,7 +288,7 @@ export var WebMap = L.LayerGroup.extend({
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(L.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     },
@@ -334,13 +337,13 @@ export var WebMap = L.LayerGroup.extend({
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                mapOptions.crs = epsgCode === 4326 ? L.CRS.TianDiTu_WGS84 : L.CRS.TianDiTu_Mercator;
+                mapOptions.crs = epsgCode === 4326 ? TianDiTu_WGS84CRS : TianDiTu_MercatorCRS;
                 mapOptions.minZoom = 1;
                 mapOptions.zoom = 1 + mapOptions.zoom;
                 layer = this.createTiandituLayer(layerInfo);
                 break;
             case "BAIDU":
-                mapOptions.crs = L.CRS.BaiduCRS;
+                mapOptions.crs = BaiduCRS;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
                 layer = baiduTileLayer();
@@ -427,7 +430,7 @@ export var WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
 
-        var layer = L.geoJSON(L.Util.toGeoJSON(markers), {
+        var layer = L.geoJSON(toGeoJSON(markers), {
             pointToLayer: function (geojson, latlng) {
                 var m = new L.Marker(latlng);
                 m.setStyle = function (style) {
@@ -489,7 +492,7 @@ export var WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.features), {
+            var layer = L.geoJSON(toGeoJSON(layerInfo.features), {
                 pointToLayer: function (geojson, latlng) {
                     var m = new L.Marker(latlng);
                     m.setStyle = function (style) {

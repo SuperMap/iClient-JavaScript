@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-
+import {crs as CRS} from './Proj4Leaflet'
 /**
  * @name L.CRS.BaiduCRS
  * @description 百度的坐标对象。
@@ -33,7 +33,7 @@ for (let i = 1; i < 19; i++) {
  * @namespace
  * @category BaseTypes Projection
  */
-export var TianDiTu_WGS84CRS = L.Proj.CRS("EPSG:4326",{
+export var TianDiTu_WGS84CRS = CRS("EPSG:4326",{
     origin: [-180, 90],
     resolutions: tdt_WGS84_resolutions,
     bounds: L.bounds([-180, -90], [180, 90]),
@@ -53,7 +53,7 @@ for (let i = 1; i < 19; i++) {
  * @category BaseTypes Projection
  * @namespace
  */
-export var TianDiTu_MercatorCRS = L.Proj.CRS('EPSG:3857', {
+export var TianDiTu_MercatorCRS = CRS('EPSG:3857', {
     origin: [-halfC, halfC],
     resolutions: tdt_Mercator_resolutions,
     bounds: L.bounds([-halfC, -halfC], [halfC, halfC]),
