@@ -306,7 +306,8 @@ import {
   resolutionToScale,
   scaleToResolution,
   GetResolutionFromScaleDpi,
-  NormalizeScale
+  NormalizeScale,
+  transform
 } from './core';
 
 import {
@@ -485,6 +486,10 @@ L.Util.scaleToResolution = scaleToResolution;
 L.Util.getMeterPerMapUnit = getMeterPerMapUnit;
 L.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
 L.Util.NormalizeScale = NormalizeScale;
+L.Util.transform = transform;
+// L.Proj4Leaflet
+L.Proj = L.Proj || {};
+L.Proj.CRS = crs;
 // core/NonEarthCRS
 L.Projection = {};
 L.Projection.NonProjection = nonProjection;

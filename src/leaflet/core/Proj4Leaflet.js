@@ -331,4 +331,4 @@ export var CRS = L.Class.extend({
 export var crs = function(srsCode, options) {
     return new CRS(srsCode, options);
 };
-L.Proj.CRS = crs;
+

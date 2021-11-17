@@ -139,4 +139,3 @@ export var transform = function (feature, sourceCRS = L.CRS.EPSG4326, targetCRS)
 
 };
 
-L.Util.transform = transform;

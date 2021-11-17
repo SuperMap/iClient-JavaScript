@@ -269,7 +269,6 @@
       * @returns {boolean} Whether or not the event observer was removed
       */
      stopObserving: function (elementParam, name, observer, useCapture) {
-       console.log('stopObserving', Event.observers, this)
          useCapture = useCapture || false;
  
          var element = Util.getElement(elementParam);
