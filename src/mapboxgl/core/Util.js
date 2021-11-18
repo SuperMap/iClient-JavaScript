@@ -56,7 +56,7 @@ export const Util = {
             return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
         if (bounds instanceof mapboxgl.LngLatBounds) {
-          return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+            return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
         }
         return bounds;
     },
@@ -233,7 +233,8 @@ export const Util = {
       }
       return false;
   },
-   /**
+
+  /**
    * @description 墨卡托转经纬度。
    * @param {Array} point - 待转换的点。
    * @returns {Object} 经纬度坐标。

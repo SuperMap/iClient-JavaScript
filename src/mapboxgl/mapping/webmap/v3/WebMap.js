@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
-import { FetchRequest } from '@supermap/iclient-common';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { Util } from '../../../core/Util';
 
 const LAEYR_TYPE_LEGEND_TYPE = {
@@ -29,10 +29,6 @@ export const LEGEND_STYLE_KEYS = {
 };
 
 export class WebMap extends mapboxgl.Evented {
-  /**
-   * @constructs
-   * @version 9.1.2
-   */
   constructor(mapId, options) {
     super();
     this.mapId = mapId;
@@ -49,7 +45,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   /**
-   * @function mapboxgl.supermap.WebMap.prototype.createWebMap
+   * @function WebMap.prototype.createWebMap
    * @description 登陆窗口后添加地图图层。
    * @param {Object} mapInfo - map 信息。
    * @param {Object} map - map 实例。
@@ -66,7 +62,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._createMap
+   * @function WebMap.prototype._createMap
    * @description 创建地图。
    */
   _createMap() {
@@ -105,7 +101,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._initLayers
+   * @function WebMap.prototype._initLayers
    * @description emit 图层加载成功事件。
    */
   _initLayers() {
@@ -126,7 +122,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._createMapRelatedInfo
+   * @function WebMap.prototype._createMapRelatedInfo
    * @description 创建地图相关资源。
    */
   _createMapRelatedInfo() {
@@ -138,7 +134,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._getMapRelatedInfo
+   * @function WebMap.prototype._getMapRelatedInfo
    * @description 获取地图关联信息的 JSON 信息。
    */
   _getMapRelatedInfo() {
@@ -148,7 +144,7 @@ export class WebMap extends mapboxgl.Evented {
       })
       .catch((error) => {
         /**
-         * @event mapboxgl.supermap.WebMap#getmapfailed
+         * @event WebMap#getmapfailed
          * @description 获取地图信息失败。
          * @property {Object} error - 失败原因。
          */
@@ -158,7 +154,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._addLayersToMap
+   * @function WebMap.prototype._addLayersToMap
    * @description emit 图层加载成功事件。
    */
   _addLayersToMap() {
@@ -175,7 +171,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._setUniqueId
+   * @function WebMap.prototype._setUniqueId
    * @description 返回唯一 id 的 sources 和 layers。
    * @param {Object} mapInfo - map 信息。
    */
@@ -209,7 +205,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._sortLayers
+   * @function WebMap.prototype._sortLayers
    * @description 调整图层位置。
    * @param {Array<Object>} layers - 图层信息。
    */
@@ -232,7 +228,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._sendMapToUser
+   * @function WebMap.prototype._sendMapToUser
    * @description emit 图层加载成功事件。
    */
   _sendMapToUser() {
@@ -265,7 +261,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._generateV2LayersStructure
+   * @function WebMap.prototype._generateV2LayersStructure
    * @description emit 图层加载成功事件。
    * @param {Array<Object>} layers - 图层信息。
    */
@@ -315,7 +311,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._getLabelFontFamily
+   * @function WebMap.prototype._getLabelFontFamily
    * @description 获取图层字体类型。
    */
   _getLabelFontFamily() {
@@ -333,7 +329,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._getSpriteDatas
+   * @function WebMap.prototype._getSpriteDatas
    * @description 获取雪碧图信息。
    */
   _getSpriteDatas(spriteUrl) {

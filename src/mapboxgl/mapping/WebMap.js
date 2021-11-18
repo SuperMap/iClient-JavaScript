@@ -2,22 +2,24 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import mapboxgl from 'mapbox-gl';
- import { FetchRequest, Lang } from '@supermap/iclient-common';
+ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
  import { Util } from '../core/Util';
  import { WebMap as WebMapV2 } from './webmap/v2/WebMap';
  import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
 
  /**
-  * @class mapboxgl.supermap.WebMap
+  * @class WebMap
   * @version 9.1.2
-  * @category  iPortal/Online
+  * @category  iPortal/Online Resources Map
   * @classdesc 对接 iPortal/Online 地图类。目前支持地图坐标系包括：'EPSG:3857'，'EPSG:4326'，'EPSG:4490'，'EPSG:4214'，'EPSG:4610'。
   * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
   *      <p style="color: #ce4844">Notice</p>
   *      <p style="font-size: 13px">该功能依赖 <a href='https://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 和 <a href='https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js'>JsonSql</a> 插件，请确认引入该插件。</p>
-  *      `<script type="text/javascript" src="https://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`</br>
-  *      `<script type="text/javascript" src="https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"></script>`
+  *      <p style="font-size: 13px">&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/geostats/geostats.js"&gt;&lt;/script&gt;</p>
+  *      <p style="font-size: 13px">&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"&gt;&lt;/script&gt;</p>
   * </div>
+  * @modulecategory Mapping
   * @param {number} id - iPortal|Online 地图 ID。
   * @param {Object} options - 参数。
   * @param {string} [options.target='map'] - 地图容器 ID。
@@ -25,20 +27,17 @@
   * @param {string} [options.credentialKey] - 凭证密钥。
   * @param {string} [options.credentialValue] - 凭证值。
   * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
-  * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
-  * @fires mapboxgl.supermap.WebMap#getmapfailed
-  * @fires mapboxgl.supermap.WebMap#getwmtsfailed
-  * @fires mapboxgl.supermap.WebMap#getlayersfailed
-  * @fires mapboxgl.supermap.WebMap#getfeaturesfailed
-  * @fires mapboxgl.supermap.WebMap#addlayerssucceeded
+  * @param {boolean} [options.excludePortalProxyUrl] - 服务端传递过来的 URL 是否带有代理。
+  * @fires WebMap#getmapfailed
+  * @fires WebMap#getwmtsfailed
+  * @fires WebMap#getlayersfailed
+  * @fires WebMap#getfeaturesfailed
+  * @fires WebMap#addlayerssucceeded
   * @extends {mapboxgl.Evented}
+  * @usage
   */
  export class WebMap extends mapboxgl.Evented {
-   /**
-    * @constructs
-    * @version 9.1.2
-    */
-   constructor(id, options) {
+      constructor(id, options) {
      super();
      const { server, credentialKey, credentialValue, withCredentials, target } = options || {};
      this.mapId = id;
@@ -56,19 +55,17 @@
    }
 
    /**
-    * @function mapboxgl.supermap.WebMap.prototype.resize
-    * @description map resize。
-    * @version 9.1.2
+    * @function WebMap.prototype.resize
+    * @description 地图 resize。
     */
    resize() {
      this.map.resize();
    }
 
    /**
-    * @function mapboxgl.supermap.WebMap.prototype.setMapId
+    * @function WebMap.prototype.setMapId
     * @param {string} mapId - webMap 地图 ID。
     * @description 设置 WebMap ID。
-    * @version 9.1.2
     */
    setMapId(mapId) {
      this.mapId = mapId;
@@ -76,10 +73,9 @@
    }
 
    /**
-    * @function mapboxgl.supermap.WebMap.prototype.setWebMapOptions
+    * @function WebMap.prototype.setWebMapOptions
     * @param {Object} webMapOptions - webMap 参数。
     * @description 设置 webMap 参数。
-    * @version 9.1.2
     */
    setWebMapOptions(webMapOptions) {
      const server = this._formatServerUrl(webMapOptions.server);
@@ -89,10 +85,9 @@
    }
 
    /**
-    * @function mapboxgl.supermap.WebMap.prototype.setMapOptions
+    * @function WebMap.prototype.setMapOptions
     * @param {Object} mapOptions - map 参数。
     * @description 设置 map 参数。
-    * @version 9.1.2
     */
    setMapOptions(mapOptions) {
      let { center, zoom, maxBounds, minZoom, maxZoom, isWorldCopy, bearing, pitch } = mapOptions;
@@ -108,7 +103,7 @@
 
    /**
     * @private
-    * @function mapboxgl.supermap.WebMap.prototype._createWebMap
+    * @function WebMap.prototype._createWebMap
     * @description 登陆窗口后添加地图图层。
     */
    _createWebMap() {
@@ -118,7 +113,7 @@
 
    /**
     * @private
-    * @function mapboxgl.supermap.WebMap.prototype._formatServerUrl
+    * @function WebMap.prototype._formatServerUrl
     * @description 格式化服务地址
     */
    _formatServerUrl(server) {
@@ -131,7 +126,7 @@
 
    /**
     * @private
-    * @function mapboxgl.supermap.WebMap.prototype._getMapInfo
+    * @function WebMap.prototype._getMapInfo
     * @description 获取地图的 JSON 信息。
     * @param {string} mapUrl - 请求地图的 url。
     */
@@ -159,7 +154,7 @@
        })
        .catch((error) => {
          /**
-          * @event mapboxgl.supermap.WebMap#getmapfailed
+          * @event WebMap#getmapfailed
           * @description 获取地图信息失败。
           * @property {Object} error - 失败原因。
           */
@@ -169,7 +164,7 @@
 
    /**
     * @private
-    * @function mapboxgl.supermap.WebMap.prototype._getMapProjection
+    * @function WebMap.prototype._getMapProjection
     * @param {object} mapInfo - 地图信息。
     * @description 获取地图投影。
     */
@@ -182,7 +177,7 @@
 
    /**
     * @private
-    * @function mapboxgl.supermap.WebMap.prototype._initMap
+    * @function WebMap.prototype._initMap
     * @param {object} mapInfo - 地图信息。
     * @description 初始化 WebMap 实例
     */
@@ -195,7 +190,7 @@
 
    /**
     * @private
-    * @function mapboxgl.supermap.WebMap.prototype._registerWebMapEvents
+    * @function WebMap.prototype._registerWebMapEvents
     * @description 注册 WebMap 事件
     */
    _registerWebMapEvents() {
@@ -214,4 +209,3 @@
       return this.webMapInstance;
    }
  }
- 

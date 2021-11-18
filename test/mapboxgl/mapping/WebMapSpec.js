@@ -727,17 +727,14 @@ describe('mapboxgl_WebMap', () => {
             { strokeDashstyle: 'longdash' },
             { strokeDashstyle: 'longdashdot' }
         ];
-        setTimeout(() => {
-          var webMapInstance = datavizWebmap._getWebMapInstance();
-          expect(webMapInstance._dashStyle(style[0]).length).toBe(0);
-          expect(webMapInstance._dashStyle(style[1]).length).toBe(2);
-          expect(webMapInstance._dashStyle(style[2]).length).toBe(4);
-          webMapInstance._dashStyle(style[4]);
-          expect(webMapInstance._dashStyle(style[3]).length).toBe(2);
-          expect(webMapInstance._dashStyle(style[5]).length).toBe(2);
-          expect(webMapInstance._dashStyle(style[6]).length).toBe(4);
-          done();
-        }, 1000);
+        expect(datavizWebmap._dashStyle(style[0]).length).toBe(0);
+        expect(datavizWebmap._dashStyle(style[1]).length).toBe(2);
+        expect(datavizWebmap._dashStyle(style[2]).length).toBe(4);
+        datavizWebmap._dashStyle(style[4]);
+        expect(datavizWebmap._dashStyle(style[3]).length).toBe(2);
+        expect(datavizWebmap._dashStyle(style[5]).length).toBe(2);
+        expect(datavizWebmap._dashStyle(style[6]).length).toBe(4);
+        done();
     });
     it('vector_svg', (done) => {
         let options = {
