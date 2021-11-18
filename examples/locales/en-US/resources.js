@@ -573,6 +573,7 @@ window.examplesResources = {
         "title_iportalWebMap_unicode": "SuperMap iPortal Point Style",
         "title_iportalWebMap_unique": "SuperMap iPortal Unique Map",
         "title_iportalWebMap_label": "SuperMap iPortal Label Map",
+        "title_iportalWebMap_mapstudio": "SuperMap iPortal Map Studio",
         "title_earthquakeHeatMapLayer": "Earthquake occurrences(2005-2016)(Classic)",
         "title_echartsEarthquake": "Earthquake occurrences(2005-2016)",
         "title_l_echartsEarthquake": "Earthquake heat map (2001-2014)",

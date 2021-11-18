@@ -1,0 +1,81 @@
+<!--********************************************************************
+* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html style="  width: 100%;height: 100%;">
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_iportalWebMap_range"></title>
+  <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+  <script type="text/javascript" include='convert,jsonsql,canvg,geostats,mapbox-gl-enhance'
+    src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <style>
+    .dropdown {
+      position: fixed;
+      right: 50px;
+      top: 30px;
+    }
+  </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height: 100%">
+  <div id="map" style="width: 100%;height:100%"></div>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="true">
+      raster 图层
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+      <li map-id="501209431" class="active">
+        <a href="javascript:void(0)"
+          title="base/raster/4326 + overlay/vector(fill-extrusion))">3D 拉伸图层
+        </a>
+      </li>
+      <li map-id="1053690230">
+        <a href="javascript:void(0)"
+          title="base/raster/3857 + overlay/raster">raster(webp) 图层
+        </a>
+      </li>
+      <li map-id="1414137318">
+        <a href="javascript:void(0)"
+          title="base/raster/3857 + overlay/vector">vector 图层
+        </a>
+      </li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+    function getMap(mapId) {
+      var instance = new mapboxgl.supermap.WebMap(mapId, {
+        target: 'map',
+        server: 'https://www.supermapol.com/'
+      });
+      instance.on('addlayerssucceeded', function(e) {
+        mapInstance = e.map;
+      });
+      return instance;
+    }
+    var selected = 1414137318;
+    var webMap = getMap(selected);
+    var mapInstance;
+    $(document).ready(function () {
+      var mapId;
+      $('.dropdown-menu-right').on('click', 'li', function (e) {
+        mapId = $(this).attr('map-id');
+        if (!mapInstance || !mapInstance.loaded()) {
+          alert('地图正在加载中...')
+          return;
+        }
+        if (selected !== mapId) {
+          mapInstance && mapInstance.remove();
+          selected = mapId;
+          $('li').removeClass('active');
+          $(this).addClass('active');
+          $('#dropdownMenu1').text($(this).text());
+          webMap = getMap(selected);
+        }
+      });
+    });
+  </script>
+</body>
