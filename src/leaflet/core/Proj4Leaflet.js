@@ -9,7 +9,7 @@ import proj4 from 'proj4';
 
 window.proj4 = proj4;
 window.Proj4js = proj4;
-L.Proj = {};
+L.Proj = L.Proj || {};
 
 L.Proj._isProj4Obj = function(a) {
     return typeof a.inverse !== 'undefined' && typeof a.forward !== 'undefined';
