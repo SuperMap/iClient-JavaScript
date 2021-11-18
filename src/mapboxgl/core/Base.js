@@ -15,5 +15,3 @@
  */
 import mapboxgl from 'mapbox-gl';
 import './MapExtend';
-
-mapboxgl.supermap = mapboxgl.supermap || {};
