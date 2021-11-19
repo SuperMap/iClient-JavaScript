@@ -6,7 +6,11 @@ import 'fetch-ie8';
 import fetchJsonp from 'fetch-jsonp';
 import { Util } from '../commontypes/Util';
 
-export var RequestJSONPPromise = {
+let fetch = window.fetch;
+export var setFetch = function (newFetch) {
+    fetch = newFetch;
+}
+var RequestJSONPPromise = {
   limitLength: 1500,
   queryKeys: [],
   queryValues: [],
@@ -167,10 +171,6 @@ export var RequestJSONPPromise = {
       return me.issue(config);
   }
 };
-let fetch = window.fetch;
-export var setFetch = function (newFetch) {
-    fetch = newFetch;
-}
 
 var CORS;
 var RequestTimeout;
