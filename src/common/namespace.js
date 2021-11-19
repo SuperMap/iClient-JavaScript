@@ -397,10 +397,10 @@ import {
 } from './online';
 import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter } from './security';
 import {
-  BinaryClassification,
-  LandcoverClassification,
-  ObjectDetection,
-  WebMachineLearning,
+  // BinaryClassification,
+  // LandcoverClassification,
+  // ObjectDetection,
+  // WebMachineLearning,
   ElasticSearch
 } from './thirdparty';
 import {
@@ -891,10 +891,10 @@ if (window && window.SuperMap) {
   SuperMap.ThemeStyle = ThemeStyle;
   SuperMap.CartoCSS = CartoCSS;
   // thirdparty
-  SuperMap.BinaryClassification = BinaryClassification;
-  SuperMap.LandcoverClassification = LandcoverClassification;
-  SuperMap.ObjectDetection = ObjectDetection;
-  SuperMap.WebMachineLearning = WebMachineLearning;
+  // SuperMap.BinaryClassification = BinaryClassification;
+  // SuperMap.LandcoverClassification = LandcoverClassification;
+  // SuperMap.ObjectDetection = ObjectDetection;
+  // SuperMap.WebMachineLearning = WebMachineLearning;
   SuperMap.ElasticSearch = ElasticSearch;
   // util
   SuperMap.ArrayStatistic = ArrayStatistic;
