@@ -284,7 +284,8 @@ export {
     ImageSearchParameter,
     ImageRenderingRule,
     Sortby,
-    ImageStretchOption
+    ImageStretchOption,
+    CommonUtil
 } from '@supermap/iclient-common';
 
 export * from './control';
