@@ -409,7 +409,6 @@ import {
   setRequestTimeout,
   getRequestTimeout,
   FetchRequest,
-  RequestJSONPPromise,
   ColorsPickerUtil,
   ArrayStatistic,
   getMeterPerMapUnit,
@@ -523,7 +522,6 @@ if (window && window.SuperMap) {
   SuperMap.setRequestTimeout = setRequestTimeout;
   SuperMap.getRequestTimeout = getRequestTimeout;
   SuperMap.FetchRequest = FetchRequest;
-  SuperMap.Util.RequestJSONPPromise = RequestJSONPPromise;
 
   // commontypes
   SuperMap.inherit = inheritExt;

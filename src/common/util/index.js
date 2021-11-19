@@ -6,8 +6,7 @@ import {
   isCORS,
   setRequestTimeout,
   getRequestTimeout,
-  FetchRequest,
-  RequestJSONPPromise
+  FetchRequest
 } from './FetchRequest';
 
 import { ColorsPickerUtil } from './ColorsPickerUtil';
@@ -21,7 +20,6 @@ export {
   setRequestTimeout,
   getRequestTimeout,
   FetchRequest,
-  RequestJSONPPromise,
   ColorsPickerUtil,
   ArrayStatistic,
   getMeterPerMapUnit,

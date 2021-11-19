@@ -6,6 +6,167 @@ import 'fetch-ie8';
 import fetchJsonp from 'fetch-jsonp';
 import { Util } from '../commontypes/Util';
 
+export var RequestJSONPPromise = {
+  limitLength: 1500,
+  queryKeys: [],
+  queryValues: [],
+  supermap_callbacks: {},
+  addQueryStrings: function (values) {
+      var me = this;
+      for (var key in values) {
+          me.queryKeys.push(key);
+          if (typeof values[key] !== 'string') {
+              values[key] = Util.toJSON(values[key]);
+          }
+          var tempValue = encodeURIComponent(values[key]);
+          me.queryValues.push(tempValue);
+      }
+  },
+  issue: function (config) {
+      var me = this,
+          uid = me.getUid(),
+          url = config.url,
+          splitQuestUrl = [];
+      var p = new Promise(function (resolve) {
+          me.supermap_callbacks[uid] = function (response) {
+              delete me.supermap_callbacks[uid];
+              resolve(response);
+          };
+      });
+
+      // me.addQueryStrings({
+      //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
+      // });
+      var sectionURL = url,
+          keysCount = 0; //此次sectionURL中有多少个key
+      var length = me.queryKeys ? me.queryKeys.length : 0;
+      for (var i = 0; i < length; i++) {
+          if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+              //+2 for ("&"or"?")and"="
+              if (keysCount == 0) {
+                  return false;
+              }
+              splitQuestUrl.push(sectionURL);
+              sectionURL = url;
+              keysCount = 0;
+              i--;
+          } else {
+              if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
+                  var leftValue = me.queryValues[i];
+                  while (leftValue.length > 0) {
+                      var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
+                      if (sectionURL.indexOf('?') > -1) {
+                          sectionURL += '&';
+                      } else {
+                          sectionURL += '?';
+                      }
+                      var tempLeftValue = leftValue.substring(0, leftLength);
+                      //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
+                      if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
+                          leftLength -= 1;
+                          tempLeftValue = leftValue.substring(0, leftLength);
+                      } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
+                          leftLength -= 2;
+                          tempLeftValue = leftValue.substring(0, leftLength);
+                      }
+
+                      sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
+                      leftValue = leftValue.substring(leftLength);
+                      if (tempLeftValue.length > 0) {
+                          splitQuestUrl.push(sectionURL);
+                          sectionURL = url;
+                          keysCount = 0;
+                      }
+                  }
+              } else {
+                  keysCount++;
+                  if (sectionURL.indexOf('?') > -1) {
+                      sectionURL += '&';
+                  } else {
+                      sectionURL += '?';
+                  }
+                  sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
+              }
+          }
+      }
+      splitQuestUrl.push(sectionURL);
+      me.send(
+          splitQuestUrl,
+          'RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+          config && config.proxy
+      );
+      return p;
+  },
+
+  getUid: function () {
+      var uid = new Date().getTime(),
+          random = Math.floor(Math.random() * 1e17);
+      return uid * 1000 + random;
+  },
+
+  send: function (splitQuestUrl, callback, proxy) {
+      var len = splitQuestUrl.length;
+      if (len > 0) {
+          var jsonpUserID = new Date().getTime();
+          for (var i = 0; i < len; i++) {
+              var url = splitQuestUrl[i];
+              if (url.indexOf('?') > -1) {
+                  url += '&';
+              } else {
+                  url += '?';
+              }
+              url += 'sectionCount=' + len;
+              url += '&sectionIndex=' + i;
+              url += '&jsonpUserID=' + jsonpUserID;
+              if (proxy) {
+                  url = decodeURIComponent(url);
+                  url = proxy + encodeURIComponent(url);
+              }
+              fetchJsonp(url, {
+                  jsonpCallbackFunction: callback,
+                  timeout: 30000
+              });
+          }
+      }
+  },
+
+  GET: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings(config.params);
+      return me.issue(config);
+  },
+
+  POST: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  },
+
+  PUT: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  },
+  DELETE: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  }
+};
 let fetch = window.fetch;
 export var setFetch = function (newFetch) {
     fetch = newFetch;
@@ -85,7 +246,7 @@ export var FetchRequest = {
                 url: url,
                 data: params
             };
-            return Util.RequestJSONPPromise.GET(config);
+            return RequestJSONPPromise.GET(config);
         }
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
@@ -105,7 +266,7 @@ export var FetchRequest = {
                 url: url += "&_method=DELETE",
                 data: params
             };
-            return Util.RequestJSONPPromise.DELETE(config);
+            return RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -120,7 +281,7 @@ export var FetchRequest = {
                 url: url += "&_method=POST",
                 data: params
             };
-            return Util.RequestJSONPPromise.POST(config);
+            return RequestJSONPPromise.POST(config);
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
@@ -134,7 +295,7 @@ export var FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return Util.RequestJSONPPromise.PUT(config);
+            return RequestJSONPPromise.PUT(config);
         }
         return this._fetch(url, params, options, 'PUT');
     },
@@ -273,164 +434,3 @@ export var FetchRequest = {
         return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
     }
 }
-export var RequestJSONPPromise = {
-    limitLength: 1500,
-    queryKeys: [],
-    queryValues: [],
-    supermap_callbacks: {},
-    addQueryStrings: function (values) {
-        var me = this;
-        for (var key in values) {
-            me.queryKeys.push(key);
-            if (typeof values[key] !== 'string') {
-                values[key] = Util.toJSON(values[key]);
-            }
-            var tempValue = encodeURIComponent(values[key]);
-            me.queryValues.push(tempValue);
-        }
-    },
-    issue: function (config) {
-        var me = this,
-            uid = me.getUid(),
-            url = config.url,
-            splitQuestUrl = [];
-        var p = new Promise(function (resolve) {
-            me.supermap_callbacks[uid] = function (response) {
-                delete me.supermap_callbacks[uid];
-                resolve(response);
-            };
-        });
-
-        // me.addQueryStrings({
-        //     callback: "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]"
-        // });
-        var sectionURL = url,
-            keysCount = 0; //此次sectionURL中有多少个key
-        var length = me.queryKeys ? me.queryKeys.length : 0;
-        for (var i = 0; i < length; i++) {
-            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
-                //+2 for ("&"or"?")and"="
-                if (keysCount == 0) {
-                    return false;
-                }
-                splitQuestUrl.push(sectionURL);
-                sectionURL = url;
-                keysCount = 0;
-                i--;
-            } else {
-                if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
-                    var leftValue = me.queryValues[i];
-                    while (leftValue.length > 0) {
-                        var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
-                        if (sectionURL.indexOf('?') > -1) {
-                            sectionURL += '&';
-                        } else {
-                            sectionURL += '?';
-                        }
-                        var tempLeftValue = leftValue.substring(0, leftLength);
-                        //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
-                        if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
-                            leftLength -= 1;
-                            tempLeftValue = leftValue.substring(0, leftLength);
-                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
-                            leftLength -= 2;
-                            tempLeftValue = leftValue.substring(0, leftLength);
-                        }
-
-                        sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
-                        leftValue = leftValue.substring(leftLength);
-                        if (tempLeftValue.length > 0) {
-                            splitQuestUrl.push(sectionURL);
-                            sectionURL = url;
-                            keysCount = 0;
-                        }
-                    }
-                } else {
-                    keysCount++;
-                    if (sectionURL.indexOf('?') > -1) {
-                        sectionURL += '&';
-                    } else {
-                        sectionURL += '?';
-                    }
-                    sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
-                }
-            }
-        }
-        splitQuestUrl.push(sectionURL);
-        me.send(
-            splitQuestUrl,
-            'SuperMap.Util.RequestJSONPPromise.supermap_callbacks[' + uid + ']',
-            config && config.proxy
-        );
-        return p;
-    },
-
-    getUid: function () {
-        var uid = new Date().getTime(),
-            random = Math.floor(Math.random() * 1e17);
-        return uid * 1000 + random;
-    },
-
-    send: function (splitQuestUrl, callback, proxy) {
-        var len = splitQuestUrl.length;
-        if (len > 0) {
-            var jsonpUserID = new Date().getTime();
-            for (var i = 0; i < len; i++) {
-                var url = splitQuestUrl[i];
-                if (url.indexOf('?') > -1) {
-                    url += '&';
-                } else {
-                    url += '?';
-                }
-                url += 'sectionCount=' + len;
-                url += '&sectionIndex=' + i;
-                url += '&jsonpUserID=' + jsonpUserID;
-                if (proxy) {
-                    url = decodeURIComponent(url);
-                    url = proxy + encodeURIComponent(url);
-                }
-                fetchJsonp(url, {
-                    jsonpCallbackFunction: callback,
-                    timeout: 30000
-                });
-            }
-        }
-    },
-
-    GET: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings(config.params);
-        return me.issue(config);
-    },
-
-    POST: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings({
-            requestEntity: config.data
-        });
-        return me.issue(config);
-    },
-
-    PUT: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings({
-            requestEntity: config.data
-        });
-        return me.issue(config);
-    },
-    DELETE: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings({
-            requestEntity: config.data
-        });
-        return me.issue(config);
-    }
-};
