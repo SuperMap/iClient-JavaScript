@@ -1,7 +1,8 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
+ import { en } from './locales/en-US';
+ import { zh } from './locales/zh-CN';
 /**
  * @name Lang
  * @memberOf SuperMap
@@ -10,7 +11,8 @@
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
  */
 let Lang = {
-
+   'en-US': en,
+   "zh-CN": zh,
     /**
      * @member {string} SuperMap.Lang.code
      * @description 当前所使用的语言类型。
@@ -97,5 +99,6 @@ let Lang = {
     }
 
 };
+
 export { Lang };
 
