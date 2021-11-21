@@ -1,0 +1,22 @@
+<?js var data = obj; ?>
+<?jsif(data && typeof data === 'object'){?>
+<pre class="prettyprint">
+<code>// 浏览器
+&lt;script type="text/javascript" src="<?js= data.globalParams.cdn ?>"&gt;&lt;/script&gt;
+&lt;script&gt;
+  <?js= "new {namespace}.{className}({paramsNames});".replace('{className}',data.className).replace('{namespace}',data.globalParams.namespace).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
+  
+  // 弃用的写法
+  <?js data.deprecatedClasses.forEach(deprecatedClass => { ?><?js= "new {deprecatedClass}({paramsNames});".replace('{deprecatedClass}',deprecatedClass).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
+  <?js }); ?>
+&lt;/script&gt;
+
+<span class="nopretty">// ES6 Import</span>
+<?js= "import {{className}} from '{npm}';".replace('{className}',data.className).replace('{npm}',data.globalParams.npm) ?>
+
+<?js= "new {className}({paramsNames});".replace('{className}',data.className).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
+</code>
+</pre>
+<?js}else{ ?>
+<?js= data ?>
+<?js} ?>
