@@ -25,13 +25,18 @@
             "src/common/overlay/levelRenderer"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/usage"],
+    "markdown": {
+        "tags": ["usage"]
+    },
     "templates": {
         "cleverLinks": true,
         "monospaceLinks": true,
         "default": {
             "outputSourceFiles": false
-        }
-        //"applicationName": "iClient for MapboxGL"
+        },
+        "namespace": "mapboxgl.supermap",
+        "npm":"@supermap/iclient-mapboxgl",
+        "cdn":"https://iclient.supermap.io/dist/mapboxgl/iclient-mapboxgl.js"
     }
 }

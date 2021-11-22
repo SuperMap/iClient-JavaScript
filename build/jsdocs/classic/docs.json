@@ -30,7 +30,9 @@
         "monospaceLinks": false,
         "default": {
             "outputSourceFiles": false
-        }
-        //"applicationName": "iClient Classic"
+        },
+        "namespace": "SuperMap",
+        "npm":"@supermap/iclient-classic",
+        "cdn":"https://iclient.supermap.io/dist/classic/iclient-classic.js"
     }
 }
