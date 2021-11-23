@@ -195,7 +195,7 @@ describe('EditFeaturesService', () => {
         var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(editServiceURL + "/features?ids=[134]");
+            expect(testUrl).toBe(editServiceURL + "/features?ids=%5B134%5D");
             expect(params).not.toBeNull();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));

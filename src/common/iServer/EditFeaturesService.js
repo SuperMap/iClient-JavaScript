@@ -90,7 +90,7 @@ export class EditFeaturesService extends CommonServiceBase {
         jsonParameters = EditFeaturesParameters.toJsonParameters(params);
         if (editType === EditType.DELETE) {
             ids = Util.toJSON(params.IDs);
-            me.url = Util.urlAppend(me.url, "ids=" + ids);
+            me.url = Util.urlAppend(me.url, Util.getParameterString({ids}));
             method = "DELETE";
             jsonParameters = ids;
         } else if (editType === EditType.UPDATE) {
