@@ -92,4 +92,8 @@ var self = this;
         <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
         <?js= this.partial('examples.tmpl', examples) ?>
     <?js } ?>
+    <?js if (data.usage) { ?>
+        <h3>Usage</h3>
+        <?js= self.partial('usage.tmpl', data.usage) ?>
+    <?js } ?>
 </dd>
