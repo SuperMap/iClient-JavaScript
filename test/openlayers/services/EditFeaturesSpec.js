@@ -135,7 +135,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=%5B238,239,240%5D");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=%5B238%2C239%2C240%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });

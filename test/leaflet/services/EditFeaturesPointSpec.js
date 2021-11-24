@@ -118,7 +118,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
         var deletePointsService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features?ids=%5B92,93,94%5D");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features?ids=%5B92%2C93%2C94%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
