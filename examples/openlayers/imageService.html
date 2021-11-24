@@ -6,8 +6,6 @@
     <head>
         <meta charset="UTF-8" />
         <title data-i18n="resources.title_image_service"></title>
-        <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
-        <script type="text/javascript" include="proj4,turf" src="../../dist/ol/include-ol.js"></script>
         <style>
             .sidebar-config-wrap {
                 position: absolute;
@@ -334,9 +332,10 @@
                 <!-- /.modal-content -->
             </div>
         </div>
-
-        <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+        <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+        <script type="text/javascript" include="proj4,turf" src="../../dist/ol/include-ol.js"></script>
         <script type="text/javascript">
+            widgets.loader.showLoader("data loading...");
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var root = host + '/iserver/services/imageservice-hainan/restjsr';
             var url = host + '/iserver/services/data-china400/rest/data';
@@ -699,6 +698,7 @@
                         });
                     }
                     appendOptions('provinces', result, 'value', 'label');
+                    widgets.loader.removeLoader();
                     provinces = result;
                     return result;
                 });

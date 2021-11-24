@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_image_service"></title>
-    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+    
     <script
       type="text/javascript"
       include="proj4,turf,leaflet-geoman"
@@ -324,19 +324,12 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var mapUrl = host + '/iserver/services/map-world/rest/maps/World';
       var root = host + '/iserver/services/imageservice-hainan/restjsr';
       var url = host + '/iserver/services/data-china400/rest/data';
-      var map = L.map('map', {
-        crs: L.CRS.EPSG4326,
-        center: [19.2, 110],
-        maxZoom: 18,
-        zoom: 8
-      });
-      L.supermap.tiledMapLayer(mapUrl).addTo(map);
       var currentIndex = 0;
       var features = [];
       var pageMax = 10;
@@ -351,9 +344,17 @@
       var searchBoxLayer;
       var provinceLayer;
       var selectedFeature;
+      var plotLayer;
+      var map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [19.2, 110],
+        maxZoom: 18,
+        zoom: 8
+      });
+      L.supermap.tiledMapLayer(mapUrl).addTo(map);
+      widgets.loader.showLoader("data loading...");
       var result = queryFromDataService(url);
       var drawControl = addDrawControl();
-      var plotLayer;
       var imageService = ImageService();
       function ImageService() {
         var service = new L.supermap.imageService(root);
@@ -513,6 +514,7 @@
             });
           }
           appendOptions('provinces', result, 'value', 'label');
+          widgets.loader.removeLoader();
           provinces = result;
           return result;
         });
