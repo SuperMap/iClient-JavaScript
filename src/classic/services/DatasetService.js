@@ -1,6 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+import { SuperMap } from '../SuperMap';
 import { CommonServiceBase } from '@supermap/iclient-common/iServer/CommonServiceBase';
 import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
 import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
@@ -154,3 +155,4 @@ export class DatasetService extends CommonServiceBase {
         datasetService.deleteDatasetService();
     }
 }
+SuperMap.REST.DatasetService = DatasetService;
