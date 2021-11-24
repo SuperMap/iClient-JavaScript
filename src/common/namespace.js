@@ -535,6 +535,7 @@ if (window && window.SuperMap) {
   SuperMap.Events = Events;
   SuperMap.Feature = Feature;
   SuperMap.Geometry = Geometry;
+  SuperMap.LonLat = LonLat;
   SuperMap.Pixel = Pixel;
   SuperMap.Size = Size;
   SuperMap.Feature.Vector = GeometryVector;

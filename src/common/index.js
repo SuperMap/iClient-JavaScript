@@ -61,6 +61,17 @@ import {
     BucketAggType,
     GetFeatureMode,
     RasterFunctionType,
+    ResourceType,
+    OrderBy,
+    OrderType,
+    SearchType,
+    AggregationTypes,
+    PermissionType,
+    EntityType,
+    WebExportFormatType,
+    WebScaleOrientationType,
+    WebScaleType,
+    WebScaleUnit,
     DataItemType
 } from './REST';
 import {
@@ -90,6 +101,10 @@ import {
     Pixel,
     Size,
     CommonUtil,
+    Browser,
+    INCHES_PER_UNIT,
+    DOTS_PER_INCH,
+    IS_GECKO,
     GeometryVector
 } from './commontypes';
 import { Format, GeoJSON, JSONFormat, WKT } from './format';
@@ -210,6 +225,7 @@ import {
     UGCImage,
     InterpolationAnalystParameters,
     InterpolationAnalystService,
+    InterpolationDensityAnalystParameters,
     InterpolationIDWAnalystParameters,
     InterpolationKrigingAnalystParameters,
     InterpolationRBFAnalystParameters,
@@ -467,7 +483,8 @@ import {
     ComponentsUtil,
     FileReaderUtil,
     ChartView,
-    ChartViewModel
+    ChartViewModel,
+    TemplateBase
 } from './components';
 import { Lang, en, zh } from './lang';
 
@@ -488,7 +505,8 @@ export {
     ComponentsUtil,
     FileReaderUtil,
     ChartView,
-    ChartViewModel
+    ChartViewModel,
+    TemplateBase
 };
 export { SuperMap };
 export {
@@ -550,6 +568,17 @@ export {
     BucketAggType,
     GetFeatureMode,
     RasterFunctionType,
+    ResourceType,
+    OrderBy,
+    OrderType,
+    SearchType,
+    AggregationTypes,
+    PermissionType,
+    EntityType,
+    WebExportFormatType,
+    WebScaleOrientationType,
+    WebScaleType,
+    WebScaleUnit,
     DataItemType
 };
 export {
@@ -579,6 +608,10 @@ export {
     Pixel,
     Size,
     CommonUtil,
+    Browser,
+    INCHES_PER_UNIT,
+    DOTS_PER_INCH,
+    IS_GECKO,
     GeometryVector
 };
 export { TimeControlBase, TimeFlowControl };
@@ -710,6 +743,7 @@ export {
     UGCImage,
     InterpolationAnalystParameters,
     InterpolationAnalystService,
+    InterpolationDensityAnalystParameters,
     InterpolationIDWAnalystParameters,
     InterpolationKrigingAnalystParameters,
     InterpolationRBFAnalystParameters,
