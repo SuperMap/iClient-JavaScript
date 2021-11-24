@@ -41,6 +41,10 @@
             <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
             <?js= self.partial('examples.tmpl', doc.examples) ?>
         <?js } ?>
+        <?js if (doc.usage) { ?>
+            <h3>Usage</h3>
+            <?js= self.partial('usage.tmpl', doc.usage) ?>
+        <?js } ?>
     <?js } ?>
     </div>
     
