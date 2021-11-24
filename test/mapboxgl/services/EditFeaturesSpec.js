@@ -76,7 +76,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features?ids=[257]");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features?ids=%5B257%5D");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.editFeatures(deleteFeatureParams, (result) => {

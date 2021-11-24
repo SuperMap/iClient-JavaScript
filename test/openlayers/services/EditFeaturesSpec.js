@@ -135,7 +135,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=[238,239,240]");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=%5B238,239,240%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -171,7 +171,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=[241]");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=%5B241%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the specified features does not exist"}}`));
         });
