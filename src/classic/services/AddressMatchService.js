@@ -1,7 +1,8 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
+ import {SuperMap} from '../SuperMap';
+ import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
 import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
 
 /**
@@ -65,3 +66,4 @@ export class AddressMatchService extends CommonServiceBase {
         addressMatchService.decode(me.url + '/geodecoding', params);
     }
 }
+SuperMap.REST.AddressMatchService = AddressMatchService;

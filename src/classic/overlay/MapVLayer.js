@@ -235,4 +235,4 @@ export class MapVLayer extends SuperMap.Layer {
         return new LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 }
-
+SuperMap.Layer.MapVLayer = MapVLayer;
