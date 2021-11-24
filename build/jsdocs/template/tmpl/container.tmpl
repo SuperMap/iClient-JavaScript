@@ -34,6 +34,10 @@
         <?js if (doc.description) { ?>
             <div class="description"><?js= doc.description ?></div>
         <?js } ?>
+         <?js if (doc.usage) { ?>
+            <h5>Usage</h5>
+            <?js= self.partial('usage.tmpl', doc.usage) ?>
+        <?js } ?>
         
         <?js= self.partial('details.tmpl', doc) ?>
         
@@ -41,10 +45,7 @@
             <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
             <?js= self.partial('examples.tmpl', doc.examples) ?>
         <?js } ?>
-        <?js if (doc.usage) { ?>
-            <h3>Usage</h3>
-            <?js= self.partial('usage.tmpl', doc.usage) ?>
-        <?js } ?>
+       
     <?js } ?>
     </div>
     

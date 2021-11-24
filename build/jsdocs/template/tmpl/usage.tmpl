@@ -6,7 +6,7 @@
 &lt;script&gt;
   <?js= "new {namespace}.{className}({paramsNames});".replace('{className}',data.className).replace('{namespace}',data.globalParams.namespace).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
   
-  // 弃用的写法
+  <?js= data.deprecatedClasses.length > 0?'// 弃用的写法':'' ?>
   <?js data.deprecatedClasses.forEach(deprecatedClass => { ?><?js= "new {deprecatedClass}({paramsNames});".replace('{deprecatedClass}',deprecatedClass).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
   <?js }); ?>
 &lt;/script&gt;
