@@ -34,10 +34,6 @@ var self = this;
         <?js= data.description ?>
     </div>
     <?js } ?>
-    <?js if (data.usage) { ?>
-        <h5>Usage</h5>
-        <?js= self.partial('usage.tmpl', data.usage) ?>
-    <?js } ?>
 
     <?js if (kind === 'event' && data.type && data.type.names) {?>
         <h5>Type:</h5>
