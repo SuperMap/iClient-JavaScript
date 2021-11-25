@@ -11,7 +11,14 @@ if (data.type && data.type.names) {
 ?>
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="<?js= id ?>"><?js= data.attribs + (data.scope === 'static' ? longname : name)  + typeSignature ?></h4>
+        <h4 class="name" id="<?js= id ?>">
+        <?js if (data.usage) { ?>
+        <h5>Usage</h5>
+        <?js= self.partial('usage.tmpl', data.usage) ?>
+        <?js }else{ ?>
+        <?js= data.attribs + (data.scope === 'static' ? longname : name)  + typeSignature ?>
+        <?js } ?>
+        </h4>
     </div>
     
     <?js if (data.summary) { ?>
@@ -31,8 +38,5 @@ if (data.type && data.type.names) {
         <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
         <?js= this.partial('examples.tmpl', examples) ?>
     <?js } ?>
-    <?js if (data.usage) { ?>
-        <h3>Usage</h3>
-        <?js= self.partial('usage.tmpl', data.usage) ?>
-    <?js } ?>
+    
 </dd>
