@@ -5,14 +5,16 @@ import {Util} from '../commontypes/Util';
 import {Point} from '../commontypes/geometry/Point';
 
 /**
- * @class SuperMap.PointWithMeasure
+ * @class PointWithMeasure
+ * @deprecatedclass SuperMap.PointWithMeasure
  * @category  iServer SpatialAnalyst
  * @classdesc 路由点类。路由点是指具有线性度量值 (Measure) 的二维地理坐标点。
  * @param {Object} options - 参数。
  * @param {number} options.measure - 度量值，即路由对象属性值 M。
  * @param {number} options.x - 获取当前点对象在地理坐标系下的 X 坐标值。
  * @param {number} options.y - 获取当前点对象在地理坐标系下的 Y 坐标值。
- * @extends {SuperMap.Geometry.Point}
+ * @extends {GeometryPoint}
+ * @usage
  */
 export class PointWithMeasure extends Point {
 
@@ -20,7 +22,7 @@ export class PointWithMeasure extends Point {
         super(options);
 
         /**
-         * @member {number} SuperMap.PointWithMeasure.prototype.measure
+         * @member {number} PointWithMeasure.prototype.measure
          * @description 度量值，即路由对象属性值 M。
          */
         this.measure = null;
@@ -33,9 +35,9 @@ export class PointWithMeasure extends Point {
     }
 
     /**
-     * @function SuperMap.PointWithMeasure.prototype.equals
+     * @function PointWithMeasure.prototype.equals
      * @description 判断两个路由点对象是否相等。如果两个路由点对象具有相同的坐标以及度量值，则认为是相等的。
-     * @param {SuperMap.PointWithMeasure} geom - 需要判断的路由点对象。
+     * @param {PointWithMeasure} geom - 需要判断的路由点对象。
      * @returns {boolean} 两个路由点对象是否相等（true 为相等，false 为不等）。
      */
     equals(geom) {
@@ -51,7 +53,7 @@ export class PointWithMeasure extends Point {
 
 
     /**
-     * @function SuperMap.PointWithMeasure.prototype.toJson
+     * @function PointWithMeasure.prototype.toJson
      * @description 转换为 JSON 对象。
      * */
      toJson() {
@@ -67,7 +69,7 @@ export class PointWithMeasure extends Point {
 
 
      /**
-     * @function SuperMap.PointWithMeasure.prototype.destroy
+     * @function PointWithMeasure.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -78,10 +80,10 @@ export class PointWithMeasure extends Point {
     }
 
     /**
-     * @function SuperMap.PointWithMeasure.fromJson
-     * @description 将 JSON 对象转换为{@link SuperMap.PointWithMeasure} 对象。
+     * @function PointWithMeasure.fromJson
+     * @description 将 JSON 对象转换为{@link PointWithMeasure} 对象。
      * @param {Object} jsonObject - JSON 对象表示的路由点。
-     * @returns {SuperMap.PointWithMeasure} 转化后的 PointWithMeasure 对象。
+     * @returns {PointWithMeasure} 转化后的 PointWithMeasure 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

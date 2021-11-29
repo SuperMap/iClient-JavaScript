@@ -3,32 +3,34 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 /**
- * @class SuperMap.ServerColor
+ * @class ServerColor
+ * @deprecatedclass SuperMap.ServerColor
  * @category iServer Map Theme
  * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
  * @param {Object} options - 参数。
  * @param {number} [options.red=255] - 获取或设置红色值。
  * @param {number} [options.green=0] - 获取或设置绿色值。
  * @param {number} [options.blue=0] - 获取或设置蓝色值。
+ * @usage
  */
 export class ServerColor {
 
     constructor(red, green, blue) {
 
         /**
-         * @member {number} [SuperMap.ServerColor.prototype.red=255]
+         * @member {number} [ServerColor.prototype.red=255]
          * @description 获取或设置红色值。
          */
         this.red = (!red && red != 0)?255:red;
 
         /**
-         * @member {number} [SuperMap.ServerColor.prototype.green=0]
+         * @member {number} [ServerColor.prototype.green=0]
          * @description 获取或设置绿色值。
          */
         this.green = green||0;
 
         /**
-         * @member {number} [SuperMap.ServerColor.prototype.blue=0]
+         * @member {number} [ServerColor.prototype.blue=0]
          * @description 获取或设置蓝色值。
          */
         this.blue = blue||0;
@@ -37,7 +39,7 @@ export class ServerColor {
     }
 
     /**
-     * @function SuperMap.ServerColor.prototype.destroy
+     * @function ServerColor.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -49,10 +51,10 @@ export class ServerColor {
 
 
     /**
-     * @function SuperMap.ServerColor.formJson
+     * @function ServerColor.formJson
      * @description 将 JSON 对象转化为 ServerColor 对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
-     * @returns {SuperMap.ServerColor} 转化后的 ServerColor 对象。
+     * @returns {ServerColor} 转化后的 ServerColor 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

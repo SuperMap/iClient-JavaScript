@@ -6,14 +6,16 @@ import { ProcessingServiceBase } from './ProcessingServiceBase';
 import { SummaryRegionJobParameter } from './SummaryRegionJobParameter';
 
 /**
- * @class SuperMap.SummaryRegionJobsService
+ * @class SummaryRegionJobsService
+ * @deprecatedclass SuperMap.SummaryRegionJobsService
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析服务类
- * @extends {SuperMap.ProcessingServiceBase}
+ * @extends {ProcessingServiceBase}
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class SummaryRegionJobsService extends ProcessingServiceBase {
     constructor(url, options) {
@@ -30,7 +32,7 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
+     * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析任务集合。
      */
     getSummaryRegionJobs() {
@@ -38,7 +40,7 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
+     * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
      * @description 获取指定id的区域汇总分析任务。
      * @param {string} id -要获取区域汇总分析任务的id
      */
@@ -47,9 +49,9 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
+     * @function SummaryRegionJobsService.prototype.addSummaryRegionJob
      * @description 新建区域汇总任务。
-     * @param {SuperMap.SummaryRegionJobParameter} params - 创建一个区域汇总任务的请求参数。
+     * @param {SummaryRegionJobParameter} params - 创建一个区域汇总任务的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryRegionJob(params, seconds) {

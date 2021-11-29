@@ -5,27 +5,28 @@ import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 
 /**
- * @class SuperMap.GetFieldsService
+ * @class GetFieldsService
+ * @deprecatedclass SuperMap.GetFieldsService
  * @category iServer Data Field
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
  * @param {string}options.dataset - 要查询的数据集名称。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example
- * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
+ * var myService = new GetFieldsService(url, {eventListeners: {
  *     "processCompleted": getFieldsCompleted,
  *     "processFailed": getFieldsError
  *     },
  *     datasource: "World",
  *     dataset: "Countries"
  * };
- *
+ * @usage
  */
 export class GetFieldsService extends CommonServiceBase {
 
@@ -33,13 +34,13 @@ export class GetFieldsService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.GetFieldsService.prototype.datasource
+         * @member {string} GetFieldsService.prototype.datasource
          * @description 要查询的数据集所在的数据源名称。
          */
         this.datasource = null;
 
         /**
-         *  @member {string} SuperMap.GetFieldsService.prototype.dataset
+         *  @member {string} GetFieldsService.prototype.dataset
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;
@@ -52,7 +53,7 @@ export class GetFieldsService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.GetFieldsService.prototype.destroy
+     * @function GetFieldsService.prototype.destroy
      * @override
      */
     destroy() {
@@ -64,7 +65,7 @@ export class GetFieldsService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.GetFieldsService.prototype.processAsync
+     * @function GetFieldsService.prototype.processAsync
      * @description 执行服务，查询指定数据集的字段信息。
      */
     processAsync() {

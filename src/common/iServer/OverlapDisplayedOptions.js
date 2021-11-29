@@ -5,7 +5,8 @@ import {Util} from '../commontypes/Util';
 import {UGCLayer} from './UGCLayer';
 
 /**
- * @class SuperMap.OverlapDisplayedOptions
+ * @class OverlapDisplayedOptions
+ * @deprecatedclass SuperMap.OverlapDisplayedOptions
  * @category iServer Map Layer
  * @classdesc 地图压盖过滤显示选项。
  * @description 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，
@@ -22,57 +23,58 @@ import {UGCLayer} from './UGCLayer';
  *                                                             当两个对象的横向间距小于该值，且纵向间距小于 verticalOverlappedSpaceSize 时认为压盖。
  * @param {number} [options.verticalOverlappedSpaceSize=0] - 两个对象之间的纵向压盖间距，单位为 0.1 毫米，跟 horizontalOverlappedSpaceSize 结合使用，
  *                                                           当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。
+ * @usage
  */
 export class OverlapDisplayedOptions {
 
     constructor(options) {
         options = options || {};
         /**
-         * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowPointOverlap=true]
+         * @member {boolean} [OverlapDisplayedOptions.prototype.allowPointOverlap=true]
          * @description 点和点压盖时是否显示压盖的点对象。
          */
         this.allowPointOverlap = true;
 
         /**
-         * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowPointWithTextDisplay=true]
+         * @member {boolean} [OverlapDisplayedOptions.prototype.allowPointWithTextDisplay=true]
          * @description 标签和相应普通图层上的点是否一起过滤显示，如果过滤显示，
          * 只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。
          */
         this.allowPointWithTextDisplay = true;
 
         /**
-         * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowTextOverlap=false]
+         * @member {boolean} [OverlapDisplayedOptions.prototype.allowTextOverlap=false]
          * @description 文本压盖时是否显示压盖的文本对象。
          */
         this.allowTextOverlap = false;
 
         /**
-         * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowTextAndPointOverlap=true]
+         * @member {boolean} [OverlapDisplayedOptions.prototype.allowTextAndPointOverlap=true]
          * @description  文本和点压盖时是否显示压盖的文本或点对象（此属性不处理文本之间的压盖和点之间的压盖）。
          */
         this.allowTextAndPointOverlap = true;
 
         /**
-         * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowThemeGraduatedSymbolOverlap=false]
+         * @member {boolean} [OverlapDisplayedOptions.prototype.allowThemeGraduatedSymbolOverlap=false]
          * @description 等级符号元素压盖时是否显示压盖的等级符号元素。
          */
         this.allowThemeGraduatedSymbolOverlap = false;
 
         /**
-         * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowThemeGraphOverlap=false]
+         * @member {boolean} [OverlapDisplayedOptions.prototype.allowThemeGraphOverlap=false]
          * @description 统计专题图元素压盖时是否显示压盖的统计专题图元素。
          */
         this.allowThemeGraphOverlap = false;
 
         /**
-         * @member {number} [SuperMap.OverlapDisplayedOptions.prototype.horizontalOverlappedSpaceSize=0]
+         * @member {number} [OverlapDisplayedOptions.prototype.horizontalOverlappedSpaceSize=0]
          * @description 两个对象之间的横向压盖间距，单位为0.1毫米，跟 verticalOverlappedSpaceSize 结合使用，
          * 当两个对象的横向间距小于该值，且纵向间距小于 verticalOverlappedSpaceSize 时认为压盖。
          */
         this.horizontalOverlappedSpaceSize = 0;
 
         /**
-         * @member {number} [SuperMap.OverlapDisplayedOptions.prototype.verticalOverlappedSpaceSize=0]
+         * @member {number} [OverlapDisplayedOptions.prototype.verticalOverlappedSpaceSize=0]
          * @description 两个对象之间的纵向压盖间距，单位为0.1毫米，跟 horizontalOverlappedSpaceSize 结合使用，
          * 当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。
          */
@@ -85,7 +87,7 @@ export class OverlapDisplayedOptions {
     }
 
     /**
-     * @function SuperMap.OverlapDisplayedOptions.prototype.destroy
+     * @function OverlapDisplayedOptions.prototype.destroy
      * @description 释放资源，将资源的属性置空。
      */
     destroy() {
@@ -94,7 +96,7 @@ export class OverlapDisplayedOptions {
 
 
     /**
-     * @function SuperMap.OverlapDisplayedOptions.prototype.fromJson
+     * @function OverlapDisplayedOptions.prototype.fromJson
      * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
@@ -104,7 +106,7 @@ export class OverlapDisplayedOptions {
 
 
     /**
-     * @function SuperMap.OverlapDisplayedOptions.prototype.toServerJSONObject
+     * @function OverlapDisplayedOptions.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      * @returns {Object} 对应的 JSON 格式对象。
      */
@@ -115,7 +117,7 @@ export class OverlapDisplayedOptions {
 
 
     /**
-     * @function SuperMap.OverlapDisplayedOptions.prototype.toString
+     * @function OverlapDisplayedOptions.prototype.toString
      * @description 转换成对应的 tileLayer 请求瓦片时 overlapDisplayedOptions 参数。
      * @returns {string} 对应的 tileLayer 请求瓦片时 overlapDisplayedOptions 参数。
      */

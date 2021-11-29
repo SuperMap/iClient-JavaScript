@@ -6,33 +6,35 @@ import {ServerTextStyle} from './ServerTextStyle';
 import {ThemeGraphTextFormat} from '../REST';
 
 /**
- * @class SuperMap.ThemeGraphText
+ * @class ThemeGraphText
+ * @deprecatedclass SuperMap.ThemeGraphText
  * @category  iServer Map Theme
  * @classdesc 统计图文字标注风格类。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.graphTextDisplayed=false] - 是否显示统计图上的文字标注。
- * @param {SuperMap.ThemeGraphTextFormat} [options.graphTextFormat=SuperMap.ThemeGraphTextFormat.CAPTION] - 统计专题图文本显示格式。
- * @param {SuperMap.ServerTextStyle} [options.graphTextStyle] - 统计图上的文字标注风格。
+ * @param {ThemeGraphTextFormat} [options.graphTextFormat=ThemeGraphTextFormat.CAPTION] - 统计专题图文本显示格式。
+ * @param {ServerTextStyle} [options.graphTextStyle] - 统计图上的文字标注风格。
+ * @usage
  */
 export class ThemeGraphText {
 
     constructor(options) {
 
         /**
-         * @member {boolean} [SuperMap.ThemeGraphText.prototype.graphTextDisplayed=false]
+         * @member {boolean} [ThemeGraphText.prototype.graphTextDisplayed=false]
          * @description 是否显示统计图上的文字标注。
          */
         this.graphTextDisplayed = false;
 
         /**
-         * @member {SuperMap.ThemeGraphTextFormat} [SuperMap.ThemeGraphText.prototype.graphTextFormat=SuperMap.ThemeGraphTextFormat.CAPTION]
+         * @member {ThemeGraphTextFormat} [ThemeGraphText.prototype.graphTextFormat=ThemeGraphTextFormat.CAPTION]
          * @description 统计专题图文本显示格式。
          *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。
          */
         this.graphTextFormat = ThemeGraphTextFormat.CAPTION;
 
         /**
-         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphText.prototype.graphTextStyle
+         * @member {ServerTextStyle} ThemeGraphText.prototype.graphTextStyle
          * @description 统计图上的文字标注风格。
          */
         this.graphTextStyle =  new ServerTextStyle();
@@ -45,7 +47,7 @@ export class ThemeGraphText {
     }
 
     /**
-     * @function SuperMap.ThemeGraphText.prototype.destroy
+     * @function ThemeGraphText.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -59,10 +61,10 @@ export class ThemeGraphText {
     }
 
     /**
-     * @function SuperMap.ThemeGraphText.fromObj
+     * @function ThemeGraphText.fromObj
      * @description 从传入对象获取统计图文字标注风格类。
      * @param {Object} obj - 传入对象。
-     * @returns {SuperMap.ThemeGraphText} ThemeGraphText 对象。
+     * @returns {ThemeGraphText} ThemeGraphText 对象。
      */
     static fromObj(obj) {
         var res = new ThemeGraphText();

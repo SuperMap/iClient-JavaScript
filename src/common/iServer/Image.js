@@ -6,18 +6,20 @@ import {ServerColor} from './ServerColor';
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.Image
+ * @class UGCImage
+ * @deprecatedclass SuperMap.Image
  * @category iServer Map Layer
- * @classdesc UGC 影像图层类 
- * @extends {SuperMap.UGCSubLayer}
- * @param {Object} options - 参数。 
- * @param {SuperMap.ColorSpaceType} [options.colorSpaceType] - 返回影像图层的色彩显示模式。
+ * @classdesc UGC 影像图层类
+ * @extends {UGCSubLayer}
+ * @param {Object} options - 参数。
+ * @param {ColorSpaceType} [options.colorSpaceType] - 返回影像图层的色彩显示模式。
  * @param {number} [options.brightness] - 影像图层的亮度。
  * @param {Array.<number>} [options.displayBandIndexes] - 返回当前影像图层显示的波段索引。
  * @param {number} [options.contrast] - 影像图层的对比度。
  * @param {boolean} [options.transparent] - 是否背景透明。
- * @param {SuperMap.ServerColor} [options.transparentColor] - 返回背景透明色。
+ * @param {ServerColor} [options.transparentColor] - 返回背景透明色。
  * @param {number} [options.transparentColorTolerance] - 背景透明色容限。
+ * @usage
  */
 export class UGCImage extends UGCSubLayer {
 
@@ -26,43 +28,43 @@ export class UGCImage extends UGCSubLayer {
         options = options || {};
         super(options);
         /**
-         * @member {number} SuperMap.Image.prototype.brightness
+         * @member {number} UGCImage.prototype.brightness
          * @description 影像图层的亮度。
          */
         this.brightness = null;
 
         /**
-         * @member {SuperMap.ColorSpaceType} SuperMap.Image.prototype.colorSpaceType
+         * @member {ColorSpaceType} UGCImage.prototype.colorSpaceType
          * @description 返回影像图层的色彩显示模式。
          */
         this.colorSpaceType = null;
 
         /**
-         * @member {number} SuperMap.Image.prototype.contrast
+         * @member {number} UGCImage.prototype.contrast
          * @description 影像图层的对比度。
          */
         this.contrast = null;
 
         /**
-         * @member {Array.<number>} SuperMap.Image.prototype.displayBandIndexes
+         * @member {Array.<number>} UGCImage.prototype.displayBandIndexes
          * @description 返回当前影像图层显示的波段索引。
          */
         this.displayBandIndexes = null;
 
         /**
-         * @member {boolean} SuperMap.Image.prototype.transparent
+         * @member {boolean} UGCImage.prototype.transparent
          * @description 是否背景透明。
          */
         this.transparent = null;
 
         /**
-         * @member {SuperMap.ServerColor} SuperMap.Image.prototype.transparentColor
+         * @member {ServerColor} UGCImage.prototype.transparentColor
          * @description 返回背景透明色。
          */
         this.transparentColor = null;
 
         /**
-         * @member {number} SuperMap.Image.prototype.transparentColorTolerance
+         * @member {number} UGCImage.prototype.transparentColorTolerance
          * @description 背景透明色容限。
          */
         this.transparentColorTolerance = null;
@@ -71,7 +73,7 @@ export class UGCImage extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.Image.prototype.destroy
+     * @function UGCImage.prototype.destroy
      * @override
      */
     destroy() {
@@ -80,7 +82,7 @@ export class UGCImage extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.Image.prototype.fromJson
+     * @function UGCImage.prototype.fromJson
      * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
@@ -94,7 +96,7 @@ export class UGCImage extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.Image.prototype.toServerJSONObject
+     * @function UGCImage.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {

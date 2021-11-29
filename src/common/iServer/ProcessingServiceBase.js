@@ -15,18 +15,20 @@ import {
 } from '../security/SecurityManager';
 
 /**
- * @class SuperMap.ProcessingServiceBase
+ * @class ProcessingServiceBase
+ * @deprecatedclass SuperMap.ProcessingServiceBase
  * @category  iServer ProcessingService
  * @classdesc 分布式分析服务基类
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 参数。
- * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class ProcessingServiceBase extends CommonServiceBase {
 
@@ -47,7 +49,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ProcessingServiceBase.prototype.destroy
+     * @function ProcessingServiceBase.prototype.destroy
      * @override
      */
     destroy() {
@@ -55,7 +57,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ProcessingServiceBase.prototype.getJobs
+     * @function ProcessingServiceBase.prototype.getJobs
      * @description 获取分布式分析任务。
      * @param {string} url - 资源地址。
      */
@@ -77,7 +79,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ProcessingServiceBase.prototype.addJob
+     * @function ProcessingServiceBase.prototype.addJob
      * @description 添加分布式分析任务。
      * @param {string} url - 资源根地址。
      * @param {Object} params - 创建一个空间分析的请求参数。

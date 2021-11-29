@@ -6,12 +6,13 @@ import {CommonServiceBase} from './CommonServiceBase';
 import {ThemeParameters} from './ThemeParameters';
 
 /**
- * @class SuperMap.ThemeService
+ * @class ThemeService
+ * @deprecatedclass SuperMap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example
- * var myThemeService = new SuperMap.ThemeService(url, {
+ * var myThemeService = new ThemeService(url, {
  *     eventListeners: {
  *           "processCompleted": themeCompleted,
  *           "processFailed": themeFailed
@@ -22,6 +23,7 @@ import {ThemeParameters} from './ThemeParameters';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class ThemeService extends CommonServiceBase {
 
@@ -42,9 +44,9 @@ export class ThemeService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ThemeService.prototype.processAsync
+     * @function ThemeService.prototype.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
-     * @param {SuperMap.ThemeParameters} params - 专题图参数类。
+     * @param {ThemeParameters} params - 专题图参数类。
      */
     processAsync(params) {
         if (!(params instanceof ThemeParameters)) {
@@ -63,9 +65,9 @@ export class ThemeService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ThemeService.prototype.getJsonParameters
+     * @function ThemeService.prototype.getJsonParameters
      * @description 将专题图参数参数转化为 JSON 字符串。
-     * @param {SuperMap.ThemeParameters} parameter - 专题图参数类。
+     * @param {ThemeParameters} parameter - 专题图参数类。
      * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(parameter) {

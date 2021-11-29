@@ -5,18 +5,19 @@ import {Util} from '../commontypes/Util';
 import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
 
 /**
- * @class SuperMap.LinkItem
- * @constructs SuperMap.LinkItem
+ * @class LinkItem
+ * @deprecatedclass SuperMap.LinkItem
+ * @constructs LinkItem
  * @category iServer
  * @classdesc 关联信息类。
  * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
  *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持 SQL Server 和 Oracle 类型。使用 LinkItem 时，
- *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。{@link SuperMap.LinkItem}
- *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link SuperMap.LinkItem}；另外，用于建立关联关系的两个表可以不在同一个数据源下。注意：<br>
- * 1. 使用 {@link SuperMap.LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br>
+ *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。{@link LinkItem}
+ *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link LinkItem}；另外，用于建立关联关系的两个表可以不在同一个数据源下。注意：<br>
+ * 1. 使用 {@link LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br>
  * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为 BaseMap_R 数据集的 SmID，就要写成 BaseMap_R.SMID。
  * @param {Object} options - 参数。
- * @param {SuperMap.DatasourceConnectionInfo} options.datasourceConnectionInfo - 关联的外部数据源信息。
+ * @param {DatasourceConnectionInfo} options.datasourceConnectionInfo - 关联的外部数据源信息。
  * @param {Array.<string>} options.foreignKeys - 主空间数据集的外键。
  * @param {string} options.foreignTable - 关联的外部属性表的名称。
  * @param {Array.<string>} options.linkFields - 欲保留的外部属性表的字段。
@@ -26,7 +27,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  * @example 下面以 SQL 查询说明 linkitem 的使用方法：
  *  function queryBySQL() {
  *      // 设置关联的外部数据库信息,alias表示数据库别名
- *      var dc = new SuperMap.DatasourceConnectionInfo({
+ *      var dc = new DatasourceConnectionInfo({
  *          dataBase: "RelQuery",
  *          server: "{ip}:{port}",
  *          user: "sa",
@@ -40,7 +41,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  *          exclusive: false
  *      });
  *     // 设置关联信息
- *      var linkItem = new SuperMap.LinkItem({
+ *      var linkItem = new LinkItem({
  *          datasourceConnectionInfo: dc,
  *          foreignKeys: ["name"],
  *          foreignTable: "Pop_2011",
@@ -50,16 +51,16 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  *      });
  *      // 设置查询参数，在查询参数中添加linkItem关联条件信息
  *      var queryParam, queryBySQLParams, queryBySQLService;
- *      queryParam = new SuperMap.FilterParameter({
+ *      queryParam = new FilterParameter({
  *          name: "Province@RelQuery",
  *          fields: ["SmID","name"],
  *          attributeFilter: "SmID<7",
  *          linkItems: [linkItem]
  *       }),
- *      queryBySQLParams = new SuperMap.QueryBySQLParameters({
+ *      queryBySQLParams = new QueryBySQLParameters({
  *           queryParams: [queryParam]
  *              }),
- *      queryBySQLService = new SuperMap.QueryBySQLService(url, {
+ *      queryBySQLService = new QueryBySQLService(url, {
      *          eventListeners: {
      *              "processCompleted": processCompleted,
      *              "processFailed": processFailed
@@ -69,7 +70,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
      *  }
  *  function processCompleted(queryEventArgs) {//todo}
  *  function processFailed(e) {//todo}
- *
+ * @usage
  */
 export class LinkItem {
 
@@ -77,44 +78,44 @@ export class LinkItem {
     constructor(options) {
 
         /**
-         * @member {SuperMap.DatasourceConnectionInfo} SuperMap.LinkItem.prototype.datasourceConnectionInfo
+         * @member {DatasourceConnectionInfo} LinkItem.prototype.datasourceConnectionInfo
          * @description 关联的外部数据源信息。
          */
         this.datasourceConnectionInfo = null;
 
         /**
-         * @member {Array.<string>} SuperMap.LinkItem.prototype.foreignKeys
+         * @member {Array.<string>} LinkItem.prototype.foreignKeys
          * @description 主空间数据集的外键。
          */
         this.foreignKeys = null;
 
         /**
-         * @member {string} SuperMap.LinkItem.prototype.foreignTable
+         * @member {string} LinkItem.prototype.foreignTable
          * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。
          */
         this.foreignTable = null;
 
         /**
-         * @member {Array.<string>} SuperMap.LinkItem.prototype.linkFields
+         * @member {Array.<string>} LinkItem.prototype.linkFields
          * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返
          * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。
          */
         this.linkFields = null;
 
         /**
-         * @member {string} SuperMap.LinkItem.prototype.linkFilter
+         * @member {string} LinkItem.prototype.linkFilter
          * @description 与外部属性表的连接条件。
          */
         this.linkFilter = null;
 
         /**
-         * @member {string} SuperMap.LinkItem.prototype.name
+         * @member {string} LinkItem.prototype.name
          * @description 此关联信息对象的名称。
          */
         this.name = null;
 
         /**
-         * @member {Array.<string>} SuperMap.LinkItem.prototype.primaryKeys
+         * @member {Array.<string>} LinkItem.prototype.primaryKeys
          * @description 需要关联的外部属性表的主键。
          */
         this.primaryKeys = null;
@@ -127,7 +128,7 @@ export class LinkItem {
     }
 
     /**
-     * @function SuperMap.LinkItem.prototype.destroy
+     * @function LinkItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

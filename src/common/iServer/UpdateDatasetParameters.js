@@ -4,10 +4,11 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.UpdateDatasetParameters
+ * @class UpdateDatasetParameters
+ * @deprecatedclass SuperMap.UpdateDatasetParameters
  * @category iServer Data Dataset
  * @classdesc 数据集信息更改参数类。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {String} options.datasourceName - 数据源名称(必选)。
  * @param {String} options.datasetName - 数据集名称(必选)。
  * @param {boolean} options.isFileCache - 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
@@ -16,6 +17,7 @@ import {Util} from '../commontypes/Util';
  * @param {enum} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。
  * @param {java.util.List<Color>} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
  * @param {double} options.noValue - 栅格数据集中没有数据的像元的栅格值。当数据集类型为栅格数据集时，可以传递此参数。
+ * @usage
  */
 export class UpdateDatasetParameters {
 
@@ -23,51 +25,51 @@ export class UpdateDatasetParameters {
         if (!options) {
             return;
         }
-        
+
         /**
-         * @member {string} SuperMap.UpdateDatasetParameters.prototype.datasourceName
+         * @member {string} UpdateDatasetParameters.prototype.datasourceName
          * @description 数据源名称。
          */
         this.datasourceName = null;
 
         /**
-         * @member {string} SuperMap.UpdateDatasetParameters.prototype.datasetName
+         * @member {string} UpdateDatasetParameters.prototype.datasetName
          * @description 数据集名称。
          */
         this.datasetName = null;
 
         /**
-         * @member {boolean} SuperMap.UpdateDatasetParameters.prototype.isFileCache
+         * @member {boolean} UpdateDatasetParameters.prototype.isFileCache
          * @description 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
          */
         this.isFileCache = null;
 
         /**
-         * @member {String} SuperMap.UpdateDatasetParameters.prototype.description
+         * @member {String} UpdateDatasetParameters.prototype.description
          * @description 数据集描述信息。
          */
         this.description = null;
 
         /**
-         * @member {PrjCoordSys} SuperMap.UpdateDatasetParameters.prototype.prjCoordSys
+         * @member {PrjCoordSys} UpdateDatasetParameters.prototype.prjCoordSys
          * @description 投影坐标系。
          */
         this.prjCoordSys = null;
 
         /**
-         * @member {enum} SuperMap.UpdateDatasetParameters.prototype.charset
+         * @member {enum} UpdateDatasetParameters.prototype.charset
          * @description 矢量数据集的字符集。
          */
         this.charset = null;
 
         /**
-         * @member {java.util.List<Color>} SuperMap.UpdateDatasetParameters.prototype.palette
+         * @member {java.util.List<Color>} UpdateDatasetParameters.prototype.palette
          * @description 影像数据的颜色调色板。
          */
         this.palette = null;
 
         /**
-         * @member {double} SuperMap.UpdateDatasetParameters.prototype.noValue
+         * @member {double} UpdateDatasetParameters.prototype.noValue
          * @description 栅格数据集中没有数据的像元的栅格值。
          */
         this.noValue = null;
@@ -79,7 +81,7 @@ export class UpdateDatasetParameters {
     }
 
     /**
-     * @function SuperMap.UpdateDatasetParameters.prototype.destroy
+     * @function UpdateDatasetParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

@@ -9,7 +9,8 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
 
 
 /**
- * @class SuperMap.SurfaceAnalystService
+ * @class SurfaceAnalystService
+ * @deprecatedclass SuperMap.SurfaceAnalystService
  * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
@@ -19,17 +20,17 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
+ * var mySurfaceAnalystService = new SurfaceAnalystService(url, {
      *      eventListeners: {
      *	       "processCompleted": surfaceAnalysCompleted,
      *		   "processFailed": surfaceAnalysFailed
      *		   }
      * });
  * (end)
- *
+ * @usage
  */
 export class SurfaceAnalystService extends SpatialAnalystBase {
 
@@ -39,7 +40,7 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.SurfaceAnalystService.prototype.destroy
+     * @function SurfaceAnalystService.prototype.destroy
      * @description 释放资源,将引用的资源属性置空。
      */
     destroy() {
@@ -47,9 +48,9 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.SurfaceAnalystService.prototype.processAsync
+     * @function SurfaceAnalystService.prototype.processAsync
      * @description 负责将客户端的表面分析服务参数传递到服务端。
-     * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析提取操作参数类。
+     * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
      */
     processAsync(params) {
         if (!(params instanceof SurfaceAnalystParameters)) {
@@ -67,9 +68,9 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.SurfaceAnalystService.prototype.getJsonParameters
+     * @function SurfaceAnalystService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
-     * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析提取操作参数类。
+     * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
      * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {

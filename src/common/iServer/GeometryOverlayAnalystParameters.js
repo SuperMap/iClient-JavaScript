@@ -6,20 +6,22 @@ import {OverlayAnalystParameters} from './OverlayAnalystParameters';
 import {ServerGeometry} from './ServerGeometry';
 
 /**
- * @class SuperMap.GeometryOverlayAnalystParameters
+ * @class GeometryOverlayAnalystParameters
+ * @deprecatedclass SuperMap.GeometryOverlayAnalystParameters
  * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc
  * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {Object} options.operateGeometry - 叠加分析的操作几何对象。 </br>
- *                                   点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
- *                                   线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
- *                                   面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。 
- * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。 
- * @param {Array.<Object>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。 
- * @param {Array.<Object>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。 
- * @param {SuperMap.OverlayOperationType} [options.operation] - 叠加操作枚举值。 
- * @extends {SuperMap.OverlayAnalystParameters}
+ *                                   点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+ *                                   线类型可以是：{@link LineString}|{@link LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
+ *                                   面类型可以是：{@link Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。
+ * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。
+ * @param {Array.<Object>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。
+ * @param {Array.<Object>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。
+ * @param {OverlayOperationType} [options.operation] - 叠加操作枚举值。
+ * @extends {OverlayAnalystParameters}
+ * @usage
  */
 export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
@@ -45,7 +47,7 @@ export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
     }
 
     /**
-     * @function SuperMap.GeometryOverlayAnalystParameters.prototype.destroy
+     * @function GeometryOverlayAnalystParameters.prototype.destroy
      * @override
      */
     destroy() {
@@ -72,9 +74,9 @@ export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
     }
 
     /**
-     * @function SuperMap.GeometryOverlayAnalystParameters.toObject
-     * @param {SuperMap.GeometryOverlayAnalystParameters} geometryOverlayAnalystParameters - 几何对象叠加分析参数类。
-     * @param {SuperMap.GeometryOverlayAnalystParameters} tempObj - 几何对象叠加分析参数对象。
+     * @function GeometryOverlayAnalystParameters.toObject
+     * @param {GeometryOverlayAnalystParameters} geometryOverlayAnalystParameters - 几何对象叠加分析参数类。
+     * @param {GeometryOverlayAnalystParameters} tempObj - 几何对象叠加分析参数对象。
      * @description 将几何对象叠加分析参数对象转换为 JSON 对象。
      * @returns {Object} JSON 对象。
      */

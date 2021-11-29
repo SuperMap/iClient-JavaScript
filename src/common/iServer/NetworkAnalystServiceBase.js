@@ -6,22 +6,24 @@ import {DataFormat} from '../REST';
 import {CommonServiceBase} from './CommonServiceBase';
 
 /**
- * @class SuperMap.NetworkAnalystServiceBase
+ * @class NetworkAnalystServiceBase
+ * @deprecatedclass SuperMap.NetworkAnalystServiceBase
  * @category iServer NetworkAnalyst
  * @classdesc 网络分析服务基类。
  * @description 网络分析服务基类。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 网络分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class NetworkAnalystServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {SuperMap.DataFormat} [SuperMap.NetworkAnalystServiceBase.prototype.format=SuperMap.DataFormat.GEOJSON]
+         * @member {DataFormat} [NetworkAnalystServiceBase.prototype.format=DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER","GEOJSON"
          */
         this.format = DataFormat.GEOJSON;
@@ -30,7 +32,7 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.NetworkAnalystServiceBase.prototype.destroy
+     * @function NetworkAnalystServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
@@ -39,7 +41,7 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.NetworkAnalystServiceBase.prototype.serviceProcessCompleted
+     * @function NetworkAnalystServiceBase.prototype.serviceProcessCompleted
      * @description 分析完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -56,7 +58,7 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
+     * @function NetworkAnalystServiceBase.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。只处理结果中的路由，由子类实现。
      * @param {Object} result - 服务器返回的结果对象。
      * @returns {GeoJSONObject} GeoJSON 对象。

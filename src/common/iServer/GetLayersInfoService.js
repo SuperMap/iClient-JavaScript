@@ -9,10 +9,11 @@ import {UGCImage as Image} from './Image';
 import {Vector} from './Vector';
 
 /**
- * @class SuperMap.GetLayersInfoService
+ * @class GetLayersInfoService
+ * @deprecatedclass SuperMap.GetLayersInfoService
  * @category iServer Map Layer
  * @classdesc 获取图层信息服务类构造函数。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
  *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。
@@ -20,10 +21,11 @@ import {Vector} from './Vector';
  *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
+ * @usage
  */
 export class GetLayersInfoService extends CommonServiceBase {
 
@@ -31,7 +33,7 @@ export class GetLayersInfoService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {boolean} SuperMap.GetLayersInfoService.prototype.isTempLayers
+         * @member {boolean} GetLayersInfoService.prototype.isTempLayers
          * @description 当前url对应的图层是否是临时图层。
          */
         this.isTempLayers = false;
@@ -42,7 +44,7 @@ export class GetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GetLayersInfoService.prototype.destroy
+     * @function GetLayersInfoService.prototype.destroy
      * @override
      */
     destroy() {
@@ -51,7 +53,7 @@ export class GetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GetLayersInfoService.prototype.processAsync
+     * @function GetLayersInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      */
     processAsync() {
@@ -59,7 +61,7 @@ export class GetLayersInfoService extends CommonServiceBase {
             method = "GET";
         if (!me.isTempLayers) {
             me.url = Util.urlPathAppend(me.url, 'layers');
-        } 
+        }
         me.request({
             method: method,
             params: null,
@@ -70,7 +72,7 @@ export class GetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GetLayersInfoService.prototype.serviceProcessCompleted
+     * @function GetLayersInfoService.prototype.serviceProcessCompleted
      * @description 编辑完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
@@ -87,7 +89,7 @@ export class GetLayersInfoService extends CommonServiceBase {
 
     /**
      * TODO 专题图时候可能会用到
-     * @function SuperMap.GetLayersInfoService.prototype.handleLayers
+     * @function GetLayersInfoService.prototype.handleLayers
      * @description 处理 iServer 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
      * @param {number} len - subLayers.layers的长度
      * @param {Array.<number>} layers - subLayers.layers的长度数组

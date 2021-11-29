@@ -7,14 +7,15 @@ import {DatasetThiessenAnalystParameters} from './DatasetThiessenAnalystParamete
 import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParameters';
 
 /**
- * @class SuperMap.ThiessenAnalystService
+ * @class ThiessenAnalystService
+ * @deprecatedclass SuperMap.ThiessenAnalystService
  * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
  * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
- * 泰森多边形分析的参数支持两种，当参数为 {SuperMap.DatasetThiessenAnalystParameters} 类型
- * 时，执行数据集泰森多边形分析，当参数为 {SuperMap.GeometryThiessenAnalystParameters} 类型时，
+ * 泰森多边形分析的参数支持两种，当参数为 {DatasetThiessenAnalystParameters} 类型
+ * 时，执行数据集泰森多边形分析，当参数为 {GeometryThiessenAnalystParameters} 类型时，
  * 执行几何对象泰森多边形分析。
  * @param url - {string} 服务的访问地址。
  * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
@@ -22,17 +23,17 @@ import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParame
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
+ * var myThiessenAnalystService = new ThiessenAnalystService(url, {
      *     eventListeners: {
      *           "processCompleted": bufferCompleted,
      *           "processFailed": bufferFailed
      *           }
      *    });
  * (end)
- *
+ * @usage
  */
 export class ThiessenAnalystService extends SpatialAnalystBase {
 
@@ -40,7 +41,7 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.ThiessenAnalystService.prototype.mode
+         * @member {string} ThiessenAnalystService.prototype.mode
          * @description 缓冲区分析类型
          */
         this.mode = null;
@@ -59,9 +60,9 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.ThiessenAnalystService.prototype.processAsync
+     * @function ThiessenAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {(SuperMap.DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters)} parameter - 泰森多边形分析参数基类。
+     * @param {(DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters)} parameter - 泰森多边形分析参数基类。
      */
     processAsync(parameter) {
         var parameterObject = {};

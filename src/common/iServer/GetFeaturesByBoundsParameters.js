@@ -7,54 +7,56 @@ import { FilterParameter } from './FilterParameter';
 import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
 
 /**
- * @class SuperMap.GetFeaturesByBoundsParameters
+ * @class GetFeaturesByBoundsParameters
+ * @deprecatedclass SuperMap.GetFeaturesByBoundsParameters
  * @category iServer Data FeatureResults
  * @classdesc 数据集范围查询参数类，该类用于设置数据集范围查询的相关参数。
  * @param {Object} options - 参数。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 用于查询的范围对象。
+ * @param {(Bounds|L.Bounds|ol.extent)} options.bounds - 用于查询的范围对象。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。
- * @param {SuperMap.SpatialQueryMode} [options.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式常量。
+ * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式常量。
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
  * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
- * @param {SuperMap.MetricsAggParameter|SuperMap.GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
- * @extends {SuperMap.GetFeaturesParametersBase}
+ * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
+ * @extends {GetFeaturesParametersBase}
+ * @usage
  */
 
 export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode
+         * @member {string} GetFeaturesByBoundsParameters.prototype.getFeatureMode
          * @description 数据集查询模式。范围查询有 "BOUNDS"，"BOUNDS_ATTRIBUTEFILTER" 两种，当用户设置 attributeFilter 时会自动切换到 BOUNDS_ATTRIBUTEFILTER 访问服务。
          */
         this.getFeatureMode = GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS;
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.GetFeaturesByBoundsParameters.prototype.bounds
+         * @member {(Bounds|L.Bounds|ol.extent)} GetFeaturesByBoundsParameters.prototype.bounds
          * @description 用于查询的范围对象。
          *
          */
         this.bounds = null;
 
         /**
-         * @member {Array.<string>} SuperMap.GetFeaturesByBoundsParameters.prototype.fields
+         * @member {Array.<string>} GetFeaturesByBoundsParameters.prototype.fields
          * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
 
         /**
-         * @member {string} SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter
+         * @member {string} GetFeaturesByBoundsParameters.prototype.attributeFilter
          * @description 范围查询属性过滤条件。
          */
         this.attributeFilter = null;
 
         /**
-         * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
+         * @member {SpatialQueryMode} [GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
         this.spatialQueryMode = SpatialQueryMode.CONTAIN;
@@ -64,7 +66,7 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
     }
 
     /**
-     * @function SuperMap.GetFeaturesByBoundsParameters.prototype.destroy
+     * @function GetFeaturesByBoundsParameters.prototype.destroy
      * @override
      */
     destroy() {
@@ -86,9 +88,9 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
     }
 
     /**
-     * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
-     * @description 将 {@link SuperMap.GetFeaturesByBoundsParameters} 对象参数转换为 JSON 字符串。
-     * @param {SuperMap.GetFeaturesByBoundsParameters} params - 范围查询参数。
+     * @function GetFeaturesByBoundsParameters.toJsonParameters
+     * @description 将 {@link GetFeaturesByBoundsParameters} 对象参数转换为 JSON 字符串。
+     * @param {GetFeaturesByBoundsParameters} params - 范围查询参数。
      * @returns {string} 转化后的 JSON 字符串。
      *
      */
