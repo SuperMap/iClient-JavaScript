@@ -6,17 +6,19 @@ import {FileTypes} from '../CommonTypes';
 import {Lang} from '../../lang/Lang';
 
 /**
- * @class SuperMap.Components.FileReaderUtil
+ * @class FileReaderUtil
+ * @deprecatedclass SuperMap.Components.FileReaderUtil
  * @classdesc 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
+ * @usage
  */
 export let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
     rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
     /**
-     * @function SuperMap.Components.FileReaderUtil.prototype.readFile
+     * @function FileReaderUtil.prototype.readFile
      * @description 读取文件
      * @param {string} fileType - 当前读取的文件类型
      *
@@ -81,7 +83,7 @@ export let FileReaderUtil = {
     },
 
     /**
-     * @function SuperMap.Components.FileReaderUtil.prototype.processDataToGeoJson
+     * @function FileReaderUtil.prototype.processDataToGeoJson
      * @description 将读取回来得数据统一处理为 GeoJSON 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
@@ -117,7 +119,7 @@ export let FileReaderUtil = {
         }
     },
     /**
-     * @function SuperMap.Components.FileReaderUtil.prototype.processExcelDataToGeoJson
+     * @function FileReaderUtil.prototype.processExcelDataToGeoJson
      * @description 表格文件数据处理
      * @param {Object} data - 读取的表格文件数据
      * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据

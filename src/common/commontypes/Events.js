@@ -7,19 +7,21 @@ import {FunctionExt} from './BaseTypes';
 import {Util} from './Util';
 
 /**
- * @class SuperMap.Events
+ * @class Events
+ * @deprecatedclass SuperMap.Events
  * @classdesc 事件类。
  * @param {Object} object - 当前事件对象被添加到的 JS 对象。
  * @param {HTMLElement} element - 响应浏览器事件的 DOM 元素。
  * @param {Array.<string>} eventTypes - 自定义应用事件的数组。
  * @param {boolean} [fallThrough=false] - 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
  * @param {Object} options - 事件对象选项。
+ * @usage
  */
 export class Events {
 
     constructor(object, element, eventTypes, fallThrough, options) {
         /**
-         * @member {Array.<string>} SuperMap.Events.prototype.BROWSER_EVENTS
+         * @member {Array.<string>} Events.prototype.BROWSER_EVENTS
          * @description 支持的事件。
          * @constant
          * @default [
@@ -42,43 +44,43 @@ export class Events {
         ];
 
         /**
-         * @member {Object} SuperMap.Events.prototype.listeners
+         * @member {Object} Events.prototype.listeners
          * @description Hashtable of Array(function): events listener functions
          */
         this.listeners = {};
 
         /**
-         * @member {Object} SuperMap.Events.prototype.object
+         * @member {Object} Events.prototype.object
          * @description  发布应用程序事件的对象。
          */
         this.object = object;
 
         /**
-         * @member {HTMLElement} SuperMap.Events.prototype.element
+         * @member {HTMLElement} Events.prototype.element
          * @description 接受浏览器事件的 DOM 节点。
          */
         this.element = null;
 
         /**
-         * @member {Array.<string>} SuperMap.Events.prototype.eventTypes
+         * @member {Array.<string>} Events.prototype.eventTypes
          * @description 支持的事件类型列表。
          */
         this.eventTypes = [];
 
         /**
-         * @member {function} SuperMap.Events.prototype.eventHandler
+         * @member {function} Events.prototype.eventHandler
          * @description 绑定在元素上的事件处理器对象。
          */
         this.eventHandler = null;
 
         /**
-         * @member {boolean} [SuperMap.Events.prototype.fallThrough=false]
+         * @member {boolean} [Events.prototype.fallThrough=false]
          * @description 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
          */
         this.fallThrough = fallThrough;
 
         /**
-         * @member {boolean} [SuperMap.Events.prototype.includeXY=false]
+         * @member {boolean} [Events.prototype.includeXY=false]
          * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。
          *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个
          *              事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
@@ -91,51 +93,17 @@ export class Events {
         this.includeXY = false;
 
         /**
-         * @member {Object} SuperMap.Events.prototype.extensions
+         * @member {Object} Events.prototype.extensions
          * @description 事件扩展。Keys 代表事件类型，values 代表事件对象。
-         * @example
-         * 以扩展 "foostart" 和 "fooend" 事件为例。展示替换 css 属性为 foo 的元素的 click 事件。
-         *
-         *   SuperMap.Events.foostart = SuperMap.Class({
-     *       initialize: function(target) {
-     *           this.target = target;
-     *           this.target.register("click", this, this.doStuff, {extension: true});
-     *           // only required if extension provides more than one event type
-     *           this.target.extensions["foostart"] = true;
-     *           this.target.extensions["fooend"] = true;
-     *       },
-     *       destroy: function() {
-     *           var target = this.target;
-     *           target.unregister("click", this, this.doStuff);
-     *           delete this.target;
-     *           // only required if extension provides more than one event type
-     *           delete target.extensions["foostart"];
-     *           delete target.extensions["fooend"];
-     *       },
-     *       doStuff: function(evt) {
-     *           var propagate = true;
-     *           if (SuperMap.Event.element(evt).className === "foo") {
-     *               propagate = false;
-     *               var target = this.target;
-     *               target.triggerEvent("foostart");
-     *               window.setTimeout(function() {
-     *                   target.triggerEvent("fooend");
-     *               }, 1000);
-     *           }
-     *           return propagate;
-     *       }
-     *   });
-         *   // only required if extension provides more than one event type
-         *   SuperMap.Events.fooend = SuperMap.Events.foostart;
          */
         this.extensions = {};
 
         /**
-         * @member {Object} SuperMap.Events.prototype.extensionCount
+         * @member {Object} Events.prototype.extensionCount
          */
         this.extensionCount = {};
         /**
-         * @member {Object} SuperMap.Events.prototype.clearMouseListener
+         * @member {Object} Events.prototype.clearMouseListener
          */
         this.clearMouseListener = null;
 
@@ -155,7 +123,7 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.destroy
+     * @function Events.prototype.destroy
      * @description 移除当前要素 element 上的所有事件监听和处理。
      */
     destroy() {
@@ -183,7 +151,7 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.addEventType
+     * @function Events.prototype.addEventType
      * @description 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
      * @param {string} eventName - 事件名。
      */
@@ -195,7 +163,7 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.attachToElement
+     * @function Events.prototype.attachToElement
      * @description 给 DOM 元素绑定浏览器事件。
      * @param {HTMLDOMElement} element - 绑定浏览器事件的 DOM 元素。
      */
@@ -231,7 +199,7 @@ export class Events {
 
 
     /**
-     * @function SuperMap.Events.prototype.on
+     * @function Events.prototype.on
      * @description 在一个相同的范围内注册监听器的方法，此方法调用 register 函数。
      * @example
      * // 注册一个 "loadstart" 监听事件
@@ -264,9 +232,9 @@ export class Events {
 
 
     /**
-     * @function SuperMap.Events.prototype.register
+     * @function Events.prototype.register
      * @description 在事件对象上注册一个事件。当事件被触发时，'func' 函数被调用，假设我们触发一个事件，
-     *              指定 SuperMap.Bounds 作为 "obj"，当事件被触发时，回调函数的上下文作为 Bounds 对象。
+     *              指定 Bounds 作为 "obj"，当事件被触发时，回调函数的上下文作为 Bounds 对象。
      * @param {string} type - 事件注册者的名字。
      * @param {Object} [obj=this.object] - 对象绑定的回调。
      * @param {function} [func] - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
@@ -301,7 +269,7 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.registerPriority
+     * @function Events.prototype.registerPriority
      * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束。
      * @param {string} type - 事件注册者的名字。
      * @param {Object} [obj=this.object] - 对象绑定方面的回调。
@@ -313,7 +281,7 @@ export class Events {
 
 
     /**
-     * @function SuperMap.Events.prototype.un
+     * @function Events.prototype.un
      * @description 在一个相同的范围内取消注册监听器的方法，此方法调用 unregister 函数。
      * @example
      * // 移除 "loadstart" 事件监听
@@ -344,7 +312,7 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.unregister
+     * @function Events.prototype.unregister
      * @description 取消注册。
      * @param {string} type - 事件类型。
      * @param {Object} [obj=this.object] - 对象绑定方面的回调。
@@ -367,7 +335,7 @@ export class Events {
 
 
     /**
-     * @function SuperMap.Events.prototype.remove
+     * @function Events.prototype.remove
      * @description 删除某个事件类型的所有监听，如果该事件类型没有注册，则不做任何操作。
      * @param {string} type - 事件类型。
      */
@@ -378,7 +346,7 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.triggerEvent
+     * @function Events.prototype.triggerEvent
      * @description 触发一个特定的注册事件。
      * @param {string} type - 触发事件类型。
      * @param {Event} evt - 事件对象。
@@ -426,7 +394,7 @@ export class Events {
 
 
     /**
-     * @function SuperMap.Events.prototype.handleBrowserEvent
+     * @function Events.prototype.handleBrowserEvent
      * @description 对 triggerEvent 函数的包装，给事件对象设置了 xy 属性（即当前鼠标点的 xy 坐标）。
      * @param {Event} evt - 事件对象。
      */
@@ -459,7 +427,7 @@ export class Events {
 
 
     /**
-     * @function SuperMap.Events.prototype.clearMouseCache
+     * @function Events.prototype.clearMouseCache
      * @description 清除鼠标缓存。
      */
     clearMouseCache() {
@@ -473,9 +441,9 @@ export class Events {
     }
 
     /**
-     * @function SuperMap.Events.prototype.getMousePosition
+     * @function Events.prototype.getMousePosition
      * @param {Event} evt - 事件对象。
-     * @returns {SuperMap.Pixel} 当前的鼠标的 xy 坐标点。
+     * @returns {Pixel} 当前的鼠标的 xy 坐标点。
      */
     getMousePosition(evt) {
         if (!this.includeXY) {

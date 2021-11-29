@@ -5,18 +5,20 @@ import { Util } from '../commontypes/Util';
 import { AggregationParameter } from './AggregationParameter';
 
 /**
- * @class SuperMap.BucketAggParameter
+ * @class BucketAggParameter
+ * @deprecatedclass SuperMap.BucketAggParameter
  * @classdesc 子聚合类查询参数设置，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @category iServer Data FeatureResults
  * @param {Object} options - 初始化参数。
- * @param {Array.<SuperMap.MetricsAggParameter>} options.subAggs - 子聚合类集合。
- * @extends {SuperMap.AggregationParameter}
+ * @param {Array.<MetricsAggParameter>} options.subAggs - 子聚合类集合。
+ * @extends {AggregationParameter}
+ * @usage
  */
 export class BucketAggParameter extends AggregationParameter {
     constructor(options) {
         super();
         /**
-         * @member {Array.<SuperMap.MetricsAggParameter>} SuperMap.BucketAggParameter.prototype.subAggs
+         * @member {Array.<MetricsAggParameter>} BucketAggParameter.prototype.subAggs
          * @description 子聚合类集合。
          */
         this.subAggs = null;

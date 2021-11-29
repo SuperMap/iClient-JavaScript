@@ -4,11 +4,12 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.iManagerCreateNodeParam
+ * @class IManagerCreateNodeParam
+ * @deprecatedclass SuperMap.iManagerCreateNodeParam
  * @classdesc iManager 创建节点参数。
  * @category iManager
  * @param {Object} [params] - iManager 创建节点参数。
- *
+ * @usage
  */
 export class IManagerCreateNodeParam {
 

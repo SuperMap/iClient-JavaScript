@@ -5,13 +5,14 @@ import { ChartModel } from "./ChartModel";
 import { Events } from '../../commontypes/Events';
 
 /**
- * @class SuperMap.Components.ChartViewModel
+ * @class ChartViewModel
+ * @deprecatedclass SuperMap.Components.ChartViewModel
  * @classdesc 图表组件功能类
  * @category Components Chart
  * @version 10.0.0
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {SuperMap.Components.Chart.Datasets} options.datasets - 数据来源。
+ * @param {ChartView.Datasets} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -19,7 +20,8 @@ import { Events } from '../../commontypes/Events';
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @fires SuperMap.Components.ChartViewModel#getdatafailed
+ * @fires ChartViewModel#getdatafailed
+ * @usage
  */
 
 export class ChartViewModel {
@@ -41,7 +43,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._initXYField
+     * @function ChartViewModel.prototype._initXYField
      * @description 初始化XY字段。
      * @private
      * @param {Object} chartOptions - options里的图表参数
@@ -66,7 +68,7 @@ export class ChartViewModel {
         }
     }
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.getDatasetInfo
+     * @function ChartViewModel.prototype.getDatasetInfo
      * @description 获得数据集数据。
      * @param {function} success - 成功回调函数
      */
@@ -80,7 +82,7 @@ export class ChartViewModel {
                 this.chartModel.getDataInfoByIptl(this._getDataInfoSuccess.bind(this));
             }
             /**
-             * @event SuperMap.Components.ChartViewModel#getdatafailed
+             * @event ChartViewModel#getdatafailed
              * @description 监听到获取数据失败事件后触发
              * @property {Object} error  - 事件对象。
              */
@@ -91,7 +93,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getDatasetInfoSuccess
+     * @function ChartViewModel.prototype._getDatasetInfoSuccess
      * @description 成功回调函数。
      * @private
      * @param {Object} results - 数据集信息
@@ -119,7 +121,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getDataInfoSuccess
+     * @function ChartViewModel.prototype._getDataInfoSuccess
      * @description 请求iportal数据成功之后的回调
      * @private
      */
@@ -133,7 +135,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getDataFeatures
+     * @function ChartViewModel.prototype._getDataFeatures
      * @description 请求数据集的数据信息
      * @private
      * @param {Object} results - 数据集信息
@@ -143,7 +145,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getLayerFeatures
+     * @function ChartViewModel.prototype._getLayerFeatures
      * @description 请求图层的数据信息
      * @private
      * @param {Object} results - 数据集信息
@@ -153,7 +155,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getChartDatas
+     * @function ChartViewModel.prototype._getChartDatas
      * @description 将请求回来的数据转换为图表所需的数据格式
      * @private
      * @param {Object} results - 数据要素信息
@@ -194,7 +196,7 @@ export class ChartViewModel {
         }
     }
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getChartDatasFromLayer
+     * @function ChartViewModel.prototype._getChartDatasFromLayer
      * @description 将请求回来的数据转换为图表所需的数据格式
      * @private
      * @param {Object} results - 图层数据要素信息
@@ -229,7 +231,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._createChartOptions
+     * @function ChartViewModel.prototype._createChartOptions
      * @description 创建图表所需参数
      * @private
      * @param {Object} data - 图表数据
@@ -240,7 +242,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.changeType
+     * @function ChartViewModel.prototype.changeType
      * @description 改变图表类型
      * @param {string} type - 图表类型
      */
@@ -252,9 +254,9 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.updateData
+     * @function ChartViewModel.prototype.updateData
      * @description 改变图表类型
-     * @param {SuperMap.Components.Chart.Datasets} datasets - 数据来源
+     * @param {ChartView.Datasets} datasets - 数据来源
      * @param {function} success 成功回调函数
      */
     updateData(datasets, chartOption, success) {
@@ -271,7 +273,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._updateDataSuccess
+     * @function ChartViewModel.prototype._updateDataSuccess
      * @description 改变图表类型
      * @private
      * @param {Object} data - 图表数据
@@ -282,7 +284,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.updateChartOptions
+     * @function ChartViewModel.prototype.updateChartOptions
      * @description 更新图表所需参数
      * @param {string} type - 图表类型
      * @param {Object} style - 图表样式
@@ -358,7 +360,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._createChartDatas
+     * @function ChartViewModel.prototype._createChartDatas
      * @description 构建图表数据
      * @private
      * @param {Object} data - 源数据
@@ -431,7 +433,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getAttrData
+     * @function ChartViewModel.prototype._getAttrData
      * @description 选中字段数据
      * @private
      * @param {Object} datacontent - 图表数据
@@ -456,7 +458,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._createChartSeries
+     * @function ChartViewModel.prototype._createChartSeries
      * @description 图表数据
      * @private
      * @param {Object} calculatedData - 图表数据
@@ -486,7 +488,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._isDate
+     * @function ChartViewModel.prototype._isDate
      * @description 判断是否为日期
      * @private
      * @param {string} data - 字符串
@@ -497,7 +499,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._isNumber
+     * @function ChartViewModel.prototype._isNumber
      * @description 判断是否为数值
      * @private
      * @param {string} data - 字符串
@@ -511,7 +513,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._getDataType
+     * @function ChartViewModel.prototype._getDataType
      * @description 判断数据的类型
      * @private
      * @param {string} data - 字符串
@@ -529,7 +531,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._checkUrl
+     * @function ChartViewModel.prototype._checkUrl
      * @description 检查url是否符合要求
      * @private
      * @param {string} url
@@ -548,7 +550,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype._isMatchUrl
+     * @function ChartViewModel.prototype._isMatchUrl
      * @description 判断输入的地址是否符合地址格式
      * @private
      * @param {string} str - url
@@ -559,7 +561,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.getStyle
+     * @function ChartViewModel.prototype.getStyle
      * @description 获取图表样式。
      */
     getStyle() {
@@ -572,7 +574,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.getFeatures
+     * @function ChartViewModel.prototype.getFeatures
      * @description 获取地图服务，数据服务请求返回的数据。
      */
     getFeatures() {
@@ -580,7 +582,7 @@ export class ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Components.ChartViewModel.prototype.setStyle
+     * @function ChartViewModel.prototype.setStyle
      * @description 设置图表样式。
      * @param {Object} style - 图表样式
      */

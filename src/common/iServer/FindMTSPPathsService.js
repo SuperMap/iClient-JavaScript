@@ -7,7 +7,8 @@ import {FindMTSPPathsParameters} from './FindMTSPPathsParameters';
 import {GeoJSON} from '../format/GeoJSON';
 
 /**
- * @class SuperMap.FindMTSPPathsService
+ * @class FindMTSPPathsService
+ * @deprecatedclass SuperMap.FindMTSPPathsService
  * @category  iServer NetworkAnalyst MTSPPath
  * @classdesc 多旅行商分析服务类
  *            多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。
@@ -15,9 +16,9 @@ import {GeoJSON} from '../format/GeoJSON';
  *            物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
  *            该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  *            多旅行商分析结果通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
- * var myFindMTSPPathsService = new SuperMap.FindMTSPPathsService(url, {
+ * var myFindMTSPPathsService = new FindMTSPPathsService(url, {
  *     eventListeners: {
  *         "processCompleted": findMTSPPathsCompleted,
  *		   "processFailed": findMTSPPathsError
@@ -30,6 +31,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class FindMTSPPathsService extends NetworkAnalystServiceBase {
 
@@ -40,7 +42,7 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindMTSPPathsService.prototype.destroy
+     * @function FindMTSPPathsService.prototype.destroy
      * @override
      */
     destroy() {
@@ -48,9 +50,9 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindMTSPPathsService..prototype.processAsync
+     * @function FindMTSPPathsService..prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.FindMTSPPathsParameters} params - 多旅行商分析服务参数类
+     * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类
      */
     processAsync(params) {
         if (!(params instanceof FindMTSPPathsParameters)) {
@@ -78,7 +80,7 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindMTSPPathsService.prototype.getJson
+     * @function FindMTSPPathsService.prototype.getJson
      * @description 将对象转化为JSON字符串。
      * @param {boolean} isAnalyzeById - 是否通过id分析
      * @param {Array} params - 需要转换的数字
@@ -108,7 +110,7 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindMTSPPathsService.prototype.toGeoJSONResult
+     * @function FindMTSPPathsService.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
      * @param {Object} result - 服务器返回的结果对象。
      */

@@ -5,11 +5,13 @@ import {Util} from '../commontypes/Util';
 import {BufferSetting} from './BufferSetting';
 
 /**
- * @class SuperMap.BufferAnalystParameters
+ * @class BufferAnalystParameters
+ * @deprecatedclass SuperMap.BufferAnalystParameters
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析参数基类。
- * @param {Object} options - 参数。 
- * @param {SuperMap.BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
+ * @param {Object} options - 参数。
+ * @param {BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
+ * @usage
  */
 export class BufferAnalystParameters {
 
@@ -17,7 +19,7 @@ export class BufferAnalystParameters {
     constructor(options) {
         var me = this;
         /**
-         * @member {SuperMap.BufferSetting} [SuperMap.BufferAnalystParameters.prototype.bufferSetting]
+         * @member {BufferSetting} [BufferAnalystParameters.prototype.bufferSetting]
          * @description 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
          */
         me.bufferSetting = new BufferSetting();
@@ -27,7 +29,7 @@ export class BufferAnalystParameters {
 
 
     /**
-     * @function SuperMap.BufferAnalystParameters.prototype.destroy
+     * @function BufferAnalystParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

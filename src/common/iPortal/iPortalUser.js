@@ -1,21 +1,22 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {IPortalServiceBase} from './iPortalServiceBase';
-import {IPortalAddResourceParam} from './iPortalAddResourceParam';
-import {IPortalRegisterServiceParam} from "./iPortalRegisterServiceParam";
+import { IPortalServiceBase } from './iPortalServiceBase';
+import { IPortalAddResourceParam } from './iPortalAddResourceParam';
+import { IPortalRegisterServiceParam } from "./iPortalRegisterServiceParam";
 import { IPortalAddDataParam } from "./iPortalAddDataParam";
 import { IPortalDataMetaInfoParam } from "./iPortalDataMetaInfoParam";
 import { IPortalDataStoreInfoParam } from "./iPortalDataStoreInfoParam";
 import { IPortalDataConnectionInfoParam } from "./iPortalDataConnectionInfoParam";
 /**
- * @class SuperMap.iPortalUser
+ * @class IPortalUser
+ * @deprecatedclass SuperMap.iPortalUser
  * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
  * @version 10.0.1
  * @category iPortal/Online
  * @param {string} iportalUrl - iportal根地址。
- * @extends {SuperMap.iPortalServiceBase}
- *
+ * @extends {IPortalServiceBase}
+ * @usage
  */
 export class IPortalUser extends IPortalServiceBase {
     constructor(iportalUrl) {
@@ -24,7 +25,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.deleteResources
+     * @function IPortalUser.prototype.deleteResources
      * @description 删除资源。
      * @param {Object} params - 删除资源所需的参数对象：{ids,resourceType}。
      * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
@@ -40,10 +41,10 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.addMap
+     * @function IPortalUser.prototype.addMap
      * @description 添加地图。
      * @version 10.1.0
-     * @param {SuperMap.iPortalAddResourceParam} addMapParams - 添加地图的参数。
+     * @param {IPortalAddResourceParam} addMapParams - 添加地图的参数。
      * @returns {Promise} 返回包含添加地图结果的 Promise 对象。
      */
     addMap(addMapParams) {
@@ -62,10 +63,10 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.addScene
+     * @function IPortalUser.prototype.addScene
      * @description 添加场景。
      * @version 10.1.0
-     * @param {SuperMap.iPortalAddResourceParam} addSceneParams - 添加场景的参数。
+     * @param {IPortalAddResourceParam} addSceneParams - 添加场景的参数。
      * @returns {Promise} 返回包含添加场景结果的 Promise 对象。
      */
     addScene(addSceneParams) {
@@ -84,10 +85,10 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.registerService
+     * @function IPortalUser.prototype.registerService
      * @description 注册服务。
      * @version 10.1.0
-     * @param {SuperMap.iPortalRegisterServiceParam} registerParams - 注册服务的参数。
+     * @param {IPortalRegisterServiceParam} registerParams - 注册服务的参数。
      * @returns {Promise} 返回包含注册服务结果的 Promise 对象。
      */
     registerService(registerParams) {
@@ -109,7 +110,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.getErrMsgPromise
+     * @function IPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
      * @version 10.1.0
      * @param {String} errMsg - 传入的错误信息。
@@ -122,7 +123,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.uploadDataRequest
+     * @function IPortalUser.prototype.uploadDataRequest
      * @description 上传数据。
      * @version 10.1.0
      * @param {number} id - 上传数据的资源id。
@@ -135,10 +136,10 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.addData
+     * @function IPortalUser.prototype.addData
      * @description 上传/注册数据。
      * @version 10.1.0
-     * @param {SuperMap.iPortalAddDataParam} params - 上传/注册数据所需的参数。
+     * @param {IPortalAddDataParam} params - 上传/注册数据所需的参数。
      * @param {Object} [formData] - 请求体为文本数据流(上传数据时传入)。
      * @returns {Promise} 返回上传/注册数据的 Promise 对象。
      */
@@ -216,7 +217,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.publishOrUnpublish
+     * @function IPortalUser.prototype.publishOrUnpublish
      * @description 发布/取消发布。
      * @version 10.1.0
      * @param {object} options - 发布/取消发布数据服务所需的参数。
@@ -254,7 +255,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.getDataPublishedStatus
+     * @function IPortalUser.prototype.getDataPublishedStatus
      * @description 查询服务状态，发起服务状态查询。
      * @version 10.1.0
      * @param {number} dataId - 查询服务状态的数据项id。
@@ -267,7 +268,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.unPublishedDataService
+     * @function IPortalUser.prototype.unPublishedDataService
      * @description 取消发布。
      * @version 10.1.0
      * @param {object} options - 取消发布服务具体参数。
@@ -281,7 +282,7 @@ export class IPortalUser extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortalUser.prototype.publishedDataService
+     * @function IPortalUser.prototype.publishedDataService
      * @description 发布数据服务。
      * @version 10.1.0
      * @param {object} options - 发布数据服务具体参数。

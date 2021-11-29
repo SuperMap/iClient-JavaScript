@@ -6,10 +6,11 @@ import {Util} from '../commontypes/Util';
 import {SecurityManager} from '../security/SecurityManager';
 
 /**
- * @class SuperMap.DataFlowService
+ * @class DataFlowService
+ * @deprecatedclass SuperMap.DataFlowService
  * @category iServer DataFlow
  * @classdesc 数据流服务类
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 数据流服务地址
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
@@ -18,6 +19,7 @@ import {SecurityManager} from '../security/SecurityManager';
  * @param {Object} [options.excludeField] - -排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class DataFlowService extends CommonServiceBase {
 
@@ -33,19 +35,19 @@ export class DataFlowService extends CommonServiceBase {
         super(url, options);
 
         /**
-         * @member {GeoJSONObject} SuperMap.DataFlowService.prototype.geometry
+         * @member {GeoJSONObject} DataFlowService.prototype.geometry
          * @description 指定几何范围，该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
         /**
-         * @member {Object} SuperMap.DataFlowService.prototype.prjCoordSys
+         * @member {Object} DataFlowService.prototype.prjCoordSys
          * @description 动态投影参数
          */
         this.prjCoordSys = null;
 
         /**
-         * @member {Object} SuperMap.DataFlowService.prototype.excludeField
+         * @member {Object} DataFlowService.prototype.excludeField
          * @description 排除字段
          */
         this.excludeField = null;
@@ -56,9 +58,9 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.initBroadcast
+     * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @returns {SuperMap.DataFlowService}
+     * @returns {DataFlowService}
      */
     initBroadcast() {
         var me = this;
@@ -81,7 +83,7 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.broadcast
+     * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
      * @param {GeoJSONObject} geoJSONFeature - JSON 格式的要素数据。
      */
@@ -96,7 +98,7 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.initSubscribe
+     * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
      * @returns {this} this
      */
@@ -120,7 +122,7 @@ export class DataFlowService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.DataFlowService.prototype.setExcludeField
+     * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param {Object} excludeField - 排除字段
      * @returns {this} this
@@ -132,7 +134,7 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.setGeometry
+     * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {this} this
@@ -144,7 +146,7 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.unSubscribe
+     * @function DataFlowService.prototype.unSubscribe
      * @description 结束订阅数据
      */
     unSubscribe() {
@@ -156,7 +158,7 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.unBroadcast
+     * @function DataFlowService.prototype.unBroadcast
      * @description 结束加载广播
      */
     unBroadcast() {
@@ -168,7 +170,7 @@ export class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.DataFlowService.prototype.destroy
+     * @function DataFlowService.prototype.destroy
      * @override
      */
     destroy() {

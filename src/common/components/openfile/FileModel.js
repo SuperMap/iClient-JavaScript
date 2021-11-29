@@ -4,7 +4,8 @@
 import {FileTypes, FileConfig} from '../CommonTypes'
 
 /**
- * @class SuperMap.FileModel
+ * @class FileModel
+ * @deprecatedclass SuperMap.FileModel
  * @description 文件数据组件数据模型，用于存储一些文件数据或状态，todo 结构待完善
  * @category Components OpenFile
  * @private
@@ -17,7 +18,7 @@ export class FileModel {
     }
 
     /**
-     * @function SuperMap.FileModel.prototype.set
+     * @function FileModel.prototype.set
      * @description 设置属性值
      * @param {string} key - 属性名称
      * @param {string|Object} value - 属性值
@@ -27,7 +28,7 @@ export class FileModel {
     }
 
     /**
-     * @function SuperMap.FileModel.prototype.get
+     * @function FileModel.prototype.get
      * @description 获取数据值
      * @param {string} key - 属性名称
      * @returns {string|Object} value - 返回属性值

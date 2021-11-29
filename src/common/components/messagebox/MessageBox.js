@@ -3,10 +3,12 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 /**
- * @class SuperMap.Components.MessageBox
+ * @class MessageBox
+ * @deprecatedclass SuperMap.Components.MessageBox
  * @version 9.1.1
  * @classdesc 组件信息提示框。
  * @category Components Common
+ * @usage
  */
 export class MessageBox {
 
@@ -50,7 +52,7 @@ export class MessageBox {
     }
 
     /**
-     * @function SuperMap.Components.MessageBox.prototype.closeView
+     * @function MessageBox.prototype.closeView
      * @description 关闭提示框。
      */
     closeView() {
@@ -58,7 +60,7 @@ export class MessageBox {
     }
 
     /**
-     * @function SuperMap.Components.MessageBox.prototype.showView
+     * @function MessageBox.prototype.showView
      * @description 显示提示框。
      * @param {string} message - 提示框显示内容。
      * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success"。

@@ -4,17 +4,19 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.iPortalRegisterServiceParam
+ * @class IPortalRegisterServiceParam
+ * @deprecatedclass SuperMap.iPortalRegisterServiceParam
  * @classdesc iPortal 注册服务参数。
  * @version 10.0.1
  * @category iPortal/Online
  * @param {Object} params - iPortal 注册服务具体参数。
  * @param {String} [params.type] - 服务类型。
  * @param {Array} [params.tags] - 服务标签。
- * @param {SuperMap.iPortalShareEntity} [params.entities] - 资源的实体共享参数
+ * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
  * @param {Object} [params.metadata] - 服务元信息。
  * @param {Array} [params.addedMapNames] - 地图服务列表。
  * @param {Array} [params.addedSceneNames] - 场景服务列表。
+ * @usage
  */
 export class IPortalRegisterServiceParam {
 
@@ -29,5 +31,4 @@ export class IPortalRegisterServiceParam {
         Util.extend(this, params);
     }
 }
-   
-   
+

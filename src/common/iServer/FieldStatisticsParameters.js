@@ -5,15 +5,17 @@ import {Util} from '../commontypes/Util';
 import {FieldParameters} from './FieldParameters';
 
 /**
- * @class SuperMap.FieldStatisticsParameters
+ * @class FieldStatisticsParameters
+ * @deprecatedclass SuperMap.FieldStatisticsParameters
  * @category iServer Data Field
  * @classdesc 字段统计信息查询参数类。
- * @param {Object} options - 参数。 
- * @param {string} options.datasource - 数据源名称。 
- * @param {string} options.dataset - 数据集名称。 
- * @param {string} options.fieldName - 字段名。 
- * @param {(string.<SuperMap.StatisticMode>|Array.<string.<SuperMap.StatisticMode>>)} statisticMode - 字段统计方法类型。
- * @extends {SuperMap.FieldParameters}
+ * @param {Object} options - 参数。
+ * @param {string} options.datasource - 数据源名称。
+ * @param {string} options.dataset - 数据集名称。
+ * @param {string} options.fieldName - 字段名。
+ * @param {(string.<StatisticMode>|Array.<string.<StatisticMode>>)} statisticMode - 字段统计方法类型。
+ * @extends {FieldParameters}
+ * @usage
  */
 export class FieldStatisticsParameters extends FieldParameters {
 
@@ -21,13 +23,13 @@ export class FieldStatisticsParameters extends FieldParameters {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.FieldStatisticsParameters.prototype.fieldName
+         * @member {string} FieldStatisticsParameters.prototype.fieldName
          * @description 字段名
          */
         this.fieldName = null;
 
         /**
-         * @member {(string.<SuperMap.StatisticMode>|Array.<string.<SuperMap.StatisticMode>>)} SuperMap.FieldStatisticsParameters.prototype.statisticMode
+         * @member {(string.<StatisticMode>|Array.<string.<StatisticMode>>)} FieldStatisticsParameters.prototype.statisticMode
          * @description 字段统计方法类型
          */
         this.statisticMode = null;
@@ -40,7 +42,7 @@ export class FieldStatisticsParameters extends FieldParameters {
     }
 
     /**
-     * @function SuperMap.FieldStatisticsParameters.prototype.destroy
+     * @function FieldStatisticsParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

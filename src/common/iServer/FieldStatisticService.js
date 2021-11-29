@@ -6,22 +6,23 @@ import {Util} from '../commontypes/Util';
 import './FieldStatisticsParameters';
 
 /**
- * @class SuperMap.FieldStatisticService
+ * @class FieldStatisticService
+ * @deprecatedclass SuperMap.FieldStatisticService
  * @category iServer Data Field
  * @classdesc 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 服务的访问地址。如访问 World Map 服务，只需将 url 设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和GeoJSON 两种格式。参数格式为 "ISERVER","GEOJSON"。
+ * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和GeoJSON 两种格式。参数格式为 "ISERVER","GEOJSON"。
  * @param {string} options.datasource - 数据集所在的数据源名称。
  * @param {string} options.dataset - 数据集名称。
  * @param {string} options.field - 查询统计的目标字段名称。
- * @param {SuperMap.StatisticMode} options.statisticMode - 字段查询统计的方法类型。
+ * @param {StatisticMode} options.statisticMode - 字段查询统计的方法类型。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
+ * var myService = new FieldStatisticService(url, {eventListeners: {
  *     "processCompleted": fieldStatisticCompleted,
  *     "processFailed": fieldStatisticError
  *     }，
@@ -30,6 +31,7 @@ import './FieldStatisticsParameters';
  *     field: "SmID",
  *     statisticMode: StatisticMode.AVERAGE
  * };
+ * @usage
  */
 
 
@@ -39,26 +41,26 @@ export class FieldStatisticService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.FieldStatisticService.prototype.datasource
+         * @member {string} FieldStatisticService.prototype.datasource
          * @description 数据集所在的数据源名称。
          */
         this.datasource = null;
 
 
         /**
-         * @member {string} SuperMap.FieldStatisticService.prototype.dataset
+         * @member {string} FieldStatisticService.prototype.dataset
          * @description 数据集名称。
          */
         this.dataset = null;
 
         /**
-         * @member {string} SuperMap.FieldStatisticService.prototype.field
+         * @member {string} FieldStatisticService.prototype.field
          * @description 查询统计的目标字段名称。
          */
         this.field = null;
 
         /**
-         * @member {SuperMap.StatisticMode} SuperMap.FieldStatisticService.prototype.statisticMode
+         * @member {StatisticMode} FieldStatisticService.prototype.statisticMode
          * @description 字段查询统计的方法类型。
          */
         this.statisticMode = null;
@@ -71,7 +73,7 @@ export class FieldStatisticService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.FieldStatisticService.prototype.destroy
+     * @function FieldStatisticService.prototype.destroy
      * @override
      */
     destroy() {
@@ -85,7 +87,7 @@ export class FieldStatisticService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.FieldStatisticService.prototype.processAsync
+     * @function FieldStatisticService.prototype.processAsync
      * @description 执行服务，进行指定字段的查询统计。
      */
     processAsync() {

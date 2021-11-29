@@ -7,16 +7,17 @@ import {FindPathParameters} from './FindPathParameters';
 import {GeoJSON} from '../format/GeoJSON';
 
 /**
- * @class SuperMap.FindPathService
+ * @class FindPathService
+ * @deprecatedclass SuperMap.FindPathService
  * @category iServer NetworkAnalyst Path
  * @classdesc 最佳路径分析服务类。
  *            最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，
  *            顺序访问这些节点从而求解起止点之间阻抗最小的路经。
  *            该类负责将客户端指定的最佳路径分析参数传递给服务端，并接收服务端返回的结果数据。
  *            最佳路径分析结果通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
- * var myFindPathService = new SuperMap.FindPathService(url, {
+ * var myFindPathService = new FindPathService(url, {
  *     eventListeners: {
  *	       "processCompleted": findPathCompleted,
  *		   "processFailed": findPathError
@@ -29,6 +30,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class FindPathService extends NetworkAnalystServiceBase {
 
@@ -39,7 +41,7 @@ export class FindPathService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindPathService.prototype.destroy
+     * @function FindPathService.prototype.destroy
      * @override
      */
     destroy() {
@@ -47,9 +49,9 @@ export class FindPathService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindPathService.prototype.processAsync
+     * @function FindPathService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.FindPathParameters} params - 最佳路径分析服务参数类
+     * @param {FindPathParameters} params - 最佳路径分析服务参数类
      */
     processAsync(params) {
         if (!(params instanceof FindPathParameters)) {
@@ -72,7 +74,7 @@ export class FindPathService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindPathService.prototype.getJson
+     * @function FindPathService.prototype.getJson
      * @description 将对象转化为JSON字符串。
      * @param {boolean} isAnalyzeById - 是否通过id分析
      * @param {Array} params - 需要转换的数字
@@ -102,7 +104,7 @@ export class FindPathService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindMTSPPathsService.prototype.toGeoJSONResult
+     * @function FindMTSPPathsService.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
      * @param {Object} result - 服务器返回的结果对象。
      */

@@ -4,14 +4,16 @@
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.CommonContainer
+ * @class CommonContainer
+ * @deprecatedclass SuperMap.Components.CommonContainer
  * @classdesc 组件统一外框。
  * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
  * @category Components Common
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
+ * @usage
  */
 export class CommonContainer extends TemplateBase {
     constructor(options) {
@@ -46,7 +48,7 @@ export class CommonContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.CommonContainer.prototype.getContentElement
+     * @function CommonContainer.prototype.getContentElement
      * @description 获取内容元素容器
      */
     getContentElement() {
@@ -54,7 +56,7 @@ export class CommonContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.CommonContainer.prototype.appendContent
+     * @function CommonContainer.prototype.appendContent
      * @description 填充内容元素
      */
     appendContent(element) {

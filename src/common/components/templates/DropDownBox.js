@@ -4,7 +4,8 @@
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.DropDownBox
+ * @class DropDownBox
+ * @deprecatedclass SuperMap.Components.DropDownBox
  * @classdesc 组件统一的图片下拉框。
  * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
@@ -16,7 +17,8 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
  * @category Components Common
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
+ * @usage
  */
 export class DropDownBox extends TemplateBase {
     constructor(optionsArr) {
@@ -25,7 +27,7 @@ export class DropDownBox extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.DropDownBox.prototype._initView
+     * @function DropDownBox.prototype._initView
      * @description 初始化下拉框。
      * @private
      * @override
@@ -66,7 +68,7 @@ export class DropDownBox extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.DropDownBox.prototype._createDropDownBox
+     * @function DropDownBox.prototype._createDropDownBox
      * @description 创建下拉框。
      * @private
      */
@@ -102,7 +104,7 @@ export class DropDownBox extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.DropDownBox.prototype._createDropDownOption
+     * @function DropDownBox.prototype._createDropDownOption
      * @description 创建下拉框子元素。
      * @private
      */
@@ -142,7 +144,7 @@ export class DropDownBox extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.DropDownBox.prototype._dropDownClickEvent
+     * @function DropDownBox.prototype._dropDownClickEvent
      * @description 下拉框点击事件。
      * @private
      */
@@ -169,7 +171,7 @@ export class DropDownBox extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.DropDownBox.prototype._eleOnblur
+     * @function DropDownBox.prototype._eleOnblur
      * @description 下拉框失焦事件。
      * @private
      */
@@ -181,7 +183,7 @@ export class DropDownBox extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.DropDownBox.prototype._createElement
+     * @function DropDownBox.prototype._createElement
      * @description 通用创建元素。
      * @private
      */
