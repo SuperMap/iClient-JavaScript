@@ -18,7 +18,7 @@ import { DistributedAnalysisView, distributedAnalysisView } from './distributeda
 import { DistributedAnalysisViewModel, distributedAnalysisViewModel } from './distributedanalysis/DistributedAnalysisViewModel';
 import { DataServiceQueryView, dataServiceQueryView } from './dataservicequery/DataServiceQueryView';
 import { DataServiceQueryViewModel, dataServiceQueryViewModel } from './dataservicequery/DataServiceQueryViewModel';
-import { componentsViewBase } from './ComponentsViewBase';
+import { componentsViewBase, ComponentsViewBase } from './ComponentsViewBase';
 
 
 export { OpenFileView, openFileView };
@@ -38,5 +38,5 @@ export { DistributedAnalysisView, distributedAnalysisView };
 export { DistributedAnalysisViewModel, distributedAnalysisViewModel }
 export { DataServiceQueryView, dataServiceQueryView };
 export { DataServiceQueryViewModel, dataServiceQueryViewModel };
-export { componentsViewBase };
+export { componentsViewBase, ComponentsViewBase };
 

@@ -410,10 +410,7 @@ import {
   getRequestTimeout,
   FetchRequest,
   ColorsPickerUtil,
-  ArrayStatistic,
-  getMeterPerMapUnit,
-  getWrapNum,
-  conversionDegree
+  ArrayStatistic
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -439,50 +436,9 @@ import {
   Sector,
   FeatureTheme,
   LevelRenderer,
-  Render,
-  Animation,
-  Animator,
-  Area,
-  Clip,
-  Color,
-  ComputeBoundingBox,
-  Config,
-  LevelRendererCurve,
-  Easing,
-  Env,
-  LevelRendererEvent,
-  Eventful,
-  Group,
-  Handler,
-  Http,
-  Log,
-  MathTool,
-  Matrix,
-  Painter,
-  PaintLayer,
-  Shape,
-  SmicBrokenLine,
-  SmicCircle,
-  SmicEllipse,
-  SmicImage,
-  SmicIsogon,
-  SmicPoint,
-  SmicPolygon,
-  SmicRectangle,
-  SmicRing,
-  SmicSector,
-  SmicStar,
-  SmicText,
-  Storage,
-  Transformable,
-  Util,
-  LevelRendererVector,
   SUtil
 } from './overlay';
 import {
-  FileTypes,
-  FileConfig,
-  FileModel,
   MessageBox,
   CommonContainer,
   DropDownBox,
@@ -494,12 +450,11 @@ import {
   CityTabsPage,
   NavTabsPage,
   PaginationContainer,
-  ComponentsUtil,
   FileReaderUtil,
   ChartView,
   ChartViewModel
 } from './components';
-import { Lang, en, zh } from './lang';
+import { Lang } from './lang';
 
 if (window && window.SuperMap) {
   let SuperMap = (window.SuperMap = window.SuperMap || {});
@@ -972,22 +927,19 @@ if (window && window.SuperMap) {
 }
 
 export {
-  FileTypes,
-  FileConfig,
-  FileModel,
   MessageBox,
   CommonContainer,
   DropDownBox,
   Select,
+  TemplateBase,
   AttributesPopContainer,
   PopContainer,
   IndexTabsPageContainer,
   CityTabsPage,
   NavTabsPage,
   PaginationContainer,
-  ComponentsUtil,
   FileReaderUtil,
-  ChartView,
+  ChartView as Chart,
   ChartViewModel
 };
 export { SuperMap };
@@ -1050,6 +1002,17 @@ export {
   BucketAggType,
   GetFeatureMode,
   RasterFunctionType,
+  ResourceType,
+  OrderBy,
+  OrderType,
+  SearchType,
+  AggregationTypes,
+  PermissionType,
+  EntityType,
+  WebExportFormatType,
+  WebScaleOrientationType,
+  WebScaleType,
+  WebScaleUnit,
   DataItemType
 };
 export {
@@ -1064,13 +1027,8 @@ export {
   GeometryPoint,
   Polygon,
   Rectangle,
-  StringExt,
-  NumberExt,
-  FunctionExt,
-  ArrayExt,
   Bounds,
   Credential,
-  DateExt,
   Event,
   Events,
   Feature,
@@ -1079,6 +1037,11 @@ export {
   Pixel,
   Size,
   CommonUtil,
+  Browser,
+  INCHES_PER_UNIT,
+  METERS_PER_INCH,
+  DOTS_PER_INCH,
+  IS_GECKO,
   GeometryVector
 };
 export { TimeControlBase, TimeFlowControl };
@@ -1090,10 +1053,7 @@ export {
   getRequestTimeout,
   FetchRequest,
   ColorsPickerUtil,
-  ArrayStatistic,
-  getMeterPerMapUnit,
-  getWrapNum,
-  conversionDegree
+  ArrayStatistic
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {
@@ -1206,6 +1166,7 @@ export {
   GetGridCellInfosParameters,
   GetGridCellInfosService,
   GetLayersInfoService,
+  GeoprocessingService,
   Grid,
   UGCImage,
   InterpolationAnalystParameters,
@@ -1213,6 +1174,7 @@ export {
   InterpolationIDWAnalystParameters,
   InterpolationKrigingAnalystParameters,
   InterpolationRBFAnalystParameters,
+  InterpolationDensityAnalystParameters,
   JoinItem,
   KernelDensityJobParameter,
   KernelDensityJobsService,
@@ -1395,47 +1357,9 @@ export {
   Sector,
   FeatureTheme,
   LevelRenderer,
-  Render,
-  Animation,
-  Animator,
-  Area,
-  Clip,
-  Color,
-  ComputeBoundingBox,
-  Config,
-  LevelRendererCurve,
-  Easing,
-  Env,
-  LevelRendererEvent,
-  Eventful,
-  Group,
-  Handler,
-  Http,
-  Log,
-  MathTool,
-  Matrix,
-  Painter,
-  PaintLayer,
-  Shape,
-  SmicBrokenLine,
-  SmicCircle,
-  SmicEllipse,
-  SmicImage,
-  SmicIsogon,
-  SmicPoint,
-  SmicPolygon,
-  SmicRectangle,
-  SmicRing,
-  SmicSector,
-  SmicStar,
-  SmicText,
-  Storage,
-  Transformable,
-  Util,
-  LevelRendererVector,
   SUtil
 };
 export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
 export { CartoCSS, ThemeStyle };
 export { ElasticSearch };
-export { Lang, en, zh };
+export { Lang };
