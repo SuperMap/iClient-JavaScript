@@ -3,14 +3,14 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Tool.Http
+ * @class  LevelRenderer.Tool.Http
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-Http
  */
 export class Http {
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Http.constructor
+     * @function LevelRenderer.Tool.Http.constructor
      * @description 构造函数。
      */
     constructor() {
@@ -18,11 +18,11 @@ export class Http {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Http.prototype.get
+     * @function LevelRenderer.Tool.Http.prototype.get
      * @description get请求。
      * @param {(string|IHTTPGetOption)} url - 请求url
      * @param {function} onsuccess - 请求成功函数
-     * @param {function} onerror - 请求失败函数 
+     * @param {function} onerror - 请求失败函数
      * @param {Object} opts - 额外参数
      * @returns {number} cos值
      */

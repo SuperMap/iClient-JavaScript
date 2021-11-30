@@ -5,22 +5,23 @@ import {Util} from '../../commontypes/Util';
 import {Render} from './Render';
 
 /**
- * @class  SuperMap.LevelRenderer
+ * @class  LevelRenderer
+ * @deprecatedclass SuperMap.LevelRenderer
  * @category Visualization Theme
  * @classdesc LevelRenderer 渲染器
- * @private 
+ * @private
  */
 export class LevelRenderer {
 
     /**
-     * @function SuperMap.LevelRenderer.constructor
+     * @function LevelRenderer.constructor
      * @description 构造函数。
-     * @example 
+     * @example
      * //在渲染器上加上图形
-     * var levelRenderer = new SuperMap.LevelRenderer();
+     * var levelRenderer = new LevelRenderer();
      * var zr = levelRenderer.init(document.getElementById('lRendertest'));
      * zr.clear();
-     * zr.addShape(new SuperMap.LevelRenderer.Shape.Circle({
+     * zr.addShape(new LevelRenderer.Shape.Circle({
      *     style:{
      *         x : 100,
      *         y : 100,
@@ -32,7 +33,7 @@ export class LevelRenderer {
      */
     constructor() {
         /**
-         * @member {Object} SuperMap.LevelRenderer.prototype._instances
+         * @member {Object} LevelRenderer.prototype._instances
          * @description LevelRenderer 实例 map 索引
          */
         LevelRenderer._instances = {};
@@ -41,7 +42,7 @@ export class LevelRenderer {
         LevelRenderer.Tool = {};
 
         /**
-         * @member {string} SuperMap.LevelRenderer.prototype.version
+         * @member {string} LevelRenderer.prototype.version
          * @description 版本。zRender（Baidu）的版本号
          *              记录当前 LevelRenderer 是在 zRender 的那个版本上构建而来。
          *              在每次完整评判和实施由 zRender（Baidu）升级带来的 LevelRenderer 升级后修改。
@@ -53,7 +54,7 @@ export class LevelRenderer {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.prototype.destroy
+     * @function LevelRenderer.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为null。
      */
     destroy() {
@@ -62,10 +63,10 @@ export class LevelRenderer {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.prototype.init
+     * @function LevelRenderer.prototype.init
      * @description 创建 LevelRenderer 实例。
      * @param {HTMLElement} dom - 绘图容器。
-     * @returns {SuperMap.LevelRenderer} LevelRenderer 实例。
+     * @returns {LevelRenderer} LevelRenderer 实例。
      */
     init(dom) {
         var zr = new Render(Util.createUniqueID("LRenderer_"), dom);
@@ -74,12 +75,12 @@ export class LevelRenderer {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.prototype.dispose
+     * @function LevelRenderer.prototype.dispose
      * @description LevelRenderer 实例销毁。
-     *              可以通过 zrender.dispose(zr) 销毁指定 SuperMap.LevelRenderer.Render 实例。
+     *              可以通过 zrender.dispose(zr) 销毁指定 LevelRenderer.Render 实例。
      *              也可以通过 zr.dispose() 直接销毁
-     * @param {SuperMap.LevelRenderer.Render} zr - ZRender对象，不传此参数则销毁全部。
-     * @returns {SuperMap.LevelRenderer} this。
+     * @param {LevelRenderer.Render} zr - ZRender对象，不传此参数则销毁全部。
+     * @returns {LevelRenderer} this。
      */
     dispose(zr) {
         if (zr) {
@@ -96,21 +97,21 @@ export class LevelRenderer {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.prototype.getInstance
-     * @description 获取 SuperMap.LevelRenderer.Render 实例。
+     * @function LevelRenderer.prototype.getInstance
+     * @description 获取 LevelRenderer.Render 实例。
      * @param {string} id - ZRender对象索引。
-     * @returns {SuperMap.LevelRenderer.Render} SuperMap.LevelRenderer.Render 实例。
+     * @returns {LevelRenderer.Render} LevelRenderer.Render 实例。
      */
     getInstance(id) {
         return LevelRenderer._instances[id];
     }
 
     /**
-     * @function SuperMap.LevelRenderer.prototype.delInstance
+     * @function LevelRenderer.prototype.delInstance
      * @description 删除 zrender 实例，SuperMap.LevelRenderer.Render 实例 dispose 时会调用，删除后 getInstance 则返回 undefined
      * @param {string} id - ZRender对象索引。
-     * @param {string} id - SuperMap.LevelRenderer.Render 对象索引。
-     * @returns {SuperMap.LevelRenderer} this。
+     * @param {string} id - LevelRenderer.Render 对象索引。
+     * @returns {LevelRenderer} this。
      */
     delInstance(id) {
         delete LevelRenderer._instances[id];

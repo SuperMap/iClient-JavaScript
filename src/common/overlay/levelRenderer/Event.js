@@ -2,21 +2,21 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
- * @class  SuperMap.LevelRenderer.Tool.Event
+ * @class  LevelRenderer.Tool.Event
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-事件辅助类
- * @private 
+ * @private
  */
 export class Event {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Event.prototype.constructor
+     * @function LevelRenderer.Tool.Event.prototype.constructor
      * @description 构造函数。
      */
     constructor() {
         /**
-         * @member {function} SuperMap.LevelRenderer.Tool.Event.prototype.stop
+         * @member {function} LevelRenderer.Tool.Event.prototype.stop
          * @description 停止冒泡和阻止默认行为
          */
         this.stop = typeof window.addEventListener === 'function'
@@ -35,7 +35,7 @@ export class Event {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getX
+     * @function LevelRenderer.Tool.Event.prototype.getX
      * @description 提取鼠标（手指）x坐标。
      * @param {Event} e - 事件。
      * @returns {number} 鼠标（手指）x坐标。
@@ -49,7 +49,7 @@ export class Event {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getY
+     * @function LevelRenderer.Tool.Event.prototype.getY
      * @description 提取鼠标（手指）y坐标。
      * @param {Event} e - 事件。
      * @returns {number} 鼠标（手指）y坐标。
@@ -63,7 +63,7 @@ export class Event {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getDelta
+     * @function LevelRenderer.Tool.Event.prototype.getDelta
      * @description 提取鼠标滚轮变化。
      * @param {Event} e - 事件。
      * @returns {number} 滚轮变化，正值说明滚轮是向上滚动，如果是负值说明滚轮是向下滚动。

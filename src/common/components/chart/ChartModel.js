@@ -566,7 +566,7 @@ export class ChartModel {
                   message: Lang.i18n('msg_getdatafailed')
               };
         /**
-         * @event ChartView#getdatafailed
+         * @event ChartModel#getdatafailed
          * @description 监听到获取数据失败事件后触发
          * @property {Object} error  - 事件对象。
          */

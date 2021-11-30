@@ -5,15 +5,15 @@ import {Curve} from './Curve';
 import {Vector} from './Vector';
 
 /**
- * @class  SuperMap.LevelRenderer.Tool.ComputeBoundingBox
+ * @class  LevelRenderer.Tool.ComputeBoundingBox
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-图形 Bounds 计算
- * @private 
+ * @private
  */
 export class ComputeBoundingBox {
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.constructor
+     * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.constructor
      * @description 构造函数。
      */
     constructor() {
@@ -25,7 +25,7 @@ export class ComputeBoundingBox {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.computeBoundingBox
+     * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.computeBoundingBox
      * @description 从顶点数组中计算出最小包围盒，写入'min'和'max'中。
      * @param {Array.<Object>} points - 顶点数组。
      * @param {Array} min - 最小
@@ -61,9 +61,9 @@ export class ComputeBoundingBox {
         max[0] = right;
         max[1] = bottom;
     }
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.cubeBezier
+     * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.cubeBezier
      * @description 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入'min'和'max'中。原：computeCubeBezierBoundingBox。
      * @param {Array.<number>} p0 - 三阶贝塞尔曲线p0点
      * @param {Array.<number>} p1 - 三阶贝塞尔曲线p1点
@@ -99,9 +99,9 @@ export class ComputeBoundingBox {
         max[0] = right;
         max[1] = bottom;
     }
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.quadraticBezier
+     * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.quadraticBezier
      * @description 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入'min'和'max'中。原：computeQuadraticBezierBoundingBox。
      * @param {Array.<number>} p0 - 二阶贝塞尔曲线p0点
      * @param {Array.<number>} p1 - 二阶贝塞尔曲线p1点
@@ -140,9 +140,9 @@ export class ComputeBoundingBox {
         max[0] = Math.max(p0[0], p2[0], x1, x2);
         max[1] = Math.max(p0[1], p2[1], y1, y2);
     }
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.arc
+     * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.arc
      * @description 从圆弧中计算出最小包围盒，写入'min'和'max'中。原：computeArcBoundingBox。
      * @param {number} x - 圆弧中心点 x
      * @param {number} y - 圆弧中心点 y

@@ -5,13 +5,15 @@ import {Util} from '../commontypes/Util';
 import {OnlineServiceBase} from './OnlineServiceBase';
 
 /**
- * @class SuperMap.OnlineData
+ * @class OnlineData
+ * @deprecatedclass SuperMap.OnlineData
  * @classdesc Online myData 服务。
  * @category iPortal/Online
  * @param {string} serviceRootUrl - 服务根地址。
- * @param {Object} options - 服务相关参数。 
+ * @param {Object} options - 服务相关参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class OnlineData extends OnlineServiceBase {
 
@@ -70,7 +72,7 @@ export class OnlineData extends OnlineServiceBase {
     }
 
     /**
-     * @function SuperMap.OnlineData.prototype.load
+     * @function OnlineData.prototype.load
      * @description 通过 URL 请求获取该服务完整信息。
      * @returns {Promise} 返回不包含请求结果的 Promise 对象,请求返回结果自动填充到该类属性中。
      */
@@ -85,7 +87,7 @@ export class OnlineData extends OnlineServiceBase {
     }
 
     /**
-     * @function SuperMap.OnlineData.prototype.getPublishedServices
+     * @function OnlineData.prototype.getPublishedServices
      * @description 获取数据发布的所有服务。
      * @returns {Object} 数据发布的所有服务。
      */
@@ -94,7 +96,7 @@ export class OnlineData extends OnlineServiceBase {
     }
 
     /**
-     * @function SuperMap.OnlineData.prototype.getAuthorizeSetting
+     * @function OnlineData.prototype.getAuthorizeSetting
      * @description 获取数据的权限信息。
      * @returns {Object} 权限信息。
      */

@@ -4,38 +4,38 @@
 import {Vector} from './Vector';
 
 /**
- * @class  SuperMap.LevelRenderer.Tool.Curve
+ * @class  LevelRenderer.Tool.Curve
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-曲线
- * @private 
+ * @private
  */
 export class Curve {
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.constructor
+     * @function LevelRenderer.Tool.Curve.prototype.constructor
      * @description 构造函数。
      */
     constructor() {
         /**
-         * @member {SuperMap.LevelRenderer.Tool.Vector} SuperMap.LevelRenderer.Tool.Curve.prototype.vector
+         * @member {LevelRenderer.Tool.Vector} LevelRenderer.Tool.Curve.prototype.vector
          * @description 矢量工具。
          */
         this.vector = new Vector();
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.EPSILON
+         * @member {number} LevelRenderer.Tool.Curve.prototype.EPSILON
          * @description e。
          */
         this.EPSILON = 1e-4;
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.THREE_SQRT
+         * @member {number} LevelRenderer.Tool.Curve.prototype.THREE_SQRT
          * @description 3 的平方根。
          */
         this.THREE_SQRT = Math.sqrt(3);
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.ONE_THIRD
+         * @member {number} LevelRenderer.Tool.Curve.prototype.ONE_THIRD
          * @description 1/3。
          */
         this.ONE_THIRD = 1 / 3;
@@ -63,9 +63,9 @@ export class Curve {
      return ((a * t + b) * t + c) * t + d;
      },
      */
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.isAroundZero
+     * @function LevelRenderer.Tool.Curve.prototype.isAroundZero
      * @description 判断一个值是否趋于0，判断参考值：1e-4。
      * @param {number} val - 值。
      * @returns {boolean} 值是否趋于0。
@@ -76,7 +76,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.isNotAroundZero
+     * @function LevelRenderer.Tool.Curve.prototype.isNotAroundZero
      * @description 判断一个值是否不趋于0，判断参考值：1e-4。
      * @param {number} val - 值。
      * @returns {boolean} 值是否不趋于0。
@@ -87,7 +87,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicAt
+     * @function LevelRenderer.Tool.Curve.prototype.cubicAt
      * @description 计算三次贝塞尔值
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -104,7 +104,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicDerivativeAt
+     * @function LevelRenderer.Tool.Curve.prototype.cubicDerivativeAt
      * @description 计算三次贝塞尔导数值
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -121,9 +121,9 @@ export class Curve {
         );
     }
 
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicRootAt
+     * @function LevelRenderer.Tool.Curve.prototype.cubicRootAt
      * @description 计算三次贝塞尔方程根，使用盛金公式
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -209,9 +209,9 @@ export class Curve {
         return n;
     }
 
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicRootAt
+     * @function LevelRenderer.Tool.Curve.prototype.cubicRootAt
      * @description 计算三次贝塞尔方程极限值的位置
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -252,9 +252,9 @@ export class Curve {
         return n;
     }
 
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicSubdivide
+     * @function LevelRenderer.Tool.Curve.prototype.cubicSubdivide
      * @description 细分三次贝塞尔曲线
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -287,7 +287,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicProjectPoint
+     * @function LevelRenderer.Tool.Curve.prototype.cubicProjectPoint
      * @description 投射点到三次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
      * @param {number} x0 - 点p0横坐标。
      * @param {number} y0 - 点p0纵坐标。
@@ -371,7 +371,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticAt
+     * @function LevelRenderer.Tool.Curve.prototype.quadraticAt
      * @description 计算二次方贝塞尔值。
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -384,9 +384,9 @@ export class Curve {
         return onet * (onet * p0 + 2 * t * p1) + t * t * p2;
     }
 
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticAt
+     * @function LevelRenderer.Tool.Curve.prototype.quadraticAt
      * @description 计算二次方贝塞尔导数值。
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -400,7 +400,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticRootAt
+     * @function LevelRenderer.Tool.Curve.prototype.quadraticRootAt
      * @description 计算二次方贝塞尔方程根
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -446,7 +446,7 @@ export class Curve {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticExtremum
+     * @function LevelRenderer.Tool.Curve.prototype.quadraticExtremum
      * @description 计算二次贝塞尔方程极限值
      * @param {number} p0 - 点p0。
      * @param {number} p1 - 点p1。
@@ -463,9 +463,9 @@ export class Curve {
         }
     }
 
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticProjectPoint
+     * @function LevelRenderer.Tool.Curve.prototype.quadraticProjectPoint
      * @description 投射点到二次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
      * @param {number} x0 - 点p0横坐标。
      * @param {number} y0 - 点p0纵坐标。

@@ -4,7 +4,8 @@
 import { Util } from '../commontypes/Util';
 
 /**
- * @class SuperMap.WebPrintingJobCustomItems
+ * @class WebPrintingJobCustomItems
+ * @deprecatedclass SuperMap.WebPrintingJobCustomItems
  * @classdesc Web 打印图例元素参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
@@ -12,21 +13,22 @@ import { Util } from '../commontypes/Util';
  * @param {string} option.name - 图例元素的名称。
  * @param {string} [option.picAsUrl] - 图例元素 Base64 格式图片。
  * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。
+ * @usage
  */
 export class WebPrintingJobCustomItems {
     constructor(option) {
         /**
-         * @member {string} SuperMap.WebPrintingJobCustomItems.prototype.name
+         * @member {string} WebPrintingJobCustomItems.prototype.name
          * @description  图例元素的名称。
          */
         this.name = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobCustomItems.prototype.picAsUrl]
+         * @member {string} [WebPrintingJobCustomItems.prototype.picAsUrl]
          * @description  图例元素 Base64 格式图片。
          */
         this.picAsUrl = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobCustomItems.prototype.picAsBase64]
+         * @member {string} [WebPrintingJobCustomItems.prototype.picAsBase64]
          * @description  图例元素图片的获取地址。
          */
         this.picAsBase64 = null;
@@ -36,7 +38,7 @@ export class WebPrintingJobCustomItems {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobCustomItems.prototype.destroy
+     * @function WebPrintingJobCustomItems.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -47,8 +49,8 @@ export class WebPrintingJobCustomItems {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobCustomItems.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobCustomItems 对象转化为 JSON 字符串。
+     * @function WebPrintingJobCustomItems.prototype.toJSON
+     * @description 将 WebPrintingJobCustomItems 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

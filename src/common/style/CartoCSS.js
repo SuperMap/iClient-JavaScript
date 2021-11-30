@@ -5,7 +5,8 @@ import {SuperMap} from '../SuperMap';
 import toPairs from 'lodash.topairs';
 
 /**
- * @class SuperMap.CartoCSS
+ * @class CartoCSS
+ * @deprecatedclass SuperMap.CartoCSS
  * @classdesc CartoCSS 解析类，其主要功能为将 CartoCSS 字符串解析为 CartoCSS 的 shader 属性风格对象。
  * @category BaseTypes Style
  * @param {string} cartoStr -  CartoCSS 样式表字符串
@@ -16,7 +17,8 @@ import toPairs from 'lodash.topairs';
  *                      line-color:@provinceLineColor;
  *                      line-width:1;
  *                 }";
- * new SuperMap.CartoCSS(cartocss);
+ * new CartoCSS(cartocss);
+ * @usage
  */
 /*eslint no-useless-escape: "off"*/
 export class CartoCSS {
@@ -25,25 +27,25 @@ export class CartoCSS {
         this.env = null;
 
         /**
-         * @member SuperMap.CartoCSS.prototype.parser
+         * @member CartoCSS.prototype.parser
          * @description 解析器
          */
         this.parser = null;
 
         /**
-         * @member SuperMap.CartoCSS.prototype.ruleSet
+         * @member CartoCSS.prototype.ruleSet
          * @description CartoCSS 规则对象
          */
         this.ruleSet = null;
 
         /**
-         * @member SuperMap.CartoCSS.prototype.cartoStr
+         * @member CartoCSS.prototype.cartoStr
          * @description CartoCSS 样式表字符串
          */
         this.cartoStr = "";
 
         /**
-         * @member SuperMap.CartoCSS.prototype.shaders
+         * @member CartoCSS.prototype.shaders
          * @description Carto 着色器集
          */
         this.shaders = null;
@@ -64,7 +66,7 @@ export class CartoCSS {
     }
 
     /**
-     * @function SuperMap.CartoCSS.prototype.getParser
+     * @function CartoCSS.prototype.getParser
      * @description 获取 CartoCSS 解析器
      */
     getParser(env) {
@@ -874,7 +876,7 @@ export class CartoCSS {
 
 
     /**
-     * @function SuperMap.CartoCSS.prototype.parse
+     * @function CartoCSS.prototype.parse
      * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
      * @returns {Object} CartoCSS规则集
      */
@@ -886,7 +888,7 @@ export class CartoCSS {
 
 
     /**
-     * @function SuperMap.CartoCSS.prototype.toShaders
+     * @function CartoCSS.prototype.toShaders
      * @description 将CartoCSS规则集转化为着色器
      * @returns {Array} CartoCSS着色器集
      */
@@ -1018,7 +1020,7 @@ export class CartoCSS {
         }
     }
     /**
-     * @function SuperMap.CartoCSS.prototype.getShaders
+     * @function CartoCSS.prototype.getShaders
      * @description 获取CartoCSS着色器
      * @returns {Array} 着色器集
      * @example
@@ -1047,7 +1049,7 @@ export class CartoCSS {
     }
 
     /**
-     * @function SuperMap.CartoCSS.prototype.destroy
+     * @function CartoCSS.prototype.destroy
      * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
      */
     destroy() {
@@ -3331,7 +3333,7 @@ CartoCSS.Tree.Comment = class Comment {
 CartoCSS.Tree.Definition = class Definition {
     constructor(selector, rules) {
         this.elements = selector.elements;
-        //assert.ok(selector.filters instanceof SuperMap.CartoCSS.Tree.Filterset);
+        //assert.ok(selector.filters instanceof CartoCSS.Tree.Filterset);
         this.rules = rules;
         this.ruleIndex = {};
         for (var i = 0; i < this.rules.length; i++) {
@@ -3938,8 +3940,8 @@ CartoCSS.Tree.Operation = class Operation {
 
         if (a instanceof CartoCSS.Tree.Dimension && b instanceof CartoCSS.Tree.Color) {
             if (this.op === '*' || this.op === '+') {
-                temp = b; 
-                b = a; 
+                temp = b;
+                b = a;
                 a = temp;
             } else {
                 env.error({
@@ -4357,7 +4359,7 @@ CartoCSS.Tree.Ruleset = class Ruleset {
         return this._lookups[key] = rules;
     }
 
-    // Zooms can use variables. This replaces SuperMap.CartoCSS.Tree.Zoom objects on selectors
+    // Zooms can use variables. This replaces CartoCSS.Tree.Zoom objects on selectors
     // with simple bit-arrays that we can compare easily.
     evZooms(env) {
         for (var i = 0; i < this.selectors.length; i++) {
@@ -4617,7 +4619,7 @@ CartoCSS.Tree.Zoom = class Zoom {
                 break;
         }
         /*
-         for (var i = 0; i <= SuperMap.CartoCSS.Tree.Zoom.maxZoom; i++) {
+         for (var i = 0; i <= CartoCSS.Tree.Zoom.maxZoom; i++) {
          if (i >= start && i <= end) {
          zoom |= (1 << i);
          }

@@ -4,18 +4,20 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  SuperMap.Feature.ShapeParameters.Sector
+ * @class  Sector
+ * @deprecatedclass SuperMap.Feature.ShapeParameters.Sector
  * @category Visualization Theme
  * @classdesc 扇形参数对象。
- * @extends {SuperMap.Feature.ShapeParameters}
+ * @extends {ShapeParameters}
+ * @usage
  */
 
 export class Sector extends ShapeParameters {
 
-    
+
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Sector.prototype.constructor
+     * @function Sector.prototype.constructor
      * @description 创建一个扇形参数对象。
      * @param {number} x - 圆心 x 坐标，必设参数。
      * @param {number} y - 圆心 y 坐标，必设参数。
@@ -23,57 +25,57 @@ export class Sector extends ShapeParameters {
      * @param {number} startAngle - 起始角度，必设参数。取值范围[0, 360)。
      * @param {number} endAngle - 结束角度，必设参数。取值范围(0, 360]。
      * @param {number} [r0=0] - 内圆半径，指定后将出现内弧，同时扇边长度为'r - r0'。取值范围[0, r)。
-     * @returns {SuperMap.Feature.ShapeParameters.Sector} 扇形参数对象。
+     * @returns {Sector} 扇形参数对象。
      */
     constructor(x, y, r, startAngle, endAngle, r0, clockWise) {
         super(x, y, r, startAngle, endAngle, r0, clockWise);
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.x
+         * @member {number} Sector.prototype.x
          * @description  圆心 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
-        
+
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.Y
+         * @member {number} Sector.prototype.Y
          * @description  圆心 Y 坐标。
          */
         this.y = !isNaN(y) ? y : 0;
 
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.r
+         * @member {number} Sector.prototype.r
          * @description  外圆半径。
          */
         this.r = !isNaN(r) ? r : 0;
-        
+
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.startAngle
+         * @member {number} Sector.prototype.startAngle
          * @description  起始角度。取值范围[0, 360)，默认值：null。
          */
         this.startAngle = !isNaN(startAngle) ? startAngle : 0;
-        
+
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.endAngle
+         * @member {number} Sector.prototype.endAngle
          * @description  结束角度。取值范围(0, 360]，默认值：null。
          */
         this.endAngle =  !isNaN(endAngle) ? endAngle : 0;
-        
+
         /**
-         * @member {number} [SuperMap.Feature.ShapeParameters.Sector.prototype.r0=0]
+         * @member {number} [Sector.prototype.r0=0]
          * @description 内圆半径，指定后将出现内弧，同时扇边长度为 r 减 r0。取值范围[0, r)。
          */
         this.r0 = !isNaN(r0) ? r0 : 0;
-        
+
         /**
-         * @member {number} [SuperMap.Feature.ShapeParameters.Sector.prototype.clockWise=false]
+         * @member {number} [Sector.prototype.clockWise=false]
          * @description 是否是顺时针。默认值：false。
          */
         this.clockWise = clockWise;
 
         this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Sector";
     }
-    
+
     /**
-     * @function SuperMap.Feature.ShapeParameters.Sector.prototype.destroy
+     * @function Sector.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {
@@ -91,7 +93,7 @@ export class Sector extends ShapeParameters {
 }
 
 /**
- * @typedef {Object} SuperMap.Feature.ShapeParameters.Sector.style
+ * @typedef {Object} Sector.style
  * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
  * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
  * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。

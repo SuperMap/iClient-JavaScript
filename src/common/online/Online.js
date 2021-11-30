@@ -6,16 +6,18 @@ import {OnlineData} from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class SuperMap.Online
+ * @class Online
+ * @deprecatedclass SuperMap.Online
  * @classdesc 对接 SuperMap Online 所有基础服务。
  * @category iPortal/Online
  * @example
- * var online=new SuperMap.Online();
+ * var online=new Online();
  * var services = online.queryDatas(param);
  * service.then(function(services){
  *      var service= services[0];
  *      service.updateDataInfo();
  * })
+ * @usage
  */
 export class Online {
 
@@ -32,7 +34,7 @@ export class Online {
     }
 
     /**
-     * @function SuperMap.Online.prototype.load
+     * @function Online.prototype.load
      * @description 加载 online，验证 online 是否可用。
      * @returns {Promise} 返回包含网络请求结果的 Promise 对象。
      */
@@ -43,7 +45,7 @@ export class Online {
     }
 
     /**
-     * @function SuperMap.Online.prototype.login
+     * @function Online.prototype.login
      * @description 登录Online
      */
     login() {
@@ -51,9 +53,9 @@ export class Online {
     }
 
     /**
-     * @function SuperMap.Online.prototype.queryDatas
+     * @function Online.prototype.queryDatas
      * @description 查询 Online “我的内容” 下 “我的数据” 服务（需要登录状态获取），并返回可操作的服务对象。
-     * @param {SuperMap.OnlineQueryDatasParameter} parameter - myDatas 服务资源查询参数。
+     * @param {OnlineQueryDatasParameter} parameter - myDatas 服务资源查询参数。
      * @returns {Promise} 返回包含所有数据服务信息的 Promise 对象。
      */
     queryDatas(parameter) {

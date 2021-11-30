@@ -4,15 +4,15 @@
 import {Easing as AEasing} from './Easing';
 
 /**
- * @class  SuperMap.LevelRenderer.Animation.Clip
+ * @class  LevelRenderer.Animation.Clip
  * @category Visualization Theme
  * @classdec 动画片段
- * @private 
+ * @private
  */
 export class Clip {
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.constructor
+     * @function LevelRenderer.Animation.Clip.prototype.constructor
      * @description 构造函数。
      * @param {Object} options - 参数。
      * @param {Object} options.target - 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
@@ -56,7 +56,7 @@ export class Clip {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.destroy
+     * @function LevelRenderer.Animation.Clip.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {

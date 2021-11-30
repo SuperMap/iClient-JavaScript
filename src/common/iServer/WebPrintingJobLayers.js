@@ -4,27 +4,29 @@
  import { Util } from '../commontypes/Util';
 
  /**
-  * @class SuperMap.WebPrintingJobLayers
+  * @class WebPrintingJobLayers
+  * @deprecatedclass SuperMap.WebPrintingJobLayers
   * @classdesc 将图例添加到布局的业务图层参数类。
   * @version 10.1.0
   * @category iServer WebPrintingJob
   * @param {Object} option - 初始化参数。
   * @param {string} [option.name] - 表示图层 name 的字符串。此 name 必须唯一，并且必须与定义业务图层的 LegendOptions_layers 元素中的图层 name 匹配。
+  * @usage
   */
  export class WebPrintingJobLayers {
      constructor(option) {
          /**
-          * @member {string} SuperMap.WebPrintingJobLayers.prototype.name
+          * @member {string} WebPrintingJobLayers.prototype.name
           * @description  图层 name。
           */
          this.name = null;
          /**
-          * @member {string} SuperMap.WebPrintingJobLayers.prototype.layerType
+          * @member {string} WebPrintingJobLayers.prototype.layerType
           * @description  图层 type。
           */
          this.layerType = null;
          /**
-          * @member {string} SuperMap.WebPrintingJobLayers.prototype.url
+          * @member {string} WebPrintingJobLayers.prototype.url
           * @description  图层 url。
           */
          this.url = null;
@@ -34,7 +36,7 @@
      }
 
      /**
-     * @function SuperMap.WebPrintingJobLayers.prototype.destroy
+     * @function WebPrintingJobLayers.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
      destroy() {

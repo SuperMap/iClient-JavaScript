@@ -6,11 +6,11 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicText
+ * @class  LevelRenderer.Shape.SmicText
  * @category Visualization Theme
- * @extends {SuperMap.LevelRenderer.Shape}
+ * @extends {LevelRenderer.Shape}
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+ *   var shape = new LevelRenderer.Shape.SmicText({
  *         style: {
  *             text: 'Label',
  *             x: 100,
@@ -24,7 +24,7 @@ import {SUtil} from './SUtil';
 export class SmicText extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicText.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicText.prototype.style
      * @description 绘制样式。
      *
      * @param {number} style.x - 横坐标，必设参数。
@@ -48,7 +48,7 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.constructor
+     * @function LevelRenderer.Shape.SmicText.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -57,7 +57,7 @@ export class SmicText extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicText.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicText.prototype.type
          * @description 图形类型.
          */
         this.type = 'smictext';
@@ -69,7 +69,7 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.destroy
+     * @function LevelRenderer.Shape.SmicText.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -80,7 +80,7 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.brush
+     * @function LevelRenderer.Shape.SmicText.prototype.brush
      * @description 笔触。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -308,7 +308,7 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRect
+     * @function LevelRenderer.Shape.SmicText.prototype.getRect
      * @description 返回文字包围盒矩形
      */
     getRect(style) {
@@ -355,7 +355,7 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRectNoRotation
+     * @function LevelRenderer.Shape.SmicText.prototype.getRectNoRotation
      * @description 返回忽略旋转和maxWidth时文字包围盒矩形
      */
     getRectNoRotation(style) {
@@ -434,9 +434,9 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getTextBackground
+     * @function LevelRenderer.Shape.SmicText.prototype.getTextBackground
      * @description 获取文本背景框范围
-     * 
+     *
      * @param {Object} style - 样式。
      * @param {boolean} redo - 是否强制重新计算 textBackground。
      */
@@ -490,9 +490,9 @@ export class SmicText extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRotatedLocation
+     * @function LevelRenderer.Shape.SmicText.prototype.getRotatedLocation
      * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
-     * 
+     *
      * @param {number} x - 旋转点横坐标。
      * @param {number} y - 旋转点纵坐标。
      * @param {number} rx - 旋转中心点横坐标。

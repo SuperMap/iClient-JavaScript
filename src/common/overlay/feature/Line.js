@@ -4,25 +4,27 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  SuperMap.Feature.ShapeParameters.Line
+ * @class  FeatureLine
+ * @deprecatedclass SuperMap.Feature.ShapeParameters.Line
  * @category Visualization Theme
  * @classdesc 线参数对象。
- * @extends {SuperMap.Feature.ShapeParameters}
+ * @extends {ShapeParameters}
+ * @usage
  */
 export class Line extends ShapeParameters {
 
 
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Line.prototype.constructor
+     * @function FeatureLine.prototype.constructor
      * @description 创建一个图形线参数对象。
      * @param {Array} pointList - 线要素节点数组，二维数组，必设参数。
-     * @returns {SuperMap.Feature.ShapeParameters.Line} 圆形参数对象。
+     * @returns {FeatureLine} 圆形参数对象。
      */
     constructor(pointList) {
         super(pointList);
         /**
-         * @member {Array} SuperMap.Feature.ShapeParameters.Line.prototype.pointList
+         * @member {Array} FeatureLine.prototype.pointList
          * @description 线要素节点数组，二维数组。
          * 数组形如：
          * (start code)
@@ -40,7 +42,7 @@ export class Line extends ShapeParameters {
     }
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Line.prototype.destroy
+     * @function FeatureLine.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {
@@ -51,7 +53,7 @@ export class Line extends ShapeParameters {
 }
 
 /**
-* @typedef {Object} SuperMap.Feature.ShapeParameters.Line.style
+* @typedef {Object} FeatureLine.style
 * @property {string} strokeColor - 十六进制线颜色。
 * @property {number}  strokeWidth - 线宽度，默认值 1。
 * @property {string} strokeLinecap - 线帽样式；strokeLinecap 有三种类型 ：“butt", "round", "square"; 默认为"butt"。

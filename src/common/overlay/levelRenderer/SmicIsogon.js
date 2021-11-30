@@ -6,15 +6,15 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicIsogon
+ * @class  LevelRenderer.Shape.SmicIsogon
  * @category Visualization Theme
  * @classdesc 正多边形。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  */
 export class SmicIsogon extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicIsogon.prototype.style
      * @description 绘制样式。
      *
      * @param {number} x - 正 n 边形外接圆心 x 坐标，必设参数。
@@ -43,7 +43,7 @@ export class SmicIsogon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicIsogon.constructor
+     * @function LevelRenderer.Shape.SmicIsogon.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -52,7 +52,7 @@ export class SmicIsogon extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicIsogon.prototype.type
          * @description 图形类型。
          */
         this.type = 'smicisogon';
@@ -64,7 +64,7 @@ export class SmicIsogon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.destroy
+     * @function LevelRenderer.Shape.SmicIsogon.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -74,7 +74,7 @@ export class SmicIsogon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicIsogon.prototype.buildPath
      * @description 创建n角星（n>=3）路径。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -127,7 +127,7 @@ export class SmicIsogon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.getRect
+     * @function LevelRenderer.Shape.SmicIsogon.prototype.getRect
      * @description 计算返回正多边形的包围盒矩形。
      *
      * @param {Object} style - style

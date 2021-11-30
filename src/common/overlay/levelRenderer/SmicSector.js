@@ -6,12 +6,12 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicSector
+ * @class  LevelRenderer.Shape.SmicSector
  * @category Visualization Theme
  * @classdesc 扇形。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
+ *   var shape = new LevelRenderer.Shape.SmicSector({
  *         style: {
  *             x: 100,
  *             y: 100,
@@ -28,7 +28,7 @@ import {SUtil} from './SUtil';
 export class SmicSector extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicSector.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicSector.prototype.style
      * @description 绘制样式。
      *
      * @param {number} style.x - 圆心 x 坐标，必设参数。
@@ -59,16 +59,16 @@ export class SmicSector extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.constructor
+     * @function LevelRenderer.Shape.SmicSector.constructor
      * @description 构造函数。
-     * 
+     *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicSector.protptype.type
+         * @member {string} LevelRenderer.Shape.SmicSector.protptype.type
          * @description 图形类型。
          */
         this.type = 'smicsector';
@@ -79,7 +79,7 @@ export class SmicSector extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.destroy
+     * @function LevelRenderer.Shape.SmicSector.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -88,9 +88,9 @@ export class SmicSector extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicSector.prototype.buildPath
      * @description 创建扇形路径。
-     * 
+     *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
      * @param {Object} style - style。
      *
@@ -148,12 +148,12 @@ export class SmicSector extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.getRect
+     * @function LevelRenderer.Shape.SmicSector.prototype.getRect
      * @description 返回扇形包围盒矩形
      *
      * @param {Object} style - style
      * @return {Object} 边框对象。包含属性：x，y，width，height。
-     * 
+     *
      */
     getRect(style) {
         if (style.__rect) {
