@@ -5,14 +5,13 @@ import { StringExt } from './BaseTypes';
 import { Geometry } from './Geometry';
 
 /**
- * @memberOf SuperMap
  * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：
  *     * "opera" -- Opera
  *     * "msie"  -- Internet Explorer
  *     * "safari" -- Safari
  *     * "firefox" -- Firefox
  *     * "mozilla" -- Mozilla
- * @constant
+ * @constant {object}
  */
 const Browser = (function () {
   var name = '',
@@ -72,9 +71,8 @@ const isSupportCanvas = (function () {
 })();
 
 /**
- * @memberOf SuperMap
  * @description 如果 userAgent 捕获到浏览器使用的是 Gecko 引擎则返回 true。
- * @constant
+ * @constant {number}
  */
 const IS_GECKO = (function () {
   var ua = navigator.userAgent.toLowerCase();
@@ -82,16 +80,14 @@ const IS_GECKO = (function () {
 })();
 
 /**
- * @memberOf SuperMap
- * @member [SuperMap.DOTS_PER_INCH=96]
+ * @constant {number}
+ * @default
  * @description 分辨率与比例尺之间转换的常量。
- * @type {Object}
  */
 const DOTS_PER_INCH = 96;
 
 /**
  * @name Util
- * @memberOf SuperMap
  * @namespace
  * @category BaseTypes Util
  * @description common 工具类。
@@ -99,13 +95,12 @@ const DOTS_PER_INCH = 96;
 
 const Util = {
   /**
-   * @memberOf SuperMap.Util
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
    * @example
-   * 要复制 SuperMap.Size 对象的所有属性到自定义对象上，使用方法如下:
-   *     var size = new SuperMap.Size(100, 100);
+   * 要复制 Size 对象的所有属性到自定义对象上，使用方法如下:
+   *     var size = new Size(100, 100);
    *     var obj = {}；
-   *     SuperMap.Util.extend(obj, size);
+   *     Util.extend(obj, size);
    * @param {Object} [destination] - 目标对象。
    * @param {Object} source - 源对象，其属性将被设置到目标对象上。
    * @returns {Object} 目标对象。
@@ -265,8 +260,8 @@ const Util = {
    * @description 修改某 DOM 元素的许多属性。
    * @param {HTMLElement} element - 待修改的 DOM 元素。
    * @param {string} [id] - DOM 元素的 ID。
-   * @param {SuperMap.Pixel} [px] - 包含 DOM 元素的 style 属性的 left 和 top 属性。
-   * @param {SuperMap.Size} [sz] - 包含 DOM 元素的 width 和 height 属性。
+   * @param {Pixel} [px] - 包含 DOM 元素的 style 属性的 left 和 top 属性。
+   * @param {Size} [sz] - 包含 DOM 元素的 width 和 height 属性。
    * @param {string} [position] - DOM 元素的 position 属性。
    * @param {string} [border] - DOM 元素的 style 属性的 border 属性。
    * @param {string} [overflow] - DOM 元素的 style 属性的 overflow 属性。
@@ -304,7 +299,7 @@ const Util = {
 
   /**
    * @description Takes an object and copies any properties that don't exist from
-   *     another properties, by analogy with SuperMap.Util.extend() from
+   *     another properties, by analogy with Util.extend() from
    *     Prototype.js.
    *
    * @param {Object} [to] - 目标对象。
@@ -635,8 +630,8 @@ const Util = {
 
   /**
    * @description 计算 iServer 服务的 REST 图层的显示分辨率，需要从 iServer 的 REST 图层表述中获取 viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
-   * @param {SuperMap.Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
-   * @param {SuperMap.Size} viewer - 地图初始化时默认的地图图片的尺寸。
+   * @param {Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
+   * @param {Size} viewer - 地图初始化时默认的地图图片的尺寸。
    * @param {number} scale - 地图初始化时默认的显示比例尺。
    * @param {string} [coordUnit='degrees'] - 投影坐标系统的地图单位。
    * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则系统默认为 WGS84 参考系的椭球体长半轴 6378137。
@@ -746,7 +741,7 @@ const Util = {
           }
           let arr = [];
           for (let attr in objInn) {
-            //为解决SuperMap.Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
+            //为解决Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
             if (typeof objInn[attr] !== 'function' && attr !== 'CLASS_NAME' && attr !== 'parent') {
               arr.push("'" + attr + "':" + Util.toJSON(objInn[attr]));
             }
@@ -929,10 +924,10 @@ const Util = {
 
   /**
    * @description 判断两条线段是不是有交点。
-   * @param {SuperMap.Geometry.Point} a1 - 第一条线段的起始节点。
-   * @param {SuperMap.Geometry.Point} a2 - 第一条线段的结束节点。
-   * @param {SuperMap.Geometry.Point} b1 - 第二条线段的起始节点。
-   * @param {SuperMap.Geometry.Point} b2 - 第二条线段的结束节点。
+   * @param {GeometryPoint} a1 - 第一条线段的起始节点。
+   * @param {GeometryPoint} a2 - 第一条线段的结束节点。
+   * @param {GeometryPoint} b1 - 第二条线段的起始节点。
+   * @param {GeometryPoint} b2 - 第二条线段的结束节点。
    * @returns {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
    */
   lineIntersection: function (a1, a2, b1, b2) {
@@ -975,7 +970,7 @@ const Util = {
 
   /**
    * @description 获取文本外接矩形宽度与高度。
-   * @param {SuperMap.ThemeStyle} style - 文本样式。
+   * @param {ThemeStyle} style - 文本样式。
    * @param {string} text - 文本内容。
    * @param {Object} element - DOM 元素。
    * @returns {Object} 返回裁剪后的宽度，高度信息。
@@ -1029,10 +1024,9 @@ const Util = {
 };
 
 /**
- * @memberOf SuperMap
+ * @enum INCHES_PER_UNIT
  * @description 每单位的英尺数。
- * @type {Object}
- * @constant
+ * @type {number}
  */
 const INCHES_PER_UNIT = {
   inches: 1.0,

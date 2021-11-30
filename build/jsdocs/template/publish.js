@@ -244,7 +244,7 @@ function buildNav(members, view, templatePath) {
 }
 
 function sortNav(members) {
-    var merged = members.namespaces.concat(members.classes);
+    var merged = members.namespaces.concat(members.classes, members.globals);
     merged.sort(function (a, b) {
         return a.longname.toLowerCase() > b.longname.toLowerCase()
     });
@@ -316,8 +316,7 @@ function buildNavMap(members) {
                     memberof: v.longname
                 })
             };
-        }
-        if (v.kind == 'class') {
+        } else if (v.kind == 'class') {
             nav = {
                 type: 'class',
                 longname: v.longname,
@@ -341,6 +340,29 @@ function buildNavMap(members) {
                     memberof: v.longname
                 })
             };
+        } else if (v.scope === 'global') {
+          nav = {
+              type: 'global',
+              longname: v.longname,
+              version:v.version,
+              name: v.name,
+              members: find({
+                  kind: 'member',
+                  memberof: v.longname
+              }),
+              methods: find({
+                  kind: 'function',
+                  memberof: v.longname
+              }),
+              typedefs: find({
+                  kind: 'typedef',
+                  memberof: v.longname
+              }),
+              events: find({
+                  kind: 'event',
+                  memberof: v.longname
+              })
+          };
         }
         navMap[v.longname] = nav;
 

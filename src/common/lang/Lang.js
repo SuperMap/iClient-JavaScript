@@ -5,7 +5,6 @@
  import { zh } from './locales/zh-CN';
 /**
  * @name Lang
- * @memberOf SuperMap
  * @namespace
  * @category BaseTypes
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
@@ -14,19 +13,19 @@ let Lang = {
    'en-US': en,
    "zh-CN": zh,
     /**
-     * @member {string} SuperMap.Lang.code
+     * @member {string} Lang.code
      * @description 当前所使用的语言类型。
      */
     code: null,
 
     /**
-     * @member {string} [SuperMap.Lang.defaultCode='en-US']
+     * @member {string} [Lang.defaultCode='en-US']
      * @description 默认使用的语言类型。
      */
     defaultCode: "en-US",
 
     /**
-     * @function SuperMap.Lang.getCode
+     * @function Lang.getCode
      * @description 获取当前的语言代码。
      * @returns {string} 当前的语言代码。
      */
@@ -38,7 +37,7 @@ let Lang = {
     },
 
     /**
-     * @function SuperMap.Lang.setCode
+     * @function Lang.setCode
      * @description 设置语言代码。
      * @param {string} code - 此参数遵循IETF规范。
      */
@@ -64,7 +63,7 @@ let Lang = {
         Lang.code = lang;
     },
     /**
-     * @function SuperMap.Lang.getLanguageFromCookie
+     * @function Lang.getLanguageFromCookie
      * @description 从 cookie 中获取语言类型。
      */
     getLanguageFromCookie() {
@@ -83,7 +82,7 @@ let Lang = {
     },
 
     /**
-     * @function SuperMap.Lang.i18n
+     * @function Lang.i18n
      * @description 从当前语言字符串的字典查找 key。
      * @param {string} key - 字典中 i18n 字符串值的关键字。
      * @returns {string} 国际化的字符串。

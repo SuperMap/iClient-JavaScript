@@ -175,17 +175,51 @@ var RequestJSONPPromise = {
 var CORS;
 var RequestTimeout;
 /**
- * @function SuperMap.setCORS
+ * @function setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cnd}"></script>
+  <script>
+    {namespace}.setCORS(cors);
+
+    // 弃用的写法
+    SuperMap.setCORS(cors);
+
+  </script>
+
+  // ES6 Import
+  import { setCORS } from '{npm}';
+
+  setCORS(cors);
+ * ```
  */
 export var setCORS = function (cors) {
     CORS = cors;
 }
 /**
- * @function SuperMap.isCORS
+ * @function isCORS
  * @description 是是否允许跨域请求。
  * @returns {boolean} 是否允许跨域请求。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cnd}"></script>
+  <script>
+    {namespace}.isCORS();
+
+    // 弃用的写法
+    SuperMap.isCORS();
+
+  </script>
+
+  // ES6 Import
+  import { isCORS } from '{npm}';
+
+  isCORS();
+ * ```
  */
 export var isCORS = function () {
     if (CORS != undefined) {
@@ -194,17 +228,51 @@ export var isCORS = function () {
     return window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
 }
 /**
- * @function SuperMap.setRequestTimeout
+ * @function setRequestTimeout
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cnd}"></script>
+  <script>
+    {namespace}.setRequestTimeout(timeout);
+
+    // 弃用的写法
+    SuperMap.setRequestTimeout(timeout);
+
+  </script>
+
+  // ES6 Import
+  import { setRequestTimeout } from '{npm}';
+
+  setRequestTimeout(timeout);
+ * ```
  */
 export var setRequestTimeout = function (timeout) {
     return RequestTimeout = timeout;
 }
 /**
- * @function SuperMap.getRequestTimeout
+ * @function getRequestTimeout
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cnd}"></script>
+  <script>
+    {namespace}.getRequestTimeout();
+
+    // 弃用的写法
+    SuperMap.getRequestTimeout();
+
+  </script>
+
+  // ES6 Import
+  import { getRequestTimeout } from '{npm}';
+
+  getRequestTimeout();
+ * ```
  */
 export var getRequestTimeout = function () {
     return RequestTimeout || 45000;

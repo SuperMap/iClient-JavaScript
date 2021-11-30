@@ -4,7 +4,6 @@
 
  /**
  * @enum DataFormat
- * @memberOf SuperMap
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
@@ -17,7 +16,6 @@ var DataFormat = {
 
 /**
  * @enum ServerType
- * @memberOf SuperMap
  * @description 服务器类型
  * @type {string}
  */
@@ -32,7 +30,6 @@ var ServerType = {
 
 /**
  * @enum GeometryType
- * @memberOf SuperMap
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
@@ -67,7 +64,6 @@ var GeometryType = {
 
 /**
  * @enum QueryOption
- * @memberOf SuperMap
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
@@ -82,7 +78,6 @@ var QueryOption = {
 
 /**
  * @enum JoinType
- * @memberOf SuperMap
  * @description 关联查询时的关联类型常量。
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
@@ -96,7 +91,6 @@ var JoinType = {
 
 /**
  * @enum SpatialQueryMode
- * @memberOf SuperMap
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
@@ -123,7 +117,6 @@ var SpatialQueryMode = {
 
 /**
  * @enum SpatialRelationType
- * @memberOf SuperMap
  * @description  数据集对象间的空间关系枚举。
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
@@ -139,7 +132,6 @@ var SpatialRelationType = {
 
 /**
  * @enum MeasureMode
- * @memberOf SuperMap
  * @type {string}
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
@@ -153,7 +145,6 @@ var MeasureMode = {
 
 /**
  * @enum Unit
- * @memberOf SuperMap
  * @description  距离单位枚举。
  * 该类定义了一系列距离单位类型。
  * @type {string}
@@ -189,7 +180,6 @@ var Unit = {
 
 /**
  * @enum BufferRadiusUnit
- * @memberOf SuperMap
  * @description  缓冲区距离单位枚举。
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
@@ -217,7 +207,6 @@ var BufferRadiusUnit = {
 
 /**
  * @enum EngineType
- * @memberOf SuperMap
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
@@ -238,7 +227,6 @@ var EngineType = {
 
 /**
  * @enum ThemeGraphTextFormat
- * @memberOf SuperMap
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
@@ -258,7 +246,6 @@ var ThemeGraphTextFormat = {
 
 /**
  * @enum ThemeGraphType
- * @memberOf SuperMap
  * @description  统计专题图类型枚举。
  * @type {string}
  */
@@ -293,7 +280,6 @@ var ThemeGraphType = {
 
 /**
  * @enum GraphAxesTextDisplayMode
- * @memberOf SuperMap
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
@@ -308,7 +294,6 @@ var GraphAxesTextDisplayMode = {
 
 /**
  * @enum GraduatedMode
- * @memberOf SuperMap
  * @description  专题图分级模式枚举。
  *
  * @type {string}
@@ -324,7 +309,6 @@ var GraduatedMode = {
 
 /**
  * @enum RangeMode
- * @memberOf SuperMap
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
@@ -345,7 +329,6 @@ var RangeMode = {
 
 /**
  * @enum ThemeType
- * @memberOf SuperMap
  * @description  专题图类型枚举。
  * @type {string}
  */
@@ -366,7 +349,6 @@ var ThemeType = {
 
 /**
  * @enum ColorGradientType
- * @memberOf SuperMap
  * @description  渐变颜色枚举。
  * @type {string}
  */
@@ -429,7 +411,6 @@ var ColorGradientType = {
 
 /**
  * @enum TextAlignment
- * @memberOf SuperMap
  * @description  文本对齐枚举。
  * @type {string}
  */
@@ -462,7 +443,6 @@ var TextAlignment = {
 
 /**
  * @enum FillGradientMode
- * @memberOf SuperMap
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
@@ -481,7 +461,6 @@ var FillGradientMode = {
 
 /**
  * @enum AlongLineDirection
- * @memberOf SuperMap
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
@@ -500,7 +479,6 @@ var AlongLineDirection = {
 
 /**
  * @enum LabelBackShape
- * @memberOf SuperMap
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
@@ -523,7 +501,6 @@ var LabelBackShape = {
 
 /**
  * @enum LabelOverLengthMode
- * @memberOf SuperMap
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
@@ -538,7 +515,6 @@ var LabelOverLengthMode = {
 
 /**
  * @enum DirectionType
- * @memberOf SuperMap
  * @description  网络分析中方向枚举。
  * 在行驶引导子项中使用。
  * @type {string}
@@ -558,7 +534,6 @@ var DirectionType = {
 
 /**
  * @enum SideType
- * @memberOf SuperMap
  * @description  行驶位置枚举。
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
@@ -576,7 +551,6 @@ var SideType = {
 
 /**
  * @enum SupplyCenterType
- * @memberOf SuperMap
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
@@ -593,7 +567,6 @@ var SupplyCenterType = {
 
 /**
  * @enum TurnType
- * @memberOf SuperMap
  * @description  转弯方向枚举。
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
@@ -615,7 +588,6 @@ var TurnType = {
 
 /**
  * @enum BufferEndType
- * @memberOf SuperMap
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
@@ -627,7 +599,6 @@ var BufferEndType = {
 };
 /**
  * @enum OverlayOperationType
- * @memberOf SuperMap
  * @description  叠加分析类型枚举。
  * @type {string}
  */
@@ -650,7 +621,6 @@ var BufferEndType = {
 
 /**
  * @enum OutputType
- * @memberOf SuperMap
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
@@ -667,7 +637,6 @@ var OutputType =  {
 
 /**
  * @enum SmoothMethod
- * @memberOf SuperMap
  * @description  光滑方法枚举。
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
@@ -681,7 +650,6 @@ var OutputType =  {
 
 /**
  * @enum SurfaceAnalystMethod
- * @memberOf SuperMap
  * @description  表面分析方法枚举。
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
@@ -695,7 +663,6 @@ var SurfaceAnalystMethod = {
 
 /**
  * @enum DataReturnMode
- * @memberOf SuperMap
  * @description  数据返回模式枚举。
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
@@ -711,7 +678,6 @@ var DataReturnMode = {
 
 /**
  * @enum EditType
- * @memberOf SuperMap
  * @description  要素集更新模式枚举。
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
@@ -727,7 +693,6 @@ var EditType = {
 
 /**
  * @enum TransferTactic
- * @memberOf SuperMap
  * @description  公交换乘策略枚举。
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
@@ -745,7 +710,6 @@ var TransferTactic = {
 
 /**
  * @enum TransferPreference
- * @memberOf SuperMap
  * @description  公交换乘策略枚举。
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
@@ -763,7 +727,6 @@ var TransferPreference = {
 
 /**
  * @enum GridType
- * @memberOf SuperMap
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
@@ -778,7 +741,6 @@ var GridType =  {
 
 /**
  * @enum ColorSpaceType
- * @memberOf SuperMap
  * @description  色彩空间枚举。
  * 由于成色原理的不同，决定了显示器、投影仪这类靠色光直接合成颜色的颜色设备和打印机、
  * 印刷机这类靠使用颜料的印刷设备在生成颜色方式上的区别。
@@ -795,7 +757,6 @@ var ColorSpaceType = {
 
 /**
  * @enum LayerType
- * @memberOf SuperMap
  * @description  图层类型。
  * @type {string}
  */
@@ -812,7 +773,6 @@ var LayerType = {
 
 /**
  * @enum UGCLayerType
- * @memberOf SuperMap
  * @description  UGC图层类型。
  * @type {string}
  */
@@ -829,7 +789,6 @@ var UGCLayerType = {
 
 /**
  * @enum StatisticMode
- * @memberOf SuperMap
  * @description  字段统计方法类型。
  * @type {string}
  */
@@ -850,7 +809,6 @@ var StatisticMode = {
 
 /**
  * @enum PixelFormat
- * @memberOf SuperMap
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
@@ -879,7 +837,6 @@ var PixelFormat = {
 
 /**
  * @enum SearchMode
- * @memberOf SuperMap
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
@@ -896,7 +853,6 @@ var SearchMode = {
 
 /**
  * @enum InterpolationAlgorithmType
- * @memberOf SuperMap
  * @description  插值分析的算法的类型
  * @type {string}
  */
@@ -911,7 +867,6 @@ var InterpolationAlgorithmType = {
 
 /**
  * @enum VariogramMode
- * @memberOf SuperMap
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
@@ -926,7 +881,6 @@ var VariogramMode = {
 
 /**
  * @enum Exponent
- * @memberOf SuperMap
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
@@ -939,7 +893,6 @@ var Exponent = {
 
 /**
  * @enum ClientType
- * @memberOf SuperMap
  * @description token申请的客户端标识类型
  * @type {string}
  */
@@ -960,7 +913,6 @@ var ClientType = {
 
 /**
  * @enum ChartType
- * @memberOf SuperMap
  * @description 客户端专题图图表类型
  * @type {string}
  */
@@ -983,7 +935,6 @@ var ChartType = {
 
 /**
  * @enum ClipAnalystMode
- * @memberOf SuperMap
  * @description  裁剪分析模式
  * @type {string}
  */
@@ -996,7 +947,6 @@ var ClipAnalystMode = {
 
 /**
  * @enum AnalystAreaUnit
- * @memberOf SuperMap
  * @description 分布式分析面积单位
  * @type {string}
  */
@@ -1021,7 +971,6 @@ var AnalystAreaUnit = {
 
 /**
  * @enum AnalystSizeUnit
- * @memberOf SuperMap
  * @description 分布式分析单位
  * @type {string}
  */
@@ -1040,7 +989,6 @@ var AnalystSizeUnit = {
 
 /**
  * @enum StatisticAnalystMode
- * @memberOf SuperMap
  * @description 分布式分析统计模式
  * @type {string}
  */
@@ -1061,7 +1009,6 @@ var StatisticAnalystMode = {
 
 /**
  * @enum SummaryType
- * @memberOf SuperMap
  * @description 分布式分析聚合类型
  * @type {string}
  */
@@ -1074,7 +1021,6 @@ var SummaryType = {
 
 /**
  * @enum TopologyValidatorRule
- * @memberOf SuperMap
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
@@ -1097,7 +1043,6 @@ var TopologyValidatorRule = {
 
 /**
  * @enum BucketAggType
- * @memberOf SuperMap
  * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
@@ -1108,7 +1053,6 @@ var BucketAggType = {
 
 /**
  * @enum MetricsAggType
- * @memberOf SuperMap
  * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
  */
@@ -1125,7 +1069,6 @@ var MetricsAggType = {
 
 /**
  * @enum GetFeatureMode
- * @memberOf SuperMap
  * @description feature 查询方式。
  * @type {string}
  */
@@ -1144,7 +1087,6 @@ var GetFeatureMode = {
 
 /**
  * @enum RasterFunctionType
- * @memberOf SuperMap
  * @description 栅格分析方法。
  * @type {string}
  */
@@ -1157,7 +1099,6 @@ var RasterFunctionType = {
 
 /**
  * @enum ResourceType
- * @memberOf SuperMap
  * @description iportal资源类型。
  * @version 10.0.1
  * @type {string}
@@ -1179,7 +1120,6 @@ var ResourceType = {
 
 /**
  * @enum OrderBy
- * @memberOf SuperMap
  * @description iportal资源排序字段。
  * @version 10.0.1
  * @type {string}
@@ -1195,7 +1135,6 @@ var OrderBy = {
 
 /**
  * @enum OrderType
- * @memberOf SuperMap
  * @description iportal资源升序还是降序过滤
  * @version 10.0.1
  * @type {string}
@@ -1209,7 +1148,6 @@ var OrderType = {
 
 /**
  * @enum SearchType
- * @memberOf SuperMap
  * @description iportal资源查询的范围进行过滤
  * @version 10.0.1
  * @type {string}
@@ -1229,7 +1167,6 @@ var SearchType = {
 
 /**
  * @enum AggregationTypes
- * @memberOf SuperMap
  * @description iportal资源聚合查询的类型
  * @version 10.0.1
  * @type {string}
@@ -1243,7 +1180,6 @@ var AggregationTypes = {
 
 /**
  * @enum PermissionType
- * @memberOf SuperMap
  * @description iportal资源权限类型。
  * @version 10.0.1
  * @type {string}
@@ -1263,7 +1199,6 @@ var PermissionType = {
 
 /**
  * @enum EntityType
- * @memberOf SuperMap
  * @description iportal资源实体类型。
  * @version 10.0.1
  * @type {string}
@@ -1283,7 +1218,6 @@ var EntityType = {
 
 /**
  * @enum DataItemType
- * @memberOf SuperMap
  * @description iportal数据类型。
  * @version 10.0.1
  * @type {string}
@@ -1349,7 +1283,6 @@ var DataItemType = {
 
 /**
  * @enum WebExportFormatType
- * @memberOf SuperMap
  * @description Web 打印输出的格式。
  * @version 10.0.1
  * @type {string}
@@ -1363,7 +1296,6 @@ var WebExportFormatType = {
 
 /**
  * @enum WebScaleOrientationType
- * @memberOf SuperMap
  * @description Web 比例尺的方位样式。
  * @version 10.0.1
  * @type {string}
@@ -1381,7 +1313,6 @@ var WebScaleOrientationType = {
 
 /**
  * @enum WebScaleType
- * @memberOf SuperMap
  * @description Web 比例尺的样式。
  * @version 10.0.1
  * @type {string}
@@ -1397,7 +1328,6 @@ var WebScaleType = {
 
 /**
  * @enum WebScaleUnit
- * @memberOf SuperMap
  * @description Web 比例尺的单位制。
  * @version 10.0.1
  * @type {string}
