@@ -6,12 +6,13 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
 
 /**
 /**
- * @class ol.supermap.GridCellInfosService
+ * @class GridCellInfosService
+ * @deprecatedclass ol.supermap.GridCellInfosService
  * @category  iServer Data Grid
  * @classdesc 数据栅格查询服务。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      new ol.supermap.GridCellInfosService(url)
+ *      new GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
@@ -22,6 +23,7 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class GridCellInfosService extends ServiceBase {
 
@@ -30,8 +32,8 @@ export class GridCellInfosService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.GridCellInfosService.prototype.getGridCellInfos
-     * @param {SuperMap.GetGridCellInfosParameters} params - 查询所需参数类。
+     * @function GridCellInfosService.prototype.getGridCellInfos
+     * @param {GetGridCellInfosParameters} params - 查询所需参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getGridCellInfos(params, callback) {

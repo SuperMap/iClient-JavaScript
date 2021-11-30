@@ -9,10 +9,6 @@ export {MapExtend} from './MapExtend';
  * @category BaseTypes Namespace
  */
 /**
- * @namespace ol.supermap
- * @category BaseTypes Namespace
- */
-/**
  * @namespace ol.style
  * @category BaseTypes Namespace
  */

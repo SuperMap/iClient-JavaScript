@@ -7,11 +7,12 @@ import { GetFieldsService } from '@supermap/iclient-common/iServer/GetFieldsServ
 import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldStatisticService';
 
 /**
- * @class ol.supermap.FieldService
+ * @class FieldService
+ * @deprecatedclass ol.supermap.FieldService
  * @category  iServer Data Field
  * @classdesc 字段服务类。
  * @example
- *      new ol.supermap.FieldService(url).getFields(function(result){
+ *      new FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
  * @param {string} url - 与客户端交互的服务地址。
@@ -20,7 +21,8 @@ import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldSta
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export class FieldService extends ServiceBase {
 
@@ -29,9 +31,9 @@ export class FieldService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.FieldService.prototype.getFields
+     * @function FieldService.prototype.getFields
      * @description 字段查询服务。
-     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类。
+     * @param {FieldParameters} params - 字段信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getFields(params, callback) {
@@ -53,9 +55,9 @@ export class FieldService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.FieldService.prototype.getFieldStatisticsInfo
+     * @function FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务。
-     * @param {SuperMap.FieldStatisticsParameters} params - 查询所需参数类。
+     * @param {FieldStatisticsParameters} params - 查询所需参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {

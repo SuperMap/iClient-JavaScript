@@ -366,7 +366,7 @@ export class HeatMap extends ImageCanvasSource {
     /**
      * @function ol.source.HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
+     * @param {Array.<GeometryVector>} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -409,7 +409,7 @@ export class HeatMap extends ImageCanvasSource {
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {GeoJSONObject|Array.<ol/Feature>} features - 待添加的要素数组。
-     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
+     * @returns {GeometryVector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {

@@ -26,7 +26,7 @@ import {
  * @param {number} [opt_options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
  * @param {Array.<number>} [opt_options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox（由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  * @param {number} [opt_options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @param {string} opt_options.themeFields - 指定创建专题图字段。 
+ * @param {string} opt_options.themeFields - 指定创建专题图字段。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity = 1] - 图层透明度。
  * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
@@ -80,7 +80,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据。
-     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature)} features - 待添加的要素。
+     * @param {(ServerFeature|L.supermap.ThemeFeature)} features - 待添加的要素。
      */
     addFeatures(features) {
         var ret = this.dispatchEvent({
@@ -148,7 +148,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.createThematicFeature
      * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
-     * @param {SuperMap.ServerFeature} feature - 待添加的要素。
+     * @param {ServerFeature} feature - 待添加的要素。
      *
      */
     createThematicFeature(feature) {
@@ -356,7 +356,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.isChartInMap
      * @description  判断图表是否在地图里。
-     * @param {SuperMap.Bounds} mapPxBounds - 地图像素范围。
+     * @param {Bounds} mapPxBounds - 地图像素范围。
      * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
      */
     isChartInMap(mapPxBounds, chartPxBounds) {
@@ -385,7 +385,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素。
+     * @param {GeometryVector} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();

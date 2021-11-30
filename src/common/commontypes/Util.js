@@ -87,7 +87,7 @@ const IS_GECKO = (function () {
 const DOTS_PER_INCH = 96;
 
 /**
- * @name Util
+ * @name CommonUtil
  * @namespace
  * @category BaseTypes Util
  * @description common 工具类。
@@ -95,12 +95,13 @@ const DOTS_PER_INCH = 96;
 
 const Util = {
   /**
+   * @memberOf CommonUtil
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
    * @example
    * 要复制 Size 对象的所有属性到自定义对象上，使用方法如下:
    *     var size = new Size(100, 100);
    *     var obj = {}；
-   *     Util.extend(obj, size);
+   *     CommonUtil.extend(obj, size);
    * @param {Object} [destination] - 目标对象。
    * @param {Object} source - 源对象，其属性将被设置到目标对象上。
    * @returns {Object} 目标对象。
@@ -137,6 +138,7 @@ const Util = {
     return destination;
   },
   /**
+   * @memberOf CommonUtil
    * @description 对象拷贝。
    * @param {Object} [des] - 目标对象。
    * @param {Object} soc - 源对象。
@@ -154,6 +156,7 @@ const Util = {
     }
   },
   /**
+   * @memberOf CommonUtil
    * @description 销毁对象，将其属性置空。
    * @param {Object} [obj] - 目标对象。
    */
@@ -179,6 +182,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 获取 HTML 元素数组。
    * @returns {Array.<HTMLElement>} HTML 元素数组。
    */
@@ -199,6 +203,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description instance of 的跨浏览器实现。
    * @param {Object} o - 对象。
    * @returns {boolean} 是否是页面元素。
@@ -208,6 +213,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 判断一个对象是否是数组。
    * @param {Object} a - 对象。
    * @returns {boolean} 是否是数组。
@@ -217,6 +223,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 从数组中删除某一项。
    * @param {Array} array - 数组。
    * @param {Object} item - 数组中要删除的一项。
@@ -233,6 +240,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 获取某对象再数组中的索引值。
    * @param {Array} array - 数组。
    * @param {Object} obj - 对象。
@@ -257,6 +265,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 修改某 DOM 元素的许多属性。
    * @param {HTMLElement} element - 待修改的 DOM 元素。
    * @param {string} [id] - DOM 元素的 ID。
@@ -298,8 +307,9 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description Takes an object and copies any properties that don't exist from
-   *     another properties, by analogy with Util.extend() from
+   *     another properties, by analogy with CommonUtil.extend() from
    *     Prototype.js.
    *
    * @param {Object} [to] - 目标对象。
@@ -345,6 +355,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 将参数对象转换为 HTTP 的 GET 请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
    * @param {Object} params - 参数对象。
    * @returns {string} HTTP 的 GET 请求中的参数字符串。
@@ -370,6 +381,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 给 URL 追加查询参数。
    * @param {string} url - 待追加参数的 URL 字符串。
    * @param {string} paramStr - 待追加的查询参数。
@@ -388,6 +400,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 给 URL 追加 path 参数。
    * @param {string} url - 待追加参数的 URL 字符串。
    * @param {string} paramStr - 待追加的path参数。
@@ -410,6 +423,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 为了避免浮点精度错误而保留的有效位数。
    * @type {number}
    * @default 14
@@ -417,6 +431,7 @@ const Util = {
   DEFAULT_PRECISION: 14,
 
   /**
+   * @memberOf CommonUtil
    * @description 将字符串以接近的精度转换为数字。
    * @param {string} number - 字符串。
    * @param {number} [precision=14] - 精度。
@@ -433,6 +448,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 角度转弧度。
    * @param {number} x - 角度。
    * @returns {number} 弧度。
@@ -442,6 +458,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 从 URL 字符串中解析出参数对象。
    * @param {string} url - URL。
    * @returns {Object} 解析出的参数对象。
@@ -494,6 +511,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 不断递增计数变量，用于生成唯一 ID。
    * @type {number}
    * @default 0
@@ -501,6 +519,7 @@ const Util = {
   lastSeqID: 0,
 
   /**
+   * @memberOf CommonUtil
    * @description 创建唯一 ID 值。
    * @param {string} [prefix] - 前缀。
    * @returns {string} 唯一的 ID 值。
@@ -514,6 +533,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @param {number} scale - 比例尺。
    * @returns {number} 返回正常的 scale 值。
    */
@@ -523,6 +543,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 比例尺转分辨率。
    * @param {number} scale - 比例尺。
    * @param {string} [units='degrees'] - 比例尺单位。
@@ -541,6 +562,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 分辨率转比例尺。
    * @param {number} resolution - 分辨率。
    * @param {string} [units='degrees'] - 分辨率单位。
@@ -556,6 +578,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 获取浏览器相关信息。支持的浏览器包括：Opera，Internet Explorer，Safari，Firefox。
    * @returns {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
    */
@@ -564,12 +587,14 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 浏览器是否支持 Canvas。
    * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
    */
   isSupportCanvas,
 
   /**
+   * @memberOf CommonUtil
    * @description 判断；浏览器是否支持 Canvas。
    * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
    */
@@ -578,6 +603,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 判断一个 URL 请求是否在当前域中。
    * @param {string} url - URL 请求字符串。
    * @returns {boolean} URL 请求是否在当前域中。
@@ -629,6 +655,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 计算 iServer 服务的 REST 图层的显示分辨率，需要从 iServer 的 REST 图层表述中获取 viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
    * @param {Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
    * @param {Size} viewer - 地图初始化时默认的地图图片的尺寸。
@@ -668,6 +695,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 将对象转换成 JSON 字符串。
    * @param {Object} obj - 要转换成 JSON 的 Object 对象。
    * @returns {string} 返回转换后的 JSON 对象。
@@ -758,6 +786,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 根据比例尺和 dpi 计算屏幕分辨率。
    * @param {number} scale - 比例尺。
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
@@ -790,6 +819,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 根据 resolution、dpi、coordUnit 和 datumAxis 计算比例尺。
    * @param {number} resolution - 用于计算比例尺的地图分辨率。
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
@@ -820,6 +850,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 转换查询结果。
    * @param {Object} result - 查询结果。
    * @returns {Object} 转换后的查询结果。
@@ -832,6 +863,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 属性拷贝，不拷贝方法类名(CLASS_NAME)等。
    * @param {Object} [destination] - 拷贝目标。
    * @param {Object} source - 源对象。
@@ -851,6 +883,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 将源对象上的属性拷贝到目标对象上。（不拷贝 CLASS_NAME 和方法）
    * @param {Object} [destination] - 目标对象。
    * @param {Object} source - 源对象。
@@ -885,6 +918,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 克隆一个 Object 对象
    * @param {Object} obj - 需要克隆的对象。
    * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
@@ -923,6 +957,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 判断两条线段是不是有交点。
    * @param {GeometryPoint} a1 - 第一条线段的起始节点。
    * @param {GeometryPoint} a2 - 第一条线段的结束节点。
@@ -969,6 +1004,7 @@ const Util = {
   },
 
   /**
+   * @memberOf CommonUtil
    * @description 获取文本外接矩形宽度与高度。
    * @param {ThemeStyle} style - 文本样式。
    * @param {string} text - 文本内容。
@@ -1002,6 +1038,7 @@ const Util = {
     };
   },
   /**
+   * @memberOf CommonUtil
    * @description 获取转换后的path路径。
    * @param {string} path - 待转换的path, 包含`{param}`。
    * @param {Object} pathParams - path中待替换的参数。

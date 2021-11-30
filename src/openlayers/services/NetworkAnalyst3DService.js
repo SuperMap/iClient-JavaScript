@@ -9,13 +9,13 @@ import { FacilityAnalystTracedown3DService } from '@supermap/iclient-common/iSer
 import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServer/FacilityAnalystUpstream3DService';
 
 /**
- * @class ol.supermap.NetworkAnalyst3DService
+ * @class NetworkAnalyst3DService
+ * @deprecatedclass ol.supermap.NetworkAnalyst3DService
  * @category  iServer FacilityAnalyst3D
  * @classdesc 3D 网络分析服务类。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      new ol.supermap.NetworkAnalyst3DService(url)
- *      .sinksFacilityAnalyst(params,function(result){
+ *      new NetworkAnalyst3DService(url).sinksFacilityAnalyst(params,function(result){
  *           //doSomething
  *      })
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL 应为：
@@ -26,6 +26,7 @@ import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServ
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class NetworkAnalyst3DService extends ServiceBase {
 
@@ -34,11 +35,11 @@ export class NetworkAnalyst3DService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
+     * @function NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
-     * @param {SuperMap.FacilityAnalystSinks3DParameters} params- 最近设施分析参数类（汇查找资源）。
+     * @param {FacilityAnalystSinks3DParameters} params- 最近设施分析参数类（汇查找资源）。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.NetworkAnalyst3DService} 3D 网络分析服务。
+     * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sinksFacilityAnalyst(params, callback) {
         var me = this;
@@ -58,11 +59,11 @@ export class NetworkAnalyst3DService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
+     * @function NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务。
-     * @param {SuperMap.FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
+     * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.NetworkAnalyst3DService} 3D 网络分析服务。
+     * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sourcesFacilityAnalyst(params, callback) {
         var me = this;
@@ -82,11 +83,11 @@ export class NetworkAnalyst3DService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
+     * @function NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务。
-     * @param {SuperMap.FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
+     * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.NetworkAnalyst3DService} 3D 网络分析服务。
+     * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
 
     traceUpFacilityAnalyst(params, callback) {
@@ -107,11 +108,11 @@ export class NetworkAnalyst3DService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
+     * @function NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务。
-     * @param {SuperMap.FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类。
+     * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.NetworkAnalyst3DService} 3D 网络分析服务。
+     * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     traceDownFacilityAnalyst(params, callback) {
         var me = this;
@@ -131,11 +132,11 @@ export class NetworkAnalyst3DService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
+     * @function NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务。
-     * @param {SuperMap.FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类。
+     * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.NetworkAnalyst3DService} 3D 网络分析服务。
+     * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     upstreamFacilityAnalyst(params, callback) {
         var me = this;

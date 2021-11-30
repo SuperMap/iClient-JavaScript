@@ -6,10 +6,11 @@ import { MapService as CommonMapService } from '@supermap/iclient-common/iServer
 import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
 
 /**
- * @class ol.supermap.MapService
+ * @class MapService
+ * @deprecatedclass ol.supermap.MapService
  * @category  iServer Map
  * @classdesc 地图信息服务类。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 地图服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -17,10 +18,10 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- *   new ol.supermap.MapService(url)
- *      .getMapInfo(function(result){
+ *   new MapService(url).getMapInfo(function(result){
  *           //doSomething
  *      })
+ * @usage
  */
 export class MapService extends ServiceBase {
 
@@ -29,10 +30,10 @@ export class MapService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MapService.prototype.getMapInfo
+     * @function MapService.prototype.getMapInfo
      * @description 地图信息查询服务。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.MapService} 获取服务信息。
+     * @returns {MapService} 获取服务信息。
      */
     getMapInfo(callback) {
         var me = this;
@@ -51,10 +52,10 @@ export class MapService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MapService.prototype.getTilesets
+     * @function MapService.prototype.getTilesets
      * @description 切片列表信息查询服务。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {ol.supermap.MapService} 获取服务信息。
+     * @returns {MapService} 获取服务信息。
      */
     getTilesets(callback) {
         var me = this;

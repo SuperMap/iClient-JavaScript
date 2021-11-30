@@ -5,12 +5,13 @@ import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
 import Control from 'ol/control/Control';
 
 /**
- * @class ol.supermap.control.Logo
+ * @class Logo
+ * @deprecatedclass ol.supermap.control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @extends {ol/control/Control}
  * @example
- *      var control = new ol.supermap.control.Logo();
+ *      var control = new Logo();
  *      map.addControl(control);
  * @param {Object} options - logo 控件配置项。
  * @param {string} [options.imageUrl] - logo 图片地址。
@@ -18,6 +19,7 @@ import Control from 'ol/control/Control';
  * @param {number} [options.height] - logo 图片高。
  * @param {string} [options.link='https://iclient.supermap.io'] - 跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
+ * @usage
  */
 export class Logo extends Control {
 
@@ -33,7 +35,7 @@ export class Logo extends Control {
         this.element = options.element = initLayerout.call(this);
 
         /**
-         * @function ol.supermap.control.Logo.prototype.initLayerout
+         * @function Logo.prototype.initLayerout
          * @description 初始化图层信息。
          */
         function initLayerout() {
@@ -69,7 +71,7 @@ export class Logo extends Control {
         }
 
         /**
-         * @function ol.supermap.control.Logo.prototype.setDivStyle
+         * @function Logo.prototype.setDivStyle
          * @description 设置对象 style。
          * @param {HTMLElement} 待设置的 div。
          */

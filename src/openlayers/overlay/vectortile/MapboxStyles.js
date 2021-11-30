@@ -13,7 +13,8 @@ import FillStyle from 'ol/style/Fill';
 import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 /**
- * @class ol.supermap.MapboxStyles
+ * @class MapboxStyles
+ * @deprecatedclass ol.supermap.MapboxStyles
  * @classdesc Mapbox 矢量瓦片风格。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
@@ -34,7 +35,7 @@ import Text from 'ol/style/Text';
  * @param {ol/StyleFunction} [options.selectedStyle] -选中样式Function。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @example
- *  var mbStyle = new ol.supermap.MapboxStyles({
+ *  var mbStyle = new MapboxStyles({
             url: url,
             source: 'California',
             resolutions: [78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564]
@@ -54,6 +55,7 @@ import Text from 'ol/style/Text';
             });
             map.addLayer(vectorLayer);
         })
+ * @usage
  */
 export class MapboxStyles extends Observable {
     constructor(options) {
@@ -103,7 +105,7 @@ export class MapboxStyles extends Observable {
         this._loadStyle(this.styleTarget);
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.getStyleFunction
+     * @function MapboxStyles.prototype.getStyleFunction
      * @description 获取 ol/StyleFunction。
      * @returns {ol/StyleFunction} 返回 ol/StyleFunction
      */
@@ -111,7 +113,7 @@ export class MapboxStyles extends Observable {
         return this.featureStyleFuntion;
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.getStylesBySourceLayer
+     * @function MapboxStyles.prototype.getStylesBySourceLayer
      * @description 根据图层名称获取样式。
      * @param {string} sourceLayer - 数据图层名称。
      */
@@ -131,7 +133,7 @@ export class MapboxStyles extends Observable {
         return layers;
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.setSelectedId
+     * @function MapboxStyles.prototype.setSelectedId
      * @description 设置选中要素，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
      * @param {number} selectedId - 要素ID。
      * @param {string} sourceLayer - 要素所在图层名称。
@@ -144,17 +146,17 @@ export class MapboxStyles extends Observable {
         });
     }
     /**
-     * @typedef {Object} ol.supermap.MapboxStyles.selectedObject
+     * @typedef {Object} MapboxStyles.selectedObject
      * @description 要选择的要素对象。
      * @property {number} selectedId - 要素ID。
      * @property {string} sourceLayer - 要素所在图层名称。
      */
 
     /**
-     * @function ol.supermap.MapboxStyles.prototype.setSelectedObjects
+     * @function MapboxStyles.prototype.setSelectedObjects
      * @version 10.0.0
      * @description 设置选中要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
-     * @param {ol.supermap.MapboxStyles.selectedObject|Array.<ol.supermap.MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
+     * @param {MapboxStyles.selectedObject|Array.<MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
     setSelectedObjects(selectedObjects) {
         if (!Array.isArray(selectedObjects)) {
@@ -164,10 +166,10 @@ export class MapboxStyles extends Observable {
         this.selectedObjects = selectedObjects;
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.addSelectedObjects
+     * @function MapboxStyles.prototype.addSelectedObjects
      * @version 10.0.0
      * @description 增加选中的要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
-     * @param {ol.supermap.MapboxStyles.selectedObject|Array.<ol.supermap.MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
+     * @param {MapboxStyles.selectedObject|Array.<MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
     addSelectedObjects(selectedObjects) {
         if (!Array.isArray(selectedObjects)) {
@@ -176,7 +178,7 @@ export class MapboxStyles extends Observable {
         this.selectedObjects.push(...selectedObjects);
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.clearSelectedObjects
+     * @function MapboxStyles.prototype.clearSelectedObjects
      * @version 10.0.0
      * @description 清空选中状态。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
      */
@@ -191,7 +193,7 @@ export class MapboxStyles extends Observable {
         });
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.clearSelectedObjects
+     * @function MapboxStyles.prototype.clearSelectedObjects
      * @version 10.0.0
      * @description 清空选中状态。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
      */
@@ -199,7 +201,7 @@ export class MapboxStyles extends Observable {
         this.selectedObjects = [];
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.updateStyles
+     * @function MapboxStyles.prototype.updateStyles
      * @description 更新图层样式。
      * @param {Object} layerStyles - 图层样式或图层样式数组。
      */
@@ -233,7 +235,7 @@ export class MapboxStyles extends Observable {
         this._createStyleFunction();
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.setStyle
+     * @function MapboxStyles.prototype.setStyle
      * @version 9.1.1
      * @description 设置 Mapbox style 对象。
      * @param {Object} style - Mapbox style 对象。
@@ -304,7 +306,7 @@ export class MapboxStyles extends Observable {
         }
         this._createStyleFunction();
         /**
-         * @event ol.supermap.MapboxStyles#styleloaded
+         * @event MapboxStyles#styleloaded
          * @description 样式加载成功后触发。
          */
         this.dispatchEvent('styleloaded');

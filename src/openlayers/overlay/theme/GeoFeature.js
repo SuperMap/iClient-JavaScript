@@ -67,7 +67,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
      * @description 添加要素。
-     * @param {SuperMap.ServerFeature|GeoJSONObject|ol/Feature} features - 要素对象。
+     * @param {ServerFeature|GeoJSONObject|ol/Feature} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -85,7 +85,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
+     * @param {GeometryVector} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
