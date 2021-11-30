@@ -6,32 +6,34 @@
 import { Util } from '../commontypes/Util';
 
 /**
-* @class SuperMap.FieldsFilter
-* @classdesc 指定返回的用于描述 Feature 的字段。
-* @param {Object} options - 初始化参数。  
-* @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，要保留字段
-* @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，要排除的字段
-*/
+ * @class FieldsFilter
+ * @deprecatedclass SuperMap.FieldsFilter
+ * @classdesc 指定返回的用于描述 Feature 的字段。
+ * @param {Object} options - 初始化参数。
+ * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，要保留字段
+ * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，要排除的字段
+ * @usage
+ */
 export default class FieldsFilter {
-  constructor(options) { 
+  constructor(options) {
     /**
-    * @description 对返回的字段内容进行过滤，要保留字段 
-    * @member {Array.<string>} SuperMap.FieldsFilter.prototype.include
+    * @description 对返回的字段内容进行过滤，要保留字段
+    * @member {Array.<string>} FieldsFilter.prototype.include
     */
     this.include = undefined;
     /**
-    * @description 对返回的字段内容进行过滤，要排除的字段 
-    * @member {Array.<string>} SuperMap.FieldsFilter.prototype.exclude
+    * @description 对返回的字段内容进行过滤，要排除的字段
+    * @member {Array.<string>} FieldsFilter.prototype.exclude
     */
     this.exclude = undefined;
 
     this.CLASS_NAME = 'SuperMap.FieldsFilter';
     Util.extend(this, options);
-    
+
   }
 
   /**
-  * @function SuperMap.FieldsFilter.prototype.destroy
+  * @function FieldsFilter.prototype.destroy
   * @description 释放资源，将引用资源的属性置空。
   */
   destroy() {
@@ -41,10 +43,10 @@ export default class FieldsFilter {
   }
 
   /**
-  * @function SuperMap.FieldsFilter.prototype.constructFromObject
+  * @function FieldsFilter.prototype.constructFromObject
   * @param {Object} data 要转换的数据.
-  * @param {SuperMap.FieldsFilter} obj 返回的模型.
-  * @return {SuperMap.FieldsFilter} 返回结果
+  * @param {FieldsFilter} obj 返回的模型.
+  * @return {FieldsFilter} 返回结果
   */
   static constructFromObject(data, obj) {
     if (data) {

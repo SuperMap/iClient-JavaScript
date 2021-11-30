@@ -4,15 +4,17 @@
 import {Collection} from './Collection';
 
 /**
- * @class SuperMap.Geometry.MultiPoint
+ * @class MultiPoint
+ * @deprecatedclass SuperMap.Geometry.MultiPoint
  * @classdesc 几何对象多点类。
  * @category BaseTypes Geometry
- * @extends {SuperMap.Geometry.Collection}
- * @param {Array.<SuperMap.Geometry.Point>} components - 点对象数组。
+ * @extends {Collection}
+ * @param {Array.<GeometryPoint>} components - 点对象数组。
  * @example
- * var point1 = new SuperMap.Geometry.Point(5,6);
- * var poine2 = new SuperMap.Geometry.Point(7,8);
- * var multiPoint = new SuperMap.Geometry.MultiPoint([point1,point2]);
+ * var point1 = new GeometryPoint(5,6);
+ * var poine2 = new GeometryPoint(7,8);
+ * var multiPoint = new MultiPoint([point1,point2]);
+ * @usage
  */
 export class MultiPoint extends Collection {
 
@@ -20,7 +22,7 @@ export class MultiPoint extends Collection {
     constructor(components) {
         super(components);
         /**
-         * @member {Array.<string>} [SuperMap.Geometry.MultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
+         * @member {Array.<string>} [MultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
          * @description components 存储的的几何对象所支持的几何类型数组。
          * @readonly
          */
@@ -30,9 +32,9 @@ export class MultiPoint extends Collection {
     }
 
     /**
-     * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
-     * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent} 方法。
-     * @param {SuperMap.Geometry.Point} point - 添加的点。
+     * @function MultiPoint.prototype.addPoint
+     * @description 添加点，封装了 {@link Collection|Collection.addComponent} 方法。
+     * @param {GeometryPoint} point - 添加的点。
      * @param {integer} [index] - 下标。
      */
     addPoint(point, index) {
@@ -41,9 +43,9 @@ export class MultiPoint extends Collection {
 
 
     /**
-     * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-     * @description 移除点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
-     * @param {SuperMap.Geometry.Point} point - 移除的点对象。
+     * @function MultiPoint.prototype.removePoint
+     * @description 移除点，封装了 {@link Collection|Collection.removeComponent} 方法。
+     * @param {GeometryPoint} point - 移除的点对象。
      */
     removePoint(point) {
         this.removeComponent(point);

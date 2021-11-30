@@ -4,10 +4,12 @@
 import { ShapeParameters } from './ShapeParameters';
 
 /**
- * @class  SuperMap.Feature.ShapeParameters.Point
+ * @class  Point
+ * @deprecatedclass SuperMap.Feature.ShapeParameters.Point
  * @category Visualization Theme
  * @classdesc 点参数对象。
- * @extends {SuperMap.Feature.ShapeParameters}
+ * @extends {ShapeParameters}
+ * @usage
  */
 
 export class Point extends ShapeParameters {
@@ -15,28 +17,28 @@ export class Point extends ShapeParameters {
 
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Point.prototype.constructor
+     * @function Point.prototype.constructor
      * @description 创建一个图形点参数对象。
      * @param {number} x - 点 x 坐标，必设参数。
      * @param {number} y - 点 y 坐标，必设参数。
-     * @returns {SuperMap.Feature.ShapeParameters.Point} 标签参数对象。
+     * @returns {Point} 标签参数对象。
      */
     constructor(x, y) {
         super(x, y);
         /**
-         * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.x
+         * @member {number}  Point.prototype.x
          * @description 点 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
         /**
-         * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.y
+         * @member {number}  Point.prototype.y
          * @description 点 y 坐标。
          */
         this.y = !isNaN(y) ? y : 0;
 
         /**
-         * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.r
+         * @member {number}  Point.prototype.r
          * @description 点的半径。
          */
         this.r = 6;
@@ -47,7 +49,7 @@ export class Point extends ShapeParameters {
 
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Point.prototype.destroy
+     * @function Point.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {
@@ -61,7 +63,7 @@ export class Point extends ShapeParameters {
 }
 
 /**
- * @typedef {Object} SuperMap.Feature.ShapeParameters.Point.style
+ * @typedef {Object} Point.style
  * @property {number} pointRadius - 点的半径，默认值：6。
  * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
  * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。

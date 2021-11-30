@@ -17,19 +17,21 @@ import {
 
 
 /**
- * @class SuperMap.KernelDensityJobParameter
+ * @class KernelDensityJobParameter
+ * @deprecatedclass SuperMap.KernelDensityJobParameter
  * @category iServer ProcessingService DensityAnalyst
  * @classdesc 密度分析任务参数类。
- * @param {Object} options - 参数。 
- * @param {string} options.datasetName - 数据集名。 
- * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。 
- * @param {number} [options.resolution=80] - 分辨率。 
- * @param {number} [options.method=0] - 分析方法。 
- * @param {number} [options.meshType=0] - 分析类型。 
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.fields - 权重索引。
+ * @param {(Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
+ * @param {number} [options.resolution=80] - 分辨率。
+ * @param {number} [options.method=0] - 分析方法。
+ * @param {number} [options.meshType=0] - 分析类型。
  * @param {number} [options.radius=300] - 分析的影响半径。
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {OutputSetting} [options.output] - 输出参数设置。
+ * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @usage
  */
 export class KernelDensityJobParameter {
 
@@ -38,73 +40,73 @@ export class KernelDensityJobParameter {
             return;
         }
         /**
-         * @member {string} SuperMap.KernelDensityJobParameter.prototype.datasetName
+         * @member {string} KernelDensityJobParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member {SuperMap.Bounds|L.Bounds|ol.extent} [SuperMap.KernelDensityJobParameter.prototype.query]
-         * @description 分析范围。 
+         * @member {Bounds|L.Bounds|ol.extent} [KernelDensityJobParameter.prototype.query]
+         * @description 分析范围。
          */
         this.query = "";
 
         /**
-         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.resolution=80]
+         * @member {number} [KernelDensityJobParameter.prototype.resolution=80]
          * @description 网格大小。
          */
         this.resolution = 80;
 
         /**
-         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.method=0]
+         * @member {number} [KernelDensityJobParameter.prototype.method=0]
          * @description 分析方法。
          */
         this.method = 0;
 
         /**
-         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.meshType=0]
+         * @member {number} [KernelDensityJobParameter.prototype.meshType=0]
          * @description 分析类型。
          */
         this.meshType = 0;
 
         /**
-         * @member {string} SuperMap.KernelDensityJobParameter.prototype.fields
+         * @member {string} KernelDensityJobParameter.prototype.fields
          * @description 权重索引。
          */
         this.fields = "";
 
         /**
-         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.radius=300]
+         * @member {number} [KernelDensityJobParameter.prototype.radius=300]
          * @description 分析的影响半径。
          */
         this.radius = 300;
 
         /**
-         * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
+         * @member {AnalystSizeUnit} [KernelDensityJobParameter.prototype.meshSizeUnit=AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
         this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
+         * @member {AnalystSizeUnit} [KernelDensityJobParameter.prototype.radiusUnit=AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
         this.radiusUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
+         * @member {AnalystAreaUnit} [KernelDensityJobParameter.prototype.areaUnit=AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
         this.areaUnit = AnalystAreaUnit.SQUAREMILE;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
+         * @member {OutputSetting} KernelDensityJobParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
 
         /**
-         * @member {SuperMap.MappingParameters} [SuperMap.KernelDensityJobParameter.prototype.mappingParameters]
+         * @member {MappingParameters} [KernelDensityJobParameter.prototype.mappingParameters]
          * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
@@ -115,7 +117,7 @@ export class KernelDensityJobParameter {
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+     * @function KernelDensityJobParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -140,9 +142,9 @@ export class KernelDensityJobParameter {
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param {SuperMap.KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
-     * @param {SuperMap.KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
+     * @function KernelDensityJobParameter.toObject
+     * @param {KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
+     * @param {KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
      * @description 将密度分析任务参数对象转换为 JSON 对象。
      * @returns JSON 对象。
      */

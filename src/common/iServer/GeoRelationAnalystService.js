@@ -6,7 +6,8 @@ import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
 
 /**
- * @class SuperMap.GeoRelationAnalystService
+ * @class GeoRelationAnalystService
+ * @deprecatedclass SuperMap.GeoRelationAnalystService
  * @category iServer SpatialAnalyst GeoRelationAnalyst
  * @classdesc 空间关系分析服务类。该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
@@ -14,26 +15,26 @@ import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 实例化该类如下例所示：
  * (start code)
  *  function datasetGeoRelationAnalystProcess() {
-     *      var referenceFilter = new SuperMap.FilterParameter({
+     *      var referenceFilter = new FilterParameter({
      *                              name:"Frame_R@Changchun",
      *                              attributeFilter:"SmID>0"});
-     *      var sourceFilter = new SuperMap.FilterParameter({
+     *      var sourceFilter = new FilterParameter({
      *                          attributeFilter:"SmID>0"});
      *      //初始化服务类
-     *      var datasetGeoRelationService = new SuperMap.GeoRelationAnalystService(
+     *      var datasetGeoRelationService = new GeoRelationAnalystService(
      *          "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst/"),
      *      //构建参数类
-     *      datasetGeoRelationParameters = new SuperMap.GeoRelationAnalystParameters({
+     *      datasetGeoRelationParameters = new GeoRelationAnalystParameters({
      *          dataset: "Park@Changchun",
      *          startRecord: 0,
      *          expectCount: 20,
      *          sourceFilter: sourceFilter,
      *          referenceFilter: referenceFilter,
-     *          spatialRelationType: SuperMap.SpatialRelationType.INTERSECT,
+     *          spatialRelationType: SpatialRelationType.INTERSECT,
      *          isBorderInside: true,
      *          returnFeature: true,
      *          returnGeoRelatedOnly: true
@@ -47,7 +48,7 @@ import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
  *  function Completed(datasetGeoRelationAnalystCompleted){//todo};
  *  function Error(datasetGeoRelationAnalystFailed){//todo};
  * (end)
- *
+ * @usage
  */
 export class GeoRelationAnalystService extends SpatialAnalystBase {
 
@@ -57,7 +58,7 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.GeoRelationAnalystService.prototype.destroy
+     * @function GeoRelationAnalystService.prototype.destroy
      * @override
      */
     destroy() {
@@ -65,9 +66,9 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.GeoRelationAnalystService.prototype.processAsync
+     * @function GeoRelationAnalystService.prototype.processAsync
      * @description 负责将客户端的空间关系分析参数传递到服务端
-     * @param {SuperMap.GeoRelationAnalystParameters} parameter - 空间关系分析所需的参数信息。
+     * @param {GeoRelationAnalystParameters} parameter - 空间关系分析所需的参数信息。
      */
     processAsync(parameter) {
         if (!(parameter instanceof GeoRelationAnalystParameters)) {

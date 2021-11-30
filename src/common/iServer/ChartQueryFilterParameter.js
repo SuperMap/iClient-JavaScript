@@ -4,46 +4,48 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.ChartQueryFilterParameter
+ * @class ChartQueryFilterParameter
+ * @deprecatedclass SuperMap.ChartQueryFilterParameter
  * @category  iServer Map Chart
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
- * @param {Object} options - 参数。 
- * @param {string} options.attributeFilter - 属性字段过滤条件。 
+ * @param {Object} options - 参数。
+ * @param {string} options.attributeFilter - 属性字段过滤条件。
  * @param {number} options.chartFeatureInfoSpecCode - 查询的物标代号。
- * @param {boolean} [options.isQueryPoint] - 是否查询点。 
- * @param {boolean} [options.isQueryLine] - 是否查询线。 
- * @param {boolean} [options.isQueryRegion] - 是否查询面。 
+ * @param {boolean} [options.isQueryPoint] - 是否查询点。
+ * @param {boolean} [options.isQueryLine] - 是否查询线。
+ * @param {boolean} [options.isQueryRegion] - 是否查询面。
+ * @usage
  */
 export class ChartQueryFilterParameter {
 
 
     constructor(options) {
         /**
-         * @member {boolean} [SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint]
+         * @member {boolean} [ChartQueryFilterParameter.prototype.isQueryPoint]
          * @description 是否查询点。
          */
         this.isQueryPoint = null;
 
         /**
-         * @member {boolean} [SuperMap.ChartQueryFilterParameter.prototype.isQueryLine]
+         * @member {boolean} [ChartQueryFilterParameter.prototype.isQueryLine]
          * @description 是否查询线。
          */
         this.isQueryLine = null;
 
         /**
-         * @member {boolean} [SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion]
+         * @member {boolean} [ChartQueryFilterParameter.prototype.isQueryRegion]
          * @description 是否查询面。
          */
         this.isQueryRegion = null;
 
         /**
-         * @member {string} SuperMap.ChartQueryFilterParameter.prototype.attributeFilter
+         * @member {string} ChartQueryFilterParameter.prototype.attributeFilter
          * @description 属性字段过滤条件。
          */
         this.attributeFilter = null;
 
         /**
-         * @member {number} SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode
+         * @member {number} ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode
          * @description 查询的物标代号。
          */
         this.chartFeatureInfoSpecCode = null;
@@ -54,7 +56,7 @@ export class ChartQueryFilterParameter {
     }
 
     /**
-     * @function SuperMap.ChartQueryFilterParameter.prototype.destroy
+     * @function ChartQueryFilterParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -67,7 +69,7 @@ export class ChartQueryFilterParameter {
     }
 
     /**
-     * @function SuperMap.ChartQueryFilterParameter.prototype.toJson
+     * @function ChartQueryFilterParameter.prototype.toJson
      * @description 将属性信息转化成 JSON 格式字符串。
      */
     toJson() {

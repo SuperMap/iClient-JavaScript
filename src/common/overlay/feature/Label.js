@@ -4,39 +4,41 @@
 import { ShapeParameters } from './ShapeParameters';
 
 /**
- * @class SuperMap.Feature.ShapeParameters.Label
+ * @class CommonLabel
+ * @deprecatedclass SuperMap.Feature.ShapeParameters.Label
  * @category Visualization Theme
  * @classdesc 标签参数对象。
- * @extent {SuperMap.Feature.ShapeParameters}
+ * @extends {ShapeParameters}
+ * @usage
  */
 
 export class Label extends ShapeParameters {
 
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Label.prototype.constructor
+     * @function CommonLabel.prototype.constructor
      * @description 创建一个标签参数对象。
      * @param {number} x - 横坐标，必设参数。
      * @param {number} y - 纵坐标，必设参数。
      * @param {string} text - 图形中的附加文本，必设参数。
-     * @returns {SuperMap.Feature.ShapeParameters.Label} 标签参数对象。
+     * @returns {CommonLabel} 标签参数对象。
      */
     constructor(x, y, text) {
         super(x, y, text);
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.x
+         * @member {number} CommonLabel.prototype.x
          * @description 标签 x 坐标。
          */
         this.x = x;
 
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.y
+         * @member {number} CommonLabel.prototype.y
          * @description 标签 y 坐标。
          */
         this.y = y;
 
         /**
-         * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.text
+         * @member {number} CommonLabel.prototype.text
          * @description 标签的文本内容。
          */
         this.text = text;
@@ -46,7 +48,7 @@ export class Label extends ShapeParameters {
 
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Label.prototype.destroy
+     * @function CommonLabel.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {
@@ -61,7 +63,7 @@ export class Label extends ShapeParameters {
 }
 
 /**
-* @typedef {Object} SuperMap.Feature.ShapeParameters.Label.style
+* @typedef {Object} CommonLabel.style
 * @property {boolean} fill - 是否填充，不需要填充则设置为 false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
 * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
 * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。

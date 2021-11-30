@@ -4,7 +4,8 @@
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.Select
+ * @class Select
+ * @deprecatedclass SuperMap.Components.Select
  * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
@@ -12,8 +13,9 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
  * @category Components Common
+ * @usage
  */
 export class Select extends TemplateBase {
     constructor(options) {
@@ -50,7 +52,7 @@ export class Select extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.Select.prototype.createOptions
+     * @function Select.prototype.createOptions
      * @description 创建所属下拉框选项。
      */
     createOptions(container, optionsArr) {
@@ -62,7 +64,7 @@ export class Select extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.Select.prototype._selectClickEvent
+     * @function Select.prototype._selectClickEvent
      * @description select 点击显示&隐藏事件。
      * @private
      */
@@ -106,7 +108,7 @@ export class Select extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.Select.prototype.optionClickEvent
+     * @function Select.prototype.optionClickEvent
      * @description 下拉框的 option 的点击事件。
      */
     optionClickEvent(optionEleArr, selectNameEle, optionsClickCb) {

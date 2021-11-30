@@ -5,13 +5,15 @@ import {SecurityManager} from '../security/SecurityManager';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class SuperMap.iManagerServiceBase
+ * @class IManagerServiceBase
+ * @deprecatedclass SuperMap.iManagerServiceBase
  * @classdesc iManager 服务基类（有权限限制的类需要实现此类）。
  * @category iManager
  * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
  * @param {Object} options - 服务参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class IManagerServiceBase {
 
@@ -25,7 +27,7 @@ export class IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManagerServiceBase.prototype.request
+     * @function IManagerServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求。
      * @param {string} url - 请求 URL。
      * @param {string} [method='GET'] - 请求类型。

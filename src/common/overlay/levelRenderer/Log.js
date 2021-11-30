@@ -5,14 +5,14 @@ import {Config} from './Config';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Tool.Log
+ * @class  LevelRenderer.Tool.Log
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-日志
  */
 export class Log {
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Log.constructor
+     * @function LevelRenderer.Tool.Log.constructor
      * @description 构造函数。
      */
     constructor() {

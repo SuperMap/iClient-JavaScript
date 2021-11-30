@@ -7,16 +7,17 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
 import {FindClosestFacilitiesParameters} from './FindClosestFacilitiesParameters';
 
 /**
- * @class SuperMap.FindClosestFacilitiesService
+ * @class FindClosestFacilitiesService
+ * @deprecatedclass SuperMap.FindClosestFacilitiesService
  * @category  iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析服务类。
  *            最近设施分析是指在网络上给定一个事件点和一组设施点，
  *            查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *            该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
  *            最近设施分析结果通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
- * var myfindClosestFacilitiesService = new SuperMap.FindClosestFacilitiesService(url, {
+ * var myfindClosestFacilitiesService = new FindClosestFacilitiesService(url, {
  *     eventListeners: {
  *	       "processCompleted": findClosestFacilitiesCompleted,
  *		   "processFailed": findClosestFacilitiesError
@@ -29,11 +30,12 @@ import {FindClosestFacilitiesParameters} from './FindClosestFacilitiesParameters
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
 
     /*
-     * @function SuperMap.FindClosestFacilitiesService.prototype.constructor
+     * @function FindClosestFacilitiesService.prototype.constructor
      * @description 最近设施分析服务类构造函数。
      * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
      *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
@@ -48,7 +50,7 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindClosestFacilitiesService.prototype.destroy
+     * @function FindClosestFacilitiesService.prototype.destroy
      * @override
      */
     destroy() {
@@ -56,9 +58,9 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindClosestFacilitiesService.prototype.processAsync
+     * @function FindClosestFacilitiesService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.FindClosestFacilitiesParameters} params - 最近设施分析服务参数类
+     * @param {FindClosestFacilitiesParameters} params - 最近设施分析服务参数类
      */
     processAsync(params) {
         if (!(params instanceof FindClosestFacilitiesParameters)) {
@@ -85,7 +87,7 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindClosestFacilitiesService.prototype.getJson
+     * @function FindClosestFacilitiesService.prototype.getJson
      * @description 将对象转化为JSON字符串。
      * @param {boolean} isAnalyzeById - 是否通过ID来分析
      * @param {Array} params - 分析参数数组
@@ -115,7 +117,7 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.FindClosestFacilitiesService.prototype.toGeoJSONResult
+     * @function FindClosestFacilitiesService.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
      * @param {Object} result - 服务器返回的结果对象。
      */

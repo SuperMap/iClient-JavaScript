@@ -10,72 +10,72 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Painter
+ * @class  LevelRenderer.Painter
  * @category Visualization Theme
  * @classdesc Painter 绘图模块。
  */
 export class Painter {
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.constructor
+     * @function LevelRenderer.Painter.constructor
      * @description 构造函数。
      *
      * @param {HTMLElement} root - 绘图区域（DIV）。
-     * @param {SuperMap.LevelRenderer.Storage} storage - Storage 实例。
+     * @param {LevelRenderer.Storage} storage - Storage 实例。
      *
      */
     constructor(root, storage) {
         /**
-         * @member {HTMLElement} SuperMap.LevelRenderer.Painter.prototype.root
+         * @member {HTMLElement} LevelRenderer.Painter.prototype.root
          * @description  绘图容器。
          *
          */
         this.root = root;
 
         /**
-         * @member {Array} SuperMap.LevelRenderer.Painter.prototype.storage
+         * @member {Array} LevelRenderer.Painter.prototype.storage
          * @description 图形仓库。
          *
          */
         this.storage = storage;
 
         /**
-         * @member {HTMLElement} SuperMap.LevelRenderer.Painter.prototype._domRoot
+         * @member {HTMLElement} LevelRenderer.Painter.prototype._domRoot
          * @description 容器根 dom 对象。
          *
          */
         this._domRoot = null;
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Painter.prototype._layers
+         * @member {Object} LevelRenderer.Painter.prototype._layers
          * @description 绘制层对象。
          *
          */
         this._layers = {};
 
         /**
-         * @member {Array} SuperMap.LevelRenderer.Painter.prototype._zlevelList
+         * @member {Array} LevelRenderer.Painter.prototype._zlevelList
          * @description  层列表。
          *
          */
         this._zlevelList = [];
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Painter.prototype._layerConfig
+         * @member {Object} LevelRenderer.Painter.prototype._layerConfig
          * @description 绘制层配置对象。
          *
          */
         this._layerConfig = {};
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Painter.prototype._bgDom
+         * @member {Object} LevelRenderer.Painter.prototype._bgDom
          * @description 背景层 Canvas （Dom）。
          *
          */
         this._bgDom = null;
 
         /**
-         * @member {Function} SuperMap.LevelRenderer.Painter.prototype.shapeToImage
+         * @member {Function} LevelRenderer.Painter.prototype.shapeToImage
          * @description 形状转图像函数。
          *
          */
@@ -141,7 +141,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.destroy
+     * @function LevelRenderer.Painter.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -154,11 +154,11 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.render
+     * @function LevelRenderer.Painter.prototype.render
      * @description 渲染。首次绘图，创建各种 dom 和 context。
      *
      * @param {Function} callback - 绘画结束后的回调函数。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     render(callback) {
         // TODO
@@ -169,12 +169,12 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.refresh
+     * @function LevelRenderer.Painter.prototype.refresh
      * @description 刷新。
      *
      * @param {Function} callback - 刷新结束后的回调函数。
      * @param {boolean} paintAll - 强制绘制所有 shape。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     refresh(callback, paintAll) {
         var list = this.storage.getShapeList(true);
@@ -319,11 +319,11 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.getLayer
+     * @function LevelRenderer.Painter.prototype.getLayer
      * @description 获取 zlevel 所在层，如果不存在则会创建一个新的层。
      *
      * @param {number} zlevel - zlevel。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     getLayer(zlevel) {
         // Change draw layer
@@ -375,7 +375,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.getLayers
+     * @function LevelRenderer.Painter.prototype.getLayers
      * @description 获取所有已创建的层。
      * @return {Array.<Painter.Layer>} 已创建的层
      */
@@ -425,12 +425,12 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.refreshShapes
+     * @function LevelRenderer.Painter.prototype.refreshShapes
      * @description 更新的图形元素列表。
      *
      * @param {number} shapeList - 需要更新的图形元素列表。
      * @param {number} callback - 视图更新后回调函数。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     refreshShapes(shapeList, callback) {
         for (var i = 0, l = shapeList.length; i < l; i++) {
@@ -444,9 +444,9 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.clear
+     * @function LevelRenderer.Painter.prototype.clear
      * @description 清除 hover 层外所有内容。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     clear() {
         for (var k in this._layers) {
@@ -461,7 +461,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.modLayer
+     * @function LevelRenderer.Painter.prototype.modLayer
      * @description 修改指定 zlevel 的绘制参数。
      *
      * @param {string} zlevel - zlevel。
@@ -494,7 +494,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.delLayer
+     * @function LevelRenderer.Painter.prototype.delLayer
      * @description 删除指定层。
      *
      * @param {string} zlevel - 层所在的 zlevel。
@@ -518,9 +518,9 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.refreshHover
+     * @function LevelRenderer.Painter.prototype.refreshHover
      * @description 刷新 hover 层。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     refreshHover() {
         this.clearHover();
@@ -535,9 +535,9 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.clearHover
+     * @function LevelRenderer.Painter.prototype.clearHover
      * @description 清除 hover 层所有内容。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     clearHover() {
         var hover = this._layers.hover;
@@ -548,9 +548,9 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.resize
+     * @function LevelRenderer.Painter.prototype.resize
      * @description 区域大小变化后重绘。
-     * @return {SuperMap.LevelRenderer.Painter} this。
+     * @return {LevelRenderer.Painter} this。
      */
     resize() {
         var domRoot = this._domRoot;
@@ -582,7 +582,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.clearLayer
+     * @function LevelRenderer.Painter.prototype.clearLayer
      * @description 清除指定的一个层。
      * @param {number} zLevel - 层。
      */
@@ -595,7 +595,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.dispose
+     * @function LevelRenderer.Painter.prototype.dispose
      * @description 释放。
      *
      */
@@ -610,7 +610,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.getDomHover
+     * @function LevelRenderer.Painter.prototype.getDomHover
      * @description 获取 Hover 层的 Dom。
      */
     getDomHover() {
@@ -619,7 +619,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.toDataURL
+     * @function LevelRenderer.Painter.prototype.toDataURL
      * @description 图像导出。
      * @param {string} type - 图片类型。
      * @param {string} backgroundColor - 背景色。默认值：'#fff'。
@@ -678,7 +678,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.getWidth
+     * @function LevelRenderer.Painter.prototype.getWidth
      * @description  获取绘图区域宽度。
      * @return {number} 绘图区域宽度。
      */
@@ -688,7 +688,7 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.getHeight
+     * @function LevelRenderer.Painter.prototype.getHeight
      * @description 获取绘图区域高度。
      * @return {number} 绘图区域高度。
      */
@@ -833,7 +833,7 @@ export class Painter {
 
     // SMIC-方法扩展 - start
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.updateHoverLayer
+     * @function LevelRenderer.Painter.prototype.updateHoverLayer
      * @description 更新设置显示高亮图层。
      * @param {Array} shapes - 图形数组。
      */
@@ -854,12 +854,12 @@ export class Painter {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Painter.prototype.createDom
+     * @function LevelRenderer.Painter.prototype.createDom
      * @description 创建 Dom。
      *
      * @param {string} id - Dom id
      * @param {string} type - Dom type
-     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例。
+     * @param {LevelRenderer.Painter} painter - Painter 实例。
      * @return {Object} Dom
      */
     static createDom(id, type, painter) {
@@ -887,7 +887,7 @@ export class Painter {
  * @private
  * @class Painter.Layer
  * @classdesc 绘制层类。
- * @extends SuperMap.LevelRenderer.Transformable
+ * @extends LevelRenderer.Transformable
  */
 export class PaintLayer extends Transformable {
 
@@ -896,7 +896,7 @@ export class PaintLayer extends Transformable {
      * @description 构造函数。
      *
      * @param {string} id - id。
-     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例。
+     * @param {LevelRenderer.Painter} painter - Painter 实例。
      *
      */
     constructor(id, painter) {
@@ -920,7 +920,7 @@ export class PaintLayer extends Transformable {
         this.ctxBack = null;
 
         /**
-         * @member {SuperMap.LevelRenderer.Painter} Painter.Layer.prototype.painter
+         * @member {LevelRenderer.Painter} Painter.Layer.prototype.painter
          * @description painter。
          */
         this.painter = painter;

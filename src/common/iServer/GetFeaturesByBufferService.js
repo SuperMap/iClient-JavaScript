@@ -5,7 +5,8 @@ import {GetFeaturesServiceBase} from './GetFeaturesServiceBase';
 import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
 
 /**
- * @class SuperMap.GetFeaturesByBufferService
+ * @class GetFeaturesByBufferService
+ * @deprecatedclass SuperMap.GetFeaturesByBufferService
  * @category iServer Data FeatureResults
  * @classdesc 数据服务中数据集缓冲区查询服务类。
  * @param {string} url - 数据查询结果资源地址。请求数据服务中数据集查询服务，
@@ -13,12 +14,12 @@ import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.GetFeaturesServiceBase}
+ * @extends {GetFeaturesServiceBase}
  * @example
- * var myGetFeaturesByBufferService = new SuperMap.GetFeaturesByBufferService(url, {
+ * var myGetFeaturesByBufferService = new GetFeaturesByBufferService(url, {
  *     eventListeners: {
  *           "processCompleted": GetFeaturesCompleted,
  *           "processFailed": GetFeaturesError
@@ -26,6 +27,7 @@ import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
  * });
  * function GetFeaturesCompleted(object){//todo};
  * function GetFeaturesError(object){//todo};
+ * @usage
  */
 
 export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
@@ -37,7 +39,7 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
     }
 
     /**
-     * @function SuperMap.GetFeaturesByBufferService.prototype.destroy
+     * @function GetFeaturesByBufferService.prototype.destroy
      * @override
      */
     destroy() {
@@ -45,9 +47,9 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
     }
 
     /**
-     * @function SuperMap.GetFeaturesByBufferService.prototype.getJsonParameters
+     * @function GetFeaturesByBufferService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
-     * @param {SuperMap.GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
+     * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {

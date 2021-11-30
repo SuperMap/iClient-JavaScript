@@ -7,15 +7,17 @@ import {ShapeFactory} from './feature/ShapeFactory';
 import {RankSymbol} from './RankSymbol';
 
 /**
- * @class SuperMap.Feature.Theme.Circle
+ * @class Circle
+ * @deprecatedclass SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
  * @category Visualization Theme
- * @extends SuperMap.Feature.Theme.RankSymbol
- * @param {SuperMap.Feature.Vector} data - 用户数据。
+ * @extends CommonRankSymbol
+ * @param {GeometryVector} data - 用户数据。
  * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
- * @param {SuperMap.Feature.Theme.Circle.setting} setting - 图表配置对象。
- * @param {SuperMap.LonLat} [lonlat] - 专题要素地理位置，默认为 data 指代的地理要素 Bounds 中心。
+ * @param {Circle.setting} setting - 图表配置对象。
+ * @param {LonLat} [lonlat] - 专题要素地理位置，默认为 data 指代的地理要素 Bounds 中心。
+ * @usage
  */
 export class Circle extends RankSymbol {
 
@@ -25,7 +27,7 @@ export class Circle extends RankSymbol {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Circle.prototype.destroy
+     * @function Circle.prototype.destroy
      * @override
      */
     destroy() {
@@ -33,7 +35,7 @@ export class Circle extends RankSymbol {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Circle.prototype.assembleShapes
+     * @function Circle.prototype.assembleShapes
      * @description 装配图形（扩展接口）。
      */
     assembleShapes() {
@@ -142,7 +144,7 @@ export class Circle extends RankSymbol {
 }
 
 /**
- * @typedef {Object} SuperMap.Feature.Theme.Circle.setting
+ * @typedef {Object} Circle.setting
  * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
  * @property {number} [maxR] - 圆形的最大半径。
  * @property {number} [minR] - 圆形的最小半径。
@@ -152,5 +154,5 @@ export class Circle extends RankSymbol {
  * @property {Object} [circleHoverStyle] - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
  * @property {boolean} [circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @property {boolean} [circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- * 
+ *
  */

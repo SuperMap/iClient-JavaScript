@@ -5,20 +5,22 @@ import { Util } from '../commontypes/Util';
 import { CommonServiceBase } from './CommonServiceBase';
 
 /**
- * @class SuperMap.WebPrintingService
+ * @class WebPrintingService
+ * @deprecatedclass SuperMap.WebPrintingService
  * @category iServer WebPrintingJob
  * @version 10.1.0
  * @classdesc 打印地图服务基类。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class WebPrintingService extends CommonServiceBase {
     /**
-     * @function SuperMap.WebPrintingService.prototype.constructor
+     * @function WebPrintingService.prototype.constructor
      * @description 打印地图服务基类。
      * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
      * @param {Object} options -参数。
@@ -38,7 +40,7 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.destroy
+     * @function WebPrintingService.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -46,9 +48,9 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.createWebPrintingJob
+     * @function WebPrintingService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
-     * @param {SuperMap.WebPrintingJobParameters} params - Web 打印的请求参数。
+     * @param {WebPrintingJobParameters} params - Web 打印的请求参数。
      */
     createWebPrintingJob(params) {
         if (!params) {
@@ -83,7 +85,7 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.getPrintingJob
+     * @function WebPrintingService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
      * @param {String} jobId - Web 打印任务 ID
      */
@@ -102,7 +104,7 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.getPrintingJobResult
+     * @function WebPrintingService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
      * @param {String} jobId - Web 打印输入文档任务 ID。
      */
@@ -118,7 +120,7 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.getLayoutTemplates
+     * @function WebPrintingService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
      */
     getLayoutTemplates() {
@@ -133,7 +135,7 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.rollingProcess
+     * @function WebPrintingService.prototype.rollingProcess
      * @description 轮询查询 Web 打印任务。
      * @param {Object} result - 服务器返回的结果对象。
      */

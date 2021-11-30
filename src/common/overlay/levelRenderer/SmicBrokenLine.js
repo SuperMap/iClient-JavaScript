@@ -7,12 +7,12 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicBrokenLine
+ * @class  LevelRenderer.Shape.SmicBrokenLine
  * @category Visualization Theme
  * @classdesc 折线(ic)。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+ *   var shape = new LevelRenderer.Shape.SmicBrokenLine({
  *         style: {
  *             pointList: [[0, 0], [100, 100], [100, 0]],
  *             smooth: 'bezier',
@@ -20,13 +20,13 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * 
+ *
  *
  */
 export class SmicBrokenLine extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicBrokenLine.prototype.style
      * @description 绘制样式。
      *
      * @param {Array} pointList - 节点数组，二维数组。默认值：null，必设参数。其形式如下：
@@ -58,7 +58,7 @@ export class SmicBrokenLine extends Shape {
     //打开接口 style
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.constructor
+     * @function LevelRenderer.Shape.SmicBrokenLine.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -67,19 +67,19 @@ export class SmicBrokenLine extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string}  SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.brushTypeOnly
+         * @member {string}  LevelRenderer.Shape.SmicBrokenLine.prototype.brushTypeOnly
          * @description 线条只能描边。
          */
         this.brushTypeOnly = 'stroke';
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.textPosition
+         * @member {string} LevelRenderer.Shape.SmicBrokenLine.prototype.textPosition
          * @description 文本位置。
          */
         this.textPosition = 'end';
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicBrokenLine.prototype.type
          * @description 图形类型.
          */
         this.type = 'smicbroken-line';
@@ -92,7 +92,7 @@ export class SmicBrokenLine extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.destroy
+     * @function LevelRenderer.Shape.SmicBrokenLine.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -105,7 +105,7 @@ export class SmicBrokenLine extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicBrokenLine.prototype.buildPath
      * @description 创建折线路径。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -275,7 +275,7 @@ export class SmicBrokenLine extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.getRect
+     * @function LevelRenderer.Shape.SmicBrokenLine.prototype.getRect
      * @description 计算返回折线包围盒矩形。该包围盒是直接从四个控制点计算，并非最小包围盒。
      *
      * @param {Object} style - style

@@ -6,39 +6,41 @@
 import { Util } from '../commontypes/Util';
 
 /**
-* @class SuperMap.ImageGFSlope
-* @classdesc 栅格函数对象:对DEM数据生成坡度图。
-* @param {Object} options - 初始化参数。   
-* @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
-* @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
-* @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+ * @class ImageGFSlope
+ * @deprecatedclass SuperMap.ImageGFSlope
+ * @classdesc 栅格函数对象:对DEM数据生成坡度图。
+ * @param {Object} options - 初始化参数。
+ * @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
+ * @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
+ * @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+ * @usage
 */
 export default class ImageGFSlope {
-  constructor(options) { 
+  constructor(options) {
     /**
-    * @description 栅格函数名称，参数值为：GFSlope。 
-    * @member {string} SuperMap.ImageGFSlope.prototype.girdFuncName
+    * @description 栅格函数名称，参数值为：GFSlope。
+    * @member {string} ImageGFSlope.prototype.girdFuncName
     * @default 'GFSlope'
     */
     this.girdFuncName = 'GFSlope';
     /**
-    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。 
-    * @member {number} SuperMap.ImageGFSlope.prototype.Altitude
+    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
+    * @member {number} ImageGFSlope.prototype.Altitude
     */
     this.Altitude = 45;
     /**
-    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。 
-    * @member {number} SuperMap.ImageGFSlope.prototype.ZFactor
+    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+    * @member {number} ImageGFSlope.prototype.ZFactor
     */
     this.ZFactor = 1;
 
     this.CLASS_NAME = 'SuperMap.ImageGFSlope';
     Util.extend(this, options);
-    
+
   }
 
   /**
-  * @function SuperMap.ImageGFSlope.prototype.destroy
+  * @function ImageGFSlope.prototype.destroy
   * @description 释放资源，将引用资源的属性置空。
   */
   destroy() {
@@ -49,10 +51,10 @@ export default class ImageGFSlope {
   }
 
   /**
-  * @function SuperMap.ImageGFSlope.prototype.constructFromObject
+  * @function ImageGFSlope.prototype.constructFromObject
   * @param {Object} data 要转换的数据.
-  * @param {SuperMap.ImageGFSlope} obj 返回的模型.
-  * @return {SuperMap.ImageGFSlope} 返回结果
+  * @param {ImageGFSlope} obj 返回的模型.
+  * @return {ImageGFSlope} 返回结果
   */
   static constructFromObject(data, obj) {
     if (data) {

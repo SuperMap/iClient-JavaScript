@@ -6,7 +6,8 @@ import { OutputSetting } from './OutputSetting';
 import { MappingParameters } from './MappingParameters';
 
 /**
- * @class SuperMap.OverlayGeoJobParameter
+ * @class OverlayGeoJobParameter
+ * @deprecatedclass SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务参数类。
  * @param {Object} options - 参数。
@@ -15,8 +16,9 @@ import { MappingParameters } from './MappingParameters';
  * @param {string} options.srcFields - 输入数据需要保留的字段。
  * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
  * @param {string} [options.mode] - 叠加分析模式。
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {OutputSetting} [options.output] - 输出参数设置。
+ * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @usage
  */
 export class OverlayGeoJobParameter {
 
@@ -25,44 +27,44 @@ export class OverlayGeoJobParameter {
             return;
         }
         /**
-         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.datasetName
+         * @member {string} OverlayGeoJobParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.datasetOverlay
+         * @member {string} OverlayGeoJobParameter.prototype.datasetOverlay
          * @description 叠加对象所在的数据集名称。
          */
         this.datasetOverlay = "";
 
         /**
-         * @member {string} [SuperMap.OverlayGeoJobParameter.prototype.mode]
+         * @member {string} [OverlayGeoJobParameter.prototype.mode]
          * @description 叠加分析模式。
          */
         this.mode = "";
 
         /**
-         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.srcFields
+         * @member {string} OverlayGeoJobParameter.prototype.srcFields
          * @description 输入数据需要保留的字段。
          */
         this.srcFields = "";
 
         /**
-         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.overlayFields
+         * @member {string} OverlayGeoJobParameter.prototype.overlayFields
          * @description 叠加数据需要保留的字段，对分析模式为 clip、update、erase 时，此参数无效。
          */
         this.overlayFields = "";
 
         /**
-         * @member {SuperMap.OutputSetting} [SuperMap.OverlayGeoJobParameter.prototype.output]
+         * @member {OutputSetting} [OverlayGeoJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
 
         /**
-        * @member {SuperMap.MappingParameters} [SuperMap.OverlayGeoJobParameter.prototype.mappingParameters]
-        * @description 分析后结果可视化的参数类。   
+        * @member {MappingParameters} [OverlayGeoJobParameter.prototype.mappingParameters]
+        * @description 分析后结果可视化的参数类。
         */
         this.mappingParameters = null;
 
@@ -71,7 +73,7 @@ export class OverlayGeoJobParameter {
     }
 
     /**
-     * @function SuperMap.OverlayGeoJobParameter.destroy
+     * @function OverlayGeoJobParameter.destroy
      * @override
      */
     destroy() {
@@ -91,7 +93,7 @@ export class OverlayGeoJobParameter {
     }
 
     /**
-     * @function SuperMap.OverlayGeoJobParameter.toObject
+     * @function OverlayGeoJobParameter.toObject
      * @param {Object} OverlayGeoJobParameter - 点聚合分析任务参数。
      * @param {Object} tempObj - 目标对象。
      * @description 生成点聚合分析任务对象。
@@ -108,7 +110,7 @@ export class OverlayGeoJobParameter {
                 tempObj['output'] = OverlayGeoJobParameter[name];
                 continue;
             }
-            
+
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = OverlayGeoJobParameter[name];
             if(name === 'mappingParameters'){

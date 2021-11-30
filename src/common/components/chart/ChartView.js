@@ -10,13 +10,14 @@ import {
 } from "../messagebox/MessageBox";
 
 /**
- * @class SuperMap.Components.Chart
+ * @class Chart
+ * @deprecatedclass SuperMap.Components.Chart
  * @classdesc 图表组件
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {SuperMap.Components.Chart.Datasets} options.datasets - 数据来源
+ * @param {Chart.Datasets} options.datasets - 数据来源
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -25,13 +26,14 @@ import {
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
  * @category Components Chart
+ * @usage
  */
 /**
- * @typedef {Object} SuperMap.Components.Chart.Datasets  - 数据来源
+ * @typedef {Object} Chart.Datasets  - 数据来源
  * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
  * @property {string} url - 服务url地址。
  * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
- * @property {SuperMap.FilterParameter} queryInfo - 查询条件
+ * @property {FilterParameter} queryInfo - 查询条件
  */
 export class ChartView {
 
@@ -48,7 +50,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype.onAdd
+     * @function Chart.prototype.onAdd
      * @description 创建图表之后成功回调
      * @param {function} addChart - 回调函数
      */
@@ -57,7 +59,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype._fillDataToView
+     * @function Chart.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
@@ -73,7 +75,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype.getStyle
+     * @function Chart.prototype.getStyle
      * @description 获取图表样式。
      */
     getStyle() {
@@ -81,7 +83,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype.getFeatures
+     * @function Chart.prototype.getFeatures
      * @description 获取地图服务，数据服务请求返回的数据。
      */
     getFeatures() {
@@ -89,7 +91,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype.setStyle
+     * @function Chart.prototype.setStyle
      * @description 设置图表样式。
      * @param {Object} style - 图表样式 参考Echarts-options样式设置
      */
@@ -99,7 +101,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype.changeType
+     * @function Chart.prototype.changeType
      * @description 改变图表类型
      * @param {string} type - 图表类型
      */
@@ -112,9 +114,9 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype.updateData
+     * @function Chart.prototype.updateData
      * @description 更新图表数据
-     * @param {SuperMap.Components.Chart.Datasets} datasets - 数据来源
+     * @param {Chart.Datasets} datasets - 数据来源
      * @param {Object} chartOption - X,Y轴信息
      */
     updateData(datasets, chartOption) {
@@ -128,7 +130,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype._createChart
+     * @function Chart.prototype._createChart
      * @description 创建图表
      * @private
      * @param {Object} data - 图表数据
@@ -148,7 +150,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Components.Chart.prototype._updateChart
+     * @function Chart.prototype._updateChart
      * @description 更新图表
      * @private
      * @param {Object} options - 图表参数

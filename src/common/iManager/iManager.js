@@ -5,11 +5,12 @@ import {IManagerServiceBase} from './iManagerServiceBase';
 import {IManagerCreateNodeParam} from './iManagerCreateNodeParam';
 
 /**
- * @class SuperMap.iManager
+ * @class IManager
+ * @deprecatedclass SuperMap.iManager
  * @classdesc iManager 服务类。
  * @category iManager
  * @param {string} serviceUrl - iManager 首页地址。
- *
+ * @usage
  */
 export class IManager extends IManagerServiceBase {
 
@@ -18,7 +19,7 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.load
+     * @function IManager.prototype.load
      * @description 获取所有服务接口，验证是否已登录授权。
      * @returns {Promise} Promise 对象。
      */
@@ -27,8 +28,8 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.createIServer
-     * @param {SuperMap.iManagerCreateNodeParam} createParam - 创建参数。
+     * @function IManager.prototype.createIServer
+     * @param {IManagerCreateNodeParam} createParam - 创建参数。
      * @description 创建 iServer。
      * @returns {Promise} Promise 对象。
      */
@@ -37,8 +38,8 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.createIPortal
-     * @param {SuperMap.iManagerCreateNodeParam} createParam - 创建参数。
+     * @function IManager.prototype.createIPortal
+     * @param {IManagerCreateNodeParam} createParam - 创建参数。
      * @description 创建 iPortal。
      * @returns {Promise} Promise 对象。
      */
@@ -47,7 +48,7 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.iServerList
+     * @function IManager.prototype.iServerList
      * @description 获取所有创建的 iServer。
      * @returns {Promise} Promise 对象。
      */
@@ -56,7 +57,7 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.iPortalList
+     * @function IManager.prototype.iPortalList
      * @description 获取所有创建的 iPortal。
      * @returns {Promise} Promise 对象。
      */
@@ -65,7 +66,7 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.startNodes
+     * @function IManager.prototype.startNodes
      * @param {Array} ids - 需要启动节点的 ID 数组。e.g:['1']。
      * @description 启动节点。
      * @returns {Promise} Promise 对象。
@@ -75,7 +76,7 @@ export class IManager extends IManagerServiceBase {
     }
 
     /**
-     * @function SuperMap.iManager.prototype.stopNodes
+     * @function IManager.prototype.stopNodes
      * @param {Array} ids - 需要停止节点的 ID 数组。e.g:['1']。
      * @description 停止节点。
      * @returns {Promise} Promise 对象。

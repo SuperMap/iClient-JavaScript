@@ -5,12 +5,12 @@ import {Shape} from './Shape';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicCircle
+ * @class  LevelRenderer.Shape.SmicCircle
  * @category Visualization Theme
  * @classdesc 圆形
- * @extends SuperMap.LevelRenderer.Shape
- * @example 
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
+ * @extends LevelRenderer.Shape
+ * @example
+ *   var shape = new LevelRenderer.Shape.SmicCircle({
  *         style: {
  *             x: 100,
  *             y: 100,
@@ -23,13 +23,13 @@ import {Shape} from './Shape';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * 
+ *
  *
  */
 export class SmicCircle extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicCircle.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicCircle.prototype.style
      * @description 绘制样式。
      *
      * @param {number} x - 圆心x坐标,必设参数
@@ -56,7 +56,7 @@ export class SmicCircle extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicCircle.constructor
+     * @function LevelRenderer.Shape.SmicCircle.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -65,7 +65,7 @@ export class SmicCircle extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicCircle.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicCircle.prototype.type
          * @description 图形类型。
          */
         this.type = 'smiccircle';
@@ -78,7 +78,7 @@ export class SmicCircle extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicCircle.prototype.destroy
+     * @function LevelRenderer.Shape.SmicCircle.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -88,9 +88,9 @@ export class SmicCircle extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicCircle.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicCircle.prototype.buildPath
      * @description 创建图形路径。
-     * 
+     *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
      * @param {Object} style - style。
      *
@@ -112,12 +112,12 @@ export class SmicCircle extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicCircle.prototype.getRect
+     * @function LevelRenderer.Shape.SmicCircle.prototype.getRect
      * @description 返回圆形包围盒矩形
-     * 
+     *
      * @param {Object} style - style
      * @return {Object} 边框对象。包含属性：x，y，width，height。
-     * 
+     *
      */
     getRect(style) {
         if (style.__rect) {

@@ -5,12 +5,12 @@ import {Shape} from './Shape';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicEllipse
+ * @class  LevelRenderer.Shape.SmicEllipse
  * @category Visualization Theme
  * @classdesc 椭圆。
- * @extends SuperMap.LevelRenderer.Shape
- * @example  
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
+ * @extends LevelRenderer.Shape
+ * @example
+ *   var shape = new LevelRenderer.Shape.SmicEllipse({
  *       style: {
  *           x: 100,
  *           y: 100,
@@ -24,13 +24,13 @@ import {Shape} from './Shape';
  *       }
  *   });
  *   levelRenderer.addShape(shape);
- * 
+ *
  *
  */
 export class SmicEllipse extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicEllipse.style
+     * @member {Object} LevelRenderer.Shape.SmicEllipse.style
      * @description 绘制样式。
      *
      * @param {number} style.x - 圆心 x 坐标，必设参数。
@@ -56,7 +56,7 @@ export class SmicEllipse extends Shape {
      */
     //打开接口 style
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.constructor
+     * @function LevelRenderer.Shape.SmicEllipse.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -66,7 +66,7 @@ export class SmicEllipse extends Shape {
         super(options);
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicEllipse.prototype.type
          * @description 图形类型。
          */
         this.type = 'smicellipse';
@@ -80,7 +80,7 @@ export class SmicEllipse extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.destroy
+     * @function LevelRenderer.Shape.SmicEllipse.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -90,7 +90,7 @@ export class SmicEllipse extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicEllipse.prototype.buildPath
      * @description 构建椭圆的 Path。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -121,12 +121,12 @@ export class SmicEllipse extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.getRect
+     * @function LevelRenderer.Shape.SmicEllipse.prototype.getRect
      * @description 计算返回椭圆包围盒矩形
      *
      * @param {Object} style - style
      * @return {Object} 边框对象。包含属性：x，y，width，height。
-     * 
+     *
      */
     getRect(style) {
         if (style.__rect) {

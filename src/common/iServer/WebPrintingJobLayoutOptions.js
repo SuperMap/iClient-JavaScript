@@ -8,7 +8,8 @@ import { WebPrintingJobLittleMapOptions } from './WebPrintingJobLittleMapOptions
 import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
 
 /**
- * @class SuperMap.WebPrintingJobLayoutOptions
+ * @class WebPrintingJobLayoutOptions
+ * @deprecatedclass SuperMap.WebPrintingJobLayoutOptions
  * @classdesc Web 打印的布局参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
@@ -18,55 +19,56 @@ import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
  * @param {string} option.subTitle - 地图副标题名称。
  * @param {string} option.author - 地图作者名称。
  * @param {string} option.copyright - 地图版权信息。
- * @param {SuperMap.WebPrintingJobLittleMapOptions} option.littleMapOptions - 小地图参数类。
- * @param {SuperMap.WebPrintingJobLegendOptions} option.legendOptions - 图例参数类。
- * @param {SuperMap.WebPrintingJobScaleBarOptions} [option.scaleBarOptions] - 地图比例尺参数类。
- * @param {SuperMap.WebPrintingJobNorthArrowOptions} [option.northArrowOptions] - 地图指北针参数类。
+ * @param {WebPrintingJobLittleMapOptions} option.littleMapOptions - 小地图参数类。
+ * @param {WebPrintingJobLegendOptions} option.legendOptions - 图例参数类。
+ * @param {WebPrintingJobScaleBarOptions} [option.scaleBarOptions] - 地图比例尺参数类。
+ * @param {WebPrintingJobNorthArrowOptions} [option.northArrowOptions] - 地图指北针参数类。
+ * @usage
  */
 export class WebPrintingJobLayoutOptions {
     constructor(option) {
         /**
-         * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.templateName
+         * @member {string} WebPrintingJobLayoutOptions.prototype.templateName
          * @description 布局模板的名称。
          */
         this.templateName = null;
         /**
-         * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.title
+         * @member {string} WebPrintingJobLayoutOptions.prototype.title
          * @description 地图主标题名称。
          */
         this.title = null;
         /**
-         * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.subTitle
+         * @member {string} WebPrintingJobLayoutOptions.prototype.subTitle
          * @description 地图副标题名称。
          */
         this.subTitle = null;
         /**
-         * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.author
+         * @member {string} WebPrintingJobLayoutOptions.prototype.author
          * @description 地图作者名称。
          */
         this.author = null;
         /**
-         * @member {string} SuperMap.WebPrintingJobLayoutOptions.prototype.copyright
+         * @member {string} WebPrintingJobLayoutOptions.prototype.copyright
          * @description 地图版权信息。
          */
         this.copyright = null;
         /**
-         * @member {SuperMap.WebPrintingJobScaleBarOptions} [SuperMap.WebPrintingJobLayoutOptions.prototype.scaleBarOptions]
+         * @member {WebPrintingJobScaleBarOptions} [WebPrintingJobLayoutOptions.prototype.scaleBarOptions]
          * @description 地图比例尺参数类。
          */
         this.scaleBarOptions = null;
         /**
-         * @member {SuperMap.WebPrintingJobNorthArrowOptions} [SuperMap.WebPrintingJobLayoutOptions.prototype.northArrowOptions]
+         * @member {WebPrintingJobNorthArrowOptions} [WebPrintingJobLayoutOptions.prototype.northArrowOptions]
          * @description 地图指北针参数类。
          */
         this.northArrowOptions = null;
         /**
-         * @member {SuperMap.WebPrintingJobLittleMapOptions} SuperMap.WebPrintingJobLayoutOptions.prototype.littleMapOptions
+         * @member {WebPrintingJobLittleMapOptions} WebPrintingJobLayoutOptions.prototype.littleMapOptions
          * @description 小地图参数类。
          */
         this.littleMapOptions = null;
         /**
-         * @member {SuperMap.WebPrintingJobLegendOptions} SuperMap.WebPrintingJobLayoutOptions.prototype.legendOptions
+         * @member {WebPrintingJobLegendOptions} WebPrintingJobLayoutOptions.prototype.legendOptions
          * @description 图例参数类。
          */
         this.legendOptions = null;
@@ -76,7 +78,7 @@ export class WebPrintingJobLayoutOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobLayoutOptions.prototype.destroy
+     * @function WebPrintingJobLayoutOptions.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -104,8 +106,8 @@ export class WebPrintingJobLayoutOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobLayoutOptions.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobLayoutOptions 对象转化为 JSON 字符串。
+     * @function WebPrintingJobLayoutOptions.prototype.toJSON
+     * @description 将 WebPrintingJobLayoutOptions 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

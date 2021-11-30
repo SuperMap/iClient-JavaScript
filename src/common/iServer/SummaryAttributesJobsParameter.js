@@ -6,7 +6,8 @@ import { OutputSetting } from './OutputSetting';
 import { MappingParameters } from './MappingParameters';
 
 /**
- * @class SuperMap.SummaryAttributesJobsParameter
+ * @class SummaryAttributesJobsParameter
+ * @deprecatedclass SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析任务参数类
  * @param {Object} options - 参数。
@@ -14,8 +15,9 @@ import { MappingParameters } from './MappingParameters';
  * @param {string} options.groupField - 分组字段。
  * @param {string} options.attributeField - 属性字段。
  * @param {string} options.statisticModes - 统计模式。
- * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {OutputSetting} [options.output] -输出参数设置。
+ * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @usage
  */
 export class SummaryAttributesJobsParameter {
 
@@ -24,33 +26,33 @@ export class SummaryAttributesJobsParameter {
             return;
         }
         /**
-         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.datasetName
+         * @member {string} SummaryAttributesJobsParameter.prototype.datasetName
          * @description 汇总数据集名称。
          */
         this.datasetName = "";
         /**
-         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.groupField
+         * @member {string} SummaryAttributesJobsParameter.prototype.groupField
          * @description 分组字段。
          */
         this.groupField = "";
         /**
-         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.attributeField
+         * @member {string} SummaryAttributesJobsParameter.prototype.attributeField
          * @description 属性字段。
          */
         this.attributeField = "";
         /**
-         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes
+         * @member {string} SummaryAttributesJobsParameter.prototype.statisticModes
          * @description 属性汇总统计模式。
          */
         this.statisticModes = "";
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SummaryAttributesJobsParameter.prototype.output
+         * @member {OutputSetting} SummaryAttributesJobsParameter.prototype.output
          * @description 输出参数设置类。
          */
         this.output = null;
         /**
-         * @member {SuperMap.MappingParameters} [SuperMap.SummaryAttributesJobsParameter.prototype.mappingParameters]
-         * @description 分析后结果可视化的参数类。   
+         * @member {MappingParameters} [SummaryAttributesJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
 
@@ -59,7 +61,7 @@ export class SummaryAttributesJobsParameter {
     }
 
     /**
-     * @function SuperMap.SummaryAttributesJobsParameter.destroy
+     * @function SummaryAttributesJobsParameter.destroy
      * @override
      */
     destroy() {
@@ -78,7 +80,7 @@ export class SummaryAttributesJobsParameter {
     }
 
     /**
-     * @function SuperMap.SummaryAttributesJobsParameter.toObject
+     * @function SummaryAttributesJobsParameter.toObject
      * @param {Object} SummaryAttributesJobsParameter - 属性汇总任务参数。
      * @param {Object} tempObj - 目标对象。
      * @description 生成属性汇总分析任务对象。
@@ -95,7 +97,7 @@ export class SummaryAttributesJobsParameter {
                 tempObj['output'] = SummaryAttributesJobsParameter[name];
                 continue;
             }
-            
+
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
             if(name === 'mappingParameters'){

@@ -6,15 +6,17 @@ import {BufferAnalystParameters} from './BufferAnalystParameters';
 import {ServerGeometry} from './ServerGeometry';
 
 /**
- * @class SuperMap.GeometryBufferAnalystParameters
+ * @class GeometryBufferAnalystParameters
+ * @deprecatedclass SuperMap.GeometryBufferAnalystParameters
  * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。
  * @param {number} options.sourceGeometrySRID - 缓冲区几何对象投影坐标参数, 如 4326，3857。
- * @param {SuperMap.BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
- * @extends {SuperMap.BufferAnalystParameters}
+ * @param {BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
+ * @extends {BufferAnalystParameters}
+ * @usage
  */
 export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
@@ -22,16 +24,16 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
     constructor(options) {
         super(options);
         /**
-         * @member {Object} SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
+         * @member {Object} GeometryBufferAnalystParameters.prototype.sourceGeometry
          * @description 要做缓冲区分析的几何对象。<br>
-         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
-         * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
-         * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。 
+         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 线类型可以是：{@link LineString}|{@link LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
+         * 面类型可以是：{@link Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
          */
         this.sourceGeometry = null;
 
         /**
-         * @member {number} SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometrySRID
+         * @member {number} GeometryBufferAnalystParameters.prototype.sourceGeometrySRID
          * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
          */
         this.sourceGeometrySRID = null;
@@ -43,7 +45,7 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
     }
 
     /**
-     * @function SuperMap.GeometryBufferAnalystParameters.prototype.destroy
+     * @function GeometryBufferAnalystParameters.prototype.destroy
      * @override
      */
     destroy() {
@@ -56,9 +58,9 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
     }
 
     /**
-     * @function SuperMap.GeometryBufferAnalystParameters.toObject
-     * @param {SuperMap.GeometryBufferAnalystParameters} geometryBufferAnalystParameters - 几何对象缓冲区分析参数类。
-     * @param {SuperMap.GeometryBufferAnalystParameters} tempObj - 几何对象缓冲区分析参数对象。
+     * @function GeometryBufferAnalystParameters.toObject
+     * @param {GeometryBufferAnalystParameters} geometryBufferAnalystParameters - 几何对象缓冲区分析参数类。
+     * @param {GeometryBufferAnalystParameters} tempObj - 几何对象缓冲区分析参数对象。
      * @description 将几何对象缓冲区分析参数对象转换为 JSON 对象。
      * @returns {Object} JSON 对象。
      */

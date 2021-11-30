@@ -6,12 +6,12 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicStar
+ * @class  LevelRenderer.Shape.SmicStar
  * @category Visualization Theme
  * @classdesc n 角星（n>3）。
- * @extends SuperMap.LevelRenderer.Shape
- * @example 
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicStar({
+ * @extends LevelRenderer.Shape
+ * @example
+ *   var shape = new LevelRenderer.Shape.SmicStar({
  *         style: {
  *             x: 200,
  *             y: 100,
@@ -21,13 +21,13 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * 
+ *
  *
  */
 export class SmicStar extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicStar.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicStar.prototype.style
      * @description 绘制样式。
      *
      * @param {number} style.x - n 角星外接圆心 x 坐标，必设参数。
@@ -56,17 +56,17 @@ export class SmicStar extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicStar.constructor
+     * @function LevelRenderer.Shape.SmicStar.constructor
      * @description 构造函数。
-     * 
+     *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicStar.prototype.type
-         * @description 图形类型。  
+         * @member {string} LevelRenderer.Shape.SmicStar.prototype.type
+         * @description 图形类型。
          */
         this.type = 'smicstar';
 
@@ -78,7 +78,7 @@ export class SmicStar extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicStar.prototype.destroy
+     * @function LevelRenderer.Shape.SmicStar.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -87,7 +87,7 @@ export class SmicStar extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicStar.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicStar.prototype.buildPath
      * @description 创建n  角星（n>3）路径。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -152,7 +152,7 @@ export class SmicStar extends Shape {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicStar.prototype.getRect
+     * @function LevelRenderer.Shape.SmicStar.prototype.getRect
      * @description 返回 n 角星包围盒矩形。
      *
      * @param {Object} style - style

@@ -6,7 +6,8 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
 import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
 
 /**
- * @class SuperMap.WebPrintingJobLegendOptions
+ * @class WebPrintingJobLegendOptions
+ * @deprecatedclass SuperMap.WebPrintingJobLegendOptions
  * @classdesc Web 打印图例参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
@@ -14,33 +15,34 @@ import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
  * @param {string} [option.title] - 图例名称。
  * @param {string} [option.picAsUrl] - 图例的图片 url 地址。
  * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
- * @param {SuperMap.WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
- * @param {SuperMap.WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
+ * @param {WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
+ * @param {WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
+ * @usage
  */
 export class WebPrintingJobLegendOptions {
     constructor(option) {
         /**
-         * @member {string} SuperMap.WebPrintingJobLegendOptions.prototype.title
+         * @member {string} WebPrintingJobLegendOptions.prototype.title
          * @description  图例名称。
          */
         this.title = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobLegendOptions.prototype.picAsUrl]
+         * @member {string} [WebPrintingJobLegendOptions.prototype.picAsUrl]
          * @description  图例的图片 url 地址。
          */
         this.picAsUrl = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobLegendOptions.prototype.picAsBase64]
+         * @member {string} [WebPrintingJobLegendOptions.prototype.picAsBase64]
          * @description  图例的 base64 位图片信息。
          */
         this.picAsBase64 = null;
         /**
-         * @member {SuperMap.WebPrintingJobLayers} [SuperMap.WebPrintingJobLegendOptions.prototype.layers]
+         * @member {WebPrintingJobLayers} [WebPrintingJobLegendOptions.prototype.layers]
          * @description  图例的布局业务图层参数类。
          */
         this.layers = null;
         /**
-         * @member {SuperMap.WebPrintingJobCustomItems} [SuperMap.WebPrintingJobLegendOptions.prototype.customItems]
+         * @member {WebPrintingJobCustomItems} [WebPrintingJobLegendOptions.prototype.customItems]
          * @description  自定义图例元素参数类。
          */
         this.customItems = null;
@@ -50,7 +52,7 @@ export class WebPrintingJobLegendOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobLegendOptions.prototype.destroy
+     * @function WebPrintingJobLegendOptions.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -68,8 +70,8 @@ export class WebPrintingJobLegendOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobLegendOptions.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobLegendOptions 对象转化为 JSON 字符串。
+     * @function WebPrintingJobLegendOptions.prototype.toJSON
+     * @description 将 WebPrintingJobLegendOptions 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

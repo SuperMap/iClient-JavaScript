@@ -4,13 +4,15 @@
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.IndexTabsPageContainer
+ * @class IndexTabsPageContainer
+ * @deprecatedclass SuperMap.Components.IndexTabsPageContainer
  * @description 标签索引组件。
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Components Common
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
+ * @usage
  */
 export class IndexTabsPageContainer extends TemplateBase {
     constructor(options) {
@@ -40,7 +42,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.setTabs
+     * @function IndexTabsPageContainer.prototype.setTabs
      * @description 设置标签元素。
      * @param {Array.<Element>} tabs
      */
@@ -50,7 +52,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.appendTabs
+     * @function IndexTabsPageContainer.prototype.appendTabs
      * @description 追加标签元素。
      * @param {Array.<Element>} tabs
      */
@@ -75,7 +77,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.removeTab
+     * @function IndexTabsPageContainer.prototype.removeTab
      * @description 删除某个标签页面。
      * @param {number} index - 标签索引号。
      */
@@ -85,7 +87,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.removeAllTabs
+     * @function IndexTabsPageContainer.prototype.removeAllTabs
      * @description 删除所有标签。
      */
     removeAllTabs() {

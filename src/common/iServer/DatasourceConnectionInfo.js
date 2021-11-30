@@ -5,25 +5,27 @@ import {Util} from '../commontypes/Util';
 import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
 
 /**
- * @class SuperMap.DatasourceConnectionInfo
+ * @class DatasourceConnectionInfo
+ * @deprecatedclass SuperMap.DatasourceConnectionInfo
  * @category  iServer Data
  * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
  *            当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
  *            所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
  *            其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
  * @category iServer Data
- * @param {Object} options - 参数。 
- * @param {string} options.alias - 数据源别名。 
- * @param {string} options.dataBase - 数据源连接的数据库名。 
- * @param {boolean} [options.connect] - 数据源是否自动连接数据。 
- * @param {string} [options.driver] - 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。 
- * @param {SuperMap.EngineType} [options.engineType] - 数据源连接的引擎类型。 
- * @param {boolean} [options.exclusive] - 是否以独占方式打开数据源。 
- * @param {boolean} [options.OpenLinkTable] - 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。 
- * @param {string} [options.password] - 登录数据源连接的数据库或文件的密码。 
- * @param {boolean} [options.readOnly] - 是否以只读方式打开数据源。 
- * @param {string} [options.server] - 数据库服务器名或 SDB 文件名。 
- * @param {string} [options.user] - 登录数据库的用户名。 
+ * @param {Object} options - 参数。
+ * @param {string} options.alias - 数据源别名。
+ * @param {string} options.dataBase - 数据源连接的数据库名。
+ * @param {boolean} [options.connect] - 数据源是否自动连接数据。
+ * @param {string} [options.driver] - 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
+ * @param {EngineType} [options.engineType] - 数据源连接的引擎类型。
+ * @param {boolean} [options.exclusive] - 是否以独占方式打开数据源。
+ * @param {boolean} [options.OpenLinkTable] - 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。
+ * @param {string} [options.password] - 登录数据源连接的数据库或文件的密码。
+ * @param {boolean} [options.readOnly] - 是否以只读方式打开数据源。
+ * @param {string} [options.server] - 数据库服务器名或 SDB 文件名。
+ * @param {string} [options.user] - 登录数据库的用户名。
+ * @usage
  */
 export class DatasourceConnectionInfo {
 
@@ -31,25 +33,25 @@ export class DatasourceConnectionInfo {
     constructor(options) {
 
         /**
-         * @member {string} SuperMap.DatasourceConnectionInfo.prototype.alias
+         * @member {string} DatasourceConnectionInfo.prototype.alias
          * @description 数据源别名。
          */
         this.alias = null;
 
         /**
-         * @member {boolean} [SuperMap.DatasourceConnectionInfo.prototype.connect]
+         * @member {boolean} [DatasourceConnectionInfo.prototype.connect]
          * @description 数据源是否自动连接数据。
          */
         this.connect = null;
 
         /**
-         * @member {string} SuperMap.DatasourceConnectionInfo.prototype.dataBase
+         * @member {string} DatasourceConnectionInfo.prototype.dataBase
          * @description 数据源连接的数据库名。
          */
         this.dataBase = null;
 
         /**
-         * @member {string} [SuperMap.DatasourceConnectionInfo.prototype.driver]
+         * @member {string} [DatasourceConnectionInfo.prototype.driver]
          * @description 使用 ODBC(Open Database Connectivity，开放数据库互连) 的数据库的驱动程序名。
          * 其中，对于 SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
          * 对于 SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
@@ -58,37 +60,37 @@ export class DatasourceConnectionInfo {
         this.driver = null;
 
         /**
-         * @member {SuperMap.EngineType} [SuperMap.DatasourceConnectionInfo.prototype.engineType]
+         * @member {EngineType} [DatasourceConnectionInfo.prototype.engineType]
          * @description 数据源连接的引擎类型。
          */
         this.engineType = null;
 
         /**
-         * @member {boolean} [SuperMap.DatasourceConnectionInfo.prototype.exclusive]
+         * @member {boolean} [DatasourceConnectionInfo.prototype.exclusive]
          * @description 是否以独占方式打开数据源。
          */
         this.exclusive = null;
 
         /**
-         * @member {boolean} [SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable]
+         * @member {boolean} [DatasourceConnectionInfo.prototype.OpenLinkTable]
          * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。
          */
         this.OpenLinkTable = null;
 
         /**
-         * @member {string} [SuperMap.DatasourceConnectionInfo.prototype.password]
+         * @member {string} [DatasourceConnectionInfo.prototype.password]
          * @description 登录数据源连接的数据库或文件的密码。
          */
         this.password = null;
 
         /**
-         * @member {boolean} [SuperMap.DatasourceConnectionInfo.prototype.readOnly]
+         * @member {boolean} [DatasourceConnectionInfo.prototype.readOnly]
          * @description 是否以只读方式打开数据源。
          */
         this.readOnly = null;
 
         /**
-         * @member {string} [SuperMap.DatasourceConnectionInfo.prototype.server]
+         * @member {string} [DatasourceConnectionInfo.prototype.server]
          * @description 数据库服务器名、文件名或服务地址。
          * 1.对于 SDB 和 UDB 文件，为其文件的绝对路径。注意：当绝对路径的长度超过 UTF-8 编码格式的 260 字节长度，该数据源无法打开。
          * 2.对于 Oracle 数据库，其服务器名为其 TNS 服务名称。
@@ -104,7 +106,7 @@ export class DatasourceConnectionInfo {
         this.server = null;
 
         /**
-         * @member {string} SuperMap.DatasourceConnectionInfo.prototype.user
+         * @member {string} DatasourceConnectionInfo.prototype.user
          * @description 登录数据库的用户名。
          */
         this.user = null;
@@ -117,7 +119,7 @@ export class DatasourceConnectionInfo {
     }
 
     /**
-     * @function SuperMap.DatasourceConnectionInfo.prototype.destroy
+     * @function DatasourceConnectionInfo.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

@@ -5,45 +5,47 @@
 import { Util } from '../commontypes/Util';
 
 /**
- * @class SuperMap.ImageStretchOption
+ * @class ImageStretchOption
+ * @deprecatedclass SuperMap.ImageStretchOption
  * @param {Object} options - 初始化参数。
- * @param {SuperMap.ImageStretchOption.StretchType} [options.stretchType] 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
+ * @param {ImageStretchOption.StretchType} [options.stretchType] 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
  * @param {number} [options.stdevCoefficient] 标准差系数。
  * @param {number} [options.gaussianCoefficient] 高斯系数。
  * @param {boolean} [options.useMedianValue] 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
  * @param {number} [options.minPercent] 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
  * @param {number} [options.maxPercent] 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
+ * @usage
  */
 export default class ImageStretchOption {
   constructor(options) {
     /**
      * @description 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
-     * @member {SuperMap.ImageStretchOption.StretchType} SuperMap.ImageStretchOption.prototype.stretchType
+     * @member {ImageStretchOption.StretchType} ImageStretchOption.prototype.stretchType
      */
     this.stretchType = undefined;
     /**
      * @description 标准差系数。
-     * @member {number} SuperMap.ImageStretchOption.prototype.stdevCoefficient
+     * @member {number} ImageStretchOption.prototype.stdevCoefficient
      */
     this.stdevCoefficient = undefined;
     /**
      * @description 高斯系数。
-     * @member {number} SuperMap.ImageStretchOption.prototype.gaussianCoefficient
+     * @member {number} ImageStretchOption.prototype.gaussianCoefficient
      */
     this.gaussianCoefficient = undefined;
     /**
      * @description 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
-     * @member {boolean} SuperMap.ImageStretchOption.prototype.useMedianValue
+     * @member {boolean} ImageStretchOption.prototype.useMedianValue
      */
     this.useMedianValue = undefined;
     /**
      * @description 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
-     * @member {number} SuperMap.ImageStretchOption.prototype.minPercent
+     * @member {number} ImageStretchOption.prototype.minPercent
      */
     this.minPercent = undefined;
     /**
      * @description 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
-     * @member {number} SuperMap.ImageStretchOption.prototype.maxPercent
+     * @member {number} ImageStretchOption.prototype.maxPercent
      */
     this.maxPercent = undefined;
 
@@ -52,7 +54,7 @@ export default class ImageStretchOption {
   }
 
   /**
-   * @function SuperMap.ImageStretchOption.prototype.destroy
+   * @function ImageStretchOption.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
   destroy() {
@@ -66,10 +68,10 @@ export default class ImageStretchOption {
   }
 
   /**
-   * @function SuperMap.ImageStretchOption.prototype.constructFromObject
+   * @function ImageStretchOption.prototype.constructFromObject
    * @param {Object} data 要转换的数据.
-   * @param {SuperMap.ImageStretchOption} obj 返回的模型.
-   * @return {SuperMap.ImageStretchOption} 返回结果
+   * @param {ImageStretchOption} obj 返回的模型.
+   * @return {ImageStretchOption} 返回结果
    */
   static constructFromObject(data, obj) {
     if (data) {

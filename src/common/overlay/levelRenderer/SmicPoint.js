@@ -5,12 +5,12 @@ import {Shape} from './Shape';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicPoint
+ * @class  LevelRenderer.Shape.SmicPoint
  * @category Visualization Theme
  * @classdesc 点。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+ *   var shape = new LevelRenderer.Shape.SmicPoint({
  *       style: {
  *           x: 100,
  *           y: 100,
@@ -29,7 +29,7 @@ import {Shape} from './Shape';
 export class SmicPoint extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicPoint.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicPoint.prototype.style
      * @description 绘制样式。
      *
      * @param {number} style.x - 圆心x坐标，必设参数。
@@ -56,7 +56,7 @@ export class SmicPoint extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPoint.constructor
+     * @function LevelRenderer.Shape.SmicPoint.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -65,7 +65,7 @@ export class SmicPoint extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicPoint.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicPoint.prototype.type
          * @description 图形类型。
          */
         this.type = 'smicpoint';
@@ -88,7 +88,7 @@ export class SmicPoint extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPoint.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicPoint.prototype.buildPath
      * @description 创建点触。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -107,7 +107,7 @@ export class SmicPoint extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPoint.prototype.getRect
+     * @function LevelRenderer.Shape.SmicPoint.prototype.getRect
      * @description 计算返回点的包围盒矩形。该包围盒是直接从四个控制点计算，并非最小包围盒。
      *
      * @param {Object} style - style

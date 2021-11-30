@@ -7,12 +7,12 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicPolygon
+ * @class  LevelRenderer.Shape.SmicPolygon
  * @category Visualization Theme
  * @classdesc 多边形。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+ *   var shape = new LevelRenderer.Shape.SmicPolygon({
  *         style: {
  *             // 100x100 的正方形
  *             pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -25,7 +25,7 @@ import {SUtil} from './SUtil';
 export class SmicPolygon extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicPolygon.prototype.style
      * @description 绘制样式。
      *
      * @param {Array} pointList - 节点数组，二维数组。默认值：null，必设参数。其形式如下：
@@ -59,7 +59,7 @@ export class SmicPolygon extends Shape {
     //打开接口 style
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.constructor
+     * @function LevelRenderer.Shape.SmicPolygon.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -68,13 +68,13 @@ export class SmicPolygon extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicPolygon.prototype.type
          * @description 图形类型.
          */
         this.type = 'smicpolygon';
 
         /**
-         * @member {Array} SuperMap.LevelRenderer.Shape.SmicPolygon.prototype._holePolygonPointList
+         * @member {Array} LevelRenderer.Shape.SmicPolygon.prototype._holePolygonPointList
          * @description 岛洞面多边形顶点数组（三维数组）
          *
          */
@@ -88,7 +88,7 @@ export class SmicPolygon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.destroy
+     * @function LevelRenderer.Shape.SmicPolygon.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -99,7 +99,7 @@ export class SmicPolygon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.brush
+     * @function LevelRenderer.Shape.SmicPolygon.prototype.brush
      * @description 笔触。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -232,7 +232,7 @@ export class SmicPolygon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicPolygon.prototype.buildPath
      * @description 创建多边形路径。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -438,12 +438,12 @@ export class SmicPolygon extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.getRect
+     * @function LevelRenderer.Shape.SmicPolygon.prototype.getRect
      * @description 计算返回多边形包围盒矩阵。该包围盒是直接从四个控制点计算，并非最小包围盒。
-     * 
+     *
      * @param {Object} style - style
      * @return {Object} 边框对象。包含属性：x，y，width，height。
-     * 
+     *
      */
     getRect(style, refOriginalPosition) {
         var __OP;

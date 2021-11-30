@@ -6,12 +6,14 @@ import { SecurityManager } from '../security/SecurityManager';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class SuperMap.OnlineServiceBase
+ * @class OnlineServiceBase
+ * @deprecatedclass SuperMap.OnlineServiceBase
  * @classdesc Online 服务基类（使用 key 作为权限限制的类需要实现此类）。
  * @category iPortal/Online
  * @param {Object} options - 服务参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class OnlineServiceBase {
 
@@ -22,7 +24,7 @@ export class OnlineServiceBase {
     }
 
     /**
-     * @function SuperMap.OnlineServiceBase.prototype.request
+     * @function OnlineServiceBase.prototype.request
      * @description 请求 online 服务
      * @param {string} [method='GET'] - 请求方式, 'GET', 'PUT', 'POST', 'DELETE'。
      * @param {string} url - 服务地址。

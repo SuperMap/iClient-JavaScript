@@ -5,12 +5,13 @@ import { Util } from '../commontypes/Util';
 import { CommonServiceBase } from './CommonServiceBase';
 
 /**
- * @class SuperMap.MapService
+ * @class MapService
+ * @deprecatedclass SuperMap.MapService
  * @category iServer Map
  * @classdesc 地图信息服务类。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example
- * var myMapService = new SuperMap.MapService(url, {
+ * var myMapService = new MapService(url, {
  * eventListeners:{
  *     "processCompleted": MapServiceCompleted,
  *       "processFailed": MapServiceFailed
@@ -20,9 +21,10 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class MapService extends CommonServiceBase {
 
@@ -30,7 +32,7 @@ export class MapService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.MapService.prototype.projection
+         * @member {string} MapService.prototype.projection
          * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
          */
         this.projection = null;
@@ -71,7 +73,7 @@ export class MapService extends CommonServiceBase {
     }
 
     /**
-     * @function  SuperMap.MapService.prototype.processAsync
+     * @function  MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
      */
     processAsync() {

@@ -7,25 +7,27 @@ import {Util} from './Util';
 
 
 /**
- * @class SuperMap.Feature.Vector
+ * @class GeometryVector
+ * @deprecatedclass SuperMap.Feature.Vector
  * @category BaseTypes Geometry
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
- * 其中，默认的样式在 {@link SuperMap.Feature.Vector.style} 类中定义，如果没有特别的指定将使用默认的样式。
- * @extends {SuperMap.Feature}
- * @param {SuperMap.Geometry} geometry - 代表要素的几何形状。
+ * 其中，默认的样式在 {@link GeometryVector.style} 类中定义，如果没有特别的指定将使用默认的样式。
+ * @extends {Feature}
+ * @param {Geometry} geometry - 代表要素的几何形状。
  * @param {Object} [attributes] - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的对象。
  * @param {Object} [style] - 样式对象。
  * @example
- * var geometry = new SuperMap.Geometry.Point(-115,10);
+ * var geometry = new GeometryPoint(-115,10);
  *  var style = {
      *      strokeColor:"#339933",
      *      strokeOpacity:1,
      *      strokeWidth:3,
      *      pointRadius:6
      *  }
- *  var pointFeature = new SuperMap.Feature.Vector(geometry,null,style);
+ *  var pointFeature = new GeometryVector(geometry,null,style);
  *  vectorLayer.addFeatures(pointFeature);
+ * @usage
  */
 // TRASH THIS
 const State = {
@@ -41,19 +43,19 @@ export class Vector extends Feature {
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
         /**
-         * @member {string} SuperMap.Feature.Vector.prototype.fid
+         * @member {string} GeometryVector.prototype.fid
          * @description fid
          */
         this.fid = null;
 
         /**
-         * @member {SuperMap.Geometry} SuperMap.Feature.Vector.prototype.geometry
+         * @member {Geometry} GeometryVector.prototype.geometry
          * @description 该属性用于存放几何信息。
          */
         this.geometry = geometry ? geometry : null;
 
         /**
-         * @member {Object} SuperMap.Feature.Vector.prototype.attributes
+         * @member {Object} GeometryVector.prototype.attributes
          * @description 描述要素的任意的可序列化属性。
          */
         this.attributes = {};
@@ -63,29 +65,29 @@ export class Vector extends Feature {
         }
 
         /**
-         * @member {SuperMap.Bounds} SuperMap.Feature.Vector.prototype.bounds
+         * @member {Bounds} GeometryVector.prototype.bounds
          * @description The box bounding that feature's geometry, that
-         *     property can be set by an <SuperMap.Format> object when
+         *     property can be set by an <Format> object when
          *     deserializing the feature, so in most cases it represents an
          *     information set by the server.
          */
         this.bounds = null;
 
         /**
-         * @member {string} SuperMap.Feature.Vector.prototype.state
+         * @member {string} GeometryVector.prototype.state
          * @description state
          */
         this.state = null;
 
         /**
-         * @member {Object} SuperMap.Feature.Vector.prototype.style
+         * @member {Object} GeometryVector.prototype.style
          * @description 要素的样式属性，地图查询返回的 feature 的 style，8C 变为null。
          */
         this.style = style ? style : null;
 
         /**
-         * @member {string} SuperMap.Feature.Vector.prototype.url 
-         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 {@link SuperMap.HTTP} 。
+         * @member {string} GeometryVector.prototype.url
+         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 {@link HTTP} 。
          */
         this.url = null;
 
@@ -173,7 +175,7 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function SuperMap.Feature.Vector.prototype.destroy
+     * @function GeometryVector.prototype.destroy
      * @description nullify references to prevent circular references and memory leaks
      */
     destroy() {
@@ -187,10 +189,10 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function SuperMap.Feature.Vector.prototype.clone
+     * @function GeometryVector.prototype.clone
      * @description Create a clone of this vector feature.  Does not set any non-standard
      *     properties.
-     * @returns {SuperMap.Feature.Vector} An exact clone of this vector feature.
+     * @returns {GeometryVector} An exact clone of this vector feature.
      */
     clone() {
         return new Vector(
@@ -200,7 +202,7 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function SuperMap.Feature.Vector.prototype.toState
+     * @function GeometryVector.prototype.toState
      * @description 设置新状态。
      * @param {string} state - 状态。
      */
@@ -242,7 +244,7 @@ export class Vector extends Feature {
 }
 /**
  *
- * @typedef {Object} SuperMap.Feature.Vector.style
+ * @typedef {Object} GeometryVector.style
  * @description SuperMap.features 有大量的样式属性，如果没有特别的指定将使用默认的样式，
  * 大部分样式通过 SVG 标准定义属性。
  * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
@@ -298,8 +300,8 @@ export class Vector extends Feature {
  * @example
  *  // label的用法如下：
  *  function addGeoTest(){
- *  var geometry = new SuperMap.Geometry.Point(105, 35);
- *  var pointFeature = new SuperMap.Feature.Vector(geometry);
+ *  var geometry = new GeometryPoint(105, 35);
+ *  var pointFeature = new GeometryVector(geometry);
  *  var styleTest = {
  *        label:"supermap",
  *        fontColor:"#0000ff",

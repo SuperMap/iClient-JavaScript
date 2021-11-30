@@ -9,16 +9,16 @@ import {SUtil} from './SUtil';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape
+ * @class  LevelRenderer.Shape
  * @category Visualization Theme
  * @classdesc 图形（shape）基类。
- * @extends SuperMap.LevelRenderer.Eventful
- * @extends SuperMap.LevelRenderer.Transformable
+ * @extends LevelRenderer.Eventful
+ * @extends LevelRenderer.Transformable
  */
 export class Shape extends mixin(Eventful, Transformable) {
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.constructor
+     * @function LevelRenderer.Shape.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -29,13 +29,13 @@ export class Shape extends mixin(Eventful, Transformable) {
 
         options = options || {};
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.prototype.id
+         * @member {string} LevelRenderer.Shape.prototype.id
          * @description 唯一标识。
          */
         this.id = null;
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.style
+         * @member {Object} LevelRenderer.Shape.prototype.style
          * @description 基础绘制样式。
          * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
          * @param {string} style.color - 填充颜色。默认值："#000000'"。
@@ -58,7 +58,7 @@ export class Shape extends mixin(Eventful, Transformable) {
         this.style = {};
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.style.__rect
+         * @member {Object} LevelRenderer.Shape.prototype.style.__rect
          * @description 包围图形的最小矩形盒子。
          *
          * @param {number} x - 左上角顶点x轴坐标。
@@ -68,7 +68,7 @@ export class Shape extends mixin(Eventful, Transformable) {
          */
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.highlightStyle
+         * @member {Object} LevelRenderer.Shape.prototype.highlightStyle
          * @description 高亮样式。
          *
          * @param {string} highlightStyle.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
@@ -91,69 +91,69 @@ export class Shape extends mixin(Eventful, Transformable) {
         this.highlightStyle = null;
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.parent
-         * @description 父节点，只读属性。<SuperMap.LevelRenderer.Group>
+         * @member {Object} LevelRenderer.Shape.prototype.parent
+         * @description 父节点，只读属性。<LevelRenderer.Group>
          */
         this.parent = null;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.__dirty
+         * @member {boolean} LevelRenderer.Shape.prototype.__dirty
          * @description {boolean}
          */
         this.__dirty = true;
 
         /**
-         * @member {Array} SuperMap.LevelRenderer.Shape.prototype.__clipShapes
+         * @member {Array} LevelRenderer.Shape.prototype.__clipShapes
          * @description {Array}
-         * 
+         *
          */
         this.__clipShapes = [];
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.invisible
+         * @member {boolean} LevelRenderer.Shape.prototype.invisible
          * @description 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
          */
         this.invisible = false;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.ignore
+         * @member {boolean} LevelRenderer.Shape.prototype.ignore
          * @description 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
          */
         this.ignore = false;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.zlevel
+         * @member {boolean} LevelRenderer.Shape.prototype.zlevel
          * @description z 层 level，决定绘画在哪层 canvas 中。默认值：0。
          */
         this.zlevel = 0;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.draggable
+         * @member {boolean} LevelRenderer.Shape.prototype.draggable
          * @description 是否可拖拽。默认值：false。
          */
         this.draggable = false;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.clickable
+         * @member {boolean} LevelRenderer.Shape.prototype.clickable
          * @description 是否可点击。默认值：false。
          */
         this.clickable = false;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.hoverable
+         * @member {boolean} LevelRenderer.Shape.prototype.hoverable
          * @description 是否可以 hover。默认值：true。
          */
         this.hoverable = true;
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Shape.prototype.z
+         * @member {number} LevelRenderer.Shape.prototype.z
          * @description z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。默认值：0。
          */
         this.z = 0;
 
         //地理扩展
         /**
-         * @member {Array} SuperMap.LevelRenderer.Shape.prototype.refOriginalPosition
+         * @member {Array} LevelRenderer.Shape.prototype.refOriginalPosition
          * @description 图形参考原点位置，图形的参考中心位置。
          * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          *
@@ -172,21 +172,21 @@ export class Shape extends mixin(Eventful, Transformable) {
         this.refOriginalPosition = [0, 0];
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.prototype.refDataID
+         * @member {string} LevelRenderer.Shape.prototype.refDataID
          * @description 图形所关联数据的 ID。
          *
          */
         this.refDataID = null;
 
         /**
-         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.isHoverByRefDataID
+         * @member {boolean} LevelRenderer.Shape.prototype.isHoverByRefDataID
          * @description 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
          *
          */
         this.isHoverByRefDataID = false;
 
         /**
-         *  @member {string} SuperMap.LevelRenderer.Shape.prototype.refDataHoverGroup 
+         *  @member {string} LevelRenderer.Shape.prototype.refDataHoverGroup
          *  @description 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
          * 一旦设置此属性，且属性值有效，只有关联同一个数据的图形且此属性相同的图形才会高亮。
          *
@@ -194,7 +194,7 @@ export class Shape extends mixin(Eventful, Transformable) {
         this.refDataHoverGroup = null;
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.dataInfo
+         * @member {Object} LevelRenderer.Shape.prototype.dataInfo
          * @description 图形的数据信息。
          *
          */
@@ -203,7 +203,7 @@ export class Shape extends mixin(Eventful, Transformable) {
         this.id = this.id  || CommonUtil.createUniqueID("smShape_");
         this.CLASS_NAME = "SuperMap.LevelRenderer.Shape";
         /**
-         * @function SuperMap.LevelRenderer.Shape.prototype.getTansform
+         * @function LevelRenderer.Shape.prototype.getTansform
          * @description 变换鼠标位置到 shape 的局部坐标空间
          *
          */
@@ -231,7 +231,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.destroy
+     * @function LevelRenderer.Shape.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -259,7 +259,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.brush
+     * @function LevelRenderer.Shape.prototype.brush
      * @description 绘制图形。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -304,7 +304,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.beforeBrush
+     * @function LevelRenderer.Shape.prototype.beforeBrush
      * @description 具体绘制操作前的一些公共操作。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -345,7 +345,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.afterBrush
+     * @function LevelRenderer.Shape.prototype.afterBrush
      * @description 绘制后的处理。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -357,7 +357,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.setContext
+     * @function LevelRenderer.Shape.prototype.setContext
      * @description 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -392,7 +392,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.doClip
+     * @function LevelRenderer.Shape.prototype.doClip
      *
      */
     doClip(ctx) {
@@ -428,9 +428,9 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.getHighlightStyle
+     * @function LevelRenderer.Shape.prototype.getHighlightStyle
      * @description 根据默认样式扩展高亮样式
-     * 
+     *
      * @param {Object} style - 样式。
      * @param {Object} highlightStyle - 高亮样式。
      * @param {string} brushTypeOnly - brushTypeOnly。
@@ -502,7 +502,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.getHighlightZoom
+     * @function LevelRenderer.Shape.prototype.getHighlightZoom
      * @description 高亮放大效果参数，当前统一设置为6，如有需要差异设置，通过 this.type 判断实例类型
      *
      */
@@ -512,7 +512,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.drift
+     * @function LevelRenderer.Shape.prototype.drift
      * @description 移动位置
      *
      * @param {Object} dx - 横坐标变化。
@@ -528,7 +528,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.buildPath
+     * @function LevelRenderer.Shape.prototype.buildPath
      * @description 构建绘制的Path。子类必须重新实现此方法。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -540,7 +540,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.getRect
+     * @function LevelRenderer.Shape.prototype.getRect
      * @description 计算返回包围盒矩形。子类必须重新实现此方法。
      *
      * @param {Object} style - 样式。
@@ -551,7 +551,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.isCover
+     * @function LevelRenderer.Shape.prototype.isCover
      * @description 判断鼠标位置是否在图形内。
      *
      * @param {number} x - x。
@@ -582,7 +582,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.drawText
+     * @function LevelRenderer.Shape.prototype.drawText
      * @description 绘制附加文本。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -786,7 +786,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.modSelf
+     * @function LevelRenderer.Shape.prototype.modSelf
      * @description 图形发生改变
      */
     modSelf() {
@@ -801,7 +801,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.isSilent
+     * @function LevelRenderer.Shape.prototype.isSilent
      * @description 图形是否会触发事件，通过 bind 绑定的事件
      */
     isSilent() {
@@ -816,7 +816,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype.setCtxGlobalAlpha
+     * @function LevelRenderer.Shape.prototype.setCtxGlobalAlpha
      * @description 设置 Cavans 上下文全局透明度
      *
      * @param {Object} _ctx - Cavans 上下文
@@ -834,7 +834,7 @@ export class Shape extends mixin(Eventful, Transformable) {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.prototype._fillText
+     * @function LevelRenderer.Shape.prototype._fillText
      * @description 填充文本
      */
     static _fillText(ctx, text, x, y, textFont, textAlign, textBaseline) {
@@ -869,7 +869,7 @@ export class Shape extends mixin(Eventful, Transformable) {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Shape._getTextRect
+     * @function LevelRenderer.Shape._getTextRect
      * @description 返回矩形区域，用于局部刷新和文字定位
      *
      * @param {string} text - text。

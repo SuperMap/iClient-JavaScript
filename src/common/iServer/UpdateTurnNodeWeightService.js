@@ -6,12 +6,13 @@ import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
 import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters';
 
 /**
- * @class SuperMap.UpdateTurnNodeWeightService
+ * @class UpdateTurnNodeWeightService
+ * @deprecatedclass SuperMap.UpdateTurnNodeWeightService
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务类
- * @extends {SuperMap.NetworkAnalystServiceBase}
+ * @extends {NetworkAnalystServiceBase}
  * @example
- * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
+ * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url, {
  *     eventListeners: {
  *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
  *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
@@ -23,6 +24,7 @@ import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
@@ -39,12 +41,12 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.UpdateTurnNodeWeightService.prototype.processAsync
+     * @function UpdateTurnNodeWeightService.prototype.processAsync
      * @description 开始异步执行转向耗费权重的更新
-     * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
+     * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
      * @example
      * (code)
-     *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
+     *  var updateTurnNodeWeightParam=new UpdateTurnNodeWeightParameters({
      *           nodeId:"106",
      *           fromEdgeId:"6508",
      *           toEdgeId:"6504",
@@ -72,7 +74,7 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @function SuperMap.UpdateTurnNodeWeightService.prototype.parse
+     * @function UpdateTurnNodeWeightService.prototype.parse
      * @description 将更新服务参数解析为用‘/’做分隔的字符串
      */
     parse(params) {

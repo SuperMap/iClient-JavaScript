@@ -4,15 +4,17 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.ThiessenAnalystParameters
+ * @class ThiessenAnalystParameters
+ * @deprecatedclass SuperMap.ThiessenAnalystParameters
  * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 泰森多边形分析参数基类。
  * @param {Object} options - 参数。
- * @param {(SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon)} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
+ * @param {(Polygon|L.Polygon|ol.geom.Polygon)} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
  * @param {boolean} [options.createResultDataset=false] - 是否返回结果数据集。
  * @param {string} [options.resultDatasetName] - 指定结果数据集名称。
  * @param {string} [options.resultDatasourceName] - 指定结果数据集所在数据源，默认为当前数据源。
  * @param {boolean} [options.returnResultRegion=true] - 是否返回分析得到的多边形面数组。
+ * @usage
  */
 export class ThiessenAnalystParameters {
 
@@ -21,31 +23,31 @@ export class ThiessenAnalystParameters {
             return;
         }
         /**
-         * @member {(SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon)} [SuperMap.ThiessenAnalystParameters.prototype.clipRegion]
+         * @member {(Polygon|L.Polygon|ol.geom.Polygon)} [ThiessenAnalystParameters.prototype.clipRegion]
          * @description 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
          */
         this.clipRegion = null;
 
         /**
-         *  @member {boolean} [SuperMap.ThiessenAnalystParameters.prototype.createResultDataset=false]
+         *  @member {boolean} [ThiessenAnalystParameters.prototype.createResultDataset=false]
          *  @description 是否返回结果数据集。如果为 true，则必须设置属性 resultDatasetName 和 resultDatasourceName。
          */
         this.createResultDataset = false;
 
         /**
-         * @member {string} SuperMap.ThiessenAnalystParameters.prototype.resultDatasetName
+         * @member {string} ThiessenAnalystParameters.prototype.resultDatasetName
          * @description 指定结果数据集名称。
          */
         this.resultDatasetName = null;
 
         /**
-         * @member {string} SuperMap.ThiessenAnalystParameters.prototype.resultDatasourceName
+         * @member {string} ThiessenAnalystParameters.prototype.resultDatasourceName
          * @description 指定结果数据集所在数据源。
          */
         this.resultDatasourceName = null;
 
         /**
-         * @member {boolean} SuperMap.ThiessenAnalystParameters.prototype.returnResultRegion
+         * @member {boolean} ThiessenAnalystParameters.prototype.returnResultRegion
          * @description 是否返回分析得到的多边形面数组。
          */
         this.returnResultRegion = true;
@@ -56,7 +58,7 @@ export class ThiessenAnalystParameters {
     }
 
     /**
-     * @function SuperMap.ThiessenAnalystParameters.prototype.destroy
+     * @function ThiessenAnalystParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

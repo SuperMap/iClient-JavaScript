@@ -7,16 +7,18 @@ import {JoinItem} from './JoinItem';
 import {DatasetInfo} from './DatasetInfo';
 
 /**
- * @class SuperMap.UGCSubLayer
+ * @class UGCSubLayer
+ * @deprecatedclass SuperMap.UGCSubLayer
  * @category  iServer Map Layer
  * @classdesc 地图服务图层属性信息类。影像图层（Image）、专题图层（ServerTheme）、栅格图层（Grid）、矢量图层（Vector）等图层均继承该类。
- * @extends {SuperMap.UGCMapLayer}
- * @param {Object} options - 参数。 
- * @param {SuperMap.DatasetInfo} options.datasetInfo - 数据集信息。 
- * @param {string} [options.displayFilter] - 图层显示过滤条件。 
- * @param {SuperMap.JoinItem} [options.joinItems] - 连接信息类。 
- * @param {string} [options.representationField] - 存储制图表达信息的字段。 
- * @param {SuperMap.LayerType} [options.ugcLayerType] - 图层类型。
+ * @extends {UGCMapLayer}
+ * @param {Object} options - 参数。
+ * @param {DatasetInfo} options.datasetInfo - 数据集信息。
+ * @param {string} [options.displayFilter] - 图层显示过滤条件。
+ * @param {JoinItem} [options.joinItems] - 连接信息类。
+ * @param {string} [options.representationField] - 存储制图表达信息的字段。
+ * @param {LayerType} [options.ugcLayerType] - 图层类型。
+ * @usage
  */
 export class UGCSubLayer extends UGCMapLayer {
 
@@ -25,31 +27,31 @@ export class UGCSubLayer extends UGCMapLayer {
         options = options || {};
         super(options);
         /**
-         * @member {SuperMap.DatasetInfo} SuperMap.UGCSubLayer.prototype.datasetInfo
+         * @member {DatasetInfo} UGCSubLayer.prototype.datasetInfo
          * @description 数据集信息。
          */
         this.datasetInfo = null;
 
         /**
-         * @member {string} SuperMap.UGCSubLayer.prototype.displayFilter
+         * @member {string} UGCSubLayer.prototype.displayFilter
          * @description 图层显示过滤条件。
          */
         this.displayFilter = null;
 
         /**
-         * @member {SuperMap.JoinItem} SuperMap.UGCSubLayer.prototype.joinItems
+         * @member {JoinItem} UGCSubLayer.prototype.joinItems
          * @description 连接信息类。
          */
         this.joinItems = null;
 
         /**
-         * @member {string} SuperMap.UGCSubLayer.prototype.representationField
+         * @member {string} UGCSubLayer.prototype.representationField
          * @description 存储制图表达信息的字段。
          */
         this.representationField = null;
 
         /**
-         * @member {SuperMap.LayerType} SuperMap.UGCSubLayer.prototype.ugcLayerType
+         * @member {LayerType} UGCSubLayer.prototype.ugcLayerType
          * @description 图层类型。
          */
         this.ugcLayerType = null;
@@ -59,7 +61,7 @@ export class UGCSubLayer extends UGCMapLayer {
 
 
     /**
-     * @function SuperMap.UGCSubLayer.prototype.fromJson
+     * @function UGCSubLayer.prototype.fromJson
      * @description 将服务端 JSON 对象转换成当前客户端对象
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
@@ -78,7 +80,7 @@ export class UGCSubLayer extends UGCMapLayer {
     }
 
     /**
-     * @function SuperMap.UGCSubLayer.prototype.destroy
+     * @function UGCSubLayer.prototype.destroy
      * @override
      */
     destroy() {
@@ -88,7 +90,7 @@ export class UGCSubLayer extends UGCMapLayer {
 
 
     /**
-     * @function SuperMap.UGCSubLayer.prototype.toServerJSONObject
+     * @function UGCSubLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      * @returns {Object} 对应的 JSON 格式对象。
      */

@@ -7,7 +7,8 @@ import {DatasetBufferAnalystParameters} from './DatasetBufferAnalystParameters';
 import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters';
 
 /**
- * @class SuperMap.BufferAnalystService
+ * @class BufferAnalystService
+ * @deprecatedclass SuperMap.BufferAnalystService
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析服务类。
  * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
@@ -17,18 +18,17 @@ import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myBufferAnalystService = new SuperMap.BufferAnalystService(url, {
+ * var myBufferAnalystService = new BufferAnalystService(url, {
      *     eventListeners: {
      *           "processCompleted": bufferCompleted,
      *           "processFailed": bufferFailed
      *           }
      *    });
  * (end)
- *
- *
+ * @usage
  */
 export class BufferAnalystService extends SpatialAnalystBase {
 
@@ -36,7 +36,7 @@ export class BufferAnalystService extends SpatialAnalystBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.BufferAnalystService.prototype.mode
+         * @member {string} BufferAnalystService.prototype.mode
          * @description 缓冲区分析类型
          */
         this.mode = null;
@@ -48,7 +48,7 @@ export class BufferAnalystService extends SpatialAnalystBase {
 
 
     /**
-     * @function SuperMap.BufferAnalystService.prototype.destroy
+     * @function BufferAnalystService.prototype.destroy
      * @override
      */
     destroy() {
@@ -58,9 +58,9 @@ export class BufferAnalystService extends SpatialAnalystBase {
 
 
     /**
-     * @method SuperMap.BufferAnalystService.prototype.processAsync
+     * @method BufferAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.BufferAnalystParameters} parameter - 缓冲区分析参数
+     * @param {BufferAnalystParameters} parameter - 缓冲区分析参数
      */
     processAsync(parameter) {
         var parameterObject = {};

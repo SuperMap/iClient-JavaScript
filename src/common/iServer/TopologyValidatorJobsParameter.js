@@ -7,16 +7,18 @@ import { OutputSetting } from './OutputSetting';
 import { MappingParameters } from './MappingParameters';
 
 /**
- * @class SuperMap.TopologyValidatorJobsParameter
+ * @class TopologyValidatorJobsParameter
+ * @deprecatedclass SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类。
  * @param {Object} options - 必填参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetTopology -检查对象所在的数据集名称。
- * @param {SuperMap.TopologyValidatorRule} [options.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
+ * @param {TopologyValidatorRule} [options.rule=TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {OutputSetting} [options.output] - 输出参数设置。
+ * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @usage
  */
 export class TopologyValidatorJobsParameter {
 
@@ -25,38 +27,38 @@ export class TopologyValidatorJobsParameter {
             return;
         }
         /**
-         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.datasetName
+         * @member {string} TopologyValidatorJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology
+         * @member {string} TopologyValidatorJobsParameter.prototype.datasetTopology
          * @description 拓扑检查对象所在的数据集名称。
          */
         this.datasetTopology = "";
 
         /**
-         * @member {string} [SuperMap.TopologyValidatorJobsParameter.prototype.tolerance]
+         * @member {string} [TopologyValidatorJobsParameter.prototype.tolerance]
          * @description 容限，指定的拓扑错误检查时使用的容限。
          */
         this.tolerance = "";
 
         /**
-         * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
+         * @member {TopologyValidatorRule} [TopologyValidatorJobsParameter.prototype.rule=TopologyValidatorRule.REGIONNOOVERLAP]
          * @description 拓扑检查模式。
          */
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
+         * @member {OutputSetting} [TopologyValidatorJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
 
         /**
-         * @member {SuperMap.MappingParameters} [SuperMap.TopologyValidatorJobsParameter.prototype.mappingParameters]
-         * @description 分析后结果可视化的参数类。   
+         * @member {MappingParameters} [TopologyValidatorJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
 
@@ -66,7 +68,7 @@ export class TopologyValidatorJobsParameter {
     }
 
     /**
-     * @function SuperMap.TopologyValidatorJobsParameter.prototype.destroy
+     * @function TopologyValidatorJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -85,7 +87,7 @@ export class TopologyValidatorJobsParameter {
     }
 
     /**
-     * @function SuperMap.TopologyValidatorJobsParameter.toObject
+     * @function TopologyValidatorJobsParameter.toObject
      * @param {Object} TopologyValidatorJobsParameter -拓扑检查分析任务参数。
      * @param {Object} tempObj - 目标对象。
      * @description 生成拓扑检查分析任务对象。

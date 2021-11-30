@@ -6,7 +6,8 @@ import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
 
 /**
- * @class SuperMap.GenerateSpatialDataService
+ * @class GenerateSpatialDataService
+ * @deprecatedclass SuperMap.GenerateSpatialDataService
  * @category iServer SpatialAnalyst GenerateSpatialData
  * @classdesc 动态分段分析服务类。该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
  * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
@@ -15,20 +16,20 @@ import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 实例化该类如下例所示：
  * (start code)
  *  function GenerateSpatialData(){
      *
      *  //配置数据返回选项(option)
-     *  var option = new SuperMap.DataReturnOption({
+     *  var option = new DataReturnOption({
      *      expectCount: 1000,
      *      dataset: "generateSpatialData",
      *      deleteExistResultDataset: true,
-     *      dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+     *      dataReturnMode: DataReturnMode.DATASET_ONLY
      *  }),
      *  //配置动态分段参数(Parameters)
-     *  parameters = new SuperMap.GenerateSpatialDataParameters({
+     *  parameters = new GenerateSpatialDataParameters({
      *      routeTable: "RouteDT_road@Changchun",
      *      routeIDField: "RouteID",
      *      eventTable: "LinearEventTabDT@Changchun",
@@ -42,7 +43,7 @@ import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
      *      dataReturnOption: option
      *  }),
      *  //配置动态分段iService
-     *  iService = new SuperMap.GenerateSpatialDataService(Changchun_spatialanalyst, {
+     *  iService = new GenerateSpatialDataService(Changchun_spatialanalyst, {
      *      eventListeners: {
      *          processCompleted: generateCompleted,
      *          processFailed: generateFailded
@@ -53,6 +54,7 @@ import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
      *  function Completed(generateSpatialDataEventArgs){//todo};
      *  function Error(generateSpatialDataEventArgs){//todo};
      * (end)
+     * @usage
      */
 export class GenerateSpatialDataService extends SpatialAnalystBase {
 
@@ -63,7 +65,7 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.GenerateSpatialDataService.prototype.destroy
+     * @function GenerateSpatialDataService.prototype.destroy
      * @override
      */
     destroy() {
@@ -72,9 +74,9 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
 
 
     /**
-     * @function SuperMap.GenerateSpatialDataService.prototype.processAsync
+     * @function GenerateSpatialDataService.prototype.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
-     * @param {SuperMap.GenerateSpatialDataParameters} params - 动态分段操作参数类。
+     * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
      */
     processAsync(params) {
         if (!(params instanceof GenerateSpatialDataParameters)) {
@@ -96,9 +98,9 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
 
 
     /**
-     * @function SuperMap.GenerateSpatialDataService.prototype.getJsonParameters
+     * @function GenerateSpatialDataService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
-     * @param {SuperMap.GenerateSpatialDataParameters} params - 动态分段操作参数类。
+     * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
      * @returns {string}转化后的JSON字符串。
      */
     getJsonParameters(params) {

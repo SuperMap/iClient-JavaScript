@@ -4,22 +4,24 @@
 import { Util } from '../commontypes/Util';
 
 /**
- * @class SuperMap.AggregationParameter
+ * @class AggregationParameter
+ * @deprecatedclass SuperMap.AggregationParameter
  * @classdesc 聚合查询参数设置，该参数仅支持数据来源 Elasticsearch 服务的数据服务。
  * @category iServer Data FeatureResults
  * @param {Object} options - 初始化参数。
  * @param {string} options.aggName - 聚合名称。
  * @param {string} options.aggFieldName - 聚合字段。
+ * @usage
  */
 export class AggregationParameter {
     constructor(options) {
         /**
-         * @member {string} SuperMap.AggregationParameter.prototype.aggName
+         * @member {string} AggregationParameter.prototype.aggName
          * @description 聚合名称。
          */
         this.aggName = null;
         /**
-         * @member {string} SuperMap.AggregationParameter.prototype.aggFieldName
+         * @member {string} AggregationParameter.prototype.aggFieldName
          * @description 聚合字段。
          */
         this.aggFieldName = null;

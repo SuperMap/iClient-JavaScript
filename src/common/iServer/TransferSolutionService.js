@@ -6,7 +6,8 @@ import {CommonServiceBase} from './CommonServiceBase';
 import {TransferSolutionParameters} from './TransferSolutionParameters';
 
 /**
- * @class SuperMap.TransferSolutionService
+ * @class TransferSolutionService
+ * @deprecatedclass SuperMap.TransferSolutionService
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取。
@@ -16,16 +17,16 @@ import {TransferSolutionParameters} from './TransferSolutionParameters';
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myService = new SuperMap.TransferSolutionService(url, {eventListeners: {
+ * var myService = new TransferSolutionService(url, {eventListeners: {
      *     "processCompleted": trafficTransferCompleted,
      *     "processFailed": trafficTransferError
      *     }
      * };
  * (end)
- *
+ * @usage
  */
 export class TransferSolutionService extends CommonServiceBase {
 
@@ -42,9 +43,9 @@ export class TransferSolutionService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.TransferSolutionService.prototype.processAsync
+     * @function TransferSolutionService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param {SuperMap.TransferSolutionParameters} params - 交通换乘参数。
+     * @param {TransferSolutionParameters} params - 交通换乘参数。
      */
     processAsync(params) {
         if (!(params instanceof TransferSolutionParameters)) {

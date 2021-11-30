@@ -4,26 +4,28 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  SuperMap.Feature.ShapeParameters.Polygon
+ * @class  FeaturePolygon
+ * @deprecatedclass SuperMap.Feature.ShapeParameters.Polygon
  * @category Visualization Theme
  * @classdesc 面参数对象。
- * @extends {SuperMap.Feature.ShapeParameters}
+ * @extends {ShapeParameters}
+ * @usage
  */
- 
+
 export class Polygon extends ShapeParameters {
-    
-  
+
+
 
     /**
-     * @function SuperMap.Feature.ShapeParameters.Polygon.prototype.constructor
+     * @function FeaturePolygon.prototype.constructor
      * @description 创建一个图形面参数对象。
      * @param {Array} pointList - 横坐标，必设参数。
-     * @returns {SuperMap.Feature.ShapeParameters.Polygon} 标签参数对象。
+     * @returns {FeaturePolygon} 标签参数对象。
      */
     constructor(pointList) {
         super(pointList);
         /**
-         * @member {Array} SuperMap.Feature.ShapeParameters.Polygon.prototype.pointList
+         * @member {Array} FeaturePolygon.prototype.pointList
          * @description 面要素节点数组，二维数组。
          * 数组形如：
          * (start code)
@@ -37,16 +39,16 @@ export class Polygon extends ShapeParameters {
         this.pointList = pointList;
 
         /**
-         * @member {Array} SuperMap.Feature.ShapeParameters.Polygon.prototype.holePolygonPointLists
+         * @member {Array} FeaturePolygon.prototype.holePolygonPointLists
          * @description 岛洞面多边形顶点数组（三维数组）
          */
         this.holePolygonPointLists = null;
 
         this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Polygon";
     }
-    
+
     /**
-     * @function SuperMap.Feature.ShapeParameters.Polygon.prototype.destroy
+     * @function FeaturePolygon.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {
@@ -57,7 +59,7 @@ export class Polygon extends ShapeParameters {
 }
 
  /**
-  * @typedef {Object} SuperMap.Feature.ShapeParameters.Polygon.style
+  * @typedef {Object} FeaturePolygon.style
   * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
   * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
   * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。

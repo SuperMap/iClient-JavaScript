@@ -5,12 +5,12 @@ import {Shape} from './Shape';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicImage
+ * @class  LevelRenderer.Shape.SmicImage
  * @category Visualization Theme
  * @classdesc 图片绘制。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicImage({
+ *   var shape = new LevelRenderer.Shape.SmicImage({
  *         style: {
  *             image: 'test.jpg',
  *             x: 100,
@@ -24,7 +24,7 @@ import {Shape} from './Shape';
 export class SmicImage extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicImage.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicImage.prototype.style
      * @description 绘制样式。
      *
      * @param {number} style.x - 左上角横坐标，必设参数。
@@ -51,7 +51,7 @@ export class SmicImage extends Shape {
     //打开接口 style
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicImage.constructor
+     * @function LevelRenderer.Shape.SmicImage.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -60,13 +60,13 @@ export class SmicImage extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicImage.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicImage.prototype.type
          * @description  图形类型。
          */
         this.type = 'smicimage';
 
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicImage.prototype._imageCache
+         * @member {string} LevelRenderer.Shape.SmicImage.prototype._imageCache
          * @description 图片缓存。
          */
         this._imageCache = {};
@@ -78,7 +78,7 @@ export class SmicImage extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.destroy
+     * @function LevelRenderer.Shape.SmicImage.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -89,9 +89,9 @@ export class SmicImage extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicImage.prototype.buildPath
      * @description 创建图片。
-     * 
+     *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
      * @param {Object} style - style。
      *
@@ -212,7 +212,7 @@ export class SmicImage extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.getRect
+     * @function LevelRenderer.Shape.SmicImage.prototype.getRect
      * @description 计算返回图片的包围盒矩形。
      *
      * @param {Object} style - style
@@ -234,12 +234,12 @@ export class SmicImage extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.clearCache
+     * @function LevelRenderer.Shape.SmicImage.prototype.clearCache
      * @description 清除图片缓存。
      *
      * @param {Object} style - style
      * @return {Object} 边框对象。包含属性：x，y，width，height。
-     * 
+     *
      */
     clearCache() {
         this._imageCache = {};

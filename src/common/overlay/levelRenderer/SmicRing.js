@@ -5,12 +5,12 @@ import {Shape} from './Shape';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Shape.SmicRing
+ * @class  LevelRenderer.Shape.SmicRing
  * @category Visualization Theme
  * @classdesc 圆环。
- * @extends SuperMap.LevelRenderer.Shape
+ * @extends LevelRenderer.Shape
  * @example
- *   var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
+ *   var shape = new LevelRenderer.Shape.SmicRing({
  *         style: {
  *             x: 100,
  *             y: 100,
@@ -24,7 +24,7 @@ import {Shape} from './Shape';
 export class SmicRing extends Shape {
 
     /**
-     * @member {Object} SuperMap.LevelRenderer.Shape.SmicRing.prototype.style
+     * @member {Object} LevelRenderer.Shape.SmicRing.prototype.style
      * @description 绘制样式。
      *
      * @param {number} x - 圆心 x 坐标，必设参数。
@@ -51,7 +51,7 @@ export class SmicRing extends Shape {
     //打开接口 style
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicRing.constructor
+     * @function LevelRenderer.Shape.SmicRing.constructor
      * @description 构造函数。
      *
      * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
@@ -59,7 +59,7 @@ export class SmicRing extends Shape {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.LevelRenderer.Shape.SmicRing.prototype.type
+         * @member {string} LevelRenderer.Shape.SmicRing.prototype.type
          * @description 图形类型。
          */
         this.type = 'smicring';
@@ -72,7 +72,7 @@ export class SmicRing extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicRing.prototype.destroy
+     * @function LevelRenderer.Shape.SmicRing.prototype.destroy
      * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
@@ -82,7 +82,7 @@ export class SmicRing extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicRing.prototype.buildPath
+     * @function LevelRenderer.Shape.SmicRing.prototype.buildPath
      * @description 创建圆环路径。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
@@ -104,7 +104,7 @@ export class SmicRing extends Shape {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Shape.SmicRing.prototype.getRect
+     * @function LevelRenderer.Shape.SmicRing.prototype.getRect
      * @description 计算返回圆环包围盒矩阵
      *
      * @param {Object} style - style

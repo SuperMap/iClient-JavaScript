@@ -2,9 +2,10 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import {Util} from '../commontypes/Util';
-  
+
  /**
-  * @class SuperMap.iPortalDataMetaInfoParam
+  * @class IPortalDataMetaInfoParam
+  * @deprecatedclass SuperMap.iPortalDataMetaInfoParam
   * @classdesc iPortal 上传数据/注册数据元信息所需的参数。
   * @version 10.0.1
   * @category iPortal/Online
@@ -17,10 +18,11 @@
   * @param {string} params.separator - 分隔符（关系型存储下CSV数据时必填）
   * @param {boolean} params.firstRowIsHead - 是否带表头（关系型存储下CSV数据时必填）
   * @param {boolean} params.url - HDFS注册目录地址
-  * @param {SuperMap.iPortalDataStoreInfoParam} params.dataStoreInfo - 注册数据时的数据存储信息
+  * @param {IPortalDataStoreInfoParam} params.dataStoreInfo - 注册数据时的数据存储信息
+  * @usage
   */
  export class IPortalDataMetaInfoParam {
- 
+
      constructor(params) {
         params = params || {};
         this.xField = "";
@@ -38,5 +40,4 @@
         Util.extend(this, params);
      }
  }
-  
-  
+

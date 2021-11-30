@@ -7,7 +7,8 @@ import {LonLat} from './LonLat';
 import {Util} from './Util';
 
 /**
- * @class SuperMap.Bounds
+ * @class Bounds
+ * @deprecatedclass SuperMap.Bounds
  * @category BaseTypes Geometry
  * @classdesc 表示边界类实例。使用 bounds 之前需要设置 left，bottom，right，top 四个属性，这些属性的初始值为 null。
  * @param {number} [left] - 左边界，注意考虑宽度，理论上小于 right 值。
@@ -16,10 +17,11 @@ import {Util} from './Util';
  * @param {number} [top] - 上边界。
  * @param {Array.<number>} [array] - [left, bottom, right, top]，如果同时传多个参数，则使用左下右上组成的数组。
  * @example
- * var bounds = new SuperMap.Bounds();
- * bounds.extend(new SuperMap.LonLat(4,5));
- * bounds.extend(new SuperMap.LonLat(5,6));
+ * var bounds = new Bounds();
+ * bounds.extend(new LonLat(4,5));
+ * bounds.extend(new LonLat(5,6));
  * bounds.toBBOX(); // returns 4,5,5,6
+ * @usage
  */
 export class Bounds {
 
@@ -32,31 +34,31 @@ export class Bounds {
             left = left[0];
         }
         /**
-         * @member {number} SuperMap.Bounds.prototype.left
+         * @member {number} Bounds.prototype.left
          * @description 最小的水平坐标系。
          */
         this.left = left != null ? Util.toFloat(left) : this.left;
 
         /**
-         * @member {number} SuperMap.Bounds.prototype.bottom
+         * @member {number} Bounds.prototype.bottom
          * @description 最小的垂直坐标系。
          */
         this.bottom = bottom != null ? Util.toFloat(bottom) : this.bottom;
 
         /**
-         * @member {number} SuperMap.Bounds.prototype.right
+         * @member {number} Bounds.prototype.right
          * @description 最大的水平坐标系。
          */
         this.right = right != null ? Util.toFloat(right) : this.right;
 
         /**
-         * @member {number} SuperMap.Bounds.prototype.top
+         * @member {number} Bounds.prototype.top
          * @description 最大的垂直坐标系。
          */
         this.top = top != null ? Util.toFloat(top) : this.top;
 
         /**
-         * @member {SuperMap.LonLat} SuperMap.Bounds.prototype.centerLonLat
+         * @member {LonLat} Bounds.prototype.centerLonLat
          * @description bounds 的地图空间的中心点。用 getCenterLonLat() 获得。
          */
         this.centerLonLat = null;
@@ -64,12 +66,12 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.clone
+     * @function Bounds.prototype.clone
      * @description 复制当前 bounds 对象。
      * @example
-     * var bounds1 = new SuperMap.Bounds(-180,-90,180,90);
+     * var bounds1 = new Bounds(-180,-90,180,90);
      * var bounds2 = bounds1.clone();
-     * @returns {SuperMap.Bounds} 返回一个克隆的 bounds。
+     * @returns {Bounds} 返回一个克隆的 bounds。
      */
     clone() {
         return new Bounds(this.left, this.bottom,
@@ -77,13 +79,13 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.equals
+     * @function Bounds.prototype.equals
      * @description 判断两个 bounds 对象是否相等。
      * @example
-     * var bounds1 = new SuperMap.Bounds(-180,-90,180,90);
-     * var bounds2 = new SuperMap.Bounds(-180,-90,180,90);
+     * var bounds1 = new Bounds(-180,-90,180,90);
+     * var bounds2 = new Bounds(-180,-90,180,90);
      * var isEquals = bounds1.equals(bounds2);
-     * @param {SuperMap.Bounds} bounds - 需要进行计较的 bounds。
+     * @param {Bounds} bounds - 需要进行计较的 bounds。
      * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回 true，不一致或传入的 bounds 参数为 NULL 则返回 false。
      */
     equals(bounds) {
@@ -98,10 +100,10 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.toString
+     * @function Bounds.prototype.toString
      * @description 返回此对象的字符串形式。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,180,90);
+     * var bounds = new Bounds(-180,-90,180,90);
      * var str = bounds.toString();
      * @returns {string} 边界对象的字符串表示形式（left,bottom,right,top），例如: "-180,-90,180,90"。
      */
@@ -110,10 +112,10 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.toArray
+     * @function Bounds.prototype.toArray
      * @description 边界对象的数组表示形式。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * //array1 = [-180,-90,100,80];
      * var array1 = bounds.toArray();
      * //array1 = [-90,-180,80,100];
@@ -131,10 +133,10 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.toBBOX
+     * @function Bounds.prototype.toBBOX
      * @description 取小数点后 decimal 位数字进行四舍五入再转换为 BBOX 字符串。
      * @example
-     * var bounds = new SuperMap.Bounds(-1.1234567,-1.7654321,1.4444444,1.5555555);
+     * var bounds = new Bounds(-1.1234567,-1.7654321,1.4444444,1.5555555);
      * //str1 = "-1.123457,-1.765432,1.444444,1.555556";
      * var str1 = bounds.toBBOX();
      * //str2 = "-1.1,-1.8,1.4,1.6";
@@ -163,13 +165,13 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.toGeometry
+     * @function Bounds.prototype.toGeometry
      * @description 基于当前边界范围创建一个新的多边形对象。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
-     * //SuperMap.Geometry.Polygon对象
+     * var bounds = new Bounds(-180,-90,100,80);
+     * // Polygon对象
      * var geo = bounds.toGeometry();
-     * @returns {SuperMap.Geometry.Polygon} 基于当前 bounds 坐标创建的新的多边形。
+     * @returns {Polygon} 基于当前 bounds 坐标创建的新的多边形。
      */
     // toGeometry() {
     //     return new Polygon([
@@ -183,10 +185,10 @@ export class Bounds {
     // }
 
     /**
-     * @function SuperMap.Bounds.prototype.getWidth
+     * @function Bounds.prototype.getWidth
      * @description 获取 bounds 的宽度。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * //width = 280;
      * var width = bounds.getWidth();
      * @returns {float} 获取当前 bounds 的宽度（right 减去 left）。
@@ -196,10 +198,10 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.getHeight
+     * @function Bounds.prototype.getHeight
      * @description 获取 bounds 的高度。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * //height = 170;
      * var height = bounds.getHeight();
      * @returns {float} 返回边界高度（top 减去 bottom）。
@@ -209,24 +211,24 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.getSize
+     * @function Bounds.prototype.getSize
      * @description 获取边框大小。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * var size = bounds.getSize();
-     * @returns {SuperMap.Size} 返回边框大小。
+     * @returns {Size} 返回边框大小。
      */
     getSize() {
         return new Size(this.getWidth(), this.getHeight());
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.getCenterPixel
+     * @function Bounds.prototype.getCenterPixel
      * @description 获取像素格式的范围中心点。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * var pixel = bounds.getCenterPixel();
-     * @returns {SuperMap.Pixel} 返回像素格式的当前范围的中心点。
+     * @returns {Pixel} 返回像素格式的当前范围的中心点。
      */
     getCenterPixel() {
         return new Pixel((this.left + this.right) / 2,
@@ -234,12 +236,12 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.getCenterLonLat
+     * @function Bounds.prototype.getCenterLonLat
      * @description 获取地理格式的范围中心点。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * var lonlat = bounds.getCenterLonLat();
-     * @returns {SuperMap.LonLat} 返回当前地理范围的中心点。
+     * @returns {LonLat} 返回当前地理范围的中心点。
      */
     getCenterLonLat() {
         if (!this.centerLonLat) {
@@ -251,14 +253,14 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.scale
+     * @function Bounds.prototype.scale
      * @description 按照比例扩大/缩小出一个新的 bounds。
      * @example
-     * var bounds = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds = new Bounds(-50,-50,40,40);
      * var bounds2 = bounds.scale(2);
      * @param {float} [ratio=1] - 需要扩大的比例。
-     * @param {(SuperMap.Pixel|SuperMap.LonLat)} [origin] - 扩大时的基准点，默认为当前 bounds 的中心点。
-     * @returns {SuperMap.Bounds} 返回通过 ratio、origin 计算得到的新的边界范围。
+     * @param {(Pixel|LonLat)} [origin] - 扩大时的基准点，默认为当前 bounds 的中心点。
+     * @returns {Bounds} 返回通过 ratio、origin 计算得到的新的边界范围。
      */
     scale(ratio, origin) {
         ratio = ratio ? ratio : 1;
@@ -286,15 +288,15 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.add
+     * @function Bounds.prototype.add
      * @description 在当前的 Bounds 上按照传入的坐标点进行平移，返回新的范围。
      * @example
-     * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds2 是新的 bounds
      * var bounds2 = bounds.add(20,10);
      * @param {float} x - 传入坐标点的 x 坐标。
      * @param {float} y - 传入坐标点的 y 坐标。
-     * @returns {SuperMap.Bounds} 返回一个新的 bounds，此 bounds 的坐标是由传入的 x，y 参数与当前 bounds 坐标计算所得。
+     * @returns {Bounds} 返回一个新的 bounds，此 bounds 的坐标是由传入的 x，y 参数与当前 bounds 坐标计算所得。
      */
     add(x, y) {
         if ((x == null) || (y == null)) {
@@ -305,13 +307,13 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.extend
+     * @function Bounds.prototype.extend
      * @description 在当前 bounds 上扩展 bounds，支持 point，lanlat 和 bounds。扩展后的 bounds 的范围是两者的结合。
      * @example
-     * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds 改变
-     * bounds.extend(new SuperMap.LonLat(50,60));
-     * @param {(SuperMap.Geometry.Point|SuperMap.LonLat|SuperMap.Bounds)} object - 可以是 point、lonlat 和 bounds。
+     * bounds.extend(new LonLat(50,60));
+     * @param {(GeometryPoint|LonLat|Bounds)} object - 可以是 point、lonlat 和 bounds。
      */
     extend(object) {
         var bounds = null;
@@ -351,29 +353,29 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.containsLonLat
+     * @function Bounds.prototype.containsLonLat
      * @description 判断传入的坐标是否在范围内。
      * @example
-     * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds1 = new Bounds(-50,-50,40,40);
      * //isContains1 = true
      * //这里的第二个参数可以直接为 boolean 类型，也就是inclusive
-     * var isContains1 = bounds.containsLonLat(new SuperMap.LonLat(40,40),true);
+     * var isContains1 = bounds.containsLonLat(new LonLat(40,40),true);
      *
      * //(40,40)在范围内，同样(40+360,40)也在范围内
-     * var bounds2 = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds2 = new Bounds(-50,-50,40,40);
      * //isContains2 = true;
      * var isContains2 = bounds2.containsLonLat(
-     *      new SuperMap.LonLat(400,40),
+     *      new LonLat(400,40),
      *      {
      *           inclusive:true,
      *           //全球的范围
-     *           worldBounds: new SuperMap.Bounds(-180,-90,180,90)
+     *           worldBounds: new Bounds(-180,-90,180,90)
      *      }
      * );
-     * @param {(SuperMap.LonLat|Object)} ll - <SuperMap.LonLat> 对象或者是一个包含 'lon' 与 'lat' 属性的对象。
+     * @param {(LonLat|Object)} ll - <LonLat> 对象或者是一个包含 'lon' 与 'lat' 属性的对象。
      * @param {Object} options - 可选参数。
      * @param {boolean} [options.inclusive=true] - 是否包含边界。
-     * @param {SuperMap.Bounds} [options.worldBounds] - 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds），
+     * @param {Bounds} [options.worldBounds] - 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds），
      *        但是通过日界线的转化可以被包含, 它将被认为是包含在该范围内的。
      * @returns {boolean} 传入坐标是否包含在范围内。
      */
@@ -399,13 +401,13 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.containsPixel
+     * @function Bounds.prototype.containsPixel
      * @description 判断传入的像素是否在范围内。直接匹配大小，不涉及像素和地理转换。
      * @example
-     * var bounds = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds = new Bounds(-50,-50,40,40);
      * //isContains = true
-     * var isContains = bounds.containsPixel(new SuperMap.Pixel(40,40),true);
-     * @param {SuperMap.Pixel} px - 提供的像素参数。
+     * var isContains = bounds.containsPixel(new Pixel(40,40),true);
+     * @param {Pixel} px - 提供的像素参数。
      * @param {boolean} [inclusive=true] - 是否包含边界。
      * @returns {boolean} 传入的 pixel 在当前边界范围之内。
      */
@@ -414,10 +416,10 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.contains
+     * @function Bounds.prototype.contains
      * @description 判断传入的 x，y 坐标值是否在范围内。
      * @example
-     * var bounds = new SuperMap.Bounds(-50,-50,40,40);
+     * var bounds = new Bounds(-50,-50,40,40);
      * //isContains = true
      * var isContains = bounds.contains(40,40,true);
      * @param {float} x - 传入的 x 坐标值。
@@ -450,20 +452,20 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.intersectsBounds
+     * @function Bounds.prototype.intersectsBounds
      * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意
      *              边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * var isIntersects = bounds.intersectsBounds(
-     *      new SuperMap.Bounds(-170,-90,120,80)
+     *      new Bounds(-170,-90,120,80)
      *  );
-     * @param {SuperMap.Bounds} bounds - 目标边界。
+     * @param {Bounds} bounds - 目标边界。
      * @param {Object} options - 参数。
      * @param {boolean} [options.inclusive=true] - 边缘重合也看成相交。如果是false，
      *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
      *                               这种情况被认为没有相交。
-     * @param {SuperMap.Bounds} [options.worldBounds] - 提供了 worldBounds 参数, 如果他们相交时
+     * @param {Bounds} [options.worldBounds] - 提供了 worldBounds 参数, 如果他们相交时
      *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
      * @returns {boolean} 传入的 bounds 对象与当前 bounds 相交。
      */
@@ -530,14 +532,14 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.containsBounds
+     * @function Bounds.prototype.containsBounds
      * @description 判断目标边界是否被当前边界包含在内。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * var isContains = bounds.containsBounds(
-     *      new SuperMap.Bounds(-170,-90,100,80),true,true
+     *      new Bounds(-170,-90,100,80),true,true
      *  );
-     * @param {SuperMap.Bounds} bounds - 目标边界。
+     * @param {Bounds} bounds - 目标边界。
      * @param {boolean} [partial=false] - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。
      * 如果设为 false，整个目标边界全部被包含在当前边界范围内。
      * @param {boolean} [inclusive=true] - 边缘共享被视为包含。
@@ -560,15 +562,15 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.determineQuadrant
+     * @function Bounds.prototype.determineQuadrant
      * @description 判断传入坐标是否在 bounds 范围内的象限。以 bounds 中心点为坐标原点。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * //str = "tr";
      * var str = bounds.determineQuadrant(
-     *      new SuperMap.LonLat(20,20)
+     *      new LonLat(20,20)
      *  );
-     * @param {SuperMap.LonLat} lonlat - 传入的坐标对象。
+     * @param {LonLat} lonlat - 传入的坐标对象。
      * @returns {string} 传入坐标所在的象限（"br" "tr" "tl" "bl" 分别对应"右下"，"右上"，"左上" "左下"）。
      */
     determineQuadrant(lonlat) {
@@ -583,18 +585,18 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.wrapDateLine
+     * @function Bounds.prototype.wrapDateLine
      * @description 将当前 bounds 移动到最大边界范围内部（所谓的内部是相交或者内部）。
      * @example
-     * var bounds = new SuperMap.Bounds(380,-40,400,-20);
-     * var maxExtent = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(380,-40,400,-20);
+     * var maxExtent = new Bounds(-180,-90,100,80);
      * //新的bounds
      * var newBounds = bounds.wrapDateLine(maxExtent);
-     * @param {SuperMap.Bounds} maxExtent - 最大的边界范围（一般是全球范围）。
-     * @param {Object} options - 可选选项参数。 
-     * @param {float} [options.leftTolerance=0] - left 允许的误差。 
+     * @param {Bounds} maxExtent - 最大的边界范围（一般是全球范围）。
+     * @param {Object} options - 可选选项参数。
+     * @param {float} [options.leftTolerance=0] - left 允许的误差。
      * @param {float} [options.rightTolerance=0] - right 允许的误差。
-     * @returns {SuperMap.Bounds} 克隆当前边界。如果当前边界完全在最大范围之外此函数则返回一个不同值的边界，
+     * @returns {Bounds} 克隆当前边界。如果当前边界完全在最大范围之外此函数则返回一个不同值的边界，
      *                            若落在最大边界的左边，则给当前的bounds值加上最大范围的宽度，即向右移动，
      *                            若落在右边，则向左移动，即给当前的bounds值加上负的最大范围的宽度。
      */
@@ -633,10 +635,10 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.prototype.toServerJSONObject
+     * @function Bounds.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * var obj = bounds.toServerJSONObject();
      * @returns {Object} 返回 JSON 格式的 Object 对象。
      */
@@ -654,11 +656,11 @@ export class Bounds {
 
     /**
      *
-     * @function SuperMap.Bounds.prototype.destroy
+     * @function Bounds.prototype.destroy
      * @description 销毁此对象。
      * 销毁后此对象的所有属性为 null，而不是初始值。
      * @example
-     * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+     * var bounds = new Bounds(-180,-90,100,80);
      * bounds.destroy();
      */
     destroy() {
@@ -670,14 +672,14 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.fromString
+     * @function Bounds.fromString
      * @description 通过字符串参数创建新的 bounds 的构造函数。
      * @example
-     * var bounds = SuperMap.Bounds.fromString("-180,-90,100,80");
+     * var bounds = Bounds.fromString("-180,-90,100,80");
      * @param {string} str - 边界字符串，用逗号隔开（e.g. <i>"5,42,10,45"</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否反转轴顺序。
      * 如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
-     * @returns {SuperMap.Bounds} 返回给定的字符串创建的新的边界对象。
+     * @returns {Bounds} 返回给定的字符串创建的新的边界对象。
      */
     static fromString(str, reverseAxisOrder) {
         var bounds = str.split(",");
@@ -685,13 +687,13 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.fromArray
+     * @function Bounds.fromArray
      * @description 通过边界框数组创建 Bounds。
      * @example
-     * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
+     * var bounds = Bounds.fromArray([-180,-90,100,80]);
      * @param {Array.<float>} bbox - 边界值数组。（e.g. <i>[5,42,10,45]</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
-     * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
+     * @returns {Bounds} 返回根据传入的数组创建的新的边界对象。
      */
     static fromArray(bbox, reverseAxisOrder) {
         return reverseAxisOrder === true ?
@@ -700,12 +702,12 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.fromSize
+     * @function Bounds.fromSize
      * @description 通过传入的边界大小来创建新的边界。
      * @example
-     * var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(20,10));
-     * @param {SuperMap.Size} size - 传入的边界大小。
-     * @returns {SuperMap.Bounds} 返回根据传入的边界大小的创建新的边界。
+     * var bounds = Bounds.fromSize(new Size(20,10));
+     * @param {Size} size - 传入的边界大小。
+     * @returns {Bounds} 返回根据传入的边界大小的创建新的边界。
      */
     static fromSize(size) {
         return new Bounds(0,
@@ -715,7 +717,7 @@ export class Bounds {
     }
 
     /**
-     * @function SuperMap.Bounds.oppositeQuadrant
+     * @function Bounds.oppositeQuadrant
      * @description 反转象限。"t"和"b" 交换，"r"和"l"交换, 如："tl"变为"br"。
      * @param {string} quadrant - 代表象限的字符串，如："tl"。
      * @returns {string} 反转后的象限。

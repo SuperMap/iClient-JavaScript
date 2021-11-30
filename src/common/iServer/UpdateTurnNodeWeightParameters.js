@@ -4,15 +4,17 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.UpdateTurnNodeWeightParameters
+ * @class UpdateTurnNodeWeightParameters
+ * @deprecatedclass SuperMap.UpdateTurnNodeWeightParameters
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务参数类。
- * @param {Object} options - 参数。 
- * @param {string} options.nodeId - 转向结点的  ID。 
- * @param {string} options.fromEdgeId - 起始边的  ID。 
- * @param {string} options.toEdgeId - 终止边的  ID。 
- * @param {string} options.weightField - 转向结点的耗费字段。 
+ * @param {Object} options - 参数。
+ * @param {string} options.nodeId - 转向结点的  ID。
+ * @param {string} options.fromEdgeId - 起始边的  ID。
+ * @param {string} options.toEdgeId - 终止边的  ID。
+ * @param {string} options.weightField - 转向结点的耗费字段。
  * @param {string} options.turnNodeWeight - 耗费权重。
+ * @usage
  */
 export class UpdateTurnNodeWeightParameters {
 
@@ -21,31 +23,31 @@ export class UpdateTurnNodeWeightParameters {
             return;
         }
         /**
-         * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId
+         * @member {string} UpdateTurnNodeWeightParameters.prototype.nodeId
          * @description 转向结点的  ID。
          */
         this.nodeId = "";
 
         /**
-         * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId
+         * @member {string} UpdateTurnNodeWeightParameters.prototype.fromEdgeId
          * @description 起始边的  ID。
          */
         this.fromEdgeId = "";
 
         /**
-         * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId
+         * @member {string} UpdateTurnNodeWeightParameters.prototype.toEdgeId
          * @description 终止边的  ID。
          */
         this.toEdgeId = "";
 
         /**
-         * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField
+         * @member {string} UpdateTurnNodeWeightParameters.prototype.weightField
          * @description 转向结点的耗费字段。
          */
         this.weightField = "";
 
         /**
-         * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight
+         * @member {string} UpdateTurnNodeWeightParameters.prototype.turnNodeWeight
          * @description 耗费权重。
          */
         this.turnNodeWeight = "";
@@ -54,7 +56,7 @@ export class UpdateTurnNodeWeightParameters {
     }
 
     /**
-     * @function SuperMap.UpdateTurnNodeWeightParameters.prototype.destroy
+     * @function UpdateTurnNodeWeightParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

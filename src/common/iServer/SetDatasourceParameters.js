@@ -4,14 +4,16 @@
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.SetDatasourceParameters
+ * @class SetDatasourceParameters
+ * @deprecatedclass SuperMap.SetDatasourceParameters
  * @category iServer Data Datasource
  * @classdesc 数据源信息查询参数类。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称。
  * @param {string} options.description - 数据源描述信息。
  * @param {Unit} options.coordUnit - 坐标单位。
  * @param {Unit} options.distanceUnit - 距离单位。
+ * @usage
  */
 export class SetDatasourceParameters {
 
@@ -21,25 +23,25 @@ export class SetDatasourceParameters {
         }
 
         /**
-         * @member {string} SuperMap.SetDatasourceParameters.prototype.datasourceName
+         * @member {string} SetDatasourceParameters.prototype.datasourceName
          * @description 数据源名称。
          */
         this.datasourceName = null;
 
         /**
-         * @member {string} SuperMap.SetDatasourceParameters.prototype.description
+         * @member {string} SetDatasourceParameters.prototype.description
          * @description 数据源描述信息。
          */
         this.description = null;
 
         /**
-         * @member {Unit} SuperMap.SetDatasourceParameters.prototype.coordUnit
+         * @member {Unit} SetDatasourceParameters.prototype.coordUnit
          * @description 坐标单位。
          */
         this.coordUnit = null;
 
         /**
-         * @member {Unit} SuperMap.SetDatasourceParameters.prototype.distanceUnit
+         * @member {Unit} SetDatasourceParameters.prototype.distanceUnit
          * @description 距离单位。
          */
         this.distanceUnit = null;
@@ -51,7 +53,7 @@ export class SetDatasourceParameters {
     }
 
     /**
-     * @function SuperMap.SetDatasourceParameters.prototype.destroy
+     * @function SetDatasourceParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

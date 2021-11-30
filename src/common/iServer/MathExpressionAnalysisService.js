@@ -6,7 +6,8 @@ import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {MathExpressionAnalysisParameters} from './MathExpressionAnalysisParameters';
 
 /**
- * @class SuperMap.MathExpressionAnalysisService
+ * @class MathExpressionAnalysisService
+ * @deprecatedclass SuperMap.MathExpressionAnalysisService
  * @category  iServer SpatialAnalyst GridMathAnalyst
  * @classdesc 栅格代数运算服务类。
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
@@ -14,17 +15,17 @@ import {MathExpressionAnalysisParameters} from './MathExpressionAnalysisParamete
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
+ * var myMathExpressionAnalysisService = new MathExpressionAnalysisService(url);
  * myMathExpressionAnalysisService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
      *     }
  * );
  * (end)
- *
+ * @usage
  */
 export class MathExpressionAnalysisService extends SpatialAnalystBase {
 
@@ -42,9 +43,9 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.MathExpressionAnalysisService.prototype.processAsync
+     * @function MathExpressionAnalysisService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.MathExpressionAnalysisParameters} parameter - 栅格代数运算参数类。
+     * @param {MathExpressionAnalysisParameters} parameter - 栅格代数运算参数类。
      */
     processAsync(parameter) {
         var me = this;

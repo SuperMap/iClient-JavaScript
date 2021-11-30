@@ -6,12 +6,14 @@ import {UGCSubLayer} from './UGCSubLayer';
 import {ServerStyle} from './ServerStyle';
 
 /**
- * @class SuperMap.Vector
+ * @class Vector
+ * @deprecatedclass SuperMap.Vector
  * @category  iServer Map TileFeature
  * @classdesc UGC 矢量图层类。
- * @extends {SuperMap.UGCSubLayer}
+ * @extends {UGCSubLayer}
  * @param {Object} options - 参数。
- * @param {SuperMap.ServerStyle} [options.style] - 矢量图层的风格。
+ * @param {ServerStyle} [options.style] - 矢量图层的风格。
+ * @usage
  */
 
 export class Vector extends UGCSubLayer {
@@ -20,7 +22,7 @@ export class Vector extends UGCSubLayer {
         options = options || {};
         super(options);
         /**
-         * @member {SuperMap.ServerStyle} SuperMap.Vector.prototype.style
+         * @member {ServerStyle} Vector.prototype.style
          * @description 矢量图层的风格。
          */
         this.style = null;
@@ -29,7 +31,7 @@ export class Vector extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.Vector.prototype.destroy
+     * @function Vector.prototype.destroy
      * @override
      */
     destroy() {
@@ -38,7 +40,7 @@ export class Vector extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.Vector.prototype.fromJson
+     * @function Vector.prototype.fromJson
      * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
@@ -51,7 +53,7 @@ export class Vector extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.Vector.prototype.toServerJSONObject
+     * @function Vector.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      * @returns {Object} 对应的 JSON 格式对象
      */
