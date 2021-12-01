@@ -69,11 +69,13 @@
     "browserify": "^17.0.0",
     "browserify-css": "^0.15.0",
     "browserify-imgify": "^0.0.1",
+    "browserify-versionify": "^1.0.6",
     "chromedriver": "87.0.5",
     "clean-css-cli": "^4.3.0",
     "commander": "^6.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^5.0.0",
+    "envify": "^4.1.0",
     "es3ify-loader": "^0.2.0",
     "eslint": "^7.11.0",
     "eslint-plugin-import": "^2.22.1",
@@ -112,6 +114,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.3.0",
     "@mapbox/vector-tile": "1.3.1",
     "@supermap/iclient-common": "file:src/common",
     "@tensorflow/tfjs": "^3.9.0",
@@ -121,6 +124,7 @@
     "elasticsearch": "16.7.2",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
+    "flv.js": "^1.6.2",
     "jsonsql": "0.2.5",
     "leaflet": "1.7.1",
     "lodash.remove": "^4.7.0",
@@ -132,6 +136,8 @@
     "proj4": "2.7.5",
     "promise-polyfill": "8.2.0",
     "three": "0.126.1",
+    "video.js": "^7.15.4",
+    "videojs-flvjs-es6": "^1.0.1",
     "xlsx": "0.17.2",
     "xml-js": "1.6.11"
   },
