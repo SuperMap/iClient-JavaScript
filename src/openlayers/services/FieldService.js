@@ -8,7 +8,6 @@ import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldSta
 
 /**
  * @class FieldService
- * @deprecatedclass ol.supermap.FieldService
  * @category  iServer Data Field
  * @classdesc 字段服务类。
  * @example

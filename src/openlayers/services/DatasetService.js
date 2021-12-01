@@ -9,7 +9,6 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
 
 /**
  * @class DatasetService
- * @deprecatedclass ol.supermap.DatasetService
  * @category  iServer Data Dataset
  * @classdesc 数据集服务类。
  * @param {string} url - 与客户端交互的服务地址。

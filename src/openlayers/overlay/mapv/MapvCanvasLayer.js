@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
  * @class MapvCanvasLayer
- * @deprecatedclass ol.supermap.MapvCanvasLayer
  * @classdesc Mapv 渲染器。
  * @private
  * @param {Object} options - 参数。

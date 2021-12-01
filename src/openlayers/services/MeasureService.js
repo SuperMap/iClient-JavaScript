@@ -8,7 +8,6 @@ import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class MeasureService
- * @deprecatedclass ol.supermap.MeasureService
  * @category  iServer Map Measure
  * @classdesc 测量服务。
  * @extends {ServiceBase}

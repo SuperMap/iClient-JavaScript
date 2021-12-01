@@ -8,7 +8,6 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util'
 
 /**
  * @class DatasourceService
- * @deprecatedclass ol.supermap.DatasourceService
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。
  * @param {string} url - 与客户端交互的服务地址。

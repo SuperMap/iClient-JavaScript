@@ -6,7 +6,7 @@ import Control from 'ol/control/Control';
 
 /**
  * @class ChangeTileVersion
- * @deprecatedclass ol.supermap.control.ChangeTileVersion
+ * @aliasclass control.ChangeTileVersion
  * @category  Control
  * @classdesc 版本切换控件（目前仅支持 IE10 及以上）暂时不支持自定义位置。
  * @extends {ol/control/Control}

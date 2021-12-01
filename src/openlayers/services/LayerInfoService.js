@@ -10,7 +10,6 @@ import { SetLayerStatusService } from '@supermap/iclient-common/iServer/SetLayer
 
 /**
  * @class LayerInfoService
- * @deprecatedclass ol.supermap.LayerInfoService
  * @category  iServer Map Layer
  * @classdesc 图层信息服务类。
  * @extends {ServiceBase}

@@ -15,7 +15,6 @@ import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class QueryService
- * @deprecatedclass ol.supermap.QueryService
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL 查询，几何查询，距离查询。

@@ -10,7 +10,6 @@ import Point from 'ol/geom/Point';
 
 /**
  * @class TrafficTransferAnalystService
- * @deprecatedclass ol.supermap.TrafficTransferAnalystService
  * @extends {ServiceBase}
  * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类。

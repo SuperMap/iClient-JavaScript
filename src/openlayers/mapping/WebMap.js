@@ -73,7 +73,6 @@ const dpiConfig = {
 }
 /**
  * @class WebMap
- * @deprecatedclass ol.supermap.WebMap
  * @category  iPortal/Online
  * @classdesc 对接 iPortal/Online 地图类
  * @param {Object} options - 参数

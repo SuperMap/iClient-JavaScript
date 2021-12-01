@@ -16,7 +16,6 @@ import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ProcessingService
- * @deprecatedclass ol.supermap.ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
  * @extends {ServiceBase}

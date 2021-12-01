@@ -6,7 +6,6 @@ import CommonMatchImageService from '@supermap/iclient-common/iServer/ImageServi
 
 /**
  * @class ImageService
- * @deprecatedclass ol.supermap.ImageService
  * @version 10.2.0
  * @constructs ImageService
  * @classdesc 影像服务类

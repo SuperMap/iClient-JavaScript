@@ -12,16 +12,21 @@ exports.defineTags = function (dictionary) {
         doclet.usage = tag.value;
       } else {
         const deprecatedClasses = [];
+        let aliasClass = '';
         if (doclet.tags) {
           for (let index = 0; index < doclet.tags.length; index++) {
             const tag = doclet.tags[index];
             if (tag.title === 'deprecatedclass') {
               deprecatedClasses.push(tag.value);
             }
+            if (tag.title === 'aliasclass') {
+              aliasClass = tag.value;
+            }
           }
         }
         doclet.usage = {
           className: doclet.kind === 'class' ? doclet.name : '',
+          aliasClass: aliasClass,
           globalParams,
           deprecatedClasses: deprecatedClasses
         };

@@ -10,7 +10,6 @@ import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServ
 
 /**
  * @class NetworkAnalyst3DService
- * @deprecatedclass ol.supermap.NetworkAnalyst3DService
  * @category  iServer FacilityAnalyst3D
  * @classdesc 3D 网络分析服务类。
  * @extends {ServiceBase}

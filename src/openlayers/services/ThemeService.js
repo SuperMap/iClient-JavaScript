@@ -6,7 +6,6 @@ import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iSe
 
 /**
  * @class ThemeService
- * @deprecatedclass ol.supermap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类。
  * @extends {ServiceBase}

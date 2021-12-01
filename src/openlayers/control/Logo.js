@@ -6,7 +6,7 @@ import Control from 'ol/control/Control';
 
 /**
  * @class Logo
- * @deprecatedclass ol.supermap.control.Logo
+ * @aliasclass control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @extends {ol/control/Control}

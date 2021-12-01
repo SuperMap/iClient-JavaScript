@@ -15,7 +15,6 @@ import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 /**
  * @class VectorTileStyles
- * @deprecatedclass ol.supermap.VectorTileStyles
  * @classdesc 矢量瓦片风格。
  * @category  Visualization VectorTile
  * @param {Object} options - 交互时所需可选参数。

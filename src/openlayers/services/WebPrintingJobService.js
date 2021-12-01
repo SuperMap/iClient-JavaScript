@@ -9,7 +9,6 @@ import Point from 'ol/geom/Point';
 
 /**
  * @class WebPrintingJobService
- * @deprecatedclass ol.supermap.WebPrintingJobService
  * @category  iServer WebPrintingJob
  * @version 10.1.0
  * @classdesc Web 打印服务类。

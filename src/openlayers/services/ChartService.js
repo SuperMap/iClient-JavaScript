@@ -11,7 +11,6 @@ import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ChartService
- * @deprecatedclass ol.supermap.ChartService
  * @category  iServer Map Chart
  * @classdesc 海图服务。
  * @extends {ServiceBase}

@@ -8,7 +8,7 @@ import AssertionError from 'ol/AssertionError';
 
 /**
  * @class ScaleLine
- * @deprecatedclass ol.supermap.control.ScaleLine
+ * @aliasclass control.ScaleLine
  * @category  Control
  * @version 9.1.2
  * @classdesc 比例尺控件。

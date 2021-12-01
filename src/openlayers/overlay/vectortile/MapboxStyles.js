@@ -14,7 +14,6 @@ import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 /**
  * @class MapboxStyles
- * @deprecatedclass ol.supermap.MapboxStyles
  * @classdesc Mapbox 矢量瓦片风格。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>

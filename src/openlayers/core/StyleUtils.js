@@ -19,7 +19,6 @@ const ZERO = 0.0000001;
 
 /**
  * @class StyleUtils
- * @deprecatedclass ol.supermap.StyleUtils
  * @classdesc 样式工具类。
  * @private
  */

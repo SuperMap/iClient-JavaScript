@@ -63,18 +63,8 @@ export var polygonMap = {
 };
 
 /**
- * @constant StyleMap
+ * @constant StyleMap {object}
  * @description 地图样式。
- * @usage
- * ```
- * // 浏览器
- * <script>
- * const a = {namespace}.StyleMap.CartoStyleMap;
- * </script>
- *
- * // ES6 Import
- * import { StyleMap } from '{npm}'
- * ```
  */
 export var StyleMap = {
     /**

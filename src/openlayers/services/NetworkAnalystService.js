@@ -19,7 +19,6 @@ import Point from 'ol/geom/Point';
 
 /**
  * @class NetworkAnalystService
- * @deprecatedclass ol.supermap.NetworkAnalystService
  * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类。
  * @extends {ServiceBase}
