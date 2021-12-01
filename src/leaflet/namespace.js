@@ -445,6 +445,7 @@ import {
   rankSymbolThemeLayer,
   TileVectorLayer,
   tiledVectorLayer,
+  tileVectorLayer,
   TurfLayer,
   turfLayer,
   UnicodeMarker,
@@ -573,6 +574,7 @@ import L from 'leaflet';
 
 L.supermap = L.supermap || {};
 L.supermap.components = L.supermap.components || {};
+L.supermap.Components = L.supermap.Components || {};
 L.supermap.control = L.supermap.control || {};
 
 // ./core
@@ -598,8 +600,8 @@ L.supermap.Util.transform = transform;
 L.Proj = L.Proj || {};
 L.supermap.Proj = L.supermap.Proj || {};
 L.Proj.CRS = crs;
-L.supermap.Proj.CRS = CRS;
 L.supermap.Proj.crs = crs;
+L.supermap.Proj.CRS = CRS;
 // core/NonEarthCRS
 L.Projection = {};
 L.supermap.Projection = L.supermap.Projection || {};
@@ -626,37 +628,39 @@ L.supermap.CRS.Baidu = BaiduCRS;
 L.supermap.CommontypesConversion = CommontypesConversion;
 // components
 L.supermap.components.clientComputationLayer = clientComputationLayer;
-L.supermap.components.ClientComputationLayer = ClientComputationLayer;
+L.supermap.Components.ClientComputationLayer = ClientComputationLayer;
 L.supermap.components.clientComputation = clientComputationView;
-L.supermap.components.ClientComputation = ClientComputationView;
+L.supermap.Components.ClientComputation = ClientComputationView;
 L.supermap.components.clientComputationViewModel = clientComputationViewModel;
-L.supermap.components.ClientComputationViewModel = ClientComputationViewModel;
-L.supermap.components.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
+L.supermap.Components.ClientComputationViewModel = ClientComputationViewModel;
 L.supermap.components.geoJSONLayerWithName = geoJSONLayerWithName;
+L.supermap.Components.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
 L.supermap.components.GeoJSONLayerWithName = GeoJSONLayerWithName;
+L.supermap.Components.GeoJSONLayerWithName = GeoJSONLayerWithName;
 L.supermap.components.dataFlow = dataFlowView;
-L.supermap.components.DataFlow = DataFlowView;
+L.supermap.Components.DataFlow = DataFlowView;
 L.supermap.components.dataFlowViewModel = dataFlowViewModel;
-L.supermap.components.DataFlowViewModel = DataFlowViewModel;
+L.supermap.Components.DataFlowViewModel = DataFlowViewModel;
 L.supermap.components.dataServiceQuery = dataServiceQueryView;
-L.supermap.components.DataServiceQuery = DataServiceQueryView;
+L.supermap.Components.DataServiceQuery = DataServiceQueryView;
 L.supermap.components.dataServiceQueryViewModel = dataServiceQueryViewModel;
-L.supermap.components.DataServiceQueryViewModel = DataServiceQueryViewModel;
+L.supermap.Components.DataServiceQueryViewModel = DataServiceQueryViewModel;
 L.supermap.components.DistributedAnalysisModel = DistributedAnalysisModel;
+L.supermap.Components.DistributedAnalysisModel = DistributedAnalysisModel;
 L.supermap.components.distributedAnalysis = distributedAnalysisView;
-L.supermap.components.DistributedAnalysis = DistributedAnalysisView;
+L.supermap.Components.DistributedAnalysis = DistributedAnalysisView;
 L.supermap.components.distributedAnalysisViewModel = distributedAnalysisViewModel;
-L.supermap.components.DistributedAnalysisViewModel = DistributedAnalysisViewModel;
+L.supermap.Components.DistributedAnalysisViewModel = DistributedAnalysisViewModel;
 L.supermap.components.openFile = openFileView;
-L.supermap.components.OpenFile = OpenFileView;
+L.supermap.Components.OpenFile = OpenFileView;
 L.supermap.components.openFileViewModel = openFileViewModel;
-L.supermap.components.OpenFileViewModel = OpenFileViewModel;
+L.supermap.Components.OpenFileViewModel = OpenFileViewModel;
 L.supermap.components.search = searchView;
-L.supermap.components.Search = SearchView;
+L.supermap.Components.Search = SearchView;
 L.supermap.components.searchViewModel = searchViewModel;
-L.supermap.components.SearchViewModel = SearchViewModel;
+L.supermap.Components.SearchViewModel = SearchViewModel;
 L.supermap.components.componentsViewBase = componentsViewBase;
-L.supermap.components.ComponentsViewBase = ComponentsViewBase;
+L.supermap.Components.ComponentsViewBase = ComponentsViewBase;
 // control
 L.supermap.control.changeTileVersion = changeTileVersion;
 L.supermap.control.ChangeTileVersion = ChangeTileVersion;
@@ -716,6 +720,7 @@ L.supermap.RangeThemeLayer = RangeThemeLayer;
 L.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
 L.supermap.RankSymbolThemeLayer = RankSymbolThemeLayer;
 L.supermap.tiledVectorLayer = tiledVectorLayer;
+L.supermap.tileVectorLayer = tileVectorLayer;
 L.supermap.TileVectorLayer = TileVectorLayer;
 L.supermap.turfLayer = turfLayer;
 L.supermap.TurfLayer = TurfLayer;
@@ -811,7 +816,6 @@ L.supermap.Geometry.Point = GeometryPoint;
 L.supermap.Geometry.Polygon = Polygon;
 L.supermap.Geometry.Rectangle = Rectangle;
 // Components
-L.supermap.Components = L.supermap.Components || {};
 L.supermap.Components.Chart = Chart;
 L.supermap.Components.ChartViewModel = ChartViewModel;
 L.supermap.Components.MessageBox = MessageBox;
@@ -1253,6 +1257,7 @@ export {
   rankSymbolThemeLayer,
   TileVectorLayer,
   tiledVectorLayer,
+  tileVectorLayer,
   TurfLayer,
   turfLayer,
   UnicodeMarker,
