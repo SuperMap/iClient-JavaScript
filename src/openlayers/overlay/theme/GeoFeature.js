@@ -26,7 +26,7 @@ import {Theme} from './Theme';
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {Theme}
+ * @extends {ol.source.Theme}
  */
 
 export class GeoFeature extends Theme {
@@ -67,7 +67,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
      * @description 添加要素。
-     * @param {SuperMap.ServerFeature|GeoJSONObject|ol/Feature} features - 要素对象。
+     * @param {ServerFeature|GeoJSONObject|ol/Feature} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -85,7 +85,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
+     * @param {GeometryVector} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();

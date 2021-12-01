@@ -4,7 +4,6 @@
 
 /**
  * @enum ServiceStatus
- * @memberOf SuperMap
  * @category iPortal/Online
  * @description 服务发布状态。
  */
@@ -26,7 +25,6 @@ var ServiceStatus = {
 
 /**
  * @enum DataItemOrderBy
- * @memberOf SuperMap
  * @category iPortal/Online
  * @description 数据排序字段。
  */
@@ -54,8 +52,7 @@ var DataItemOrderBy = {
 };
 
 /**
- * @enum FilterField
- * @memberOf SuperMap
+ * @enum FilterField {number}
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段。
  */

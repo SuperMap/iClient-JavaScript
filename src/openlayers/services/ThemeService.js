@@ -5,12 +5,12 @@ import {ServiceBase} from './ServiceBase';
 import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iServer/ThemeService';
 
 /**
- * @class ol.supermap.ThemeService
+ * @class ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      new ol.supermap.ThemeService(url,{
+ *      new ThemeService(url,{
  *            projection:projection
  *      }).getThemeInfo(params,function(result){
  *           //doSomething
@@ -21,6 +21,7 @@ import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iSe
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class ThemeService extends ServiceBase {
 
@@ -29,9 +30,9 @@ export class ThemeService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ThemeService.prototype.getThemeInfo
+     * @function ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息。
-     * @param {SuperMap.ThemeParameters} params - 专题图参数类。
+     * @param {ThemeParameters} params - 专题图参数类。
      * @param {RequestCallback} callback 回调函数。
      */
     getThemeInfo(params, callback) {

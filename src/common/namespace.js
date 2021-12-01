@@ -1246,6 +1246,7 @@ export {
   TerrainCurvatureCalculationParameters,
   TerrainCurvatureCalculationService,
   Theme,
+  Theme as CommonTheme,
   ThemeDotDensity,
   ThemeFlow,
   ThemeGraduatedSymbol,

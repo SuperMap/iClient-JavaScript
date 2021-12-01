@@ -5,7 +5,8 @@ import { MapService } from '../services/MapService';
 import Control from 'ol/control/Control';
 
 /**
- * @class ol.supermap.control.ChangeTileVersion
+ * @class ChangeTileVersion
+ * @aliasclass control.ChangeTileVersion
  * @category  Control
  * @classdesc 版本切换控件（目前仅支持 IE10 及以上）暂时不支持自定义位置。
  * @extends {ol/control/Control}
@@ -19,11 +20,12 @@ import Control from 'ol/control/Control';
  * @param {string} [options.orientation='horizontal'] - 方向 horizontal|vertical。
  * @param {boolean} [options.switch=true] - 是否显示上/下一个版本切换控件。
  * @example
- * var control = new ol.supermap.control.ChangeTileVersion({
+ * var control = new ChangeTileVersion({
  *           layer: baseLayer,
  *           orientation: "horizontal"
  *      });
  *      map.addControl(control)
+ * @usage
  */
 export class ChangeTileVersion extends Control {
     constructor(options) {
@@ -69,7 +71,7 @@ export class ChangeTileVersion extends Control {
         }
 
         /**
-         * @function ol.supermap.control.ChangeTileVersion.prototype.initLayout
+         * @function ChangeTileVersion.prototype.initLayout
          * @description 初始化。
          */
         function initLayout() {
@@ -158,7 +160,7 @@ export class ChangeTileVersion extends Control {
             }
 
             /**
-             * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
+             * @function ChangeTileVersion.prototype.addDomEvent
              * @description 为元素添加事件。
              */
             addDomEvent(
@@ -187,7 +189,7 @@ export class ChangeTileVersion extends Control {
         }
 
         /**
-         * @function ol.supermap.control.ChangeTileVersion.prototype.createElement
+         * @function ChangeTileVersion.prototype.createElement
          * @description 新建元素。
          * @param {string} tagName - 标签名。
          * @param {string} className - 类名。
@@ -205,7 +207,7 @@ export class ChangeTileVersion extends Control {
         }
 
         /**
-         * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
+         * @function ChangeTileVersion.prototype.addDomEvent
          * @description 为元素添加事件。
          * @param {Object} obj - 事件对象集。
          * @param {string} type - 事件类型。
@@ -270,7 +272,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.setContent
+     * @function ChangeTileVersion.prototype.setContent
      * @description 设置版本相关信息。
      * @param {Object} version - 版本信息。
      */
@@ -280,7 +282,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.setVersionName
+     * @function ChangeTileVersion.prototype.setVersionName
      * @description 设置版本号
      * @param {string} content -版本内容。
      */
@@ -294,7 +296,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.setToolTip
+     * @function ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息。
      * @param {string} tooltip - 工具提示。
      * @returns {this} this
@@ -305,7 +307,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.updateLength
+     * @function ChangeTileVersion.prototype.updateLength
      * @description 更新进度条长度。
      * @param {number} length - 进度条长度。
      */
@@ -318,7 +320,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.setLayer
+     * @function ChangeTileVersion.prototype.setLayer
      * @description 绑定图层。
      * @param {Object} layer - 图层。
      */
@@ -340,7 +342,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.update
+     * @function ChangeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度。
      * @param {Object} tileVersions - 待更新的切片版本。
      */
@@ -350,7 +352,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.getTileSetsInfo
+     * @function ChangeTileVersion.prototype.getTileSetsInfo
      * @description 请求获取切片集信息。
      */
     getTileSetsInfo() {
@@ -363,7 +365,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.removeLayer
+     * @function ChangeTileVersion.prototype.removeLayer
      * @description 移除绑定的地图图层。
      */
     removeLayer() {
@@ -371,7 +373,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.nextTilesVersion
+     * @function ChangeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本，第一次不进行加减，是无版本的状态。
      * @returns {this} this
      */
@@ -390,7 +392,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion
+     * @function ChangeTileVersion.prototype.lastTilesVersion
      * @description 获取上一个版本信息。
      * @returns {this} this
      */
@@ -404,7 +406,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.tilesVersion
+     * @function ChangeTileVersion.prototype.tilesVersion
      * @description 根据指定版本号请求版本。
      * @param {Object} version - 版本信息。
      */
@@ -422,7 +424,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.getValue
+     * @function ChangeTileVersion.prototype.getValue
      * @description 获取进度条的值。注：(进度条的值并不是版本号)。
      */
     getValue() {
@@ -430,7 +432,7 @@ export class ChangeTileVersion extends Control {
     }
 
     /**
-     * @function ol.supermap.control.ChangeTileVersion.prototype.getVersion
+     * @function ChangeTileVersion.prototype.getVersion
      * @description 获取当前进度条值对应的版本号。
      */
     getVersion() {

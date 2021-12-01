@@ -5,13 +5,12 @@ import {ServiceBase} from './ServiceBase';
 import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
 
 /**
- * @class ol.supermap.DataFlowService
+ * @class DataFlowService
  * @category  iServer DataFlow
  * @classdesc 数据流服务。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      new ol.supermap.DataFlowService(url)
- *      .queryChart(param,function(result){
+ *      new DataFlowService(url).queryChart(param,function(result){
  *          //doSomething
  *      })
  * @param {string} url - 与客户端交互的数据流服务地址。
@@ -22,6 +21,7 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
  * @param {Object} [options.headers] - 请求头。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @usage
  */
 export class DataFlowService extends ServiceBase {
 
@@ -46,9 +46,9 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.initBroadcast
+     * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {ol.supermap.DataFlowService}
+     * @returns {DataFlowService}
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -56,7 +56,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.broadcast
+     * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
      * @param {JSON} obj - JSON 格式的要素数据。
      */
@@ -65,7 +65,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.initSubscribe
+     * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据。
      */
     initSubscribe() {
@@ -74,7 +74,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.setExcludeField
+     * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段。
      * @param {Object} excludeField - 排除字段。
      */
@@ -85,7 +85,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.setGeometry
+     * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
@@ -96,7 +96,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.unSubscribe
+     * @function DataFlowService.prototype.unSubscribe
      * @description 结束订阅数据。
      */
     unSubscribe() {
@@ -104,7 +104,7 @@ export class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.unBroadcast
+     * @function DataFlowService.prototype.unBroadcast
      * @description 结束加载广播。
      */
     unBroadcast() {

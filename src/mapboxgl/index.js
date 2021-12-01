@@ -271,7 +271,7 @@ export {
     NavTabsPage,
     PaginationContainer,
     FileReaderUtil,
-    ChartView,
+    Chart,
     ChartViewModel,
     FieldsFilter,
     ImageGFAspect,

@@ -106,7 +106,7 @@ export class Range extends GeoFeature {
             if (isSfInAttrs) {
                 for (var i = 0, len = Gro.length; i < len; i++) {
                     if ((attr >= Gro[i].start) && (attr < Gro[i].end)) {
-                        //feature.style = SuperMap.Util.copyAttributes(feature.style, this.defaultStyle);
+                        //feature.style = Util.copyAttributes(feature.style, this.defaultStyle);
                         var sty1 = Gro[i].style;
                         style = CommonUtil.copyAttributesWithClip(style, sty1);
                     }

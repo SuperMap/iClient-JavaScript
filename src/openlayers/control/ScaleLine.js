@@ -7,7 +7,8 @@ import * as olProj from 'ol/proj';
 import AssertionError from 'ol/AssertionError';
 
 /**
- * @class ol.supermap.control.ScaleLine
+ * @class ScaleLine
+ * @aliasclass control.ScaleLine
  * @category  Control
  * @version 9.1.2
  * @classdesc 比例尺控件。
@@ -22,8 +23,9 @@ import AssertionError from 'ol/AssertionError';
  * @param {(HTMLElement|string) } [options.target] - 指定比例尺控件目标容器。
  * @param {(ol.control.ScaleLineUnits|string)} [options.units='metric'] - 上一个版本的按钮布局。
  * @example
- * var control = new ol.supermap.control.ScaleLine();
- *      map.addControl(control)
+ * var control = new ScaleLine();
+ * map.addControl(control)
+ * @usage
  */
 export class ScaleLine extends Scale {
     constructor(options) {

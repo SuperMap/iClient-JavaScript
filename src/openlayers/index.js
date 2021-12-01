@@ -205,7 +205,7 @@ export {
     SurfaceAnalystParameters,
     SurfaceAnalystParametersSetting,
     TerrainCurvatureCalculationParameters,
-    Theme as CommonTheme,
+    CommonTheme,
     ThemeDotDensity,
     ThemeFlow,
     ThemeGraduatedSymbol,
@@ -318,7 +318,7 @@ export {
     ThemeStyle,
     TimeControlBase,
     TemplateBase,
-    ChartView,
+    Chart,
     ChartViewModel,
     Credential,
     // 基础类

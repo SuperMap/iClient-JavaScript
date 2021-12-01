@@ -22,7 +22,8 @@
             "src/common","src/openlayers"
         ],
         "exclude": [
-            "src/common/overlay/levelRenderer"
+            "src/common/overlay/levelRenderer",
+            "src/common/lang/locales"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage"],

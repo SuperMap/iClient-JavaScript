@@ -9,11 +9,12 @@ import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 
 /**
- * @class ol.supermap.ThemeFeature
+ * @class ThemeFeature
  * @category Visualization Theme
  * @classdesc 专题图要素类。
  * @param {Object} geometry - 要量算的几何对象，支持 {@link ol/geom/Geometry} 和 GeoText 标签数组类型 geometry = [x,y,text]。
  * @param {Object} [attributes] - 属性。
+ * @usage
  */
 export class ThemeFeature {
 
@@ -23,7 +24,7 @@ export class ThemeFeature {
     }
 
     /**
-     * @function ol.supermap.ThemeFeature.prototype.toFeature
+     * @function ThemeFeature.prototype.toFeature
      * @description 转为矢量要素。
      */
     toFeature() {

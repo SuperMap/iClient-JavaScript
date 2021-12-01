@@ -10,13 +10,12 @@ import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/C
 import {ServiceBase} from './ServiceBase';
 
 /**
- * @class ol.supermap.ChartService
+ * @class ChartService
  * @category  iServer Map Chart
  * @classdesc 海图服务。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      new ol.supermap.ChartService(url)
- *      .queryChart(param,function(result){
+ *      new ChartService(url).queryChart(param,function(result){
  *          //doSomething
  *      })
  * @param {string} url - 与客户端交互的海图服务地址。
@@ -25,6 +24,7 @@ import {ServiceBase} from './ServiceBase';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class ChartService extends ServiceBase {
 
@@ -33,11 +33,11 @@ export class ChartService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ChartService.prototype.queryChart
+     * @function ChartService.prototype.queryChart
      * @description 查询海图服务。
-     * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。
+     * @param {ChartQueryParameters} params - 海图查询所需参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回的结果格式类型。
+     * @param {DataFormat} resultFormat - 返回的结果格式类型。
      */
     queryChart(params, callback, resultFormat) {
         var me = this,
@@ -61,7 +61,7 @@ export class ChartService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ChartService.prototype.getChartFeatureInfo
+     * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
      * @param {RequestCallback} callback 回调函数。
      */

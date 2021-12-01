@@ -5,11 +5,11 @@ import {ServiceBase} from './ServiceBase';
 import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
- * @class ol.supermap.AddressMatchService
+ * @class AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务。
  * @example
- *      new ol.supermap.AddressMatchService(url,options)
+ *      new AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
@@ -19,7 +19,8 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {ol.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export class AddressMatchService extends ServiceBase {
 
@@ -28,9 +29,9 @@ export class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.AddressMatchService.prototype.code
+     * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
+     * @param {GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     code(params, callback) {
@@ -51,9 +52,9 @@ export class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.AddressMatchService.prototype.decode
+     * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
+     * @param {GeoDecodingParameter} params - 反向匹配参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     decode(params, callback) {

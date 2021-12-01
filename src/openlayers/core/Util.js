@@ -13,9 +13,11 @@
  import Feature from 'ol/Feature';
 
  /**
-  * @class ol.supermap.Util
+  * @class Util
+  * @deprecatedclass ol.supermap.Util
   * @category BaseTypes Util
   * @classdesc 工具类。
+  * @usage
   */
  export const Util = {
    getOlVersion() {
@@ -32,9 +34,9 @@
      }
      return '4';
    },
- 
+
    /**
-    * @function ol.supermap.Util.toGeoJSON
+    * @function Util.toGeoJSON
     * @description 将传入对象转为 GeoJSON 格式。
     * @param {Object} smObj - 待转参数。
     */
@@ -44,9 +46,9 @@
      }
      return new GeoJSONFormat().toGeoJSON(smObj);
    },
- 
+
    /**
-    * @function ol.supermap.Util.toSuperMapGeometry
+    * @function Util.toSuperMapGeometry
     * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
     * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
     */
@@ -57,9 +59,9 @@
      const result = new GeoJSONFormat().read(geoJSON, 'FeatureCollection');
      return result[0].geometry;
    },
- 
+
    /**
-    * @function ol.supermap.Util.resolutionToScale
+    * @function Util.resolutionToScale
     * @description 通过分辨率计算比例尺。
     * @param {number} resolution - 分辨率。
     * @param {number} dpi - 屏幕分辨率。
@@ -73,19 +75,19 @@
      const scale = 1 / (resolution * dpi * inchPerMeter * meterPerMapUnit);
      return scale;
    },
- 
+
    /**
-    * @function ol.supermap.Util.toSuperMapBounds
+    * @function Util.toSuperMapBounds
     * @description 转为 SuperMapBounds 格式。
     * @param {Array.<number>} bounds - bounds 数组。
-    * @returns {SuperMap.Bounds} 返回 SuperMap 的 Bounds 对象。
+    * @returns {Bounds} 返回 SuperMap 的 Bounds 对象。
     */
    toSuperMapBounds(bounds) {
      return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
    },
- 
+
    /**
-    * @function ol.supermap.Util.toProcessingParam
+    * @function Util.toProcessingParam
     * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
     * @param {Array} points - Region 各个节点数组。
     * @returns processing 服务裁剪、查询分析的分析参数。
@@ -103,12 +105,12 @@
      results.push(results[0]);
      geometryParam.type = 'REGION';
      geometryParam.points = results;
- 
+
      return geometryParam;
    },
- 
+
    /**
-    * @function ol.supermap.Util.scaleToResolution
+    * @function Util.scaleToResolution
     * @description 通过比例尺计算分辨率。
     * @param {number} scale - 比例尺。
     * @param {number} dpi - 屏幕分辨率。
@@ -121,26 +123,26 @@
      const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
      return resolution;
    },
- 
+
    /**
     * @private
-    * @function ol.supermap.Util.getMeterPerMapUnit
+    * @function Util.getMeterPerMapUnit
     * @description 获取每地图单位多少米。
     * @param {string} mapUnit - 地图单位。
     * @returns {number} 返回每地图单位多少米。
     */
    getMeterPerMapUnit,
- 
+
    /**
-    * @function ol.supermap.Util.isArray
+    * @function Util.isArray
     * @description 判断是否为数组格式。
     * @param {Object} obj - 待判断对象。
     * @returns {boolean} 是否是数组。
     */
    isArray,
- 
+
    /**
-    * @function ol.supermap.Util.Csv2GeoJSON
+    * @function Util.Csv2GeoJSON
     * @description 将 csv 格式转为 GeoJSON。
     * @param {Object} csv - csv 对象。
     * @param {Object} options - 转换参数。
@@ -186,14 +188,14 @@
        csv = _csv2json(csv);
      }
      return csv;
- 
+
      function _deleteDoubleQuotes(cadena) {
        if (options.deleteDoubleQuotes) {
          cadena = cadena.trim().replace(/^"/, '').replace(/"$/, '');
        }
        return cadena;
      }
- 
+
      function _csv2json(csv) {
        const json = {};
        json['type'] = 'FeatureCollection';
@@ -204,12 +206,12 @@
          const campos = csv[num_linea].trim().split(options.fieldSeparator),
            lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)]),
            lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
- 
+
          const isInRange = lng < 180 && lng > -180 && lat < 90 && lat > -90;
          if (!(campos.length === titulos.length && isInRange)) {
            continue;
          }
- 
+
          const feature = {};
          feature['type'] = 'Feature';
          feature['geometry'] = {};
@@ -226,9 +228,9 @@
        return json;
      }
    },
- 
+
    /**
-    * @function ol.supermap.Util.createCanvasContext2D
+    * @function Util.createCanvasContext2D
     * @description 创建 2D 画布。
     * @param {number} opt_width - 画布宽度。
     * @param {number} opt_height - 画布高度。
@@ -244,23 +246,23 @@
      return canvas.getContext('2d');
    },
    /**
-    * @function ol.supermap.Util.supportWebGL2
+    * @function Util.supportWebGL2
     * @description 是否支持 webgl2。
     */
    supportWebGL2() {
      const canvas = document.createElement('canvas');
      return Boolean(canvas && canvas.getContext('webgl2'));
    },
- 
+
    /**
-    * @function ol.supermap.Util.isString
+    * @function Util.isString
     * @description 是否为字符串
     * @param {string} str - 需要判断的内容
     * @returns {boolean}
     */
    isString,
    /**
-    * @function ol.supermap.Util.isObject
+    * @function Util.isObject
     * @description 是否为对象
     * @param {any} obj - 需要判断的内容
     * @returns {boolean}
@@ -268,9 +270,9 @@
    isObject(obj) {
      return Object.prototype.toString.call(obj) === '[object Object]';
    },
- 
+
    /**
-    * @function ol.supermap.Util.trim
+    * @function Util.trim
     * @description 字符串裁剪两边的空格
     * @param {string} str - 需要裁剪的字符串
     * @returns {boolean}
@@ -279,7 +281,7 @@
      return str.replace(/(^\s*)|(\s*$)/g, '');
    },
    /**
-    * @function ol.supermap.Util.newGuid
+    * @function Util.newGuid
     * @description 随机生成id
     * @param {string} attr - 几位数字的id
     * @returns {string}
@@ -294,7 +296,7 @@
      return guid;
    },
    /**
-    * @function ol.supermap.Util.isNumber
+    * @function Util.isNumber
     * @description 检测数据是否为number
     * @param {string} value - 值，未知数据类型
     * @returns {boolean}
@@ -309,18 +311,18 @@
      }
      return !isNaN(mdata);
    },
-  
- 
+
+
    /**
-    * @function ol.supermap.Util.isMatchAdministrativeName
+    * @function Util.isMatchAdministrativeName
     * @param {string} featureName 原始数据中的地名
     * @param {string} fieldName 需要匹配的地名
     * @returns {boolean} 是否匹配
     */
    isMatchAdministrativeName,
- 
+
    /**
-    * @function ol.supermap.Util.getHighestMatchAdministration
+    * @function Util.getHighestMatchAdministration
     * @param {string} featureName 初始匹配的要素数组
     * @param {string} fieldName 要匹配的地名
     * @returns {boolean} 是否匹配
@@ -329,7 +331,7 @@
      let filterFeatures = features.filter((item) => {
        return isMatchAdministrativeName(item.properties.Name, fieldName);
      });
- 
+
      let maxMatchPercent = 0,
        maxMatchFeature = null;
      filterFeatures.forEach((feature) => {
@@ -346,9 +348,9 @@
      });
      return maxMatchFeature;
    },
- 
+
    /**
-    * @function ol.supermap.Util.setMask
+    * @function Util.setMask
     * @description 为图层设置掩膜。
     * @version 10.1.0
     * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层
@@ -368,14 +370,14 @@
          color: 'black'
        })
      });
- 
+
      const clipLayer = new VectorLayer({
        source: new VectorSource({
          features: [feature],
          wrapX: false
        })
      });
- 
+
      const clipRender = function (e) {
        const vectorContext = getVectorContext(e);
        e.context.globalCompositeOperation = 'destination-in';
@@ -397,14 +399,14 @@
      });
    },
    /**
-    * @function ol.supermap.Util.unsetMask
+    * @function Util.unsetMask
     * @description 取消图层掩膜。
     * @version 10.1.0
     * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层
     */
    unsetMask
  }
- 
+
 function isString(str) {
   return typeof str === 'string' && str.constructor === String;
 }
@@ -427,7 +429,7 @@ function isArray(obj) {
      layer.changed();
    }
  }
- 
+
  function isMatchAdministrativeName(featureName, fieldName) {
    if (isString(fieldName)) {
      let shortName = featureName.substr(0, 2);
@@ -439,7 +441,7 @@ function isArray(obj) {
    }
    return false;
  }
- 
+
  function getMeterPerMapUnit(mapUnit) {
    const earchRadiusInMeters = 6378137;
    let meterPerMapUnit;
