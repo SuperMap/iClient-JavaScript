@@ -11,6 +11,7 @@ import '../LonLat';
 
 /**
  * @class GeoText
+ * @aliasclass Geometry.GeoText
  * @deprecatedclass SuperMap.Geometry.GeoText
  * @classdesc 文本标签类。
  * @category BaseTypes Geometry

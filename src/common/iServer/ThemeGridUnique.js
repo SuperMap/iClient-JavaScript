@@ -21,7 +21,7 @@ import {
  * @classdesc 栅格单值专题图类。
  * @description 栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。<br>
  *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。
- * @extends {Theme}
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {Array.<ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。
  * @param {ServerColor} [options.defaultcolor] - 栅格单值专题图的默认颜色。

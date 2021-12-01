@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
  * 该文件用于存储一些公用常量
- *
+ * @private
  */
 export const FileTypes = {
     EXCEL: "EXCEL",

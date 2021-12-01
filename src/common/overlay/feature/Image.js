@@ -5,6 +5,7 @@ import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @class  Image
+ * @aliasclass Feature.ShapeParameters.Image
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Image
  * @category Visualization Theme
  * @classdesc 图片参数对象。

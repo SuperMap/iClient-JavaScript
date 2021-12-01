@@ -6,6 +6,7 @@ import {Bounds} from '../Bounds';
 
 /**
  * @class  Rectangle
+ * @aliasclass Geometry.Rectangle
  * @deprecatedclass SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
  * @category BaseTypes Geometry

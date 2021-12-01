@@ -7,6 +7,7 @@ import {Graph} from './Graph';
 
 /**
  * @class OverlayPoint
+ * @aliasclass Feature.Theme.Point
  * @deprecatedclass SuperMap.Feature.Theme.Point
  * @classdesc 点状图。
  * @category Visualization Theme

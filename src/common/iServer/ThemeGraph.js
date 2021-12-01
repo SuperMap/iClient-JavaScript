@@ -16,7 +16,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @deprecatedclass SuperMap.ThemeGraph
  * @category  iServer Map Theme
  * @classdesc 统计专题图类。
- * @extends {Theme}
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {Array.<ThemeGraphItem>} options.items - 统计专题图子项集合。
  * @param {number}  [options.barWidth=0] - 柱状专题图中每一个柱的宽度。

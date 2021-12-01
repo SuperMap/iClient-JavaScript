@@ -14,7 +14,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  * @description 栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。
  *              栅格分段专题图一般用来反映连续分布现象的数量或程度特征。比如某年的全国降水量分布图，将各气象站点的观测值经过内插之后生成的栅格数据进行分段显示。
  *              该类类似于分段专题图类，不同点在于分段专题图的操作对象是矢量数据，而栅格分段专题图的操作对象是栅格数据。
- * @extends {Theme}
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {Array.<ThemeGridRangeItem>} options.items - 栅格分段专题图子项数组。
  * @param {boolean} [options.reverseColor=false] - 是否对栅格分段专题图中分段的颜色风格进行反序显示。

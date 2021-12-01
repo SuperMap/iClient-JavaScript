@@ -7,6 +7,7 @@ import {Graph} from './Graph';
 
 /**
  * @class Ring
+ * @aliasclass Feature.Theme.Ring
  * @deprecatedclass SuperMap.Feature.Theme.Ring
  * @classdesc 环状图。
  * @category Visualization Theme

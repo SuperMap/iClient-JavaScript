@@ -21,6 +21,7 @@ import {Util} from '../../commontypes/Util';
 
 /**
  * @class  ShapeFactory
+ * @aliasclass Feature.ShapeParameters.ShapeFactory
  * @deprecatedclass SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
  * @classdesc 图形工厂类。

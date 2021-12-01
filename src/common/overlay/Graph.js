@@ -7,6 +7,7 @@ import {ShapeFactory} from './feature/ShapeFactory';
 
 /**
  * @class CommonGraph
+ * @aliasclass Feature.Theme.Graph
  * @deprecatedclass SuperMap.Feature.Theme.Graph
  * @classdesc 统计专题要素基类。
  * @category Visualization Theme

@@ -8,6 +8,7 @@ import {Util} from './Util';
 
 /**
  * @class GeometryVector
+ * @aliasclass Feature.Vector
  * @deprecatedclass SuperMap.Feature.Vector
  * @category BaseTypes Geometry
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，

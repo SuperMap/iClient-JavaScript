@@ -5,6 +5,7 @@ import {Collection} from './Collection';
 
 /**
  * @class MultiPolygon
+ * @aliasclass Geometry.MultiPolygon
  * @deprecatedclass SuperMap.Geometry.MultiPolygon
  * @classdesc 几何对象多多边形类。
  * @category BaseTypes Geometry

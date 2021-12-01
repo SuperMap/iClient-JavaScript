@@ -8,6 +8,7 @@ import './LinearRing';
 
 /**
  * @class Polygon
+ * @aliasclass Geometry.Polygon
  * @deprecatedclass SuperMap.Geometry.Polygon
  * @classdesc  多边形几何对象类。
  * @category BaseTypes Geometry

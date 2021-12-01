@@ -17,7 +17,7 @@ import {UGCSubLayer} from './UGCSubLayer';
  * @category  iServer Map Theme
  * @classdesc UGC 专题图图层类。
  * @extends {UGCSubLayer}
- * @param {Theme} theme - 专题图对象。
+ * @param {CommonTheme} theme - 专题图对象。
  * @param {LonLat} themeElementPosition - 专题图元素位置。
  * @usage
  */
@@ -28,7 +28,7 @@ export class ServerTheme extends UGCSubLayer {
         super(options);
 
         /**
-         * @member {Theme} ServerTheme.prototype.theme
+         * @member {CommonTheme} ServerTheme.prototype.theme
          * @description 专题图对象。
          */
         this.theme = null;

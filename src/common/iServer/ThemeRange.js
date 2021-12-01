@@ -14,7 +14,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  * @description 范围分段专题图是按照指定的分段方法（如：等距离分段法）对字段的属性值进行分段，使用不同的颜色或符号（线型、填充）表示不同范围段落的属性值在整体上的分布情况，体现区域的差异。
  *              在分段专题图中，专题值按照某种分段方式被分成多个范围段，要素根据各自的专题值被分配到其中一个范围段中，在同一个范围段中的要素使用相同的颜色，填充，符号等风格进行显示。
  *              分段专题图所基于的专题变量必须为数值型，分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
- * @extends {Theme}
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {Array.<ThemeRangeItem>} options.items - 分段专题图子项数组。
  * @param {string} options.rangeExpression - 分段字段表达式。

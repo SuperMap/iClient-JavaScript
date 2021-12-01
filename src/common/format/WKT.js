@@ -14,6 +14,7 @@ import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
 
 /**
  * @class WKT
+ * @aliasclass Format.WKT
  * @deprecatedclass SuperMap.Format.WKT
  * @classdesc 用于读写常见文本的类。通过 {@link WKT} 构造器来创建一个新的实例。
  * @category BaseTypes Format

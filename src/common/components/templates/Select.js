@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class Select
+ * @aliasclass Components.Select
  * @deprecatedclass SuperMap.Components.Select
  * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1

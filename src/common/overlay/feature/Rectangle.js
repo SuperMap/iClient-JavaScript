@@ -5,6 +5,7 @@ import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @class  FeatureRectangle
+ * @aliasclass Feature.ShapeParameters.Rectangle
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Rectangle
  * @category Visualization Theme
  * @classdesc 矩形参数对象。

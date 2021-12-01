@@ -6,6 +6,7 @@ import { Events } from '../../commontypes/Events';
 
 /**
  * @class ChartViewModel
+ * @aliasclass Components.ChartViewModel
  * @deprecatedclass SuperMap.Components.ChartViewModel
  * @classdesc 图表组件功能类
  * @category Components Chart

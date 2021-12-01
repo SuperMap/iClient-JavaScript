@@ -8,6 +8,7 @@ import {Graph} from './Graph';
 
 /**
  * @class Bar3D
+ * @aliasclass Feature.Theme.Bar3D
  * @deprecatedclass SuperMap.Feature.Theme.Bar3D
  * @classdesc 三维柱状图 。
  * @category Visualization Theme

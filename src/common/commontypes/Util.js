@@ -91,6 +91,22 @@ const DOTS_PER_INCH = 96;
  * @namespace
  * @category BaseTypes Util
  * @description common 工具类。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.CommonUtil.extend(destination, source);
+ *
+ *   // 弃用的写法
+ *   SuperMap.Util.extend(destination, source);
+ *
+ * </script>
+ *   // ES6 Import
+ *   import { CommonUtil } from '{npm}';
+ *
+ *   CommonUtil.extend(destination, source);
+ * ```
  */
 
 const Util = {

@@ -12,7 +12,7 @@ import {GraduatedMode} from '../REST';
  * @deprecatedclass SuperMap.ThemeGraduatedSymbol
  * @category  iServer Map Theme
  * @classdesc 等级符号专题图。
- * @extends {Theme}
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {ThemeGraduatedSymbolStyle} options.style - 用于设置等级符号图正负和零值显示风格。
  * @param {string} options.expression - 等级符号专题图的字段或字段表达式。

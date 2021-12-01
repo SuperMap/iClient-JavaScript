@@ -11,6 +11,7 @@ import {
 
 /**
  * @class Chart
+ * @aliasclass Components.Chart
  * @deprecatedclass SuperMap.Components.Chart
  * @classdesc 图表组件
  * @version 9.1.2

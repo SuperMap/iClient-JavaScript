@@ -15,6 +15,7 @@ import './feature/Line';
 
 /**
  * @class Bar
+ * @aliasclass Feature.Theme.Bar
  * @deprecatedclass SuperMap.Feature.Theme.Bar
  * @classdesc 柱状图 。
  * @category Visualization Theme

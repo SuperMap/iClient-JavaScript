@@ -12,7 +12,7 @@ import {Util} from '../commontypes/Util';
  * @param {Array.<string>} options.datasetNames - 要制作专题图的数据集数组。
  * @param {Array.<string>} options.dataSourceNames - 要制作专题图的数据集所在的数据源数组。
  * @param {Array.<JoinItem>} [options.joinItems] - 专题图外部表的连接信息 JoinItem 数组。
- * @param {Array.<Theme>} options.themes - 专题图对象列表。
+ * @param {Array.<CommonTheme>} options.themes - 专题图对象列表。
  * @param {Array.<string>} [options.displayFilters] - 专题图属性过滤条件。
  * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。
  * @param {Object} [options.fieldValuesDisplayFilter] - 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
@@ -41,7 +41,7 @@ export class ThemeParameters {
         this.joinItems = null;
 
         /**
-         * @member {Array.<Theme>} ThemeParameters.prototype.themes
+         * @member {Array.<CommonTheme>} ThemeParameters.prototype.themes
          * @description 专题图对象列表。
          *              该参数为实例化的各类专题图对象的集合。
          */

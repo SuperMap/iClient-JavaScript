@@ -6,6 +6,7 @@ import {Util} from '../../commontypes/Util';
 
 /**
  * @class CityTabsPage
+ * @aliasclass Components.CityTabsPage
  * @deprecatedclass SuperMap.Components.CityTabsPage
  * @classdesc 城市地址匹配组件模板
  * @version 9.1.1

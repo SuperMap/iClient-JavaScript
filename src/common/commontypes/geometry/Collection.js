@@ -7,6 +7,7 @@ import {Util} from '../Util';
 
 /**
  * @class Collection
+ * @aliasclass Geometry.Collection
  * @deprecatedclass SuperMap.Geometry.Collection
  * @classdesc 几何对象集合类，存储在本地的 components 属性中（可作为参数传递给构造函数）。<br>
  *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>

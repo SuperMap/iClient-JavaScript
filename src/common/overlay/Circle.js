@@ -8,6 +8,7 @@ import {RankSymbol} from './RankSymbol';
 
 /**
  * @class Circle
+ * @aliasclass Feature.Theme.Circle
  * @deprecatedclass SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
  * @category Visualization Theme

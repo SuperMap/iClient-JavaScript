@@ -5,6 +5,7 @@ import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @class  FeatureLine
+ * @aliasclass Feature.ShapeParameters.Line
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Line
  * @category Visualization Theme
  * @classdesc 线参数对象。

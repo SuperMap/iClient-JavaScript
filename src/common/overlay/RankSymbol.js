@@ -5,6 +5,7 @@ import {Graph} from './Graph';
 
 /**
  * @class CommonRankSymbol
+ * @aliasclass Feature.Theme.RankSymbol
  * @deprecatedclass SuperMap.Feature.Theme.RankSymbol
  * @classdesc 符号专题要素基类。
  * @category Visualization Theme

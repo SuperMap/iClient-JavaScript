@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class PopContainer
+ * @aliasclass Components.PopContainer
  * @deprecatedclass SuperMap.Components.PopContainer
  * @classdesc 弹框组件。
  * @version 9.1.1

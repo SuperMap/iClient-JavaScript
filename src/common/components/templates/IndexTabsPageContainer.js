@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class IndexTabsPageContainer
+ * @aliasclass Components.IndexTabsPageContainer
  * @deprecatedclass SuperMap.Components.IndexTabsPageContainer
  * @description 标签索引组件。
  * @version 9.1.1

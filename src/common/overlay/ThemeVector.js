@@ -25,7 +25,7 @@ import {LonLat} from '../commontypes/LonLat';
 
 /**
  * @class ThemeVector
- * @deprecatedclass SuperMap.Feature.Theme.Vector
+ * @aliasclass Feature.Theme.ThemeVector
  * @deprecatedclass SuperMap.Feature.Theme.ThemeVector
  * @classdesc 矢量专题要素类。
  * @category Visualization Theme

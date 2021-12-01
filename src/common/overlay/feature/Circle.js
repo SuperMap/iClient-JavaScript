@@ -5,6 +5,7 @@ import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @class FeatureCircle
+ * @aliasclass Feature.ShapeParameters.Circle
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Circle
  * @classdesc 圆形参数对象。
  * @category Visualization Theme

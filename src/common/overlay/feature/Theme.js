@@ -8,6 +8,7 @@ import {Util} from '../../commontypes/Util';
 
 /**
  * @class  FeatureTheme
+ * @aliasclass Feature.Theme
  * @deprecatedclass SuperMap.Feature.Theme
  * @category Visualization Theme
  * @classdesc 专题要素基类，此类不可实例化。

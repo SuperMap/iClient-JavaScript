@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class PaginationContainer
+ * @aliasclass Components.PaginationContainer
  * @deprecatedclass SuperMap.Components.PaginationContainer
  * @classdesc 分页组件模板。
  * @version 9.1.1

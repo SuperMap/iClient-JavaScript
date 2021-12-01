@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class DropDownBox
+ * @aliasclass Components.DropDownBox
  * @deprecatedclass SuperMap.Components.DropDownBox
  * @classdesc 组件统一的图片下拉框。
  * @version 9.1.1

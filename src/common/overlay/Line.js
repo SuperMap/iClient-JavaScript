@@ -8,6 +8,7 @@ import {Graph} from './Graph';
 
 /**
  * @class Line
+ * @aliasclass Feature.Theme.Line
  * @deprecatedclass SuperMap.Feature.Theme.Line
  * @classdesc 折线图。
  * @category Visualization Theme

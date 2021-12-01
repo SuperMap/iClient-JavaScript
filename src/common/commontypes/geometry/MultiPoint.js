@@ -5,6 +5,7 @@ import {Collection} from './Collection';
 
 /**
  * @class MultiPoint
+ * @aliasclass Geometry.MultiPoint
  * @deprecatedclass SuperMap.Geometry.MultiPoint
  * @classdesc 几何对象多点类。
  * @category BaseTypes Geometry

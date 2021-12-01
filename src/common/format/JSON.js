@@ -7,6 +7,7 @@ import {
 
 /**
  * @class JSONFormat
+ * @aliasclass Format.JSON
  * @deprecatedclass SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link JSONFormat} 构造函数创建新实例。
  * @category BaseTypes Format

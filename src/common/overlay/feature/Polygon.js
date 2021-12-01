@@ -5,6 +5,7 @@ import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @class  FeaturePolygon
+ * @aliasclass Feature.ShapeParameters.Polygon
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Polygon
  * @category Visualization Theme
  * @classdesc 面参数对象。

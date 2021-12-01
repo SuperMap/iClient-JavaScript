@@ -4,6 +4,7 @@
 
 /**
  * @class TemplateBase
+ * @aliasclass Components.TemplateBase
  * @deprecatedclass SuperMap.Components.TemplateBase
  * @classdesc 组件公用组件父类，用于约束统一封装的公用组件结构。
  * @version 9.1.1

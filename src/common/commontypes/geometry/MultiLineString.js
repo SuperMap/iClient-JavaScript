@@ -7,6 +7,7 @@ import './LineString';
 
 /**
  * @class MultiLineString
+ * @aliasclass Geometry.MultiLineString
  * @deprecatedclass SuperMap.Geometry.MultiLineString
  * @classdesc 几何对象多线类。
  * @category BaseTypes Geometry

@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class CommonContainer
+ * @aliasclass Components.CommonContainer
  * @deprecatedclass SuperMap.Components.CommonContainer
  * @classdesc 组件统一外框。
  * @version 9.1.1

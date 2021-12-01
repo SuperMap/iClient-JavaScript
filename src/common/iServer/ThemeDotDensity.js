@@ -16,7 +16,7 @@ import {ServerStyle} from './ServerStyle';
  *              比如表示不同地区的粮食产量、GDP、人口等的分级，主要针对区域或面状的要素，因而，点密度专题图适用于面数据集。
  *              注意：点密度专题图中点的分布是随机的，并不代表实际的分布位置。即使在相关设置完全相同的情况下，
  *              每次制作出的专题图，点的数量相同，但点的位置都有差异。
- * @extends {Theme}
+ * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {string} options.dotExpression - 创建点密度专题图的字段或字段表达式。
  * @param {ServerStyle} [options.style] - 点密度专题图中点的风格。

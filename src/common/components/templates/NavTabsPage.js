@@ -5,6 +5,7 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class NavTabsPage
+ * @aliasclass Components.NavTabsPage
  * @deprecatedclass SuperMap.Components.NavTabsPage
  * @classdesc 标签页面组件。
  * @version 9.1.1

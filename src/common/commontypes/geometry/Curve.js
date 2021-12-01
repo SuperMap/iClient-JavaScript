@@ -5,6 +5,7 @@ import {MultiPoint} from './MultiPoint';
 
 /**
  * @class Curve
+ * @aliasclass Geometry.Curve
  * @deprecatedclass SuperMap.Geometry.Curve
  * @classdesc 几何对象曲线类。
  * @category BaseTypes Geometry

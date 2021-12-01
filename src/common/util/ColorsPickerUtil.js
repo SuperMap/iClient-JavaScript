@@ -2,7 +2,7 @@ import {Color} from '../overlay/levelRenderer/Color';
 
 var ColorRender = new Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
-// 					"www.qzct.net": "#7ed321" = new SuperMap.LevelRenderer.Tool.Color();
+// 					"www.qzct.net": "#7ed321" = new LevelRenderer.Tool.Color();
 
 /**
  * Created by yzy on 2016/11/9.

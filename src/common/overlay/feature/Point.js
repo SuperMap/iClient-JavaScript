@@ -5,6 +5,7 @@ import { ShapeParameters } from './ShapeParameters';
 
 /**
  * @class  Point
+ * @aliasclass Feature.ShapeParameters.Point
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Point
  * @category Visualization Theme
  * @classdesc 点参数对象。

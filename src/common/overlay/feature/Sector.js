@@ -5,6 +5,7 @@ import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @class  Sector
+ * @aliasclass Feature.ShapeParameters.Sector
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Sector
  * @category Visualization Theme
  * @classdesc 扇形参数对象。

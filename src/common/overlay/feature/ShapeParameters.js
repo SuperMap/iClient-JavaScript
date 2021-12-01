@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
  * @class  ShapeParameters
+ * @aliasclass Feature.ShapeParameters
  * @deprecatedclass SuperMap.Feature.ShapeParameters
  * @category Visualization Theme
  * @classdesc 图形参数基类，此类不可实例化

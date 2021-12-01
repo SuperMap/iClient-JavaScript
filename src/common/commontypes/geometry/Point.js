@@ -7,6 +7,7 @@ import {Util} from '../Util';
 
 /**
  * @class GeometryPoint
+ * @aliasclass Geometry.Point
  * @deprecatedclass SuperMap.Geometry.Point
  * @classdesc 点几何对象类。
  * @category BaseTypes Geometry

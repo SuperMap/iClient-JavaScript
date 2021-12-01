@@ -4,6 +4,7 @@
 
 /**
  * @class MessageBox
+ * @aliasclass Components.MessageBox
  * @deprecatedclass SuperMap.Components.MessageBox
  * @version 9.1.1
  * @classdesc 组件信息提示框。

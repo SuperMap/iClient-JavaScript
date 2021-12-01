@@ -5,6 +5,7 @@ import {LineString} from './LineString';
 
 /**
  * @class  LinearRing
+ * @aliasclass Geometry.LinearRing
  * @deprecatedclass SuperMap.Geometry.LinearRing
  * @classdesc 几何对象线环类，是一个特殊的封闭的线串，在每次 addPoint/removePoint 之后会通过添加一个点（此点是复制的第一个点得到的）
  * 作为最后的一个点来自动关闭线环。

@@ -181,19 +181,19 @@ var RequestTimeout;
  * @usage
  * ```
  * // 浏览器
-  <script type="text/javascript" src="{cnd}"></script>
-  <script>
-    {namespace}.setCORS(cors);
+ * <script type="text/javascript" src="{cnd}"></script>
+ * <script>
+ *   {namespace}.setCORS(cors);
 
-    // 弃用的写法
-    SuperMap.setCORS(cors);
+ *   // 弃用的写法
+ *   SuperMap.setCORS(cors);
 
-  </script>
+ * </script>
 
-  // ES6 Import
-  import { setCORS } from '{npm}';
-
-  setCORS(cors);
+ * // ES6 Import
+ * import { setCORS } from '{npm}';
+ *
+ * setCORS(cors);
  * ```
  */
 export var setCORS = function (cors) {
@@ -206,19 +206,19 @@ export var setCORS = function (cors) {
  * @usage
  * ```
  * // 浏览器
-  <script type="text/javascript" src="{cnd}"></script>
-  <script>
-    {namespace}.isCORS();
-
-    // 弃用的写法
-    SuperMap.isCORS();
-
-  </script>
-
-  // ES6 Import
-  import { isCORS } from '{npm}';
-
-  isCORS();
+ * <script type="text/javascript" src="{cnd}"></script>
+ * <script>
+ *   {namespace}.isCORS();
+ *
+ *   // 弃用的写法
+ *   SuperMap.isCORS();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { isCORS } from '{npm}';
+ *
+ * isCORS();
  * ```
  */
 export var isCORS = function () {

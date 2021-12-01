@@ -16,7 +16,7 @@ import {LabelOverLengthMode} from '../REST';
  * @deprecatedclass SuperMap.ThemeLabel
  * @category  iServer Map Theme
  * @classdesc 标签专题图类。
- * @extends Theme
+ * @extends CommonTheme
  * @param {Object} options - 参数。
  * @param {Array.<ThemeLabelItem>} options.items - 分段标签专题图的子项数组。
  * @param {string} options.labelExpression - 标注字段表达式。

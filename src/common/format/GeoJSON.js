@@ -43,6 +43,7 @@ import {
 
 /**
  * @class GeoJSON
+ * @aliasclass Format.GeoJSON
  * @deprecatedclass SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 {@link GeoJSON} 构造器创建一个 GeoJSON 解析器。
  * @category BaseTypes Format

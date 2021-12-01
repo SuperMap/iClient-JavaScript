@@ -6,6 +6,7 @@ import {Curve} from './Curve';
 
 /**
  * @class LineString
+ * @aliasclass Geometry.LineString
  * @deprecatedclass SuperMap.Geometry.LineString
  * @classdesc 几何对象线串类。
  * @category BaseTypes Geometry

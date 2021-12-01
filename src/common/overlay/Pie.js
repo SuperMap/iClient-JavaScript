@@ -7,6 +7,7 @@ import {Graph} from './Graph';
 
 /**
  * @class Pie
+ * @aliasclass Feature.Theme.Pie
  * @deprecatedclass SuperMap.Feature.Theme.Pie
  * @classdesc 饼图。
  * @category Visualization Theme

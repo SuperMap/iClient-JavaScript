@@ -5,6 +5,7 @@ import {PopContainer} from './PopContainer';
 
 /**
  * @class AttributesPopContainer
+ * @aliasclass Components.AttributesPopContainer
  * @deprecatedclass SuperMap.Components.AttributesPopContainer
  * @classdesc 属性弹框组件
  * @version 9.1.1

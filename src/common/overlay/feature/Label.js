@@ -5,6 +5,7 @@ import { ShapeParameters } from './ShapeParameters';
 
 /**
  * @class CommonLabel
+ * @aliasclass Feature.ShapeParameters.Label
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Label
  * @category Visualization Theme
  * @classdesc 标签参数对象。
