@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 /**
- * @class SuperMap.LabelMatrixCell
+ * @class LabelMatrixCell
  * @deprecatedclass SuperMap.LabelMatrixCell
  * @category iServer Map Theme
  * @classdesc 矩阵标签元素抽象类。
