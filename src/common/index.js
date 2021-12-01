@@ -507,6 +507,7 @@ export {
     ComponentsUtil,
     FileReaderUtil,
     ChartView,
+    ChartView as Chart,
     ChartViewModel,
     TemplateBase
 };
@@ -822,6 +823,7 @@ export {
     TerrainCurvatureCalculationParameters,
     TerrainCurvatureCalculationService,
     Theme,
+    Theme as CommonTheme,
     ThemeDotDensity,
     ThemeFlow,
     ThemeGraduatedSymbol,

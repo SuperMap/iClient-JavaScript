@@ -241,7 +241,7 @@ import {
   SurfaceAnalystParameters,
   SurfaceAnalystParametersSetting,
   TerrainCurvatureCalculationParameters,
-  Theme as CommonTheme,
+  CommonTheme,
   ThemeDotDensity,
   ThemeFlow,
   ThemeGraduatedSymbol,

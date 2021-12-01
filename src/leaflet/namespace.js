@@ -240,7 +240,7 @@ import {
   SurfaceAnalystParametersSetting,
   TerrainCurvatureCalculationParameters,
   Theme,
-  Theme as CommonTheme,
+  CommonTheme,
   ThemeDotDensity,
   ThemeFlow,
   ThemeGraduatedSymbol,
