@@ -1106,7 +1106,6 @@ export {
   LinkItem,
   MathExpressionAnalysisParameters,
   MeasureParameters,
-  MeasureService,
   NetworkAnalystServiceBase,
   OutputSetting,
   MappingParameters,
