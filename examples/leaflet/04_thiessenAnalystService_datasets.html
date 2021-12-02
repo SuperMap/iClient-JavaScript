@@ -25,13 +25,13 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
     thiessenAnalystProcess();
 
     function thiessenAnalystProcess() {
-        thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        dsThiessenAnalystParameters = new L.supermap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
         thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, function (serviceResult) {

@@ -37,15 +37,15 @@
     });
 
     function createTheme() {
-        var themeDotDensity = new SuperMap.ThemeDotDensity({
+        var themeDotDensity = new ol.supermap.ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
-            style: new SuperMap.ServerStyle({
+            style: new ol.supermap.ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]

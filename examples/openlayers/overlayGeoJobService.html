@@ -128,10 +128,10 @@
             });
         }
 
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function overlayGeoJobs() {
-            var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
+            var overlayGeoJobParameter = new ol.supermap.OverlayGeoJobParameter({
                 datasetName: $('#datasetName').val(),
                 datasetOverlay: $('#datasetOverlay').val(),
                 mode: $('#mode option:selected').attr('value'),
@@ -147,7 +147,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

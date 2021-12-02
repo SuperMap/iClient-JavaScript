@@ -37,20 +37,20 @@
     });
 
     function createTheme() {
-        var themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
+        var themeGraduatedSymbol = new ol.supermap.ThemeGraduatedSymbol({
             expression: "SMAREA",
             baseValue: 3000000000000,
-            graduatedMode: SuperMap.GraduatedMode.CONSTANT,
-            style: new SuperMap.ThemeGraduatedSymbolStyle({
-                positiveStyle: new SuperMap.ServerStyle({
+            graduatedMode: ol.supermap.GraduatedMode.CONSTANT,
+            style: new ol.supermap.ThemeGraduatedSymbolStyle({
+                positiveStyle: new ol.supermap.ServerStyle({
                     markerSize: 50,
                     markerSymbolID: 0,
-                    lineColor: new SuperMap.ServerColor(255, 165, 0),
-                    fillBackColor: new SuperMap.ServerColor(255, 0, 0)
+                    lineColor: new ol.supermap.ServerColor(255, 165, 0),
+                    fillBackColor: new ol.supermap.ServerColor(255, 0, 0)
                 })
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeGraduatedSymbol],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]

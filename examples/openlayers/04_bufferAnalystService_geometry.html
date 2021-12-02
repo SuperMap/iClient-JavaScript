@@ -114,12 +114,12 @@
         });
         map.addLayer(roadLineLayer);
         //创建缓冲区分析服务参数
-        geoBufferAnalystParams = new SuperMap.GeometryBufferAnalystParameters({
+        geoBufferAnalystParams = new ol.supermap.GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
-                leftDistance: new SuperMap.BufferDistance({value: 250}),
-                rightDistance: new SuperMap.BufferDistance({value: 250}),
+            bufferSetting: new ol.supermap.BufferSetting({
+                endType: ol.supermap.BufferEndType.ROUND,
+                leftDistance: new ol.supermap.BufferDistance({value: 250}),
+                rightDistance: new ol.supermap.BufferDistance({value: 250}),
                 semicircleLineSegment: 10
             })
         });
@@ -149,10 +149,10 @@
                 bufferPoints.push([coordinate[i][0], coordinate[i][1]]);
             }
             var geometry = new ol.geom.Polygon([bufferPoints]);
-            queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
-                queryParams: [new SuperMap.FilterParameter({name: "Company@Changchun.2"})],
+            queryByGeometryParameters = new ol.supermap.QueryByGeometryParameters({
+                queryParams: [new ol.supermap.FilterParameter({name: "Company@Changchun.2"})],
                 geometry: geometry,
-                spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT
+                spatialQueryMode: ol.supermap.SpatialQueryMode.INTERSECT
             });
 
             new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters, function (serviceResult) {

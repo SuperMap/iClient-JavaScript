@@ -20,7 +20,7 @@
         zoom: 12
     });
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var colorCount = 10;
     var colors = getRandomColors(colorCount);
     addGraphicLayer();
@@ -35,7 +35,7 @@
 
             //创建圆的样式
             for (var i = 0; i < colorCount; i++) {
-                circleStyles.push(L.supermap.circleStyle({
+                circleStyles.push(new L.supermap.CircleStyle({
                     color: colors[i],
                     opacity: 1,
                     radius: Math.floor(Math.random() * 3 + 1),
@@ -51,14 +51,14 @@
                 if (coordinates[0] === coordinates[1]) {
                     continue;
                 }
-                graphics[i] = L.supermap.graphic({
+                graphics[i] = new L.supermap.Graphic({
                     latLng: L.latLng(coordinates[1], coordinates[0]),
                     style: circleStyles[Math.floor(Math.random() * colorCount)].getStyle()
                 });
             }
 
             //绘制图层
-            L.supermap.graphicLayer(graphics, {
+            new L.supermap.GraphicLayer(graphics, {
                 render: "canvas",
                 onClick: function (graphic) {
                     L.popup().setLatLng(graphic.getLatLng())

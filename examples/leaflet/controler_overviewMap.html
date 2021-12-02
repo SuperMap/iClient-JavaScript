@@ -23,10 +23,10 @@
         zoomControl: false,
     });
 
-    var osm = L.supermap.tiledMapLayer(baseUrl, {minZoom: 5, maxZoom: 18,noWrap: true});
+    var osm = new L.supermap.TiledMapLayer(baseUrl, {minZoom: 5, maxZoom: 18,noWrap: true});
     map.addLayer(osm);
     map.setView(L.latLng(59.92448055859924, 10.758276373601069), 10);
-    var osm2 = L.supermap.tiledMapLayer(baseUrl, {minZoom: 0, maxZoom: 13,noWrap: true});
+    var osm2 = new L.supermap.TiledMapLayer(baseUrl, {minZoom: 0, maxZoom: 13,noWrap: true});
 
     L.control.minimap(osm2, {mapOptions:{ logoControl: false},toggleDisplay: true}).addTo(map);
 </script>

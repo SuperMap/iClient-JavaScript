@@ -63,11 +63,11 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     dataSourcesService();
 
     function dataSourcesService() {
-        L.supermap.datasourceService(url).getDatasources( function (serviceResult) {
+        new L.supermap.DatasourceService(url).getDatasources( function (serviceResult) {
             datasourcesSelect = document.getElementById("datasourcesSelect");
             const datasourceNames = serviceResult.result.datasourceNames;
             for (let i = 0, len = datasourceNames.length; i < len; i++) {
@@ -79,7 +79,7 @@
         //打印数据源信息
         function datasourcesPrint(){
             const datasourceName = datasourcesSelect.value;
-            L.supermap.datasourceService(url).getDatasource(datasourceName, function (serviceResult) {
+            new L.supermap.DatasourceService(url).getDatasource(datasourceName, function (serviceResult) {
                 let innerHTML = "(" + resources.text_datasourceInfoPrint + ")" + "<br><br>";
                 innerHTML += "coordUnit：" + JSON.stringify(serviceResult.result.datasourceInfo.coordUnit, null, 2) + "<br>";
                 innerHTML += "description:" + JSON.stringify(serviceResult.result.datasourceInfo.description, null, 2) + "<br>";

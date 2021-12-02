@@ -31,7 +31,7 @@
 
 
     //底图
-    baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
+    baseLayer = new L.supermap.TiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
 
     initEditView();
 
@@ -124,7 +124,7 @@
             resetLayers();
 
             url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图";
-            baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
+            baseLayer = new L.supermap.TiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
             //第一个隐藏右侧菜单
 
             choose = $('#menuSelect').children('option:selected').val();
@@ -457,11 +457,11 @@
         if (bool) {
             urlWorld = host + "/iserver/services/map-world/rest/maps/World";
             url = urlWorld;
-            baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
+            baseLayer = new L.supermap.TiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
         }
         else {
             url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图";
-            baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
+            baseLayer = new L.supermap.TiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
         }
     }
 
@@ -561,7 +561,7 @@
 
     //初始化生成图层
     function resetLayers() {
-        turfLayer = L.supermap.turfLayer({
+        turfLayer = new L.supermap.TurfLayer({
             attribution: " <span>© <a href='https://turfjs.org/' target='_blank'>turfjs</a></span>",
             style: function (feature) {
                 return {
@@ -575,7 +575,7 @@
         }).addTo(map);
 
 
-        resultLayer = L.supermap.turfLayer({
+        resultLayer = new L.supermap.TurfLayer({
             attribution: "",
             style: function (feature) {
 

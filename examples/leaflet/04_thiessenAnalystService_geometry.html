@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
         .addTo(map)
         .once("load", function () {
             thiessenAnalystProcess();
@@ -44,10 +44,10 @@
             [5472.712382, -2189.15344],
             [5752.716961, -2425.40363]
         ];
-        gThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
+        gThiessenAnalystParameters = new L.supermap.GeometryThiessenAnalystParameters({
             points: pointsList
         });
-        thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
         thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
             L.geoJSON(serviceResult.result.regions, {weight: 2}).addTo(map);
         })

@@ -38,13 +38,13 @@
             infowinPosition = e.layerPoint;
         });
 
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        new L.supermap.TiledMapLayer(baseUrl).addTo(map);
         initThemeLayer();
     }
 
     function initThemeLayer() {
         // 创建一个圆形符号专题图层
-        themeLayer = L.supermap.rankSymbolThemeLayer("themeLayer", SuperMap.ChartType.CIRCLE);
+        themeLayer = new L.supermap.RankSymbolThemeLayer("themeLayer", L.supermap.ChartType.CIRCLE);
 
         // 指定用于专题图制作的属性字段  详看下面 addThemeLayer（）中的feature.attrs.CON2009
         themeLayer.themeField = "CON2009";
@@ -80,7 +80,7 @@
             var provinceInfo = chinaConsumptionLevel[i];
             var geo = L.point(provinceInfo[1], provinceInfo[2]);
             var attrs = {NAME: provinceInfo[0], CON2009: provinceInfo[3]};
-            var feature = L.supermap.themeFeature(geo, attrs);
+            var feature = new L.supermap.ThemeFeature(geo, attrs);
             features.push(feature);
         }
         themeLayer.addFeatures(features);

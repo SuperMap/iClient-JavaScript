@@ -23,12 +23,12 @@
             center: [32.67, 109.06],
             zoom: 5
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        new L.supermap.TiledMapLayer(url).addTo(map);
 
         addHeatMapLayer();
 
         function addHeatMapLayer() {
-            heatMapLayer = L.supermap.heatMapLayer("heatMap", {
+            heatMapLayer = new L.supermap.HeatMapLayer("heatMap", {
                 id: "heatmap",
                 map: map,
                 radius: 10,

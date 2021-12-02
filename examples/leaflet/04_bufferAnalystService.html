@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
         bufferAnalystProcess();
     });
 
@@ -37,14 +37,14 @@
             [-3378.0037556404409, 5075.3145648369318],
             [-3376.9669111768926, 5305.19551436013]
         ]).addTo(map);
-        dsBufferAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+        dsBufferAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        dsBufferAnalystParameters = new L.supermap.DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new L.supermap.FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new L.supermap.BufferSetting({
+                endType: L.supermap.BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10

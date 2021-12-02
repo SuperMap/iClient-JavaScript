@@ -33,7 +33,7 @@
         maxZoom: 18,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(tileURL).addTo(map);
+    new L.supermap.TiledMapLayer(tileURL).addTo(map);
 
     option = {
         progressive: 20000,
@@ -65,7 +65,7 @@
         }]
     };
 
-    var echartsLayer = L.supermap.echartsLayer(option).addTo(map);
+    var echartsLayer = new L.supermap.EchartsLayer(option).addTo(map);
 
     var CHUNK_COUNT = 27;
 

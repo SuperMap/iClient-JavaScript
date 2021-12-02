@@ -54,7 +54,7 @@
         });
         map.addLayer(vectorLayer);
 
-        var param = new SuperMap.QueryByBoundsParameters({
+        var param = new ol.supermap.QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: polygon.getExtent()
         });

@@ -23,15 +23,15 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     fieldsService();
 
     function fieldsService() {
-        var param = new SuperMap.FieldParameters({
+        var param = new L.supermap.FieldParameters({
             datasource: "World",
             dataset: "continent_T"
         });
-        L.supermap.fieldService(url).getFields(param, function (serviceResult) {
+        new L.supermap.FieldService(url).getFields(param, function (serviceResult) {
             var innerHTML = serviceResult.result.fieldNames.join(', ');
             infoWin = L.popup({maxWidth: 420})
                 .setLatLng(map.getCenter())

@@ -150,7 +150,7 @@
 
     function execTransSolutionsQuery(tactic) {
         paths.points = [26, 180];
-        var params = new SuperMap.TransferSolutionParameters({
+        var params = new ol.supermap.TransferSolutionParameters({
             solutionCount: 6,        //最大换乘导引数量
             transferTactic: tactic,  //公交换乘策略类型
             walkingRatio: 10,        //步行与公交的消耗权重比
@@ -361,7 +361,7 @@
     }
 
     function execTransPathQuery(id, transLines) {
-        var params = new SuperMap.TransferPathParameters({
+        var params = new ol.supermap.TransferPathParameters({
             points: paths["points"],
             transferLines: transLines
         });

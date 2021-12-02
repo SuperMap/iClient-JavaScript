@@ -40,13 +40,13 @@
             maxZoom: 18,
             zoom: 7
         });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        new L.supermap.TiledMapLayer(baseUrl).addTo(map);
         initThemeLayer();
     }
 
     function initThemeLayer() {
         // 定义 Unique 单值专题图层
-        themeLayer = L.supermap.uniqueThemeLayer("ThemeLayer", {
+        themeLayer = new L.supermap.UniqueThemeLayer("ThemeLayer", {
             // 开启 hover 高亮效果
             isHoverAble: true,
             opacity: 0.8,
@@ -54,7 +54,7 @@
         }).addTo(map);
 
         // 图层基础样式
-        themeLayer.style = new SuperMap.ThemeStyle({
+        themeLayer.style = new L.supermap.ThemeStyle({
             shadowBlur: 3,
             shadowColor: "#000000",
             shadowOffsetX: 1,
@@ -63,7 +63,7 @@
         });
 
         // hover 高亮样式
-        themeLayer.highlightStyle = new SuperMap.ThemeStyle({
+        themeLayer.highlightStyle = new L.supermap.ThemeStyle({
             stroke: true,
             strokeWidth: 2,
             strokeColor: 'blue',
@@ -145,8 +145,8 @@
 
     //查询feature数据
     function addThemeLayer() {
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new L.supermap.GetFeaturesBySQLParameters({
+            queryParameter: new L.supermap.FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
@@ -154,8 +154,8 @@
             datasetNames: ["Jingjin:Landuse_R"]
         });
 
-        L.supermap.featureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, processComplete, SuperMap.DataFormat.ISERVER);
+        new L.supermap.FeatureService(dataUrl)
+            .getFeaturesBySQL(getFeatureBySQLParams, processComplete, L.supermap.DataFormat.ISERVER);
     }
 
     //数据预处理并添加到专题图图层
@@ -283,13 +283,13 @@
      * 多面中，一个子面包含另一个子面，则被包含子面处理为岛洞。
      *
      * Parameters:
-     * multiPolygon - {<SuperMap.Feature.Vector>} 需要进行岛洞处理的要素。
+     * multiPolygon - {<L.supermap.Feature.Vector>} 需要进行岛洞处理的要素。
      *
      * Returns:
-     * {<SuperMap.Feature.Vector>} 处理后的要素。
+     * {<L.supermap.Feature.Vector>} 处理后的要素。
      */
     function islandHoleHandlerForFeature(feature) {
-        if (feature.geometry instanceof SuperMap.Geometry.MultiPolygon && feature.geometry.components.length > 1) {
+        if (feature.geometry instanceof L.supermap.Geometry.MultiPolygon && feature.geometry.components.length > 1) {
             var newGeometry = islandHoleHandlerForMultiPolygon(feature.geometry);
             feature.geometry = newGeometry;
         }
@@ -303,13 +303,13 @@
          * 这种情况下应该做特殊处理，本函数可以对一个多面进行岛洞处理，并返回新的多面。
          *
          * Parameters:
-         * multiPolygon - {<SuperMap.Geometry.MultiPolygon>} 需要进行岛洞处理的多面。
+         * multiPolygon - {<L.supermap.Geometry.MultiPolygon>} 需要进行岛洞处理的多面。
          *
          * Returns:
-         * {<SuperMap.Geometry.MultiPolygon>} 处理后的多面。
+         * {<L.supermap.Geometry.MultiPolygon>} 处理后的多面。
          */
         function islandHoleHandlerForMultiPolygon(multiPolygon) {
-            if (!(multiPolygon instanceof SuperMap.Geometry.MultiPolygon) || multiPolygon.components.length < 2) {
+            if (!(multiPolygon instanceof L.supermap.Geometry.MultiPolygon) || multiPolygon.components.length < 2) {
                 return multiPolygon;
             }
             var mPTmp = multiPolygon.clone();
@@ -418,7 +418,7 @@
                 for (var n = 0, len6 = geoP.length; n < len6; n++) {
                     newLineRings.push(componentsPolygons[geoP[n]].components[0]);
                 }
-                var newGeoPolygon = new SuperMap.Geometry.Polygon(newLineRings);
+                var newGeoPolygon = new L.supermap.Geometry.Polygon(newLineRings);
                 newComponents.push(newGeoPolygon)
             }
 

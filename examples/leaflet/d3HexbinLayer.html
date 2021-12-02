@@ -23,11 +23,11 @@
         maxZoom: 18,
         zoom: 7
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Jingjin",
                 attributeFilter: "SMID >=  -1"
@@ -36,7 +36,7 @@
             fromIndex: 0,
             toIndex: 600
         });
-        L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
             var points = [];
             serviceResult.result.features.features.map(function (feature) {
                 var point = map.latLngToLayerPoint(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));

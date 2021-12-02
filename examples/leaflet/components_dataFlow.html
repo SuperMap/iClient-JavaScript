@@ -21,9 +21,9 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
-    L.supermap.components.dataFlow({
+    new L.supermap.Components.DataFlow({
         //pointToLayer 设置点样式：
         pointToLayer: function (geoJsonPoint, latlng) {
             return L.circleMarker(latlng, {

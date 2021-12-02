@@ -22,9 +22,9 @@
         zoom: 1
     });
 
-    vectorLayer = L.supermap.tiledVectorLayer(url, {
+    vectorLayer = new L.supermap.TileVectorLayer(url, {
         tileSize: 512,
-        format: L.supermap.VectorTileFormat.MVT,
+        format: new L.supermap.VectorTileFormat.MVT,
         cacheEnabled: true,
         returnAttributes: true,
         attribution: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"

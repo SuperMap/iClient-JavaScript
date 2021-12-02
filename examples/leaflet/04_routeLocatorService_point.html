@@ -26,15 +26,15 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     routeCalculateMeasureProcess();
 
     function routeCalculateMeasureProcess() {
         //通过SQL查询的方法建立路由,并添加到地图上
-        queryBySQLService = L.supermap.queryService(baseUrl);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryBySQLService = new L.supermap.QueryService(baseUrl);
+        queryBySQLParams = new L.supermap.QueryBySQLParameters({
             queryParams: [
-                new SuperMap.FilterParameter({
+                new L.supermap.FilterParameter({
                     name: "RouteDT_road@Changchun",
                     attributeFilter: "RouteID=1690"
                 })
@@ -53,14 +53,14 @@
                 }
                 routeLine = L.polyline(pointsList);
                 //里程定点服务
-                routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+                routeLocatorParameters_point = new L.supermap.RouteLocatorParameters({
                     "sourceRoute": routeLine,
                     "type": "POINT",
                     "measure": 200,
                     "offset": 0,
                     "isIgnoreGap": true
                 });
-                routeLocatorService = L.supermap.spatialAnalystService(serviceUrl);
+                routeLocatorService = new L.supermap.SpatialAnalystService(serviceUrl);
                 routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocatorServiceResult) {
                     if (routeLocatorServiceResult.result && routeLocatorServiceResult.result.resultGeometry) {
                         var layer = L.geoJSON(routeLocatorServiceResult.result.resultGeometry).addTo(map);

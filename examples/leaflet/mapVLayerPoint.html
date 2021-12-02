@@ -19,7 +19,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     loadData();
 
     function loadData() {
@@ -37,7 +37,7 @@
             dataSet.initGeometry();
 
             var dataAttr = "数据来源<a target='_blank' href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml'>NYC Taxi</a>,";
-            var layer = L.supermap.mapVLayer(dataSet, options, {attributionPrefix: dataAttr});
+            var layer = new L.supermap.MapVLayer(dataSet, options, {attributionPrefix: dataAttr});
 
             layer.on('loaded', function () {
                 initDatGUI(layer, options)

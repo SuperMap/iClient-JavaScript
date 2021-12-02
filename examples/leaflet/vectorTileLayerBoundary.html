@@ -100,7 +100,7 @@
         zoom: 11
     });
     var cartoCSS = document.getElementById("cartoCssStr").text;
-    layer = L.supermap.tiledVectorLayer(url, {
+    layer = new L.supermap.TileVectorLayer(url, {
         cacheEnabled: true,
         cartoCSS: cartoCSS,
         serverCartoCSSStyle: false,

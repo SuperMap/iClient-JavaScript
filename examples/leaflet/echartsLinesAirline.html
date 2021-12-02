@@ -20,7 +20,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(tileURL, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
+    new L.supermap.TiledMapLayer(tileURL, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
 
     $.get('../data/flights.json', function (data) {
 
@@ -67,7 +67,7 @@
                 blendMode: 'lighter'
             }]
         };
-        L.supermap.echartsLayer(option).addTo(map);
+        new L.supermap.EchartsLayer(option).addTo(map);
     });
 </script>
 </body>

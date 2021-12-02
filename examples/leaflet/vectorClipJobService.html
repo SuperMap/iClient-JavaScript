@@ -27,11 +27,11 @@
             info = L.control({
                 position: 'topright'
             });
-        L.supermap.tiledMapLayer(mapURL).addTo(map);
-        processingService = L.supermap.processingService(processingUrl, {
+        new L.supermap.TiledMapLayer(mapURL).addTo(map);
+        processingService = new L.supermap.ProcessingService(processingUrl, {
             withCredentials: window.isLocal
         });
-        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+        L.supermap.SecurityManager.registerToken(processingUrl, window.exampleToken);
         var drawLayer = new L.FeatureGroup();
         map.addLayer(drawLayer);
         var options = {
@@ -154,7 +154,7 @@
                     }
                 }
             }
-            var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
+            var vectorClipJobsParameter = new L.supermap.VectorClipJobsParameter({
                 datasetName: $('#datasetName').val(),
                 datasetVectorClip: clipParam,
                 geometryClip: points,
@@ -169,12 +169,12 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        L.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                            layer = new L.supermap.TiledMapLayer(mapUrl, {
                                 noWrap: true,
                                 transparent: true
                             });

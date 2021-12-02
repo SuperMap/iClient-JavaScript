@@ -94,7 +94,7 @@
                 });
                 map.addLayer(layer);
 
-                SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+                ol.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
 
                 //添加dataflow
                 var source = new ol.source.DataFlow({
@@ -121,7 +121,7 @@
                 //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
                 query();
                 function query() {
-                    var param = new SuperMap.QueryBySQLParameters({
+                    var param = new ol.supermap.QueryBySQLParameters({
                         queryParams: {
                             name: "Main_Road_L@China#1",
                             attributeFilter: "SMID = 1755"

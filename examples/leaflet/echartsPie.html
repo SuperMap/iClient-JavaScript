@@ -21,7 +21,7 @@
         maxZoom: 18,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var commodity = [
         resources.text_commodity + "A",
         resources.text_commodity + "B",
@@ -142,7 +142,7 @@
 
     function query() {
         clearLayer();
-        var param = new SuperMap.QueryBySQLParameters({
+        var param = new L.supermap.QueryBySQLParameters({
             queryParams: [{
                 name: "China_ProCenCity_pt@China",
                 attributeFilter: "NAME = '广州市' or NAME = '上海市'"
@@ -152,8 +152,8 @@
             }]
         });
 
-        L.supermap
-                .queryService(url2)
+        new L.supermap
+                .QueryService(url2)
                 .queryBySQL(param, function (serviceResult) {
                     serviceResult.result.recordsets.map(function (record) {
                         resultLayer = L.geoJSON(record.features, {

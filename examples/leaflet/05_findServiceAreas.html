@@ -25,13 +25,13 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     findServiceAreas();
 
     function findServiceAreas() {
         //添加中心点
         marker = L.marker([-3375, 5605]).addTo(map);
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new L.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -41,16 +41,16 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new L.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        parameter = new SuperMap.FindServiceAreasParameters({
+        parameter = new L.supermap.FindServiceAreasParameters({
             centers: [marker.getLatLng()],
             isAnalyzeById: false,
             parameter: analystParameter
         });
-        service = L.supermap.networkAnalystService(serviceUrl);
+        service = new L.supermap.NetworkAnalystService(serviceUrl);
         resultLayer = L.featureGroup().addTo(map);
         parameter.weights = [400 + Math.random() * 100];
         service.findServiceAreas(parameter, function (serviceResult) {

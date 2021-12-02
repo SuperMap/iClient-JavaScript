@@ -136,7 +136,7 @@
 
         info.setMap(map);
         map.addControl(info);
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function getQuery() {
             if ($('#query').val() === "") {
@@ -157,7 +157,7 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
+            var summaryMeshJobParameter = new ol.supermap.SummaryMeshJobParameter({
                 datasetName: $('#datasetName').val(),
                 resolution: $('#resolution').val(),
                 meshType: $('#meshType option:selected').attr('value'),
@@ -176,7 +176,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

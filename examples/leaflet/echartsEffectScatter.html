@@ -20,7 +20,7 @@
         maxZoom: 18,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var data = [
         {name: '海门', value: 9},
         {name: '鄂尔多斯', value: 12},
@@ -496,7 +496,7 @@
             }
         ]
     };
-    L.supermap.echartsLayer(option).addTo(map);
+    new L.supermap.EchartsLayer(option).addTo(map);
 </script>
 </body>
 </html>

@@ -90,7 +90,7 @@
         info.setMap(map);
         map.addControl(info);
 
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         $('#btn').on('click', function () {
             if ($('#msg_container')[0]) {
@@ -101,7 +101,7 @@
                 map.removeControl(control);
                 $("#infoControl").html("");
             }
-            var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
+            var summaryAttributesJobsParameter = new ol.supermap.SummaryAttributesJobsParameter({
                 datasetName: $('#datasetName').val(),
                 groupField: $('#groupField').val(),
                 attributeField: $('#attributeField').val(),
@@ -117,7 +117,7 @@
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTDATA') {
                         var dataUrl = info.serviceAddress + '/data';
-                        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                        var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
                             queryParameter: {
                                 name: "analystResult@UntitledDatasource",
                                 attributeFilter: "SMID > 0"

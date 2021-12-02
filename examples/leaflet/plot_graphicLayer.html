@@ -34,7 +34,7 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     L.supermap.plotting.editControl().addTo(map);
     var graphicLayer = L.supermap.plotting.graphicLayer();
     graphicLayer.addTo(map);

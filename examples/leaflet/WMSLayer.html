@@ -18,7 +18,7 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.tileLayer.wms(host + "/iserver/services/map-china400/wms111/China", {
+    new L.TileLayer.WMS(host + "/iserver/services/map-china400/wms111/China", {
         layers: 'China',
         format: 'image/png',
         transparent: true,

@@ -21,11 +21,11 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     mapService();
 
     function mapService() {
-        L.supermap.mapService(url).getMapInfo(function (serviceResult) {
+        new L.supermap.MapService(url).getMapInfo(function (serviceResult) {
             var result = serviceResult.result;
             var innerHTML = "("+resources.text_mapInfoPrint+")" + "<br><br>";
             innerHTML += resources.text_mapName+"：" + JSON.stringify(result.name, null, 2) + "<br>";

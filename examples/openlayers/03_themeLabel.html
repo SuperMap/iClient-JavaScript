@@ -37,69 +37,69 @@
 
     function createTheme() {
         var style1, style2, style3;
-        style1 = new SuperMap.ServerTextStyle({
+        style1 = new ol.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(100, 20, 50),
+            foreColor: new ol.supermap.ServerColor(100, 20, 50),
             sizeFixed: true,
             bold: true
 
         });
-        style2 = new SuperMap.ServerTextStyle({
+        style2 = new ol.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(250, 0, 0),
+            foreColor: new ol.supermap.ServerColor(250, 0, 0),
             sizeFixed: true,
             bold: true
         });
-        style3 = new SuperMap.ServerTextStyle({
+        style3 = new ol.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(93, 95, 255),
+            foreColor: new ol.supermap.ServerColor(93, 95, 255),
             sizeFixed: true,
             bold: true
         });
         var themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4, themeLabelItem5, themeLabelItem6;
-        themeLabelItem1 = new SuperMap.ThemeLabelItem({
+        themeLabelItem1 = new ol.supermap.ThemeLabelItem({
             start: 0.0,
             end: 7800000,
             style: style1
         });
-        themeLabelItem2 = new SuperMap.ThemeLabelItem({
+        themeLabelItem2 = new ol.supermap.ThemeLabelItem({
             start: 7800000,
             end: 15000000,
             style: style2
         });
-        themeLabelItem3 = new SuperMap.ThemeLabelItem({
+        themeLabelItem3 = new ol.supermap.ThemeLabelItem({
             start: 15000000,
             end: 30000000,
             style: style3
         });
-        themeLabelItem4 = new SuperMap.ThemeLabelItem({
+        themeLabelItem4 = new ol.supermap.ThemeLabelItem({
             start: 0.0,
             end: 55,
             style: style1
         });
-        themeLabelItem5 = new SuperMap.ThemeLabelItem({
+        themeLabelItem5 = new ol.supermap.ThemeLabelItem({
             start: 55,
             end: 109,
             style: style2
         });
-        themeLabelItem6 = new SuperMap.ThemeLabelItem({
+        themeLabelItem6 = new ol.supermap.ThemeLabelItem({
             start: 109,
             end: 300,
             style: style3
         });
 
-        var themeLabel = new SuperMap.ThemeLabel({
+        var themeLabel = new ol.supermap.ThemeLabel({
             matrixCells: [
-                [new SuperMap.LabelThemeCell({
-                    themeLabel: new SuperMap.ThemeLabel({
+                [new ol.supermap.LabelThemeCell({
+                    themeLabel: new ol.supermap.ThemeLabel({
                         labelExpression: "CAPITAL",
                         rangeExpression: "SmID",
                         numericPrecision: 0,
                         items: [themeLabelItem4, themeLabelItem5, themeLabelItem6]
                     })
                 })],
-                [new SuperMap.LabelThemeCell({
-                    themeLabel: new SuperMap.ThemeLabel({
+                [new ol.supermap.LabelThemeCell({
+                    themeLabel: new ol.supermap.ThemeLabel({
                         labelExpression: "CAP_POP",
                         rangeExpression: "CAP_POP",
                         numericPrecision: 0,
@@ -107,16 +107,16 @@
                     })
                 })]
             ],
-            background: new SuperMap.ThemeLabelBackground({
-                backStyle: new SuperMap.ServerStyle({
-                    fillForeColor: new SuperMap.ServerColor(179, 209, 193),
+            background: new ol.supermap.ThemeLabelBackground({
+                backStyle: new ol.supermap.ServerStyle({
+                    fillForeColor: new ol.supermap.ServerColor(179, 209, 193),
                     fillOpaqueRate: 60,
                     lineWidth: 0.1
                 }),
                 labelBackShape: "RECT"
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["Capitals"],
             dataSourceNames: ["World"]

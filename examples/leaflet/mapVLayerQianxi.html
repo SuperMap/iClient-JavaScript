@@ -20,7 +20,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     $.get('../data/china.json', function (geojson) {
 
@@ -178,7 +178,7 @@
             }
         });
         geojsonDataSet = new mapv.DataSet(data);
-        L.supermap.mapVLayer(geojsonDataSet, geojsonOptions).addTo(map);
+        new L.supermap.MapVLayer(geojsonDataSet, geojsonOptions).addTo(map);
 
         var textDataSet = new mapv.DataSet(textData);
 
@@ -191,7 +191,7 @@
             zIndex: 11,
             shadowBlur: 10
         };
-        L.supermap.mapVLayer(textDataSet, textOptions).addTo(map);
+        new L.supermap.MapVLayer(textDataSet, textOptions).addTo(map);
 
         var lineDataSet = new mapv.DataSet(lineData);
 
@@ -203,7 +203,7 @@
             zIndex: 100,
             draw: 'simple'
         };
-        L.supermap.mapVLayer(lineDataSet, lineOptions).addTo(map);
+        new L.supermap.MapVLayer(lineDataSet, lineOptions).addTo(map);
 
         var pointOptions = {
             fillStyle: 'rgba(254,175,3,0.7)',
@@ -216,7 +216,7 @@
 
 
         var pointDataSet = new mapv.DataSet(pointData);
-        L.supermap.mapVLayer(pointDataSet, pointOptions).addTo(map);
+        new L.supermap.MapVLayer(pointDataSet, pointOptions).addTo(map);
 
         var timeDataSet = new mapv.DataSet(timeData);
         
@@ -236,7 +236,7 @@
             draw: 'simple'
         };
 
-        L.supermap.mapVLayer(timeDataSet, timeOptions).addTo(map);
+        new L.supermap.MapVLayer(timeDataSet, timeOptions).addTo(map);
 
     });
 

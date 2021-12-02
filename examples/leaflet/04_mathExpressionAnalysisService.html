@@ -23,15 +23,15 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load ", function () {
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load ", function () {
         mathExpressionAnalysisProcess();
     });
 
     function mathExpressionAnalysisProcess() {
         //创建栅格代数运算服务实例
-        mathExpressionAnalysisService = L.supermap.spatialAnalystService(serviceUrl);
+        mathExpressionAnalysisService = new L.supermap.SpatialAnalystService(serviceUrl);
         //创建栅格代数运算参数实例
-        mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+        mathExpressionAnalysisParameters = new L.supermap.MathExpressionAnalysisParameters({
             //指定数据集,必设
             dataset: "JingjinTerrain@Jingjin",
             //要执行的栅格运算代数表达式,必设
@@ -58,35 +58,35 @@
     }
 
     function showAnalysisResult_ThemeGridRange() {
-        themeService = L.supermap.themeService(baseUrl);
-        var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
+        themeService = new L.supermap.ThemeService(baseUrl);
+        var themeGridRangeIteme1 = new L.supermap.ThemeGridRangeItem({
                 start: 0,
                 end: 650,
-                color: new SuperMap.ServerColor(40, 140, 40)
+                color: new L.supermap.ServerColor(40, 140, 40)
             }),
-            themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme2 = new L.supermap.ThemeGridRangeItem({
                 start: 650,
                 end: 750,
-                color: new SuperMap.ServerColor(170, 198, 40)
+                color: new L.supermap.ServerColor(170, 198, 40)
             }),
-            themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme3 = new L.supermap.ThemeGridRangeItem({
                 start: 750,
                 end: 900,
-                color: new SuperMap.ServerColor(191, 191, 0)
+                color: new L.supermap.ServerColor(191, 191, 0)
             }),
-            themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme4 = new L.supermap.ThemeGridRangeItem({
                 start: 900,
                 end: 1350,
-                color: new SuperMap.ServerColor(191, 95, 0)
+                color: new L.supermap.ServerColor(191, 95, 0)
             }),
-            themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme5 = new L.supermap.ThemeGridRangeItem({
                 start: 1350,
                 end: 3600,
-                color: new SuperMap.ServerColor(127, 0, 0)
+                color: new L.supermap.ServerColor(127, 0, 0)
             });
-        themeGridRange = new SuperMap.ThemeGridRange({
+        themeGridRange = new L.supermap.ThemeGridRange({
             reverseColor: false,
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: L.supermap.RangeMode.EQUALINTERVAL,
             //栅格分段专题图子项数组
             items: [themeGridRangeIteme1,
                 themeGridRangeIteme2,
@@ -95,7 +95,7 @@
                 themeGridRangeIteme5
             ]
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             //制作专题图的数据集
             datasetNames: [mathExpressionAnalysisResult.dataset.split('@')[0]],
             dataSourceNames: ["Jingjin"],
@@ -105,7 +105,7 @@
         themeService.getThemeInfo(themeParameters, function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                themeLayer = new L.supermap.TiledMapLayer(baseUrl, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

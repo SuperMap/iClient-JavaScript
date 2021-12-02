@@ -27,7 +27,7 @@
         maxZoom: 18,
         zoom: 11
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     loadHeatMap();
 
     function loadHeatMap() {

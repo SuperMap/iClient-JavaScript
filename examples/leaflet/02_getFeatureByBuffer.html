@@ -23,20 +23,20 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]], {color: 'red'});
         var popup = L.popup().setContent(resources.text_bufferDistance+' = 10');
         polygon.addTo(map).bindPopup(popup).openPopup();
-        var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
+        var bufferParam = new L.supermap.GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 10,
             geometry: polygon
         });
-        L.supermap
-            .featureService(url)
+        new L.supermap
+            .FeatureService(url)
             .getFeaturesByBuffer(bufferParam, function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {

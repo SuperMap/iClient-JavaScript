@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
         surfaceAnalystProcess();
     });
 
@@ -36,12 +36,12 @@
             [3150322, 1063524],
             [3150322, 0]
         ]);
-        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
-            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+        surfaceAnalystParameters = new L.supermap.DatasetSurfaceAnalystParameters({
+            extractParameter: new L.supermap.SurfaceAnalystParametersSetting({
                 datumValue: 0,
                 interval: 2,
                 resampleTolerance: 0,
-                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothMethod: L.supermap.SmoothMethod.BSPLINE,
                 smoothness: 3,
                 clipRegion: region
             }),
@@ -49,7 +49,7 @@
             resolution: 9000,
             zValueFieldName: "AVG_TMP"
         });
-        surfaceAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        surfaceAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
         surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.recordset && result.recordset.features) {

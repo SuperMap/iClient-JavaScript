@@ -18,14 +18,14 @@
         zoom: 0,
         crs: L.CRS.TianDiTu_WGS84
       });
-      L.supermap
-        .tiandituTileLayer({
+      new L.supermap
+        .TiandituTileLayer({
           layerType: 'ter',
           key: '1d109683f4d84198e37a38c442d68311'
         })
         .addTo(map);
-      L.supermap
-        .tiandituTileLayer({
+      new L.supermap
+        .TiandituTileLayer({
           layerType: 'ter',
           isLabel: true,
           key: '1d109683f4d84198e37a38c442d68311'

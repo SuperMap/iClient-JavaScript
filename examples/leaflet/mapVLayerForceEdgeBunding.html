@@ -20,7 +20,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     loadData();
 
     //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
@@ -96,7 +96,7 @@
             lineWidth: 1.0,
             draw: 'simple'
         };
-        L.supermap.mapVLayer(dataSet1, options1).addTo(map);
+        new L.supermap.MapVLayer(dataSet1, options1).addTo(map);
 
         //创建MapV图层
         var dataSet2 = new mapv.DataSet(timeData);
@@ -116,7 +116,7 @@
             draw: 'simple'
         };
 
-        L.supermap.mapVLayer(dataSet2, options2).addTo(map);
+        new L.supermap.MapVLayer(dataSet2, options2).addTo(map);
         setTimeout(function () {
             map.openPopup(resources.text_iClient, map.getCenter());
         }, 1000)

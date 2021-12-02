@@ -21,7 +21,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + '/iserver/services/map-china400/rest/maps/China';
 
-    var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
+    var baseLayers = new L.supermap.TiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
 
     initEditView();
@@ -94,8 +94,8 @@
         }
     }
 
-    var openFileViewModel = L.supermap.components.openFileViewModel(map);
-    var messageBox = new SuperMap.Components.MessageBox();
+    var openFileViewModel = new L.supermap.Components.OpenFileViewModel(map);
+    var messageBox = new L.supermap.Components.MessageBox();
     ReactDOM.render(
             <AddData openFileViewModel={openFileViewModel} messageBox={messageBox} text={resources.text_openFile}/>,
         document.getElementById('addDataContainer')

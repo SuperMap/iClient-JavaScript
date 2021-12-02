@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
         .addTo(map)
         .once("load", function () {
             findMTSPPathsProcess();
@@ -53,9 +53,9 @@
         marker5.bindPopup(resources.text_destination2);
 
         //创建多旅行商分析服务实例
-        findMTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
+        findMTSPPathsService = new L.supermap.NetworkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
-        resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        resultSetting = new L.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -65,11 +65,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        analystParameter = new SuperMap.TransportationAnalystParameter({
+        analystParameter = new L.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
+        findMTSPPathsParameter = new L.supermap.FindMTSPPathsParameters({
             centers: [L.latLng(-5500, 6000), L.latLng(-2500, 5500), L.latLng(-3500, 2500)],
             isAnalyzeById: false,
             nodes: [L.latLng(-5000, 5000), L.latLng(-2800, 8000)],

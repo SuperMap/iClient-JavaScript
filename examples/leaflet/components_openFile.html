@@ -22,9 +22,9 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + '/iserver/services/map-china400/rest/maps/China';
 
-    var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
+    var baseLayers = new L.supermap.TiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
-    var openFileComponents = L.supermap.components.openFile().addTo(map);
+    var openFileComponents = new L.supermap.Components.OpenFile().addTo(map);
     //将成功返回的数据加载到地图
     openFileComponents.on("openfilesucceeded", function (e) {
         var layer = L.geoJSON(e.result).addTo(map);

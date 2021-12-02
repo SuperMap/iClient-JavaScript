@@ -20,7 +20,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     loadData();
 
     //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
@@ -55,7 +55,7 @@
             };
 
             var dataAttr = resources.text_dataSources + "<a target='_blank' href='https://mapv.baidu.com/examples/geojson-guangdong.html'>MapV</a>";
-            L.supermap.mapVLayer(dataSet1, options, {attributionPrefix: dataAttr, attribution: ""}).addTo(map);
+            new L.supermap.MapVLayer(dataSet1, options, {attributionPrefix: dataAttr, attribution: ""}).addTo(map);
 
             var data2 = [];
             for (var key in citys) {
@@ -80,7 +80,7 @@
                 zIndex: 11,
                 shadowBlur: 10
             };
-            L.supermap.mapVLayer(dataSet2, textOptions).addTo(map);
+            new L.supermap.MapVLayer(dataSet2, textOptions).addTo(map);
             setTimeout(function () {
                 map.openPopup(resources.text_iClient, map.getCenter());
             }, 1000)

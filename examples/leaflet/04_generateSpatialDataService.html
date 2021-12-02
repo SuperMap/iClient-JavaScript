@@ -26,14 +26,14 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load ", function () {
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load ", function () {
         generateSpatialDataAnalystProcess();
     });
 
     function generateSpatialDataAnalystProcess() {
-        generateSpatialDataService = L.supermap.spatialAnalystService(serviceUrl);
+        generateSpatialDataService = new L.supermap.SpatialAnalystService(serviceUrl);
         //配置动态分段Parameters
-        generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        generateSpatialDataParameters = new L.supermap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -43,11 +43,11 @@
             measureEndField: "LineMeasureTo",
             measureOffsetField: "",
             errorInfoField: "",
-            dataReturnOption: new SuperMap.DataReturnOption({
+            dataReturnOption: new L.supermap.DataReturnOption({
                 expectCount: 1000,
                 dataset: "GenerateSpatialData_Result@Changchun",
                 deleteExistResultDataset: true,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+                dataReturnMode: L.supermap.DataReturnMode.DATASET_ONLY
             })
         });
         generateSpatialDataService.generateSpatialData(generateSpatialDataParameters, function () {
@@ -58,47 +58,47 @@
 
     function showAnalysisResult_ThemeGridUnique() {
         //创建专题图服务实例
-        themeService = L.supermap.themeService(baseUrl);
+        themeService = new L.supermap.ThemeService(baseUrl);
         //配置专题样式
         var style1, style2, style3;
-        style1 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(242, 48, 48),
-            lineColor: new SuperMap.ServerColor(242, 48, 48),
+        style1 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(242, 48, 48),
+            lineColor: new L.supermap.ServerColor(242, 48, 48),
             lineWidth: 1
         });
-        style2 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(255, 159, 25),
-            lineColor: new SuperMap.ServerColor(255, 159, 25),
+        style2 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(255, 159, 25),
+            lineColor: new L.supermap.ServerColor(255, 159, 25),
             lineWidth: 1
         });
-        style3 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(91, 195, 69),
-            lineColor: new SuperMap.ServerColor(91, 195, 69),
+        style3 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(91, 195, 69),
+            lineColor: new L.supermap.ServerColor(91, 195, 69),
             lineWidth: 1
         });
         //配置专题项
         var themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3;
-        themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({
+        themeUniqueIteme1 = new L.supermap.ThemeUniqueItem({
             unique: "拥挤",
             style: style1
         });
-        themeUniqueIteme2 = new SuperMap.ThemeUniqueItem({
+        themeUniqueIteme2 = new L.supermap.ThemeUniqueItem({
             unique: "缓行",
             style: style2
         });
-        themeUniqueIteme3 = new SuperMap.ThemeUniqueItem({
+        themeUniqueIteme3 = new L.supermap.ThemeUniqueItem({
             unique: "畅通",
             style: style3
         });
-        var themeUnique = new SuperMap.ThemeUnique({
+        var themeUnique = new L.supermap.ThemeUnique({
             uniqueExpression: "TrafficStatus",
-            defaultStyle: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(48, 89, 14),
-                lineColor: new SuperMap.ServerColor(48, 89, 14)
+            defaultStyle: new L.supermap.ServerStyle({
+                fillForeColor: new L.supermap.ServerColor(48, 89, 14),
+                lineColor: new L.supermap.ServerColor(48, 89, 14)
             }),
             items: [themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3]
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             themes: [themeUnique],
             datasetNames: ["GenerateSpatialData_Result"],
             dataSourceNames: ["Changchun"]
@@ -106,7 +106,7 @@
         themeService.getThemeInfo(themeParameters, function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                themeLayer = new L.supermap.TiledMapLayer(baseUrl, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

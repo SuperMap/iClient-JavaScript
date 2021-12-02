@@ -41,7 +41,7 @@
                 minZoom: 11,
                 maxZoom: 14
             });
-            L.supermap.tiledMapLayer(url).addTo(map);
+            new L.supermap.TiledMapLayer(url).addTo(map);
             $.get(
                 host +
                     '/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',

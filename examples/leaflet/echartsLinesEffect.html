@@ -20,7 +20,7 @@
         maxZoom: 18,
         zoom: 9
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     $.get('../data/lines-bus.json', function (data) {
         var hStep = 300 / (data.length - 1);
@@ -85,7 +85,7 @@
                     zlevel: 1
                 }]
         };
-        L.supermap.echartsLayer(option).addTo(map);
+        new L.supermap.EchartsLayer(option).addTo(map);
     });
 </script>
 </body>

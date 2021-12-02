@@ -27,16 +27,16 @@
             maxZoom: 18,
             zoom: 12
         });
-        L.supermap.tiledMapLayer(urlMap).addTo(map);
+        new L.supermap.TiledMapLayer(urlMap).addTo(map);
 
-        SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+        L.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
 
         var popup = L.popup({
             offset: L.point(0, 0),
             autoPan: true
         });
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
+        var dataFlowLayer = new L.supermap.DataFlowLayer(urlDataFlow, {
             style: function (feature) {
                 return {
                     fillColor: "red",
@@ -65,17 +65,17 @@
         var timer, featureResult, dataFlowBroadcast;
 
         function query() {
-            var param = new SuperMap.QueryBySQLParameters({
+            var param = new L.supermap.QueryBySQLParameters({
                 queryParams: {
                     name: "Main_Road_L@China#1",
                     attributeFilter: "SMID = 1755"
                 }
             });
-            L.supermap
-                .queryService(urlQuery)
+            new L.supermap
+                .QueryService(urlQuery)
                 .queryBySQL(param, function (serviceResult) {
                     featureResult = serviceResult;
-                    dataFlowBroadcast = L.supermap.dataFlowService(urlDataFlow).initBroadcast();
+                    dataFlowBroadcast = new L.supermap.DataFlowService(urlDataFlow).initBroadcast();
                     dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
                         timer = window.setInterval("broadcast()", 2000);
                     })

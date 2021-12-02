@@ -23,19 +23,19 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: "SMID = 234"
             },
             datasetNames: ["World:Countries"]
         });
-        L.supermap
-            .featureService(url)
+        new L.supermap
+            .FeatureService(url)
             .getFeaturesBySQL(sqlParam, function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features).addTo(map).bindPopup('SMID = 234');
             });

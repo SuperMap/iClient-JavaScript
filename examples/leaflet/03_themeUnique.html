@@ -20,161 +20,161 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
+    new L.supermap.TiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
     createTheme();
 
     function createTheme() {
-        themeService = L.supermap.themeService(url);
+        themeService = new L.supermap.ThemeService(url);
         var style1, style2, style3, style4, style5, style6;
-        style1 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(248, 203, 249),
-            lineColor: new SuperMap.ServerColor(255, 255, 255),
+        style1 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(248, 203, 249),
+            lineColor: new L.supermap.ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style2 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(196, 255, 189),
-            lineColor: new SuperMap.ServerColor(255, 255, 255),
+        style2 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(196, 255, 189),
+            lineColor: new L.supermap.ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style3 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(255, 173, 173),
-            lineColor: new SuperMap.ServerColor(255, 255, 255),
+        style3 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(255, 173, 173),
+            lineColor: new L.supermap.ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style4 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(255, 239, 168),
-            lineColor: new SuperMap.ServerColor(255, 255, 255),
+        style4 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(255, 239, 168),
+            lineColor: new L.supermap.ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style5 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(173, 209, 255),
-            lineColor: new SuperMap.ServerColor(255, 255, 255),
+        style5 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(173, 209, 255),
+            lineColor: new L.supermap.ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style6 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(132, 164, 232),
-            lineColor: new SuperMap.ServerColor(255, 255, 255),
+        style6 = new L.supermap.ServerStyle({
+            fillForeColor: new L.supermap.ServerColor(132, 164, 232),
+            lineColor: new L.supermap.ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
 
-        var themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({
+        var themeUniqueIteme1 = new L.supermap.ThemeUniqueItem({
                 unique: "黑龙江省",
                 style: style1
             }),
-            themeUniqueIteme2 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme2 = new L.supermap.ThemeUniqueItem({
                 unique: "湖北省",
                 style: style2
             }),
-            themeUniqueIteme3 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme3 = new L.supermap.ThemeUniqueItem({
                 unique: "吉林省",
                 style: style3
             }),
-            themeUniqueIteme4 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme4 = new L.supermap.ThemeUniqueItem({
                 unique: "内蒙古自治区",
                 style: style4
             }),
-            themeUniqueIteme5 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme5 = new L.supermap.ThemeUniqueItem({
                 unique: "青海省",
                 style: style5
             }),
-            themeUniqueIteme6 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme6 = new L.supermap.ThemeUniqueItem({
                 unique: "新疆维吾尔自治区",
                 style: style6
             }),
-            themeUniqueIteme7 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme7 = new L.supermap.ThemeUniqueItem({
                 unique: "云南省",
                 style: style1
             }),
-            themeUniqueIteme8 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme8 = new L.supermap.ThemeUniqueItem({
                 unique: "四川省",
                 style: style4
             }),
-            themeUniqueIteme9 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme9 = new L.supermap.ThemeUniqueItem({
                 unique: "贵州省",
                 style: style3
             }),
-            themeUniqueIteme10 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme10 = new L.supermap.ThemeUniqueItem({
                 unique: "甘肃省",
                 style: style3
             }),
-            themeUniqueIteme11 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme11 = new L.supermap.ThemeUniqueItem({
                 unique: "宁夏回族自治区",
                 style: style5
             }),
-            themeUniqueIteme12 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme12 = new L.supermap.ThemeUniqueItem({
                 unique: "重庆市",
                 style: style6
             }),
-            themeUniqueIteme13 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme13 = new L.supermap.ThemeUniqueItem({
                 unique: "山东省",
                 style: style1
             }),
-            themeUniqueIteme14 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme14 = new L.supermap.ThemeUniqueItem({
                 unique: "安徽省",
                 style: style2
             }),
-            themeUniqueIteme15 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme15 = new L.supermap.ThemeUniqueItem({
                 unique: "江西省",
                 style: style3
             }),
-            themeUniqueIteme16 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme16 = new L.supermap.ThemeUniqueItem({
                 unique: "浙江省",
                 style: style4
             }),
-            themeUniqueIteme17 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme17 = new L.supermap.ThemeUniqueItem({
                 unique: "台湾省",
                 style: style2
             }),
-            themeUniqueIteme18 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme18 = new L.supermap.ThemeUniqueItem({
                 unique: "江苏省",
                 style: style6
             }),
-            themeUniqueIteme19 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme19 = new L.supermap.ThemeUniqueItem({
                 unique: "湖南省",
                 style: style5
             }),
-            themeUniqueIteme20 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme20 = new L.supermap.ThemeUniqueItem({
                 unique: "河南省",
                 style: style4
             }),
-            themeUniqueIteme21 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme21 = new L.supermap.ThemeUniqueItem({
                 unique: "河北省",
                 style: style3
             }),
-            themeUniqueIteme22 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme22 = new L.supermap.ThemeUniqueItem({
                 unique: "福建省",
                 style: style5
             }),
-            themeUniqueIteme23 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme23 = new L.supermap.ThemeUniqueItem({
                 unique: "广西壮族自治区",
                 style: style6
             }),
-            themeUniqueIteme24 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme24 = new L.supermap.ThemeUniqueItem({
                 unique: "西藏自治区",
                 style: style2
             }),
-            themeUniqueIteme25 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme25 = new L.supermap.ThemeUniqueItem({
                 unique: "广东省",
                 style: style4
             }),
-            themeUniqueIteme26 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme26 = new L.supermap.ThemeUniqueItem({
                 unique: "山西省",
                 style: style2
             }),
-            themeUniqueIteme27 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme27 = new L.supermap.ThemeUniqueItem({
                 unique: "陕西省",
                 style: style1
             }),
-            themeUniqueIteme28 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme28 = new L.supermap.ThemeUniqueItem({
                 unique: "天津市",
                 style: style5
             }),
-            themeUniqueIteme29 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme29 = new L.supermap.ThemeUniqueItem({
                 unique: "北京市",
                 style: style2
             }),
 
-            themeUniqueIteme30 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme30 = new L.supermap.ThemeUniqueItem({
                 unique: "辽宁省",
                 style: style1
             });
@@ -188,12 +188,12 @@
             themeUniqueIteme26, themeUniqueIteme27, themeUniqueIteme28, themeUniqueIteme29, themeUniqueIteme30
         ];
 
-        themeUnique = new SuperMap.ThemeUnique({
+        themeUnique = new L.supermap.ThemeUnique({
             uniqueExpression: "Name",
             items: themeUniqueItemes,
             defaultStyle: style1
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             themes: [themeUnique]
@@ -201,7 +201,7 @@
         themeService.getThemeInfo(themeParameters, function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(url, {
+                themeLayer = new L.supermap.TiledMapLayer(url, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

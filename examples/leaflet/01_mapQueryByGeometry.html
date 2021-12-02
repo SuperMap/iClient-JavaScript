@@ -22,18 +22,18 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     query();
 
     function query() {
         var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]], {color: 'red'});
         polygon.addTo(map);
-        var param = new SuperMap.QueryByGeometryParameters({
+        var param = new L.supermap.QueryByGeometryParameters({
             queryParams: {name: "Capitals@World.1"},
             geometry: polygon
         });
-        L.supermap
-            .queryService(url)
+        new L.supermap
+            .QueryService(url)
             .queryByGeometry(param, function (serviceResult) {
                 var result = serviceResult.result;
                 resultLayer = L.geoJSON(result.recordsets[0].features).addTo(map);

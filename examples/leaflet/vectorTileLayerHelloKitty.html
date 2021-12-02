@@ -119,7 +119,7 @@
         zoom: 11
     });
     var cartoCSS = document.getElementById("cartoCssStr").text;
-    layer = L.supermap.tiledVectorLayer(url, {
+    layer = new L.supermap.TileVectorLayer(url, {
         cacheEnabled: true,
         cartoCSS: cartoCSS,
         attribution: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",

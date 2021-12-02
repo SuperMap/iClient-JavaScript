@@ -164,7 +164,7 @@
 
         initForm();
         bindClick();
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function initForm() {
             var info = new ol.control.Control({
@@ -203,7 +203,7 @@
                     clipParam = "";
                 }
             }
-            var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
+            var vectorClipJobsParameter = new ol.supermap.VectorClipJobsParameter({
                 datasetName: $('#datasetName').val(),
                 datasetVectorClip: clipParam,
                 geometryClip: points,
@@ -218,7 +218,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

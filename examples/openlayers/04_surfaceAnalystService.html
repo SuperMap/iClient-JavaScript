@@ -51,12 +51,12 @@
             [1063524, 3150322],
             [0, 3150322]
         ]]);
-        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
-            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+        surfaceAnalystParameters = new ol.supermap.DatasetSurfaceAnalystParameters({
+            extractParameter: new ol.supermap.SurfaceAnalystParametersSetting({
                 datumValue: 0,
                 interval: 2,
                 resampleTolerance: 0,
-                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothMethod: ol.supermap.SmoothMethod.BSPLINE,
                 smoothness: 3,
                 clipRegion: region
             }),

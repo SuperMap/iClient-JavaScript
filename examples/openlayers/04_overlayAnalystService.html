@@ -38,11 +38,11 @@
     });
 
     function overlayAnalystProcess() {
-        var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
+        var datasetOverlayAnalystParameters = new ol.supermap.DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
             tolerance: 0,
-            operation: SuperMap.OverlayOperationType.UNION
+            operation: ol.supermap.OverlayOperationType.UNION
         });
         new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
             var resultLayer = new ol.layer.Vector({

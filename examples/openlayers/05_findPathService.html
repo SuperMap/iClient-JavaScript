@@ -74,7 +74,7 @@
         map.addOverlay(stopMarker3);
 
         //创建最佳路径分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new ol.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -84,11 +84,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new ol.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findPathParameter = new SuperMap.FindPathParameters({
+        var findPathParameter = new ol.supermap.FindPathParameters({
             isAnalyzeById: false,
             nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
             hasLeastEdgeCount: false,

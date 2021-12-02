@@ -34,7 +34,7 @@
         prefix: prefix
     }).addAttribution(attribution).addTo(map);
 
-    L.supermap.tiledMapLayer(baseUrl,{attribution:false}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl,{attribution:false}).addTo(map);
 
 </script>
 </body>

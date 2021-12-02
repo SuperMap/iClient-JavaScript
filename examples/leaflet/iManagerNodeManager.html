@@ -227,7 +227,7 @@
         }
         var userName = $('#username_iManager').val();
         var password = $('#password_iManager').val();
-        SuperMap.SecurityManager.loginManager(loginUrl, {userName: userName, password: password});
+        L.supermap.SecurityManager.loginManager(loginUrl, {userName: userName, password: password});
     }
 
     /*登录 end*/
@@ -235,7 +235,7 @@
     /*获取iServer List*/
     function iServerList() {
         var url = getIManagerURL();
-        var iManager = new SuperMap.iManager(url)
+        var iManager = new L.supermap.iManager(url)
             .iServerList()
             .then(function (response) {
                 console.log(JSON.stringify(response));
@@ -262,7 +262,7 @@
             return;
         }
         var ids = [id];
-        var iManager = new SuperMap.iManager(url)
+        var iManager = new L.supermap.iManager(url)
             .startNodes(ids)
             .then(function (response) {
                 console.log(JSON.stringify(response));
@@ -280,7 +280,7 @@
             return;
         }
         var ids = [id];
-        var iManager = new SuperMap.iManager(url)
+        var iManager = new L.supermap.iManager(url)
             .stopNodes(ids)
             .then(function (response) {
                 console.log(JSON.stringify(response));
@@ -302,7 +302,7 @@
             return;
         }
         var param = {nodeName: nodeName, physicalMachineName: physicalMachineName};
-        var iManager = new SuperMap.iManager(url)
+        var iManager = new L.supermap.iManager(url)
             .createIServer(param)
             .then(function (response) {
                 console.log(JSON.stringify(response));

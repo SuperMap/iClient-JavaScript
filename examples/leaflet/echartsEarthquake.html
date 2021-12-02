@@ -21,7 +21,7 @@
         zoom: 4
     });
     var heatMapLayer;
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     addFeature();
 
     function addFeature() {
@@ -236,7 +236,7 @@
                     ]
                 })
             }
-            heatMapLayer = L.supermap.echartsLayer(option).addTo(map);
+            heatMapLayer = new L.supermap.EchartsLayer(option).addTo(map);
         });
     }
 </script>

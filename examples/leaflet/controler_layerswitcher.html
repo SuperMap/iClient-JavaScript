@@ -22,8 +22,8 @@
     var BJ = L.marker([39.830660058696104, 116.92866163503169]).bindPopup(resources.text_beijingCity),
         CD = L.marker([30.40, 104.04]).bindPopup(resources.text_chengdu);
     var cities = L.layerGroup([BJ, CD]);
-    var China = L.supermap.tiledMapLayer(host + '/iserver/services/map-china400/rest/maps/China', {noWrap: true});
-    var ChinaDark = L.supermap.tiledMapLayer(host + '/iserver/services/map-china400/rest/maps/ChinaDark', {noWrap: true});
+    var China = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china400/rest/maps/China', {noWrap: true});
+    var ChinaDark = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china400/rest/maps/ChinaDark', {noWrap: true});
     var map = L.map('map', {
         center: {lon: 0, lat: 0},
         maxZoom: 18,

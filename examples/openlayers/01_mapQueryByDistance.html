@@ -53,7 +53,7 @@
             source: pointSource
         });
         map.addLayer(vectorLayer);
-        var param = new SuperMap.QueryByDistanceParameters({
+        var param = new ol.supermap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
             distance: 10,
             geometry: point

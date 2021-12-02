@@ -26,12 +26,12 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     densityAnalystProcess();
 
     function densityAnalystProcess() {
         //创建点密度插值分析参数实例
-        densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+        densityAnalystParameters = new L.supermap.DensityKernelAnalystParameters({
             //指定数据集
             dataset: "Railway@Changchun",
             //指定范围
@@ -44,7 +44,7 @@
             deleteExistResultDataset: true
         });
         //创建一个核密度分析服务实例
-        densityAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        densityAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
         densityAnalystService.densityAnalysis(densityAnalystParameters, function (densityServiceResult) {
             densityAnalystResult = densityServiceResult.result;
             if (densityAnalystResult && densityAnalystResult.dataset) {
@@ -59,40 +59,40 @@
     //构造栅格专题图
     function showAnalysisResult_ThemeGridRange() {
         //创建专题图服务实例
-        themeService = L.supermap.themeService(baseUrl);
-        var color1 = new SuperMap.ServerColor(255, 212, 170),
-            color2 = new SuperMap.ServerColor(255, 127, 0),
-            color3 = new SuperMap.ServerColor(191, 95, 0),
-            color4 = new SuperMap.ServerColor(255, 0, 0),
-            color5 = new SuperMap.ServerColor(191, 0, 0);
-        var themeGridRangeItem1 = new SuperMap.ThemeGridRangeItem({
+        themeService = new L.supermap.ThemeService(baseUrl);
+        var color1 = new L.supermap.ServerColor(255, 212, 170),
+            color2 = new L.supermap.ServerColor(255, 127, 0),
+            color3 = new L.supermap.ServerColor(191, 95, 0),
+            color4 = new L.supermap.ServerColor(255, 0, 0),
+            color5 = new L.supermap.ServerColor(191, 0, 0);
+        var themeGridRangeItem1 = new L.supermap.ThemeGridRangeItem({
                 start: 0,
                 end: 0.05,
                 color: color1
             }),
-            themeGridRangeItem2 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem2 = new L.supermap.ThemeGridRangeItem({
                 start: 0.05,
                 end: 5,
                 color: color2
             }),
-            themeGridRangeItem3 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem3 = new L.supermap.ThemeGridRangeItem({
                 start: 5,
                 end: 10,
                 color: color3
             }),
-            themeGridRangeItem4 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem4 = new L.supermap.ThemeGridRangeItem({
                 start: 10,
                 end: 100,
                 color: color4
             }),
-            themeGridRangeItem5 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem5 = new L.supermap.ThemeGridRangeItem({
                 start: 100,
                 end: 360,
                 color: color5
             });
-        themeGridRange = new SuperMap.ThemeGridRange({
+        themeGridRange = new L.supermap.ThemeGridRange({
             reverseColor: false,
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: L.supermap.RangeMode.EQUALINTERVAL,
             //栅格分段专题图子项数组
             items: [themeGridRangeItem1,
                 themeGridRangeItem2,
@@ -102,7 +102,7 @@
             ]
         });
 
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             //制作专题图的数据集
             datasetNames: [densityAnalystResult.dataset.split('@')[0]],
             dataSourceNames: ["Changchun"],
@@ -113,7 +113,7 @@
         themeService.getThemeInfo(themeParameters, function (getThemeInfoServiceResult) {
             var result = getThemeInfoServiceResult.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                themeLayer = new L.supermap.TiledMapLayer(baseUrl, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

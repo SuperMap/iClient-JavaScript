@@ -84,7 +84,7 @@
             function addMask() {
                 if (!sichuanFeature) {
                     widgets.loader.showLoader(resources.text_add_sicahun_plygon);
-                    var param = new SuperMap.QueryBySQLParameters({
+                    var param = new ol.supermap.QueryBySQLParameters({
                         queryParams: {
                             name: 'China_Province_pl@China',
                             attributeFilter: 'SMID =14'

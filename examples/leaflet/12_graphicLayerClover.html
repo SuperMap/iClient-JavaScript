@@ -24,7 +24,7 @@
 
 
     var url = host + "/iserver/services/map-world/rest/maps/World";
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     addGraphicLayer();
 
@@ -41,7 +41,7 @@
         //创建三叶草样式
         for (var i = 0; i < radius.length; i++) {
             for (var j = 0; j < styles.length; j++) {
-                clovers.push(L.supermap.cloverStyle({
+                clovers.push(new L.supermap.CloverStyle({
                     radius: radius[i],
                     angle: styles[j].angle,
                     count: styles[j].count,
@@ -56,7 +56,7 @@
         //设置每个点的经纬度和传入三叶草样式
         for (var i = 0; i < count; ++i) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-            graphics[i] = L.supermap.graphic({
+            graphics[i] = new L.supermap.Graphic({
                 latLng: L.latLng(coordinates[0], coordinates[1]),
                 style: clovers[Math.floor(Math.random() * randCount)].getStyle()
             });
@@ -68,7 +68,7 @@
         }
 
         //将三叶草要素风格画在地图上
-        L.supermap.graphicLayer(graphics, {render: "canvas"}).addTo(map);
+        new L.supermap.GraphicLayer(graphics, {render: "canvas"}).addTo(map);
     }
 </script>
 </body>

@@ -95,7 +95,7 @@
         </div>
     </div>
 <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
     var iPortalUrl = "https://iportal.supermap.io/iportal";
@@ -119,13 +119,13 @@
     
     //获取token
     function generatePortalToken() {
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new ol.supermap.ServerInfo(ol.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        ol.supermap.SecurityManager.registerServers([serverInfo]);
+        ol.supermap.SecurityManager.destroyToken(iPortalUrl);
+        ol.supermap.SecurityManager.registerToken(iPortalUrl, token);
     }
     
     //选中数据类型函数
@@ -262,7 +262,7 @@
             "tags": tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
             "type": dataType
         }
-        var queryParams = new SuperMap.iPortalAddDataParam({
+        var queryParams = new ol.supermap.iPortalAddDataParam({
             fileName: params.fileName,
             type: params.type,
             tags: params.tags
@@ -276,8 +276,8 @@
             if(dataType === 'CSV') {
                 newDataMetaParams.fileEncoding = $("#file-encoding").val();
             }
-            var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam(newDataMetaParams)
-            queryParams = new SuperMap.iPortalAddDataParam({
+            var dataMetaParams = new ol.supermap.iPortalDataMetaInfoParam(newDataMetaParams)
+            queryParams = new ol.supermap.iPortalAddDataParam({
                 fileName: params.fileName,
                 type: params.type,
                 tags: params.tags,
@@ -286,7 +286,7 @@
         }
         const formData = new FormData();
         formData.append('newfile', file);
-        new SuperMap.iPortalUser(iPortalUrl).addData(queryParams,formData).then(res=>{
+        new ol.supermap.iPortalUser(iPortalUrl).addData(queryParams,formData).then(res=>{
             if(res.childID) {
                 widgets.alert.showAlert(resources.msg_upload_success, true);
             }else {
@@ -301,7 +301,7 @@
             file:file
         }
         //解析excel csv
-        SuperMap.Components.FileReaderUtil.readFile(dataType,files,success,failed,context)
+        ol.supermap.Components.FileReaderUtil.readFile(dataType,files,success,failed,context)
     }
     
     //Excel CSV数据处理成功的回调
@@ -311,7 +311,7 @@
         $("#xFleid").empty();
         $("#yFleid").empty();
         //把excel csv数据解析为geojson的数据
-        var result = SuperMap.Components.FileReaderUtil.processExcelDataToGeoJson(res);
+        var result = ol.supermap.Components.FileReaderUtil.processExcelDataToGeoJson(res);
         //excel csv表头数据
         var title = Object.keys(result[0].properties);
         //把表格数据为数字的项 做为xField yField的值
