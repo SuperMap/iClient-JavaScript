@@ -5,7 +5,8 @@ import '../core/Base';
 import L from "leaflet";
 import Attributions from '../core/Attributions'
 /**
- * @class L.supermap.baiduTileLayer
+ * @class BaiduTileLayer
+ * @deprecatedclassinstance L.supermap.baiduTileLayer
  * @classdesc 百度地图图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
@@ -17,11 +18,12 @@ import Attributions from '../core/Attributions'
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
+ * @usage
  */
 export var BaiduTileLayer = L.TileLayer.extend({
 
     /**
-     * @member {string} L.supermap.baiduTileLayer.prototype.url 
+     * @member {string} BaiduTileLayer.prototype.url 
      * @description 切片地址。
      */
     url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
@@ -46,7 +48,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.baiduTileLayer.prototype.getTileUrl
+     * @function BaiduTileLayer.prototype.getTileUrl
      * @description 获取切片地址。
      * @param {Object} coords - 行列号。
      * @returns {string} 切片地址。

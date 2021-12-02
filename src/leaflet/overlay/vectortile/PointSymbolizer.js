@@ -5,7 +5,7 @@ import {Symbolizer} from './Symbolizer';
 import L from "leaflet";
 
 /**
- * @class L.supermap.PointSymbolizer
+ * @class PointSymbolizer
  * @classdesc 点符号类。
  * @category Visualization VectorTile
  * @private
@@ -16,7 +16,7 @@ import L from "leaflet";
 export var PointSymbolizer = L.CircleMarker.extend({
 
     /**
-     * @member L.supermap.PointSymbolizer.prototype.includes
+     * @member PointSymbolizer.prototype.includes
      * @description 包含符号。
      */
     includes: Symbolizer.prototype,
@@ -34,7 +34,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
 
 
     /**
-     * @function L.supermap.PointSymbolizer.prototype.render
+     * @function PointSymbolizer.prototype.render
      * @description 绘制点符号。
      * @param {Object} renderer -  渲染器。
      * @param {string} style - 符号样式。
@@ -58,7 +58,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
     },
 
     /**
-     * @function L.supermap.PointSymbolizer.prototype.makeInteractive
+     * @function PointSymbolizer.prototype.makeInteractive
      * @description 设置交互。
      */
     makeInteractive: function () {
@@ -66,7 +66,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
     },
 
     /**
-     * @function L.supermap.PointSymbolizer.prototype.updateStyle
+     * @function PointSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。

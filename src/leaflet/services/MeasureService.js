@@ -9,13 +9,14 @@ import { MeasureService as CommonMeasureService } from '@supermap/iclient-common
 import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParameters';
 
 /**
- * @class L.supermap.measureService
+ * @class MeasureService
+ * @deprecatedclassinstance L.supermap.measureService
  * @classdesc 量算服务类。
  * @category  iServer Map Measure
- * @augments {L.supermap.ServiceBase}
+ * @augments {ServiceBase}
  * @example
  * 用法：
- * L.supermap.measureService(url).measureDistance({
+ * new MeasureService(url).measureDistance({
  *     geometry:xxx
  * },function(result){
  *     //doSomething
@@ -26,7 +27,8 @@ import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParam
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export var MeasureService = ServiceBase.extend({
 
@@ -35,9 +37,9 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.measureService.prototype.measureDistance
+     * @function MeasureService.prototype.measureDistance
      * @description 测距。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 测量相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measureDistance: function (params, callback) {
@@ -46,9 +48,9 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.measureService.prototype.measureArea
+     * @function MeasureService.prototype.measureArea
      * @description 测面积。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 测量相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measureArea: function (params, callback) {
@@ -57,9 +59,9 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.measureService.measure
-     * @param {SuperMap.MeasureMode} [type=SuperMap.MeasureMode.DISTANCE] - 量算模式。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @function MeasureService.measure
+     * @param {MeasureMode} [type=MeasureMode.DISTANCE] - 量算模式。
+     * @param {MeasureParameters} params - 测量相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measure: function (type, params, callback) {

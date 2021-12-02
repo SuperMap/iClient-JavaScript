@@ -6,8 +6,22 @@
  import { getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
  
 /**
- * @namespace L.Util
+ * @name Util
+ * @namespace
  * @category BaseTypes Util
+ * @description 工具类。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const util = {namespace}.Util;
+ *
+ * </script>
+ * // ES6 Import
+ * import { Util } from '{npm}';
+ *
+ * ```
  */
 export var toGeoJSON = function(feature) {
     if (!feature) {
@@ -78,7 +92,7 @@ export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
             coordUnit.toLowerCase() === 'degrees' ||
             coordUnit.toLowerCase() === 'dd'
         ) {
-            //scale = SuperMap.Util.normalizeScale(scale);
+            //scale = CommonUtil.normalizeScale(scale);
             resolution = (0.0254 * ratio) / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
             return resolution;
         } else {

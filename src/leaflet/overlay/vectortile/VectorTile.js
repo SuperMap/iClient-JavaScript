@@ -12,7 +12,7 @@ import {VectorTileJSON} from './VectorTileJSON';
 import {VectorTileFormat} from '../VectorTileFormat';
 
 /**
- * @class L.supermap.VectorTile
+ * @class VectorTile
  * @classdesc 矢量瓦片图层基类。
  * @category Visualization VectorTile
  * @private
@@ -38,7 +38,7 @@ export var VectorTile = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.VectorTile.prototype.renderTile
+     * @function VectorTile.prototype.renderTile
      * @description 渲染切片。
      */
     renderTile: function () {
@@ -60,7 +60,7 @@ export var VectorTile = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.VectorTile.prototype.render
+     * @function VectorTile.prototype.render
      * @description 渲染切片要素。
      * @param {Object} tileFeature - 要渲染的切片要素。
      * @param {Object} coords - 切片坐标参数对象。

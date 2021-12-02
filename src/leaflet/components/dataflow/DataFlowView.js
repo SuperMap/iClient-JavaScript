@@ -8,7 +8,9 @@
  import { Lang } from '@supermap/iclient-common/lang/Lang';
 
 /**
- * @class L.supermap.components.dataFlow
+ * @class DataFlowView
+ * @aliasclass Components.DataFlowView
+ * @deprecatedclassinstance L.supermap.components.dataFlow
  * @classdesc 数据流组件。
  * @version 9.1.1
  * @category Components DataFlow
@@ -24,8 +26,9 @@
                                                     };
                                             }`
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.dataFlow#dataupdated
- * @extends {L.supermap.components.componentsViewBase}
+ * @fires DataFlowView#dataupdated
+ * @extends {ComponentsViewBase}
+ * @usage
  */
 export var DataFlowView = ComponentsViewBase.extend({
     initialize(options) {
@@ -33,7 +36,7 @@ export var DataFlowView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlow.prototype.onAdd
+     * @function DataFlowView.prototype.onAdd
      * @description 向底图添加组件
      * @override
      * @private
@@ -52,7 +55,7 @@ export var DataFlowView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlow.prototype._initView
+     * @function DataFlowView.prototype._initView
      * @description 创建打开本地文件数据组件
      * @returns {HTMLElement}
      * @private
@@ -162,7 +165,7 @@ export var DataFlowView = ComponentsViewBase.extend({
         });
 
         /**
-         * @event L.supermap.components.dataFlow#dataupdated
+         * @event DataFlowView#dataupdated
          * @description 数据流服务成功返回数据后触发。
          * @property {Object} result  - 事件返回的数据对象。
          */

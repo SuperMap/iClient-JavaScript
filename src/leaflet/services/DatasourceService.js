@@ -7,16 +7,18 @@
  import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
  import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
- * @class  L.supermap.datasourceService
+ * @class  DatasourceService
+ * @deprecatedclassinstance L.supermap.datasourceService
  * @classdesc 数据源服务类。
  * @category iServer Data Datasource
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 数据源服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var DatasourceService = ServiceBase.extend({
 
@@ -25,10 +27,10 @@ export var DatasourceService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.datasourceService.prototype.getDatasources
+     * @function DatasourceService.prototype.getDatasources
      * @description 数据源集查询服务。
      * @example
-     *   L.supermap.datasourceService(url).getDatasources(function(result){
+     *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
      * @param {RequestCallback} callback - 回调函数。
@@ -50,10 +52,10 @@ export var DatasourceService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.datasourceService.prototype.getDatasource
+     * @function DatasourceService.prototype.getDatasource
      * @description 数据源信息查询服务。
      * @example
-     *   L.supermap.datasourceService(url).getDatasource(datasourceName,function(result){
+     *   new DatasourceService(url).getDatasource(datasourceName,function(result){
      *     //doSomething
      *   });
      * @param datasourceName - 数据源名称。
@@ -79,13 +81,13 @@ export var DatasourceService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.datasourceService.prototype.setDatasource
+     * @function DatasourceService.prototype.setDatasource
      * @description 数据源信息设置服务。可实现更改当前数据源信息。
      * @example
-     *   L.supermap.datasourceService(url).setDatasource(params, function(result){
+     *   new DatasourceService(url).setDatasource(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.SetDatasourceParameters} params - 数据源信息设置参数类。
+     * @param {SetDatasourceParameters} params - 数据源信息设置参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setDatasource: function(params, callback) {

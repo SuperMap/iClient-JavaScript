@@ -10,12 +10,13 @@
  import { ServiceBase } from './ServiceBase';
  import { CommontypesConversion } from '../core/CommontypesConversion';
 /**
- * @class L.supermap.chartService
+ * @class ChartService
+ * @deprecatedclassinstance L.supermap.chartService
  * @classdesc 海图服务。
  * @category  iServer Map Chart
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      L.supermap.chartService(url)
+ *      new ChartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
@@ -25,6 +26,7 @@
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var ChartService = ServiceBase.extend({
 
@@ -33,11 +35,11 @@ export var ChartService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.chartService.prototype.queryChart
+     * @function ChartService.prototype.queryChart
      * @description 查询海图。
-     * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。
+     * @param {ChartQueryParameters} params - 海图查询所需参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果格式类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果格式类型。
      */
     queryChart: function (params, callback, resultFormat) {
         var me = this,
@@ -60,7 +62,7 @@ export var ChartService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.chartService.prototype.getChartFeatureInfo
+     * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息。
      * @param {RequestCallback} callback 回调函数。
      */

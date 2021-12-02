@@ -5,7 +5,9 @@
 import '../../core/Base';
 
 /**
- * @class L.supermap.components.clientComputationLayer
+ * @class ClientComputationLayer
+ * @aliasclass Components.ClientComputationLayer
+ * @deprecatedclassinstance L.supermap.components.clientComputationLayer
  * @classdesc 客户端计算图层对象。
  * @version 9.1.1
  * @param {Object} layerObject -  图层对象。
@@ -13,6 +15,7 @@ import '../../core/Base';
  * @param {L.GeoJSON} layerObject.layer -  图层。
  * @param {Array.<string>} [layerObject.fields] - 字段数组。
  * @category Components ClientComputation
+ * @usage
  */
 export class ClientComputationLayer{
     constructor(layerObject){

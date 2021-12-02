@@ -6,13 +6,15 @@
  import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 /**
- * @class L.supermap.components.DistributedAnalysisModel
+ * @class DistributedAnalysisModel
+ * @aliasclass Components.DistributedAnalysisModel
+ * @deprecatedclassinstance L.supermap.components.DistributedAnalysisModel
  * @classdesc 分布式分析组件数据模型。
  * @private
  * @category Components DistributedAnalysis
  * @param {string} processingUrl - 分布式分析地址。
- * @fires L.supermap.components.DistributedAnalysisModel#datasetsloaded
- * @fires L.supermap.components.DistributedAnalysisModel#datasetinfoloaded
+ * @fires DistributedAnalysisModel#datasetsloaded
+ * @fires DistributedAnalysisModel#datasetinfoloaded
  * @extends {L.Evented}
  */
 export class DistributedAnalysisModel extends L.Evented {
@@ -21,7 +23,7 @@ export class DistributedAnalysisModel extends L.Evented {
         this.processingUrl = processingUrl
     }
     /**
-     * @function L.supermap.components.DistributedAnalysisModel.prototype.getDatasetsName
+     * @function DistributedAnalysisModel.prototype.getDatasetsName
      * @description 获取所有可进行分布式分析的数据集。
      * @param {string} url - 分布式分析服务地址。
      */
@@ -52,7 +54,7 @@ export class DistributedAnalysisModel extends L.Evented {
                     datasetHash[_me.dataset.datasetNames[i]] = _me.dataset.childUrl[i]
                 }
                 /**
-                 * @event L.supermap.components.DistributedAnalysisModel#datasetsloaded
+                 * @event DistributedAnalysisModel#datasetsloaded
                  * @description 数据集获取完成之后触发。
                  * @property {Object} result - 数据集数据。
                  * @property {Array.<string>} result.dataset - 数据集名称数组。
@@ -64,7 +66,7 @@ export class DistributedAnalysisModel extends L.Evented {
         });
     }
     /**
-     * @function L.supermap.components.DistributedAnalysisModel.prototype.getDatasetInfo
+     * @function DistributedAnalysisModel.prototype.getDatasetInfo
      * @description 获得数据集类型与 fields。
      * @param {string} datasetUrl - 数据集资源地址。
      */
@@ -89,7 +91,7 @@ export class DistributedAnalysisModel extends L.Evented {
                     fields.push(fieldInfos[i].name)
                 }
                 /**
-                 * @event L.supermap.components.DistributedAnalysisModel#datasetinfoloaded
+                 * @event DistributedAnalysisModel#datasetinfoloaded
                  * @description 数据集查询完成之后触发。
                  * @property {Object} result - 数据集数据。
                  * @property {string} result.type - 数据集类型。

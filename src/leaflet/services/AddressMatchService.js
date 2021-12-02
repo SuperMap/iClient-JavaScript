@@ -6,13 +6,14 @@ import '../core/Base';
 import { AddressMatchService as CommonMatchAddressService } from '@supermap/iclient-common/iServer/AddressMatchService';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
- * @class L.supermap.addressMatchService
- * @constructs L.supermap.addressMatchService
+ * @class AddressMatchService
+ * @deprecatedclassinstance L.supermap.addressMatchService
+ * @constructs AddressMatchService
  * @classdesc 地址匹配服务。
  * @category  iServer AddressMatch
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @example
- *      L.supermap.addressMatchService(url,options)
+ *      new AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
@@ -22,6 +23,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var AddressMatchService = ServiceBase.extend({
 
@@ -30,9 +32,9 @@ export var AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.addressMatchService.prototype.code
+     * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
+     * @param {GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback - 请求结果的回调函数。
      */
     code: function (params, callback) {
@@ -52,9 +54,9 @@ export var AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.addressMatchService.prototype.decode
+     * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
+     * @param {GeoDecodingParameter} params - 反向匹配参数。
      * @param {RequestCallback} callback - 请求结果的回调函数。
      */
     decode: function (params, callback) {

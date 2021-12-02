@@ -7,7 +7,8 @@ import echarts from "echarts";
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.echartsLayer
+ * @class EchartsLayer
+ * @deprecatedclassinstance L.supermap.echartsLayer
  * @classdesc 百度 ECharts 图层类。
  * @category  Visualization ECharts
  * @extends {L.Layer}
@@ -15,6 +16,7 @@ import Attributions from '../core/Attributions'
  * @param {Object} options - 可选图层参数。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权信息。
+ * @usage
  */
 export const EchartsLayer = L.Layer.extend({
 
@@ -34,7 +36,7 @@ export const EchartsLayer = L.Layer.extend({
         this.setOption(echartsOptions);
     },
     /**
-     * @function L.supermap.echartsLayer.prototype.setOption
+     * @function EchartsLayer.prototype.setOption
      * @description 设置图表地图参数。
      * @param {Object} echartsOptions - 图表参数。
      * @param {string} lazyUpdate - 后台自动更新。
@@ -61,7 +63,7 @@ export const EchartsLayer = L.Layer.extend({
 
     /**
      * @private
-     * @function L.supermap.echartsLayer.prototype.onAdd
+     * @function EchartsLayer.prototype.onAdd
      * @description 添加地图。
      * @param {L.Map} map - 待添加的地图。
      */
@@ -225,7 +227,7 @@ export const EchartsLayer = L.Layer.extend({
 });
 
 /**
- * @class L.supermap.LeafletMapCoordSys
+ * @class LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类。
  * @param {L.Map} leafletMap - 地图。

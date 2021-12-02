@@ -5,13 +5,16 @@ import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.components.GeoJsonLayersDataModel
+ * @class GeoJsonLayersDataModel
+ * @aliasclass Components.GeoJsonLayersDataModel
+ * @deprecatedclassinstance L.supermap.components.GeoJsonLayersDataModel
  * @description 多图层数据模型 todo 看看如何完善
  * @category Components Common
  * @private
  * @param {Array.<Object>} layers - 图层数组。
- * @param {L.supermap.components.geoJSONLayerWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。
- * @fires L.supermap.components.GeoJsonLayersDataModel#newlayeradded
+ * @param {GeoJSONLayerWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。
+ * @fires GeoJsonLayersDataModel#newlayeradded
+ * @usage
  */
 export class GeoJsonLayersDataModel {
     constructor(layers) {
@@ -37,7 +40,7 @@ export class GeoJsonLayersDataModel {
     }
 
     /**
-     * @function L.supermap.components.GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
+     * @function GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
      * @description 设置当前选中的图层。
      * @param {string} layerName - 选中的图层名。
      */
@@ -50,10 +53,11 @@ export class GeoJsonLayersDataModel {
 
 
 /**
- * @class L.supermap.components.GeoJsonLayerDataModel
+ * @class GeoJsonLayerDataModel
  * @classdesc 图层数据模型，用于图层要素数据及属性管理等。
  * @param {L.GeoJSON} layer - GeoJSON 图层。
  * 注：leaflet没有 feature 的概念
+ * @usage
  */
 export class GeoJsonLayerDataModel {
 

@@ -7,10 +7,11 @@ import {ServiceBase} from './ServiceBase';
 import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/DataFlowService';
 
 /**
- * @class L.supermap.dataFlowService
+ * @class DataFlowService
+ * @deprecatedclassinstance L.supermap.dataFlowService
  * @classdesc 数据流服务类。
  * @category  iServer DataFlow
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {Function} [options.style] - 设置数据加载样式。
@@ -19,13 +20,14 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/Data
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @fires L.supermap.dataFlowService#broadcastSocketConnected
- * @fires L.supermap.dataFlowService#broadcastSocketError
- * @fires L.supermap.dataFlowService#broadcastFailed
- * @fires L.supermap.dataFlowService#broadcastSucceeded
- * @fires L.supermap.dataFlowService#subscribeSocketError
- * @fires L.supermap.dataFlowService#messageSucceeded
- * @fires L.supermap.dataFlowService#setFilterParamSucceeded
+ * @fires DataFlowService#broadcastSocketConnected
+ * @fires DataFlowService#broadcastSocketError
+ * @fires DataFlowService#broadcastFailed
+ * @fires DataFlowService#broadcastSucceeded
+ * @fires DataFlowService#subscribeSocketError
+ * @fires DataFlowService#messageSucceeded
+ * @fires DataFlowService#setFilterParamSucceeded
+ * @usage
  */
 export var DataFlowService = ServiceBase.extend({
 
@@ -44,35 +46,35 @@ export var DataFlowService = ServiceBase.extend({
         ServiceBase.prototype.initialize.call(this, url, options);
         this.dataFlow = new DataFlow(url, options);
         /**
-         * @event L.supermap.dataFlowService#broadcastSocketConnected
+         * @event DataFlowService#broadcastSocketConnected
          * @description broadcast Socket 连接成功。
          */
         /**
-         * @event L.supermap.dataFlowService#broadcastSocketError
+         * @event DataFlowService#broadcastSocketError
          * @description broadcast Socket 连接失败。
          */
         /**
-         * @event L.supermap.dataFlowService#broadcastFailed
+         * @event DataFlowService#broadcastFailed
          * @description 广播失败。
          */
         /**
-         * @event L.supermap.dataFlowService#broadcastSucceeded
+         * @event DataFlowService#broadcastSucceeded
          * @description 广播成功。
          */
         /**
-         * @event L.supermap.dataFlowService#subscribeSocketConnected
+         * @event DataFlowService#subscribeSocketConnected
          * @description 订阅数据连接成功。
          */
         /**
-         * @event L.supermap.dataFlowService#subscribeSocketError
+         * @event DataFlowService#subscribeSocketError
          * @description 订阅数据连接失败。
          */
         /**
-         * @event L.supermap.dataFlowService#messageSucceeded
+         * @event DataFlowService#messageSucceeded
          * @description 获取信息成功。
          */
         /**
-         * @event L.supermap.dataFlowService#setFilterParamSucceeded
+         * @event DataFlowService#setFilterParamSucceeded
          * @description 设置过滤参数成功。
          */
         this.dataFlow.events.on({
@@ -89,7 +91,7 @@ export var DataFlowService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.dataFlowService.prototype.initBroadcast
+     * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
      */
     initBroadcast: function () {
@@ -98,7 +100,7 @@ export var DataFlowService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.dataFlowService.prototype.broadcast
+     * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
      * @param {JSONObject} obj - JSON 格式的要素数据。
      */
@@ -107,7 +109,7 @@ export var DataFlowService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.dataFlowService.prototype.initSubscribe
+     * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据。
      */
     initSubscribe: function () {
@@ -117,7 +119,7 @@ export var DataFlowService = ServiceBase.extend({
 
 
     /**
-     * @function L.supermap.dataFlowService.prototype.setExcludeField
+     * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段。
      * @param {Object} excludeField - 排除字段。
      */
@@ -128,7 +130,7 @@ export var DataFlowService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.dataFlowService.prototype.setGeometry
+     * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的 GeoJSON 几何要素数据。
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
@@ -139,7 +141,7 @@ export var DataFlowService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.dataFlowService.prototype.unSubscribe
+     * @function DataFlowService.prototype.unSubscribe
      * @description 结束订阅数据。
      */
     unSubscribe: function () {
@@ -147,7 +149,7 @@ export var DataFlowService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.dataFlowService.prototype.unBroadcast
+     * @function DataFlowService.prototype.unBroadcast
      * @description 结束加载广播。
      */
     unBroadcast: function () {

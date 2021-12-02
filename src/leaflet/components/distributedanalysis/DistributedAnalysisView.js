@@ -12,7 +12,9 @@
  import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
  import { Lang } from '@supermap/iclient-common/lang/Lang';
 /**
- * @class L.supermap.components.distributedAnalysis
+ * @class DistributedAnalysisView
+ * @aliasclass Components.DistributedAnalysisView
+ * @deprecatedclassinstance L.supermap.components.distributedAnalysis
  * @classdesc 分布式分析组件。
  * @version 9.1.1
  * @param {string} processingUrl - 分布式分析服务地址。
@@ -20,11 +22,12 @@
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.distributedAnalysis#analysissucceeded
- * @fires L.supermap.components.distributedAnalysis#analysisfailed
- * @fires L.supermap.components.distributedAnalysis#layersremoved
- * @extends {L.supermap.components.componentsViewBase}
+ * @fires DistributedAnalysisView#analysissucceeded
+ * @fires DistributedAnalysisView#analysisfailed
+ * @fires DistributedAnalysisView#layersremoved
+ * @extends {ComponentsViewBase}
  * @category Components DistributedAnalysis
+ * @usage
  */
 export var DistributedAnalysisView = ComponentsViewBase.extend({
 
@@ -34,7 +37,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         this.viewModel = new DistributedAnalysisViewModel(processingUrl);
     },
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype.onAdd
+     * @function DistributedAnalysisView.prototype.onAdd
      * @description 添加控件。
      * @private
      * @override
@@ -45,7 +48,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._fillDataToView
+     * @function DistributedAnalysisView.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
@@ -63,7 +66,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._initView
+     * @function DistributedAnalysisView.prototype._initView
      * @description 创建分布式分析组件。
      * @returns {HTMLElement}
      * @private
@@ -336,7 +339,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
                     /**
-                     * @event L.supermap.components.distributedAnalysis#analysissucceeded
+                     * @event DistributedAnalysisView#analysissucceeded
                      * @description 分析完成后触发。
                      * @property {L.GeoJSON} layer - 结果图层。
                      * @property {string} name - 结果图层名称。
@@ -349,7 +352,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
                     /**
-                     * @event L.supermap.components.distributedAnalysis#analysisfailed
+                     * @event DistributedAnalysisView#analysisfailed
                      * @description 分析失败后触发。
                      * @property {string} error - 服务器返回的错误。
                      */
@@ -363,7 +366,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
             /**
-             * @event L.supermap.components.distributedAnalysis#layersremoved
+             * @event DistributedAnalysisView#layersremoved
              * @description 结果图层删除后触发。
              * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
              */
@@ -430,7 +433,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._createOptions
+     * @function DistributedAnalysisView.prototype._createOptions
      * @description 创建下拉框 options。
      * @private
      */
@@ -446,7 +449,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._creatInputBox
+     * @function DistributedAnalysisView.prototype._creatInputBox
      * @description 创建含有 span 的 input 框。
      * @private
      */
@@ -461,7 +464,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._creatUnitSelectBox
+     * @function DistributedAnalysisView.prototype._creatUnitSelectBox
      * @description 创建含有 span 的 input 框。
      * @private
      */
@@ -481,7 +484,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._setEleAtribute
+     * @function DistributedAnalysisView.prototype._setEleAtribute
      * @description 设置元素的属性名和属性值。
      * @private
      */

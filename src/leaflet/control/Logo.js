@@ -8,13 +8,15 @@ import {
 } from '@supermap/iclient-common/control/img/Logo';
 
 /**
- * @class L.supermap.control.logo
+ * @class Logo
+ * @aliasclass control.Logo
+ * @deprecatedclassinstance L.supermap.control.logo
  * @classdesc Logo 控件。
  * @category  Control
  * @description map 初始化的配置项为 logoControl，如果为 true，则显示控件；否则不显示该控件。目前默认显示。
  * @extends {L.Control}
  * @example
- *  L.supermap.control.Logo({
+ *  new Logo({
  *      imageUrl: xxx,//非必填项
  *  }).addTo(map);
  * @param {Object} options - logo 控件配置项。
@@ -24,6 +26,7 @@ import {
  * @param {string} [options.height] - logo 图片高。
  * @param {string} [options.link] - 跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
+ * @usage
  */
 export var Logo = L.Control.extend({
 
@@ -43,7 +46,7 @@ export var Logo = L.Control.extend({
 
     /**
      * @private
-     * @function L.supermap.control.logo.prototype.onAdd
+     * @function Logo.prototype.onAdd
      * @override
      * @description 添加一个 logo。
      * @returns {HTMLElement} 返回创建 logo 的 div。

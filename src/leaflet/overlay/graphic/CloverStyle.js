@@ -5,7 +5,8 @@ import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.cloverStyle
+ * @class CloverStyle
+ * @deprecatedclassinstance L.supermap.cloverStyle
  * @classdesc 三叶草要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
@@ -25,6 +26,7 @@ import '../../core/Base';
  * @param {number} [options.fillOpacity=0.2] - 填充透明度。
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
  * @param {number} [options.radius=10] - 半径。
+ * @usage
  */
 export var CloverStyle = L.Class.extend({
 
@@ -62,7 +64,7 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.cloverStyle.prototype.getStyle
+     * @function CloverStyle.prototype.getStyle
      * @description 获取画布。
      */
     getStyle: function () {
@@ -70,7 +72,7 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.cloverStyle.prototype.drawSector
+     * @function CloverStyle.prototype.drawSector
      * @description 绘制扇形。
      * @param  {CanvasRenderingContext2D} ctx - context 对象。
      * @param {number} x - 中心点 x。

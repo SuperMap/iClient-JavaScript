@@ -6,10 +6,6 @@
  * @category BaseTypes Namespace
  */
 /**
- * @namespace L.supermap
- * @category BaseTypes Namespace
- */
-/**
  * SuperMap Leaflet基类
  * 定义命名空间
  * 提供公共模块

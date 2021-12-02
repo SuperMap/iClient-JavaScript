@@ -10,7 +10,7 @@ const emptyFunc = L.Util.falseFn;
  * @classdesc 高效率点图层 webgl 渲染器。
  * @category Visualization Graphic
  * @extends {L.Layer}
- * @param {Array.<L.supermap.graphicLayer>} layer - 高效率点图层。
+ * @param {Array.<GraphicLayer>} layer - 高效率点图层。
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度。
  * @param {number} options.height - 地图高度。

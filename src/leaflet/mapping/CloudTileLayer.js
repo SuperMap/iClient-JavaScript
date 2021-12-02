@@ -6,7 +6,8 @@ import "../core/Base";
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.cloudTileLayer
+ * @class CloudTileLayer
+ * @deprecatedclassinstance L.supermap.cloudTileLayer
  * @classdesc 超图云服务图层。
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
@@ -17,6 +18,7 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.maxZoom=18] - 最大缩放级别。
  * @param {string} [options.mapName='quanguo'] - 地图名称。
  * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
+ * @usage
  */
 export var CloudTileLayer = L.TileLayer.extend({
 
@@ -24,12 +26,12 @@ export var CloudTileLayer = L.TileLayer.extend({
 
     options: {
         /**
-         * @member {string} [L.supermap.cloudTileLayer.prototype.options='quanguo']
+         * @member {string} [CloudTileLayer.prototype.options='quanguo']
          * @description 地图名称。
          */
         mapName: "quanguo",
         /**
-         * @member {string} L.supermap.cloudTileLayer.prototype.type
+         * @member {string} CloudTileLayer.prototype.type
          * @description 地图投影。
          */
         type: "web",
@@ -46,7 +48,7 @@ export var CloudTileLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.cloudTileLayer.prototype.getTileUrl
+     * @function CloudTileLayer.prototype.getTileUrl
      * @description 获取切片地址。
      * @param {Object} coords - 行列号。
      * @returns {string} 切片地址。

@@ -5,7 +5,9 @@ import L from "leaflet";
 import '../core/Base';
 
 /**
- * @class L.supermap.components.componentsViewBase
+ * @class ComponentsViewBase
+ * @aliasclass Components.ComponentsViewBase
+ * @deprecatedclassinstance L.supermap.components.componentsViewBase
  * @classdesc Lealfet 组件基类。
  * @category Components Common
  * @version 9.1.1
@@ -14,6 +16,7 @@ import '../core/Base';
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
+ * @usage
  */
 export var ComponentsViewBase = L.Control.extend({
     options: {
@@ -52,7 +55,7 @@ export var ComponentsViewBase = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.components.componentsViewBase.prototype.onAdd
+     * @function ComponentsViewBase.prototype.onAdd
      * @description 向地图添加组件。
      */
     onAdd(map) {
@@ -63,7 +66,7 @@ export var ComponentsViewBase = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.components.componentsViewBase.prototype.on
+     * @function ComponentsViewBase.prototype.on
      * @param {string} eventType - 监听的事件类型。
      * @param {Function} callback - 监听事件的回调函数。
      */
@@ -72,7 +75,7 @@ export var ComponentsViewBase = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.components.componentsViewBase.prototype.off
+     * @function ComponentsViewBase.prototype.off
      * @description 事件关闭。
      * @param {string} eventType - 监听的事件名。
      * @param {Function} callback - 监听事件的回调函数。
@@ -82,7 +85,7 @@ export var ComponentsViewBase = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.components.componentsViewBase.prototype._initView
+     * @function ComponentsViewBase.prototype._initView
      * @description 初始化组件 UI。
      * @private
      */
@@ -91,7 +94,7 @@ export var ComponentsViewBase = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.components.componentsViewBase.prototype._preventMapEvent
+     * @function ComponentsViewBase.prototype._preventMapEvent
      * @description 阻止 map 默认事件。
      * @private
      */

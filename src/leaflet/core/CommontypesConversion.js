@@ -9,17 +9,18 @@
   return Object.prototype.toString.call(obj) == '[object Array]';
 }
 /**
- * @class L.supermap.CommontypesConversion
+ * @class CommontypesConversion
  * @category BaseTypes Util
  * @namespace
  * @classdesc Leaflet 对象和 SuperMap 对象转换工具。
+ * @usage
  */
 export const CommontypesConversion = {
     /**
-     * @function L.supermap.CommontypesConversion.toSuperMapBounds
+     * @function CommontypesConversion.toSuperMapBounds
      * @description 将 Leaflet 对象的 bounds 转成 SuperMap 的 bounds对象。
      * @param {(L.Bounds|L.LatLngBounds)} bounds - 图层显示范围。
-     * @returns {SuperMap.Bounds} SuperMap 的 bounds 对象。
+     * @returns {Bounds} SuperMap 的 bounds 对象。
      */
     toSuperMapBounds(bounds) {
         if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
@@ -54,7 +55,7 @@ export const CommontypesConversion = {
     },
 
     /**
-     * @function L.supermap.Util.isArray
+     * @function CommontypesConversion.isArray
      * @description 判断是否为数组格式。
      * @param {Object} obj - 待判断对象。
      * @returns {boolean} 是否是数组。
@@ -62,7 +63,7 @@ export const CommontypesConversion = {
     isArray,
 
     /**
-     * @function L.supermap.CommontypesConversion.toProcessingParam
+     * @function CommontypesConversion.toProcessingParam
      * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
      * @param {Array} points - Region 各个节点数组。
      * @returns processing 服务裁剪、查询分析的分析参数。

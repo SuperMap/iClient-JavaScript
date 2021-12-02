@@ -16,7 +16,7 @@ import {
 } from './CartoStyleMap';
 
 /**
- * @class L.supermap.CartoCSSToLeaflet
+ * @class CartoCSSToLeaflet
  * @classdesc CartoCSS 样式转 Leaflet 样式类。
  * @category BaseTypes Style
  * @param {string} url - 地图服务地址。
@@ -27,20 +27,20 @@ export class CartoCSSToLeaflet {
 
     constructor(url) {
         /**
-         * @member L.supermap.CartoCSSToLeaflet.prototype.cartoCSS
+         * @member CartoCSSToLeaflet.prototype.cartoCSS
          * @description CartoCSS 样式。
          */
         this.cartoCSS = null;
 
         /**
-         * @member L.supermap.CartoCSSToLeaflet.prototype.mapUrl
+         * @member CartoCSSToLeaflet.prototype.mapUrl
          * @description 地图服务地址。
          */
         this.mapUrl = url;
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
+     * @function CartoCSSToLeaflet.prototype.pretreatedCartoCSS
      * @description CartoCSS 样式预处理。
      * @param {string} cartoStr - Carto 信息。
      * @param {Object} processCharacters - 需要处理的特征对象。
@@ -64,7 +64,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
+     * @function CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号。
      * @param {string} cartoCSSStr - cartoCSSS信息。
      */
@@ -99,7 +99,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
+     * @function CartoCSSToLeaflet.prototype.pickShader
      * @description 拾取着色对象。
      * @param {string} layerName - 图层名称。
      */
@@ -112,7 +112,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
+     * @function CartoCSSToLeaflet.prototype.getDefaultStyle
      * @description 获取默认风格。
      * @param {string} type - 默认风格类型。
      */
@@ -128,7 +128,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
+     * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从 iPortalMarker 中获取样式。
      * @param {string} icon - iPortal 图标。
      */
@@ -149,7 +149,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
+     * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
      * @description 从 iPortal 的风格中获取样式。
      * @param {Object} iPortalStyle - iPortal 的样式对象。
      * @param {string} type - 样式类型。
@@ -210,7 +210,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
+     * @function CartoCSSToLeaflet.prototype.dashStyle
      * @description 符号样式。
      * @param {Object} style - 样式参数。
      * @param {number} widthFactor - 宽度系数。
@@ -247,7 +247,7 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
+     * @function CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从 Carto 中获取有效的样式。
      * @param {number} zoom - 缩放级别。
      * @param {number} scale - 比例尺。
@@ -307,9 +307,9 @@ export class CartoCSSToLeaflet {
     }
 
     /**
-     * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
+     * @function CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
      * @description 通过图层信息获取有效的样式。
-     * @param {SuperMap.Feature} feature - 要素。
+     * @param {Feature} feature - 要素。
      * @param {Object} layerInfo - 图层信息。
      */
     getValidStyleFromLayerInfo(feature, layerInfo) {

@@ -8,7 +8,7 @@ import { getMeterPerMapUnit } from '../../core/Util';
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
 /**
- * @class L.supermap.MapVRenderer
+ * @class MapVRenderer
  * @classdesc 地图渲染类。
  * @category Visualization MapV
  * @private
@@ -17,6 +17,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @param {L.Layer} layer - 待渲染的图层。
  * @param {DataSet} dataSet - 待渲染的数据集。
  * @param {Object} options - 渲染的参数。
+ * @usage
  */
 export class MapVRenderer extends BaseLayer {
 
@@ -42,7 +43,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.clickEvent
+     * @function MapVRenderer.prototype.clickEvent
      * @description 点击事件。
      * @param {Object} e - 触发对象。
      */
@@ -54,7 +55,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.mousemoveEvent
+     * @function MapVRenderer.prototype.mousemoveEvent
      * @description 鼠标移动事件。
      * @param {Object} e - 触发对象。
      */
@@ -64,7 +65,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.bindEvent
+     * @function MapVRenderer.prototype.bindEvent
      * @description 绑定鼠标移动和鼠标点击事件。
      * @param {Object} e - 触发对象。
      */
@@ -84,7 +85,7 @@ export class MapVRenderer extends BaseLayer {
         this.map.on('zoomstart', this._zoomStartEvent);
     }
     /**
-     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @function MapVRenderer.prototype.destroy
      * @description 释放资源。
      */
     destroy() {
@@ -95,7 +96,7 @@ export class MapVRenderer extends BaseLayer {
         this.canvasLayer = null;
     }
     /**
-     * @function L.supermap.MapVRenderer.prototype.unbindEvent
+     * @function MapVRenderer.prototype.unbindEvent
      * @description 解绑鼠标移动和鼠标滑动触发的事件。
      * @param {Object} e - 触发对象。
      */
@@ -116,7 +117,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.getContext
+     * @function MapVRenderer.prototype.getContext
      * @description 获取信息。
      */
     getContext() {
@@ -124,7 +125,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.addData
+     * @function MapVRenderer.prototype.addData
      * @description 添加数据。
      * @param {Object} data - 待添加的数据。
      * @param  {Object} options - 待添加的数据信息。
@@ -141,7 +142,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.update
+     * @function MapVRenderer.prototype.update
      * @description 更新图层。
      * @param {Object} opt - 待更新的数据。
      * @param {Object} opt.data - mapv数据集。
@@ -162,7 +163,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.getData
+     * @function MapVRenderer.prototype.getData
      * @description 获取数据
      */
     getData() {
@@ -170,7 +171,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.removeData
+     * @function MapVRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据。
      * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      */
@@ -190,7 +191,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.clearData
+     * @function MapVRenderer.prototype.clearData
      * @description 清除数据
      */
     clearData() {
@@ -335,7 +336,7 @@ export class MapVRenderer extends BaseLayer {
     addAnimatorEvent() {}
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.moveStartEvent
+     * @function MapVRenderer.prototype.moveStartEvent
      * @description 开始移动事件。
      */
     moveStartEvent() {
@@ -347,7 +348,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.moveEndEvent
+     * @function MapVRenderer.prototype.moveEndEvent
      * @description 结束移动事件。
      */
     moveEndEvent() {
@@ -356,7 +357,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.zoomStartEvent
+     * @function MapVRenderer.prototype.zoomStartEvent
      * @description 隐藏渲染样式。
      */
     zoomStartEvent() {
@@ -364,7 +365,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.clear
+     * @function MapVRenderer.prototype.clear
      * @description 清除信息。
      * @param {string} context - 指定要清除的信息。
      */
@@ -381,7 +382,7 @@ export class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.draw
+     * @function MapVRenderer.prototype.draw
      * @description 绘制渲染
      */
     draw() {

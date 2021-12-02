@@ -10,7 +10,9 @@
  import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
  import { Lang } from '@supermap/iclient-common/lang/Lang';
 /**
- * @class L.supermap.components.clientComputation
+ * @class ClientComputationView
+ * @aliasclass Components.ClientComputationView
+ * @deprecatedclassinstance L.supermap.components.clientComputation
  * @classdesc 客户端计算组件，用于进行叠加图层的客户端计算。
  * @version 9.1.1
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
@@ -18,11 +20,12 @@
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.clientComputation#analysissucceeded
- * @fires L.supermap.components.clientComputation#analysisfailed
- * @fires L.supermap.components.clientComputation#layersremoved
+ * @fires ClientComputationView#analysissucceeded
+ * @fires ClientComputationView#analysisfailed
+ * @fires ClientComputationView#layersremoved
  * @category Components ClientComputation
- * @extends {L.supermap.components.componentsViewBase}
+ * @extends {ComponentsViewBase}
+ * @usage
  */
 export var ClientComputationView = ComponentsViewBase.extend({
 
@@ -34,7 +37,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
         ComponentsViewBase.prototype.initialize.apply(this, [options]);
     },
     /**
-     * @function L.supermap.components.clientComputation.prototype.onAdd
+     * @function ClientComputationView.prototype.onAdd
      * @description 添加控件。
      * @private
      * @override
@@ -44,7 +47,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
         return ComponentsViewBase.prototype.onAdd.apply(this, [map]);
     },
     /**
-     * @function L.supermap.components.clientComputation.prototype.addLayer
+     * @function ClientComputationView.prototype.addLayer
      * @description 添加叠加图层。
      */
     addLayer: function (layer) {
@@ -55,7 +58,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.clientComputation.prototype.fillDataToView
+     * @function ClientComputationView.prototype.fillDataToView
      * @private
      * @description 填充数据到 view。
      * @param {Object} fillData - 待填充的数据。
@@ -133,7 +136,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.clientComputation.prototype._initView
+     * @function ClientComputationView.prototype._initView
      * @description 创建客户端计算组件。
      * @returns {HTMLElement}
      * @private
@@ -496,7 +499,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 /**
-                 * @event L.supermap.components.clientComputation#analysissucceeded
+                 * @event ClientComputationView#analysissucceeded
                  * @description 分析完成之后触发。
                  * @property {L.GeoJSON} layer - 加载完成后的结果图层。
                  * @property {string} name - 加载完成后的结果图层名称。
@@ -509,7 +512,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
                 /**
-                 * @event L.supermap.components.clientComputation#analysisfailed
+                 * @event ClientComputationView#analysisfailed
                  * @description 分析失败之后触发。
                  */
                 this._event.fire('analysisfailed')
@@ -524,7 +527,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
             /**
-             * @event L.supermap.components.clientComputation#layersremoved
+             * @event ClientComputationView#layersremoved
              * @description 结果图层删除后触发。
              * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
              */
@@ -583,7 +586,7 @@ export var ClientComputationView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.clientComputation.prototype._createOptions
+     * @function ClientComputationView.prototype._createOptions
      * @description 创建 select 下拉框的 options。
      * @private
      */

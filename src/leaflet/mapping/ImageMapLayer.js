@@ -9,12 +9,13 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import Attributions from '../core/Attributions';
 import { toSuperMapGeometry } from '../core/Util';
 /**
- * @class L.supermap.imageMapLayer
+ * @class ImageMapLayer
+ * @deprecatedclassinstance L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。
  * @category iServer Map
  * @extends {L.Layer}
  * @example
- *      L.supermap.imageMapLayer(url).addTo(map);
+ *      new ImageMapLayer(url).addTo(map);
  * @param {string} url - 地图服务地址,如：http://{ip}:{port}/iserver/services/map-china400/rest/maps/China
  * @param {Object} options - 图层可选参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
@@ -37,11 +38,12 @@ import { toSuperMapGeometry } from '../core/Util';
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
  * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
- * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
- * @fires L.supermap.imageMapLayer#load
- * @fires L.supermap.imageMapLayer#error
- * @fires L.supermap.imageMapLayer#loading
+ * @fires ImageMapLayer#load
+ * @fires ImageMapLayer#error
+ * @fires ImageMapLayer#loading
+ * @usage
  */
 export var ImageMapLayer = Layer.extend({
     options: {
@@ -95,7 +97,7 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @private
-     * @function L.supermap.imageMapLayer.prototype.onAdd
+     * @function ImageMapLayer.prototype.onAdd
      * @description 添加到地图。
      * @param {L.Map} map - 待添加到的地图对象。
      */
@@ -114,7 +116,7 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @private
-     * @function L.supermap.imageMapLayer.prototype.onRemove
+     * @function ImageMapLayer.prototype.onRemove
      * @description 从地图上移除。
      */
     onRemove: function() {
@@ -126,7 +128,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function L.supermap.imageMapLayer.prototype.bringToFront
+     * @function ImageMapLayer.prototype.bringToFront
      * @description 将当前图层置顶
      */
     bringToFront: function() {
@@ -138,7 +140,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function L.supermap.imageMapLayer.prototype.bringToFront
+     * @function ImageMapLayer.prototype.bringToFront
      * @description 将当前图层置底。
      */
     bringToBack: function() {
@@ -150,7 +152,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function L.supermap.imageMapLayer.prototype.getOpacity
+     * @function ImageMapLayer.prototype.getOpacity
      * @description 获取图层透明度。
      * @returns {number} 图层的透明度。
      */
@@ -159,7 +161,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function L.supermap.imageMapLayer.prototype.setOpacity
+     * @function ImageMapLayer.prototype.setOpacity
      * @description 设置透明度。
      */
     setOpacity: function(opacity) {
@@ -171,7 +173,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function L.supermap.imageMapLayer.prototype.getImageUrl
+     * @function ImageMapLayer.prototype.getImageUrl
      * @description 获取 image 图层请求地址，子类可重写实现。
      * @returns {string} 请求瓦片地址。
      */
@@ -297,7 +299,7 @@ export var ImageMapLayer = Layer.extend({
             }
 
             /**
-             * @event L.supermap.imageMapLayer#load
+             * @event ImageMapLayer#load
              * @description 请求图层加载完成后触发。
              * @property {L.bounds} bounds  - 图层 bounds。
              */
@@ -311,7 +313,7 @@ export var ImageMapLayer = Layer.extend({
             function() {
                 this._map.removeLayer(image);
                 /**
-                 * @event L.supermap.imageMapLayer#error
+                 * @event ImageMapLayer#error
                  * @description 请求图层加载失败后触发。
                  */
                 this.fire('error');
@@ -321,7 +323,7 @@ export var ImageMapLayer = Layer.extend({
         );
 
         /**
-         * @event L.supermap.imageMapLayer#loading
+         * @event ImageMapLayer#loading
          * @description 请求图层加载中触发。
          * @property {L.bounds} bounds  - 图层 bounds。
          */
@@ -329,7 +331,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function L.supermap.imageMapLayer.prototype.update
+     * @function ImageMapLayer.prototype.update
      * @description 更新图层。
      */
     update: function() {

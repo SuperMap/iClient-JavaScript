@@ -5,12 +5,13 @@
  import { GeoFeatureThemeLayer } from './theme/GeoFeatureThemeLayer';
  import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
- * @class L.supermap.uniqueThemeLayer
+ * @class UniqueThemeLayer
+ * @deprecatedclassinstance L.supermap.uniqueThemeLayer
  * @classdesc 客户端单值专题图。
  * @category Visualization Theme
  * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
- * @extends L.supermap.GeoFeatureThemeLayer
+ * @extends GeoFeatureThemeLayer
  * @param {string} name - 专题图层名。
  * @param {Object} options - 可选参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
@@ -26,28 +27,29 @@
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ * @usage
  */
 export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
     
     /** 
-     * @member {Object} L.supermap.uniqueThemeLayer.prototype.style
+     * @member {Object} UniqueThemeLayer.prototype.style
      * @description 专题图样式。
      */
     
      /** 
-     * @member {Object} L.supermap.uniqueThemeLayer.prototype.styleGroups
+     * @member {Object} UniqueThemeLayer.prototype.styleGroups
      * @description 各专题类型样式组。
      */
 
     /** 
-     * @member {Object} L.supermap.uniqueThemeLayer.prototype.highlightStyle
+     * @member {Object} UniqueThemeLayer.prototype.highlightStyle
      * @description 开启 hover 事件后，触发的样式风格。
      */
 
     initialize: function (name, options) {
         GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
-        //{Array.<SuperMap.ThemeStyle>} 图层中专题要素的样式
+        //{Array.<ThemeStyle>} 图层中专题要素的样式
         this.style = [];
         //{string} 用于指定专题要素样式的属性字段名称。
         // 此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。使用标签分组显示还需要设置 styleGroups 属性。
@@ -65,10 +67,10 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @private
-     * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
+     * @function UniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
-     * @param {SuperMap.Feature.Vector} feat - 用户要素数据。
-     * @returns {Array.<SuperMap.ThemeStyle>} 返回包含专题要素 style 的对象。
+     * @param {GeometryVector} feat - 用户要素数据。
+     * @returns {Array.<ThemeStyle>} 返回包含专题要素 style 的对象。
      */
     getStyleByData: function (feat) {
         var me = this,

@@ -62,7 +62,8 @@ import {
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.webmap
+ * @class WebMap
+ * @deprecatedclassinstance L.supermap.webMap
  * @classdesc 对接 iPortal/Online 地图类。
  * @category iPortal/Online
  * @extends {L.LayerGroup}
@@ -75,12 +76,13 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
  * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
- * @fires L.supermap.webmap#mapLoaded
- * @fires L.supermap.webmap#coordconvertsuccess
- * @fires L.supermap.webmap#coordconvertfailed
- * @fires L.supermap.webmap#featureunselected
- * @fires L.supermap.webmap#featureselected
- * @fires L.supermap.webmap#featuremousemove
+ * @fires WebMap#mapLoaded
+ * @fires WebMap#coordconvertsuccess
+ * @fires WebMap#coordconvertfailed
+ * @fires WebMap#featureunselected
+ * @fires WebMap#featureselected
+ * @fires WebMap#featuremousemove
+ * @usage
  */
 export var WebMap = L.LayerGroup.extend({
 
@@ -96,7 +98,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
+     * @function WebMap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框。
      * @param {L.Layer} layer - 指定图层。
      * @returns {string} 图层弹出框内容。
@@ -118,7 +120,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.load
+     * @function WebMap.prototype.load
      * @description 登陆后添加地图图层。
      */
     load: function () {
@@ -144,7 +146,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.addLayerWrapper
+     * @function WebMap.prototype.addLayerWrapper
      * @description 添加图层容器。
      * @param {L.Layer} layer - 待添加的图层。
      * @param {boolean} [isBaseLayer] - 是否为底图层。
@@ -164,7 +166,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createLayersByJson
+     * @function WebMap.prototype.createLayersByJson
      * @description 通过 JSON 创建图层。
      * @param {JSON} layersJson - 图层的 JSON 信息。
      */
@@ -201,7 +203,7 @@ export var WebMap = L.LayerGroup.extend({
             this.createLayer(type, layerInfo);
         }
         /**
-         * @event L.supermap.webmap#maploaded
+         * @event WebMap#maploaded
          * @description 底图加载完成后触发。
          * @property {L.Map} map  - Leaflet Map 对象。
          */
@@ -212,7 +214,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createCRS
+     * @function WebMap.prototype.createCRS
      * @description 创建坐标对象。
      * @param {number} epsgCode - epsg 编码。
      * @param {string} type - 坐标类型。
@@ -249,7 +251,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createMap
+     * @function WebMap.prototype.createMap
      * @description 创建地图。
      * @param {Object} options - 创建地图所需参数。
      */
@@ -277,12 +279,12 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.getResolutionsFromScales
+     * @function WebMap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率。
      * @param {Array.<number>} scales - 排序比例尺数组。
      * @param {number} dpi - 屏幕分辨率。
      * @param {string} units - 地图的单位。
-     * @param {SuperMap.Datum} datum - 大地参照系类。
+     * @param {Datum} datum - 大地参照系类。
      * @returns {Array.<number>} 返回给定比例尺所对应的分辨率。
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
@@ -295,7 +297,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createLayer
+     * @function WebMap.prototype.createLayer
      * @description 创建图层。
      * @param {string} type - 图层类型。
      * @param {Object} layerInfo - 图层信息。
@@ -395,10 +397,10 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createTiandituLayer
+     * @function WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层。
      * @param {Object} layerInfo - 图层信息。
-     * @returns {L.supermap.tiandituTileLayer} 返回天地图图层对象。
+     * @returns {tiandituTileLayer} 返回天地图图层对象。
      */
     createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
@@ -412,7 +414,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createMarkersLayer
+     * @function WebMap.prototype.createMarkersLayer
      * @description 创建图标图层。
      * @param {Object} layerInfo - 图层信息。
      * @param {Object} crs - 坐标对象。
@@ -452,7 +454,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createWmsLayer
+     * @function WebMap.prototype.createWmsLayer
      * @description 创建 Wms 图层。
      * @param {Object} layerInfo - 图层信息。
      * @returns {L.Layer} 返回 Wms 图层对象。
@@ -476,7 +478,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createVectorLayer
+     * @function WebMap.prototype.createVectorLayer
      * @description 创建矢量要素图层。
      * @param {Object} layerInfo - 图层信息。
      * @param {Object} crs - 坐标对象。
@@ -564,7 +566,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createThemeLayer
+     * @function WebMap.prototype.createThemeLayer
      * @description 创建专题图图层。
      * @param {Object} layerInfo - 图层信息。
      * @returns {L.Layer} 返回专题图图层对象。
@@ -1097,7 +1099,7 @@ export var WebMap = L.LayerGroup.extend({
         }
         if (success) {
             /**
-             * @event L.supermap.webmap#coordconvertsuccess
+             * @event WebMap#coordconvertsuccess
              * @description 坐标转换成功后触发。
              * @property {L.latLng} newCoor  - 转换成功后的坐标。
              */
@@ -1155,7 +1157,7 @@ export var WebMap = L.LayerGroup.extend({
                 return;
             }
             /**
-             * @event L.supermap.webmap#coordconvertfailed
+             * @event WebMap#coordconvertfailed
              * @description 坐标转换失败后触发。
              * @property {Object} err - error 对象。
              */
@@ -1265,9 +1267,9 @@ export var WebMap = L.LayerGroup.extend({
             }
             if (this.selectedFeature) {
                 /**
-                 * @event L.supermap.webmap#featureunselected
+                 * @event WebMap#featureunselected
                  * @description 重置选中的要素为空。
-                 * @property {SuperMap.Feature.Vector} feature - 在重置之前选中的要素。
+                 * @property {GeometryVector} feature - 在重置之前选中的要素。
                  */
                 this.fire('featureunselected', {
                     feature: this.selectedFeature
@@ -1281,9 +1283,9 @@ export var WebMap = L.LayerGroup.extend({
             if (feature) {
                 this.selectedFeature = feature;
                 /**
-                 * @event L.supermap.webmap#featureselected
+                 * @event WebMap#featureselected
                  * @description 点击要素，要素存在之后触发。设置选中的要素。
-                 * @property {SuperMap.Feature.Vector} feature - 点击的要素。
+                 * @property {GeometryVector} feature - 点击的要素。
                  */
                 this.fire('featureselected', {
                     feature: feature
@@ -1301,9 +1303,9 @@ export var WebMap = L.LayerGroup.extend({
                 }
                 if (feature) {
                     /**
-                     * @event L.supermap.webmap#featuremousemove
+                     * @event WebMap#featuremousemove
                      * @description 鼠标移动到要素上之后触发。
-                     * @property {SuperMap.Feature.Vector} feature - 当前被移动到的要素。
+                     * @property {GeometryVector} feature - 当前被移动到的要素。
                      */
                     this.fire('featuremousemove', {
                         feature: feature

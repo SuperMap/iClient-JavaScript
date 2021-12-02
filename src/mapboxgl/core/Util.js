@@ -24,13 +24,12 @@ const isString = function (str) {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.extend(dest, arguments);
+ *   const util = {namespace}.Util;
  *
  * </script>
  * // ES6 Import
  * import { Util } from '{npm}';
  *
- * Util.extend(dest, arguments);
  * ```
  */
 

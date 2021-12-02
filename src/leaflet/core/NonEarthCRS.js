@@ -5,7 +5,7 @@ import L from 'leaflet';
 
 /**
  * @private
- * @class L.Projection.NonProjection
+ * @class NonProjection
  * @classdesc 平面无投影对象。
  * @category BaseTypes Projection
  * @extends {L.Class}
@@ -30,7 +30,10 @@ export var nonProjection = function (bounds) {
 };
 
 /**
- * @class L.CRS.NonEarthCRS
+ * @class NonEarthCRS
+ * @aliasclass CRS.NonEarthCRS
+ * @deprecatedclassinstance L.CRS.NonEarthCRS
+ * @deprecatedclassinstance L.supermap.CRS.nonEarthCRS
  * @classdesc 平面无投影坐标类。
  * @category BaseTypes Projection
  * @extends {L.Class}
@@ -38,10 +41,11 @@ export var nonProjection = function (bounds) {
  * @param {Object} options.origin - 原点。
  * @param {L.bounds} options.bounds - 范围。
  * @param {Array.<number>} [options.resolutions] - 分辨率。
+ * @usage
  */
 export var NonEarthCRS = L.Class.extend({
     /**
-     * @member {Object} [L.CRS.NonEarthCRS.prototype.includes=L.CRS]
+     * @member {Object} [NonEarthCRS.prototype.includes=L.CRS]
      * @description 包含的坐标对象。
      */
     includes: L.CRS,
@@ -57,7 +61,7 @@ export var NonEarthCRS = L.Class.extend({
     },
 
     /**
-     * @function L.CRS.NonEarthCRS.prototype.scale
+     * @function NonEarthCRS.prototype.scale
      * @description 通过缩放级别计算比例尺。
      * @param {number} zoom - 缩放级别。
      * @returns {number} 得到的比例尺。
@@ -76,7 +80,7 @@ export var NonEarthCRS = L.Class.extend({
     },
 
     /**
-     * @function L.CRS.NonEarthCRS.prototype.zoom
+     * @function NonEarthCRS.prototype.zoom
      * @description 通过比例尺计算范围。
      * @param {number} scale - 比例尺。
      * @returns {number} 返回空间范围值。
@@ -95,7 +99,7 @@ export var NonEarthCRS = L.Class.extend({
         return Math.log(scale / (1.0 / this.resolutions[0])) / Math.LN2;
     },
     /**
-     * @function L.CRS.NonEarthCRS.prototype.distance
+     * @function NonEarthCRS.prototype.distance
      * @description 通过两个坐标点计算之间的距离。
      * @param {L.latLng} latlng1 - 坐标点1。
      * @param {L.latLng} latlng2 - 坐标点2。

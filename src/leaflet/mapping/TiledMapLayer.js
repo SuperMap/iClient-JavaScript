@@ -12,12 +12,13 @@
  import Attributions from '../core/Attributions';
 
 /**
- * @class L.supermap.tiledMapLayer
+ * @class TiledMapLayer
+ * @deprecatedclassinstance L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 TileImage 资源出图。
  * @category iServer Map
  * @extends {L.TileLayer}
  * @example
- *      L.supermap.tiledMapLayer(url).addTo(map);
+ *      new TiledMapLayer(url).addTo(map);
  * @param {string} url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {Object} options - 参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
@@ -30,15 +31,16 @@
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
- * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
+ * @param {CRS} [options.crs] - 坐标系统类。
  * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
- * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
- * @fires L.supermap.tiledMapLayer#tilesetsinfoloaded
- * @fires L.supermap.tiledMapLayer#tileversionschanged
+ * @fires TiledMapLayer#tilesetsinfoloaded
+ * @fires TiledMapLayer#tileversionschanged
+ * @usage
  */
 export var TiledMapLayer = L.TileLayer.extend({
 
@@ -81,7 +83,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @private
-     * @function L.supermap.tiledMapLayer.prototype.onAdd
+     * @function TiledMapLayer.prototype.onAdd
      * @description 添加地图。
      * @param {L.Map} map - 待添加的影像地图参数。
      */
@@ -91,7 +93,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.getTileUrl
+     * @function TiledMapLayer.prototype.getTileUrl
      * @description 根据行列号获取瓦片地址。
      * @param {Object} coords - 行列号。
      * @returns {string} 瓦片地址。
@@ -114,7 +116,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.getScale
+     * @function TiledMapLayer.prototype.getScale
      * @description 根据缩放级别获取比例尺。
      * @param {number} zoom - 缩放级别。
      * @returns {number} 比例尺。
@@ -127,7 +129,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
+     * @function TiledMapLayer.prototype.getScaleFromCoords
      * @description 通过行列号获取比例尺。
      * @param {Object} coords - 行列号。
      * @returns {number} 比例尺。
@@ -146,7 +148,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @private
-     * @function L.supermap.tiledMapLayer.prototype.getDefaultScale
+     * @function TiledMapLayer.prototype.getDefaultScale
      * @description 获取默认比例尺信息。
      * @param {Object} coords - 坐标对象参数。
      */
@@ -178,7 +180,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
+     * @function TiledMapLayer.prototype.setTileSetsInfo
      * @description 设置瓦片集信息。
      * @param {Object} tileSets - 瓦片对象集。
      */
@@ -191,7 +193,7 @@ export var TiledMapLayer = L.TileLayer.extend({
             return;
         }
         /**
-         * @event L.supermap.tiledMapLayer#tilesetsinfoloaded
+         * @event TiledMapLayer#tilesetsinfoloaded
          * @description 瓦片集信息设置完成后触发。
          * @property {Array.<Object>} tileVersions  - 瓦片集信息。
          */
@@ -202,7 +204,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.lastTilesVersion
+     * @function TiledMapLayer.prototype.lastTilesVersion
      * @description 请求上一个版本切片，并重新绘制。
      */
     lastTilesVersion: function () {
@@ -211,7 +213,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.nextTilesVersion
+     * @function TiledMapLayer.prototype.nextTilesVersion
      * @description 请求下一个版本切片，并重新绘制。
      */
     nextTilesVersion: function () {
@@ -220,7 +222,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.changeTilesVersion
+     * @function TiledMapLayer.prototype.changeTilesVersion
      * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引
      */
     changeTilesVersion: function () {
@@ -242,7 +244,7 @@ export var TiledMapLayer = L.TileLayer.extend({
             if (result) {
                 me.tileSetsIndex = me.tempIndex;
                 /**
-                 * @event L.supermap.tiledMapLayer#tileversionschanged
+                 * @event TiledMapLayer#tileversionschanged
                  * @description 切片的版本切换和重绘成功之后触发。
                  * @property {Object} tileVersion  - 该版本的切片。
                  */
@@ -254,7 +256,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.updateCurrentTileSetsIndex
+     * @function TiledMapLayer.prototype.updateCurrentTileSetsIndex
      * @description 手动设置当前切片集索引，目前主要提供给控件使用。
      * @param {number} index - 索引值。
      */
@@ -263,7 +265,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
+     * @function TiledMapLayer.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号，并重绘。
      * @param {string} version - 切片版本号。
      * @returns {boolean} 是否成功。

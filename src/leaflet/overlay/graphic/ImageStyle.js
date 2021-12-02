@@ -5,7 +5,8 @@ import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.imageStyle
+ * @class ImageStyle
+ * @deprecatedclassinstance L.supermap.imageStyle
  * @classdesc 自定义图形要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
@@ -16,6 +17,7 @@ import '../../core/Base';
  * @param {Array} [options.size] - 图形大小，即高度和宽度[width,height]。
  * @param {Array} [options.radius] - 半径。
  * @param {Array} [options.weight] - 宽度。
+ * @usage
  */
 export var ImageStyle = L.Class.extend({
 
@@ -36,7 +38,7 @@ export var ImageStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.imageStyle.prototype.getStyle
+     * @function ImageStyle.prototype.getStyle
      * @description 获取样式。
      */
     getStyle: function () {

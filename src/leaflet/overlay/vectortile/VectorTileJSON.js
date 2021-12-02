@@ -7,7 +7,7 @@ import * as Util from "../../core/Util";
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 /**
- * @class L.supermap.VectorTileJSON
+ * @class VectorTileJSON
  * @classdesc iServer 矢量瓦片 JSON 表述出图。
  * @category Visualization VectorTile
  * @private
@@ -21,7 +21,7 @@ export var VectorTileJSON = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.VectorTileJSON.prototype.getTile
+     * @function VectorTileJSON.prototype.getTile
      * @description 获取瓦片。
      * @returns {Promise} 返回包含矢量瓦片信息的 Promise 对象。
      */

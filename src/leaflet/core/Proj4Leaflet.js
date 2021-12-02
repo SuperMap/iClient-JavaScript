@@ -95,7 +95,10 @@ L.Proj.Projection = L.Class.extend({
 });
 
 /**
- * @class L.Proj.CRS
+ * @class CRS
+ * @aliasclass Proj.CRS
+ * @deprecatedclassinstance L.Proj.CRS
+ * @deprecatedclassinstance L.supermap.Proj.crs
  * @classdesc 基于 Proj4 坐标系统扩展类。
  * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。
  * 当指定`options.bounds` 时，第 0 级为一张 256 切片包含整个 bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
@@ -114,7 +117,7 @@ L.Proj.Projection = L.Class.extend({
  * @param {number} [options.dpi=96] - dpi。
  * @param {number} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
  * @example
- *    var crs =L.Proj.CRS("EPSG:4326",{
+ *    var crs =new CRS("EPSG:4326",{
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
  *    });
@@ -122,6 +125,7 @@ L.Proj.Projection = L.Class.extend({
  *       crs: crs
  *      ...
  *    })
+ * @usage
  */
 export var CRS = L.Class.extend({
     includes: L.CRS,
@@ -208,7 +212,7 @@ export var CRS = L.Class.extend({
         }
     },
     /**
-     * @function L.Proj.CRS.prototype.scale
+     * @function CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值。
      * @param {number} zoom - 缩放级别。
      * @returns 比例尺值。
@@ -232,7 +236,7 @@ export var CRS = L.Class.extend({
     },
 
     /**
-     * @function L.Proj.CRS.prototype.zoom
+     * @function CRS.prototype.zoom
      * @description 根据比例尺返回缩放级别。
      * @param {number} scale - 比例尺。
      * @returns {number} 缩放级别。

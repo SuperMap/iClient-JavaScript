@@ -9,16 +9,18 @@
  import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
  
 /**
- * @class  L.supermap.datasetService
+ * @class  DatasetService
+ * @deprecatedclassinstance L.supermap.datasetService
  * @classdesc 数据集信息服务类。
  * @category iServer Data Dataset
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 数据集服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var DatasetService = ServiceBase.extend({
 
@@ -28,10 +30,10 @@ export var DatasetService = ServiceBase.extend({
 
     
     /**
-     * @function L.supermap.datasetService.prototype.getDatasets
+     * @function DatasetService.prototype.getDatasets
      * @description 数据集查询服务。
      * @example
-     *   L.supermap.datasetService(url).getDatasets(datasourceName,function(result){
+     *   new DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
@@ -57,10 +59,10 @@ export var DatasetService = ServiceBase.extend({
         },
 
     /**
-     * @function L.supermap.DatasetService.prototype.getDataset
+     * @function DatasetService.prototype.getDataset
      * @description 数据集信息查询服务。
      * @example
-     *   L.supermap.datasetService(url).getDataset(datasourceName, datasetName, function(result){
+     *   new DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
@@ -87,13 +89,13 @@ export var DatasetService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.datasetService.prototype.setDataset
+     * @function  DatasetService.prototype.setDataset
      * @description 数据集信息设置服务。可实现修改已存在数据集，新增不存在数据集。
      * @example
-     *   L.supermap.datasetService(url).setDataset(params, function(result){
+     *   new DatasetService(url).setDataset(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.CreateDatasetParameters | SuperMap.UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
+     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
      * @param {RequestCallback} callback - 回调函数。
      */
     setDataset(params, callback) {
@@ -129,10 +131,10 @@ export var DatasetService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.datasetService.prototype.deleteDataset
+     * @function  DatasetService.prototype.deleteDataset
      * @description 指定数据源下的数据集删除服务。
      * @example
-     *   L.supermap.datasetService(url).deleteDataset(datasourceName, datasetName, function(result){
+     *   new DatasetService(url).deleteDataset(datasourceName, datasetName, function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。

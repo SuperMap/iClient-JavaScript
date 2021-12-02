@@ -18,12 +18,12 @@ import { UpdateEdgeWeightService } from '@supermap/iclient-common/iServer/Update
 import { UpdateTurnNodeWeightService } from '@supermap/iclient-common/iServer/UpdateTurnNodeWeightService';
 
 /**
- * @class L.supermap.networkAnalystService
+ * @class NetworkAnalystService
+ * @deprecatedclassinstance L.supermap.networkAnalystService
  * @classdesc 网络分析服务类。
  * @category  iServer NetworkAnalyst
- * @augments  L.supermap.ServiceBase
  * @example
- * L.supermap.networkAnalystService(url)
+ * new NetworkAnalystService(url)
  *  .findPath(params,function(result){
  *     //doSomething
  * })
@@ -35,7 +35,8 @@ import { UpdateTurnNodeWeightService } from '@supermap/iclient-common/iServer/Up
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export var NetworkAnalystService = ServiceBase.extend({
 
@@ -44,9 +45,9 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.burstPipelineAnalyst
+     * @function NetworkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
-     * @param {SuperMap.BurstPipelineAnalystParameters} params - 爆管分析服务参数类。
+     * @param {BurstPipelineAnalystParameters} params - 爆管分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     burstPipelineAnalyst: function (params, callback) {
@@ -66,9 +67,9 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.computeWeightMatrix
+     * @function NetworkAnalystService.prototype.computeWeightMatrix
      * @description 耗费矩阵分析服务：根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
-     * @param {SuperMap.ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类。
+     * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     computeWeightMatrix: function (params, callback) {
@@ -88,11 +89,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.findClosestFacilities
+     * @function NetworkAnalystService.prototype.findClosestFacilities
      * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
-     * @param {SuperMap.FindClosestFacilitiesParameters} params - 最近设施分析服务参数类。
+     * @param {FindClosestFacilitiesParameters} params - 最近设施分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     findClosestFacilities: function (params, callback, resultFormat) {
         var me = this;
@@ -112,11 +113,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.streamFacilityAnalyst
+     * @function NetworkAnalystService.prototype.streamFacilityAnalyst
      * @description 上游/下游 关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
-     * @param {SuperMap.FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
+     * @param {FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     streamFacilityAnalyst: function (params, callback, resultFormat) {
         var me = this;
@@ -136,11 +137,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.findLocation
+     * @function NetworkAnalystService.prototype.findLocation
      * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置。
-     * @param {SuperMap.FindLocationParameters} params - 选址分区分析服务参数类。
+     * @param {FindLocationParameters} params - 选址分区分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     findLocation: function (params, callback, resultFormat) {
         var me = this;
@@ -160,11 +161,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.findPath
+     * @function NetworkAnalystService.prototype.findPath
      * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
-     * @param {SuperMap.FindPathParameters} params - 最佳路径分析服务参数类。
+     * @param {FindPathParameters} params - 最佳路径分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     findPath: function (params, callback, resultFormat) {
         var me = this;
@@ -184,11 +185,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.findTSPPaths
+     * @function NetworkAnalystService.prototype.findTSPPaths
      * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
-     * @param {SuperMap.FindTSPPathsParameters} params - 旅行商分析服务参数类。
+     * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     findTSPPaths: function (params, callback, resultFormat) {
         var me = this;
@@ -208,11 +209,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function l.supermap.networkAnalystService.prototype.findMTSPPaths
+     * @function NetworkAnalystService.prototype.findMTSPPaths
      * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
-     * @param {SuperMap.FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
+     * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     findMTSPPaths: function (params, callback, resultFormat) {
         var me = this;
@@ -232,11 +233,11 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.findServiceAreas
+     * @function NetworkAnalystService.prototype.findServiceAreas
      * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
-     * @param {SuperMap.FindServiceAreasParameters} params -  服务区分析服务参数类。
+     * @param {FindServiceAreasParameters} params -  服务区分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     findServiceAreas: function (params, callback, resultFormat) {
         var me = this;
@@ -256,9 +257,9 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.updateEdgeWeight
+     * @function NetworkAnalystService.prototype.updateEdgeWeight
      * @description 更新边的耗费权重服务。
-     * @param {SuperMap.UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
+     * @param {UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
      * @param {RequestCallback} callback -回调函数。
      */
     updateEdgeWeight: function (params, callback) {
@@ -278,9 +279,9 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.networkAnalystService.prototype.updateTurnNodeWeight
+     * @function NetworkAnalystService.prototype.updateTurnNodeWeight
      * @description 转向耗费权重更新服务。
-     * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
+     * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     updateTurnNodeWeight: function (params, callback) {

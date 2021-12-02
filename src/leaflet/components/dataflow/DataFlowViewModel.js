@@ -7,7 +7,9 @@ import {DataFlowLayer} from "../../overlay/DataFlowLayer";
 import {CommontypesConversion} from '../../core/CommontypesConversion';
 
 /**
- * @class L.supermap.components.dataFlowViewModel
+ * @class DataFlowViewModel
+ * @aliasclass Components.DataFlowViewModel
+ * @deprecatedclassinstance L.supermap.components.dataFlowViewModel
  * @classdesc 数据流组件功能类。
  * @version 9.1.1
  * @category Components DataFlow
@@ -24,11 +26,12 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
                                                     };
                                             }`
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.dataFlowViewModel#dataflowservicesubscribed
- * @fires L.supermap.components.dataFlowViewModel#subscribesucceeded
- * @fires L.supermap.components.dataFlowViewModel#subscribefailed
- * @fires L.supermap.components.dataFlowViewModel#dataupdated
+ * @fires DataFlowViewModel#dataflowservicesubscribed
+ * @fires DataFlowViewModel#subscribesucceeded
+ * @fires DataFlowViewModel#subscribefailed
+ * @fires DataFlowViewModel#dataupdated
  * @extends {L.Evented}
+ * @usage
  */
 export var DataFlowViewModel = L.Evented.extend({
     options: {
@@ -49,7 +52,7 @@ export var DataFlowViewModel = L.Evented.extend({
     initialize(map, dataFlowLayerOptions = null) {
         if (map) {
             /**
-             * @member {L.Map} L.supermap.components.dataFlowViewModel.prototype.map
+             * @member {L.Map} DataFlowViewModel.prototype.map
              * @description 当前组件所在的地图。
              */
             this.map = map;
@@ -62,30 +65,30 @@ export var DataFlowViewModel = L.Evented.extend({
         this.options._defaultLayerOptions.pointToLayer = this.options._defaultLayerOptions.style;
 
         /**
-         * @member {boolean} [L.supermap.components.dataFlowViewModel.prototype.popupsStatus=true]
+         * @member {boolean} [DataFlowViewModel.prototype.popupsStatus=true]
          * @description 图层 popup 打开 "true" 或关闭 "false" 的状态。
          */
         this.popupsStatus = true;
         /**
-         * @member {boolean} [L.supermap.components.dataFlowViewModel.prototype.dataFlowStatus=false]
+         * @member {boolean} [DataFlowViewModel.prototype.dataFlowStatus=false]
          * @description 数据流服务当前状态，订阅 "true" 或未订阅 "false" 的状态。
          */
         this.dataFlowStatus = false;
 
         /**
-         * @member {string} [L.supermap.components.dataFlowViewModel.prototype.dataFlowUrl=""]
+         * @member {string} [DataFlowViewModel.prototype.dataFlowUrl=""]
          * @description 数据流地址。
          */
         this.dataFlowUrl = "";
 
         /**
-         * @member {Array.<Object>} [L.supermap.components.dataFlowViewModel.prototype.currentFeatures]
+         * @member {Array.<Object>} [DataFlowViewModel.prototype.currentFeatures]
          * @description 当前订阅数据流返回的要素数组。
          */
         this.currentFeatures = [];
 
         /**
-         * @member {L.supermap.dataFlowLayer} [L.supermap.components.dataFlowViewModel.prototype.dataFlowLayer=null]
+         * @member {DataFlowLayer} [DataFlowViewModel.prototype.dataFlowLayer=null]
          * @description 当前 dataFlowLayer 图层对象。
          */
         this.dataFlowLayer = null;
@@ -93,7 +96,7 @@ export var DataFlowViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlowViewModel.prototype.subscribe
+     * @function DataFlowViewModel.prototype.subscribe
      * @description 订阅数据流。
      * @param {string} dataFlowUrl - 数据流服务地址。
      */
@@ -102,7 +105,7 @@ export var DataFlowViewModel = L.Evented.extend({
         if (this.dataFlowUrl === dataFlowUrl) {
             if (this.dataFlowStatus) {
                 /**
-                 * @event L.supermap.components.dataFlowViewModel#dataflowservicesubscribed
+                 * @event DataFlowViewModel#dataflowservicesubscribed
                  * @description 数据流订阅成功后触发。
                  */
                 this.fire("dataflowservicesubscribed");
@@ -121,7 +124,7 @@ export var DataFlowViewModel = L.Evented.extend({
         const dataFlowLayer = new DataFlowLayer(dataFlowUrl, this.options._defaultLayerOptions);
         dataFlowLayer.on('subscribesucceeded', (result) => {
             /**
-             * @event L.supermap.components.dataFlowViewModel#subscribesucceeded
+             * @event DataFlowViewModel#subscribesucceeded
              * @description 数据流订阅成功后触发。
              * @property {Object} result - 返回的数据。
              */
@@ -129,7 +132,7 @@ export var DataFlowViewModel = L.Evented.extend({
         });
         dataFlowLayer.on('subscribefailed', (result) => {
             /**
-             * @event L.supermap.components.dataFlowViewModel#subscribefailed
+             * @event DataFlowViewModel#subscribefailed
              * @description 数据流订阅失败后触发。
              * @property {Object} result - 返回的数据。
              */
@@ -138,7 +141,7 @@ export var DataFlowViewModel = L.Evented.extend({
         dataFlowLayer.on('dataupdated', (result) => {
             //派发出订阅返回的数据：
             /**
-             * @event L.supermap.components.dataFlowViewModel#dataupdated
+             * @event DataFlowViewModel#dataupdated
              * @description 数据返回成功之后触发。
              * @property {Object} result - 返回的数据。
              */
@@ -164,7 +167,7 @@ export var DataFlowViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlowViewModel.prototype.cancelSubscribe
+     * @function DataFlowViewModel.prototype.cancelSubscribe
      * @description 取消订阅的数据流。
      */
     cancelSubscribe() {
@@ -178,7 +181,7 @@ export var DataFlowViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.dataFlowViewModel.prototype.openPopups
+     * @function DataFlowViewModel.prototype.openPopups
      * @description 打开图层要素弹窗。
      */
     openPopups() {
@@ -193,7 +196,7 @@ export var DataFlowViewModel = L.Evented.extend({
         }
     },
     /**
-     * @function L.supermap.components.dataFlowViewModel.prototype.closePopups
+     * @function DataFlowViewModel.prototype.closePopups
      * @description 关闭图层要素弹窗。
      */
     closePopups() {

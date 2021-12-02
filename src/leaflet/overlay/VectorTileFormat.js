@@ -4,12 +4,18 @@
 import '../core/Base';
 
 /**
- * @constant L.supermap.vectorTileFormat
- * @category Visualization TileVector
- * @classdesc 矢量瓦片格式。
+ * @enum VectorTileFormat
+ * @category Visualization VectorTile
+ * @description 矢量瓦片格式
+ * @type {string}
  */
-export var VectorTileFormat = {
+var VectorTileFormat = {
+    /** JSON */
     JSON: "JSON",
+    /** MVT */
     MVT: "MVT",
+    /** PBF */
     PBF: "PBF"
 };
+
+export { VectorTileFormat };

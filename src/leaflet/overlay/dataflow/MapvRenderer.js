@@ -12,7 +12,7 @@ import {
  * @class MapvRenderer
  * @classdesc 数据流图层 MapV 渲染器。
  * @category  iServer DataFlow
- * @extends {L.supermap.MapVLayer}
+ * @extends {MapVLayer}
  * @param {string} url - 数据流图层服务地址
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.geometry] - GeoJSON 几何对象。

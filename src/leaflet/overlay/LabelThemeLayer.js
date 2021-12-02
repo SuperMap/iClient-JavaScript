@@ -9,10 +9,11 @@
  import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
  import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
 /**
- * @class L.supermap.labelThemeLayer
+ * @class LabelThemeLayer
+ * @deprecatedclassinstance L.supermap.labelThemeLayer
  * @classdesc 标签专题图。
  * @category Visualization Theme
- * @extends L.supermap.GeoFeatureThemeLayer
+ * @extends GeoFeatureThemeLayer
  * @param {string} name - 图层名。
  * @param {Object} options - 图层参数。
  * @param {string} options.themeFields - 指定创建专题图字段。 
@@ -31,21 +32,22 @@
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ * @usage
  */
 export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /** 
-     * @member {Object} L.supermap.labelThemeLayer.prototype.style
+     * @member {Object} LabelThemeLayer.prototype.style
      * @description 专题图样式。
      */
 
     /** 
-     * @member {Object} L.supermap.labelThemeLayer.prototype.styleGroups
+     * @member {Object} LabelThemeLayer.prototype.styleGroups
      * @description 各专题类型样式组。
      */
 
     /** 
-     * @member {Object} L.supermap.labelThemeLayer.prototype.highlightStyle
+     * @member {Object} LabelThemeLayer.prototype.highlightStyle
      * @description 开启 hover 事件后，触发的样式风格。
      */
 
@@ -114,7 +116,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
         this.labelFeatures = [];
     },
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.onAdd
+     * @function LabelThemeLayer.prototype.onAdd
      * @description 添加专题图。
      * @param {L.Map} map - 要添加的地图。
      * @private
@@ -124,7 +126,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
         this.container.style.zIndex = 200;
     },
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.redrawThematicFeatures
+     * @function LabelThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
@@ -142,9 +144,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
      /**
-     * @function L.supermap.LabelThemeLayer.prototype.removeFeatures
+     * @function LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除的要素。
+     * @param {Array.<GeometryVector>} features - 要删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
@@ -152,7 +154,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.removeAllFeatures
+     * @function LabelThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures: function () {
@@ -161,10 +163,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.getDrawnLabels
+     * @function LabelThemeLayer.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
-     * @param {Array.<SuperMap.Feature.Vector>}  labelFeatures - 所有标签要素的数组。
-     * @returns {Array.<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
+     * @param {Array.<GeometryVector>}  labelFeatures - 所有标签要素的数组。
+     * @returns {Array.<GeometryVector>}  最终要绘制的标签要素数组。
      */
     getDrawnLabels: function (labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
@@ -320,10 +322,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.getStyleByData
+     * @function LabelThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
-     * @param {SuperMap.Feature.Vector} feat - 矢量要素对象。
-     * @returns {Array.<SuperMap.ThemeStyle>} 专题要素的 Style。
+     * @param {GeometryVector} feat - 矢量要素对象。
+     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
      */
     getStyleByData: function (feat) {
         var feature = feat;
@@ -369,10 +371,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.setLabelsStyle
+     * @function LabelThemeLayer.prototype.setLabelsStyle
      * @description 设置标签要素的 Style。
-     * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @returns {Array.<SuperMap.Feature.Vector>}  赋予 Style 后的标签要素数组。
+     * @param {Array.<GeometryVector>} labelFeatures - 需要设置 Style 的标签要素数组。
+     * @returns {Array.<GeometryVector>}  赋予 Style 后的标签要素数组。
      */
     setLabelsStyle: function (labelFeatures) {
         var fea, labelFeas = [];
@@ -397,9 +399,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.setStyle
+     * @function LabelThemeLayer.prototype.setStyle
      * @description 设置标签要素的 Style。
-     * @param {SuperMap.Feature.Vector} feat - 需要赋予 style 的要素。
+     * @param {GeometryVector} feat - 需要赋予 style 的要素。
      */
     setStyle: function (feat) {
         var feature = feat;
@@ -447,9 +449,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.getLabelPxLocation
+     * @function LabelThemeLayer.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
-     * @param {SuperMap.Feature.Vector} feature - 标签要素。
+     * @param {GeometryVector} feature - 标签要素。
      * @returns {L.point} 标签位置。
      */
     getLabelPxLocation: function (feature) {
@@ -474,10 +476,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds
+     * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
+     * @param {GeometryVector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -533,10 +535,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
+     * @function LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
+     * @param {GeometryVector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -629,7 +631,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.getLabelInfo
+     * @function LabelThemeLayer.prototype.getLabelInfo
      * @description 根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等。
      * @returns {Object} 绘制后的标签信息。
      */
@@ -728,10 +730,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.rotationBounds
+     * @function LabelThemeLayer.prototype.rotationBounds
      * @description 旋转 bounds。
      *
-     * @param {SuperMap.Bounds} bounds - 要旋转的 bounds。
+     * @param {Bounds} bounds - 要旋转的 bounds。
      * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
      * @param {number}  angle - 旋转角度（顺时针）。
      *
@@ -766,7 +768,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.getRotatedLocation
+     * @function LabelThemeLayer.prototype.getRotatedLocation
      * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）。
      *
      * @param {number} x - 旋转点横坐标。
@@ -794,10 +796,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.getAvoidInfo
+     * @function LabelThemeLayer.prototype.getAvoidInfo
      * @description 获取避让的信息。
      *
-     * @param {SuperMap.Bounds} bounds - 地图像素范围。
+     * @param {Bounds} bounds - 地图像素范围。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      *
      * @returns {Object} 避让的信息。
@@ -910,7 +912,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.isQuadrilateralOverLap
+     * @function LabelThemeLayer.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖。
      *
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -957,7 +959,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.LabelThemeLayer.prototype.isPointInPoly
+     * @function LabelThemeLayer.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面。(射线法)。
      *
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。

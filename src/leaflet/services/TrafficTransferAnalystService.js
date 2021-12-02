@@ -9,20 +9,22 @@ import { TransferPathService } from '@supermap/iclient-common/iServer/TransferPa
 import { TransferSolutionService } from '@supermap/iclient-common/iServer/TransferSolutionService';
 
 /**
- * @class L.supermap.trafficTransferAnalystService
+ * @class TrafficTransferAnalystService
+ * @deprecatedclassinstance L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类。
  * @category  iServer TrafficTransferAnalyst
  * @example
- * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
+ * new TrafficTransferAnalystService(url).queryStop(params,function(result){
  *   //doSomething
  * })
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export var TrafficTransferAnalystService = ServiceBase.extend({
     initialize: function(url, options) {
@@ -30,9 +32,9 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.trafficTransferAnalystService.prototype.queryStop
+     * @function  TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
-     * @param {SuperMap.StopQueryParameters} params - 站点查询参数类。
+     * @param {StopQueryParameters} params - 站点查询参数类。
      * @param {RequestCallback} callback 回调函数。
      */
     queryStop: function(params, callback) {
@@ -52,9 +54,9 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
         stopQueryService.processAsync(params);
     },
     /**
-     * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferPath
+     * @function  TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
-     * @param {SuperMap.TransferPathParameters} params - 交通换乘线路查询参数类。
+     * @param {TransferPathParameters} params - 交通换乘线路查询参数类。
      * @param {RequestCallback} callback 回调函数。
      */
     analysisTransferPath: function(params, callback) {
@@ -74,9 +76,9 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
         transferPathService.processAsync(me._processParams(params));
     },
     /**
-     * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferSolution
+     * @function  TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
-     * @param {SuperMap.TransferSolutionParameters} params - 交通换乘方案查询参数类。
+     * @param {TransferSolutionParameters} params - 交通换乘方案查询参数类。
      * @param {RequestCallback} callback 回调函数。
      */
     analysisTransferSolution: function(params, callback) {

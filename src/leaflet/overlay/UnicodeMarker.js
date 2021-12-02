@@ -5,7 +5,8 @@ import L from "leaflet";
 import '../core/Base';
 
 /**
- * @class L.supermap.unicodeMarker
+ * @class UnicodeMarker
+ * @deprecatedclassinstance L.supermap.unicodeMarker
  * @classdesc Unicode 字符图标。
  * @category Visualization Marker
  * @extends {L.Path}
@@ -20,7 +21,8 @@ import '../core/Base';
  * @param {string} [options.fontFamily='sans-serif'] - 符号的字体。
  * @param {string} [options.textAlign='center'] - 符号内容的对齐方式。
  * @param {string} [options.textBaseline='middle'] - 绘制符号时使用的基线。
- * @fires L.supermap.unicodeMarker#move
+ * @fires UnicodeMarker#move
+ * @usage
  */
 export var UnicodeMarker = L.Path.extend({
     // @section
@@ -44,7 +46,7 @@ export var UnicodeMarker = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.unicodeMarker.prototype.setLatLng
+     * @function UnicodeMarker.prototype.setLatLng
      * @description 设置 marker 新坐标。
      * @param {L.LatLng} setLatLng - 需要设置的新坐标。
      */
@@ -52,7 +54,7 @@ export var UnicodeMarker = L.Path.extend({
         this._latlng = latlng;
         this.redraw();
         /**
-         * @event L.supermap.unicodeMarker#move
+         * @event UnicodeMarker#move
          * @description circle marker 重设坐标之后触发。
          * @property {L.LatLng} latlng - 当前 marker 坐标。
          */
@@ -60,7 +62,7 @@ export var UnicodeMarker = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.unicodeMarker.prototype.getLatLng
+     * @function UnicodeMarker.prototype.getLatLng
      * @description 获取 marker 坐标。
      * @returns {L.LatLng} 返回当前 marker 坐标。
      */

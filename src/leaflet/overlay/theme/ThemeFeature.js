@@ -8,13 +8,15 @@
  import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
  import { Vector } from '@supermap/iclient-common/commontypes/Vector';
 /**
- * @class L.supermap.themeFeature
+ * @class ThemeFeature
+ * @deprecatedclassinstance L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
  *            支持的 geometry 参数类型为 {@link L.Point},{@link L.LatLng},{@link L.Polyline},{@link L.Polygon}。
  * @category Visualization Theme
  * @extends {L.Class}
  * @param {(L.Path|L.Point|L.LatLng)} geometry - 要素图形。
  * @param {Object} attributes - 要素属性。
+ * @usage
  */
 export var ThemeFeature = L.Class.extend({
 
@@ -24,9 +26,9 @@ export var ThemeFeature = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.themeFeature.prototype.toFeature
+     * @function ThemeFeature.prototype.toFeature
      * @description 转为内部矢量要素。
-     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
+     * @returns {GeometryVector} 内部矢量要素。
      */
     toFeature: function () {
         let geometry = this.geometry;
@@ -51,7 +53,7 @@ export var ThemeFeature = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.themeFeature.prototype.reverseLatLngs
+     * @function ThemeFeature.prototype.reverseLatLngs
      * @description 坐标反转。
      * @param {L.Latlng} latlngs - 坐标值。
      */

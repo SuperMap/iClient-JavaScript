@@ -9,10 +9,11 @@ import {
 import { MapService as CommonMapService } from '@supermap/iclient-common/iServer/MapService';
 import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
 /**
- * @class  L.supermap.mapService
+ * @class  MapService
+ * @deprecatedclassinstance L.supermap.mapService
  * @classdesc 地图信息服务类。
  * @category  iServer Map
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 地图服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -20,10 +21,11 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * L.supermap.mapService(url)
+ * new MapService(url)
  *  .getMapInfo(function(result){
  *     //doSomething
  * })
+ * @usage
  */
 export var MapService = ServiceBase.extend({
 
@@ -41,7 +43,7 @@ export var MapService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.mapService.prototype.getMapInfo
+     * @function  MapService.prototype.getMapInfo
      * @description 获取地图信息。
      * @param {RequestCallback} callback - 回调函数。
      */
@@ -63,7 +65,7 @@ export var MapService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.mapService.prototype.getTilesets
+     * @function  MapService.prototype.getTilesets
      * @description 获取切片列表信息。
      * @param {RequestCallback} callback - 回调函数。
      */

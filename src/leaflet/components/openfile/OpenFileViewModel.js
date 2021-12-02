@@ -9,16 +9,19 @@
  import { Lang } from '@supermap/iclient-common/lang/Lang';
 
 /**
- * @class L.supermap.components.openFileViewModel
+ * @class OpenFileViewModel
+ * @aliasclass Components.OpenFileViewModel
+ * @deprecatedclassinstance L.supermap.components.openFileViewModel
  * @classdesc 打开本地文件组件功能类,目前只支持WGS84经纬度坐标。
  * @version 9.1.1
  * @category Components OpenFile
  * @param {L.Map} map - leaflet map 对象。
- * @fires L.supermap.components.openFileViewModel#filesizeexceed
- * @fires L.supermap.components.openFileViewModel#errorfileformat
- * @fires L.supermap.components.openFileViewModel#openfilesucceeded
- * @fires L.supermap.components.openFileViewModel#openfilefailed
+ * @fires OpenFileViewModel#filesizeexceed
+ * @fires OpenFileViewModel#errorfileformat
+ * @fires OpenFileViewModel#openfilesucceeded
+ * @fires OpenFileViewModel#openfilefailed
  * @extends {L.Evented}
+ * @usage
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize() {
@@ -26,7 +29,7 @@ export var OpenFileViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.openFileViewModel.prototype.readFile
+     * @function OpenFileViewModel.prototype.readFile
      * @description 选中文件并加载到底图。
      * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象。
      */
@@ -37,7 +40,7 @@ export var OpenFileViewModel = L.Evented.extend({
         if (file.size > this.fileModel.FileConfig.fileMaxSize) {
             // document.alert("File supports up to 10M.");
             /**
-             * @event L.supermap.components.openFileViewModel#filesizeexceed
+             * @event OpenFileViewModel#filesizeexceed
              * @description 超出文件大小限制后触发。
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
@@ -53,7 +56,7 @@ export var OpenFileViewModel = L.Evented.extend({
         if (!fileType) {
             // document.alert("Unsupported data type.");
             /**
-             * @event L.supermap.components.openFileViewModel#errorfileformat
+             * @event OpenFileViewModel#errorfileformat
              * @description 文件格式不支持时触发。
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
@@ -78,7 +81,7 @@ export var OpenFileViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.components.openFileViewModel.prototype._readData
+     * @function OpenFileViewModel.prototype._readData
      * @description 数据文件中的数据。
      * @private
      */
@@ -94,7 +97,7 @@ export var OpenFileViewModel = L.Evented.extend({
             FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
-                     * @event L.supermap.components.openFileViewModel#openfilesucceeded
+                     * @event OpenFileViewModel#openfilesucceeded
                      * @description 打开文件成功。
                      * @property {GeoJSONObject} result - GeoJSON 格式数据。
                      * @property {string} layerName - 图层名。
@@ -109,7 +112,7 @@ export var OpenFileViewModel = L.Evented.extend({
             }, this);
         }, () => {
             /**
-             * @event L.supermap.components.openFileViewModel#openfilefailed
+             * @event OpenFileViewModel#openfilefailed
              * @description 打开文件失败。
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。

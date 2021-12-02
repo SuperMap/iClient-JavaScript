@@ -5,7 +5,9 @@
 import '../../core/Base';
 
 /**
- * @class L.supermap.components.geoJSONLayerWithName
+ * @class GeoJSONLayerWithName
+ * @aliasclass Components.GeoJSONLayerWithName
+ * @deprecatedclassinstance L.supermap.components.geoJSONLayerWithName
  * @classdesc 含有 layerName 与 GeoJSON 图层的对象。
  * @private
  * @param {Object} layerObject - 图层对象。
