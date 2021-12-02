@@ -96,16 +96,16 @@ const DOTS_PER_INCH = 96;
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.CommonUtil.extend(destination, source);
+ *   const commonUtil = {namespace}.CommonUtil;
  *
  *   // 弃用的写法
- *   SuperMap.Util.extend(destination, source);
+ *   const commonUtil = SuperMap.Util;
  *
  * </script>
- *   // ES6 Import
- *   import { CommonUtil } from '{npm}';
  *
- *   CommonUtil.extend(destination, source);
+ * // ES6 Import
+ * import { CommonUtil } from '{npm}';
+ *
  * ```
  */
 

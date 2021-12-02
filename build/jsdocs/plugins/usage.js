@@ -13,6 +13,7 @@ exports.defineTags = function (dictionary) {
       } else {
         const deprecatedClasses = [];
         let aliasClass = '';
+        let deprecatedClassInstance;
         if (doclet.tags) {
           for (let index = 0; index < doclet.tags.length; index++) {
             const tag = doclet.tags[index];
@@ -22,13 +23,17 @@ exports.defineTags = function (dictionary) {
             if (tag.title === 'aliasclass') {
               aliasClass = tag.value;
             }
+            if (tag.title === 'deprecatedclassinstance') {
+              deprecatedClassInstance = tag.value;
+            }
           }
         }
         doclet.usage = {
           className: doclet.kind === 'class' ? doclet.name : '',
           aliasClass: aliasClass,
           globalParams,
-          deprecatedClasses: deprecatedClasses
+          deprecatedClasses: deprecatedClasses,
+          deprecatedClassInstance: deprecatedClassInstance
         };
       }
     }

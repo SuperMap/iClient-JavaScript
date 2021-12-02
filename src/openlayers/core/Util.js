@@ -13,10 +13,23 @@
  import Feature from 'ol/Feature';
 
  /**
-  * @class Util
+  * @name Util
+  * @namespace
   * @category BaseTypes Util
   * @classdesc 工具类。
   * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const util = {namespace}.Util;
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { Util } from '{npm}';
+  *
+  * ```
   */
  export const Util = {
    getOlVersion() {
