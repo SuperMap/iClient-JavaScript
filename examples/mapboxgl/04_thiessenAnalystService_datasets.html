@@ -48,7 +48,7 @@
     });
 
     function thiessenAnalystProcess() {
-        var dThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        var dThiessenAnalystParameters = new mapboxgl.supermap.DatasetThiessenAnalystParameters({
             dataset: "Town_P@Jingjin"
         });
         new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {

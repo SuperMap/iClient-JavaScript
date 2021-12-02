@@ -82,13 +82,13 @@
             }
         });
         //缓冲区分析参数
-        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+        var dsBufferAnalystParameters = new mapboxgl.supermap.DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new mapboxgl.supermap.FilterParameter({
                 attributeFilter: "NAME='莲花池东路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new mapboxgl.supermap.BufferSetting({
+                endType: mapboxgl.supermap.BufferEndType.ROUND,
                 leftDistance: {value: 300},
                 rightDistance: {value: 300},
                 semicircleLineSegment: 10,

@@ -102,7 +102,7 @@
 
         //点定里程服务
         routeCalculateMeasureService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
-        routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
+        routeCalculateMeasureParameters = new mapboxgl.supermap.RouteCalculateMeasureParameters({
             "sourceRoute": routeLine,   //必选,路由类型
             "point": pointGeometryData,  //必选
             "tolerance": 0.0001,

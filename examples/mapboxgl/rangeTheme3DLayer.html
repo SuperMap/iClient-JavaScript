@@ -65,8 +65,8 @@
     buildThemeLayer();
 
     function buildThemeLayer() {
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: new mapboxgl.supermap.FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
@@ -74,7 +74,7 @@
             datasetNames: ["Jingjin:BaseMap_R"]
         });
 
-        var queryFeatures = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+        new mapboxgl.supermap.FeatureService(dataUrl, {
             eventListeners: {
                 processCompleted: function (serviceResult) {
                     if (serviceResult.error) {
@@ -87,9 +87,8 @@
                     }
                 }
             },
-            format: SuperMap.DataFormat.GEOJSON
-        });
-        queryFeatures.processAsync(getFeatureBySQLParams);
+            format: mapboxgl.supermap.DataFormat.GEOJSON,
+        }).getFeaturesBySQL(getFeatureBySQLParams);
     }
 
     //创建专题图图层

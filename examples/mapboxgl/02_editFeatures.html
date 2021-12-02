@@ -86,7 +86,7 @@
             "type": "Polygon",
             "coordinates": [[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]
         };
-        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeatureParams = new mapboxgl.supermap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon,
@@ -205,7 +205,7 @@
             return;
         }
         //更新添加的source
-        var addFeatureParams = new SuperMap.EditFeaturesParameters({
+        var addFeatureParams = new mapboxgl.supermap.EditFeaturesParameters({
             features: pointFeature,
             dataSourceName: "World",
             dataSetName: "Capitals",
@@ -245,7 +245,7 @@
 
     function dataClickListener(e) {
 
-        var deleteParams = new SuperMap.EditFeaturesParameters({
+        var deleteParams = new mapboxgl.supermap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [e.features[0].id],

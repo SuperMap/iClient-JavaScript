@@ -103,7 +103,7 @@
 
         bindClick();
 
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        mapboxgl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl, {
             withCredentials: window.isLocal
@@ -122,7 +122,7 @@
         }
 
         function summaryAttributesJobs() {
-            var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
+            var summaryAttributesJobsParameter = new mapboxgl.supermap.SummaryAttributesJobsParameter({
                 datasetName: $('#datasetName').val(),
                 groupField: $('#groupField').val(),
                 attributeField: $('#attributeField').val(),
@@ -138,7 +138,7 @@
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTDATA') {
                         var dataUrl = info.serviceAddress + '/data';
-                        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
                             queryParameter: {
                                 name: "analystResult@UntitledDatasource",
                                 attributeFilter: "SMID > 0"

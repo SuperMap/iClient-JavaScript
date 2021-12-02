@@ -28,8 +28,8 @@
   var ctx = canvas.getContext('2d');
   var predictBtn = document.querySelector('#predict');
   ctx.drawImage(img, 0, 0, 640, 640);
-  var webMachineLearning = new SuperMap.WebMachineLearning();
-  var binaryClassification = new SuperMap.BinaryClassification({ modelUrl, image: img });
+  var webMachineLearning = new mapboxgl.supermap.WebMachineLearning();
+  var binaryClassification = new mapboxgl.supermap.BinaryClassification({ modelUrl, image: img });
   predictBtn.addEventListener('click', function() {
     webMachineLearning.execute(binaryClassification).then((res) => {
     const { data, width, height } = res;

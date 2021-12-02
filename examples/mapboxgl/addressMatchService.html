@@ -168,7 +168,7 @@
     var addressMatchService = new mapboxgl.supermap.AddressMatchService(addressUrl);
 
     $("#codeBtn").click(function () {
-        var geoCodeParam = new SuperMap.GeoCodingParameter({
+        var geoCodeParam = new mapboxgl.supermap.GeoCodingParameter({
             address: $('#address').val() || $('#address').attr('placeholder'),
             fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
             toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
@@ -179,7 +179,7 @@
         addressMatchService.code(geoCodeParam, match);
     });
     $("#decodeBtn").click(function () {
-        var geoDecodeParam = new SuperMap.GeoDecodingParameter({
+        var geoDecodeParam = new mapboxgl.supermap.GeoDecodingParameter({
             x: $('#xCoord').val() || $('#xCoord').attr('placeholder'),
             y: $('#yCoord').val() || $('#yCoord').attr('placeholder'),
             fromIndex: $('#fromIndex2').val() || $('#fromIndex2').attr('placeholder'),

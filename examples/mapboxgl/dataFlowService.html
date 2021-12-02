@@ -58,7 +58,7 @@
         map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-        SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+        mapboxgl.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
         var popup = new mapboxgl.Popup();
 
         map.on('load', function () {
@@ -80,7 +80,7 @@
         //模拟实时数据 start
         //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
         function query() {
-            var param = new SuperMap.QueryBySQLParameters({
+            var param = new mapboxgl.supermap.QueryBySQLParameters({
                 queryParams: {
                     name: "Main_Road_L@China#1",
                     attributeFilter: "SMID = 1755"

@@ -49,13 +49,7 @@
     });
 
     function mapService() {
-        var getMapStatusService = new SuperMap.MapService(url, {
-            serverType: SuperMap.ServerType.ISERVER,
-            eventListeners: {
-                processCompleted: callback
-            },
-        });
-        getMapStatusService.processAsync();
+        new mapboxgl.supermap.MapService(url).getMapInfo(callback);
     }
 
     function callback(serviceResult) {

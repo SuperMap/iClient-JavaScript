@@ -347,7 +347,7 @@
     query();
 
     function query() {
-        var sqlParam = new SuperMap.QueryBySQLParameters({
+        var sqlParam = new mapboxgl.supermap.QueryBySQLParameters({
             queryParams: [{
                 name: "China_ProCenCity_pt@China",
                 attributeFilter: "NAME = '广州市' or NAME = '上海市'"

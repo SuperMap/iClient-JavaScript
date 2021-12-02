@@ -562,7 +562,7 @@
 
             function queryFromDataService(url) {
                 var result = [];
-                var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
                     queryParameter: { attributeFilter: "PAC Like '46%'" },
                     datasetNames: ['China:City_R'],
                     targetPrj: { epsgCode: 4326 },

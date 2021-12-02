@@ -346,7 +346,7 @@
         }
 
         function query(count) {
-            var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+            var boundsParam = new mapboxgl.supermap.GetFeaturesByBoundsParameters({
                 datasetNames: ["ny:Building_Footprints"],
                 attributeFilter: "cnstrct_yr > " + (1880 + 26 * (count - 1)) + " And cnstrct_yr <= " + (1880 + 26 * count),
                 bounds: map.getBounds(),

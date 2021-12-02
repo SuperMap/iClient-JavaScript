@@ -112,13 +112,13 @@
             "filter": ["==", "$type", "Point"],
         });
 
-        var geoBufferAnalystParams = new SuperMap.GeometryBufferAnalystParameters({
+        var geoBufferAnalystParams = new mapboxgl.supermap.GeometryBufferAnalystParameters({
             sourceGeometry: geometryLine,
             sourceGeometrySRID: 4326,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
-                leftDistance: new SuperMap.BufferDistance({value: 300}),
-                rightDistance: new SuperMap.BufferDistance({value: 300}),
+            bufferSetting: new mapboxgl.supermap.BufferSetting({
+                endType: mapboxgl.supermap.BufferEndType.ROUND,
+                leftDistance: new mapboxgl.supermap.BufferDistance({value: 300}),
+                rightDistance: new mapboxgl.supermap.BufferDistance({value: 300}),
                 radiusUnit: "METER",
                 semicircleLineSegment: 10
             })

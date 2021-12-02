@@ -82,7 +82,7 @@
             });
             map.on('load', function() {
                 //从 iServer 查询
-                var param = new SuperMap.QueryBySQLParameters({
+                var param = new mapboxgl.supermap.QueryBySQLParameters({
                     queryParams: {
                         name: 'China_Province_pl@China',
                         attributeFilter: 'SMID =14'

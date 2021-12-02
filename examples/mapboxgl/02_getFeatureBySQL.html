@@ -63,7 +63,7 @@
     });
 
     function query() {
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: "SMID = 234"

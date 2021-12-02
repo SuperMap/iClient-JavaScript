@@ -145,7 +145,7 @@
                 $("#summaryregionS").show();
             });
 
-            SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+            mapboxgl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
             //分布式分析：
             var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl, {
@@ -175,7 +175,7 @@
                     map.removeLayer("summaryLayer");
                     map.removeSource("summarySource");
                 }
-                var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
+                var summaryMeshJobParameter = new mapboxgl.supermap.SummaryMeshJobParameter({
                     datasetName: $('#datasetName').val(),
                     resolution: $('#resolution').val(),
                     meshType: $('#meshType option:selected').attr('value'),
@@ -194,7 +194,7 @@
                     }
                     serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                         if (info.serviceType === 'RESTMAP') {
-                            SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(
+                            mapboxgl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(
                                 function (response) {
                                     return response.json();
                                 }).then(function (result) {

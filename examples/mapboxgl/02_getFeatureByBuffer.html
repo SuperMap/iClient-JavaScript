@@ -69,7 +69,7 @@
     });
 
     function query() {
-        var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
+        var bufferParam = new mapboxgl.supermap.GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 30,
             geometry: queryBufferGeometry

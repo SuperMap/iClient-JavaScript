@@ -59,7 +59,7 @@
         if (!e.features) {
             widgets.alert.showAlert(resources.msg_noDataRedraw, false);
         }
-        var param = new SuperMap.MeasureParameters(e.features[0]);
+        var param = new mapboxgl.supermap.MeasureParameters(e.features[0]);
         new mapboxgl.supermap.MeasureService(url).measureDistance(param, function (serviceResult) {
             var distance = serviceResult.result.distance;
             widgets.alert.showAlert(distance + resources.msg_m, true);

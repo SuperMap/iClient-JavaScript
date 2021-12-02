@@ -126,7 +126,7 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                var param = new SuperMap.FieldParameters({
+                var param = new mapboxgl.supermap.FieldParameters({
                     datasource: dataInfo.dataSourceName,
                     dataset: dataInfo.dataSetName
                 });
@@ -139,17 +139,17 @@
 
     function fieldStatistic() {
         var fieldName = 'SmID';
-        var param = new SuperMap.FieldStatisticsParameters({
+        var param = new mapboxgl.supermap.FieldStatisticsParameters({
             datasource: currentData.dataSourceName,
             dataset: currentData.dataSetName,
             fieldName: fieldName,
             statisticMode: [
-                SuperMap.StatisticMode.MAX,
-                SuperMap.StatisticMode.MIN,
-                SuperMap.StatisticMode.SUM,
-                SuperMap.StatisticMode.AVERAGE,
-                SuperMap.StatisticMode.STDDEVIATION,
-                SuperMap.StatisticMode.VARIANCE
+                mapboxgl.supermap.StatisticMode.MAX,
+                mapboxgl.supermap.StatisticMode.MIN,
+                mapboxgl.supermap.StatisticMode.SUM,
+                mapboxgl.supermap.StatisticMode.AVERAGE,
+                mapboxgl.supermap.StatisticMode.STDDEVIATION,
+                mapboxgl.supermap.StatisticMode.VARIANCE
             ]
         });
         if (currentData) {

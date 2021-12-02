@@ -81,7 +81,7 @@
             });
             map.on('load', function() {
                 //从 iServer 查询
-                var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+                var idsParam = new mapboxgl.supermap.GetFeaturesByIDsParameters({
                     IDs: [234],
                     datasetNames: ['World:Countries']
                 });
