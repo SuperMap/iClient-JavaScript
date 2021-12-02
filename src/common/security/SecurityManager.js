@@ -5,9 +5,8 @@ import { Util } from '../commontypes/Util';
 import { FetchRequest } from '../util/FetchRequest';
 import { Credential } from '../commontypes/Credential';
 /**
- * @name SecurityManager
+ * @class SecurityManager
  * @deprecatedclass SuperMap.SecurityManager
- * @namespace
  * @category Security
  * @description 安全管理中心，提供 iServer,iPortal,Online 统一权限认证管理。
  *  > 使用说明：
