@@ -14,7 +14,6 @@
 
  /**
   * @class Util
-  * @deprecatedclass ol.supermap.Util
   * @category BaseTypes Util
   * @classdesc 工具类。
   * @usage
