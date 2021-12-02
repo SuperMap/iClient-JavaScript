@@ -40,16 +40,16 @@ const cancel = window.cancelAnimationFrame ||
  * @class ThreeLayerRenderer
  * @category  Visualization Three
  * @classdesc Three图层渲染器
- * @param {mapboxgl.supermap.ThreeLayer} layer - ThreeJs图层。</br>
+ * @param {ThreeLayer} layer - ThreeJs图层。</br>
  * @param {string} [renderer="gl"] - 图层渲染方式(canvas或WebGL)。取值："gl","canvas"。</br>
  * @param {Object} options - threejs渲染器初始化参数对象。参数内容详见:
  *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
  *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
  *
  * @extends {mapboxgl.Evented}
- * @fires mapboxgl.supermap.ThreeLayer#initialized
- * @fires mapboxgl.supermap.ThreeLayer#draw
- * @fires mapboxgl.supermap.ThreeLayer#rendererinitialized
+ * @fires ThreeLayer#initialized
+ * @fires ThreeLayer#draw
+ * @fires ThreeLayer#rendererinitialized
  */
 export class ThreeLayerRenderer {
 
@@ -70,13 +70,13 @@ export class ThreeLayerRenderer {
         }
         this.prepare();
         /**
-         * @event mapboxgl.supermap.ThreeLayer#initialized
+         * @event ThreeLayer#initialized
          * @description three 初始化之后后触发。
          */
         this._layer.fire("initialized");
         this._layer && this._layer.draw(this.context, this.scene, this.camera);
         /**
-         * @event mapboxgl.supermap.ThreeLayer#draw
+         * @event ThreeLayer#draw
          * @description draw 绘制事件, 调用提供给外部绘制的接口后触发
          */
         this._layer.fire("draw");
@@ -127,7 +127,7 @@ export class ThreeLayerRenderer {
             this._initContainer();
             this._initThreeRenderer();
             /**
-             * @event mapboxgl.supermap.ThreeLayer#rendererinitialized
+             * @event ThreeLayer#rendererinitialized
              * @description rendererinitialized 事件，初始化 three 渲染器后触发
              */
             this._layer.fire("rendererinitialized");

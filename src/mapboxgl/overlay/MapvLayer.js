@@ -6,13 +6,14 @@ import { MapvRenderer } from './mapv/MapvRenderer';
 import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 
 /**
- * @class mapboxgl.supermap.MapvLayer
+ * @class MapvLayer
  * @category  Visualization MapV
  * @classdesc Mapv 图层。
  * @param {mapboxgl.Map} map - mapboxgl 地图对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - Mapv 参数。
  * @param {string} [mapVOptions.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("mapvLayer_") 创建专题图层 ID。
+ * @usage
  */
 export class MapvLayer {
     constructor(map, dataSet, mapVOptions) {
@@ -41,7 +42,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.removeFromMap
+     * @function MapvLayer.prototype.removeFromMap
      * @description 移除图层。
      */
     removeFromMap() {
@@ -50,7 +51,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.setVisibility
+     * @function MapvLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
@@ -66,7 +67,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
+     * @function MapvLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
      * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
@@ -92,7 +93,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
+     * @function MapvLayer.prototype.getTopLeft
      * @description 获取左上的距离。
      */
     getTopLeft() {
@@ -106,7 +107,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.addData
+     * @function MapvLayer.prototype.addData
      * @description 追加数据。
      * @param {Object} data - 要追加的数据。
      * @param {Object} options - 要追加的值。
@@ -116,7 +117,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.update
+     * @function MapvLayer.prototype.update
      * @description 更新图层。
      * @param {Object} opt - 待更新的数据。
      * @param {Object} opt.data - mapv 数据集。
@@ -127,7 +128,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.getData
+     * @function MapvLayer.prototype.getData
      * @description 获取数据。
      * @returns {mapv.DataSet} mapv 数据集。
      */
@@ -139,7 +140,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.removeData
+     * @function MapvLayer.prototype.removeData
      * @description 删除符合过滤条件的数据。
      * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为 true,表示删除该元素；否则表示不删除。
      * @example
@@ -155,7 +156,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.clearData
+     * @function MapvLayer.prototype.clearData
      * @description 清除数据。
      */
     clearData() {
@@ -195,7 +196,7 @@ export class MapvLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.setZIndex
+     * @function MapvLayer.prototype.setZIndex
      * @description 设置 canvas 层级。
      * @param {number} zIndex - canvas 层级。
      */

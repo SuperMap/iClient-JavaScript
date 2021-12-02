@@ -7,11 +7,11 @@ import { AddressMatchService as CommonAddressMatchService } from '@supermap/icli
 import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 
 /**
- * @class mapboxgl.supermap.AddressMatchService
+ * @class AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务。
  * @example
- * new mapboxgl.supermap.AddressMatchService(url,options)
+ * new AddressMatchService(url,options)
  * .code(function(result){
  *     //doSomething
  * })
@@ -21,7 +21,8 @@ import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {mapboxgl.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export class AddressMatchService extends ServiceBase {
     constructor(url, options) {
@@ -29,7 +30,7 @@ export class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.AddressMatchService.prototype.code
+     * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param {Object} params - 正向匹配参数。
      * @param {RequestCallback} callback - 请求结果的回调函数。
@@ -52,7 +53,7 @@ export class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.AddressMatchService.prototype.decode
+     * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param {Object} params -反向匹配参数。
      * @param {RequestCallback} callback - 请求结果的回调函数。

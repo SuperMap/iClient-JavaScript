@@ -8,7 +8,7 @@ import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVec
 import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 
 /**
- * @class mapboxgl.supermap.RangeThemeLayer
+ * @class RangeThemeLayer
  * @category  Visualization Theme
  * @classdesc 分段专题图层。
  * @param {string} name - 图层名。
@@ -22,7 +22,8 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @param {Object} options.styleGroups - 各专题类型样式组。
  * @param {boolean} [options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
+ * @extends {GeoFeatureThemeLayer}
+ * @usage
  */
 export class Range extends GeoFeature {
 
@@ -36,7 +37,7 @@ export class Range extends GeoFeature {
     }
 
     /**
-     * @function mapboxgl.supermap.RangeThemeLayer.prototype.createThematicFeature
+     * @function Range.prototype.createThematicFeature
      * @description 创建专题图要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */
@@ -64,7 +65,7 @@ export class Range extends GeoFeature {
 
     /**
      * @private
-     * @function mapboxgl.supermap.RangeThemeLayer.prototype.getStyleByData
+     * @function Range.prototype.getStyleByData
      * @description 通过数据获取 style。
      * @param {Object} fea - 要素数据。
      */

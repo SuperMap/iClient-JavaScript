@@ -63,7 +63,7 @@ const MB_SCALEDENOMINATOR_4326 = [
 const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
 
 /**
- * @class mapboxgl.supermap.WebMap
+ * @class WebMap
  * @version 9.1.2
  * @category  iPortal/Online
  * @classdesc 对接 iPortal/Online 地图类。目前支持地图坐标系包括：'EPSG:3857'，'EPSG:4326'，'EPSG:4490'，'EPSG:4214'，'EPSG:4610'。
@@ -81,12 +81,13 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * @param {string} [options.credentialValue] - 凭证值。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
- * @fires mapboxgl.supermap.WebMap#getmapfailed
- * @fires mapboxgl.supermap.WebMap#getwmtsfailed
- * @fires mapboxgl.supermap.WebMap#getlayersfailed
- * @fires mapboxgl.supermap.WebMap#getfeaturesfailed
- * @fires mapboxgl.supermap.WebMap#addlayerssucceeded
+ * @fires WebMap#getmapfailed
+ * @fires WebMap#getwmtsfailed
+ * @fires WebMap#getlayersfailed
+ * @fires WebMap#getfeaturesfailed
+ * @fires WebMap#addlayerssucceeded
  * @extends {mapboxgl.Evented}
+ * @usage
  */
 export class WebMap extends mapboxgl.Evented {
 	/**
@@ -105,7 +106,7 @@ export class WebMap extends mapboxgl.Evented {
 		this._createWebMap();
 	}
 	/**
-	 * @function mapboxgl.supermap.WebMap.prototype.resize
+	 * @function WebMap.prototype.resize
 	 * @description map resize。
    * @version 9.1.2
 	 */
@@ -114,7 +115,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
 	/**
-	 * @function mapboxgl.supermap.WebMap.prototype.setMapId
+	 * @function WebMap.prototype.setMapId
 	 * @param {string} mapId - webMap 地图 ID。
 	 * @description 设置 WebMap ID。
    * @version 9.1.2
@@ -125,7 +126,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   /**
-	 * @function mapboxgl.supermap.WebMap.prototype.setWebMapOptions
+	 * @function WebMap.prototype.setWebMapOptions
 	 * @param {Object} webMapOptions - webMap 参数。
 	 * @description 设置 webMap 参数。
    * @version 9.1.2
@@ -136,7 +137,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 
   /**
-	 * @function mapboxgl.supermap.WebMap.prototype.setMapOptions
+	 * @function WebMap.prototype.setMapOptions
 	 * @param {Object} mapOptions - map 参数。
 	 * @description 设置 map 参数。
    * @version 9.1.2
@@ -155,7 +156,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createWebMap
+	 * @function WebMap.prototype._createWebMap
 	 * @description 登陆窗口后添加地图图层。
 	 */
 	_createWebMap() {
@@ -180,7 +181,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createMap
+	 * @function WebMap.prototype._createMap
 	 * @description 创建地图。
 	 */
 	_createMap(mapInfo) {
@@ -234,7 +235,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getMapInfo
+	 * @function WebMap.prototype._getMapInfo
 	 * @description 获取地图的 JSON 信息。
 	 * @param {string} url - 请求地图的 url。
 	 */
@@ -277,7 +278,7 @@ export class WebMap extends mapboxgl.Evented {
 			})
 			.catch(error => {
 				/**
-				 * @event mapboxgl.supermap.WebMap#getmapfailed
+				 * @event WebMap#getmapfailed
 				 * @description 获取地图信息失败。
 				 * @property {Object} error - 失败原因。
 				 */
@@ -287,7 +288,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._addBaseMap
+	 * @function WebMap.prototype._addBaseMap
 	 * @description 添加底图。
 	 * @param {Object} mapInfo - map 信息。
 	 */
@@ -297,7 +298,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createBaseLayer
+	 * @function WebMap.prototype._createBaseLayer
 	 * @description 创建底图。
 	 * @param {Object} mapInfo - map 信息。
 	 */
@@ -365,7 +366,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createMapboxStyle
+	 * @function WebMap.prototype._createMapboxStyle
 	 * @description 创建 Mapbox 样式。
 	 * @param {Object} mapInfo - map 信息。
 	 */
@@ -391,7 +392,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._matchStyleObject
+	 * @function WebMap.prototype._matchStyleObject
 	 * @description 恢复 style 为标准格式。
 	 * @param {Object} style - mapbox 样式。
 	 */
@@ -407,7 +408,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createTiandituLayer
+	 * @function WebMap.prototype._createTiandituLayer
 	 * @description 创建天地图底图。
 	 * @param {Object} mapInfo - map 信息。
 	 */
@@ -423,7 +424,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createWMTSLayer
+	 * @function WebMap.prototype._createWMTSLayer
 	 * @description 创建 WMTS 底图。
 	 * @param {Object} mapInfo - map 信息。
 	 */
@@ -436,7 +437,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._filterWMTSIsMatched
+	 * @function WebMap.prototype._filterWMTSIsMatched
 	 * @description 过滤能够跟mapboxgl匹配的wmts服务。
 	 * @param {Object} mapInfo - map 信息。
 	 * @callback matchedCallback
@@ -504,7 +505,7 @@ export class WebMap extends mapboxgl.Evented {
 			})
 			.catch(error => {
 				/**
-				 * @event mapboxgl.supermap.WebMap#getwmtsfailed
+				 * @event WebMap#getwmtsfailed
 				 * @description 获取 WMTS 图层信息失败。
 				 * @property {Object} error - 失败原因。
 				 * @property {mapboxgl.Map} map - MapBoxGL Map 对象。
@@ -515,7 +516,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createBingLayer
+	 * @function WebMap.prototype._createBingLayer
 	 * @description 创建 Bing 图层。
 	 */
 	_createBingLayer(layerName) {
@@ -526,7 +527,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createXYZLayer
+	 * @function WebMap.prototype._createXYZLayer
 	 * @description 创建 XYZ 底图。
 	 * @param {String} url - url 地址。
 	 */
@@ -568,7 +569,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createDynamicTiledLayer
+	 * @function WebMap.prototype._createDynamicTiledLayer
 	 * @description 创建 iserver 底图。
 	 * @param {Object} layerInfo - 图层信息。
 	 */
@@ -581,7 +582,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createWMSLayer
+	 * @function WebMap.prototype._createWMSLayer
 	 * @description 创建 WMS 图层。
 	 * @param {Object} mapInfo - map 信息。
 	 */
@@ -592,7 +593,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createVectorLayer
+	 * @function WebMap.prototype._createVectorLayer
 	 * @description 创建 Vector 图层。
 	 * @param {Object} layerInfo - map 信息。
 	 * @param {Array} features - 属性 信息。
@@ -620,7 +621,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 
 	/**
-	 * @function mapboxgl.supermap.WebMap.prototype._getTiandituUrl
+	 * @function WebMap.prototype._getTiandituUrl
 	 * @private
 	 * @description 创建天地图url;
 	 * @param {Object} mapInfo - map 信息。
@@ -676,7 +677,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 
 	/**
-	 * @function mapboxgl.supermap.WebMap.prototype._getWMSUrl
+	 * @function WebMap.prototype._getWMSUrl
 	 * @private
 	 * @description 创建 WMS url;
 	 * @param {Object} mapInfo - map 信息。
@@ -704,7 +705,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._addLayers
+	 * @function WebMap.prototype._addLayers
 	 * @description 添加叠加图层。
 	 * @param {Object} mapInfo - 图层信息。
 	 */
@@ -732,7 +733,7 @@ export class WebMap extends mapboxgl.Evented {
 								layerAdded++;
 								this._sendMapToUser(layerAdded, len);
 								/**
-								 * @event mapboxgl.supermap.WebMap#getlayersfailed
+								 * @event WebMap#getlayersfailed
 								 * @description 获取图层信息失败。
 								 * @property {Object} error - 失败原因。
 								 * @property {mapboxgl.Map} map - MapBoxGL Map 对象。
@@ -787,7 +788,7 @@ export class WebMap extends mapboxgl.Evented {
 						layerAdded++;
 						this._sendMapToUser(layerAdded, len);
 						/**
-						 * @event mapboxgl.supermap.WebMap#getfeaturesfailed
+						 * @event WebMap#getfeaturesfailed
 						 * @description 获取图层要素失败。
 						 * @property {Object} error - 失败原因。
 						 */
@@ -837,7 +838,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getFeatures
+	 * @function WebMap.prototype._getFeatures
 	 * @description 将单个图层添加到地图上。
 	 * @param layerInfo  某个图层的图层信息
 	 * @param {Array.<GeoJSON>} features - feature。
@@ -874,7 +875,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._addLayer
+	 * @function WebMap.prototype._addLayer
 	 * @description 将单个图层添加到地图上。
 	 * @param layerInfo  某个图层的图层信息
 	 * @param {Array.<GeoJSON>} features - feature。
@@ -924,7 +925,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._addLabelLayer
+	 * @function WebMap.prototype._addLabelLayer
 	 * @description 添加标签图层。
 	 * @param layerInfo  某个图层的图层信息。
 	 * @param {Array.<GeoJSON>} features - feature。
@@ -959,7 +960,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createSymbolLayer
+	 * @function WebMap.prototype._createSymbolLayer
 	 * @description 添加 symbol 图层。
 	 * @param layerInfo  某个图层的图层信息。
 	 * @param {Array.<GeoJSON>} features - feature。
@@ -1001,7 +1002,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createGraphicLayer
+	 * @function WebMap.prototype._createGraphicLayer
 	 * @description 创建 Graphic 图层。
 	 * @param {Object} layerInfo - map 信息。
 	 * @param {Array} features - 属性 信息。
@@ -1082,7 +1083,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createUniqueLayer
+	 * @function WebMap.prototype._createUniqueLayer
 	 * @description 创建单值图层。
 	 * @param layerInfo  某个图层的图层信息
 	 * @param features   图层上的 feature
@@ -1123,7 +1124,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getUniqueStyleGroup
+	 * @function WebMap.prototype._getUniqueStyleGroup
 	 * @description 获取单值的目标字段与颜色的对应数组。
 	 * @param layerInfo  某个图层的图层信息
 	 * @param features   图层上的 feature
@@ -1177,7 +1178,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getWMTSUrl
+	 * @function WebMap.prototype._getWMTSUrl
 	 * @description 根据传入的配置信息拼接wmts url。
 	 * @param options 配置对象
 	 */
@@ -1200,7 +1201,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createMarkerLayer
+	 * @function WebMap.prototype._createMarkerLayer
 	 * @description 添加标记图层。
 	 * @param {Array.<GeoJSON>} features - feature。
 	 */
@@ -1309,7 +1310,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype.setFeatureInfo
+	 * @function WebMap.prototype.setFeatureInfo
 	 * @description 设置 feature 信息。
 	 * @param {Array.<GeoJSON>} features - feature。
 	 */
@@ -1335,7 +1336,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createHeatLayer
+	 * @function WebMap.prototype._createHeatLayer
 	 * @description 添加热力图。
 	 * @param {Array.<GeoJSON>} features - feature。
 	 */
@@ -1396,7 +1397,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._changeWeight
+	 * @function WebMap.prototype._changeWeight
 	 * @description 改变当前权重字段
 	 * @param {Array.<GeoJSON>} features - feature。
 	 * @param {String} weightFeild - 权重字段
@@ -1414,7 +1415,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getMaxValue
+	 * @function WebMap.prototype._getMaxValue
 	 * @description 获取当前字段对应的最大值，用于计算权重。
 	 * @param {Array.<GeoJSON>} features - feature。
 	 * @param {String} weightFeild - 权重字段
@@ -1436,7 +1437,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._createRangeLayer
+	 * @function WebMap.prototype._createRangeLayer
 	 * @description 添加分段专题图。
 	 * @param {Array.<GeoJSON>} features - feature。
 	 */
@@ -1488,7 +1489,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getFiterFeatures
+	 * @function WebMap.prototype._getFiterFeatures
 	 * @description 通过过滤条件查询满足的 feature。
 	 * @param {String} filterCondition - 过滤条件。
 	 * @param {array} allFeatures - 图层上的 feature 集合
@@ -1520,7 +1521,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._replaceFilterCharacter
+	 * @function WebMap.prototype._replaceFilterCharacter
 	 * @description 获取过滤字符串。
 	 * @param {String} filterString - 过滤条件。
 	 */
@@ -1536,7 +1537,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getRangeStyleGroup
+	 * @function WebMap.prototype._getRangeStyleGroup
 	 * @description 获取分段样式。
 	 * @param {Array.<GeoJSON>} features - feature。
 	 */
@@ -1619,7 +1620,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._formatGeoJSON
+	 * @function WebMap.prototype._formatGeoJSON
 	 * @description 格式 GeoJSON。
 	 * @param {GeoJSON} data - GeoJSON 数据。
 	 */
@@ -1645,7 +1646,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._excelData2Feature将
+	 * @function WebMap.prototype._excelData2Feature将
 	 * @description csv 和 xls 文件内容转换成 geojson
 	 * @param content  文件内容
 	 * @param layerInfo  图层信息
@@ -1711,7 +1712,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._sendMapToUser
+	 * @function WebMap.prototype._sendMapToUser
 	 * @description 返回最终的 map 对象给用户，供他们操作使用。
 	 * @param count
 	 * @param layersLen
@@ -1719,7 +1720,7 @@ export class WebMap extends mapboxgl.Evented {
 	_sendMapToUser(count, layersLen) {
 		if (count === layersLen) {
 			/**
-			 * @event mapboxgl.supermap.WebMap#addlayerssucceeded
+			 * @event WebMap#addlayerssucceeded
 			 * @description 添加图层成功。
 			 * @property {mapboxgl.Map} map - MapBoxGL Map 对象。
 			 * @property {Object} mapparams - 地图信息。
@@ -1732,7 +1733,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 
 	/**
-	 * @function mapboxgl.supermap.WebMap.prototype._unproject
+	 * @function WebMap.prototype._unproject
 	 * @private
 	 * @description 墨卡托转经纬度。
 	 * @param {} point - 待转换的点。
@@ -1751,7 +1752,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 
 	/**
-	 * @function mapboxgl.supermap.WebMap.prototype._getParamString
+	 * @function WebMap.prototype._getParamString
 	 * @private
 	 * @param {Object} obj - 待添加的参数。
 	 * @param {string} existingUrl - 待添加参数的 url。
@@ -1805,7 +1806,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._transformStyleToMapBoxGl
+	 * @function WebMap.prototype._transformStyleToMapBoxGl
 	 * @description 根据图层类型将 layerInfo 中的 style 属性格式转换为 mapboxgl 中的 style 格式。
 	 * @param {Object} style - layerInfo中的style属性
 	 * @param {String} type - 图层类型
@@ -1859,7 +1860,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype.._dashStyle
+	 * @function WebMap.prototype.._dashStyle
 	 * @description 符号样式。
 	 * @param {Object} style - 样式参数。
 	 * @param {number} widthFactor - 宽度系数。
@@ -1926,7 +1927,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._addOverlayToMap
+	 * @function WebMap.prototype._addOverlayToMap
 	 * @description 添加基础矢量图层到 MAP
 	 * @param {Object} style - mabgl style
 	 * @param {String} type - 图层类型
@@ -1966,7 +1967,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._addStrokeLineForPoly
+	 * @function WebMap.prototype._addStrokeLineForPoly
 	 * @description 添加面的边框。
 	 * @param {Object} style - mabgl style
 	 */
@@ -1978,7 +1979,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._parseGeoJsonData2Feature
+	 * @function WebMap.prototype._parseGeoJsonData2Feature
 	 * @description 将从restData地址上获取的json转换成feature（从iserver中获取的json转换成feature）
 	 * @param {object} metaData - json内容
 	 * @returns {Array}  ol.feature的数组集合
@@ -2005,7 +2006,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._getFeatureBySQL
+	 * @function WebMap.prototype._getFeatureBySQL
 	 * @description 通过 sql 方式查询数据。
 	 */
 	_getFeatureBySQL(url, datasetNames, processCompleted, processFaild) {
@@ -2037,7 +2038,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._queryFeatureBySQL
+	 * @function WebMap.prototype._queryFeatureBySQL
 	 * @description 通过 sql 方式查询数据。
 	 */
 	_queryFeatureBySQL(
@@ -2082,7 +2083,7 @@ export class WebMap extends mapboxgl.Evented {
 
 	/**
 	 * @private
-	 * @function mapboxgl.supermap.WebMap.prototype._handleMultyPolygon
+	 * @function WebMap.prototype._handleMultyPolygon
 	 * @description 处理复杂面情况
 	 */
 	_handleMultyPolygon(features) {

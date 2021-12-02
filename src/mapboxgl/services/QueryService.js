@@ -14,11 +14,11 @@ import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryBy
 import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
 import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 /**
- * @class mapboxgl.supermap.QueryService
+ * @class QueryService
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
- * @extends {mapboxgl.supermap.ServiceBase}
+ * @extends {ServiceBase}
  * @param {string} url - 地图查询服务访问地址。
  * @param {Object} options - 服务交互时所需的可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -26,10 +26,11 @@ import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryBy
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * new mapboxgl.supermap.QueryService(url)
+ * new QueryService(url)
  * .queryByBounds(param,function(result){
  *     //doSomething
  * })
+ * @usage
  */
 export class QueryService extends ServiceBase {
     constructor(url, options) {
@@ -37,11 +38,11 @@ export class QueryService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.QueryService.prototype.queryByBounds
+     * @function QueryService.prototype.queryByBounds
      * @description Bounds 查询地图服务。
-     * @param {SuperMap.QueryByBoundsParameters} params - 通过 Bounds 查询的相关参数类。
+     * @param {QueryByBoundsParameters} params - 通过 Bounds 查询的相关参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByBounds(params, callback, resultFormat) {
         var me = this;
@@ -64,11 +65,11 @@ export class QueryService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.QueryService.prototype.queryByDistance
+     * @function QueryService.prototype.queryByDistance
      * @description 地图距离查询服务。
-     * @param {SuperMap.QueryByDistanceParameters} params - Distance 查询相关参数类。
+     * @param {QueryByDistanceParameters} params - Distance 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型
      */
     queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -90,11 +91,11 @@ export class QueryService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.QueryService.prototype.queryBySQL
+     * @function QueryService.prototype.queryBySQL
      * @description 地图 SQL 查询服务。
-     * @param {SuperMap.QueryBySQLParameters} params - SQL 查询相关参数类。
+     * @param {QueryBySQLParameters} params - SQL 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -116,11 +117,11 @@ export class QueryService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.QueryService.prototype.queryByGeometry
+     * @function QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务。
-     * @param {SuperMap.QueryByGeometryParameters} params - Geometry 查询相关参数类。
+     * @param {QueryByGeometryParameters} params - Geometry 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry(params, callback, resultFormat) {
         var me = this;

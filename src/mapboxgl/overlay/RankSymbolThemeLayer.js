@@ -6,7 +6,7 @@ import {Graph} from './GraphThemeLayer';
 import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
 
 /**
- * @class mapboxgl.supermap.RankSymbolThemeLayer
+ * @class RankSymbolThemeLayer
  * @category  Visualization Theme
  * @classdesc 等级符号专题图层。
  * @param {string} name - 图层名。
@@ -27,7 +27,8 @@ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/
  * @param {number} [opt_options.symbolSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
  * @param {Array.<number>} opt_options.symbolSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  * @param {number} opt_options.symbolSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @extends {mapboxgl.supermap.GraphThemeLayer}
+ * @extends {GraphThemeLayer}
+ * @usage
  */
 export class RankSymbol extends Graph {
 
@@ -39,7 +40,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.setSymbolType
+     * @function RankSymbol.prototype.setSymbolType
      * @description 设置标志符号。
      * @param {string} [symbolType] - 符号类型。
      */
@@ -49,7 +50,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.createThematicFeature
+     * @function RankSymbol.prototype.createThematicFeature
      * @description 创建专题图形要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */

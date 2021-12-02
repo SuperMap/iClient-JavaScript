@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 
 /**
- * @class mapboxgl.supermap.ServiceBase
+ * @class ServiceBase
  * @category  iServer
  * @description mapboxgl.supermap 服务基类。
  * @param {string} url - 与客户端交互的服务地址。 
@@ -14,7 +14,8 @@ import '../core/Base';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @fires mapboxgl.supermap.ServiceBase#initialized
+ * @fires ServiceBase#initialized
+ * @usage
  */
 export class ServiceBase extends mapboxgl.Evented {
 
@@ -23,7 +24,7 @@ export class ServiceBase extends mapboxgl.Evented {
         this.options = options || {};
         this.url = url;
         /**
-         * @event mapboxgl.supermap.ServiceBase#initialized
+         * @event ServiceBase#initialized
          * @description 构造函数构造成功之后触发。
          * @property {Object} this - this 对象。
          */

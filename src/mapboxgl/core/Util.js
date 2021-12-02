@@ -15,16 +15,32 @@ const isString = function (str) {
   return (typeof str === 'string') && str.constructor === String;
 }
 /**
- * @class mapboxgl.supermap.Util
+ * @name Util
+ * @namespace
  * @category BaseTypes Util
- * @classdesc 工具类。
+ * @description 工具类。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.Util.extend(dest, arguments);
+ *
+ * </script>
+ * // ES6 Import
+ * import { Util } from '{npm}';
+ *
+ * Util.extend(dest, arguments);
+ * ```
  */
+
 export const Util = {
     /**
-     * @function mapboxgl.supermap.Util.toSuperMapGeometry
+     * @memberOf Util
+     * @function Util.toSuperMapGeometry
      * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
      * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
-     * @returns {SuperMap.Geometry}
+     * @returns {Geometry}
      */
     toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
@@ -52,10 +68,11 @@ export const Util = {
         return new GeometryPoint(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
     },
     /**
-     * @function mapboxgl.supermap.Util.toSuperMapPolygon
+     * @memberOf Util
+     * @function Util.toSuperMapPolygon
      * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
      * @param {Mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
-     * @returns {SuperMap.Geometry.Polygon}
+     * @returns {Polygon}
      */
     toSuperMapPolygon(lnglatBounds) {
         const west = lnglatBounds.getWest();
@@ -73,7 +90,8 @@ export const Util = {
     },
 
     /**
-     * @function mapboxgl.supermap.Util.isArray
+     * @memberOf Util
+     * @function Util.isArray
      * @description 判断是否为数组格式。
      * @param {Object} obj - 待判断对象。
      * @returns {boolean} 是否是数组。
@@ -81,7 +99,8 @@ export const Util = {
     isArray,
 
     /**
-     * @function mapboxgl.supermap.Util.toGeoJSON
+     * @memberOf Util
+     * @function Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式。
      * @param {Object} smObj - 待转参数。
      */
@@ -93,7 +112,8 @@ export const Util = {
     },
 
     /**
-     * @function mapboxgl.supermap.Util.toProcessingParam
+     * @memberOf Util
+     * @function Util.toProcessingParam
      * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
      * @param {Array} points - Region 各个节点数组。
      * @returns {Object} processing 服务裁剪、查询分析的分析参数。
@@ -117,7 +137,8 @@ export const Util = {
     },
 
     /**
-     * @function mapboxgl.supermap.Util.extend
+     * @memberOf Util
+     * @function Util.extend
      * @description 对象拷贝赋值。
      * @param {Object} dest - 目标对象。
      * @param {Object} arguments - 待拷贝的对象。
@@ -144,6 +165,7 @@ export const Util = {
     },
 
     /**
+     * @memberOf Util
      * 检测数据是否为number
      * @param value 值，未知数据类型
      * @returns {boolean}
@@ -161,6 +183,7 @@ export const Util = {
 
     isString: isString,
     /**
+     * @memberOf Util
      * 随机生成id
      * @param attr
      * @returns {string}
@@ -175,6 +198,7 @@ export const Util = {
         return guid;
     },
     /**
+     * @memberOf Util
      * @description 十六进制转 RGBA 格式。
      * @param {Object} hex - 十六进制格式参数。
      * @param {number} opacity -Alpha 参数。
@@ -200,6 +224,7 @@ export const Util = {
     },
 
     /**
+     * @memberOf Util
      * @param {string} featureName 原始数据中的地名
      * @param {string} fieldName 需要匹配的地名
      * @returns {boolean} 是否匹配

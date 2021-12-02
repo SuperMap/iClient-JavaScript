@@ -8,7 +8,7 @@ import { DatasetService as CommonDatasetService } from '@supermap/iclient-common
 import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
 import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
 /**
- * @class mapboxgl.supermap.DatasetService
+ * @class DatasetService
  * @category  iServer Data Dataset
  * @classdesc 数据源服务类。
  * @param {string} url - 与客户端交互的服务地址。
@@ -17,7 +17,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {mapboxgl.supermap.ServiceBase}
+ * @extends {ServiceBase}
  */
 
 export class DatasetService extends ServiceBase {
@@ -27,10 +27,10 @@ export class DatasetService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasetService.prototype.getDatasets
+     * @function DatasetService.prototype.getDatasets
      * @description 数据集查询服务。
      * @example
-     *   new mapboxgl.supermap.DatasetService(url).getDatasets(datasourceName,function(result){
+     *   new DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
@@ -57,10 +57,10 @@ export class DatasetService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasetService.prototype.getDataset
+     * @function DatasetService.prototype.getDataset
      * @description 数据集查询服务。
      * @example
-     *   new mapboxgl.supermap.DatasetService(url).getDataset(datasourceName, datasetName, function(result){
+     *   new DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
@@ -87,13 +87,13 @@ export class DatasetService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasetService.prototype.setDataset
+     * @function DatasetService.prototype.setDataset
      * @description 数据集信息设置服务。可实现修改已存在数据集，新增不存在数据集。
      * @example
-     *   new mapboxgl.supermap.DatasetService(url).setDataset(params, function(result){
+     *   new DatasetService(url).setDataset(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.CreateDatasetParameters | SuperMap.UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
+     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
      * @param {RequestCallback} callback - 回调函数。
      */
     setDataset(params, callback) {
@@ -130,10 +130,10 @@ export class DatasetService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.DatasetService.prototype.deleteDataset
+     * @function DatasetService.prototype.deleteDataset
      * @description 指定数据源下的数据集删除服务。
      * @example
-     *   new mapboxgl.supermap.DatasetService(url).deleteDataset(datasourceName, datasetName, function(result){
+     *   new DatasetService(url).deleteDataset(datasourceName, datasetName, function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。

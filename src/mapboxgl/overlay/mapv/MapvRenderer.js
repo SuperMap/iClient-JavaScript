@@ -307,7 +307,7 @@ export class MapvRenderer extends BaseLayer {
         this.initAnimator();
     }
     /**
-     * @function L.supermap.MapVRenderer.prototype.bindMapEvent
+     * @function MapVRenderer.prototype.bindMapEvent
      * @description 绑定鼠标移动事件。
      */
     bindMapEvent() {
@@ -337,7 +337,7 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.unbindMapEvent
+     * @function MapVRenderer.prototype.unbindMapEvent
      * @description 解绑鼠标移动事件。
      */
     unbindMapEvent() {
@@ -354,7 +354,7 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @function MapVRenderer.prototype.destroy
      * @description 释放资源。
      */
     destroy() {

@@ -5,13 +5,14 @@ import '../core/Base';
 import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
 
 /**
- * @class mapboxgl.supermap.LogoControl
+ * @class Logo
+ * @deprecatedclass mapboxgl.supermap.LogoControl
  * @category  Control
  * @classdesc Logo 控件。默认不显示。
  *
  * @example
  * (start code)
- *  map.addControl(new mapboxgl.supermap.LogoControl(),'bottom-right');
+ *  map.addControl(new Logo(),'bottom-right');
  * (end)
  * @param {Object} options - logo 控件配置项。
  * @param {string} [options.imageUrl] - logo 图片地址。
@@ -36,7 +37,7 @@ export class Logo {
     }
 
     /**
-     * @function mapboxgl.supermap.LogoControl.prototype.onAdd
+     * @function Logo.prototype.onAdd
      * @description 添加一个 logo。
      * @returns {HTMLElement} 返回创建的 logo 元素。
      */

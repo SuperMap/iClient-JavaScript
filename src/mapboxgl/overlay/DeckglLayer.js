@@ -7,7 +7,7 @@ import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import { Util } from '../core/Util';
 
 /**
- * @class mapboxgl.supermap.DeckglLayer
+ * @class DeckglLayer
  * @category  Visualization DeckGL
  * @classdesc Deckgl 高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
  *            正六边形图层（蜂巢图层）、网格图层，只需给定相依配置，因此，在创建图层之前，请仔细阅读参数配置。
@@ -69,17 +69,18 @@ import { Util } from '../core/Util';
  * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
  * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
+ * @usage
  */
 export class DeckglLayer {
     constructor(layerTypeID, options) {
         // Util.extend(defaultProps, options);
         /**
-         * @member {string} mapboxgl.supermap.DeckglLayer.prototype.id
+         * @member {string} DeckglLayer.prototype.id
          * @description 高效率点图层 id。
          */
         this.layerTypeID = layerTypeID;
         /**
-         * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.DeckglLayer.prototype.graphics
+         * @member {Array.<Graphic>} DeckglLayer.prototype.graphics
          * @description 点要素对象数组。
          */
         this.data = [].concat(options.data);
@@ -92,16 +93,16 @@ export class DeckglLayer {
             : CommonUtil.createUniqueID('graphicLayer_' + this.layerTypeID + '_');
 
         /**
-         * @member {boolean} [mapboxgl.supermap.DeckglLayer.prototype.visibility=true]
+         * @member {boolean} [DeckglLayer.prototype.visibility=true]
          * @description 图层显示状态属性。
          */
         this.visibility = true;
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.onAdd
+     * @function DeckglLayer.prototype.onAdd
      * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
-     * @returns {mapboxgl.supermap.DeckglLayer}
+     * @returns {DeckglLayer}
      */
     onAdd(map) {
         this.map = map;
@@ -140,7 +141,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.remove
+     * @function DeckglLayer.prototype.remove
      * @description 删除该图层。
      */
     remove() {
@@ -150,7 +151,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.removeFromMap
+     * @function DeckglLayer.prototype.removeFromMap
      * @deprecated
      * @description 删除该图层。
      */
@@ -160,7 +161,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.moveTo
+     * @function DeckglLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
      * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前（如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后）。
@@ -186,7 +187,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.setVisibility
+     * @function DeckglLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
@@ -198,7 +199,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.setStyle
+     * @function DeckglLayer.prototype.setStyle
      * @description 设置图层整体样式。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
@@ -218,7 +219,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.setData
+     * @function DeckglLayer.prototype.setData
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
      * @param {Array.<Object>}  data - 点要素对象数组。
      */
@@ -239,7 +240,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.addData
+     * @function DeckglLayer.prototype.addData
      * @description 添加点要素，不会覆盖之前的要素。
      * @param {Array.<Object>}  data - 点要素对象数组。
      */
@@ -257,7 +258,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.update
+     * @function DeckglLayer.prototype.update
      * @description 更新图层。
      */
     update() {
@@ -274,7 +275,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.clear
+     * @function DeckglLayer.prototype.clear
      * @description 释放图层资源。
      */
     // todo 还有哪些资源应该被释放？
@@ -284,7 +285,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype.removeData
+     * @function DeckglLayer.prototype.removeData
      * @description 移除所有要素。
      */
     removeData() {
@@ -354,7 +355,7 @@ export class DeckglLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.DeckglLayer.prototype._createLayerByLayerTypeID
+     * @function DeckglLayer.prototype._createLayerByLayerTypeID
      * @description 判别当前创建图层类型。
      * @private
      */
