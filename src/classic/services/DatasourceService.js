@@ -11,7 +11,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @class SuperMap.REST.DatasourceService
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

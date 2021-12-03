@@ -72,7 +72,7 @@ export class ElasticSearch {
         this.EVENT_TYPES = ['change', 'error', 'outOfGeoFence'];
 
         /**
-         * @member {SuperMap.Events} ElasticSearch.prototype.events
+         * @member {Events} ElasticSearch.prototype.events
          * @description 事件
          */
         this.events = new Events(this, null, this.EVENT_TYPES);
@@ -80,7 +80,7 @@ export class ElasticSearch {
         /**
          * @member {Object} ElasticSearch.prototype.eventListeners
          * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
-         * 相当于调用 SuperMap.Events.on(eventListeners)。
+         * 相当于调用 Events.on(eventListeners)。
          */
         this.eventListeners = null;
         Util.extend(this, options);
@@ -92,7 +92,7 @@ export class ElasticSearch {
     /**
      * @function  ElasticSearch.prototype.setGeoFence
      * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
-     * @param {SuperMap.Geometry} geoFence - 地理围栏。
+     * @param {Geometry} geoFence - 地理围栏。
      */
 
     setGeoFence(geoFence) {

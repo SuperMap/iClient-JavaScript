@@ -12,7 +12,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
  * @classdesc 数据集查询。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -91,7 +91,7 @@ export class DatasetService extends CommonServiceBase {
      *   new SuperMap.REST.DatasetService(url).setDataset(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.CreateDatasetParameters | SuperMap.UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
+     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
      * @param {RequestCallback} callback - 回调函数。
      */
     setDataset(params, callback) {

@@ -9,7 +9,7 @@ import { AddressMatchService as CommonAddressMatchService } from '@supermap/icli
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -25,7 +25,7 @@ export class AddressMatchService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.code
      * @description 正向匹配。
-     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
+     * @param {GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback - 回调函数。
      */
     code(params, callback) {
@@ -47,7 +47,7 @@ export class AddressMatchService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.decode
      * @description 反向匹配。
-     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
+     * @param {GeoDecodingParameter} params - 反向匹配参数。
      * @param {RequestCallback} callback - 回调函数。
      */
     decode(params, callback) {
