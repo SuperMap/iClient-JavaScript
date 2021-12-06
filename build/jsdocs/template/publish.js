@@ -74,6 +74,9 @@ function addSignatureParams(f) {
     var params = helper.getSignatureParams(f, 'optional');
 
     f.signature = (f.signature || '') + '(' + params.join(', ') + ')';
+    if (f.usage) {
+      f.usage.paramsNames = params;
+    }
 }
 
 function addSignatureReturns(f) {

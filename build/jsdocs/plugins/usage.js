@@ -41,19 +41,6 @@ exports.defineTags = function (dictionary) {
 };
 
 exports.handlers = {
-  parseComplete: function (e) {
-    const doclets = e.doclets;
-    let usage = null;
-    for (let index = 0; index < doclets.length; index++) {
-      const doclet = doclets[index];
-      if (doclet.usage && typeof doclet.usage === 'object') {
-        usage = doclet.usage;
-      }
-      if (doclet.meta && doclet.meta.code && doclet.meta.code.type === 'ClassDeclaration' && usage) {
-        usage.paramsNames = doclet.meta.code.paramnames;
-      }
-    }
-  },
   newDoclet: function (e) {
     var usage = e.doclet.usage;
     if (usage && usage.indexOf) {
