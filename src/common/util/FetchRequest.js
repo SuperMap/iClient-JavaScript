@@ -178,6 +178,7 @@ var RequestTimeout;
  * @function setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
+ * @private
  * @usage
  * ```
  * // 浏览器
@@ -231,6 +232,7 @@ export var isCORS = function () {
  * @function setRequestTimeout
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
+ * @private
  * @usage
  * ```
  * // 浏览器
@@ -256,6 +258,7 @@ export var setRequestTimeout = function (timeout) {
  * @function getRequestTimeout
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
+ * @private
  * @usage
  * ```
  * // 浏览器

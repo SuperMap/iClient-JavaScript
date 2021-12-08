@@ -73,6 +73,7 @@ const isSupportCanvas = (function () {
 /**
  * @description 如果 userAgent 捕获到浏览器使用的是 Gecko 引擎则返回 true。
  * @constant {number}
+ * @private
  */
 const IS_GECKO = (function () {
   var ua = navigator.userAgent.toLowerCase();
@@ -83,6 +84,7 @@ const IS_GECKO = (function () {
  * @constant {number}
  * @default
  * @description 分辨率与比例尺之间转换的常量。
+ * @private
  */
 const DOTS_PER_INCH = 96;
 
@@ -1080,6 +1082,7 @@ const Util = {
  * @enum INCHES_PER_UNIT
  * @description 每单位的英尺数。
  * @type {number}
+ * @private
  */
 const INCHES_PER_UNIT = {
   inches: 1.0,

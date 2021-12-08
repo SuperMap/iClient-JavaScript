@@ -54,6 +54,7 @@ import {Graph} from './Graph';
  * ]
  * @extends CommonGraph
  * @usage
+ * @private
  */
 export class Point extends Graph {
 

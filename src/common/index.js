@@ -104,12 +104,9 @@ import {
     Size,
     CommonUtil,
     Browser,
-    INCHES_PER_UNIT,
-    DOTS_PER_INCH,
-    IS_GECKO,
     GeometryVector
 } from './commontypes';
-import { Format, GeoJSON, JSONFormat, WKT } from './format';
+import { Format, GeoJSON, JSONFormat } from './format';
 
 import { TimeControlBase, TimeFlowControl } from './control';
 import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
@@ -224,7 +221,6 @@ import {
     GetGridCellInfosService,
     GetLayersInfoService,
     Grid,
-    UGCImage,
     InterpolationAnalystParameters,
     InterpolationAnalystService,
     InterpolationDensityAnalystParameters,
@@ -393,10 +389,7 @@ import {
 import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter } from './security';
 import { ElasticSearch } from './thirdparty';
 import {
-    setCORS,
     isCORS,
-    setRequestTimeout,
-    getRequestTimeout,
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
@@ -406,23 +399,14 @@ import {
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
-    Bar,
-    Bar3D,
-    Circle,
     Graph,
-    Line,
-    Pie,
-    OverlayPoint,
     RankSymbol,
-    Ring,
     ThemeVector,
     ShapeFactory,
     ShapeParameters,
-    FeatureCircle,
     Image,
     Label,
     FeatureLine,
-    Point,
     FeaturePolygon,
     FeatureRectangle,
     Sector,
@@ -614,18 +598,12 @@ export {
     Size,
     CommonUtil,
     Browser,
-    INCHES_PER_UNIT,
-    DOTS_PER_INCH,
-    IS_GECKO,
     GeometryVector
 };
 export { TimeControlBase, TimeFlowControl };
-export { Format, GeoJSON, JSONFormat, WKT };
+export { Format, GeoJSON, JSONFormat };
 export {
-    setCORS,
     isCORS,
-    setRequestTimeout,
-    getRequestTimeout,
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
@@ -745,7 +723,6 @@ export {
     GetGridCellInfosService,
     GetLayersInfoService,
     Grid,
-    UGCImage,
     InterpolationAnalystParameters,
     InterpolationAnalystService,
     InterpolationDensityAnalystParameters,
@@ -913,23 +890,14 @@ export {
     OnlineServiceBase
 };
 export {
-    Bar,
-    Bar3D,
-    Circle,
     Graph,
-    Line,
-    Pie,
-    OverlayPoint,
     RankSymbol,
-    Ring,
     ThemeVector,
     ShapeFactory,
     ShapeParameters,
-    FeatureCircle,
     Image,
     Label,
     FeatureLine,
-    Point,
     FeaturePolygon,
     FeatureRectangle,
     Sector,

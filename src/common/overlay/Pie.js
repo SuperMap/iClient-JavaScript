@@ -54,6 +54,7 @@ import {Graph} from './Graph';
  *  }
  * ]
  * @usage
+ * @private
  */
 export class Pie extends Graph {
 

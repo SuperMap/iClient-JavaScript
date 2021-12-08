@@ -11,6 +11,7 @@ import { ShapeParameters } from './ShapeParameters';
  * @classdesc 点参数对象。
  * @extends {ShapeParameters}
  * @usage
+ * @private
  */
 
 export class Point extends ShapeParameters {

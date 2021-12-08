@@ -20,6 +20,7 @@ import {Util} from '../commontypes/Util';
  * @param {ServerColor} [options.transparentColor] - 返回背景透明色。
  * @param {number} [options.transparentColorTolerance] - 背景透明色容限。
  * @usage
+ * @private
  */
 export class UGCImage extends UGCSubLayer {
 

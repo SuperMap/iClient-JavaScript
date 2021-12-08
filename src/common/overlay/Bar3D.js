@@ -135,6 +135,7 @@ import {Graph} from './Graph';
  *  }
  * ]
  * @usage
+ * @private
  */
 
 export class Bar3D extends Graph {

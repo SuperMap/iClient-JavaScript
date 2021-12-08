@@ -11,6 +11,7 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @extends {ShapeParameters}
  * @usage
+ * @private
  */
 
 export class Circle extends ShapeParameters {

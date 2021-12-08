@@ -63,6 +63,7 @@ import './feature/Line';
  * @param {Bar.setting} setting - 图表配置对象。
  * @param {LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @usage
+ * @private
  */
 export class Bar extends Graph {
 
