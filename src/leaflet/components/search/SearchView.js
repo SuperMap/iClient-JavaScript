@@ -14,7 +14,7 @@
 
 /**
  * @class SearchView
- * @aliasclass Components.SearchView
+ * @aliasclass Components.Search
  * @deprecatedclassinstance L.supermap.components.search
  * @classdesc 图层查询组件。
  * @category Components Search

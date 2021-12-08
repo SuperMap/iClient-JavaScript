@@ -32,7 +32,7 @@ export var nonProjection = function (bounds) {
 /**
  * @class NonEarthCRS
  * @aliasclass CRS.NonEarthCRS
- * @deprecatedclassinstance L.CRS.NonEarthCRS
+ * @deprecatedclass L.CRS.NonEarthCRS
  * @deprecatedclassinstance L.supermap.CRS.nonEarthCRS
  * @classdesc 平面无投影坐标类。
  * @category BaseTypes Projection

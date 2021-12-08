@@ -27,6 +27,7 @@ import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServ
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class NetworkAnalyst3DService extends ServiceBase {
 

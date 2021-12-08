@@ -19,6 +19,7 @@ import {
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
+ * @usage
  */
 export var MapvRenderer = MapVLayer.extend({
 

@@ -6,6 +6,7 @@ import {IManagerCreateNodeParam} from './iManagerCreateNodeParam';
 
 /**
  * @class IManager
+ * @aliasclass iManager
  * @deprecatedclass SuperMap.iManager
  * @classdesc iManager 服务类。
  * @category iManager

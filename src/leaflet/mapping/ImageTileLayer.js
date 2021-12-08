@@ -29,6 +29,7 @@ import { SecurityManager } from '@supermap/iclient-common/security/SecurityManag
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
  * @param {string} [options.tileProxy] -  代理地址。
+ * @usage
  */
 export var ImageTileLayer = L.TileLayer.extend({
     options: {

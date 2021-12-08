@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class IPortalShareParam
+ * @aliasclass iPortalShareParam
  * @deprecatedclass SuperMap.iPortalShareParam
  * @classdesc iPortal 资源共享参数。
  * @version 10.0.1

@@ -5,7 +5,8 @@
 
  /**
   * @class IPortalAddResourceParam
- * @deprecatedclass SuperMap.iPortalAddResourceParam
+  * @aliasclass iPortalAddResourceParam
+  * @deprecatedclass SuperMap.iPortalAddResourceParam
   * @classdesc iPortal 添加资源参数。
   * @version 10.0.1
   * @category iPortal/Online

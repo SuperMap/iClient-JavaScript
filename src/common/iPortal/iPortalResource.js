@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 import {IPortalServiceBase} from './iPortalServiceBase';
 /**
  * @class IPortalResource
+ * @aliasclass iPortalResource
  * @deprecatedclass SuperMap.iPortalResource
  * @classdesc iPortal 资源详情类。
  * @version 10.0.1

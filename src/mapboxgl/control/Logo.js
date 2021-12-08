@@ -20,6 +20,7 @@ import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
  * @param {string} [options.height] - logo 图片高。
  * @param {string} [options.link] - logo 图片跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
+ * @usage
  */
 export class Logo {
     constructor(options) {

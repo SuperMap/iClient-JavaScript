@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class IPortalQueryResult
+ * @aliasclass iPortalQueryResult
  * @deprecatedclass SuperMap.iPortalQueryResult
  * @classdesc iPortal 资源结果集封装类。
  * @version 10.0.1

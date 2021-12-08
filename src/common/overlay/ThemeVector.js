@@ -39,7 +39,7 @@ import {LonLat} from '../commontypes/LonLat';
  * @param {boolean} [options.isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
  * @param {Object} [options.highlightStyle] - 高亮样式。
- * @suage
+ * @usage
  */
 export class ThemeVector extends Theme {
 

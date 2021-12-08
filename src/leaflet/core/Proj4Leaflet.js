@@ -97,7 +97,7 @@ L.Proj.Projection = L.Class.extend({
 /**
  * @class CRS
  * @aliasclass Proj.CRS
- * @deprecatedclassinstance L.Proj.CRS
+ * @deprecatedclass L.Proj.CRS
  * @deprecatedclassinstance L.supermap.Proj.crs
  * @classdesc 基于 Proj4 坐标系统扩展类。
  * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。

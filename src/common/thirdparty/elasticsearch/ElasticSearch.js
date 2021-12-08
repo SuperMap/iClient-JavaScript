@@ -160,7 +160,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.delete
+     * @function  ElasticSearch.prototype.deleteByQuery
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
@@ -172,7 +172,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.delete
+     * @function  ElasticSearch.prototype.deleteScript
      * @description 根据其ID删除脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>

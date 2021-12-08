@@ -5,7 +5,8 @@
 
  /**
   * @class IPortalAddDataParam
- * @deprecatedclass SuperMap.iPortalAddDataParam
+  * @aliasclass iPortalAddDataParam
+  * @deprecatedclass SuperMap.iPortalAddDataParam
   * @classdesc iPortal 上传/注册数据所需的参数。
   * @version 10.0.1
   * @category iPortal/Online

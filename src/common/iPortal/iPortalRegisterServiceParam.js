@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class IPortalRegisterServiceParam
+ * @aliasclass iPortalRegisterServiceParam
  * @deprecatedclass SuperMap.iPortalRegisterServiceParam
  * @classdesc iPortal 注册服务参数。
  * @version 10.0.1

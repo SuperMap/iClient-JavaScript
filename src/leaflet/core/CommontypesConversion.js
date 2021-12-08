@@ -11,7 +11,6 @@
 /**
  * @class CommontypesConversion
  * @category BaseTypes Util
- * @namespace
  * @classdesc Leaflet 对象和 SuperMap 对象转换工具。
  * @usage
  */

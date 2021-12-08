@@ -7,6 +7,7 @@ import {Lang} from '../../lang/Lang';
 
 /**
  * @class FileReaderUtil
+ * @aliasclass Components.FileReaderUtil
  * @deprecatedclass SuperMap.Components.FileReaderUtil
  * @classdesc 组件读取文件工具类。
  * @version 9.1.1

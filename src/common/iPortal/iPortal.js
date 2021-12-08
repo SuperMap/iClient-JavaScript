@@ -10,6 +10,7 @@ import { IPortalShareParam } from "./iPortalShareParam";
 
 /**
  * @class IPortal
+ * @aliasclass iPortal
  * @deprecatedclass SuperMap.iPortal
  * @classdesc 对接 SuperMap iPortal 基础服务。
  * @category iPortal/Online

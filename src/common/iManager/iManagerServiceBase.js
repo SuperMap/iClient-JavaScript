@@ -6,6 +6,7 @@ import {FetchRequest} from '../util/FetchRequest';
 
 /**
  * @class IManagerServiceBase
+ * @aliasclass iManagerServiceBase
  * @deprecatedclass SuperMap.iManagerServiceBase
  * @classdesc iManager 服务基类（有权限限制的类需要实现此类）。
  * @category iManager

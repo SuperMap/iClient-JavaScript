@@ -5,6 +5,7 @@
 
  /**
   * @class IPortalDataStoreInfoParam
+  * @aliasclass iPortalDataStoreInfoParam
   * @deprecatedclass SuperMap.iPortalDataStoreInfoParam
   * @classdesc iPortal 注册一个HBASE HDFS数据存储类。
   * @version 10.0.1

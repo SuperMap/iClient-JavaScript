@@ -184,12 +184,12 @@ var RequestTimeout;
  * <script type="text/javascript" src="{cnd}"></script>
  * <script>
  *   {namespace}.setCORS(cors);
-
+ * 
  *   // 弃用的写法
  *   SuperMap.setCORS(cors);
-
+ * 
  * </script>
-
+ * 
  * // ES6 Import
  * import { setCORS } from '{npm}';
  *

@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class IPortalShareEntity
+ * @aliasclass iPortalShareEntity
  * @deprecatedclass SuperMap.iPortalShareEntity
  * @classdesc iPortal 资源共享实体参数。
  * @version 10.0.1
