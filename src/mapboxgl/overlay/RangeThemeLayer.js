@@ -37,7 +37,7 @@ export class Range extends GeoFeature {
     }
 
     /**
-     * @function Range.prototype.createThematicFeature
+     * @function RangeThemeLayer.prototype.createThematicFeature
      * @description 创建专题图要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */
@@ -65,7 +65,7 @@ export class Range extends GeoFeature {
 
     /**
      * @private
-     * @function Range.prototype.getStyleByData
+     * @function RangeThemeLayer.prototype.getStyleByData
      * @description 通过数据获取 style。
      * @param {Object} fea - 要素数据。
      */

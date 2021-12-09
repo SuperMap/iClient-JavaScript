@@ -51,7 +51,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.setChartsType
+     * @function GraphThemeLayer.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
      * @param {string} [chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
      */
@@ -61,7 +61,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.addFeatures
+     * @function GraphThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据，支持的 feature 类型为：iServer 返回的 feature JSON 对象。
      * @param {ServerFeature} features - 待添加的要素。
      */
@@ -86,7 +86,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.redrawThematicFeatures
+     * @function GraphThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
@@ -129,7 +129,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.createThematicFeature
+     * @function GraphThemeLayer.prototype.createThematicFeature
      * @description  向专题图图层中添加数据, 支持的 feature 类型为:iServer 返回的 feature json 对象。
      * @param {Object} feature - 待添加的要素。
      *
@@ -150,7 +150,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.drawCharts
+     * @function GraphThemeLayer.prototype.drawCharts
      * @description 绘制图表。包含压盖处理。
      *
      */
@@ -257,7 +257,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.getShapesByFeatureID
+     * @function GraphThemeLayer.prototype.getShapesByFeatureID
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
@@ -277,7 +277,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.isQuadrilateralOverLap
+     * @function GraphThemeLayer.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
@@ -320,7 +320,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.isPointInPoly
+     * @function GraphThemeLayer.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。(射线法)
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x (横坐标)，属性 y (纵坐标)。
      * @param {Array.<Object>} poly - 多边形节点数组。
@@ -335,7 +335,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.isChartInMap
+     * @function GraphThemeLayer.prototype.isChartInMap
      * @description  判断图表是否在地图里。
      * @param {Bounds} mapPxBounds - 地图像素范围。
      * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
@@ -355,7 +355,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.clearCache
+     * @function GraphThemeLayer.prototype.clearCache
      * @description  清除缓存
      */
     clearCache() {
@@ -364,7 +364,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.removeFeatures
+     * @function GraphThemeLayer.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {Feature.Vector} features - 要删除的要素。
      */
@@ -374,7 +374,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.removeAllFeatures
+     * @function GraphThemeLayer.prototype.removeAllFeatures
      * @description  移除所有的要素。
      */
     removeAllFeatures() {
@@ -383,7 +383,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.redraw
+     * @function GraphThemeLayer.prototype.redraw
      * @description  重绘该图层。
      */
     redraw() {
@@ -396,7 +396,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function Graph.prototype.clear
+     * @function GraphThemeLayer.prototype.clear
      * @description  清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {

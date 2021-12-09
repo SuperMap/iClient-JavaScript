@@ -40,7 +40,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function RankSymbol.prototype.setSymbolType
+     * @function RankSymbolThemeLayer.prototype.setSymbolType
      * @description 设置标志符号。
      * @param {string} [symbolType] - 符号类型。
      */
@@ -50,7 +50,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function RankSymbol.prototype.createThematicFeature
+     * @function RankSymbolThemeLayer.prototype.createThematicFeature
      * @description 创建专题图形要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */

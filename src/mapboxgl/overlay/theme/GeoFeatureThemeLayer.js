@@ -36,46 +36,46 @@ export class GeoFeature extends Theme {
     constructor(name, opt_options) {
         super(name, opt_options);
         /**
-         * @member {string} GeoFeature.prototype.name 
+         * @member {string} GeoFeatureThemeLayer.prototype.name 
          * @description 专题图图层名称。
          */
         this.name = null;
         /**
-         * @member {ThemeStyle} GeoFeature.prototype.style 
+         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.style 
          * @description 专题图图层全局样式。
          */
         this.style = null;
 
         /**
-         * @member {ThemeStyle} GeoFeature.prototype.highlightStyle 
+         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.highlightStyle 
          * @description 专题图图层高亮样式。
          */
         this.highlightStyle = null;
 
         /**
-         * @member {number} [GeoFeature.prototype.nodesClipPixel=2]
+         * @member {number} [GeoFeatureThemeLayer.prototype.nodesClipPixel=2]
          * @description 节点抽稀像素距离。
          */
         this.nodesClipPixel = 2;
 
         /**
-         * @member {boolean} [GeoFeature.prototype.isHoverAble=false]
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isHoverAble=false]
          * @description 图形是否在 hover 时高亮。
          */
         this.isHoverAble = false;
         /**
-         * @member {boolean} [GeoFeature.prototype.isMultiHover=false]
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isMultiHover=false]
          * @description 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
          */
         this.isMultiHover = false;
         /**
-         * @member {boolean} [GeoFeature.prototype.isClickAble=true] 
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isClickAble=true] 
          * @description  图形是否可点击。
          */
         this.isClickAble = true;
 
         /**
-         * @member {boolean} [GeoFeature.prototype.isAllowFeatureStyle=false]
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isAllowFeatureStyle=false]
          * @description  是否允许 feature 样式（style） 中的有效属性应用到专题图层。</br>
          *               禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
          *               的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
@@ -90,7 +90,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.addFeatures
+     * @function GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加要素。
      * @param {ThemeFeature|ServerFeature} features - 要素对象。
      */
@@ -114,7 +114,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.removeFeatures
+     * @function GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * @param {GeometryVector} features - 要删除的要素对象。
      */
@@ -124,7 +124,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.removeAllFeatures
+     * @function GeoFeatureThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -133,7 +133,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.redrawThematicFeatures
+     * @function GeoFeatureThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      * @param {mapboxgl.LngLatBounds} extent - 重绘的范围。
      */
@@ -205,7 +205,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.createThematicFeature
+     * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {GeometryVector} feature - 要素对象。
      */
@@ -231,7 +231,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.clearCache
+     * @function GeoFeatureThemeLayer.prototype.clearCache
      * @description 清除缓存。
      */
     clearCache() {
@@ -240,7 +240,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.clear
+     * @function GeoFeatureThemeLayer.prototype.clear
      * @description  清除的内容包括数据（features）、专题要素和缓存。
      */
     clear() {
@@ -251,7 +251,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.getCacheCount
+     * @function GeoFeatureThemeLayer.prototype.getCacheCount
      * @description 获取当前缓存数量。
      * @returns {number} 当前缓存数量。
      */
@@ -260,7 +260,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.setMaxCacheCount
+     * @function GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @param {number} [cacheCount] - 缓存总数。
      * @description 设置最大缓存条数。
      */
@@ -272,7 +272,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeature.prototype.setMaxCacheCount
+     * @function GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @param {number} [featureID=si.refDataID] - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */
