@@ -127,17 +127,17 @@ import {
   WebScaleUnit,
   DataItemType,
   // commontypes
-  Collection,
-  Curve,
-  GeoText,
-  LinearRing,
-  LineString,
-  MultiLineString,
-  MultiPoint,
-  MultiPolygon,
+  GeometryCollection,
+  GeometryCurve,
+  GeometryGeoText,
+  GeometryLinearRing,
+  GeometryLineString,
+  GeometryMultiLineString,
+  GeometryMultiPoint,
+  GeometryMultiPolygon,
   GeometryPoint,
-  Polygon,
-  Rectangle,
+  GeometryPolygon,
+  GeometryRectangle,
   Bounds,
   Credential,
   Event,
@@ -149,10 +149,10 @@ import {
   Size,
   CommonUtil,
   Browser,
-  GeometryVector,
+  FeatureVector,
   // format
   Format,
-  GeoJSON,
+  GeoJSONFormat,
   JSONFormat,
   // control,
   TimeControlBase,
@@ -381,14 +381,17 @@ import {
   CartoCSS,
   ThemeStyle,
   // overlay
-  ThemeVector,
-  ShapeFactory,
+  FeatureThemeGraph,
+  FeatureThemeRankSymbol,
+  FeatureThemeVector,
+  FeatureShapeFactory,
   ShapeParameters,
-  Image,
-  FeatureLine,
-  FeaturePolygon,
-  FeatureRectangle,
-  Sector,
+  ShapeParametersImage,
+  ShapeParametersLabel,
+  ShapeParametersLine,
+  ShapeParametersPolygon,
+  ShapeParametersRectangle,
+  ShapeParametersSector,
   FeatureTheme,
   LevelRenderer,
   // components
@@ -404,26 +407,27 @@ import {
   NavTabsPage,
   PaginationContainer,
   FileReaderUtil,
-  Chart,
+  ChartView,
   ChartViewModel,
   // lang
   Lang
 } from '@supermap/iclient-common/index';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from '@supermap/iclient-common/commontypes/Util';
-import { WKT } from '@supermap/iclient-common/format/WKT';
+import { WKTFormat } from '@supermap/iclient-common/format';
 import { UGCImage } from '@supermap/iclient-common/iServer/Image';
 import { setCORS, setRequestTimeout, getRequestTimeout } from '@supermap/iclient-common/util/FetchRequest';
-import { Bar } from '@supermap/iclient-common/overlay/Bar';
-import { Bar3D } from '@supermap/iclient-common/overlay/Bar3D';
-import { Circle } from '@supermap/iclient-common/overlay/Circle';
-import { Line } from '@supermap/iclient-common/overlay/Line';
-import { Pie } from '@supermap/iclient-common/overlay/Pie';
-import { Point as OverlayPoint } from '@supermap/iclient-common/overlay/Point';
-import { Ring } from '@supermap/iclient-common/overlay/Ring';
-import { Circle as FeatureCircle } from '@supermap/iclient-common/overlay/feature/Circle';
-import { Point } from '@supermap/iclient-common/overlay/feature/Point';
-
+import {
+  FeatureThemeBar,
+  FeatureThemeBar3D,
+  FeatureThemeCircle,
+  FeatureThemeLine,
+  FeatureThemePie,
+  FeatureThemePoint,
+  FeatureThemeRing,
+  ShapeParametersCircle,
+  ShapeParametersPoint
+} from '@supermap/iclient-common/overlay';
 import { WebMap } from './mapping';
 import mapboxgl from 'mapbox-gl';
 
@@ -509,21 +513,21 @@ mapboxgl.supermap.Geometry = Geometry;
 mapboxgl.supermap.LonLat = LonLat;
 mapboxgl.supermap.Pixel = Pixel;
 mapboxgl.supermap.Size = Size;
-mapboxgl.supermap.Feature.Vector = GeometryVector;
-mapboxgl.supermap.Geometry.Collection = Collection;
-mapboxgl.supermap.Geometry.Curve = Curve;
-mapboxgl.supermap.Geometry.GeoText = GeoText;
-mapboxgl.supermap.Geometry.LinearRing = LinearRing;
-mapboxgl.supermap.Geometry.LineString = LineString;
-mapboxgl.supermap.Geometry.MultiLineString = MultiLineString;
-mapboxgl.supermap.Geometry.MultiPoint = MultiPoint;
-mapboxgl.supermap.Geometry.MultiPolygon = MultiPolygon;
+mapboxgl.supermap.Feature.Vector = FeatureVector;
+mapboxgl.supermap.Geometry.Collection = GeometryCollection;
+mapboxgl.supermap.Geometry.Curve = GeometryCurve;
+mapboxgl.supermap.Geometry.GeoText = GeometryGeoText;
+mapboxgl.supermap.Geometry.LinearRing = GeometryLinearRing;
+mapboxgl.supermap.Geometry.LineString = GeometryLineString;
+mapboxgl.supermap.Geometry.MultiLineString = GeometryMultiLineString;
+mapboxgl.supermap.Geometry.MultiPoint = GeometryMultiPoint;
+mapboxgl.supermap.Geometry.MultiPolygon = GeometryMultiPolygon;
 mapboxgl.supermap.Geometry.Point = GeometryPoint;
-mapboxgl.supermap.Geometry.Polygon = Polygon;
-mapboxgl.supermap.Geometry.Rectangle = Rectangle;
+mapboxgl.supermap.Geometry.Polygon = GeometryPolygon;
+mapboxgl.supermap.Geometry.Rectangle = GeometryRectangle;
 // Components
 mapboxgl.supermap.Components = mapboxgl.supermap.Components || {};
-mapboxgl.supermap.Components.Chart = Chart;
+mapboxgl.supermap.Components.Chart = ChartView;
 mapboxgl.supermap.Components.ChartViewModel = ChartViewModel;
 mapboxgl.supermap.Components.MessageBox = MessageBox;
 mapboxgl.supermap.Components.AttributesPopContainer = AttributesPopContainer;
@@ -542,9 +546,9 @@ mapboxgl.supermap.TimeControlBase = TimeControlBase;
 mapboxgl.supermap.TimeFlowControl = TimeFlowControl;
 // Format
 mapboxgl.supermap.Format = mapboxgl.supermap.Format || Format;
-mapboxgl.supermap.Format.GeoJSON = GeoJSON;
+mapboxgl.supermap.Format.GeoJSON = GeoJSONFormat;
 mapboxgl.supermap.Format.JSON = JSONFormat;
-mapboxgl.supermap.Format.WKT = WKT;
+mapboxgl.supermap.Format.WKT = WKTFormat;
 // iManager
 mapboxgl.supermap.iManager = IManager;
 mapboxgl.supermap.iManagerCreateNodeParam = IManagerCreateNodeParam;
@@ -759,23 +763,26 @@ mapboxgl.supermap.OnlineServiceBase = OnlineServiceBase;
 // overlay
 mapboxgl.supermap.Feature = mapboxgl.supermap.Feature || {};
 mapboxgl.supermap.Feature.Theme = FeatureTheme;
-mapboxgl.supermap.Feature.Theme.Bar = Bar;
-mapboxgl.supermap.Feature.Theme.Bar3D = Bar3D;
-mapboxgl.supermap.Feature.Theme.Circle = Circle;
-mapboxgl.supermap.Feature.Theme.Line = Line;
-mapboxgl.supermap.Feature.Theme.Pie = Pie;
-mapboxgl.supermap.Feature.Theme.Point = OverlayPoint;
-mapboxgl.supermap.Feature.Theme.Ring = Ring;
-mapboxgl.supermap.Feature.Theme.ThemeVector = ThemeVector;
+mapboxgl.supermap.Feature.Theme.Bar = FeatureThemeBar;
+mapboxgl.supermap.Feature.Theme.Bar3D = FeatureThemeBar3D;
+mapboxgl.supermap.Feature.Theme.Circle = FeatureThemeCircle;
+mapboxgl.supermap.Feature.Theme.Graph = FeatureThemeGraph;
+mapboxgl.supermap.Feature.Theme.Line = FeatureThemeLine;
+mapboxgl.supermap.Feature.Theme.Pie = FeatureThemePie;
+mapboxgl.supermap.Feature.Theme.Point = FeatureThemePoint;
+mapboxgl.supermap.Feature.Theme.RankSymbol = FeatureThemeRankSymbol;
+mapboxgl.supermap.Feature.Theme.Ring = FeatureThemeRing;
+mapboxgl.supermap.Feature.Theme.ThemeVector = FeatureThemeVector;
 mapboxgl.supermap.Feature.ShapeParameters = ShapeParameters;
-mapboxgl.supermap.Feature.ShapeParameters.Circle = FeatureCircle;
-mapboxgl.supermap.Feature.ShapeParameters.Image = Image;
-mapboxgl.supermap.Feature.ShapeParameters.Line = FeatureLine;
-mapboxgl.supermap.Feature.ShapeParameters.Point = Point;
-mapboxgl.supermap.Feature.ShapeParameters.Polygon = FeaturePolygon;
-mapboxgl.supermap.Feature.ShapeParameters.Rectangle = FeatureRectangle;
-mapboxgl.supermap.Feature.ShapeParameters.Sector = Sector;
-mapboxgl.supermap.Feature.ShapeFactory = ShapeFactory;
+mapboxgl.supermap.Feature.ShapeParameters.Circle = ShapeParametersCircle;
+mapboxgl.supermap.Feature.ShapeParameters.Image = ShapeParametersImage;
+mapboxgl.supermap.Feature.ShapeParameters.Label = ShapeParametersLabel;
+mapboxgl.supermap.Feature.ShapeParameters.Line = ShapeParametersLine;
+mapboxgl.supermap.Feature.ShapeParameters.Point = ShapeParametersPoint;
+mapboxgl.supermap.Feature.ShapeParameters.Polygon = ShapeParametersPolygon;
+mapboxgl.supermap.Feature.ShapeParameters.Rectangle = ShapeParametersRectangle;
+mapboxgl.supermap.Feature.ShapeParameters.Sector = ShapeParametersSector;
+mapboxgl.supermap.Feature.ShapeFactory = FeatureShapeFactory;
 // LevelRenderer
 mapboxgl.supermap.LevelRenderer = LevelRenderer;
 

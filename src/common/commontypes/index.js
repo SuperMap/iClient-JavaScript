@@ -3,16 +3,26 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
   Collection,
+  GeometryCollection,
   Curve,
+  GeometryCurve,
   GeoText,
+  GeometryGeoText,
   LinearRing,
+  GeometryLinearRing,
   LineString,
+  GeometryLineString,
   MultiLineString,
+  GeometryMultiLineString,
   MultiPoint,
+  GeometryMultiPoint,
   MultiPolygon,
+  GeometryMultiPolygon,
   GeometryPoint,
   Polygon,
-  Rectangle
+  GeometryPolygon,
+  Rectangle,
+  GeometryRectangle
 } from './geometry/index';
 import { inheritExt, mixinExt, StringExt, NumberExt, FunctionExt, ArrayExt } from './BaseTypes';
 import { Bounds } from './Bounds';
@@ -33,20 +43,30 @@ import {
   DOTS_PER_INCH,
   IS_GECKO
 } from './Util';
-import { Vector as GeometryVector } from './Vector';
+import { Vector as GeometryVector, Vector as FeatureVector } from './Vector';
 
 export {
   Collection,
+  GeometryCollection,
   Curve,
+  GeometryCurve,
   GeoText,
+  GeometryGeoText,
   LinearRing,
+  GeometryLinearRing,
   LineString,
+  GeometryLineString,
   MultiLineString,
+  GeometryMultiLineString,
   MultiPoint,
+  GeometryMultiPoint,
   MultiPolygon,
+  GeometryMultiPolygon,
   GeometryPoint,
   Polygon,
-  Rectangle
+  GeometryPolygon,
+  Rectangle,
+  GeometryRectangle
 };
 export { inheritExt, mixinExt, StringExt, NumberExt, FunctionExt, ArrayExt };
 export { Bounds };
@@ -60,4 +80,4 @@ export { LonLat };
 export { Pixel };
 export { Size };
 export { CommonUtil, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO };
-export { GeometryVector };
+export { GeometryVector, FeatureVector };

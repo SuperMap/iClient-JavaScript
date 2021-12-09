@@ -76,16 +76,26 @@ import {
 } from './REST';
 import {
     Collection,
+    GeometryCollection,
     Curve,
+    GeometryCurve,
     GeoText,
+    GeometryGeoText,
     LinearRing,
+    GeometryLinearRing,
     LineString,
+    GeometryLineString,
     MultiLineString,
+    GeometryMultiLineString,
     MultiPoint,
+    GeometryMultiPoint,
     MultiPolygon,
+    GeometryMultiPolygon,
     GeometryPoint,
     Polygon,
+    GeometryPolygon,
     Rectangle,
+    GeometryRectangle,
     inheritExt,
     mixinExt,
     StringExt,
@@ -104,9 +114,10 @@ import {
     Size,
     CommonUtil,
     Browser,
-    GeometryVector
+    GeometryVector,
+    FeatureVector
 } from './commontypes';
-import { Format, GeoJSON, JSONFormat } from './format';
+import { Format, GeoJSON, GeoJSONFormat, JSONFormat } from './format';
 
 import { TimeControlBase, TimeFlowControl } from './control';
 import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
@@ -400,16 +411,26 @@ import {
 import { CartoCSS, ThemeStyle } from './style';
 import {
     Graph,
+    FeatureThemeGraph,
     RankSymbol,
+    FeatureThemeRankSymbol,
     ThemeVector,
+    FeatureThemeVector,
     ShapeFactory,
+    FeatureShapeFactory,
     ShapeParameters,
     Image,
+    ShapeParametersImage,
     Label,
+    ShapeParametersLabel,
     FeatureLine,
+    ShapeParametersLine,
     FeaturePolygon,
+    ShapeParametersPolygon,
     FeatureRectangle,
+    ShapeParametersRectangle,
     Sector,
+    ShapeParametersSector,
     FeatureTheme,
     LevelRenderer,
     Render,
@@ -491,7 +512,6 @@ export {
     ComponentsUtil,
     FileReaderUtil,
     ChartView,
-    ChartView as Chart,
     ChartViewModel,
     TemplateBase
 };
@@ -570,16 +590,26 @@ export {
 };
 export {
     Collection,
+    GeometryCollection,
     Curve,
+    GeometryCurve,
     GeoText,
+    GeometryGeoText,
     LinearRing,
+    GeometryLinearRing,
     LineString,
+    GeometryLineString,
     MultiLineString,
+    GeometryMultiLineString,
     MultiPoint,
+    GeometryMultiPoint,
     MultiPolygon,
+    GeometryMultiPolygon,
     GeometryPoint,
     Polygon,
+    GeometryPolygon,
     Rectangle,
+    GeometryRectangle,
     inheritExt,
     mixinExt,
     StringExt,
@@ -598,10 +628,11 @@ export {
     Size,
     CommonUtil,
     Browser,
-    GeometryVector
+    GeometryVector,
+    FeatureVector
 };
 export { TimeControlBase, TimeFlowControl };
-export { Format, GeoJSON, JSONFormat };
+export { Format, GeoJSON, GeoJSONFormat, JSONFormat };
 export {
     isCORS,
     FetchRequest,
@@ -891,16 +922,26 @@ export {
 };
 export {
     Graph,
+    FeatureThemeGraph,
     RankSymbol,
+    FeatureThemeRankSymbol,
     ThemeVector,
+    FeatureThemeVector,
     ShapeFactory,
+    FeatureShapeFactory,
     ShapeParameters,
     Image,
+    ShapeParametersImage,
     Label,
+    ShapeParametersLabel,
     FeatureLine,
+    ShapeParametersLine,
     FeaturePolygon,
+    ShapeParametersPolygon,
     FeatureRectangle,
+    ShapeParametersRectangle,
     Sector,
+    ShapeParametersSector,
     FeatureTheme,
     LevelRenderer,
     Render,

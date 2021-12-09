@@ -75,17 +75,17 @@ import {
   WebScaleUnit,
   DataItemType,
   // commontypes
-  Collection,
-  Curve,
-  GeoText,
-  LinearRing,
-  LineString,
-  MultiLineString,
-  MultiPoint,
-  MultiPolygon,
+  GeometryCollection,
+  GeometryCurve,
+  GeometryGeoText,
+  GeometryLinearRing,
+  GeometryLineString,
+  GeometryMultiLineString,
+  GeometryMultiPoint,
+  GeometryMultiPolygon,
   GeometryPoint,
-  Polygon,
-  Rectangle,
+  GeometryPolygon,
+  GeometryRectangle,
   Bounds,
   Credential,
   Event,
@@ -97,10 +97,10 @@ import {
   Size,
   CommonUtil,
   Browser,
-  GeometryVector,
+  FeatureVector,
   //format
   Format,
-  GeoJSON,
+  GeoJSONFormat,
   JSONFormat,
   // control
   TimeControlBase,
@@ -330,14 +330,17 @@ import {
   CartoCSS,
   ThemeStyle,
   // overlay
-  ThemeVector,
-  ShapeFactory,
+  FeatureThemeGraph,
+  FeatureThemeRankSymbol,
+  FeatureThemeVector,
+  FeatureShapeFactory,
   ShapeParameters,
-  Image,
-  FeatureLine,
-  FeaturePolygon,
-  FeatureRectangle,
-  Sector,
+  ShapeParametersImage,
+  ShapeParametersLabel,
+  ShapeParametersLine,
+  ShapeParametersPolygon,
+  ShapeParametersRectangle,
+  ShapeParametersSector,
   FeatureTheme,
   LevelRenderer,
   // components
@@ -353,26 +356,27 @@ import {
   NavTabsPage,
   PaginationContainer,
   FileReaderUtil,
-  Chart,
+  ChartView,
   ChartViewModel,
   // lang
   Lang
 } from '@supermap/iclient-common/index';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from '@supermap/iclient-common/commontypes/Util';
-import { WKT } from '@supermap/iclient-common/format/WKT';
+import { WKTFormat } from '@supermap/iclient-common/format';
 import { UGCImage } from '@supermap/iclient-common/iServer/Image';
 import { setCORS, setRequestTimeout, getRequestTimeout } from '@supermap/iclient-common/util/FetchRequest';
-import { Bar } from '@supermap/iclient-common/overlay/Bar';
-import { Bar3D } from '@supermap/iclient-common/overlay/Bar3D';
-import { Circle } from '@supermap/iclient-common/overlay/Circle';
-import { Line } from '@supermap/iclient-common/overlay/Line';
-import { Pie } from '@supermap/iclient-common/overlay/Pie';
-import { Point as OverlayPoint } from '@supermap/iclient-common/overlay/Point';
-import { Ring } from '@supermap/iclient-common/overlay/Ring';
-import { Circle as FeatureCircle } from '@supermap/iclient-common/overlay/feature/Circle';
-import { Point } from '@supermap/iclient-common/overlay/feature/Point';
-
+import {
+  FeatureThemeBar,
+  FeatureThemeBar3D,
+  FeatureThemeCircle,
+  FeatureThemeLine,
+  FeatureThemePie,
+  FeatureThemePoint,
+  FeatureThemeRing,
+  ShapeParametersCircle,
+  ShapeParametersPoint
+} from '@supermap/iclient-common/overlay';
 /* control */
 import { ChangeTileVersion, Logo, ScaleLine } from './control';
 
@@ -536,21 +540,21 @@ if (window && window.ol) {
   ol.supermap.LonLat = LonLat;
   ol.supermap.Pixel = Pixel;
   ol.supermap.Size = Size;
-  ol.supermap.Feature.Vector = GeometryVector;
-  ol.supermap.Geometry.Collection = Collection;
-  ol.supermap.Geometry.Curve = Curve;
-  ol.supermap.Geometry.GeoText = GeoText;
-  ol.supermap.Geometry.LinearRing = LinearRing;
-  ol.supermap.Geometry.LineString = LineString;
-  ol.supermap.Geometry.MultiLineString = MultiLineString;
-  ol.supermap.Geometry.MultiPoint = MultiPoint;
-  ol.supermap.Geometry.MultiPolygon = MultiPolygon;
+  ol.supermap.Feature.Vector = FeatureVector;
+  ol.supermap.Geometry.Collection = GeometryCollection;
+  ol.supermap.Geometry.Curve = GeometryCurve;
+  ol.supermap.Geometry.GeoText = GeometryGeoText;
+  ol.supermap.Geometry.LinearRing = GeometryLinearRing;
+  ol.supermap.Geometry.LineString = GeometryLineString;
+  ol.supermap.Geometry.MultiLineString = GeometryMultiLineString;
+  ol.supermap.Geometry.MultiPoint = GeometryMultiPoint;
+  ol.supermap.Geometry.MultiPolygon = GeometryMultiPolygon;
   ol.supermap.Geometry.Point = GeometryPoint;
-  ol.supermap.Geometry.Polygon = Polygon;
-  ol.supermap.Geometry.Rectangle = Rectangle;
+  ol.supermap.Geometry.Polygon = GeometryPolygon;
+  ol.supermap.Geometry.Rectangle = GeometryRectangle;
   // Components
   ol.supermap.Components = ol.supermap.Components || {};
-  ol.supermap.Components.Chart = Chart;
+  ol.supermap.Components.Chart = ChartView;
   ol.supermap.Components.ChartViewModel = ChartViewModel;
   ol.supermap.Components.MessageBox = MessageBox;
   ol.supermap.Components.AttributesPopContainer = AttributesPopContainer;
@@ -569,9 +573,9 @@ if (window && window.ol) {
   ol.supermap.TimeFlowControl = TimeFlowControl;
   // Format
   ol.supermap.Format = ol.supermap.Format || Format;
-  ol.supermap.Format.GeoJSON = GeoJSON;
+  ol.supermap.Format.GeoJSON = GeoJSONFormat;
   ol.supermap.Format.JSON = JSONFormat;
-  ol.supermap.Format.WKT = WKT;
+  ol.supermap.Format.WKT = WKTFormat;
   // iManager
   ol.supermap.iManager = IManager;
   ol.supermap.iManagerCreateNodeParam = IManagerCreateNodeParam;
@@ -783,23 +787,26 @@ if (window && window.ol) {
   // overlay
   ol.supermap.Feature = ol.supermap.Feature || {};
   ol.supermap.Feature.Theme = FeatureTheme;
-  ol.supermap.Feature.Theme.Bar = Bar;
-  ol.supermap.Feature.Theme.Bar3D = Bar3D;
-  ol.supermap.Feature.Theme.Circle = Circle;
-  ol.supermap.Feature.Theme.Line = Line;
-  ol.supermap.Feature.Theme.Pie = Pie;
-  ol.supermap.Feature.Theme.Point = OverlayPoint;
-  ol.supermap.Feature.Theme.Ring = Ring;
-  ol.supermap.Feature.Theme.ThemeVector = ThemeVector;
+  ol.supermap.Feature.Theme.Bar = FeatureThemeBar;
+  ol.supermap.Feature.Theme.Bar3D = FeatureThemeBar3D;
+  ol.supermap.Feature.Theme.Circle = FeatureThemeCircle;
+  ol.supermap.Feature.Theme.Graph = FeatureThemeGraph;
+  ol.supermap.Feature.Theme.Line = FeatureThemeLine;
+  ol.supermap.Feature.Theme.Pie = FeatureThemePie;
+  ol.supermap.Feature.Theme.Point = FeatureThemePoint;
+  ol.supermap.Feature.Theme.RankSymbol = FeatureThemeRankSymbol;
+  ol.supermap.Feature.Theme.Ring = FeatureThemeRing;
+  ol.supermap.Feature.Theme.ThemeVector = FeatureThemeVector;
   ol.supermap.Feature.ShapeParameters = ShapeParameters;
-  ol.supermap.Feature.ShapeParameters.Circle = FeatureCircle;
-  ol.supermap.Feature.ShapeParameters.Image = Image;
-  ol.supermap.Feature.ShapeParameters.Line = FeatureLine;
-  ol.supermap.Feature.ShapeParameters.Point = Point;
-  ol.supermap.Feature.ShapeParameters.Polygon = FeaturePolygon;
-  ol.supermap.Feature.ShapeParameters.Rectangle = FeatureRectangle;
-  ol.supermap.Feature.ShapeParameters.Sector = Sector;
-  ol.supermap.Feature.ShapeFactory = ShapeFactory;
+  ol.supermap.Feature.ShapeParameters.Circle = ShapeParametersCircle;
+  ol.supermap.Feature.ShapeParameters.Image = ShapeParametersImage;
+  ol.supermap.Feature.ShapeParameters.Label = ShapeParametersLabel;
+  ol.supermap.Feature.ShapeParameters.Line = ShapeParametersLine;
+  ol.supermap.Feature.ShapeParameters.Point = ShapeParametersPoint;
+  ol.supermap.Feature.ShapeParameters.Polygon = ShapeParametersPolygon;
+  ol.supermap.Feature.ShapeParameters.Rectangle = ShapeParametersRectangle;
+  ol.supermap.Feature.ShapeParameters.Sector = ShapeParametersSector;
+  ol.supermap.Feature.ShapeFactory = FeatureShapeFactory;
   // LevelRenderer
   ol.supermap.LevelRenderer = LevelRenderer;
 
