@@ -9,11 +9,6 @@
  */
 export class MathTool {
 
-     /**
-     * @function LevelRenderer.Tool.Math.constructor
-     * @description 构造函数。
-     */
-
     constructor() {
 
         /**

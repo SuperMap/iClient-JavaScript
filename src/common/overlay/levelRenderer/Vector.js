@@ -9,11 +9,6 @@
  *
  */
 export class Vector {
-
-    /**
-     * @function LevelRenderer.Tool.Vector.constructor
-     * @description 构造函数
-     */
     constructor() {
         this.ArrayCtor = typeof Float32Array === 'undefined'
             ? Array

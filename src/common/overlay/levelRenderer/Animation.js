@@ -12,35 +12,30 @@ import {Util as CommonUtil} from "../../commontypes/Util";
  * @classdesc 动画主类, 调度和管理所有动画控制器
  * @category Visualization Theme
  * @extends {LevelRenderer.Eventful}
+ * @param {Object} options - 动画参数。
+ * @param {Object} options.onframe - onframe。
+ * @param {Object} options.stage - stage。
+ * @example 例如：
+ * (start code)
+ *     var animation = new LevelRenderer.Animation();
+ *     var obj = {
+ *         x: 100,
+ *         y: 100
+ *     };
+ *     animation.animate(node.position)
+ *         .when(1000, {
+ *             x: 500,
+ *             y: 500
+ *         })
+ *         .when(2000, {
+ *             x: 100,
+ *             y: 100
+ *         })
+ *         .start('spline');
+ * (end)
  * @private
  */
 export class Animation extends Eventful {
-
-
-    /**
-     * @function LevelRenderer.Animation.prototype.constructor
-     * @description 构造函数。
-     * @param {Object} options - 动画参数。
-     * @param {Object} options.onframe - onframe。
-     * @param {Object} options.stage - stage。
-     * (start code)
-     *     var animation = new LevelRenderer.Animation();
-     *     var obj = {
-     *         x: 100,
-     *         y: 100
-     *     };
-     *     animation.animate(node.position)
-     *         .when(1000, {
-     *             x: 500,
-     *             y: 500
-     *         })
-     *         .when(2000, {
-     *             x: 100,
-     *             y: 100
-     *         })
-     *         .start('spline');
-     * (end)
-     */
     constructor(options) {
         super(options);
 

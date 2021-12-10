@@ -10,21 +10,14 @@ import {ShapeParameters} from './ShapeParameters';
  * @classdesc 圆形参数对象。
  * @category Visualization Theme
  * @extends {ShapeParameters}
+ * @param {number} x - 圆心 x 坐标，必设参数。
+ * @param {number} y - 圆心 y 坐标，必设参数。
+ * @param {number} r - 圆半径，必设参数。
  * @usage
  * @private
  */
 
 export class Circle extends ShapeParameters {
-
-
-    /**
-     * @function FeatureCircle.prototype.constructor
-     * @description 创建一个圆形参数对象。
-     * @param {number} x - 圆心 x 坐标，必设参数。
-     * @param {number} y - 圆心 y 坐标，必设参数。
-     * @param {number} r - 圆半径，必设参数。
-     * @returns {FeatureCircle} 圆形参数对象。
-     */
     constructor(x, y, r) {
         super(x, y, r);
         /**

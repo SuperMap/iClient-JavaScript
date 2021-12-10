@@ -11,18 +11,12 @@ import {Util} from '../../commontypes/Util';
  * @aliasclass Feature.Theme
  * @deprecatedclass SuperMap.Feature.Theme
  * @category Visualization Theme
- * @classdesc 专题要素基类，此类不可实例化。
+ * @classdesc 专题要素基类。
+ * @param {Object} data - 用户数据，用于生成可视化 shape，必设参数。
+ * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层，必设参数。
  * @usage
  */
 export class Theme {
-
-    /**
-     * @function FeatureTheme.prototype.constructor
-     * @description 构造函数。
-     * @param {Object} data - 用户数据，用于生成可视化 shape，必设参数。
-     * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层，必设参数。
-     * @returns {FeatureTheme} 返回一个专题要素。
-     */
     constructor(data, layer) {
 
         if (!data) {

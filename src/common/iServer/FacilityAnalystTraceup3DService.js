@@ -21,16 +21,6 @@ import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DPara
  * @usage
  */
 export class FacilityAnalystTraceup3DService extends CommonServiceBase {
-
-    /**
-     * @function FacilityAnalystTraceup3DService.constructor
-     * @description 上游追踪资源服务类构造函数。
-     * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
-     *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * @param {Object} options - 参数。
-     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalystTraceup3DService";

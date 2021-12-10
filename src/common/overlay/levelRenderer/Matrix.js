@@ -9,11 +9,6 @@
  */
 export class Matrix {
 
-    /**
-     * @function LevelRenderer.Tool.Matrix.constructor
-     * @description 构造函数。
-     */
-
     constructor() {
         /**
          * @member {Object} LevelRenderer.Tool.Matrix.prototype.ArrayCtor

@@ -10,21 +10,14 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 矩形参数对象。
  * @extends {ShapeParameters}
+ * @param {number} x - 矩形 x 坐标，必设参数。
+ * @param {number} y - 矩形 y 坐标，必设参数。
+ * @param {number} width - 矩形 width 坐标，必设参数。
+ * @param {number} height - 矩形 height 坐标，必设参数。
  * @usage
  */
 
 export class Rectangle extends ShapeParameters {
-
-
-    /**
-     * @function FeatureRectangle.prototype.constructor
-     * @description 创建一个图形矩形参数对象。
-     * @param {number} x - 矩形 x 坐标，必设参数。
-     * @param {number} y - 矩形 y 坐标，必设参数。
-     * @param {number} width - 矩形 width 坐标，必设参数。
-     * @param {number} height - 矩形 height 坐标，必设参数。
-     * @returns {FeatureRectangle} 图形矩形参数对象。
-     */
     constructor(x, y, width, height) {
         super(x, y, width, height);
         /**

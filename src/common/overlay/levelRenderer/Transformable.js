@@ -10,11 +10,6 @@ import {SUtil} from './SUtil';
  * @classdesc 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。此类不可实例化。
  */
 export class Transformable {
-
-    /**
-     * @function LevelRenderer.Transformable.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.position

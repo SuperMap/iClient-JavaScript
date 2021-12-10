@@ -10,19 +10,11 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 面参数对象。
  * @extends {ShapeParameters}
+ * @param {Array} pointList - 横坐标，必设参数。
  * @usage
  */
 
 export class Polygon extends ShapeParameters {
-
-
-
-    /**
-     * @function FeaturePolygon.prototype.constructor
-     * @description 创建一个图形面参数对象。
-     * @param {Array} pointList - 横坐标，必设参数。
-     * @returns {FeaturePolygon} 标签参数对象。
-     */
     constructor(pointList) {
         super(pointList);
         /**

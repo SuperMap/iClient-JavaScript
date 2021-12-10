@@ -10,11 +10,6 @@ import {Vector} from './Vector';
  * @private
  */
 export class Curve {
-
-    /**
-     * @function LevelRenderer.Tool.Curve.prototype.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
          * @member {LevelRenderer.Tool.Vector} LevelRenderer.Tool.Curve.prototype.vector

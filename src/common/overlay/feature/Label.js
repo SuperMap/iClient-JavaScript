@@ -10,20 +10,13 @@ import { ShapeParameters } from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 标签参数对象。
  * @extends {ShapeParameters}
+ * @param {number} x - 横坐标，必设参数。
+ * @param {number} y - 纵坐标，必设参数。
+ * @param {string} text - 图形中的附加文本，必设参数。
  * @usage
  */
 
 export class Label extends ShapeParameters {
-
-
-    /**
-     * @function CommonLabel.prototype.constructor
-     * @description 创建一个标签参数对象。
-     * @param {number} x - 横坐标，必设参数。
-     * @param {number} y - 纵坐标，必设参数。
-     * @param {string} text - 图形中的附加文本，必设参数。
-     * @returns {CommonLabel} 标签参数对象。
-     */
     constructor(x, y, text) {
         super(x, y, text);
         /**

@@ -10,25 +10,18 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 图片参数对象。
  * @extends {ShapeParameters}
+ * @param {number} x - 左上角横坐标，必设参数。
+ * @param {number} y - 左上角纵坐标，必设参数。
+ * @param {(string|Object)} image - 图片地址或Cavans对象，必设参数。
+ * @param {number} width - 绘制到画布上的宽度，默认为图片高度。
+ * @param {number} height - 绘制到画布上的高度，默认为图片高度。
+ * @param {number} sx - 从图片中裁剪的左上角横坐标。
+ * @param {number} sy - 从图片中裁剪的左上角纵坐标。
+ * @param {number} sWidth - 从图片中裁剪的宽度，默认为图片高度。
+ * @param {number} sHeight - 绘制到画布上的高度，默认为图片高度。
  * @usage
  */
 export class Image extends ShapeParameters {
-
-
-    /**
-     * @function Image.prototype.constructor
-     * @description 创建一个图片参数对象。
-     * @param {number} x - 左上角横坐标，必设参数。
-     * @param {number} y - 左上角纵坐标，必设参数。
-     * @param {(string|Object)} image - 图片地址或Cavans对象，必设参数。
-     * @param {number} width - 绘制到画布上的宽度，默认为图片高度。
-     * @param {number} height - 绘制到画布上的高度，默认为图片高度。
-     * @param {number} sx - 从图片中裁剪的左上角横坐标。
-     * @param {number} sy - 从图片中裁剪的左上角纵坐标。
-     * @param {number} sWidth - 从图片中裁剪的宽度，默认为图片高度。
-     * @param {number} sHeight - 绘制到画布上的高度，默认为图片高度。
-     * @returns {Image} 圆形参数对象。
-     */
     constructor(x, y, image, width, height, sx, sy, sWidth, sHeight) {
         super(x, y, image, width, height, sx, sy, sWidth, sHeight);
         /**

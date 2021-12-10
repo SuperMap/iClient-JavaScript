@@ -36,18 +36,10 @@ import {Util} from '../../commontypes/Util';
  * 图片 - 参数对象 <{@link Image}> <br>
  * 用于符号专题图：<br>
  * 圆形 -  参数对象：<{@link FeatureCircle}>
+ * @param {Object} shapeParameters - 图形参数对象，<{@link ShapeParameters}> 子类对象，可选参数。
  * @usage
  */
 export class ShapeFactory {
-
-
-
-    /**
-     * @function ShapeFactory.prototype.constructor
-     * @description 构建图形工厂对象。
-     * @param {Object} shapeParameters - 图形参数对象，<{@link ShapeParameters}> 子类对象，可选参数。
-     * @returns {ShapeFactory} 返回图形工厂类对象。
-     */
     constructor(shapeParameters) {
         /**
          * @member {Object} ShapeParameters.prototype.shapeParameters

@@ -10,18 +10,10 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 线参数对象。
  * @extends {ShapeParameters}
+ * @param {Array} pointList - 线要素节点数组，二维数组，必设参数。
  * @usage
  */
 export class Line extends ShapeParameters {
-
-
-
-    /**
-     * @function FeatureLine.prototype.constructor
-     * @description 创建一个图形线参数对象。
-     * @param {Array} pointList - 线要素节点数组，二维数组，必设参数。
-     * @returns {FeatureLine} 圆形参数对象。
-     */
     constructor(pointList) {
         super(pointList);
         /**

@@ -11,11 +11,6 @@ import {Vector} from './Vector';
  * @private
  */
 export class ComputeBoundingBox {
-
-    /**
-     * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.constructor
-     * @description 构造函数。
-     */
     constructor() {
         if (arguments.length === 3) {
             this.computeBoundingBox(arguments);

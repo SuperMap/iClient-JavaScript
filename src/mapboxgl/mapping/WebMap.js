@@ -90,10 +90,6 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * @usage
  */
 export class WebMap extends mapboxgl.Evented {
-	/**
-	 * @constructs
-	 * @version 9.1.2
-	 */
 	constructor(id, options) {
 		super();
 		this.mapId = id;

@@ -27,15 +27,10 @@ import {Transformable} from './Transformable';
  *     }));
  *     LR.addGroup(g);
  * (end)
+ * @param {Array} options - Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
  */
 
 export class Group extends mixin(Eventful, Transformable) {
-
-    /**
-     * @function LevelRenderer.Group.prototype.constructor
-     * @description 构造函数。
-     * @param {Array} options - Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
-     */
     constructor(options) {
         super(options)
         options = options || {};

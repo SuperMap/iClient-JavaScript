@@ -30,14 +30,6 @@ import {ServerGeometry} from './ServerGeometry';
  * @usage
  */
 export class QueryByGeometryService extends QueryService {
-
-    /**
-     * @function QueryByGeometryService.prototype.constructor
-     * @description Geometry 查询服务类构造函数。
-     * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
-     * @param {Object} options - 参数。
-     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
         this.CLASS_NAME = "SuperMap.QueryByGeometryService";

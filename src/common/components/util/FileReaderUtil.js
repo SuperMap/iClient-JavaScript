@@ -6,13 +6,27 @@ import {FileTypes} from '../CommonTypes';
 import {Lang} from '../../lang/Lang';
 
 /**
- * @class FileReaderUtil
- * @aliasclass Components.FileReaderUtil
- * @deprecatedclass SuperMap.Components.FileReaderUtil
- * @classdesc 组件读取文件工具类。
+ * @name FileReaderUtil
+ * @namespace
+ * @description 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const FileReaderUtil = {namespace}.Components.FileReaderUtil;
+ *
+ *   // 弃用的写法
+ *   const FileReaderUtil = SuperMap.Components.FileReaderUtil;
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { FileReaderUtil } from '{npm}';
+ *
+ * ```
  */
 export let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,

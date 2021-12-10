@@ -10,11 +10,6 @@
 // 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
 // http://sole.github.io/tween.js/examples/03_graphs.html
 export class Easing {
-
-    /**
-     * @function LevelRenderer.Animation.easing.constructor
-     * @description 构造函数。
-     */
     constructor() {
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.easing";
     }

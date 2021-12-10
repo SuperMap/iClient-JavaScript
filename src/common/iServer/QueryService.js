@@ -39,14 +39,6 @@ import {
  * @usage
  */
 export class QueryService extends CommonServiceBase {
-
-    /**
-     * @function QueryService.prototype.constructor
-     * @description 查询服务基类构造函数。
-     * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * @param {Object} options -参数。
-     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
 

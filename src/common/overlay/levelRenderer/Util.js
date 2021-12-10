@@ -9,13 +9,6 @@
  *
  */
 export class Util {
-
-
-    /**
-     * @function LevelRenderer.Tool.Util.constructor
-     * @description 构造函数。
-     *
-     */
     constructor() {
         /**
          * @member {Object} LevelRenderer.Tool.Util.prototype.BUILTIN_OBJECT

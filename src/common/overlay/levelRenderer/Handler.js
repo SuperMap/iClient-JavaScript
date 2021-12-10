@@ -11,16 +11,11 @@ import {SUtil} from './SUtil';
  * @category Visualization Theme
  * @classdesc Handler控制模块。
  * @extends {LevelRenderer.Eventful}
+ * @param {HTMLElement} root - 绘图区域。
+ * @param {LevelRenderer.Storage} storage - Storage 实例。
+ * @param {LevelRenderer.Painter} painter - Painter 实例。
  */
 export class Handler extends Eventful {
-
-    /**
-     * @function LevelRenderer.Handler.constructor
-     * @description 构造函数。
-     * @param {HTMLElement} root - 绘图区域。
-     * @param {LevelRenderer.Storage} storage - Storage 实例。
-     * @param {LevelRenderer.Painter} painter - Painter 实例。
-     */
     constructor(root, storage, painter) {
         super(root, storage, painter);
         /**

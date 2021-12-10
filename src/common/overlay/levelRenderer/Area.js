@@ -11,11 +11,6 @@ import {Curve} from './Curve';
  * @private
  */
 export class Area {
-
-    /**
-     * @function LevelRenderer.Tool.Areal.prototype.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
          * @member {LevelRenderer.Tool.Util}  LevelRenderer.Tool.Areal.prototype.util

@@ -8,11 +8,6 @@
  * @classdesc LevelRenderer 工具-Http
  */
 export class Http {
-
-    /**
-     * @function LevelRenderer.Tool.Http.constructor
-     * @description 构造函数。
-     */
     constructor() {
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Http"
     }

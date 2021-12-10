@@ -10,21 +10,13 @@ import { ShapeParameters } from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 点参数对象。
  * @extends {ShapeParameters}
+ * @param {number} x - 点 x 坐标，必设参数。
+ * @param {number} y - 点 y 坐标，必设参数。
  * @usage
  * @private
  */
 
 export class Point extends ShapeParameters {
-
-
-
-    /**
-     * @function Point.prototype.constructor
-     * @description 创建一个图形点参数对象。
-     * @param {number} x - 点 x 坐标，必设参数。
-     * @param {number} y - 点 y 坐标，必设参数。
-     * @returns {Point} 标签参数对象。
-     */
     constructor(x, y) {
         super(x, y);
         /**

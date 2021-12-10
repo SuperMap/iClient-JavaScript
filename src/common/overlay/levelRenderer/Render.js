@@ -1,30 +1,25 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-/**
+
+ import {Util} from './Util';
+ import {Util as CommonUtil} from '../../commontypes/Util';
+ import {Storage} from './Storage';
+ import {Painter} from './Painter';
+ import {Handler} from './Handler';
+ import {Animation} from './Animation';
+ import {SUtil} from './SUtil';
+
+ /**
  * @private
  * @class LevelRenderer.Render
  * @category Visualization Theme
  * @classdesc Render 接口类，对外可用的所有接口都在这里。内部使用非 get 接口统一返回 this 对象，支持链式调用。
+ * @param {string} id - 唯一标识。
+ * @param {HTMLElement} dom - Dom 对象。
  */
-import {Util} from './Util';
-import {Util as CommonUtil} from '../../commontypes/Util';
-import {Storage} from './Storage';
-import {Painter} from './Painter';
-import {Handler} from './Handler';
-import {Animation} from './Animation';
-import {SUtil} from './SUtil';
 
 export class Render {
-
-
-    /**
-     * @function LevelRenderer.Render.constructor
-     * @description 构造函数。
-     *
-     * @param {string} id - 唯一标识。
-     * @param {HTMLElement} dom - Dom 对象。
-     */
     constructor(id, dom) {
         /**
          * @member {string} LevelRenderer.Render.prototype.id

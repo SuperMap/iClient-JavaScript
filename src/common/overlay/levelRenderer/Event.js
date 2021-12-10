@@ -8,12 +8,6 @@
  * @private
  */
 export class Event {
-
-
-    /**
-     * @function LevelRenderer.Tool.Event.prototype.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
          * @member {function} LevelRenderer.Tool.Event.prototype.stop

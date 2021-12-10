@@ -10,24 +10,16 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 扇形参数对象。
  * @extends {ShapeParameters}
+ * @param {number} x - 圆心 x 坐标，必设参数。
+ * @param {number} y - 圆心 y 坐标，必设参数。
+ * @param {number} r - 外圆半径，必设参数。
+ * @param {number} startAngle - 起始角度，必设参数。取值范围[0, 360)。
+ * @param {number} endAngle - 结束角度，必设参数。取值范围(0, 360]。
+ * @param {number} [r0=0] - 内圆半径，指定后将出现内弧，同时扇边长度为'r - r0'。取值范围[0, r)。
  * @usage
  */
 
 export class Sector extends ShapeParameters {
-
-
-
-    /**
-     * @function Sector.prototype.constructor
-     * @description 创建一个扇形参数对象。
-     * @param {number} x - 圆心 x 坐标，必设参数。
-     * @param {number} y - 圆心 y 坐标，必设参数。
-     * @param {number} r - 外圆半径，必设参数。
-     * @param {number} startAngle - 起始角度，必设参数。取值范围[0, 360)。
-     * @param {number} endAngle - 结束角度，必设参数。取值范围(0, 360]。
-     * @param {number} [r0=0] - 内圆半径，指定后将出现内弧，同时扇边长度为'r - r0'。取值范围[0, r)。
-     * @returns {Sector} 扇形参数对象。
-     */
     constructor(x, y, r, startAngle, endAngle, r0, clockWise) {
         super(x, y, r, startAngle, endAngle, r0, clockWise);
         /**

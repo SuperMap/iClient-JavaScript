@@ -9,28 +9,23 @@ import {Render} from './Render';
  * @deprecatedclass SuperMap.LevelRenderer
  * @category Visualization Theme
  * @classdesc LevelRenderer 渲染器
+ * @example
+ * //在渲染器上加上图形
+ * var levelRenderer = new LevelRenderer();
+ * var zr = levelRenderer.init(document.getElementById('lRendertest'));
+ * zr.clear();
+ * zr.addShape(new LevelRenderer.Shape.Circle({
+ *     style:{
+ *         x : 100,
+ *         y : 100,
+ *         r : 50,
+ *         brushType: 'fill'
+ *     }
+ * }));
+ * zr.render();
  * @private
  */
 export class LevelRenderer {
-
-    /**
-     * @function LevelRenderer.constructor
-     * @description 构造函数。
-     * @example
-     * //在渲染器上加上图形
-     * var levelRenderer = new LevelRenderer();
-     * var zr = levelRenderer.init(document.getElementById('lRendertest'));
-     * zr.clear();
-     * zr.addShape(new LevelRenderer.Shape.Circle({
-     *     style:{
-     *         x : 100,
-     *         y : 100,
-     *         r : 50,
-     *         brushType: 'fill'
-     *     }
-     * }));
-     * zr.render();
-     */
     constructor() {
         /**
          * @member {Object} LevelRenderer.prototype._instances

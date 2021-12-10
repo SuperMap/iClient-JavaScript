@@ -14,16 +14,9 @@ import {SUtil} from './SUtil';
  * @classdesc 图形（shape）基类。
  * @extends LevelRenderer.Eventful
  * @extends LevelRenderer.Transformable
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  */
 export class Shape extends mixin(Eventful, Transformable) {
-
-    /**
-     * @function LevelRenderer.Shape.constructor
-     * @description 构造函数。
-     *
-     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
-     *
-     */
     constructor(options) {
         super(options);
 

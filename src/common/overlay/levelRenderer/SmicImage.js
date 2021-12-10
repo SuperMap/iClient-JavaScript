@@ -18,45 +18,10 @@ import {Shape} from './Shape';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- *
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  *
  */
 export class SmicImage extends Shape {
-
-    /**
-     * @member {Object} LevelRenderer.Shape.SmicImage.prototype.style
-     * @description 绘制样式。
-     *
-     * @param {number} style.x - 左上角横坐标，必设参数。
-     * @param {number} style.y - 左上角纵坐标，必设参数。
-     * @param {(string/Cavans)} style.image - 图片地址或cavans对象，必设参数。
-     * @param {number} style.width - 绘制到画布上的宽度，默认为图片高度。
-     * @param {number} style.height - 绘制到画布上的高度，默认为图片高度。
-     * @param {number} style.sx - 从图片中裁剪的左上角横坐标。
-     * @param {number} style.sy - 从图片中裁剪的左上角纵坐标。
-     * @param {number} style.sWidth - 从图片中裁剪的宽度，默认为图片高度。
-     * @param {number} style.sHeight - 绘制到画布上的高度，默认为图片高度。
-     * @param {number} style.opacity - 绘制透明度。默认值：1。
-     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
-     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
-     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
-     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
-     * @param {string} style.text - 图形中的附加文本。默认值：""。
-     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
-     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
-     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     */
-    //打开接口 style
-
-    /**
-     * @function LevelRenderer.Shape.SmicImage.constructor
-     * @description 构造函数。
-     *
-     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
-     *
-     */
     constructor(options) {
         super(options);
         /**

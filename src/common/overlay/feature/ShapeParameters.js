@@ -6,18 +6,10 @@
  * @aliasclass Feature.ShapeParameters
  * @deprecatedclass SuperMap.Feature.ShapeParameters
  * @category Visualization Theme
- * @classdesc 图形参数基类，此类不可实例化
+ * @classdesc 图形参数基类
  * @usage
  */
 export class ShapeParameters {
-
-
-
-    /**
-     * @function ShapeParameters.prototype.constructor
-     * @description 图形参数对象。
-     * @returns {ShapeParameters} 图形参数对象。
-     */
     constructor() {
         /**
          * @member {Array} [ShapeParameters.prototype.refOriginalPosition=[0,0]]

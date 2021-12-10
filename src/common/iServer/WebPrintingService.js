@@ -19,13 +19,6 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @usage
  */
 export class WebPrintingService extends CommonServiceBase {
-    /**
-     * @function WebPrintingService.prototype.constructor
-     * @description 打印地图服务基类。
-     * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
-     * @param {Object} options -参数。
-     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
 

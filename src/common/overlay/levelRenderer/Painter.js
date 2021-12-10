@@ -13,17 +13,10 @@ import {SUtil} from './SUtil';
  * @class  LevelRenderer.Painter
  * @category Visualization Theme
  * @classdesc Painter 绘图模块。
+ * @param {HTMLElement} root - 绘图区域（DIV）。
+ * @param {LevelRenderer.Storage} storage - Storage 实例。
  */
 export class Painter {
-
-    /**
-     * @function LevelRenderer.Painter.constructor
-     * @description 构造函数。
-     *
-     * @param {HTMLElement} root - 绘图区域（DIV）。
-     * @param {LevelRenderer.Storage} storage - Storage 实例。
-     *
-     */
     constructor(root, storage) {
         /**
          * @member {HTMLElement} LevelRenderer.Painter.prototype.root

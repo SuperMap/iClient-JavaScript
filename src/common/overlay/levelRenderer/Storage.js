@@ -11,12 +11,6 @@ import {Group} from './Group';
  * @classdesc 内容（图像）仓库 (M) 。
  */
 export class Storage {
-
-
-    /**
-     * @function LevelRenderer.Storage.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
          * @member {Object} LevelRenderer.Storage.prototype._elements
