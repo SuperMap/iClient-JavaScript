@@ -103,7 +103,7 @@ export class LevelRenderer {
 
     /**
      * @function LevelRenderer.prototype.delInstance
-     * @description 删除 zrender 实例，SuperMap.LevelRenderer.Render 实例 dispose 时会调用，删除后 getInstance 则返回 undefined
+     * @description 删除 zrender 实例，LevelRenderer.Render 实例 dispose 时会调用，删除后 getInstance 则返回 undefined
      * @param {string} id - ZRender对象索引。
      * @param {string} id - LevelRenderer.Render 对象索引。
      * @returns {LevelRenderer} this。

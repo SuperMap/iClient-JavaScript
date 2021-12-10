@@ -202,7 +202,7 @@ export {
     dataServiceQueryViewModel
 };
 
-export * from '@supermap/iclient-common';
+export * from '@supermap/iclient-common/index.common';
 export { Logo, logo, ChangeTileVersion, changeTileVersion };
 export {
     CommontypesConversion,

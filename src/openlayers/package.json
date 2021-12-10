@@ -6,6 +6,7 @@
     "SuperMap",
     "OpenLayers"
   ],
+  "main": "namespace.js",
   "homepage": "https://iclient.supermap.io",
   "repository": {
     "type": "git",

@@ -6,6 +6,7 @@
     "SuperMap",
     "MapboxGL v1"
   ],
+  "main": "namespace.js",
   "homepage": "https://iclient.supermap.io",
   "repository": {
     "type": "git",
