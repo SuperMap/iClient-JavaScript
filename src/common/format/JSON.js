@@ -262,7 +262,7 @@ export class JSONFormat extends Format {
                     JSON.stringify(value) :
                     this.serialize[type].apply(this, [value]);
             } catch (err) {
-                //SuperMap.Console.error("Trouble serializing: " + err);
+                //console.error("Trouble serializing: " + err);
             }
         }
         return json;

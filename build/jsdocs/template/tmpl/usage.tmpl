@@ -5,14 +5,12 @@
 &lt;script type="text/javascript" src="<?js= data.globalParams.cdn ?>"&gt;&lt;/script&gt;
 &lt;script&gt;
   <?js= "new {namespace}.{className}({paramsNames});".replace('{className}', data.aliasClass || data.className).replace('{namespace}',data.globalParams.namespace).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
-
-  <?js= data.deprecatedClasses.length > 0 || data.deprecatedClassInstance?'// 弃用的写法':'' ?><?jsdata.deprecatedClasses.forEach(deprecatedClass => { ?><?js= "\r  new {deprecatedClass}({paramsNames});".replace('{deprecatedClass}',deprecatedClass).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?><?js}); ?>
-  <?js if(data.deprecatedClassInstance){ ?><?js= "{deprecatedClassInstance}({paramsNames});".replace('{deprecatedClassInstance}',data.deprecatedClassInstance).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
+  <?js= data.deprecatedClasses.length > 0 || data.deprecatedClassInstance?'\r  // 弃用的写法\r\n':'' ?><?jsdata.deprecatedClasses.forEach(deprecatedClass => { ?><?js= "  new {deprecatedClass}({paramsNames});\r\n".replace('{deprecatedClass}',deprecatedClass).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?><?js}); ?><?js if(data.deprecatedClassInstance){ ?><?js= "  {deprecatedClassInstance}({paramsNames});".replace('{deprecatedClassInstance}',data.deprecatedClassInstance).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
   <?js } ?>
 &lt;/script&gt;
 
 <span class="nopretty">// ES6 Import</span>
-<?js= "import {{className}} from '{npm}';".replace('{className}',data.className).replace('{npm}',data.globalParams.npm) ?>
+<?js= "import { {className} } from '{npm}';".replace('{className}',data.className).replace('{npm}',data.globalParams.npm) ?>
 
 <?js= "new {className}({paramsNames});".replace('{className}',data.className).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
 </code>

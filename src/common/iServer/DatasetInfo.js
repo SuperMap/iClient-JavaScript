@@ -23,7 +23,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @param {string} [options.encodeType] - 数据集存储时的压缩编码方式，该字段只读。
  * @param {boolean} [options.isReadOnly] - 数据集是否为只读。
  * @param {string} options.name - 数据集名称，该字段必须且只读。
- * @param {SuperMap.Projection} [options.prjCoordSys] - 数据集的投影信息。
+ * @param {Object} [options.prjCoordSys] - 数据集的投影信息。如：prjCoordSys={"epsgCode":3857}。
  * @param {string} [options.tableName] - 表名，该字段只读。
  * @param {string} options.type - 数据集类型。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD 数据集）、网络数据集，栅格数据集（grid dataset）和影像数据集（image dataset）。
  * @usage
@@ -71,7 +71,7 @@ export class DatasetInfo {
         this.name = null;
 
         /**
-         * @member {SuperMap.Projection} [DatasetInfo.prototype.prjCoordSys]
+         * @member {Object} [DatasetInfo.prototype.prjCoordSys]
          * @description 数据集的投影信息。
          */
         this.prjCoordSys = null;

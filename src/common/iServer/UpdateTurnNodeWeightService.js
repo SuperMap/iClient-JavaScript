@@ -14,8 +14,8 @@ import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters
  * @example
  * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url, {
  *     eventListeners: {
- *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
- *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
+ *         "processCompleted": UpdateTurnNodeWeightCompleted,
+ *		   "processFailed": UpdateTurnNodeWeightError
  *		   }
  * });
  * @param {string} url - 服务的访问地址。如:

@@ -246,7 +246,7 @@ export class Vector extends Feature {
 /**
  *
  * @typedef {Object} GeometryVector.style
- * @description SuperMap.features 有大量的样式属性，如果没有特别的指定将使用默认的样式，
+ * @description Feature 有大量的样式属性，如果没有特别的指定将使用默认的样式，
  * 大部分样式通过 SVG 标准定义属性。
  * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
  * - stroke properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}

@@ -74,7 +74,9 @@ var typeLinks = {
 
     //classic
     "SuperMap.Layer":classicapi + '/Layer-js.html',
+    "SuperMap.Layer.Theme": classicapi + '/Layer/Theme-js.html#SuperMap.Layer.Theme',
     "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
+    "SuperMap.Layer.RankSymbol": classicapi + '/Layer/Theme/RankSymbol-js.html#SuperMap.Layer.RankSymbol',
 
 	   //GeoJSON
     "GeoJSONObject": geojsonapi,

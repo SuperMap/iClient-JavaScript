@@ -6,7 +6,7 @@ import {Easing as AEasing} from './Easing';
 /**
  * @class  LevelRenderer.Animation.Clip
  * @category Visualization Theme
- * @classdec 动画片段
+ * @classdesc 动画片段
  * @private
  */
 export class Clip {

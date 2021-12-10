@@ -11,8 +11,8 @@ import {LabelBackShape} from '../REST';
  * @category  iServer Map Theme
  * @classdesc 标签背景风格类。通过该类可以设置标签的背景形状和风格。
  * @param {Object} options - 参数。
- * @param {LabelBackShape} [options.labelBackShape=LabelBackShape.NONE] - 标签专题图中标签背景风格。
- * @param {ServerStyle} [options.backStyle=LabelBackShape.NONE] - 标签专题图中标签背景的形状枚举类。
+ * @param {LabelBackShape} [options.labelBackShape=LabelBackShape.NONE] - 标签专题图中标签背景的形状枚举类。
+ * @param {ServerStyle} [options.backStyle] - 标签专题图中标签背景风格。
  * @usage
  */
 export class ThemeLabelBackground {
@@ -26,7 +26,7 @@ export class ThemeLabelBackground {
         this.labelBackShape = LabelBackShape.NONE;
 
         /**
-         * @member {ServerStyle} [ThemeLabelBackground.prototype.backStyle=LabelBackShape.NON]
+         * @member {ServerStyle} [ThemeLabelBackground.prototype.backStyle]
          * @description 标签专题图中标签背景的形状枚举类。背景类型可
          *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
          */

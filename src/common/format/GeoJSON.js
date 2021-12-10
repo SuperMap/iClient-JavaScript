@@ -410,7 +410,7 @@ export class GeoJSON extends JSONFormat {
      * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
      * @returns {Object}  返回值依赖于 type 参数的值。
      *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link GeometryVector} 数组。
-     *     -如果 type 为 "Geometry",输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link SuperMap.Feature.Geometry}。
+     *     -如果 type 为 "Geometry",输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link Geometry}。
      *     -如果 type 为 "Feature"，输入的 JSON 对象也必须表示的一个要素，这样返回值才会是 {@link GeometryVector}。
      */
 
@@ -424,16 +424,16 @@ export class GeoJSON extends JSONFormat {
             obj = json;
         }
         if (!obj) {
-            //SuperMap.Console.error("Bad JSON: " + json);
+            //console.error("Bad JSON: " + json);
         } else if (typeof (obj.type) != "string") {
-            //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
+            //console.error("Bad GeoJSON - no type: " + json);
         } else if (this.isValidType(obj, type)) {
             switch (type) {
                 case "Geometry":
                     try {
                         results = this.parseGeometry(obj);
                     } catch (err) {
-                        //SuperMap.Console.error(err);
+                        //console.error(err);
                     }
                     break;
                 case "Feature":
@@ -441,7 +441,7 @@ export class GeoJSON extends JSONFormat {
                         results = this.parseFeature(obj);
                         results.type = "Feature";
                     } catch (err) {
-                        //SuperMap.Console.error(err);
+                        //console.error(err);
                     }
                     break;
                 case "FeatureCollection":
@@ -453,7 +453,7 @@ export class GeoJSON extends JSONFormat {
                                 results.push(this.parseFeature(obj));
                             } catch (err) {
                                 results = null;
-                                //SuperMap.Console.error(err);
+                                //console.error(err);
                             }
                             break;
                         case "FeatureCollection":
@@ -462,7 +462,7 @@ export class GeoJSON extends JSONFormat {
                                     results.push(this.parseFeature(obj.features[i]));
                                 } catch (err) {
                                     results = null;
-                                    // SuperMap.Console.error(err);
+                                    // console.error(err);
                                 }
                             }
                             break;
@@ -472,7 +472,7 @@ export class GeoJSON extends JSONFormat {
                                 results.push(new Vector(geom));
                             } catch (err) {
                                 results = null;
-                                //SuperMap.Console.error(err);
+                                //console.error(err);
                             }
                     }
                     break;
@@ -568,7 +568,7 @@ export class GeoJSON extends JSONFormat {
                     ],
                     obj.type) == -1) {
                     // unsupported geometry type
-                    //SuperMap.Console.error("Unsupported geometry type: " +
+                    //console.error("Unsupported geometry type: " +
                     // obj.type);
                 } else {
                     valid = true;
@@ -583,7 +583,7 @@ export class GeoJSON extends JSONFormat {
                 if (obj.type == type) {
                     valid = true;
                 } else {
-                    //SuperMap.Console.error("Cannot convert types from " +
+                    //console.error("Cannot convert types from " +
                     //obj.type + " to " + type);
                 }
         }

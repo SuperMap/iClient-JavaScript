@@ -15,8 +15,8 @@ import { UpdateEdgeWeightParameters } from './UpdateEdgeWeightParameters';
  *(start code)
  * var updateEdgeWeightService = new UpdateEdgeWeightService(url, {
  *     eventListeners: {
- *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.UpdateEdgeWeightEventArgs
- *		   "processFailed": UpdateEdgeWeightError             //参数为SuperMap.ServiceFailedEventArgs
+ *         "processCompleted": UpdateEdgeWeightCompleted,
+ *		   "processFailed": UpdateEdgeWeightError
  *		   }
  * });
  * (end)
