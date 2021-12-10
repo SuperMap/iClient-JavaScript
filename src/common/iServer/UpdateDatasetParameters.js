@@ -13,10 +13,10 @@ import {Util} from '../commontypes/Util';
  * @param {String} options.datasetName - 数据集名称(必选)。
  * @param {boolean} options.isFileCache - 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
  * @param {String} options.description - 数据集描述信息。
- * @param {PrjCoordSys} options.prjCoordSys - 投影坐标系。
- * @param {enum} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。
- * @param {java.util.List<Color>} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
- * @param {double} options.noValue - 栅格数据集中没有数据的像元的栅格值。当数据集类型为栅格数据集时，可以传递此参数。
+ * @param {String} options.prjCoordSys - 投影坐标系。
+ * @param {Object} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。
+ * @param {Array} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
+ * @param {Array.<string>} options.noValue - 栅格数据集中没有数据的像元的栅格值。当数据集类型为栅格数据集时，可以传递此参数。
  * @usage
  */
 export class UpdateDatasetParameters {
@@ -51,25 +51,25 @@ export class UpdateDatasetParameters {
         this.description = null;
 
         /**
-         * @member {PrjCoordSys} UpdateDatasetParameters.prototype.prjCoordSys
+         * @member {String} UpdateDatasetParameters.prototype.prjCoordSys
          * @description 投影坐标系。
          */
         this.prjCoordSys = null;
 
         /**
-         * @member {enum} UpdateDatasetParameters.prototype.charset
+         * @member {Object} UpdateDatasetParameters.prototype.charset
          * @description 矢量数据集的字符集。
          */
         this.charset = null;
 
         /**
-         * @member {java.util.List<Color>} UpdateDatasetParameters.prototype.palette
+         * @member {Array} UpdateDatasetParameters.prototype.palette
          * @description 影像数据的颜色调色板。
          */
         this.palette = null;
 
         /**
-         * @member {double} UpdateDatasetParameters.prototype.noValue
+         * @member {Array.<string>} UpdateDatasetParameters.prototype.noValue
          * @description 栅格数据集中没有数据的像元的栅格值。
          */
         this.noValue = null;

@@ -11,8 +11,8 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称。
  * @param {string} options.description - 数据源描述信息。
- * @param {Unit} options.coordUnit - 坐标单位。
- * @param {Unit} options.distanceUnit - 距离单位。
+ * @param {string} options.coordUnit - 坐标单位。
+ * @param {string} options.distanceUnit - 距离单位。
  * @usage
  */
 export class SetDatasourceParameters {
@@ -35,13 +35,13 @@ export class SetDatasourceParameters {
         this.description = null;
 
         /**
-         * @member {Unit} SetDatasourceParameters.prototype.coordUnit
+         * @member {string} SetDatasourceParameters.prototype.coordUnit
          * @description 坐标单位。
          */
         this.coordUnit = null;
 
         /**
-         * @member {Unit} SetDatasourceParameters.prototype.distanceUnit
+         * @member {string} SetDatasourceParameters.prototype.distanceUnit
          * @description 距离单位。
          */
         this.distanceUnit = null;
