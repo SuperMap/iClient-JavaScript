@@ -8,21 +8,21 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
     <th width="33.3%">SuperMap 云 GIS</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>
     <td><p>API for SuperMap iServer / iEdge / iPortal / Online</p>
-        <a href="ol.supermap.MapService.html">ol.supermap.MapService</a><br>
-        <a href="ol.supermap.FeatureService.html">ol.supermap.FeatureService</a><br>
-        <a href="ol.supermap.SpatialAnalystService.html">ol.supermap.SpatialAnalystService</a><br>
-        <a href="ol.supermap.NetworkAnalystService.html">ol.supermap.NetworkAnalystService</a><br>
-        <a href="ol.supermap.TrafficTransferAnalystService.html">ol.supermap.TrafficTransferAnalystService</a><br>
-        <a href="ol.supermap.AddressMatchService.html">ol.supermap.AddressMatchService</a></td>
+        <a href="MapService.html">MapService</a><br>
+        <a href="FeatureService.html">FeatureService</a><br>
+        <a href="SpatialAnalystService.html">SpatialAnalystService</a><br>
+        <a href="NetworkAnalystService.html">NetworkAnalystService</a><br>
+        <a href="TrafficTransferAnalystService.html">TrafficTransferAnalystService</a><br>
+        <a href="AddressMatchService.html">AddressMatchService</a></td>
      <td>
         <br>
-        <a href="ol.supermap.ProcessingService.html">ol.supermap.ProcessingService</a><br>
-        <a href="ol.supermap.DataFlowService.html">ol.supermap.DataFlowService</a><br>
-        <a href="ol.supermap.WebMap.html">ol.supermap.WebMap</a><br>
-        <a href="SuperMap.iPortal.html">SuperMap.iPortal</a><br>
-        <a href="SuperMap.Online.html">SuperMap.Online</a><br>
-        ......</td>   
-         <td><p> </p></td>   
+        <a href="ProcessingService.html">ProcessingService</a><br>
+        <a href="DataFlowService.html">DataFlowService</a><br>
+        <a href="WebMap.html">WebMap</a><br>
+        <a href="IPortal.html">IPortal</a><br>
+        <a href="Online.html">Online</a><br>
+        ......</td>
+         <td><p> </p></td>
 </tr></table>
 <table><tr>
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%"></th>
