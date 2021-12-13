@@ -35,7 +35,6 @@ const isString = function (str) {
 
 export const Util = {
     /**
-     * @memberOf Util
      * @function Util.toSuperMapGeometry
      * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
      * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
@@ -67,7 +66,6 @@ export const Util = {
         return new GeometryPoint(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
     },
     /**
-     * @memberOf Util
      * @function Util.toSuperMapPolygon
      * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
      * @param {Mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
@@ -87,9 +85,7 @@ export const Util = {
             ])
         ]);
     },
-
     /**
-     * @memberOf Util
      * @function Util.isArray
      * @description 判断是否为数组格式。
      * @param {Object} obj - 待判断对象。
@@ -98,7 +94,6 @@ export const Util = {
     isArray,
 
     /**
-     * @memberOf Util
      * @function Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式。
      * @param {Object} smObj - 待转参数。
@@ -111,7 +106,6 @@ export const Util = {
     },
 
     /**
-     * @memberOf Util
      * @function Util.toProcessingParam
      * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
      * @param {Array} points - Region 各个节点数组。
@@ -136,7 +130,6 @@ export const Util = {
     },
 
     /**
-     * @memberOf Util
      * @function Util.extend
      * @description 对象拷贝赋值。
      * @param {Object} dest - 目标对象。
@@ -164,7 +157,6 @@ export const Util = {
     },
 
     /**
-     * @memberOf Util
      * 检测数据是否为number
      * @param value 值，未知数据类型
      * @returns {boolean}
@@ -182,7 +174,6 @@ export const Util = {
 
     isString: isString,
     /**
-     * @memberOf Util
      * 随机生成id
      * @param attr
      * @returns {string}
@@ -197,7 +188,6 @@ export const Util = {
         return guid;
     },
     /**
-     * @memberOf Util
      * @description 十六进制转 RGBA 格式。
      * @param {Object} hex - 十六进制格式参数。
      * @param {number} opacity -Alpha 参数。
@@ -223,7 +213,6 @@ export const Util = {
     },
 
     /**
-     * @memberOf Util
      * @param {string} featureName 原始数据中的地名
      * @param {string} fieldName 需要匹配的地名
      * @returns {boolean} 是否匹配
