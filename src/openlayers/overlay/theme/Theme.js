@@ -321,7 +321,7 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.on
      * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      * @param {string} event - 事件名称。
-     * @param {RequestCallback} callback - 事件回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     on(event, callback) {
         var cb = callback;

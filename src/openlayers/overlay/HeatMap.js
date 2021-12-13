@@ -17,8 +17,8 @@ import Point from 'ol/geom/Point';
  * @class ol.source.HeatMap
  * @classdesc 热力图层类。
  * @category Visualization HeatMap
- * @param {string} name - 图层名称s
- * @param {Object} options - 构造参数。
+ * @param {string} name - 图层名称
+ * @param {Object} options - 参数。
  * @param {ol/Map} options.map - openlayers 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
  * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。

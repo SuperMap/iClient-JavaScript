@@ -22,7 +22,7 @@ export class MapVLayer extends SuperMap.Layer {
 
         /**
          * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
-         * @description mapv dataset 对象。
+         * @description mapv 的 dataset 对象。
          */
         this.dataSet = null;
 
@@ -103,8 +103,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {mapv.DataSet} dataSet - mapv 数据集。
-     * @param {Object} options - mapv 绘图参数。
+     * @param {mapv.DataSet} dataSet - mapv 的 dataSet 对象。
+     * @param {Object} options - mapv 绘图风格配置信息。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -113,8 +113,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {mapv.DataSet} dataSet - mapv 数据集。
-     * @param {Object} options - mapv 绘图参数。
+     * @param {mapv.DataSet} dataSet - mapv 的 dataSet 对象。
+     * @param {Object} options - mapv 绘图风格配置信息。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -123,7 +123,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} - mapv 数据集。
+     * @returns {mapv.DataSet} - mapv 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {

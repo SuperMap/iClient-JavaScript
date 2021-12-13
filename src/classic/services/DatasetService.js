@@ -91,7 +91,7 @@ export class DatasetService extends CommonServiceBase {
      *   new SuperMap.REST.DatasetService(url).setDataset(params, function(result){
      *     //doSomething
      *   });
-     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
+     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类或数据集信息更改参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setDataset(params, callback) {

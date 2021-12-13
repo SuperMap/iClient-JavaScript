@@ -85,7 +85,7 @@ export class DatasourceService extends CommonServiceBase {
      *  new SuperMap.REST.DatasourceService(url).setDatasource(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.SetDatasourceParameters} params - 数据源信息设置参数类。
+     * @param {SuperMap.SetDatasourceParameters} params - 数据源信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setDatasource(params, callback) {

@@ -194,8 +194,8 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.setCartoShaders
-     * @description 设置 Carto 的阴影。
-     * @param {Array} cartoShaders - Carto 阴影。
+     * @description 设置服务端 Carto 的阴影。
+     * @param {Array} cartoShaders - 服务端 Carto 阴影。
      */
     static setCartoShaders(cartoShaders) {
         this.cartoShaders = cartoShaders;
@@ -203,7 +203,7 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.getCartoShaders
-     * @description 获取客户端 Carto 的阴影。
+     * @description 获取服务端 Carto 的阴影。
      */
     static getCartoShaders() {
         return this.cartoShaders;
@@ -488,7 +488,7 @@ export class VectorTileStyles extends Observable {
          * @description 合并文本要素样式。
          * @param {string} layerInfo - 图层信息。
          * @param {Object} feature - 获取的要素。
-         * @param {string} url - 地址。
+         * @param {string} url - 服务地址。
          */
         function mergeTextFeatureStyle(layerInfo, feature, url) {
             var textFeatureStyle = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);

@@ -79,7 +79,7 @@ const dpiConfig = {
  * @param {string} [options.target='map'] - 地图容器id
  * @param {Object | string} [options.webMap] - webMap对象，或者是获取webMap的url地址。存在webMap，优先使用webMap, id的选项则会被忽略
  * @param {number} [options.id] - 地图的id
- * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址,如果使用传入id，server则会和id拼接成webMap请求地址
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址，如果使用传入id，server则会和id拼接成webMap请求地址
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数
  * @param {string} [options.credentialKey] - 凭证密钥。例如为"key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填

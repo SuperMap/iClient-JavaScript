@@ -298,7 +298,7 @@ export class ChangeTileVersion extends Control {
     /**
      * @function ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息。
-     * @param {string} tooltip - 工具提示。
+     * @param {string} tooltip - 提示信息。
      * @returns {this} this
      */
     setToolTip(tooltip) {

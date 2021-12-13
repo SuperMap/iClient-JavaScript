@@ -18,7 +18,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @category iServer Map
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
@@ -30,7 +30,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {boolean} [options.overlapDisplayed = false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
  * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
- * @param {string} [options.tileProxy] - 代理地址。
+ * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol/source/TileImage}
@@ -312,7 +312,7 @@ export class TileSuperMapRest extends TileImage {
     /**
      * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
      * @description 从 MapJSON 中获取参数对象。
-     * @param {string} url - 地址。
+     * @param {string} url - 服务地址。
      * @param {Object} mapJSONObj - 地图 JSON 对象。
      */
     static optionsFromMapJSON(url, mapJSONObj) {

@@ -15,7 +15,7 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param {string} url - 与客户端交互的地图服务地址。请求地图服务，URL 应为：
+ * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -32,7 +32,7 @@ export class GridCellInfosService extends ServiceBase {
 
     /**
      * @function GridCellInfosService.prototype.getGridCellInfos
-     * @param {GetGridCellInfosParameters} params - 查询所需参数类。
+     * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     getGridCellInfos(params, callback) {

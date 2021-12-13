@@ -13,7 +13,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {string} opt_options.ws - SuperMap iServer 数据流服务地址，例如：http://localhost:8090/iserver/services/dataflowTest/dataflow。
  * @param {string} [opt_options.idField = 'id'] - 要素属性中表示唯一标识的字段。
  * @param {GeoJSONObject} [opt_options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
- * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
+ * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时，系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {Object} [opt_options.excludeField] - 排除字段
  * @extends {ol/source/Vector}
  * @example

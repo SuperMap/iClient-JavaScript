@@ -17,7 +17,7 @@ import { SetLayerStatusService } from '@supermap/iclient-common/iServer/SetLayer
  *      new LayerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
- * @param {string} url - 与客户端交互的地图服务地址。请求地图服务，URL 应为：
+ * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -85,8 +85,8 @@ export class LayerInfoService extends ServiceBase {
 
     /**
      * @function LayerInfoService.prototype.setLayersInfo
-     * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
-     * @param {SetLayersInfoParameters} params - 设置图层信息参数类，包括临时图层。
+     * @description 设置图层信息服务。可以创建新的临时图层和修改现有的临时图层。
+     * @param {SetLayersInfoParameters} params - 设置图层信息参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo(params, callback) {

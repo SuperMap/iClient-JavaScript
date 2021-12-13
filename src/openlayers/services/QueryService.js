@@ -19,7 +19,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
  * @extends {ServiceBase}
- * @param {string} url - 地图查询服务访问地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -41,9 +41,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function QueryService.prototype.queryByBounds
      * @description bounds 查询地图服务。
-     * @param {QueryByBoundsParameters} params - 通过 bounds 查询的相关参数类。
+     * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {QueryService}
      */
     queryByBounds(params, callback, resultFormat) {
@@ -68,9 +68,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function QueryService.prototype.queryByDistance
      * @description 地图距离查询服务。
-     * @param {QueryByDistanceParameters} params - Distance 查询相关参数类。
+     * @param {QueryByDistanceParameters} params - Distance 查询参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -94,9 +94,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function QueryService.prototype.queryBySQL
      * @description 地图 SQL 查询服务。
-     * @param {QueryBySQLParameters} params - SQL 查询相关参数类。
+     * @param {QueryBySQLParameters} params - SQL 查询参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -120,9 +120,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务。
-     * @param {QueryByGeometryParameters} params - Geometry 查询相关参数类。
+     * @param {QueryByGeometryParameters} params - Geometry 查询参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry(params, callback, resultFormat) {
         var me = this;

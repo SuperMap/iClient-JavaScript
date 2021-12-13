@@ -35,7 +35,7 @@ const Renderer = ['canvas', 'webgl'];
  * @class ol.source.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
- * @param {Object} options - 图形参数。
+ * @param {Object} options - 参数。
  * @param {ol/map} options.map - openlayers 地图对象。
  * @param {ol/Graphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
@@ -265,7 +265,7 @@ export class Graphic extends ImageCanvasSource {
     /**
      * @function ol.source.Graphic.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {string} property - graphic 的某个属性名称。
+     * @param {string} property - graphic 的属性名称。
      * @param {string} value - property 所对应的值。
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */

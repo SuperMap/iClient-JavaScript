@@ -22,7 +22,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
  * @param {Object} options - 参数。
- * @param {(string|undefined)} options.url - SuperMap iServer 地图服务地址。
+ * @param {(string|undefined)} options.url - 服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol/format/MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
  * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。

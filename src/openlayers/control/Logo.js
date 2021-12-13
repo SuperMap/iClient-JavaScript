@@ -13,7 +13,7 @@ import Control from 'ol/control/Control';
  * @example
  *      var control = new Logo();
  *      map.addControl(control);
- * @param {Object} options - logo 控件配置项。
+ * @param {Object} options - 参数。
  * @param {string} [options.imageUrl] - logo 图片地址。
  * @param {number} [options.width] - logo 图片宽。
  * @param {number} [options.height] - logo 图片高。

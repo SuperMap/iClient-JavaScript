@@ -26,7 +26,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 与客户端交互的服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -44,7 +44,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
-     * @param {GetFeaturesByIDsParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
@@ -69,7 +69,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @function FeatureService.prototype.getFeaturesByBounds
      * @description 数据集 Bounds 查询服务。
-     * @param {GetFeaturesByBoundsParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
@@ -93,7 +93,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 Buffer 查询服务。
-     * @param {GetFeaturesByBufferParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByBufferParameters} params - 数据服务中数据集缓冲区查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
@@ -117,7 +117,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
-     * @param {GetFeaturesBySQLParameters} params - 查询所需参数类。
+     * @param {GetFeaturesBySQLParameters} params - 数据服务中数据集 SQL 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
@@ -142,7 +142,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @function FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类。
-     * @param {GetFeaturesByGeometryParameters} params - 查询所需参数类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
@@ -166,7 +166,7 @@ export class FeatureService extends ServiceBase {
     /**
      * @function FeatureService.prototype.editFeatures
      * @description 地物编辑服务。
-     * @param {EditFeaturesParameters} params - 查询所需参数类。
+     * @param {EditFeaturesParameters} params - 数据服务中数据集添加、修改、删除参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     editFeatures(params, callback) {
