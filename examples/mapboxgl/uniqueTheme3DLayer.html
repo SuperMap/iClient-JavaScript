@@ -73,21 +73,22 @@
             datasetNames: ["Jingjin:Landuse_R"]
         });
 
-        new mapboxgl.supermap.FeatureService(dataUrl, {
-            eventListeners: {
-                processCompleted: function (serviceResult) {
-                    if (serviceResult.error) {
-                        alert("error:" + JSON.stringify(serviceResult.error));
-                        return;
-                    }
-                    var result = serviceResult.result;
-                    if (result.features) {
-                        createThemeLayer(result.features);
-                    }
-                }
-            },
-            format: mapboxgl.supermap.DataFormat.GEOJSON,
-        }).getFeaturesBySQL(getFeatureBySQLParams);
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+            getFeatureBySQLParams,
+            processCompleted,
+            mapboxgl.supermap.DataFormat.GEOJSON
+        );
+    }
+
+    function processCompleted(serviceResult) {
+        if (serviceResult.error) {
+            alert("error:" + JSON.stringify(serviceResult.error));
+            return;
+        }
+        var result = serviceResult.result;
+        if (result.features) {
+            createThemeLayer(result.features);
+        }
     }
 
     //创建专题图图层

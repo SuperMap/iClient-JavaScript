@@ -117,10 +117,11 @@
         toIndex: 500,
         datasetNames: ["Jingjin:BaseMap_R"]
     });
-    new mapboxgl.supermap.FeatureService(dataUrl, {
-        format: mapboxgl.supermap.DataFormat.ISERVER,
-        eventListeners: {"processCompleted": processCompleted}
-    }).getFeaturesBySQL(getFeatureBySQLParams);
+    new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+        getFeatureBySQLParams,
+        processCompleted,
+        mapboxgl.supermap.DataFormat.ISERVER
+    );
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;
