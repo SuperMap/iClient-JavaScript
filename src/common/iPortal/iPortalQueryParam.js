@@ -10,7 +10,7 @@ import {Util} from '../commontypes/Util';
  * @classdesc iPortal 资源查询参数。
  * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 资源查询具体参数。
+ * @param {Object} params - 可选参数。
  * @param {ResourceType} [params.resourceType] - 资源类型
  * @param {number} [params.pageSize] - 分页中每页大小。
  * @param {number} [params.currentPage] - 分页页码。

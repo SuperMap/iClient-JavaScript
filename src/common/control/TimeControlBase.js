@@ -8,7 +8,7 @@ import {Events} from '../commontypes/Events';
  * @deprecatedclass SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
  * @category  Control
- * @param {Object} options - 该类开放的可选属性。
+ * @param {Object} options - 可选参数。
  * @param {number} [options.speed=1] - 速度。不能小于 0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。
  * @param {number} [options.frequency=1000] - 刷新频率（单位 ms），服务器刷新的时间间隔。
  * @param {number} [options.startTime=0] - 起始时间，必须为数字，且小于等于 endTime。如果不设置，初始化时为 0，建议设置。

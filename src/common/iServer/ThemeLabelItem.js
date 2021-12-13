@@ -14,12 +14,12 @@ import {ServerTextStyle} from './ServerTextStyle';
  *              每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，
  *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 ThemeLabelItem[0].start=0，
  *              ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
- * @param {Object} options - 参数。
- * @param {string} [options.caption] - 专题图子项的名称。
- * @param {number} [options.end=0] - 标签专题图子项的终止值。
- * @param {number} [options.start=0] - 标签专题图子项的分段起始值。
- * @param {boolean} [options.visible=true] - 标签专题图子项是否可见。
- * @param {ServerTextStyle} [options.style] - 标签专题图子项文本的显示风格。
+ * @param {Object} options - 可选参数。
+ * @param {string} [options.caption] - 子项的名称。
+ * @param {number} [options.end=0] - 子项的终止值。
+ * @param {number} [options.start=0] - 子项的分段起始值。
+ * @param {boolean} [options.visible=true] - 子项是否可见。
+ * @param {ServerTextStyle} [options.style] - 子项文本的显示风格。
  * @usage
  */
 export class ThemeLabelItem {

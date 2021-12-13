@@ -121,7 +121,7 @@ export class ChartModel {
      * @private
      * @function ChartModel.prototype.getDataInfoByIptl
      * @description 用dataId获取iportal的数据。
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      *
      */
     getDataInfoByIptl(success) {
@@ -134,7 +134,7 @@ export class ChartModel {
      * @function ChartModel.prototype.getServiceInfo
      * @description 用iportal获取dataItemServices。
      * @param {String} url
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      * */
     getServiceInfo(url, success) {
         let me = this;
@@ -185,7 +185,7 @@ export class ChartModel {
      * @function ChartModel.prototype.getDatafromURL
      * @description 用iportal获取数据。（通过固定的url来请求，但是不能请求工作空间的数据）
      * @param {String} url
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromContent(url, success) {
         // 成功回调传入的results
@@ -244,7 +244,7 @@ export class ChartModel {
      * @description 获取数据源名和数据集名。
      * @param {string} serviceType 服务类型
      * @param {string} address 地址
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      * @return{array} [数据源名:数据集名]
      * @return{string} 图层名
      */
@@ -331,7 +331,7 @@ export class ChartModel {
      * @description 请求restdata服务
      * @param {String} url
      * @param {Array<string>} dataSource [数据源名:数据集名]
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromRestData(url, dataSource, success) {
         let me = this;
@@ -357,7 +357,7 @@ export class ChartModel {
      * @description 请求restmap服务
      * @param {String} dataSource layerName
      * @param {String} path - map服务地址。
-     * @param {Callbacks} success - getdatachart。
+     * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromRestMap(dataSource, path, success) {
         let me = this;
@@ -461,7 +461,7 @@ export class ChartModel {
      * @description  SQL 查询服务。
      * @param {QueryBySQLParameters} params - SQL 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 结果类型。
      */
     _queryBySQL(url, params, callback, resultFormat) {
         var me = this;
@@ -480,7 +480,7 @@ export class ChartModel {
      * @function ChartModel.prototype._processFormat
      * @description 将数据转换成geojson。
      * @param {object} resultFormat - 返回结果集。
-     * @return {object} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @return {object} [resultFormat=DataFormat.GEOJSON] - 结果类型。
      */
     _processFormat(resultFormat) {
         return resultFormat ? resultFormat : DataFormat.GEOJSON;

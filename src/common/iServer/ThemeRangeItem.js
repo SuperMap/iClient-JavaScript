@@ -12,11 +12,11 @@ import {ServerStyle} from './ServerStyle';
  * @description 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
  * @param {Object} options - 参数。
- * @param {string} [options.caption] - 分段专题图子项的标题。
- * @param {number} [options.end=0] - 分段专题图子项的终止值。
- * @param {number} [options.start=0] - 分段专题图子项的起始值。
- * @param {ServerStyle} options.style - 分段专题图子项的风格。
- * @param {boolean} [options.visible=true] - 分段专题图子项是否可见。
+ * @param {string} [options.caption] - 子项的标题。
+ * @param {number} [options.end=0] - 子项的终止值。
+ * @param {number} [options.start=0] - 子项的起始值。
+ * @param {ServerStyle} options.style - 子项的风格。
+ * @param {boolean} [options.visible=true] - 子项是否可见。
  * @usage
  */
 export class ThemeRangeItem {

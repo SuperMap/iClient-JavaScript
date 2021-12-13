@@ -13,13 +13,13 @@ import {Geometry} from '../commontypes/Geometry';
  * @category iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc 数据集表面分析参数类。该类对数据集表面分析所用到的参数进行设置。
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 要用来做数据集表面分析的数据源中数据集的名称。
- * @param {string} options.zValueFieldName - 获取或设置用于提取操作的字段名称。
- * @param {integer} options.resolution - 获取或设置指定中间结果（栅格数据集）的分辨率。
+ * @param {string} options.dataset - 数据集名称。
+ * @param {string} options.zValueFieldName - 字段名称。
+ * @param {integer} options.resolution - 指定中间结果（栅格数据集）的分辨率。
  * @param {SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。获取或设置表面分析参数。
- * @param {FilterParameter} [options.filterQueryParameter] - 获取或设置查询过滤条件参数。
+ * @param {FilterParameter} [options.filterQueryParameter] - 查询过滤条件参数。
  * @param {DataReturnOption} [options.resultSetting] - 结果返回设置类。
- * @param {SurfaceAnalystMethod} [options.surfaceAnalystMethod=SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，提取等值线和提取等值面。
+ * @param {SurfaceAnalystMethod} [options.surfaceAnalystMethod=SurfaceAnalystMethod.ISOLINE] - 表面分析的提取方法，提取等值线和提取等值面。
  * @extends {SurfaceAnalystParameters}
  * @usage
  */

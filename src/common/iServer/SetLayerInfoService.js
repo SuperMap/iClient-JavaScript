@@ -11,7 +11,7 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @classdesc 设置图层信息服务类。可以实现临时图层中子图层的修改
  *            该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  * @extends {CommonServiceBase}
- * @param {string} url - 与客户端交互的地图服务地址。请求地图服务，URL 应为：
+ * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                 http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。

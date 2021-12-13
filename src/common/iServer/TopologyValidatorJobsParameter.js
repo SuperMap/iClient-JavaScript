@@ -11,7 +11,7 @@ import { MappingParameters } from './MappingParameters';
  * @deprecatedclass SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类。
- * @param {Object} options - 必填参数。
+ * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetTopology -检查对象所在的数据集名称。
  * @param {TopologyValidatorRule} [options.rule=TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。

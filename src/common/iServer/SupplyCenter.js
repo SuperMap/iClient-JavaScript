@@ -9,9 +9,9 @@ import {Util} from '../commontypes/Util';
  * @category  iServer NetworkAnalyst Location
  * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
  * @param {Object} options - 参数。
- * @param {number} options.maxWeight - 资源供给中心的最大耗费值。
- * @param {number} options.nodeID - 资源供给中心点的结点 ID 号。资源供给中心必须是结点。
- * @param {number} options.resourceValue - 资源供给中心能提供的最大服务量或商品数量。
+ * @param {number} options.maxWeight - 最大耗费值。
+ * @param {number} options.nodeID - 结点 ID 号。资源供给中心必须是结点。
+ * @param {number} options.resourceValue - 能提供的最大服务量或商品数量。
  * @param {SupplyCenterType} [options.type] - 资源供给中心点的类型常量。
  * @usage
  */

@@ -14,8 +14,8 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。
- * @param {string} [options.zValueFieldName] - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystParameters.prototype.InterpolationAnalystType)为 dataset 时。此为必选参数。
- * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
+ * @param {string} [options.zValueFieldName] - 进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystParameters.prototype.InterpolationAnalystType)为 dataset 时。此为必选参数。
+ * @param {number} [options.zValueScale=1] - 进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
  * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。

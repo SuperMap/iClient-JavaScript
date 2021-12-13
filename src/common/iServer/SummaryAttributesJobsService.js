@@ -11,8 +11,8 @@ import {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析服务类
  * @extends {ProcessingServiceBase}
- * @param {string} url - 汇总统计分析服务地址。
- * @param {Object} options - 参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -52,8 +52,8 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryAttributesJobsService.protitype.addSummaryAttributesJob
      * @description 新建属性汇总分析服务
-     * @param {SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
-     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
+     * @param {number} seconds - 创建成功结果的时间间隔。
      */
     addSummaryAttributesJob(params, seconds) {
         super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);

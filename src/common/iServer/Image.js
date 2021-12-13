@@ -11,7 +11,7 @@ import {Util} from '../commontypes/Util';
  * @category iServer Map Layer
  * @classdesc UGC 影像图层类
  * @extends {UGCSubLayer}
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {ColorSpaceType} [options.colorSpaceType] - 返回影像图层的色彩显示模式。
  * @param {number} [options.brightness] - 影像图层的亮度。
  * @param {Array.<number>} [options.displayBandIndexes] - 返回当前影像图层显示的波段索引。

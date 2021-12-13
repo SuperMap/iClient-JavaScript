@@ -13,12 +13,12 @@ import {ServerTextStyle} from './ServerTextStyle';
  *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
  *              每一个子项都具有其名称、风格、指定的单值、X 方向偏移量和 Y 方向偏移量。
  * @param {Object} options - 参数。
- * @param {string} options.unique - 单值专题图子项的值，可以为数字、字符串等。
- * @param {string} [options.caption] - 专题图子项的名称。
+ * @param {string} options.unique - 子项的值，可以为数字、字符串等。
+ * @param {string} [options.caption] - 子项的名称。
  * @param {number} [options.offsetX=0] - 标签在 X 方向偏移量。
  * @param {number} [options.offsetY=0] - 标签在 Y 方向偏移量。
- * @param {boolean} [options.visible=true] - 标签专题图子项是否可见。
- * @param {ServerTextStyle} [options.style] - 标签专题图子项文本的显示风格。
+ * @param {boolean} [options.visible=true] - 子项是否可见。
+ * @param {ServerTextStyle} [options.style] - 子项文本的显示风格。
  * @usage
  */
 export class ThemeLabelUniqueItem {

@@ -12,7 +12,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @category  iServer SpatialAnalyst
  * @classdesc 空间分析服务基类。
  * @param {string} url - 地址。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}

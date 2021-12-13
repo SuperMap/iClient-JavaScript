@@ -10,7 +10,7 @@ import { OverlayGeoJobParameter } from './OverlayGeoJobParameter';
  * @deprecatedclass SuperMap.OverlayGeoJobsService
  * @category iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务类。
- * @param {string} url - 叠加分析任务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。

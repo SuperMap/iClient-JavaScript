@@ -13,13 +13,13 @@ import {Geometry} from '../commontypes/Geometry';
  * @classdesc 表面分析参数设置类。
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
  * @param {Object} options - 参数。
- * @param {(Polygon|L.Polygon|ol.geom.Polygon)} [options.clipRegion] - 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用 null 值取代该参数。
- * @param {number} [options.datumValue=0] - 获取或设置表面分析中提取等值线、提取等值面的基准值。
- * @param {Array.<number>} options.expectedZValues - 获取或设置期望分析结果的 Z 值集合。
- * @param {number} [options.interval=0] - 获取或设置等值距。等值距是两条等值线之间的间隔值。
- * @param {number} [options.resampleTolerance=0] - 获取或设置重采样容限。
- * @param {SmoothMethod} [options.smoothMethod=SmoothMethod.BSPLINE] - 获取或设置光滑处理所使用的方法。
- * @param {number} [options.smoothness=0] - 获取或设置表面分析中等值线或等值面的边界线的光滑度。
+ * @param {(Polygon|L.Polygon|ol.geom.Polygon)} [options.clipRegion] - 裁剪面对象，如果不需要对操作结果进行裁剪，可以使用 null 值取代该参数。
+ * @param {number} [options.datumValue=0] - 提取等值线、提取等值面的基准值。
+ * @param {Array.<number>} options.expectedZValues - 期望分析结果的 Z 值集合。
+ * @param {number} [options.interval=0] - 等值距。等值距是两条等值线之间的间隔值。
+ * @param {number} [options.resampleTolerance=0] - 重采样容限。
+ * @param {SmoothMethod} [options.smoothMethod=SmoothMethod.BSPLINE] - 光滑处理所使用的方法。
+ * @param {number} [options.smoothness=0] - 等值线或等值面的边界线的光滑度。
  * @usage
  */
 export class SurfaceAnalystParametersSetting {

@@ -28,7 +28,7 @@ export class LinearRing extends LineString {
         super(points);
         /**
          * @member {Array.<string>} [LinearRing.prototype.componentTypes=["SuperMap.Geometry.Point"]]
-         * @description components 存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];

@@ -10,8 +10,8 @@ import { GeoDecodingParameter } from './GeoDecodingParameter';
  * @deprecatedclass SuperMap.AddressMatchService
  * @category iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @param {string} url - 地址匹配服务地址。
- * @param {Object} options - 参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage

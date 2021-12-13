@@ -9,7 +9,7 @@ import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
  * @deprecatedclass SuperMap.GetFeaturesByBufferService
  * @category iServer Data FeatureResults
  * @classdesc 数据服务中数据集缓冲区查询服务类。
- * @param {string} url - 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * @param {string} url - 服务地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。

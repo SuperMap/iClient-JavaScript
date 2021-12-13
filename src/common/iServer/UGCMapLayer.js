@@ -10,7 +10,7 @@ import {UGCLayer} from './UGCLayer';
  * @category  iServer Map Layer
  * @classdesc UGC 地图图层类。
  * @extends {UGCLayer}
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.completeLineSymbolDisplayed] - 是否显示完整线型。
  * @param {number} [options.maxScale] - 地图最大比例尺。
  * @param {number} [options.minScale] - 地图最小比例尺。

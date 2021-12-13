@@ -17,8 +17,8 @@ import {ColorGradientType} from '../REST';
  *              比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
  * @extends {CommonTheme}
  * @param {Object} options - 参数。
- * @param {Array.<ThemeUniqueItem>} options.items - 单值专题图子项类数组。
- * @param {string} options.uniqueExpression - 用于制作单值专题图的字段或字段表达式。
+ * @param {Array.<ThemeUniqueItem>} options.items - 子项类数组。
+ * @param {string} options.uniqueExpression - 指定单值专题图的字段或字段表达式。
  * @param {ServerStyle} [options.defaultStyle] - 未参与单值专题图制作的对象的显示风格。
  * @param {ColorGradientType} [options.colorGradientType=ColorGradientType.YELLOW_RED] - 渐变颜色枚举类。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。

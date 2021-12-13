@@ -32,7 +32,7 @@ export class TemplateBase {
     /**
      * @function TemplateBase.prototype.getElement
      * @description 获取当前组件元素对象。
-     * @return {Element}
+     * @return {Element} 组件 dom 元素对象
      */
     getElement() {
         //todo 其实感觉再这里给组件设置不太合理

@@ -5,7 +5,7 @@ import {FileTypes} from '../CommonTypes';
 
 export let ComponentsUtil = {
     /**
-     * 获取上传文件类型
+     * @description 获取上传文件类型
      * @param fileName
      */
     getFileType(fileName) {

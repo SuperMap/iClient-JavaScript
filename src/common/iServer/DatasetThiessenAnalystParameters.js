@@ -11,7 +11,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @category iServer SpatialAnalyst ThiessenAnalyst
  * @classdesc 数据集泰森多边形分析参数类。
  * @param {Object} options - 参数。
- * @param {FilterParameter} [options.filterQueryParameter] - 对待分析数据集中的点进行过滤，即对数据集中的所有点进行分析。
+ * @param {FilterParameter} [options.filterQueryParameter] - 过滤参数类，即对数据集中的所有点进行分析。
  * @extends {ThiessenAnalystParameters}
  * @usage
  */

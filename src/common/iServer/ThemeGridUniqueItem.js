@@ -10,11 +10,11 @@ import {ServerColor} from './ServerColor';
  * @category  iServer Map Theme
  * @classdesc 栅格单值专题图子项类。
  *            栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
- * @param {Object} options - 参数。
- * @param {string} [options.caption] - 栅格单值专题图子项的名称。
- * @param {ServerColor} [options.color] - 栅格单值专题图子项的显示颜色。
- * @param {number} options.unique - 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
- * @param {boolean} [options.visible=true] - 栅格单值专题图子项是否可见。
+ * @param {Object} options - 可选参数。
+ * @param {string} [options.caption] - 子项的名称。
+ * @param {ServerColor} [options.color] - 子项的显示颜色。
+ * @param {number} options.unique - 子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
+ * @param {boolean} [options.visible=true] - 子项是否可见。
  * @usage
  */
 export class ThemeGridUniqueItem {

@@ -11,8 +11,8 @@ import { SummaryRegionJobParameter } from './SummaryRegionJobParameter';
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析服务类
  * @extends {ProcessingServiceBase}
- * @param {string} url - 区域汇总分析服务地址。
- * @param {Object} options - 参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -51,8 +51,8 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryRegionJobsService.prototype.addSummaryRegionJob
      * @description 新建区域汇总任务。
-     * @param {SummaryRegionJobParameter} params - 创建一个区域汇总任务的请求参数。
-     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
+     * @param {number} seconds - 创建成功结果的时间间隔。
      */
     addSummaryRegionJob(params, seconds) {
         super.addJob(this.url, params, SummaryRegionJobParameter, seconds);

@@ -12,8 +12,8 @@ import {Util} from '../../commontypes/Util';
  * @deprecatedclass SuperMap.Feature.Theme
  * @category Visualization Theme
  * @classdesc 专题要素基类。
- * @param {Object} data - 用户数据，用于生成可视化 shape，必设参数。
- * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层，必设参数。
+ * @param {Object} data - 用户数据，用于生成可视化 shape。
+ * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层。
  * @usage
  */
 export class Theme {

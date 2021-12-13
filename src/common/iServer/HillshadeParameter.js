@@ -10,7 +10,7 @@ import { RasterFunctionType } from '../REST';
  * @deprecatedclass SuperMap.HillshadeParameter
  * @category iServer Map
  * @classdesc 阴影面分析参数类
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
  * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
  * @param {number} [options.zFactor=1] - 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。

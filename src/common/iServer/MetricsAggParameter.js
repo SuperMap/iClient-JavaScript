@@ -11,8 +11,8 @@ import { MetricsAggType } from '../REST';
  * @deprecatedclass SuperMap.MetricsAggParameter
  * @classdesc 指标聚合查询参数类，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @category iServer Data FeatureResults
- * @param {Object} options - 初始化参数。
- * @param {MetricsAggType} [options.aggType = 'avg'] - 聚合类型设置。
+ * @param {Object} options - 可选参数。
+ * @param {MetricsAggType} [options.aggType = 'avg'] - 聚合类型。
  * @extends {AggregationParameter}
  * @usage
  */

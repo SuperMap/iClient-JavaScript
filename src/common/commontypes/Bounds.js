@@ -11,11 +11,10 @@ import {Util} from './Util';
  * @deprecatedclass SuperMap.Bounds
  * @category BaseTypes Geometry
  * @classdesc 表示边界类实例。使用 bounds 之前需要设置 left，bottom，right，top 四个属性，这些属性的初始值为 null。
- * @param {number} [left] - 左边界，注意考虑宽度，理论上小于 right 值。
+ * @param {number|Array.<number>} [left] - 如果是number，则表示左边界，注意考虑宽度，理论上小于 right 值。如果是数组，则表示 [left, bottom, right, top] 左下右上组成的数组。
  * @param {number} [bottom] - 下边界。考虑高度，理论上小于 top 值。
  * @param {number} [right] - 右边界。
  * @param {number} [top] - 上边界。
- * @param {Array.<number>} [array] - [left, bottom, right, top]，如果同时传多个参数，则使用左下右上组成的数组。
  * @example
  * var bounds = new Bounds();
  * bounds.extend(new LonLat(4,5));
@@ -71,7 +70,7 @@ export class Bounds {
      * @example
      * var bounds1 = new Bounds(-180,-90,180,90);
      * var bounds2 = bounds1.clone();
-     * @returns {Bounds} 返回一个克隆的 bounds。
+     * @returns {Bounds} 克隆后的 bounds。
      */
     clone() {
         return new Bounds(this.left, this.bottom,
@@ -164,15 +163,15 @@ export class Bounds {
         }
     }
 
-    /**
-     * @function Bounds.prototype.toGeometry
-     * @description 基于当前边界范围创建一个新的多边形对象。
-     * @example
-     * var bounds = new Bounds(-180,-90,100,80);
-     * // Polygon对象
-     * var geo = bounds.toGeometry();
-     * @returns {Polygon} 基于当前 bounds 坐标创建的新的多边形。
-     */
+    ///**
+    // * @function Bounds.prototype.toGeometry
+    // * @description 基于当前边界范围创建一个新的多边形对象。
+    // * @example
+    // * var bounds = new Bounds(-180,-90,100,80);
+    // * // Polygon对象
+    // * var geo = bounds.toGeometry();
+    // * @returns {Polygon} 基于当前 bounds 坐标创建的新的多边形。
+    // */
     // toGeometry() {
     //     return new Polygon([
     //         new LinearRing([
@@ -204,7 +203,7 @@ export class Bounds {
      * var bounds = new Bounds(-180,-90,100,80);
      * //height = 170;
      * var height = bounds.getHeight();
-     * @returns {float} 返回边界高度（top 减去 bottom）。
+     * @returns {float} 边界高度（top 减去 bottom）。
      */
     getHeight() {
         return (this.top - this.bottom);
@@ -216,7 +215,7 @@ export class Bounds {
      * @example
      * var bounds = new Bounds(-180,-90,100,80);
      * var size = bounds.getSize();
-     * @returns {Size} 返回边框大小。
+     * @returns {Size} 边框大小。
      */
     getSize() {
         return new Size(this.getWidth(), this.getHeight());
@@ -228,7 +227,7 @@ export class Bounds {
      * @example
      * var bounds = new Bounds(-180,-90,100,80);
      * var pixel = bounds.getCenterPixel();
-     * @returns {Pixel} 返回像素格式的当前范围的中心点。
+     * @returns {Pixel} 像素格式的当前范围的中心点。
      */
     getCenterPixel() {
         return new Pixel((this.left + this.right) / 2,
@@ -241,7 +240,7 @@ export class Bounds {
      * @example
      * var bounds = new Bounds(-180,-90,100,80);
      * var lonlat = bounds.getCenterLonLat();
-     * @returns {LonLat} 返回当前地理范围的中心点。
+     * @returns {LonLat} 当前地理范围的中心点。
      */
     getCenterLonLat() {
         if (!this.centerLonLat) {
@@ -260,7 +259,7 @@ export class Bounds {
      * var bounds2 = bounds.scale(2);
      * @param {float} [ratio=1] - 需要扩大的比例。
      * @param {(Pixel|LonLat)} [origin] - 扩大时的基准点，默认为当前 bounds 的中心点。
-     * @returns {Bounds} 返回通过 ratio、origin 计算得到的新的边界范围。
+     * @returns {Bounds} 通过 ratio、origin 计算得到的新的边界范围。
      */
     scale(ratio, origin) {
         ratio = ratio ? ratio : 1;
@@ -294,9 +293,9 @@ export class Bounds {
      * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds2 是新的 bounds
      * var bounds2 = bounds.add(20,10);
-     * @param {float} x - 传入坐标点的 x 坐标。
-     * @param {float} y - 传入坐标点的 y 坐标。
-     * @returns {Bounds} 返回一个新的 bounds，此 bounds 的坐标是由传入的 x，y 参数与当前 bounds 坐标计算所得。
+     * @param {float} x - 坐标点的 x 坐标。
+     * @param {float} y - 坐标点的 y 坐标。
+     * @returns {Bounds} 新的 bounds，此 bounds 的坐标是由传入的 x，y 参数与当前 bounds 坐标计算所得。
      */
     add(x, y) {
         if ((x == null) || (y == null)) {
@@ -422,8 +421,8 @@ export class Bounds {
      * var bounds = new Bounds(-50,-50,40,40);
      * //isContains = true
      * var isContains = bounds.contains(40,40,true);
-     * @param {float} x - 传入的 x 坐标值。
-     * @param {float} y - 传入的 y 坐标值。
+     * @param {float} x - x 坐标值。
+     * @param {float} y - y 坐标值。
      * @param {boolean} [inclusive=true] - 是否包含边界。
      * @returns {boolean} 传入的 x，y 坐标是否在当前范围内。
      */
@@ -542,8 +541,8 @@ export class Bounds {
      * @param {Bounds} bounds - 目标边界。
      * @param {boolean} [partial=false] - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。
      * 如果设为 false，整个目标边界全部被包含在当前边界范围内。
-     * @param {boolean} [inclusive=true] - 边缘共享被视为包含。
-     * @returns {boolean} 传入的边界被当前边界包含。
+     * @param {boolean} [inclusive=true] - 边缘共享是否被视为包含。
+     * @returns {boolean} 传入的边界是否被当前边界包含。
      */
     containsBounds(bounds, partial, inclusive) {
         if (partial == null) {
@@ -640,7 +639,7 @@ export class Bounds {
      * @example
      * var bounds = new Bounds(-180,-90,100,80);
      * var obj = bounds.toServerJSONObject();
-     * @returns {Object} 返回 JSON 格式的 Object 对象。
+     * @returns {Object} JSON 格式的 Object 对象。
      */
     toServerJSONObject() {
         var jsonObject = {
@@ -679,7 +678,7 @@ export class Bounds {
      * @param {string} str - 边界字符串，用逗号隔开（e.g. <i>"5,42,10,45"</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否反转轴顺序。
      * 如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
-     * @returns {Bounds} 返回给定的字符串创建的新的边界对象。
+     * @returns {Bounds} 给定的字符串创建的新的边界对象。
      */
     static fromString(str, reverseAxisOrder) {
         var bounds = str.split(",");
@@ -693,7 +692,7 @@ export class Bounds {
      * var bounds = Bounds.fromArray([-180,-90,100,80]);
      * @param {Array.<float>} bbox - 边界值数组。（e.g. <i>[5,42,10,45]</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
-     * @returns {Bounds} 返回根据传入的数组创建的新的边界对象。
+     * @returns {Bounds} 根据传入的数组创建的新的边界对象。
      */
     static fromArray(bbox, reverseAxisOrder) {
         return reverseAxisOrder === true ?
@@ -706,8 +705,8 @@ export class Bounds {
      * @description 通过传入的边界大小来创建新的边界。
      * @example
      * var bounds = Bounds.fromSize(new Size(20,10));
-     * @param {Size} size - 传入的边界大小。
-     * @returns {Bounds} 返回根据传入的边界大小的创建新的边界。
+     * @param {Size} size - 边界大小。
+     * @returns {Bounds} 根据传入的边界大小的创建新的边界。
      */
     static fromSize(size) {
         return new Bounds(0,

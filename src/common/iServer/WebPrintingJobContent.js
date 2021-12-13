@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @classdesc Web 打印内容参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP
  * @param {string} [option.url] - 待打印的 SuperMap iPortal WebMap 的 url 地址。例如：http://supermapiportal:8190/iportal/web/maps/{mapid}/map.rjson
  * @param {string} [option.token] - 如果待打印的是 SuperMap iPortal 用户私有的 WebMap，需要提供 SuperMap iPortal 用户的 token。
@@ -57,7 +57,7 @@ export class WebPrintingJobContent {
     /**
      * @function WebPrintingJobContent.prototype.toJSON
      * @description 将 WebPrintingJobContent 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {

@@ -8,9 +8,8 @@ import {Util} from './Util';
  * @deprecatedclass SuperMap.LonLat
  * @category BaseTypes Geometry
  * @classdesc  这个类用来表示经度和纬度对。
- * @param {number} [lon=0.0] - 地图单位上的 X 轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的 x 坐标。
+ * @param {number|Array.<float>} [lon=0.0] - 地图单位上的 X 轴坐标或者横纵坐标组成的数组；如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的 x 坐标。
  * @param {number} [lat=0.0] - 地图单位上的 Y 轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的 y 坐标。
- * @param {Array.<float>} [location] - 如果要同时设置，则使用传入横纵坐标组成的数组。
  * @example
  * var lonLat = new LonLat(30,45);
  * @usage
@@ -55,7 +54,7 @@ export class LonLat {
      * @example
      * var lonLat = new LonLat(100,50);
      * var str = lonLat.toShortString();
-     * @returns {string} 返回处理后的经纬度字符串。例如："100,50"
+     * @returns {string} 处理后的经纬度字符串。例如："100,50"
      */
     toShortString() {
         return (this.lon + "," + this.lat);
@@ -67,7 +66,7 @@ export class LonLat {
      * @example
      * var lonLat1 = new LonLat(100,50);
      * var lonLat2 = lonLat1.clone();
-     * @returns {LonLat}  返回相同坐标值的新的坐标对象。
+     * @returns {LonLat}  相同坐标值的新的坐标对象。
      */
     clone() {
         return new LonLat(this.lon, this.lat);
@@ -80,9 +79,9 @@ export class LonLat {
      * var lonLat1 = new LonLat(100,50);
      * //lonLat2 是新的对象
      * var lonLat2 = lonLat1.add(100,50);
-     * @param {float} lon - 传入的经度参数。
-     * @param {float} lat - 传入的纬度参数。
-     * @returns {LonLat} 返回一个新的 LonLat 对象，此对象的经纬度是由传入的经纬度与当前的经纬度相加所得。
+     * @param {float} lon - 经度参数。
+     * @param {float} lat - 纬度参数。
+     * @returns {LonLat} 新的 LonLat 对象，此对象的经纬度是由传入的经纬度与当前的经纬度相加所得。
      */
     add(lon, lat) {
         if ((lon == null) || (lat == null)) {
@@ -165,7 +164,7 @@ export class LonLat {
      * var str = "100,50";
      * var lonLat = LonLat.fromString(str);
      * @param {string} str - 字符串的格式：Lon+","+Lat。如："100,50"。
-     * @returns {LonLat} 返回一个 {@link LonLat} 对象。
+     * @returns {LonLat} {@link LonLat} 对象。
      */
     static fromString(str) {
         var pair = str.split(",");
@@ -174,9 +173,9 @@ export class LonLat {
 
     /**
      * @function LonLat.fromArray
-     * @description 通过数组生成一个 <LonLat> 对象。
+     * @description 通过数组生成一个 {@link LonLat} 对象。
      * @param {Array.<float>} arr - 数组的格式，长度只能为2,：[Lon,Lat]。如：[5,-42]。
-     * @returns {LonLat} 返回一个 <LonLat> 对象。
+     * @returns {LonLat} {@link LonLat} 对象。
      */
     static fromArray(arr) {
         var gotArr = Util.isArray(arr),

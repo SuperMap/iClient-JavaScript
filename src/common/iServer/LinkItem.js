@@ -23,7 +23,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  * @param {Array.<string>} options.linkFields - 欲保留的外部属性表的字段。
  * @param {string} options.linkFilter - 与外部属性表的连接条件。
  * @param {string} options.name - 此关联信息对象的名称。
- * @param {Array.<string>} options.primaryKeys - 需要关联的外部属性表的主键。
+ * @param {Array.<string>} options.primaryKeys - 关联的外部属性表的主键。
  * @example 下面以 SQL 查询说明 linkitem 的使用方法：
  *  function queryBySQL() {
  *      // 设置关联的外部数据库信息,alias表示数据库别名

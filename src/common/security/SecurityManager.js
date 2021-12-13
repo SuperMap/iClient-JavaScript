@@ -4,6 +4,7 @@
 import { Util } from '../commontypes/Util';
 import { FetchRequest } from '../util/FetchRequest';
 import { Credential } from '../commontypes/Credential';
+
 /**
  * @class SecurityManager
  * @deprecatedclass SuperMap.SecurityManager
@@ -21,7 +22,7 @@ export class SecurityManager {
      * @function SecurityManager.generateToken
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @param {TokenServiceParameter} tokenParam - token 申请参数。
-     * @returns {Promise} 返回包含 token 信息的 Promise 对象。
+     * @returns {Promise} 包含 token 信息的 Promise 对象。
      */
 
     static generateToken(url, tokenParam) {
@@ -131,7 +132,7 @@ export class SecurityManager {
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @param {boolean} [rememberme=false] - 是否记住。
-     * @returns {Promise} 返回包含 iServer 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
         url = Util.urlPathAppend(url, 'services/security/login');
@@ -191,7 +192,7 @@ export class SecurityManager {
      * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
-     * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
         url = Util.urlPathAppend(url, 'web/login');
@@ -244,7 +245,7 @@ export class SecurityManager {
      * @param {string} loginInfoParams.password - 密码。
      * @param {Object} options
      * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
-     * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
         if (!Util.isInTheSameDomain(url)) {
@@ -321,7 +322,7 @@ export class SecurityManager {
      * @version 10.1.2
      * @function SecurityManager.appendCredential
      * @param {string} url - 服务URL
-     * @returns {string} - 返回绑定了token或者key的服务URL
+     * @returns {string} - 绑定了token或者key的服务URL
      */
     static appendCredential(url) {
         var newUrl = url;

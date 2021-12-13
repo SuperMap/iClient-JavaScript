@@ -13,7 +13,7 @@ import { ServerGeometry } from './ServerGeometry';
  * @category iServer Data FeatureResults
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param {Object} options - 参数。
- * @param {Object} options.geometry - 用于查询的几何对象。
+ * @param {Object} options.geometry - 查询的几何对象。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
  * @param {string} [options.attributeFilter] - 几何查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。

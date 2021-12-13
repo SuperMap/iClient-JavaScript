@@ -11,7 +11,7 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
  * @classdesc Web 打印小地图参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} option.center - 小地图的中心点。
  * @param {number} [option.scale] - 小地图的比例尺。
  * @param {Array.<string>} [option.layerNames] - 指定 WebMap中图层名称的列表，用于渲染小地图。
@@ -73,7 +73,7 @@ export class WebPrintingJobLittleMapOptions {
     /**
      * @function WebPrintingJobLittleMapOptions.prototype.toJSON
      * @description 将 WebPrintingJobLittleMapOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {

@@ -9,7 +9,7 @@ import {TemplateBase} from './TemplateBase';
  * @deprecatedclass SuperMap.Components.Select
  * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
- * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
+ * @param {Array.<string|Array>} options - 组件配置参数数组。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。

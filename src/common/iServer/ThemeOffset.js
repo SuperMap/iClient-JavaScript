@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer Map Theme
  * @classdesc 专题图中文本或符号相对于要素内点的偏移量设置类。
  *            通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.offsetFixed=false] - 当前专题图是否固定标记文本或符号的偏移量。
  * @param {string} [options.offsetX='0.0'] - 专题图中文本或符号相对于要素内点的水平偏移量。
  * @param {string} [options.offsetY='0.0'] - 专题图中文本或符号相对于要素内点的垂直偏移量。

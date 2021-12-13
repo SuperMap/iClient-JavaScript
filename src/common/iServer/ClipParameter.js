@@ -10,7 +10,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {string} [options.clipDatasetName] - 裁剪的数据集名。
  * @param {string} [options.clipDatasourceName] - 裁剪的数据集所在数据源的名字。
  * @param {(Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON)} [options.clipRegion] - 用户指定的裁剪区域。

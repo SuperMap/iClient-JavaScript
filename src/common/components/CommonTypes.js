@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
- * 该文件用于存储一些公用常量
+ * @description 该文件用于存储一些公用常量
  * @private
  */
 export const FileTypes = {

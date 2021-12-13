@@ -9,8 +9,8 @@ import {OnlineServiceBase} from './OnlineServiceBase';
  * @deprecatedclass SuperMap.OnlineData
  * @classdesc Online myData 服务。
  * @category iPortal/Online
- * @param {string} serviceRootUrl - 服务根地址。
- * @param {Object} options - 服务相关参数。
+ * @param {string} serviceRootUrl - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -74,7 +74,7 @@ export class OnlineData extends OnlineServiceBase {
     /**
      * @function OnlineData.prototype.load
      * @description 通过 URL 请求获取该服务完整信息。
-     * @returns {Promise} 返回不包含请求结果的 Promise 对象,请求返回结果自动填充到该类属性中。
+     * @returns {Promise} 不包含请求结果的 Promise 对象,请求返回结果自动填充到该类属性中。
      */
     load() {
         if (!this.serviceUrl) {

@@ -11,7 +11,7 @@ import {
  * @deprecatedclass SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link JSONFormat} 构造函数创建新实例。
  * @category BaseTypes Format
- * @param {Object} [options] - 参数。
+ * @param {Object} [options] - 可选参数。
  * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
  * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
  * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
@@ -225,7 +225,7 @@ export class JSONFormat extends Format {
      * @description 将一个符合 JSON 结构的字符串进行解析。
      * @param {string} json - 符合 JSON 结构的字符串。
      * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
-     * @returns {Object} 对象，数组，字符串或数字。
+     * @returns {(object|string|Array|number|boolean)} 对象，数组，字符串或数字。
      */
     read(json, filter) {
         var object;
@@ -247,7 +247,7 @@ export class JSONFormat extends Format {
     /**
      * @function JSONFormat.prototype.write
      * @description 序列化一个对象到一个符合 JSON 格式的字符串。
-     * @param {(object|string|Array|number|boolean)} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
+     * @param {object|string|Array|number|boolean} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
      * @param {boolean} [pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
      * @returns {string} 符合 JSON 格式的字符串。
      *
@@ -298,7 +298,7 @@ export class JSONFormat extends Format {
      * @function JSONFormat.prototype.writeSpace
      * @private
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
-     * @returns {string} 一个空格。
+     * @returns {string} 空格字符串。
      */
     writeSpace() {
         return (this.pretty) ? this.space : '';

@@ -10,9 +10,9 @@ import {ShapeParameters} from './ShapeParameters';
  * @classdesc 圆形参数对象。
  * @category Visualization Theme
  * @extends {ShapeParameters}
- * @param {number} x - 圆心 x 坐标，必设参数。
- * @param {number} y - 圆心 y 坐标，必设参数。
- * @param {number} r - 圆半径，必设参数。
+ * @param {number} x - 圆心 x 坐标。
+ * @param {number} y - 圆心 y 坐标。
+ * @param {number} r - 圆半径。
  * @usage
  * @private
  */

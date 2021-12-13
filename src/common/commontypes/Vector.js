@@ -15,7 +15,7 @@ import {Util} from './Util';
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
  * 其中，默认的样式在 {@link GeometryVector.style} 类中定义，如果没有特别的指定将使用默认的样式。
  * @extends {Feature}
- * @param {Geometry} geometry - 代表要素的几何形状。
+ * @param {Geometry} geometry - 要素的几何信息。
  * @param {Object} [attributes] - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的对象。
  * @param {Object} [style] - 样式对象。
  * @example
@@ -51,7 +51,7 @@ export class Vector extends Feature {
 
         /**
          * @member {Geometry} GeometryVector.prototype.geometry
-         * @description 该属性用于存放几何信息。
+         * @description 存放几何信息。
          */
         this.geometry = geometry ? geometry : null;
 

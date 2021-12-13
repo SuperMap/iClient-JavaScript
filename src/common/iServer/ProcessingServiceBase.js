@@ -20,7 +20,7 @@ import {
  * @category  iServer ProcessingService
  * @classdesc 分布式分析服务基类
  * @extends {CommonServiceBase}
- * @param {string} url - 分布式分析服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。

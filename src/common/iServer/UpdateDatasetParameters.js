@@ -9,9 +9,9 @@ import {Util} from '../commontypes/Util';
  * @category iServer Data Dataset
  * @classdesc 数据集信息更改参数类。
  * @param {Object} options - 参数。
- * @param {String} options.datasourceName - 数据源名称(必选)。
- * @param {String} options.datasetName - 数据集名称(必选)。
- * @param {boolean} options.isFileCache - 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
+ * @param {String} options.datasourceName - 数据源名称。
+ * @param {String} options.datasetName - 数据集名称。
+ * @param {boolean} options.isFileCache - 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。
  * @param {String} options.description - 数据集描述信息。
  * @param {String} options.prjCoordSys - 投影坐标系。
  * @param {Object} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。

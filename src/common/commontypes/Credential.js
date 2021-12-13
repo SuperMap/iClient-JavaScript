@@ -41,7 +41,7 @@ export class Credential {
      * var credential = new Credential("valueString","token");
      * //这里 str = "token=valueString";
      * var str = credential.getUrlParameters();
-     * @returns {string} 返回安全信息组成的 url 片段。
+     * @returns {string} 安全信息组成的 url 片段。
      */
     getUrlParameters() {
         //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
@@ -56,7 +56,7 @@ export class Credential {
      * var credential = new Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
      * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
      * var str = credential.getValue();
-     * @returns {string} 返回 value 字符串，在 iServer 服务下该 value 值即为 token 值。
+     * @returns {string} value 字符串，在 iServer 服务下该 value 值即为 token 值。
      */
     getValue() {
         return this.value;

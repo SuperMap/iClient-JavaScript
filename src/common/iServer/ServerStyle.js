@@ -182,7 +182,7 @@ export class ServerStyle {
     /**
      * @function ServerStyle.fromJson
      * @description 将JSON对象转换为 ServerStyle 对象。
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      * @returns {ServerStyle} 转化后的 ServerStyle 对象。
      */
     static fromJson(jsonObject) {

@@ -11,7 +11,7 @@ import {ServerStyle} from './ServerStyle';
  * @category  iServer Map TileFeature
  * @classdesc UGC 矢量图层类。
  * @extends {UGCSubLayer}
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {ServerStyle} [options.style] - 矢量图层的风格。
  * @usage
  */

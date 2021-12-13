@@ -14,13 +14,13 @@ import { Events } from '../../commontypes/Events';
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
  * @param {Chart.Datasets} options.datasets - 数据来源。
- * @param {Array.<Object>} options.chartOptions - 图表可选参数。
- * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
- * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
- * @param {string} options.chartOptions.xAxis.name - 图表X轴名称。
- * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
- * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
- * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
+ * @param {Array.<Object>} options.chartOptions - 图表可选配置。
+ * @param {Array.<Object>} options.chartOptions.xAxis - X轴可选参数。
+ * @param {string} options.chartOptions.xAxis.field - X轴字段名。
+ * @param {string} options.chartOptions.xAxis.name - X轴名称。
+ * @param {Array.<Object>} options.chartOptions.yAxis - Y轴可选参数。
+ * @param {string} options.chartOptions.yAxis.field - Y轴字段名。
+ * @param {string} options.chartOptions.yAxis.name - Y轴名称。
  * @fires ChartViewModel#getdatafailed
  * @usage
  */
@@ -47,7 +47,7 @@ export class ChartViewModel {
      * @function ChartViewModel.prototype._initXYField
      * @description 初始化XY字段。
      * @private
-     * @param {Object} chartOptions - options里的图表参数
+     * @param {Object} chartOptions - options里的图表参数。
      */
     _initXYField(chartOptions) {
         let me = this;
@@ -71,7 +71,7 @@ export class ChartViewModel {
     /**
      * @function ChartViewModel.prototype.getDatasetInfo
      * @description 获得数据集数据。
-     * @param {function} success - 成功回调函数
+     * @param {function} success - 成功回调函数。
      */
     getDatasetInfo(success) {
         this.createChart = success;
@@ -84,7 +84,7 @@ export class ChartViewModel {
             }
             /**
              * @event ChartViewModel#getdatafailed
-             * @description 监听到获取数据失败事件后触发
+             * @description 监听到获取数据失败事件后触发。
              * @property {Object} error  - 事件对象。
              */
             this.chartModel.events.on({"getdatafailed":  (error) => {
@@ -97,7 +97,7 @@ export class ChartViewModel {
      * @function ChartViewModel.prototype._getDatasetInfoSuccess
      * @description 成功回调函数。
      * @private
-     * @param {Object} results - 数据集信息
+     * @param {Object} results - 数据集信息。
      */
     _getDatasetInfoSuccess(results) {
         let datasetUrl = this.datasets.url;
@@ -123,7 +123,7 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._getDataInfoSuccess
-     * @description 请求iportal数据成功之后的回调
+     * @description 请求iportal数据成功之后的回调。
      * @private
      */
     _getDataInfoSuccess(results, type) {
@@ -147,9 +147,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._getLayerFeatures
-     * @description 请求图层的数据信息
+     * @description 请求图层的数据信息。
      * @private
-     * @param {Object} results - 数据集信息
+     * @param {Object} results - 数据集信息。
      */
     _getLayerFeatures(results) {
         this.chartModel.getLayerFeatures(results, this._getChartDatasFromLayer.bind(this));
@@ -157,9 +157,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._getChartDatas
-     * @description 将请求回来的数据转换为图表所需的数据格式
+     * @description 将请求回来的数据转换为图表所需的数据格式。
      * @private
-     * @param {Object} results - 数据要素信息
+     * @param {Object} results - 数据要素信息。
      */
     _getChartDatas(results) {
         if (results) {
@@ -198,9 +198,9 @@ export class ChartViewModel {
     }
     /**
      * @function ChartViewModel.prototype._getChartDatasFromLayer
-     * @description 将请求回来的数据转换为图表所需的数据格式
+     * @description 将请求回来的数据转换为图表所需的数据格式。
      * @private
-     * @param {Object} results - 图层数据要素信息
+     * @param {Object} results - 图层数据要素信息。
      */
     _getChartDatasFromLayer(results) {
         if (results.result.recordsets) {
@@ -233,9 +233,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._createChartOptions
-     * @description 创建图表所需参数
+     * @description 创建图表所需参数。
      * @private
-     * @param {Object} data - 图表数据
+     * @param {Object} data - 图表数据。
      */
     _createChartOptions(data) {
         this.calculatedData = this._createChartDatas(data);
@@ -244,8 +244,8 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype.changeType
-     * @description 改变图表类型
-     * @param {string} type - 图表类型
+     * @description 改变图表类型。
+     * @param {string} type - 图表类型。
      */
     changeType(type) {
         if (type !== this.chartType) {
@@ -256,9 +256,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype.updateData
-     * @description 改变图表类型
-     * @param {Chart.Datasets} datasets - 数据来源
-     * @param {function} success 成功回调函数
+     * @description 改变图表类型。
+     * @param {Chart.Datasets} datasets - 数据来源。
+     * @param {function} success 成功回调函数。
      */
     updateData(datasets, chartOption, success) {
         this.updateChart = success;
@@ -275,9 +275,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._updateDataSuccess
-     * @description 改变图表类型
+     * @description 改变图表类型。
      * @private
-     * @param {Object} data - 图表数据
+     * @param {Object} data - 图表数据。
      */
     _updateDataSuccess(data) {
         let options = this._createChartOptions(data);
@@ -286,9 +286,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype.updateChartOptions
-     * @description 更新图表所需参数
-     * @param {string} type - 图表类型
-     * @param {Object} style - 图表样式
+     * @description 更新图表所需参数。
+     * @param {string} type - 图表类型。
+     * @param {Object} style - 图表样式。
      */
     updateChartOptions(type, style) {
         if (this.calculatedData) {
@@ -362,9 +362,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._createChartDatas
-     * @description 构建图表数据
+     * @description 构建图表数据。
      * @private
-     * @param {Object} data - 源数据
+     * @param {Object} data - 源数据。
      */
     _createChartDatas(data) {
         let fieldIndex = 0, yfieldIndexs = [];
@@ -435,10 +435,10 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._getAttrData
-     * @description 选中字段数据
+     * @description 选中字段数据。
      * @private
-     * @param {Object} datacontent - 图表数据
-     * @param {number} index - 字段索引
+     * @param {Object} datacontent - 图表数据。
+     * @param {number} index - 字段索引。
      */
     _getAttrData(datacontent, index) {
         if (index === 0) {
@@ -460,10 +460,10 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._createChartSeries
-     * @description 图表数据
+     * @description 图表数据。
      * @private
-     * @param {Object} calculatedData - 图表数据
-     * @param {string} chartType - 图表类型
+     * @param {Object} calculatedData - 图表数据。
+     * @param {string} chartType - 图表类型。
      */
     _createChartSeries(calculatedData, chartType) {
         let series = [];
@@ -490,9 +490,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._isDate
-     * @description 判断是否为日期
+     * @description 判断是否为日期。
      * @private
-     * @param {string} data - 字符串
+     * @param {string} data - 字符串。
      */
     _isDate(data) {
         let reg = /((^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(10|12|0?[13578])([-\/\._])(3[01]|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(11|0?[469])([-\/\._])(30|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(0?2)([-\/\._])(2[0-8]|1[0-9]|0?[1-9])$)|(^([2468][048]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([3579][26]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][13579][26])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][13579][26])([-\/\._])(0?2)([-\/\._])(29)$))/ig;
@@ -501,9 +501,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._isNumber
-     * @description 判断是否为数值
+     * @description 判断是否为数值。
      * @private
-     * @param {string} data - 字符串
+     * @param {string} data - 字符串。
      */
     _isNumber(data) {
         let mdata = Number(data);
@@ -515,9 +515,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._getDataType
-     * @description 判断数据的类型
+     * @description 判断数据的类型。
      * @private
-     * @param {string} data - 字符串
+     * @param {string} data - 字符串。
      */
     _getDataType(data) {
         if (data !== null && data !== undefined && data !== '') {
@@ -533,9 +533,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._checkUrl
-     * @description 检查url是否符合要求
+     * @description 检查url是否符合要求。
      * @private
-     * @param {string} url
+     * @param {string} url。
      */
     _checkUrl(url) {
         let match;
@@ -552,9 +552,9 @@ export class ChartViewModel {
 
     /**
      * @function ChartViewModel.prototype._isMatchUrl
-     * @description 判断输入的地址是否符合地址格式
+     * @description 判断输入的地址是否符合地址格式。
      * @private
-     * @param {string} str - url
+     * @param {string} str - url。
      */
     _isMatchUrl(str) {
         var reg = new RegExp('(https?|http|file|ftp)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');

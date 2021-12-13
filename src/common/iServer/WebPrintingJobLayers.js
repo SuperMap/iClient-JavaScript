@@ -9,8 +9,8 @@
   * @classdesc 将图例添加到布局的业务图层参数类。
   * @version 10.1.0
   * @category iServer WebPrintingJob
-  * @param {Object} option - 初始化参数。
-  * @param {string} [option.name] - 表示图层 name 的字符串。此 name 必须唯一，并且必须与定义业务图层的 LegendOptions_layers 元素中的图层 name 匹配。
+  * @param {Object} option - 参数。
+  * @param {string} option.name - 图层 name 的字符串。此 name 必须唯一，并且必须与定义业务图层的 LegendOptions_layers 元素中的图层 name 匹配。
   * @usage
   */
  export class WebPrintingJobLayers {

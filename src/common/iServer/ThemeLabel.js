@@ -18,15 +18,15 @@ import {LabelOverLengthMode} from '../REST';
  * @classdesc 标签专题图类。
  * @extends CommonTheme
  * @param {Object} options - 参数。
- * @param {Array.<ThemeLabelItem>} options.items - 分段标签专题图的子项数组。
+ * @param {Array.<ThemeLabelItem>} options.items - 子项数组。
  * @param {string} options.labelExpression - 标注字段表达式。
  * @param {Array.<LabelImageCell|LabelSymbolCell|LabelThemeCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
- * @param {ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
- * @param {LabelOverLengthMode} [options.labelOverLengthMode=LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
+ * @param {ThemeLabelBackground} [options.background] - 标签的背景风格类。
+ * @param {LabelOverLengthMode} [options.labelOverLengthMode=LabelOverLengthMode.NONE] - 超长标签的处理模式枚举类。
  * @param {number} [options.maxLabelLength=256] - 标签在每一行显示的最大长度。
  * @param {number} [options.numericPrecision=0] - 通过该字段设置其显示的精度。
- * @param {ThemeOffset} [options.offset] - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+ * @param {ThemeOffset} [options.offset] - 指定标签专题图中标记文本相对于要素内点的偏移量对象。
  * @param {boolean} [options.overlapAvoided=true] - 是否允许以文本避让方式显示文本。
  * @param {string} [options.rangeExpression] - 制作分段标签专题的分段字段或字段表达式。
  * @param {boolean} [options.smallGeometryLabeled=false] - 是否显示长度大于被标注对象本身长度的标签。

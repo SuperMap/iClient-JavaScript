@@ -9,10 +9,6 @@ import {Graph} from './Graph';
 import './feature/Label';
 import './feature/Line';
 
-
-
-
-
 /**
  * @class Bar
  * @aliasclass Feature.Theme.Bar
@@ -319,44 +315,3 @@ export class Bar extends Graph {
     }
 
 }
-
-/**
-* @typedef {Object} Bar.setting
-* @property {number} width - 专题要素（图表）宽度。
-* @property {number} height - 专题要素（图表）高度。
-* @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
-* @property {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
-* @property {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
-* @property {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）
-*                                                     在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；
-*                                                     不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。
-* @property {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
-* @property {boolean} [useBackground=true] - 是否使用图表背景框。
-* @property {FeatureRectangle.style} [backgroundStyle] - 背景样式。
-* @property {Array.<number>} [backgroundRadius=[0, 0, 0, 0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
-*                                         则 backgroundRadius 为 [r1、r2、r3、r4]。
-* @property {Array.<number>} xShapeBlank - 水平方向上的图形空白间隔参数。长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
-*                                            第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-* @property {boolean} [showShadow=true] - 阴影开关。
-* @property {Object} [barShadowStyle] - 阴影样式,如：{shadowBlur : 8, shadowOffsetX: 2 , shadowOffsetY : 2,shadowColor : "rgba(100,100,100,0.8)"}
-* @property {Array.<string>} [barLinearGradient] - 按字段设置柱条样式[渐变开始颜色,渐变终止颜色]  与 themeLayer.themeFields 中的字段一一对应），
-*                                                  如：[["#00FF00","#00CD00"],["#00CCFF","#5E87A2"],["#00FF66","#669985"],["#CCFF00","#94A25E"],["#FF9900","#A2945E"]]
-* @property {boolean} [useAxis=true] - 是否使用坐标轴。</br>
-* @property {FeatureLine.style} [axisStyle] - 坐标轴样式。
-* @property {boolean} [axisUseArrow=false] - 坐标轴是否使用箭头。
-* @property {number} [axisYTick=0] - y 轴刻度数量。
-* @property {Array.<string>}  [axisYLabels] - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
-* @property {CommonLabel.style} [axisYLabelsStyle] - y 轴上的标签组样式。
-* @property {Array.<number>} [axisYLabelsOffset=[0,0]] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正。
-* @property {Array.<string>}  [axisXLabels] - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签,否则沿数据视图框下面条边等距排布标签。
-* @property {CommonLabel.style} [axisXLabelsStyle] - x 轴上的标签组样式。
-* @property {Array.<number>} [axisXLabelsOffset=[0,0]] - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正。
-* @property {boolean} [useXReferenceLine] - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
-* @property {FeatureLine.style} xReferenceLineStyle - 水平参考线样式。
-* @property {Object} barStyle - 柱状图柱条基础 style，此参数控制柱条基础样式，优先级低于 barStyleByFields 和 barStyleByCodomain。
-* @property {Array.<FeaturePolygon.style>} barStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields|L.supermap.graphThemeLayer.themeFields|ol.source.Graph.themeFields|mapboxgl.supermap.GraphThemeLayer.themeFields>）为柱条赋 style，此参数按字段控制柱条样式，优先级低于 barStyleByCodomain，高于 barStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条使用 style1，字段 POP_1995 对应的柱条使用 style2 ，字段 POP_1999 对应的柱条使用 style3。
-* @property {Array.<FeaturePolygon.style>} barStyleByCodomain - 按柱条代表的数据值所在值域范围控制柱条样式，优先级高于 barStyle 和 barStyleByFields。
-* @property {Object} [barHoverStyle] - 柱条 hover 状态时的样式，barHoverAble 为 true 时有效。
-* @property {Object} [barHoverAble] - 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。
-* @property {Object} [barClickAble] - 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。
-*/

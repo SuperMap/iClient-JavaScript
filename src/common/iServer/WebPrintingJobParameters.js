@@ -12,7 +12,7 @@ import { WebPrintingJobExportOptions } from './WebPrintingJobExportOptions';
  * @category iServer WebPrintingJob
  * @version 10.1.0
  * @classdesc Web 打印参数类
- * @param {Object} options - 初始化参数。
+ * @param {Object} options - 参数。
  * @param {WebPrintingJobContent} options.content - Web 打印的内容类。
  * @param {WebPrintingJobLayoutOptions} options.layoutOptions - Web 打印的布局类，包含各种布局元素的设置。
  * @param {WebPrintingJobExportOptions} options.exportOptions - Web 打印的输出类，包含 DPI、页面大小等。

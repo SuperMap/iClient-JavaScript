@@ -8,7 +8,7 @@ import { Util } from '../commontypes/Util';
  * @deprecatedclass SuperMap.AggregationParameter
  * @classdesc 聚合查询参数设置，该参数仅支持数据来源 Elasticsearch 服务的数据服务。
  * @category iServer Data FeatureResults
- * @param {Object} options - 初始化参数。
+ * @param {Object} options - 参数。
  * @param {string} options.aggName - 聚合名称。
  * @param {string} options.aggFieldName - 聚合字段。
  * @usage

@@ -6,9 +6,9 @@ import { Util } from '../commontypes/Util';
 /**
  * @class Sortby
  * @deprecatedclass SuperMap.Sortby
- * @param {Object} options - 初始化参数。
- * @param {string} options.field 属性名称
- * @param {Sortby.Direction} options.direction 排序规则， 默认升序
+ * @param {Object} options - 参数。
+ * @param {string} options.field 属性名称。
+ * @param {Sortby.Direction} options.direction 排序规则， 默认升序。
  * @usage
  */
 export default class Sortby {
@@ -41,9 +41,9 @@ export default class Sortby {
 
   /**
    * @function Sortby.prototype.constructFromObject
-   * @param {Object} data 要转换的数据.
-   * @param {Sortby} obj 返回的模型.
-   * @return {Sortby} 返回结果
+   * @param {Object} data 要转换的数据。
+   * @param {Sortby} obj 返回的模型。
+   * @return {Sortby} 返回结果。
    */
   static constructFromObject(data, obj) {
     if (data) {

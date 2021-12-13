@@ -13,12 +13,12 @@ import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
  * @classdesc Web 打印的布局参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} option.templateName - 布局模板的名称。
  * @param {string} option.title - 地图主标题名称。
  * @param {string} option.subTitle - 地图副标题名称。
- * @param {string} option.author - 地图作者名称。
- * @param {string} option.copyright - 地图版权信息。
+ * @param {string} option.author - 作者名称。
+ * @param {string} option.copyright - 版权信息。
  * @param {WebPrintingJobLittleMapOptions} option.littleMapOptions - 小地图参数类。
  * @param {WebPrintingJobLegendOptions} option.legendOptions - 图例参数类。
  * @param {WebPrintingJobScaleBarOptions} [option.scaleBarOptions] - 地图比例尺参数类。
@@ -108,7 +108,7 @@ export class WebPrintingJobLayoutOptions {
     /**
      * @function WebPrintingJobLayoutOptions.prototype.toJSON
      * @description 将 WebPrintingJobLayoutOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {

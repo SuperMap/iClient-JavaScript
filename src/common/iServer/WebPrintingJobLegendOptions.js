@@ -11,7 +11,7 @@ import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
  * @classdesc Web 打印图例参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} [option.title] - 图例名称。
  * @param {string} [option.picAsUrl] - 图例的图片 url 地址。
  * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
@@ -72,7 +72,7 @@ export class WebPrintingJobLegendOptions {
     /**
      * @function WebPrintingJobLegendOptions.prototype.toJSON
      * @description 将 WebPrintingJobLegendOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {

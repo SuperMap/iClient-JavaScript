@@ -11,8 +11,8 @@ import {Point} from '../commontypes/geometry/Point';
  * @classdesc 路由点类。路由点是指具有线性度量值 (Measure) 的二维地理坐标点。
  * @param {Object} options - 参数。
  * @param {number} options.measure - 度量值，即路由对象属性值 M。
- * @param {number} options.x - 获取当前点对象在地理坐标系下的 X 坐标值。
- * @param {number} options.y - 获取当前点对象在地理坐标系下的 Y 坐标值。
+ * @param {number} options.x - 地理坐标系下的 X 坐标值。
+ * @param {number} options.y - 地理坐标系下的 Y 坐标值。
  * @extends {GeometryPoint}
  * @usage
  */

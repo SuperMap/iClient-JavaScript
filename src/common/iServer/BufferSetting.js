@@ -10,7 +10,7 @@ import {BufferDistance} from './BufferDistance';
  * @deprecatedclass SuperMap.BufferSetting
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析通用设置类。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {BufferEndType} [options.endType=BufferEndType.FLAT] - 缓冲区端点枚举值。
  * @param {BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。
  * @param {BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。

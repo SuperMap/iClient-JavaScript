@@ -10,7 +10,7 @@
   * @classdesc iPortal 上传数据/注册数据元信息所需的参数。
   * @version 10.0.1
   * @category iPortal/Online
-  * @param {Object} params - iPortal 获取数据项id excel csv类型的数据所需数据元信息具体参数。
+  * @param {Object} params - 参数。
   * @param {string} params.xField - X 坐标字段
   * @param {string} params.yField - Y 坐标字段
   * @param {number} params.xIndex - x所在列（关系型存储下CSV或EXCEL数据时必填）

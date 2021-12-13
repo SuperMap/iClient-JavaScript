@@ -187,25 +187,3 @@ export class Pie extends Graph {
     }
 
 }
-
-/**
- * @typedef {Object} Pie.setting
- * @property {number} width - 专题要素（图表）宽度。
- * @property {number} height - 专题要素（图表）高度。
- * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
- * @property {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @property {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- * @property {Array.<number>} [dataViewBoxParameter=[0, 0, 0, 0]] - 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- * @property {Array.<number>} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @property {boolean} [useBackground=false] - 是否使用图表背景框。
- * @property {FeatureRectangle.style} backgroundStyle - 背景样式。
- * @property {Array.<number>} [backgroundRadius=[0, 0, 0, 0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
- * @property {Sector.style} sectorStyle - 饼图中扇形的基础 style，此参数控制饼图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
- * @property {Array.<Sector.style>} sectorStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。
- * @property {Array.<Object>} sectorStyleByCodomain - 按饼图扇形代表的数据值所在值域范围控制饼图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
- * @property {Object} [sectorHoverStyle] 饼图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * @property {boolean} [sectorHoverAble=true] 是否允许饼图扇形使用 hover 状态。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
- * @property {boolean} [sectorClickAble=true] 是否允许饼图扇形被点击。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
- */

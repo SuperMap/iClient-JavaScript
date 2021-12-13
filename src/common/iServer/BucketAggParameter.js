@@ -9,7 +9,7 @@ import { AggregationParameter } from './AggregationParameter';
  * @deprecatedclass SuperMap.BucketAggParameter
  * @classdesc 子聚合类查询参数设置，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @category iServer Data FeatureResults
- * @param {Object} options - 初始化参数。
+ * @param {Object} options - 参数。
  * @param {Array.<MetricsAggParameter>} options.subAggs - 子聚合类集合。
  * @extends {AggregationParameter}
  * @usage

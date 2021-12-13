@@ -24,9 +24,8 @@ export class Format {
         this.data = null;
 
         /**
-         * APIProperty: keepData
          * @member {Object} [Format.prototype.keepData=false]
-         * @description 保持最近读到的数据的引用（通过 <data> 属性）。
+         * @description 保持最近读到的数据的引用（通过 data 属性）。
          */
         this.keepData = false;
 
@@ -57,7 +56,7 @@ export class Format {
      * @function Format.prototype.write
      * @description 将对象写成字符串。
      * @param {Object} object - 可序列化的对象。
-     * @returns {string} 对象被写成字符串。
+     * @returns {string} 对象转化后的字符串。
      */
     write(object) { // eslint-disable-line no-unused-vars
         //用来写字符串

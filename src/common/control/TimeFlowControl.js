@@ -13,7 +13,7 @@ import {TimeControlBase} from './TimeControlBase';
  * 那么表示按照每次1年（可以通过 setSpeed 进行修改）的变化从公元 1000 年开始到公元 2000 年为止，默认每 1 秒会 1 次（通过 setFrequency 修改）
  * @extends {TimeControlBase}
  * @param {function} callback - 每次刷新回调函数。具体的效果需要用户在此回调函数里面实现。
- * @param {Object} options - 该类开放的可选属性。
+ * @param {Object} options - 可选参数。
  * @param {number} [options.speed=1] - 步长（单位 ms）。不能小于 0，（每次刷新的数据之间的间隔为 1ms）。
  * @param {number} [options.frequency=1000] - 刷新频率（单位 ms）。
  * @param {number} [options.startTime=0] - 起始时间，必须为数字，且小于等于 endTime。如果不设置，初始化时为 0，建议设置。

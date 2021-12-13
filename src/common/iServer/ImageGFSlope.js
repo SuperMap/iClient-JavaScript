@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @class ImageGFSlope
  * @deprecatedclass SuperMap.ImageGFSlope
  * @classdesc 栅格函数对象:对DEM数据生成坡度图。
- * @param {Object} options - 初始化参数。
+ * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
  * @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
  * @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。

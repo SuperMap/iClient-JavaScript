@@ -47,7 +47,7 @@ import {
  * @deprecatedclass SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 {@link GeoJSON} 构造器创建一个 GeoJSON 解析器。
  * @category BaseTypes Format
- * @param {Object} [options] - 参数。
+ * @param {Object} [options] - 可选参数。
  * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
  * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
  * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。

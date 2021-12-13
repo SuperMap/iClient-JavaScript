@@ -9,10 +9,10 @@ import { Util } from '../commontypes/Util';
  * @classdesc Web 打印图例元素参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} option.name - 图例元素的名称。
- * @param {string} [option.picAsUrl] - 图例元素 Base64 格式图片。
- * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。
+ * @param {string} option.picAsUrl - 图例元素 Base64 格式图片。
+ * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。如果已填了 url 参数，此参数可不传
  * @usage
  */
 export class WebPrintingJobCustomItems {
@@ -51,7 +51,7 @@ export class WebPrintingJobCustomItems {
     /**
      * @function WebPrintingJobCustomItems.prototype.toJSON
      * @description 将 WebPrintingJobCustomItems 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {

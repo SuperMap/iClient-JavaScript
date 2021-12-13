@@ -13,7 +13,7 @@ import {ColorDictionary} from './ColorDictionary';
  * @category iServer Map Layer
  * @classdesc UGC 栅格图层类。
  * @extends {UGCSubLayer}
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {Array.<Object>} [options.colorDictionary] - 颜色对照表对象。
  * @param {number} [options.brightness] - Grid 图层的亮度。
  * @param {ColorGradientType} [options.colorGradientType] - 颜色渐变枚举。

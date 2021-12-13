@@ -259,10 +259,10 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 获取某对象再数组中的索引值。
+   * @description 获取某对象在数组中的索引值。
    * @param {Array} array - 数组。
    * @param {Object} obj - 对象。
-   * @returns {number} 某对象再数组中的索引值。
+   * @returns {number} 某对象在数组中的索引值。
    */
   indexOf: function (array, obj) {
     if (array == null) {
@@ -287,8 +287,8 @@ const Util = {
    * @description 修改某 DOM 元素的许多属性。
    * @param {HTMLElement} element - 待修改的 DOM 元素。
    * @param {string} [id] - DOM 元素的 ID。
-   * @param {Pixel} [px] - 包含 DOM 元素的 style 属性的 left 和 top 属性。
-   * @param {Size} [sz] - 包含 DOM 元素的 width 和 height 属性。
+   * @param {Pixel} [px] - DOM 元素的 style 属性的 left 和 top 属性。
+   * @param {Size} [sz] - DOM 元素的 width 和 height 属性。
    * @param {string} [position] - DOM 元素的 position 属性。
    * @param {string} [border] - DOM 元素的 style 属性的 border 属性。
    * @param {string} [overflow] - DOM 元素的 style 属性的 overflow 属性。
@@ -453,7 +453,7 @@ const Util = {
    * @description 将字符串以接近的精度转换为数字。
    * @param {string} number - 字符串。
    * @param {number} [precision=14] - 精度。
-   * @returns {number} 数字。
+   * @returns {number} 转化后的数字。
    */
   toFloat: function (number, precision) {
     if (precision == null) {
@@ -469,7 +469,7 @@ const Util = {
    * @memberOf CommonUtil
    * @description 角度转弧度。
    * @param {number} x - 角度。
-   * @returns {number} 弧度。
+   * @returns {number} 转化后的弧度。
    */
   rad: function (x) {
     return (x * Math.PI) / 180;
@@ -553,7 +553,7 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @param {number} scale - 比例尺。
-   * @returns {number} 返回正常的 scale 值。
+   * @returns {number} 正常的 scale 值。
    */
   normalizeScale: function (scale) {
     var normScale = scale > 1.0 ? 1.0 / scale : scale;
@@ -565,7 +565,7 @@ const Util = {
    * @description 比例尺转分辨率。
    * @param {number} scale - 比例尺。
    * @param {string} [units='degrees'] - 比例尺单位。
-   * @returns {number} 分辨率。
+   * @returns {number} 转化后的分辨率。
    */
   getResolutionFromScale: function (scale, units) {
     var resolution;
@@ -584,7 +584,7 @@ const Util = {
    * @description 分辨率转比例尺。
    * @param {number} resolution - 分辨率。
    * @param {string} [units='degrees'] - 分辨率单位。
-   * @returns {number} 比例尺。
+   * @returns {number} 转化后的比例尺。
    */
   getScaleFromResolution: function (resolution, units) {
     if (units == null) {
@@ -598,7 +598,7 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 获取浏览器相关信息。支持的浏览器包括：Opera，Internet Explorer，Safari，Firefox。
-   * @returns {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
+   * @returns {Object} 浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
    */
   getBrowser: function () {
     return Browser;
@@ -607,14 +607,14 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 浏览器是否支持 Canvas。
-   * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
+   * @returns {boolean} 当前浏览器是否支持 HTML5 Canvas。
    */
   isSupportCanvas,
 
   /**
    * @memberOf CommonUtil
    * @description 判断；浏览器是否支持 Canvas。
-   * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
+   * @returns {boolean} 当前浏览器是否支持 HTML5 Canvas 。
    */
   supportCanvas: function () {
     return Util.isSupportCanvas;
@@ -680,7 +680,7 @@ const Util = {
    * @param {number} scale - 地图初始化时默认的显示比例尺。
    * @param {string} [coordUnit='degrees'] - 投影坐标系统的地图单位。
    * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则系统默认为 WGS84 参考系的椭球体长半轴 6378137。
-   * @returns {number} 返回图层显示分辨率。
+   * @returns {number} 图层显示分辨率。
    */
   calculateDpi: function (viewBounds, viewer, scale, coordUnit, datumAxis) {
     //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
@@ -716,7 +716,7 @@ const Util = {
    * @memberOf CommonUtil
    * @description 将对象转换成 JSON 字符串。
    * @param {Object} obj - 要转换成 JSON 的 Object 对象。
-   * @returns {string} 返回转换后的 JSON 对象。
+   * @returns {string} 转换后的 JSON 对象。
    */
   toJSON: function (obj) {
     var objInn = obj;
@@ -810,7 +810,7 @@ const Util = {
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
    * @param {string} [coordUnit] - 投影坐标系统的地图单位。
    * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
-   * @returns {number} 返回当前比例尺下的屏幕分辨率。
+   * @returns {number} 当前比例尺下的屏幕分辨率。
    */
   getResolutionFromScaleDpi: function (scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
@@ -843,7 +843,7 @@ const Util = {
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
    * @param {string} [coordUnit] - 投影坐标系统的地图单位。
    * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
-   * @returns {number} 返回当前屏幕分辨率下的比例尺。
+   * @returns {number} 当前屏幕分辨率下的比例尺。
    */
   getScaleFromResolutionDpi: function (resolution, dpi, coordUnit, datumAxis) {
     var scale = null,
@@ -939,7 +939,7 @@ const Util = {
    * @memberOf CommonUtil
    * @description 克隆一个 Object 对象
    * @param {Object} obj - 需要克隆的对象。
-   * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
+   * @returns {Object} 对象的拷贝对象，注意是新的对象，不是指向。
    */
   cloneObject: function (obj) {
     // Handle the 3 simple types, and null or undefined
@@ -1027,7 +1027,7 @@ const Util = {
    * @param {ThemeStyle} style - 文本样式。
    * @param {string} text - 文本内容。
    * @param {Object} element - DOM 元素。
-   * @returns {Object} 返回裁剪后的宽度，高度信息。
+   * @returns {Object} 裁剪后的宽度，高度信息。
    */
   getTextBounds: function (style, text, element) {
     document.body.appendChild(element);
@@ -1060,7 +1060,7 @@ const Util = {
    * @description 获取转换后的path路径。
    * @param {string} path - 待转换的path, 包含`{param}`。
    * @param {Object} pathParams - path中待替换的参数。
-   * @returns {string} 返回转换后的path路径
+   * @returns {string} 转换后的path路径
    */
   convertPath: function (path, pathParams) {
     if (!pathParams) {

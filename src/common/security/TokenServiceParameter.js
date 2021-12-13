@@ -9,7 +9,7 @@ import {ClientType} from '../REST';
  * @deprecatedclass SuperMap.TokenServiceParameter
  * @classdesc token 申请参数。
  * @category Security
- * @param {Object} options - token 申请参数。
+ * @param {Object} options - 参数。
  * @param {string} options.username - 用户名。
  * @param {string} options.password - 密码。
  * @param {ClientType} [options.clientType='ClientType.NONE'] - token 申请的客户端标识类型。

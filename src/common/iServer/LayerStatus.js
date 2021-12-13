@@ -10,8 +10,8 @@ import {Util} from '../commontypes/Util';
  * @classdesc 子图层显示参数类。
  * @description 该类存储了各个子图层的名字和是否可见的状态。
  * @param {Object} options - 参数。
- * @param {string} options.layerName - 获取或设置图层名称。
- * @param {boolean} [options.isVisible=true] - 获取或设置图层是否可见，true 表示可见。
+ * @param {string} options.layerName - 图层名称。
+ * @param {boolean} [options.isVisible=true] - 图层是否可见，true 表示可见。
  * @param {string} [options.displayFilter] - 图层显示 SQL 过滤条件。
  * @usage
  */

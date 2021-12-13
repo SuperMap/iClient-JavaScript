@@ -32,7 +32,7 @@ import {
 /**
  * @typedef {Object} Chart.Datasets  - 数据来源
  * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
- * @property {string} url - 服务url地址。
+ * @property {string} url - 服务地址。
  * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
  * @property {FilterParameter} queryInfo - 查询条件
  */
@@ -53,7 +53,7 @@ export class ChartView {
     /**
      * @function Chart.prototype.onAdd
      * @description 创建图表之后成功回调
-     * @param {function} addChart - 回调函数
+     * @param {function} addChart - 回调函数。
      */
     onAdd(addChart) {
         this.addChart = addChart;
@@ -94,7 +94,7 @@ export class ChartView {
     /**
      * @function Chart.prototype.setStyle
      * @description 设置图表样式。
-     * @param {Object} style - 图表样式 参考Echarts-options样式设置
+     * @param {Object} style - 图表样式，参考Echarts-options样式设置。
      */
     setStyle(style) {
         let newOptions = this.viewModel.setStyle(style);
@@ -103,8 +103,8 @@ export class ChartView {
 
     /**
      * @function Chart.prototype.changeType
-     * @description 改变图表类型
-     * @param {string} type - 图表类型
+     * @description 改变图表类型。
+     * @param {string} type - 图表类型。
      */
     changeType(type) {
         if (this.chartType !== type) {
@@ -116,9 +116,9 @@ export class ChartView {
 
     /**
      * @function Chart.prototype.updateData
-     * @description 更新图表数据
-     * @param {Chart.Datasets} datasets - 数据来源
-     * @param {Object} chartOption - X,Y轴信息
+     * @description 更新图表数据。
+     * @param {Chart.Datasets} datasets - 数据来源。
+     * @param {Object} chartOption - X,Y轴信息。
      */
     updateData(datasets, chartOption) {
         let me = this;
@@ -132,9 +132,9 @@ export class ChartView {
 
     /**
      * @function Chart.prototype._createChart
-     * @description 创建图表
+     * @description 创建图表。
      * @private
-     * @param {Object} data - 图表数据
+     * @param {Object} data - 图表数据。
      */
     _createChart(data) {
         this.echart = echarts.init(
@@ -152,9 +152,9 @@ export class ChartView {
 
     /**
      * @function Chart.prototype._updateChart
-     * @description 更新图表
+     * @description 更新图表。
      * @private
-     * @param {Object} options - 图表参数
+     * @param {Object} options - 图表参数。
      */
     _updateChart(options) {
         if (this.echart) {

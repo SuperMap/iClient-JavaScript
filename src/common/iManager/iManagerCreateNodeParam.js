@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.iManagerCreateNodeParam
  * @classdesc iManager 创建节点参数。
  * @category iManager
- * @param {Object} [params] - iManager 创建节点参数。
+ * @param {Object} [params] - 节点参数。
  * @usage
  */
 export class IManagerCreateNodeParam {

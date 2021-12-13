@@ -12,7 +12,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集查询服务基类。获取结果数据类型为 Object。包含 result 属性，result 的数据格式根据 format 参数决定为 GeoJSON 或者 iServerJSON。
  * @extends CommonServiceBase
- * @param {string} url - 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * @param {string} url - 服务地址。请求数据服务中数据集查询服务，
  * URL应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。

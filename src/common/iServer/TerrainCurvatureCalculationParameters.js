@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 地形曲率计算参数类。
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} options.dataset - 地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {string} options.averageCurvatureName - 结果数据集：平均曲率数据集的名称。
  * @param {string} options.profileCurvatureName - 结果数据集：剖面曲率数据集的名称。
  * @param {string} options.planCurvatureName - 结果数据集：平面曲率数据集的名称。

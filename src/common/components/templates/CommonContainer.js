@@ -9,7 +9,7 @@ import {TemplateBase} from './TemplateBase';
  * @deprecatedclass SuperMap.Components.CommonContainer
  * @classdesc 组件统一外框。
  * @version 9.1.1
- * @param {Object} options - 组件可选参数。
+ * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
  * @category Components Common
@@ -50,7 +50,7 @@ export class CommonContainer extends TemplateBase {
 
     /**
      * @function CommonContainer.prototype.getContentElement
-     * @description 获取内容元素容器
+     * @description 获取内容元素容器。
      */
     getContentElement() {
         return this.content;
@@ -58,7 +58,7 @@ export class CommonContainer extends TemplateBase {
 
     /**
      * @function CommonContainer.prototype.appendContent
-     * @description 填充内容元素
+     * @description 填充内容元素。
      */
     appendContent(element) {
         this.content.appendChild(element);

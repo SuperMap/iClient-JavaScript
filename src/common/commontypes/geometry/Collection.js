@@ -125,7 +125,7 @@ export class Collection extends Geometry {
 
     /**
      * @function Collection.prototype.addComponent
-     * @description 添加一个几何对象到集合中。如果设置了 componentTypes 类型，则添加的几何对象必须是 componentTypes 中的类型。
+     * @description 添加几何对象到集合中。如果设置了 componentTypes 类型，则添加的几何对象必须是 componentTypes 中的类型。
      * @param {Geometry} component - 待添加的几何对象。
      * @param {int} [index] - 几何对象插入的位置。
      * @returns {boolean} 是否添加成功。
@@ -174,7 +174,7 @@ export class Collection extends Geometry {
 
     /**
      * @function Collection.prototype.removeComponent
-     * @description 从集合中移除一个几何对象。
+     * @description 从集合中移除几何对象。
      * @param {Geometry} component - 要移除的几何对象。
      * @returns {boolean} 几何对象是否移除成功。
      */

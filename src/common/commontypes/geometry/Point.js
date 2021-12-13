@@ -14,8 +14,8 @@ import {Util} from '../Util';
  * @extends {Geometry}
  * @param {float} x - x 坐标。
  * @param {float} y - y 坐标。
- * @param {string} [type = 'Point'] - 用来存储点的类型。
- * @param {float} [tag] - 用来存储额外的属性，比如差值分析中的 Z 值。
+ * @param {string} [type = 'Point'] - 点的类型。
+ * @param {float} [tag] - 额外的属性，比如差值分析中的 Z 值。
  * @example
  * var point = new GeometryPoint(-111.04, 45.68);
  * @usage
@@ -44,7 +44,7 @@ export class Point extends Geometry {
         this.tag = (tag || tag == 0) ? parseFloat(tag) : null;
 
         /**
-         * @member {string} GeometryPoint.prototype.tag
+         * @member {string} GeometryPoint.prototype.type
          * @description  用来存储点的类型
          */
         this.type = type || "Point";
@@ -130,11 +130,10 @@ export class Point extends Geometry {
 
     /**
      * @function GeometryPoint.prototype.getVertices
-     * @description 返回点对象的所有顶点的列表。
-     * @param {boolean} [nodes] - 对于点对象此参数不起作用，直接返回点。
+     * @description 获取几何图形所有顶点的列表。
      * @returns {Array} 几何图形的顶点列表。
      */
-    getVertices(nodes) { // eslint-disable-line no-unused-vars
+    getVertices() {
         return [this];
     }
 

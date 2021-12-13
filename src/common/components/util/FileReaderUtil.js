@@ -51,10 +51,10 @@ export let FileReaderUtil = {
     },
 
     /**
-     * 读取文本文件
-     * @param file
-     * @param success
-     * @param failed
+     * @description 读取文本文件
+     * @param {Object} file 文件内容对象
+     * @param {function} success 读取文件成功回调函数
+     * @param {function} failed 读取文件失败回调函数
      * @param {Object} context - 回调重定向对象
      */
     readTextFile(file, success, failed, context) {
@@ -69,10 +69,10 @@ export let FileReaderUtil = {
     },
 
     /**
-     * 读取excel或csv文件
-     * @param file
-     * @param success
-     * @param failed
+     * @description 读取excel或csv文件
+     * @param {Object} file 文件内容对象
+     * @param {function} success 读取文件成功回调函数
+     * @param {function} failed 读取文件失败回调函数
      * @param {Object} context - 回调重定向对象
      */
     readXLSXFile(file, success, failed, context) {
@@ -185,8 +185,8 @@ export let FileReaderUtil = {
         return features;
     },
     /**
-     * 判断是否地理X坐标
-     * @param data
+     * @description 判断是否地理X坐标
+     * @param {string} data 字段名
      */
     isXField(data) {
         var lowerdata = data.toLowerCase();
@@ -196,8 +196,8 @@ export let FileReaderUtil = {
     },
 
     /**
-     * 判断是否地理Y坐标
-     * @param data
+     * @description 判断是否地理Y坐标
+     * @param {string} data 字段名
      */
     isYField(data) {
         var lowerdata = data.toLowerCase();
@@ -206,9 +206,9 @@ export let FileReaderUtil = {
             lowerdata === "latitude" || lowerdata === "lat" || lowerdata === "y坐标");
     },
     /**
-     * 字符串转为dataEditor 支持的csv格式数据
-     * @param string
-     * @param withoutTitle
+     * @description 字符串转为dataEditor 支持的csv格式数据
+     * @param {string} string 待转化的字符串
+     * @param {boolean} withoutTitle 是否需要列标题
      */
     string2Csv(string, withoutTitle) {
         // let rows = string.split('\r\n');

@@ -12,7 +12,7 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}

@@ -19,7 +19,7 @@ export class Geometry {
         this.CLASS_NAME = "SuperMap.Geometry";
         /**
          * @member {string} Geometry.prototype.id
-         * @description  此几何对象的唯一标示符。
+         * @description  几何对象的唯一标示符。
          *
          */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
@@ -63,7 +63,7 @@ export class Geometry {
 
     /**
      * @function Geometry.prototype.clone
-     * @description 创建克隆的几何图形。克隆的几何图形不设置非标准的属性。
+     * @description 克隆几何图形。克隆的几何图形不设置非标准的属性。
      * @returns {Geometry} 克隆的几何图形。
      */
     clone() {
@@ -73,7 +73,7 @@ export class Geometry {
 
     /**
      * @function Geometry.prototype.setBounds
-     * @description 设置此几何对象的 bounds。
+     * @description 设置几何对象的 bounds。
      * @param {Bounds} bounds - 范围。
      */
     setBounds(bounds) {
@@ -116,7 +116,7 @@ export class Geometry {
     /**
      * @function Geometry.prototype.getBounds
      * @description 获得几何图形的边界。如果没有设置边界，可通过计算获得。
-     * @returns {Bounds} 返回的几何对象的边界。
+     * @returns {Bounds} 几何对象的边界。
      */
     getBounds() {
         if (this.bounds == null) {

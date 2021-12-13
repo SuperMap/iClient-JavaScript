@@ -11,7 +11,7 @@ import {ServerColor} from './ServerColor';
  * @category  iServer Map Theme
  * @classdesc 服务端文本风格类。
  * @description 该类用于定义文本风格的相关属性。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {TextAlignment} [options.align=TextAlignment.BASELINECENTER] - 文本的对齐方式。
  * @param {ServerColor} [options.backColor] - 文本的背景色。默认 backColor = new ServerColor(255, 255, 255)。
  * @param {ServerColor} [options.foreColor] - 文本的前景色。默认 foreColor = new ServerColor(0, 0, 0)。

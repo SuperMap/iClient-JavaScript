@@ -18,7 +18,7 @@ import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters
  *		   "processFailed": UpdateTurnNodeWeightError
  *		   }
  * });
- * @param {string} url - 服务的访问地址。如:
+ * @param {string} url - 服务地址。如:
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。

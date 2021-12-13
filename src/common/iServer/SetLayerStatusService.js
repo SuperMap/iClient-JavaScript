@@ -14,7 +14,7 @@ import {SetLayerStatusParameters} from './SetLayerStatusParameters';
  *             一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
  *             一种是使用 AsyncResponder 类实现异步处理。
  * @extends {CommonServiceBase}
- * @param {string} url - 地图服务访问地址。请求地图服务，URL 应为：
+ * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。

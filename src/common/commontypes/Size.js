@@ -34,7 +34,7 @@ export class Size {
 
     /**
      * @function Size.prototype.toString
-     * @description 返回此对象的字符串形式。
+     * @description 返回字符串形式。
      * @example
      * var size = new Size(10,5);
      * var str = size.toString();
@@ -51,7 +51,7 @@ export class Size {
      * @example
      * var size = new Size(31,46);
      * var size2 = size.clone();
-     * @returns {Size}  返回一个新的与当前 size 对象有相同宽、高的 Size 对象。
+     * @returns {Size}  新的与当前 size 对象有相同宽、高的 Size 对象。
      */
     clone() {
         return new Size(this.w, this.h);

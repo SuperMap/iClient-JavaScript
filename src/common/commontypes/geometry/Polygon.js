@@ -13,7 +13,7 @@ import './LinearRing';
  * @classdesc  多边形几何对象类。
  * @category BaseTypes Geometry
  * @extends {Collection}
- * @param {Array.<LinearRing>} components - 用来生成多边形的线环数组。
+ * @param {Array.<LinearRing>} components - 多边形的线环数组。
  * @example
  * var points =[new GeometryPoint(0,4010338),
  *      new GeometryPoint(1063524,4010338),

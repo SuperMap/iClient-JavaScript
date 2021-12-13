@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @category  iServer Data FeatureResults
  * @classdesc 要素查询参数基类。
  * @param {Object} options - 参数。
- * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
+ * @param {Array.<string>} options.datasetNames - 数据集名称列表。
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。

@@ -10,7 +10,7 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @category  iServer Map Tilesets
  * @classdesc 切片列表信息查询服务类；即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息。
  * @extends {CommonServiceBase}
- * @param {string} url - 地图服务地址。URL 应为：
+ * @param {string} url - 服务地址。URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{服务名}/rest/maps/map；
  *                       例如: "http://localhost:8090/iserver/services/test/rest/maps/tianlocal"。
  * @param {Object} options - 参数。

@@ -15,7 +15,7 @@ import { IPortalDataConnectionInfoParam } from "./iPortalDataConnectionInfoParam
  * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
  * @version 10.0.1
  * @category iPortal/Online
- * @param {string} iportalUrl - iportal根地址。
+ * @param {string} iportalUrl - 服务地址。
  * @extends {IPortalServiceBase}
  * @usage
  */

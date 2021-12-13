@@ -10,7 +10,7 @@ import {Util} from '../commontypes/Util';
  * @classdesc iPortal 注册服务参数。
  * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 注册服务具体参数。
+ * @param {Object} params - 可选参数。
  * @param {String} [params.type] - 服务类型。
  * @param {Array} [params.tags] - 服务标签。
  * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数

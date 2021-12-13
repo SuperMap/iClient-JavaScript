@@ -15,8 +15,8 @@ import { IPortalShareParam } from "./iPortalShareParam";
  * @classdesc 对接 SuperMap iPortal 基础服务。
  * @category iPortal/Online
  * @extends {IPortalServiceBase}
- * @param {string} iportalUrl - 地址。
- * @param {Object} options - 参数。
+ * @param {string} iportalUrl - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @usage
  */
@@ -31,7 +31,7 @@ export class IPortal extends IPortalServiceBase {
     /**
      * @function IPortal.prototype.load
      * @description 加载页面。
-     * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
+     * @returns {Promise} 包含 iportal web 资源信息的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.iportalUrl + "/web");
@@ -42,7 +42,7 @@ export class IPortal extends IPortalServiceBase {
      * @description 查询资源。
      * @version 10.0.1
      * @param {IPortalQueryParam} queryParams - 查询参数。
-     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     * @returns {Promise} 包含所有资源结果的 Promise 对象。
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof IPortalQueryParam)) {
@@ -76,7 +76,7 @@ export class IPortal extends IPortalServiceBase {
      * @description 更新共享设置。
      * @version 10.0.1
      * @param {IPortalShareParam} shareParams - 共享的参数。
-     * @returns {Promise} 返回包含共享资源结果的 Promise 对象。
+     * @returns {Promise} 包含共享资源结果的 Promise 对象。
      */
     updateResourcesShareSetting(shareParams) {
         if (!(shareParams instanceof IPortalShareParam)) {

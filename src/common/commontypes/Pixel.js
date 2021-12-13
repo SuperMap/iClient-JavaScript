@@ -6,7 +6,7 @@
  * @class Pixel
  * @deprecatedclass SuperMap.Pixel
  * @category BaseTypes Geometry
- * @classdesc 此类用 x,y 坐标描绘屏幕坐标（像素点）。
+ * @classdesc 用 x,y 坐标描绘屏幕坐标（像素点）。
  * @param {number} [x=0.0] - x 坐标。
  * @param {number} [y=0.0] - y 坐标。
  * @param {Pixel.Mode} [mode=Pixel.Mode.LeftTop] - 坐标模式。
@@ -62,7 +62,7 @@ export class Pixel {
    * @example
    * var pixcel = new Pixel(100,50);
    * var pixcel2 = pixcel.clone();
-   * @returns {Pixel} 返回一个新的与当前 pixel 对象有相同 x、y 坐标的 pixel 对象。
+   * @returns {Pixel} 新的与当前 pixel 对象有相同 x、y 坐标的 pixel 对象。
    */
   clone() {
     return new Pixel(this.x, this.y, this.mode);
@@ -95,7 +95,7 @@ export class Pixel {
    * var pixcel2 = new Pixel(110,30);
    * var distance = pixcel.distanceTo(pixcel2);
    *
-   * @param {Pixel} px - 用于计算的一个 pixel。
+   * @param {Pixel} px - 需要计算的 pixel。
    * @returns {float} 作为参数传入的像素与当前像素点的距离。
    */
   distanceTo(px) {
@@ -112,7 +112,7 @@ export class Pixel {
    *
    * @param {number} x - 传入的 x 值。
    * @param {number} y - 传入的 y 值。
-   * @returns {Pixel} 返回一个新的 pixel 对象，该 pixel 是由当前的 pixel 与传入的 x，y 相加得到。
+   * @returns {Pixel} 新的 pixel 对象，该 pixel 是由当前的 pixel 与传入的 x，y 相加得到。
    */
   add(x, y) {
     if (x == null || y == null) {
@@ -130,8 +130,8 @@ export class Pixel {
    * //pixcel3 是新的对象
    * var pixcel3 = pixcel.offset(pixcel2);
    *
-   * @param {Pixel} px - 传入的 <Pixel> 对象。
-   * @returns {Pixel} 返回一个新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y 值与传入的 Pixel 对象的 x，y 值相加得到。
+   * @param {Pixel} px - 传入的 {@link Pixel} 对象。
+   * @returns {Pixel} 新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y 值与传入的 Pixel 对象的 x，y 值相加得到。
    */
   offset(px) {
     var newPx = this.clone();

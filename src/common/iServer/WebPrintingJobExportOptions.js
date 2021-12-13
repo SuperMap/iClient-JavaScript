@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @classdesc Web 打印的输出参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {WebExportFormatType} option.format - Web 打印输出的格式，目前支持：PNG、PDF。
  * @param {number} [option.dpi=96] - Web 打印输出的分辨率，单位为每英寸点数。默认值为 96 dpi。
  * @param {number} [option.scale] - Web 打印输出的地图比例尺。
@@ -65,7 +65,7 @@ export class WebPrintingJobExportOptions {
     /**
      * @function WebPrintingJobExportOptions.prototype.toJSON
      * @description 将 WebPrintingJobExportOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {

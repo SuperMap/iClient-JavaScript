@@ -18,7 +18,7 @@ import {LabelMatrixCell} from './LabelMatrixCell';
  *              每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
  * @extends {LabelMatrixCell}
  * @param {Object} options -参数。
- * @param {ThemeLabel} options.themeLabel - 使用专题图对象作为矩阵标签的一个元素。
+ * @param {ThemeLabel} options.themeLabel - 作为矩阵标签元素的标签专题图类。
  * @usage
  */
 export class LabelThemeCell extends LabelMatrixCell {

@@ -10,7 +10,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer Map Theme
  * @classdesc 专题图基类。
  * @param {string} type - 专题图类型。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  * @usage
  */

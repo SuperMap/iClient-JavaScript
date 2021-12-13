@@ -10,7 +10,7 @@ import {Util} from '../commontypes/Util';
  * @classdesc iPortal 资源共享参数。
  * @version 10.0.1
  * @category iPortal/Online
- * @param {Object} params - iPortal 资源共享具体参数。
+ * @param {Object} params - 可选参数。
  * @param {ResourceType} [params.resourceType] - 资源类型。
  * @param {Array} [params.ids] - 资源的id数组。
  * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数

@@ -16,7 +16,7 @@ import {ServerTextStyle} from './ServerTextStyle';
  *     第一个字符（“珠”）的索引值为 0，第二个字符（“穆”）的索引值为 1，以此类推；当设置分段索引值为 1，3，4，9 时，
  *     字符分段范围相应的就是 (-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为 0 的字符（即“珠” ）在第一个分段内，
  *     索引号为 1，2 的字符（即“穆”、“朗”）位于第二个分段内，索引号为 3 的字符（“玛”）在第三个分段内，索引号为 4 的字符（“峰”）在第四个分段内，其余分段中没有字符。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {ServerTextStyle} [options.defaultStyle] - 默认的文本复合风格。
  * @param {string} [options.separator] - 文本的分隔符。
  * @param {boolean} [options.separatorEnabled=false] - 文本的分隔符是否有效。

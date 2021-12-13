@@ -36,7 +36,7 @@ import {Util} from '../../commontypes/Util';
  * 图片 - 参数对象 <{@link Image}> <br>
  * 用于符号专题图：<br>
  * 圆形 -  参数对象：<{@link FeatureCircle}>
- * @param {Object} shapeParameters - 图形参数对象，<{@link ShapeParameters}> 子类对象，可选参数。
+ * @param {Object} [shapeParameters] - 图形参数对象，<{@link ShapeParameters}> 子类对象。
  * @usage
  */
 export class ShapeFactory {
@@ -370,9 +370,9 @@ export class ShapeFactory {
     /**
      * @function  ShapeParameters.prototype.Background
      * @description 创建一个矩形背景框图形对象。
-     * @param {ShapeFactory} shapeFactory - 图形工厂对象，必设参数。
-     * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
-     * @param {Object} setting - 图表配置参数，必设参数。本函数中图形配置对象 setting 可设属性：
+     * @param {ShapeFactory} shapeFactory - 图形工厂对象。
+     * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
+     * @param {Object} setting - 图表配置参数。本函数中图形配置对象 setting 可设属性：
      * @param {Object} setting.backgroundStyle - 背景样式，此样式对象对象可设属性：<FeatureRectangle#style>。
      * @param {Array} [setting.backgroundRadius=[0,0,0,0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
      * @returns {Object} 背景框图形，一个可视化图形（矩形）对象。
@@ -408,9 +408,9 @@ export class ShapeFactory {
     /**
      * @function  ShapeParameters.prototype.GraphAxis
      * @description 创建一个统计图表坐标轴图形对象组。
-     * @param {ShapeFactory} shapeFactory - 图形工厂对象，必设参数。
-     * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
-     * @param {Object} setting - 图表配置参数，必设参数。
+     * @param {ShapeFactory} shapeFactory - 图形工厂对象。
+     * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
+     * @param {Object} setting - 图表配置参数。
      * @param {Object} setting.axisStyle - 坐标轴样式，此样式对象对象可设属性：<FeatureLine#style>。
      * @param {boolean} [setting.axisUseArrow=false] - 坐标轴是否使用箭头。
      * @param {number} [setting.axisYTick=0] - y 轴刻度数量，0表示不使用箭头。

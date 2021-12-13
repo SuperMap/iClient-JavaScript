@@ -9,7 +9,7 @@ import {AlongLineDirection} from '../REST';
  * @deprecatedclass SuperMap.ThemeLabelAlongLine
  * @category  iServer Map Theme
  * @classdesc 标签沿线标注样式类。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.isAlongLine=true] - 是否沿线显示文本。
  * @param {AlongLineDirection} [options.alongLineDirection=AlongLineDirection.LB_TO_RT] - 标签沿线标注方向。
  * @param {boolean} [options.angleFixed=false] - 当沿线显示文本时，是否将文本角度固定。

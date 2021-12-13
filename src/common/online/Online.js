@@ -36,7 +36,7 @@ export class Online {
     /**
      * @function Online.prototype.load
      * @description 加载 online，验证 online 是否可用。
-     * @returns {Promise} 返回包含网络请求结果的 Promise 对象。
+     * @returns {Promise} 包含网络请求结果的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.rootUrl).then(function (response) {
@@ -56,7 +56,7 @@ export class Online {
      * @function Online.prototype.queryDatas
      * @description 查询 Online “我的内容” 下 “我的数据” 服务（需要登录状态获取），并返回可操作的服务对象。
      * @param {OnlineQueryDatasParameter} parameter - myDatas 服务资源查询参数。
-     * @returns {Promise} 返回包含所有数据服务信息的 Promise 对象。
+     * @returns {Promise} 包含所有数据服务信息的 Promise 对象。
      */
     queryDatas(parameter) {
         var me = this, url = me.mDatasUrl;

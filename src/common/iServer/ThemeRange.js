@@ -16,11 +16,11 @@ import {RangeMode, ColorGradientType} from '../REST';
  *              分段专题图所基于的专题变量必须为数值型，分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @extends {CommonTheme}
  * @param {Object} options - 参数。
- * @param {Array.<ThemeRangeItem>} options.items - 分段专题图子项数组。
+ * @param {Array.<ThemeRangeItem>} options.items - 子项数组。
  * @param {string} options.rangeExpression - 分段字段表达式。
  * @param {number} options.rangeParameter - 分段参数。
  * @param {number} options.rangeParameter - 分段参数。
- * @param {RangeMode} [options.rangeMode=RangeMode.EQUALINTERVAL] - 分段专题图的分段模式。
+ * @param {RangeMode} [options.rangeMode=RangeMode.EQUALINTERVAL] - 分段模式。
  * @param {ColorGradientType} [options.colorGradientType=ColorGradientType.YELLOW_RED] - 渐变颜色枚举类。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  * @usage

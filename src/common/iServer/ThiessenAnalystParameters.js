@@ -8,7 +8,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.ThiessenAnalystParameters
  * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 泰森多边形分析参数基类。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {(Polygon|L.Polygon|ol.geom.Polygon)} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
  * @param {boolean} [options.createResultDataset=false] - 是否返回结果数据集。
  * @param {string} [options.resultDatasetName] - 指定结果数据集名称。

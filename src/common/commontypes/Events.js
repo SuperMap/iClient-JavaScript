@@ -272,7 +272,7 @@ export class Events {
      * @function Events.prototype.registerPriority
      * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束。
      * @param {string} type - 事件注册者的名字。
-     * @param {Object} [obj=this.object] - 对象绑定方面的回调。
+     * @param {Object} [obj=this.object] - 对象绑定的回调。
      * @param {function} [func] - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
      */
     registerPriority(type, obj, func) {
@@ -315,7 +315,7 @@ export class Events {
      * @function Events.prototype.unregister
      * @description 取消注册。
      * @param {string} type - 事件类型。
-     * @param {Object} [obj=this.object] - 对象绑定方面的回调。
+     * @param {Object} [obj=this.object] - 对象绑定的回调。
      * @param {function} [func] - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
      */
     unregister(type, obj, func) {
@@ -350,7 +350,7 @@ export class Events {
      * @description 触发一个特定的注册事件。
      * @param {string} type - 触发事件类型。
      * @param {Event} evt - 事件对象。
-     * @returns {boolean} 返回监听对象，如果返回是 false，则停止监听。
+     * @returns {Event|boolean} 监听对象，如果返回是 false，则停止监听。
      */
     triggerEvent(type, evt) {
         var listeners = this.listeners[type];

@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer NetworkAnalyst
  * @classdesc 交通网络分析结果参数类。
  * @description 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.returnEdgeFeatures=false] - 是否在分析结果中包含弧段要素集合。
  * @param {boolean} [options.returnEdgeGeometry=false] - 返回的弧段要素集合中是否包含几何对象信息。
  * @param {boolean} [options.returnEdgeIDs=false] - 返回结果中是否包含经过弧段 ID 集合。

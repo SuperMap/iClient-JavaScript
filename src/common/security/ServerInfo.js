@@ -10,7 +10,7 @@ import {ServerType} from '../REST';
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  * @category Security
  * @param {string} type - 服务器类型
- * @param {Object} options - 服务器信息相关可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.server - 服务器地址,如：http://supermapiserver:8090/iserver
  * @param {string} [options.tokenServiceUrl] - 如：http://supermapiserver:8090/iserver/services/security/tokens.json
  * @param {string} [options.keyServiceUrl] - 如：http://supermapiserver:8092/web/mycontent/keys/register.json

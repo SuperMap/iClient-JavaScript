@@ -11,8 +11,8 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.dataSourceName - 数据源名称。
- * @param {number} options.X - 要查询的地理位置 X 轴。
- * @param {number} options.Y - 要查询的地理位置 Y 轴。
+ * @param {number} options.X - 地理位置 X 轴。
+ * @param {number} options.Y - 地理位置 Y 轴。
  * @usage
  */
 export class GetGridCellInfosParameters {

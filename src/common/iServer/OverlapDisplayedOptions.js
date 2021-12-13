@@ -11,7 +11,7 @@ import {UGCLayer} from './UGCLayer';
  * @classdesc 地图压盖过滤显示选项。
  * @description 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，
  * 该类可以分别控制各种类型的对象的压盖显示情况，进而很好地处理地图中各种类型对象的压盖显示问题。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.allowPointOverlap=true] - 点和点压盖时是否显示压盖的点对象。
  * @param {boolean} [options.allowPointWithTextDisplay=true] - 标签和相应普通图层上的点是否一起过滤显示,如果过滤显示，
  *                                                             只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。

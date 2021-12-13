@@ -14,11 +14,11 @@ import {GraduatedMode} from '../REST';
  * @classdesc 等级符号专题图。
  * @extends {CommonTheme}
  * @param {Object} options - 参数。
- * @param {ThemeGraduatedSymbolStyle} options.style - 用于设置等级符号图正负和零值显示风格。
+ * @param {ThemeGraduatedSymbolStyle} options.style - 等级符号专题图正负零值显示风格类。
  * @param {string} options.expression - 等级符号专题图的字段或字段表达式。
  * @param {number} [options.baseValue=0] - 等级符号专题图的基准值，单位同专题变量的单位。
  * @param {GraduatedMode} [options.graduatedMode=GraduatedMode.CONSTANT] - 等级符号专题图分级模式。
- * @param {ThemeOffset} [options.offset] - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+ * @param {ThemeOffset} [options.offset] - 指定标签专题图中标记文本相对于要素内点的偏移量对象。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  * @usage
  */

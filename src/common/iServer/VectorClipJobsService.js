@@ -11,8 +11,8 @@ import { VectorClipJobsParameter } from './VectorClipJobsParameter';
  * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析服务类
  * @extends {ProcessingServiceBase}
- * @param {string} url -矢量裁剪分析服务地址。
- * @param {Object} options - 交互服务时所需可选参数。
+ * @param {string} url -服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage

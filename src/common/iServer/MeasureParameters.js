@@ -10,7 +10,7 @@ import {Unit} from '../REST';
  * @category iServer Map Measure
  * @classdesc 量算参数类。
  * @param {Object} geometry - 要量算的几何对象。
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {Unit} [options.unit=Unit.METER] - 量算单位。
  * @param {string} [options.prjCoordSys] - 用来指定该量算操作所使用的投影。
  * @param {string} [options.distanceMode="Geodesic"] - 用来指定量算的方式为按球面长度 'Geodesic' 或者平面长度 'Planar' 来计算。

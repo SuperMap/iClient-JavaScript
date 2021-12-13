@@ -9,20 +9,20 @@ import { Util } from '../commontypes/Util';
  * @class FieldsFilter
  * @deprecatedclass SuperMap.FieldsFilter
  * @classdesc 指定返回的用于描述 Feature 的字段。
- * @param {Object} options - 初始化参数。
- * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，要保留字段
- * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，要排除的字段
+ * @param {Object} options - 可选参数。
+ * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表
+ * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，需排除的字段列表
  * @usage
  */
 export default class FieldsFilter {
   constructor(options) {
     /**
-    * @description 对返回的字段内容进行过滤，要保留字段
+    * @description 对返回的字段内容进行过滤，需保留的字段列表
     * @member {Array.<string>} FieldsFilter.prototype.include
     */
     this.include = undefined;
     /**
-    * @description 对返回的字段内容进行过滤，要排除的字段
+    * @description 对返回的字段内容进行过滤，需排除的字段列表
     * @member {Array.<string>} FieldsFilter.prototype.exclude
     */
     this.exclude = undefined;

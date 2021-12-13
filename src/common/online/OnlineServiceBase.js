@@ -10,7 +10,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @deprecatedclass SuperMap.OnlineServiceBase
  * @classdesc Online 服务基类（使用 key 作为权限限制的类需要实现此类）。
  * @category iPortal/Online
- * @param {Object} options - 服务参数。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -30,7 +30,7 @@ export class OnlineServiceBase {
      * @param {string} url - 服务地址。
      * @param {Object} param - URL 查询参数。
      * @param {Object} [requestOptions] - http 请求参数, 比如请求头，超时时间等。
-     * @returns {Promise}  返回包含请求结果的 Promise 对象。
+     * @returns {Promise}  包含请求结果的 Promise 对象。
      */
     request(method, url, param, requestOptions = {}) {
         url = SecurityManager.appendCredential(url);

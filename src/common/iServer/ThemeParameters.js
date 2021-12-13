@@ -9,8 +9,8 @@ import {Util} from '../commontypes/Util';
  * @classdesc 专题图参数类。
  *            该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
  * @param {Object} options - 参数。
- * @param {Array.<string>} options.datasetNames - 要制作专题图的数据集数组。
- * @param {Array.<string>} options.dataSourceNames - 要制作专题图的数据集所在的数据源数组。
+ * @param {Array.<string>} options.datasetNames - 数据集数组。
+ * @param {Array.<string>} options.dataSourceNames - 数据源数组。
  * @param {Array.<JoinItem>} [options.joinItems] - 专题图外部表的连接信息 JoinItem 数组。
  * @param {Array.<CommonTheme>} options.themes - 专题图对象列表。
  * @param {Array.<string>} [options.displayFilters] - 专题图属性过滤条件。
@@ -61,8 +61,8 @@ export class ThemeParameters {
 
         /**
          * @member {Object} [ThemeParameters.prototype.fieldValuesDisplayFilter]
-         * @property {Array.<number>} values - 需要过滤的值。
-         * @property {string} fieldName - 要过滤的字段名称只支持数字类型的字段。
+         * @property {Array.<number>} values - 待过滤的值。
+         * @property {string} fieldName - 待过滤的字段名称只支持数字类型的字段。
          * @property {string} fieldValuesDisplayMode - 目前为 DISPLAY/DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素。
          */
         this.fieldValuesDisplayFilter = null;

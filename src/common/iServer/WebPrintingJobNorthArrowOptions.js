@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @classdesc Web 打印地图指北针参数类。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} option.picAsUrl - 指北针的图片 url 地址。
  * @param {string} [option.picAsBase64] - 指北针的base64位图片信息。
  * @usage
@@ -43,7 +43,7 @@ export class WebPrintingJobNorthArrowOptions {
     /**
      * @function WebPrintingJobNorthArrowOptions.prototype.toJSON
      * @description 将 WebPrintingJobNorthArrowOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {};

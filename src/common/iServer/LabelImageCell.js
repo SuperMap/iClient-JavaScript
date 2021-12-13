@@ -16,7 +16,7 @@ import {LabelMatrixCell} from './LabelMatrixCell';
  * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 {@link ThemeLabel.matrixCells} 属性即可。matrixCells 是一个二维数组，
  * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
  * @extends {LabelMatrixCell}
- * @param {Object} options - 参数。
+ * @param {Object} options - 可选参数。
  * @param {number} [options.height=0] - 设置图片的高度，单位为毫米。
  * @param {string} [options.pathField] - 设置矩阵标签元素所使用图片的路径。
  * @param {number} [options.rotation=0.0] - 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。
