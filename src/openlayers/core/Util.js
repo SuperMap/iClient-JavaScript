@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
  import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
- import { Unit } from '@supermap/iclient-common/REST';
+ import { getMeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
  import * as olUtil from 'ol/util';
  import Geometry from 'ol/geom/Geometry';
  import { getVectorContext } from 'ol/render';
@@ -452,24 +452,4 @@ function isArray(obj) {
      return !!fieldName.match(new RegExp(shortName));
    }
    return false;
- }
-
- function getMeterPerMapUnit(mapUnit) {
-   const earchRadiusInMeters = 6378137;
-   let meterPerMapUnit;
-   if (mapUnit === Unit.METER) {
-     meterPerMapUnit = 1;
-   } else if (mapUnit === Unit.DEGREE) {
-     // 每度表示多少米。
-     meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
-   } else if (mapUnit === Unit.KILOMETER) {
-     meterPerMapUnit = 1.0e-3;
-   } else if (mapUnit === Unit.INCH) {
-     meterPerMapUnit = 1 / 2.5399999918e-2;
-   } else if (mapUnit === Unit.FOOT) {
-     meterPerMapUnit = 0.3048;
-   } else {
-     return meterPerMapUnit;
-   }
-   return meterPerMapUnit;
  }

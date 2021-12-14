@@ -1,5 +1,4 @@
 export * from './index.common';
-export { Label, Graph, RankSymbol, Util } from './overlay';
 export {
   Theme,
   GeoprocessingService,

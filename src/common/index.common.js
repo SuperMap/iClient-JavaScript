@@ -75,26 +75,16 @@ import {
     DataItemType
 } from './REST';
 import {
-    Collection,
     GeometryCollection,
-    Curve,
     GeometryCurve,
-    GeoText,
     GeometryGeoText,
-    LinearRing,
     GeometryLinearRing,
-    LineString,
     GeometryLineString,
-    MultiLineString,
     GeometryMultiLineString,
-    MultiPoint,
     GeometryMultiPoint,
-    MultiPolygon,
     GeometryMultiPolygon,
     GeometryPoint,
-    Polygon,
     GeometryPolygon,
-    Rectangle,
     GeometryRectangle,
     inheritExt,
     mixinExt,
@@ -114,10 +104,9 @@ import {
     Size,
     CommonUtil,
     Browser,
-    GeometryVector,
     FeatureVector
 } from './commontypes';
-import { Format, GeoJSON, GeoJSONFormat, JSONFormat } from './format';
+import { Format, GeoJSONFormat, JSONFormat } from './format';
 
 import { TimeControlBase, TimeFlowControl } from './control';
 import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
@@ -339,61 +328,29 @@ import { CartoCSS, ThemeStyle } from './style';
 import {
     FeatureThemeGraph,
     FeatureThemeRankSymbol,
-    ThemeVector,
     FeatureThemeVector,
-    ShapeFactory,
     FeatureShapeFactory,
     ShapeParameters,
-    Image,
     ShapeParametersImage,
     ShapeParametersLabel,
-    FeatureLine,
     ShapeParametersLine,
-    FeaturePolygon,
     ShapeParametersPolygon,
-    FeatureRectangle,
     ShapeParametersRectangle,
-    Sector,
     ShapeParametersSector,
     FeatureTheme,
     LevelRenderer,
     Render,
-    Animation,
-    Animator,
-    Area,
-    Clip,
     Color,
-    ComputeBoundingBox,
-    Config,
-    LevelRendererCurve,
-    Easing,
-    Env,
-    LevelRendererEvent,
-    Eventful,
-    Group,
-    Handler,
-    Http,
-    Log,
-    MathTool,
-    Matrix,
-    Painter,
-    PaintLayer,
     Shape,
     SmicBrokenLine,
     SmicCircle,
     SmicEllipse,
     SmicImage,
-    SmicIsogon,
     SmicPoint,
     SmicPolygon,
     SmicRectangle,
-    SmicRing,
     SmicSector,
-    SmicStar,
     SmicText,
-    Storage,
-    Transformable,
-    LevelRendererVector,
     SUtil
 } from './overlay';
 import {
@@ -416,7 +373,7 @@ import {
     ChartViewModel,
     TemplateBase
 } from './components';
-import { Lang, en, zh } from './lang';
+import { Lang } from './lang';
 
 export {
     FileTypes,
@@ -512,26 +469,16 @@ export {
     DataItemType
 };
 export {
-    Collection,
     GeometryCollection,
-    Curve,
     GeometryCurve,
-    GeoText,
     GeometryGeoText,
-    LinearRing,
     GeometryLinearRing,
-    LineString,
     GeometryLineString,
-    MultiLineString,
     GeometryMultiLineString,
-    MultiPoint,
     GeometryMultiPoint,
-    MultiPolygon,
     GeometryMultiPolygon,
     GeometryPoint,
-    Polygon,
     GeometryPolygon,
-    Rectangle,
     GeometryRectangle,
     inheritExt,
     mixinExt,
@@ -551,11 +498,10 @@ export {
     Size,
     CommonUtil,
     Browser,
-    GeometryVector,
     FeatureVector
 };
 export { TimeControlBase, TimeFlowControl };
-export { Format, GeoJSON, GeoJSONFormat, JSONFormat };
+export { Format, GeoJSONFormat, JSONFormat };
 export {
     isCORS,
     FetchRequest,
@@ -772,64 +718,32 @@ export {
 export {
     FeatureThemeGraph,
     FeatureThemeRankSymbol,
-    ThemeVector,
     FeatureThemeVector,
-    ShapeFactory,
     FeatureShapeFactory,
     ShapeParameters,
-    Image,
     ShapeParametersImage,
     ShapeParametersLabel,
-    FeatureLine,
     ShapeParametersLine,
-    FeaturePolygon,
     ShapeParametersPolygon,
-    FeatureRectangle,
     ShapeParametersRectangle,
-    Sector,
     ShapeParametersSector,
     FeatureTheme,
     LevelRenderer,
     Render,
-    Animation,
-    Animator,
-    Area,
-    Clip,
     Color,
-    ComputeBoundingBox,
-    Config,
-    LevelRendererCurve,
-    Easing,
-    Env,
-    LevelRendererEvent,
-    Eventful,
-    Group,
-    Handler,
-    Http,
-    Log,
-    MathTool,
-    Matrix,
-    Painter,
-    PaintLayer,
     Shape,
     SmicBrokenLine,
     SmicCircle,
     SmicEllipse,
     SmicImage,
-    SmicIsogon,
     SmicPoint,
     SmicPolygon,
     SmicRectangle,
-    SmicRing,
     SmicSector,
-    SmicStar,
     SmicText,
-    Storage,
-    Transformable,
-    LevelRendererVector,
     SUtil
 };
 export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
 export { CartoCSS, ThemeStyle };
 export { ElasticSearch };
-export { Lang, en, zh };
+export { Lang };

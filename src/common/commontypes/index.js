@@ -2,26 +2,16 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
-  Collection,
   GeometryCollection,
-  Curve,
   GeometryCurve,
-  GeoText,
   GeometryGeoText,
-  LinearRing,
   GeometryLinearRing,
-  LineString,
   GeometryLineString,
-  MultiLineString,
   GeometryMultiLineString,
-  MultiPoint,
   GeometryMultiPoint,
-  MultiPolygon,
   GeometryMultiPolygon,
   GeometryPoint,
-  Polygon,
   GeometryPolygon,
-  Rectangle,
   GeometryRectangle
 } from './geometry/index';
 import { inheritExt, mixinExt, StringExt, NumberExt, FunctionExt, ArrayExt } from './BaseTypes';
@@ -43,35 +33,24 @@ import {
   DOTS_PER_INCH,
   IS_GECKO
 } from './Util';
-import { Vector as GeometryVector, Vector as FeatureVector } from './Vector';
+import { Vector as FeatureVector } from './Vector';
 
 export {
-  Collection,
   GeometryCollection,
-  Curve,
   GeometryCurve,
-  GeoText,
   GeometryGeoText,
-  LinearRing,
   GeometryLinearRing,
-  LineString,
   GeometryLineString,
-  MultiLineString,
   GeometryMultiLineString,
-  MultiPoint,
   GeometryMultiPoint,
-  MultiPolygon,
   GeometryMultiPolygon,
   GeometryPoint,
-  Polygon,
   GeometryPolygon,
-  Rectangle,
   GeometryRectangle
 };
-export { inheritExt, mixinExt, StringExt, NumberExt, FunctionExt, ArrayExt };
+export { inheritExt, mixinExt, DateExt, StringExt, NumberExt, FunctionExt, ArrayExt };
 export { Bounds };
 export { Credential };
-export { DateExt };
 export { Event };
 export { Events };
 export { Feature };
@@ -80,4 +59,4 @@ export { LonLat };
 export { Pixel };
 export { Size };
 export { CommonUtil, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO };
-export { GeometryVector, FeatureVector };
+export { FeatureVector };
