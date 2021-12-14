@@ -33,7 +33,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
     /**
      * @function DistributedAnalysisViewModel.prototype.getDatasetsName
      * @description 获取所有数据集名称。
-     * @param {string} url - 分布式分析服务地址。 
+     * @param {string} url - 服务地址。
      */
     getDatasetsName() {
         let processingUrl = this.processingUrl;
@@ -54,7 +54,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
 
     /**
      * @function DistributedAnalysisViewModel.prototype.getDatasetInfo
-     * @description 获得数据集类型与 fields。
+     * @description 获取数据集类型和字段。
      * @param {string} datasetUrl - 数据集资源地址。
      */
     getDatasetInfo(datasetUrl) {
@@ -77,11 +77,11 @@ export class DistributedAnalysisViewModel extends L.Evented {
 
     /**
      * @function DistributedAnalysisViewModel.prototype.analysis
-     * @description 进行分布式分析。
+     * @description 分布式分析。
      * @param {Object.<KernelDensityJobParameter|string>} params - 参数。
-     * @param {KernelDensityJobParameter} params.analysisParam - 分布式分析参数。
+     * @param {KernelDensityJobParameter} params.analysisParam - 密度分析任务参数类。
      * @param {string} [params.resultLayerName] - 结果图层名称。
-     * @param {L.Map} map - leaflet Map 对象。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     analysis(params, map) {
         let processingService = new ProcessingService(this.processingUrl);

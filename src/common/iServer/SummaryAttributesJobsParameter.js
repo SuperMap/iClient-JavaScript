@@ -9,7 +9,7 @@ import { MappingParameters } from './MappingParameters';
  * @class SummaryAttributesJobsParameter
  * @deprecatedclass SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
- * @classdesc 属性汇总分析任务参数类
+ * @classdesc 属性汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.groupField - 分组字段。

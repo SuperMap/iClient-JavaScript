@@ -17,7 +17,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
 
     /**
      * @member PointSymbolizer.prototype.includes
-     * @description 包含符号。
+     * @description 包含的符号。
      */
     includes: Symbolizer.prototype,
 
@@ -67,7 +67,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
 
     /**
      * @function PointSymbolizer.prototype.updateStyle
-     * @description 更新替换符号样式。
+     * @description 更新符号样式。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。
      */

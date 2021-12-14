@@ -14,7 +14,7 @@
  * @classdesc 数据集信息服务类。
  * @category iServer Data Dataset
  * @extends {ServiceBase}
- * @param {string} url - 数据集服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -95,7 +95,7 @@ export var DatasetService = ServiceBase.extend({
      *   new DatasetService(url).setDataset(params, function(result){
      *     //doSomething
      *   });
-     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集设置参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类。(当前数据源下的数据集存在时，更改数据集信息)
+     * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类(当前数据源下的数据集存在时，更改数据集信息)
      * @param {RequestCallback} callback - 回调函数。
      */
     setDataset(params, callback) {

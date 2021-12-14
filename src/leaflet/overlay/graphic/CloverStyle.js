@@ -10,7 +10,7 @@ import '../../core/Base';
  * @classdesc 三叶草要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 三叶草形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {number} [options.angle=60] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {number} [options.spaceAngle=0] - 扇叶间隔角度，通过计算获取。
  * @param {number} [options.count=3] - 扇叶数量。

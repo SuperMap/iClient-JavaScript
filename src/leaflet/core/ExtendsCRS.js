@@ -5,7 +5,7 @@ import L from "leaflet";
 import {crs as CRS} from './Proj4Leaflet'
 /**
  * @name BaiduCRS
- * @description 百度的坐标对象。
+ * @description 百度坐标对象。
  * @namespace
  * @category BaseTypes Projection
  * @usage

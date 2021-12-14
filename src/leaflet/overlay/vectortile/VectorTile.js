@@ -17,7 +17,7 @@ import {VectorTileFormat} from '../VectorTileFormat';
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {Object} options - 矢量瓦片类构造可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.layer] - 图层名称。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {string} [options.format] - 返回值类型。
@@ -62,7 +62,7 @@ export var VectorTile = L.Class.extend({
     /**
      * @function VectorTile.prototype.render
      * @description 渲染切片要素。
-     * @param {Object} tileFeature - 要渲染的切片要素。
+     * @param {Object} tileFeature - 需要渲染的切片要素。
      * @param {Object} coords - 切片坐标参数对象。
      */
     render: function (tileFeature, coords) {

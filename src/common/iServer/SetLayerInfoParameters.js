@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class SetLayerInfoParameters
  * @deprecatedclass SuperMap.SetLayerInfoParameters
  * @category  iServer Map TempLayersSet
- * @classdesc 设置图层信息参数类.
+ * @classdesc 设置图层信息参数类。
  * @param {Object} options - 参数。
  * @param {string} options.resourceID - 临时图层的资源 ID。
  * @param {string} options.tempLayerName - 临时图层下的子图层名。

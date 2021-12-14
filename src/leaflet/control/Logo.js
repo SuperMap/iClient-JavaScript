@@ -13,19 +13,18 @@ import {
  * @deprecatedclassinstance L.supermap.control.logo
  * @classdesc Logo 控件。
  * @category  Control
- * @description map 初始化的配置项为 logoControl，如果为 true，则显示控件；否则不显示该控件。目前默认显示。
  * @extends {L.Control}
  * @example
  *  new Logo({
  *      imageUrl: xxx,//非必填项
  *  }).addTo(map);
- * @param {Object} options - logo 控件配置项。
+ * @param {Object} options - 参数。
  * @param {string} [options.position='bottomright'] - 控件位置继承自 leaflet control。
  * @param {string} [options.imageUrl] - logo 图片地址。
- * @param {string} [options.width] - logo 图片宽。
- * @param {string} [options.height] - logo 图片高。
+ * @param {string} [options.width] - logo 图片宽度。
+ * @param {string} [options.height] - logo 图片高度。
  * @param {string} [options.link] - 跳转链接。
- * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
+ * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示的提示文本。
  * @usage
  */
 export var Logo = L.Control.extend({
@@ -48,7 +47,7 @@ export var Logo = L.Control.extend({
      * @private
      * @function Logo.prototype.onAdd
      * @override
-     * @description 添加一个 logo。
+     * @description 添加 logo。
      * @returns {HTMLElement} 返回创建 logo 的 div。
      */
     onAdd: function () {

@@ -68,7 +68,7 @@ export class DataServiceQueryViewModel extends L.Evented {
      * @function DataServiceQueryViewModel.prototype._getQureyResult
      * @description 获取查询结果。
      * @private
-     * @param {Object} serviceResult - 服务器返回结果。
+     * @param {Object} serviceResult - 返回查询结果。
      * @param {L.Map} map - Leaflet Map 对象。
      */
     _getQureyResult(serviceResult, map) {

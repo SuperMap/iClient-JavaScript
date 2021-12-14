@@ -45,7 +45,7 @@ export var MapVLayer = L.Layer.extend({
      * @private
      * @function MapVLayer.prototype.onAdd
      * @description 添加地图图层。
-     * @param {L.Map} map - 要添加的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onAdd: function (map) {
         this._map = map;
@@ -84,9 +84,9 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function MapVLayer.prototype.addData
-     * @description 追加数据。
-     * @param {Object} data - 要追加的数据。
-     * @param {Object} options - 要追加的值。
+     * @description 添加数据。
+     * @param {Object} data - 需要添加的数据。
+     * @param {Object} options - 参数。
      */
     addData: function (data, options) {
         this.renderer.addData(data, options);
@@ -97,7 +97,7 @@ export var MapVLayer = L.Layer.extend({
      * @description 更新图层。
      * @param {Object} opt - 待更新的数据。
      * @param {Object} data - mapv 数据集。
-     * @param {Object} options - mapv 绘制参数。
+     * @param {Object} options - 参数。
      */
     update: function (opt) {
         this.renderer.update(opt);
@@ -117,8 +117,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function MapVLayer.prototype.removeData
-     * @description 删除符合过滤条件的数据。
-     * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
+     * @description 删除数据。
+     * @param {Function} filter - 过滤条件。指定数据项后，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){

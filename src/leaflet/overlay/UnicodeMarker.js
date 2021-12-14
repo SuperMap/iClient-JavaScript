@@ -11,7 +11,7 @@ import '../core/Base';
  * @category Visualization Marker
  * @extends {L.Path}
  * @param {L.LatLngBounds} latlng - 经纬度坐标。
- * @param {Object} options - 符号参数。
+ * @param {Object} options - 参数。
  * @param {string} options.label - 符号 Unicode 值。
  * @param {string} [options.labelRotation='0'] - 符号旋转角度。
  * @param {string} [options.globalAlpha='1'] - 符号的透明值。

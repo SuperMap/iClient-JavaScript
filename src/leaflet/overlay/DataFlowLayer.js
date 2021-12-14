@@ -19,8 +19,8 @@ import {
  * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务并上图。订阅得到的数据会根据 `options.idField` 自动更新。
  * @category  iServer DataFlow
  * @extends {L.LayerGroup}
- * @param {string} url - SuperMap iServer 数据流服务地址，例如：http://localhost:8090/iserver/services/dataflowTest/dataflow。
- * @param {Object} options - 设置图层参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。
  'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link mapVLayer} 方式绘制实时数据。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
@@ -77,7 +77,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
    * @private
    * @function DataFlowLayer.prototype.onAdd
    * @description 添加地图。
-   * @param {L.Map} map - 待添加的地图。
+   * @param {L.Map} map - Leaflet Map 对象。
    */
   onAdd: function (map) { // eslint-disable-line no-unused-vars
     this.dataService.initSubscribe();
@@ -113,7 +113,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
    * @private
    * @function DataFlowLayer.prototype.onRemove
    * @description 删除指定地图。
-   * @param {L.Map} map - 待删除的地图。
+   * @param {L.Map} map - Leaflet Map 对象。
    */
   onRemove: function (map) { // eslint-disable-line no-unused-vars
     L.LayerGroup.prototype.onRemove.call(this, map);

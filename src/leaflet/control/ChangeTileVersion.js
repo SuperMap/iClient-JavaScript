@@ -18,9 +18,9 @@ import {MapService} from "../services/MapService";
  *      position: "topleft",
  *      orientation: "horizontal"
  *  }).addTo(map);
- * @param {Object} options - logo 控件配置项。
- * @param {L.Layer} options.layer - 绑定的底图图层。
- * @param {string} [options.position='topleft'] - 控件位置继承自 leaflet control。
+ * @param {Object} options - 参数。
+ * @param {L.Layer} options.layer - Leaflet Layer 对象。
+ * @param {string} [options.position='topleft'] - 控件位置继承自 Leaflet control。
  * @param {string} [options.title='switch tile version'] - 鼠标滑过时提示。
  * @param {string} [options.tooltip='top'] - tooltip 提示显示位置 top | right | bottom | left。
  * @param {boolean} [options.collapsed=true] - 是否折叠。
@@ -74,7 +74,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.setContent
-     * @description 设置版本相关信息。
+     * @description 设置版本信息。
      * @param {Object} version - 版本信息。
      */
     setContent: function (version) {
@@ -100,7 +100,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息。
-     * @param {(HTMLElement|String)} tooltip - 要需要设置的提示信息。
+     * @param {(HTMLElement|String)} tooltip - 提示信息。
      * @returns {this} this
      */
     setToolTip: function (tooltip) {
@@ -123,7 +123,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.setLayer
-     * @description 绑定图层。
+     * @description 设置需要绑定的图层。
      * @param {TiledMapLayer} layer - 绑定的图层。
      */
     setLayer: function (layer) {
@@ -145,7 +145,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.update
-     * @description 更新缓存切片集及进度条长度。
+     * @description 更新缓存切片集和进度条长度。
      * @param {number} tileVersions - 待更新的切片版本号。
      */
     update: function (tileVersions) {
@@ -155,7 +155,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.getTileSetsInfo
-     * @description 请求获取切片集信息。
+     * @description 获取切片集信息。
      */
     getTileSetsInfo: function () {
         var me = this;
@@ -176,7 +176,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.nextTilesVersion
-     * @description 下一个版本，第一次不进行加减，是无版本的状态。
+     * @description 下一个版本，首次调用该函数默认为无版本。
      * @returns {this} this
      */
     nextTilesVersion: function () {
@@ -208,7 +208,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.tilesVersion
-     * @description 根据指定版本号请求版本。
+     * @description 请求指定版本。
      * @param {string} version - 版本号参数。
      */
     tilesVersion: function (version) {
@@ -226,7 +226,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.getValue
-     * @description 获取进度条的值。注：(进度条的值并不是版本号)。
+     * @description 获取进度条的值。（注：进度条的值并不是版本号）。
      */
     getValue: function () {
         return this.slider.value;
@@ -234,7 +234,7 @@ export var ChangeTileVersion = L.Control.extend({
 
     /**
      * @function ChangeTileVersion.prototype.getVersion
-     * @description 获取当前进度条值对应的版本号。
+     * @description 获取当前进度条的值对应的版本号。
      */
     getVersion: function () {
         var version = this.tileVersions[this.getValue()];

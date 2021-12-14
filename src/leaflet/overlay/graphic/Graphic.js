@@ -10,7 +10,7 @@ import '../../core/Base';
  * @classdesc 高效率点图层要素类。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 图形参数。
+ * @param {Object} options - 参数。
  * @param {L.LatLng} options.latLng - 经纬度。
  * @param {number} options.id - 要素id。
  * @param {(CircleStyle|CloverStyle|ImageStyle)} [options.style] - 点样式。
@@ -31,8 +31,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function Graphic.prototype.getId
-     * @description 获取当前 ID。
-     * @returns {string} id
+     * @description 获取当前要素 ID。
+     * @returns {string} 要素 ID。
      */
     getId() {
         return this.id;

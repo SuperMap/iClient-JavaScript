@@ -20,7 +20,7 @@
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 与客户端交互的海图服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -36,10 +36,10 @@ export var ChartService = ServiceBase.extend({
 
     /**
      * @function ChartService.prototype.queryChart
-     * @description 查询海图。
-     * @param {ChartQueryParameters} params - 海图查询所需参数类。
+     * @description 查询海图服务。
+     * @param {ChartQueryParameters} params - 海图查询参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果格式类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryChart: function (params, callback, resultFormat) {
         var me = this,
@@ -64,7 +64,7 @@ export var ChartService = ServiceBase.extend({
     /**
      * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.url.concat();

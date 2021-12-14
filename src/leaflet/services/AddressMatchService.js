@@ -17,7 +17,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 地址匹配服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -35,7 +35,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param {GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback - 请求结果的回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     code: function (params, callback) {
         var me = this;
@@ -57,7 +57,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback - 请求结果的回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     decode: function (params, callback) {
         var me = this;

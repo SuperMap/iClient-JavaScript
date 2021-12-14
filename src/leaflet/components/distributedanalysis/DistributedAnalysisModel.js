@@ -24,8 +24,8 @@ export class DistributedAnalysisModel extends L.Evented {
     }
     /**
      * @function DistributedAnalysisModel.prototype.getDatasetsName
-     * @description 获取所有可进行分布式分析的数据集。
-     * @param {string} url - 分布式分析服务地址。
+     * @description 获取所有可进行分布式分析的数据集名称。
+     * @param {string} url - 服务地址。
      */
     getDatasetsName() {
         let url = this.processingUrl;
@@ -67,7 +67,7 @@ export class DistributedAnalysisModel extends L.Evented {
     }
     /**
      * @function DistributedAnalysisModel.prototype.getDatasetInfo
-     * @description 获得数据集类型与 fields。
+     * @description 获取数据集类型和字段。
      * @param {string} datasetUrl - 数据集资源地址。
      */
     getDatasetInfo(datasetUrl) {

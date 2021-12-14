@@ -19,7 +19,7 @@
  * @extends {L.TileLayer}
  * @example
  *      new TiledMapLayer(url).addTo(map);
- * @param {string} url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {string} url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {Object} options - 参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
@@ -32,7 +32,7 @@
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {CRS} [options.crs] - 坐标系统类。
- * @param {string} [options.tileProxy] -  代理地址。
+ * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
@@ -85,7 +85,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @private
      * @function TiledMapLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.Map} map - 待添加的影像地图参数。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;

@@ -41,7 +41,7 @@ export var LineSymbolizer = L.Polyline.extend({
 
     /**
      * @function LineSymbolizer.prototype.updateStyle
-     * @description 更新替换符号样式。
+     * @description 更新符号样式。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。
      */

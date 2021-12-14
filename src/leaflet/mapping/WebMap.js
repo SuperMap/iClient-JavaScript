@@ -68,8 +68,8 @@ import Attributions from '../core/Attributions'
  * @category iPortal/Online
  * @extends {L.LayerGroup}
  * @param {number} id - iPortal/Online 地图 id。
- * @param {Object} options - 可选参数。
- * @param {string} [options.map='map'] - 地图容器id。
+ * @param {Object} options - 参数。
+ * @param {string} [options.map='map'] - 地图容器 id。
  * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
@@ -100,7 +100,7 @@ export var WebMap = L.LayerGroup.extend({
      * @private
      * @function WebMap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框。
-     * @param {L.Layer} layer - 指定图层。
+     * @param {L.Layer} layer - Leaflet Layer 对象。
      * @returns {string} 图层弹出框内容。
      */
     defaultFeatureLayerPopup: function (layer) {
@@ -148,9 +148,9 @@ export var WebMap = L.LayerGroup.extend({
      * @private
      * @function WebMap.prototype.addLayerWrapper
      * @description 添加图层容器。
-     * @param {L.Layer} layer - 待添加的图层。
+     * @param {L.Layer} layer - Leaflet Layer 对象。
      * @param {boolean} [isBaseLayer] - 是否为底图层。
-     * @param {Object} options - 创建地图的可选参数。
+     * @param {Object} options - 参数。
      * @returns {this} this
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
@@ -205,7 +205,7 @@ export var WebMap = L.LayerGroup.extend({
         /**
          * @event WebMap#maploaded
          * @description 底图加载完成后触发。
-         * @property {L.Map} map  - Leaflet Map 对象。
+         * @property {L.Map} map - Leaflet Map 对象。
          */
         this.fire('maploaded', {
             map: this._map
@@ -253,7 +253,7 @@ export var WebMap = L.LayerGroup.extend({
      * @private
      * @function WebMap.prototype.createMap
      * @description 创建地图。
-     * @param {Object} options - 创建地图所需参数。
+     * @param {Object} options - 参数。
      */
     createMap: function (options) {
         var crs = options.crs || L.CRS.EPSG3857;

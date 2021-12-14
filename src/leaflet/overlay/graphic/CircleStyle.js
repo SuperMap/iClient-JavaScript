@@ -10,7 +10,7 @@ import '../../core/Base';
  * @classdesc 圆形要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 圆形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.stroke=true] - 是否描边。
  * @param {string} [options.color='#3388ff'] - 颜色。
  * @param {number} [options.weight=1] - 线宽。

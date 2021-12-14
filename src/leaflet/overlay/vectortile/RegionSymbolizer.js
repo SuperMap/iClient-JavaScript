@@ -18,7 +18,7 @@ export var RegionSymbolizer = L.Polygon.extend({
 
     /**
      * @member RegionSymbolizer.prototype.includes
-     * @description 包含符号。
+     * @description 包含的符号。
      */
     includes: [Symbolizer.prototype, PolyBase],
 

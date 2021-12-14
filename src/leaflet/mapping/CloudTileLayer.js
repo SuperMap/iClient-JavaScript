@@ -12,7 +12,7 @@ import Attributions from '../core/Attributions'
  * @category ThirdPartyMap
  * @extends {L.TileLayer}
  * @param {string} [url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
- * @param {Object} options - 图层可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.type='web'] - type。
  * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=18] - 最大缩放级别。

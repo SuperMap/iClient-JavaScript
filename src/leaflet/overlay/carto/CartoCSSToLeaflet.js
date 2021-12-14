@@ -19,7 +19,7 @@ import {
  * @class CartoCSSToLeaflet
  * @classdesc CartoCSS 样式转 Leaflet 样式类。
  * @category BaseTypes Style
- * @param {string} url - 地图服务地址。
+ * @param {string} url - 服务地址。
  * @private
  */
 export class CartoCSSToLeaflet {
@@ -66,7 +66,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号。
-     * @param {string} cartoCSSStr - cartoCSSS信息。
+     * @param {string} cartoCSSStr - cartoCSSS 信息。
      */
     processCharacters(cartoCSSStr) {
         var style = cartoCSSStr;

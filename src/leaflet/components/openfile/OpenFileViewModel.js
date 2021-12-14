@@ -12,10 +12,10 @@
  * @class OpenFileViewModel
  * @aliasclass Components.OpenFileViewModel
  * @deprecatedclassinstance L.supermap.components.openFileViewModel
- * @classdesc 打开本地文件组件功能类,目前只支持WGS84经纬度坐标。
+ * @classdesc 打开本地文件组件功能类，目前只支持 WGS84 经纬度坐标。
  * @version 9.1.1
  * @category Components OpenFile
- * @param {L.Map} map - leaflet map 对象。
+ * @param {L.Map} map - Leaflet Map 对象。
  * @fires OpenFileViewModel#filesizeexceed
  * @fires OpenFileViewModel#errorfileformat
  * @fires OpenFileViewModel#openfilesucceeded
@@ -30,8 +30,8 @@ export var OpenFileViewModel = L.Evented.extend({
 
     /**
      * @function OpenFileViewModel.prototype.readFile
-     * @description 选中文件并加载到底图。
-     * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象。
+     * @description 打开文件并加载到地图。
+     * @param {Object} fileEventObject - 本地文件对象。
      */
     readFile(fileEventObject) {
         let inputDom = fileEventObject.target;

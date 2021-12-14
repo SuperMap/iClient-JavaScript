@@ -52,7 +52,7 @@ L.Proj.Projection = L.Class.extend({
      * @function L.Proj.Projection.prototype.unproject
      * @description 通过投影坐标得到地理坐标。
      * @param {L.Point} point - 坐标点。
-     * @param {number} unbounded -  坐标点高程值等。
+     * @param {number} unbounded - 坐标点高程值等。
      * @returns {L.LatLng} 返回经纬度坐标
      */
     unproject: function(point, zoom) {
@@ -103,7 +103,7 @@ L.Proj.Projection = L.Class.extend({
  * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。
  * 当指定`options.bounds` 时，第 0 级为一张 256 切片包含整个 bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
  * 为保证切片行列号正确，`options.origin` `options.bounds` 必须指定一个。
- * 当指定`options.bounds` 时，切片原点为bounds的左上角。
+ * 当指定`options.bounds` 时，切片原点为 bounds 的左上角。
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。

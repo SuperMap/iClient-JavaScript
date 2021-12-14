@@ -14,7 +14,7 @@
  * @extends ThemeLayer
  * @category Visualization Graphic
  * @param {string} name - 专题图名。
- * @param {Object} options - 需要设置的参数对象。
+ * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
@@ -65,7 +65,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GeoFeatureThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据。
+     * @description 添加数据。
      * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
      */
     addFeatures: function (features) {
@@ -73,7 +73,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
         /**
          * @event GeoFeatureThemeLayer#beforefeaturesadded
-         * @description 向专题图图层中添加数据之前触发。
+         * @description 添加数据之前触发。
          * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 事件对象。
          */
         me.fire("beforefeaturesadded", {features: features});
@@ -98,8 +98,8 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {GeometryVector} features - 要删除的要素。
+     * @description 删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @param {GeometryVector} features - 需要删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -189,7 +189,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
-     * @param {GeometryVector} feature - 要创建的要素。
+     * @param {GeometryVector} feature - 需要创建的要素。
      */
     createThematicFeature: function (feature) {
         var me = this;

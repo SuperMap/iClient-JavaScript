@@ -8,7 +8,7 @@ import '../../core/Base';
  * @class GeoJsonLayersDataModel
  * @aliasclass Components.GeoJsonLayersDataModel
  * @deprecatedclassinstance L.supermap.components.GeoJsonLayersDataModel
- * @description 多图层数据模型 todo 看看如何完善
+ * @description 多图层数据模型。
  * @category Components Common
  * @private
  * @param {Array.<Object>} layers - 图层数组。
@@ -16,6 +16,7 @@ import '../../core/Base';
  * @fires GeoJsonLayersDataModel#newlayeradded
  * @usage
  */
+//  todo 看看如何完善
 export class GeoJsonLayersDataModel {
     constructor(layers) {
         this.layers = [];
@@ -42,7 +43,7 @@ export class GeoJsonLayersDataModel {
     /**
      * @function GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
      * @description 设置当前选中的图层。
-     * @param {string} layerName - 选中的图层名。
+     * @param {string} layerName - 选中的图层名称。
      */
     setCurrentLayerDataModel(layerName) {
         if (this.layers[layerName]) {
@@ -54,7 +55,7 @@ export class GeoJsonLayersDataModel {
 
 /**
  * @class GeoJsonLayerDataModel
- * @classdesc 图层数据模型，用于图层要素数据及属性管理等。
+ * @classdesc 图层数据模型，可用于图层要素数据、属性管理等。
  * @param {L.GeoJSON} layer - GeoJSON 图层。
  * 注：leaflet没有 feature 的概念
  * @usage
@@ -91,8 +92,8 @@ export class GeoJsonLayerDataModel {
 
     /**
      * @function GeoJsonLayerDataModel.prototype.getAllAttributeNames
-     * @description 获取图层所有属性字段。
-     * @returns {Array.<string>} - 返回图层所有属性字段。
+     * @description 获取图层所有属性名称。
+     * @returns {Array.<string>} - 返回图层所有属性名称。
      */
     getAllAttributeNames() {
         return this.attributeNames;
@@ -101,7 +102,7 @@ export class GeoJsonLayerDataModel {
     /**
      * @function GeoJsonLayerDataModel.prototype.getAttributeNamesByType
      * @description 获取指定类型的图层属性字段。
-     * @param {string} [type] - 需要获取的图层属性字段的类型。目前可选 "Num"，若不传此参数，则默认返回所有字段。
+     * @param {string} [type] - 类型参数。默认返回所有字段，可选 'Num'。
      * @returns {Array.<string>} - 返回指定类型的图层属性字段。
      */
     getAttributeNamesByType(type) {
@@ -124,8 +125,8 @@ export class GeoJsonLayerDataModel {
 
     /**
      * @function GeoJsonLayerDataModel.prototype.getAllFeatures
-     * @description 获取图层所有要素
-     * @returns {Array.<Object>} - 返回图层要素
+     * @description 获取图层所有要素。
+     * @returns {Array.<Object>} - 返回图层所有要素。
      */
     getAllFeatures() {
         return this.features;
@@ -133,9 +134,9 @@ export class GeoJsonLayerDataModel {
 
     /**
      * @function GeoJsonLayerDataModel.prototype.getAttributeValueByAttributeName
-     * @description 通过属性字段名获取属性值
-     * @param {string} attributeName - 图层要素属性字段名
-     * @returns {Object} - 图层要素属性值对象
+     * @description 获取属性值。
+     * @param {string} attributeName - 属性名称。
+     * @returns {Object} - 返回属性值对象。
      */
     getAttributeValueByAttributeName(attributeName) {
         //如果图层属性对象中已存在该属性，则直接返回
@@ -161,9 +162,9 @@ export class GeoJsonLayerDataModel {
 
     /**
      * @function GeoJsonLayerDataModel.prototype.getFeaturesByKeyWord
-     * @description 通过关键字查找要素对象
-     * @param {string} keyWord - 查询关键字
-     * @returns {Array.<Object>} - 返回要素对象数组
+     * @description 查询要素对象。
+     * @param {string} keyWord - 查询关键字。
+     * @returns {Array.<Object>} - 返回要素对象数组。
      */
     getFeaturesByKeyWord(keyWord) {
         let features = [], keyReg = new RegExp(keyWord.toLowerCase());

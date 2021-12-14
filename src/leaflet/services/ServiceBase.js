@@ -7,7 +7,7 @@ import L from "leaflet";
  * @class ServiceBase
  * @classdesc L.supermap 服务基类。
  * @category  iServer
- * @param {string} url - 与客户端交互的服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。

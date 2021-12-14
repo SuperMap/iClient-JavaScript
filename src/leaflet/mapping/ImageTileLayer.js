@@ -11,12 +11,12 @@ import { SecurityManager } from '@supermap/iclient-common/security/SecurityManag
  * @class ImageTileLayer
  * @deprecatedclassinstance L.supermap.imageTileLayer
  * @version 10.2.0
- * @classdesc iServer影像服务图层源。根据指定的请求参数，返回影像数据栅格瓦片并渲染。
+ * @classdesc iServer 影像服务图层源。根据请求参数，返回指定的影像数据栅格瓦片并渲染。
  * @category iServer Image
  * @extends {L.TileLayer}
  * @example
  *      new ImageTileLayer(url,{collectionId:'xxx'}).addTo(map);
- * @param {string} url - 地图服务地址,例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 服务地址,例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} options.collectionId - 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
  * @param {string} [options.sqlFilter] 对所显示影像的过滤条件。相当于sql查询中的where子句。支持st_geometry空间函数过滤。11.0版本暂不支持通过ECQL进行过滤。
@@ -28,7 +28,7 @@ import { SecurityManager } from '@supermap/iclient-common/security/SecurityManag
  * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
- * @param {string} [options.tileProxy] -  代理地址。
+ * @param {string} [options.tileProxy] - 服务代理地址。
  * @usage
  */
 export var ImageTileLayer = L.TileLayer.extend({
@@ -58,7 +58,7 @@ export var ImageTileLayer = L.TileLayer.extend({
      * @private
      * @function ImageTileLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.Map} map - 待添加的影像地图参数。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onAdd: function (map) {
         L.TileLayer.prototype.onAdd.call(this, map);

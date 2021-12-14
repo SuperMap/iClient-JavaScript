@@ -12,7 +12,7 @@ import Attributions from '../core/Attributions'
  * @classdesc Turf 图层。
  * @category Visualization Turf
  * @extends {L.Layer}
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
  * @usage
  */
@@ -232,7 +232,7 @@ export var TurfLayer = L.GeoJSON.extend({
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
      * @param {Function} callback - 空间分析完成执行的回调函数，返回执行的结果。
-     * @param {boolean} [addFeaturesToMap=true] - 是否添加到 map。
+     * @param {boolean} [addFeaturesToMap=true] - 是否添加到地图。
      */
     process: function (type, args, callback, addFeaturesToMap) {
         // 兼容版本4到5

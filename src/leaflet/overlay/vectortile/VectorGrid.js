@@ -17,7 +17,7 @@ import {VectorFeatureType} from './VectorFeatureType';
  * @classdesc 矢量瓦片图层基类。
  * @category Visualization VectorTile
  * @extends {L.GridLayer}
- * @param {Object} options - 矢量瓦片图层基类参数。
+ * @param {Object} options - 参数。
  * @param {Object} [options.vectorTileLayerStyles] - 矢量网片图层风格。
  * @param {string} [options.renderer='SVG'] -  渲染器类型。
  * @param {VectorTileFormat} [options.format=VectorTileFormat.JSON] - 矢量瓦片格式。
@@ -111,7 +111,7 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function VectorGrid.prototype.setFeatureStyle
-     * @description 设置要素风格，需要 ID 和 layerName 才能确定一个要素。
+     * @description 指定要素 ID 和图层名称设置要素风格。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
      * @param {(Array|Function)} layerStyle - 图层样式。
@@ -135,7 +135,7 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function VectorGrid.prototype.resetFeatureStyle
-     * @description 重绘要素风格，需要 ID 和 layerName 才能确定一个要素。
+     * @description 指定要素 ID 和图层名称重绘要素风格。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
      * @returns {this} this
@@ -158,8 +158,8 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function VectorGrid.prototype.getDataLayerNames
-     * @description 获取数据图层名字。
-     * @returns {Array} 返回数据图层名数组。
+     * @description 获取数据图层名称。
+     * @returns {Array} 返回数据图层名称数组。
      */
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);

@@ -13,7 +13,7 @@
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends GeoFeatureThemeLayer
  * @param {string} name - 专题图层名。
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
@@ -23,8 +23,7 @@
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
- * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
- *                                        禁止对专题要素使用数据（feature）的 style。
+ * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 的 style 中的有效属性应用到专题图层。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  * @usage

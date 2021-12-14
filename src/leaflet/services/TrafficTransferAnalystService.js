@@ -35,7 +35,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @function  TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
      * @param {StopQueryParameters} params - 站点查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     queryStop: function(params, callback) {
         var me = this;
@@ -57,7 +57,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @function  TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
      * @param {TransferPathParameters} params - 交通换乘线路查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath: function(params, callback) {
         var me = this;
@@ -79,7 +79,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @function  TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
      * @param {TransferSolutionParameters} params - 交通换乘方案查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution: function(params, callback) {
         var me = this;

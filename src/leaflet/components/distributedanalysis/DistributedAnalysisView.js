@@ -18,10 +18,10 @@
  * @classdesc 分布式分析组件。
  * @version 9.1.1
  * @param {string} processingUrl - 分布式分析服务地址。
- * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
- * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
- * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
+ * @param {Object} options - 参数。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
+ * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。
+ * @param {function} [options.onEachFeature] - 给该元素绑定事件和弹窗。
  * @fires DistributedAnalysisView#analysissucceeded
  * @fires DistributedAnalysisView#analysisfailed
  * @fires DistributedAnalysisView#layersremoved
@@ -49,7 +49,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
 
     /**
      * @function DistributedAnalysisView.prototype._fillDataToView
-     * @description 填充数据到 view。
+     * @description 添加数据。
      * @private
      */
     _fillDataToView: function () {
@@ -434,7 +434,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
 
     /**
      * @function DistributedAnalysisView.prototype._createOptions
-     * @description 创建下拉框 options。
+     * @description 创建下拉框。
      * @private
      */
     _createOptions(container, optionsArr) {
@@ -450,7 +450,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
 
     /**
      * @function DistributedAnalysisView.prototype._creatInputBox
-     * @description 创建含有 span 的 input 框。
+     * @description 创建输入框。
      * @private
      */
     _creatInputBox(inputOptions, parentEle) {
@@ -465,7 +465,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
 
     /**
      * @function DistributedAnalysisView.prototype._creatUnitSelectBox
-     * @description 创建含有 span 的 input 框。
+     * @description 创建选择框。
      * @private
      */
     _creatUnitSelectBox(options, parentEle) {

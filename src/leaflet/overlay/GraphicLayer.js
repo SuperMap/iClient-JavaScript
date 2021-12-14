@@ -35,19 +35,19 @@ const DEFAULT_ZOOM_OFFSET = {
  * @category Visualization Graphic
  * @extends {L.Path}
  * @param {Array.<Graphic>} graphics - 要素对象。
- * @param {Object} options - 图层参数。
- * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值：“webgl”，“canvas”（webgl 渲染目前只支持散点）。
+ * @param {Object} options - 参数。
+ * @param {string}   [options.render='canvas'] - 指定使用的渲染器。可选值：'webgl'，'canvas'（ webgl 渲染目前只支持散点）。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
- * @param {number} [options.radius=10] - 要素半径，单位像素。
+ * @param {number} [options.radius=10] - 要素半径，单位为像素。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
- * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值(像素)。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
+ * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {Function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
- * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
+ * @param {Function} [options.onClick] -  图层鼠标点击响应事件（支持 webgl、canvas 渲染）。
+ * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只支持 webgl 渲染）。
  * @usage
  */
 export var GraphicLayer = L.Path.extend({
@@ -135,10 +135,10 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getGraphicBy
-     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {string} property - graphic 的某个属性名称。
-     * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @description 指定属性名和属性值，获取第一个匹配的要素数组。
+     * @param {string} property - 属性名称。
+     * @param {string} value - 属性值。
+     * @returns {ol.Graphic} 返回匹配的 graphic 。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -153,9 +153,9 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @description 获取指定 id 的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {ol.Graphic} 返回匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy('id', graphicId);
@@ -163,10 +163,10 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - graphic 的某个属性名称。
-     * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @description 指定属性名和属性值，获取所有匹配的要素数组。
+     * @param {string} attrName - 属性名称。
+     * @param {string} attrValue - 属性值。
+     * @returns {Array.<ol.Graphic>} 返回匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -184,7 +184,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.removeGraphics
-     * @description 删除要素数组，默认将删除所有要素。
+     * @description 删除要素数组，默认删除所有要素。
      * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
@@ -224,8 +224,8 @@ export var GraphicLayer = L.Path.extend({
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
      * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
@@ -274,8 +274,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getState
-     * @description 获取当前地图及图层状态。
-     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+     * @description 获取当前地图和图层状态。
+     * @returns {Object} 地图和图层状态，包含地图状态信息和本图层相关状态。
      */
     getState: function () {
         let map = this._map;

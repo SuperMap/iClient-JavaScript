@@ -9,9 +9,9 @@ import L from "leaflet";
  * @classdesc 画布渲染器。
  * @category Visualization VectorTile
  * @extends {L.Canvas}
- * @param {Object} tileCoord - 切片坐标系
- * @param {number} tileSize - 切片大小
- * @param {Object} options - 渲染器参数
+ * @param {Object} tileCoord - 切片坐标系。
+ * @param {number} tileSize - 切片大小。
+ * @param {Object} options - 渲染器参数。
  */
 export var CanvasRenderer = L.Canvas.extend({
 
@@ -61,7 +61,7 @@ export var CanvasRenderer = L.Canvas.extend({
     /**
      * @function CanvasRenderer.prototype.addTo
      * @description 添加到地图。
-     * @param {L.Map} map - map 对象。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     addTo: function (map) {
         this._map = map;
@@ -70,7 +70,7 @@ export var CanvasRenderer = L.Canvas.extend({
     /**
      * @function CanvasRenderer.prototype.removeFrom
      * @description 从地图移除。
-     * @param {L.Map} map - map 对象。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     removeFrom: function (map) { // eslint-disable-line no-unused-vars
         delete this._map;

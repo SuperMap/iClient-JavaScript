@@ -37,7 +37,7 @@ export var nonProjection = function (bounds) {
  * @classdesc 平面无投影坐标类。
  * @category BaseTypes Projection
  * @extends {L.Class}
- * @param {Object} options - 构建平面无投影坐标对象参数。
+ * @param {Object} options - 参数。
  * @param {Object} options.origin - 原点。
  * @param {L.bounds} options.bounds - 范围。
  * @param {Array.<number>} [options.resolutions] - 分辨率。
@@ -46,7 +46,7 @@ export var nonProjection = function (bounds) {
 export var NonEarthCRS = L.Class.extend({
     /**
      * @member {Object} [NonEarthCRS.prototype.includes=L.CRS]
-     * @description 包含的坐标对象。
+     * @description 坐标对象。
      */
     includes: L.CRS,
 
@@ -64,7 +64,7 @@ export var NonEarthCRS = L.Class.extend({
      * @function NonEarthCRS.prototype.scale
      * @description 通过缩放级别计算比例尺。
      * @param {number} zoom - 缩放级别。
-     * @returns {number} 得到的比例尺。
+     * @returns {number} 返回比例尺值。
      */
     scale: function (zoom) {
         let defaultScale;

@@ -20,7 +20,7 @@
  *  .sinksFacilityAnalyst(params,function(result){
  *     //doSomething
  * })
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为:
+ * @param {string} url - 服务地址。请求网络分析服务，URL应为:
  *                      "http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -60,7 +60,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务。
-     * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
+     * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找资源）。
      * @param {RequestCallback} callback - 回调函数。
      * @returns {this} this
      */
@@ -106,7 +106,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务。
-     * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类。
+     * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     traceDownFacilityAnalyst: function (params, callback) {
@@ -128,7 +128,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务。
-     * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类。
+     * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找资源参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     upstreamFacilityAnalyst: function (params, callback) {

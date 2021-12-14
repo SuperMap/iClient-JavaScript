@@ -20,7 +20,7 @@ import Attributions from '../../core/Attributions'
  * @category Visualization Theme
  * @extends {L.Layer}
  * @param {string} name - 专题图图层名称。
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
@@ -54,7 +54,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.getEvents
      * @description 获取图层事件。
-     * @returns {Object} 返回图层支持的事件。
+     * @returns {Object} 返回图层事件。
      */
     getEvents: function () {
         var me = this;
@@ -72,7 +72,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.onRemove
      * @description 删除某个地图。
-     * @param {L.Map} map - 要删除的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onRemove: function (map) {
         var me = this;
@@ -83,7 +83,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.onAdd
      * @description 添加专题图。
-     * @param {L.Map} map - 要添加的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      * @private
      */
     onAdd: function (map) {
@@ -121,8 +121,8 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
+     * @description 添加数据。
+     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -130,7 +130,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.redrawThematicFeatures
-     * @description 抽象方法，可实例化子类必须实现此方法。
+     * @description 抽象方法，实例化子类前先执行此方法。
      * @param {L.bounds} bounds - 重绘专题要素范围。
      */
     redrawThematicFeatures: function (bounds) { // eslint-disable-line no-unused-vars
@@ -140,7 +140,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.destroyFeatures
      * @description 销毁要素。
-     * @param {Array.<GeometryVector>} features - 将被销毁的要素。
+     * @param {Array.<GeometryVector>} features - 需要销毁的要素。
      */
     destroyFeatures: function (features) {
         if (features === undefined) {
@@ -157,8 +157,8 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {Array.<GeometryVector>} features - 将被删除的要素。
+     * @description 从专题图中删除 feature。删除所有传递进来的矢量要素。
+     * @param {Array.<GeometryVector>} features - 需要删除的要素。
      */
     removeFeatures: function (features) {
         var me = this;
@@ -207,9 +207,9 @@ export var ThemeLayer = L.Layer.extend({
         var succeed = featuresFailRemoved.length == 0;
         /**
          * @event ThemeLayer#featuresremoved
-         * @description 删除的要素成功之后触发。
+         * @description 成功删除要素之后触发。
          * @property {Array.<GeometryVector>} features - 事件对象。
-         * @property {boolean} succeed - 要输是否删除成功，true 为删除成功，false 为删除失败。
+         * @property {boolean} succeed - 要素是否删除成功，true 为删除成功，false 为删除失败。
          */
         me.fire("featuresremoved", {
             features: featuresFailRemoved,
@@ -250,9 +250,9 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.getFeatureBy
-     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
-     * @param {string} property - 要的某个属性名。
-     * @param {string} value - 对应属性名得值。
+     * @description 过滤属性。
+     * @param {string} property - 过滤某个属性名。
+     * @param {string} value - 返回属性值。
      */
     getFeatureBy: function (property, value) {
         var me = this;
@@ -269,7 +269,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.getFeatureById
-     * @description 通过给定一个 ID，返回对应的矢量要素,如果不存在则返回 null。
+     * @description 返回指定 ID 的矢量要素，不存在则返回 null。
      * @param {number} featureId - 要素 ID。
      */
     getFeatureById: function (featureId) {
@@ -278,9 +278,9 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.getFeaturesByAttribute
-     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - key 值。
-     * @param {string} attrValue - value 值。
+     * @description 指定属性名和属性值，返回所有匹配的要素数组。
+     * @param {string} attrName - 属性名。
+     * @param {string} attrValue - 属性值。
      * @returns {Array} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
@@ -368,7 +368,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.on
-     * @description 添加专题要素事件监听。添加专题要素事件监听。
+     * @description 监听事件。监听专题要素事件。
      * @param {Event} event - 监听事件。
      * @param {Function} callback - 回调函数。
      * @param {string} context - 信息。
@@ -384,7 +384,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.off
-     * @description 移除专题要素事件监听。
+     * @description 移除事件监听。
      * @param {Event} event - 监听事件。
      * @param {Function} callback - 回调函数。
      * @param {string} context -  信息。
@@ -408,7 +408,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.addTFEvents
-     * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
+     * @description 先把事件监听添加到图层，再把图层添加到地图。
      * @private
      */
     addTFEvents: function () {
@@ -449,7 +449,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
+     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
      * @returns {Array.<GeometryVector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -485,7 +485,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
+     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
      * @returns {GeometryVector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {

@@ -11,7 +11,7 @@ import '../../core/Base';
  * @classdesc 含有 layerName 与 GeoJSON 图层的对象。
  * @private
  * @param {Object} layerObject - 图层对象。
- * @param {string} layerName -  图层名。
+ * @param {string} layerName -  图层名称。
  * @param {L.GeoJSON} layer -  图层。
  * @category Components Common
  */

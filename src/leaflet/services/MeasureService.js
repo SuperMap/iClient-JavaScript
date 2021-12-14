@@ -21,7 +21,7 @@ import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParam
  * },function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -39,7 +39,7 @@ export var MeasureService = ServiceBase.extend({
     /**
      * @function MeasureService.prototype.measureDistance
      * @description 测距。
-     * @param {MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measureDistance: function (params, callback) {
@@ -50,7 +50,7 @@ export var MeasureService = ServiceBase.extend({
     /**
      * @function MeasureService.prototype.measureArea
      * @description 测面积。
-     * @param {MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measureArea: function (params, callback) {
@@ -61,7 +61,7 @@ export var MeasureService = ServiceBase.extend({
     /**
      * @function MeasureService.measure
      * @param {MeasureMode} [type=MeasureMode.DISTANCE] - 量算模式。
-     * @param {MeasureParameters} params - 测量相关参数类。
+     * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     measure: function (type, params, callback) {

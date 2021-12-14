@@ -10,19 +10,19 @@ import "../core/Base";
  * @classdesc wmts 图层类。
  * @category OGC
  * @extends {L.TileLayer}
- * @param {string} url - wmts 图层地址。
- * @param {Object} options - wmts 图层可选参数。
- * @param {string} options.layer - 需要显示的图层。
- * @param {string} [options.tileProxy] - 代理地址。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.layer - 显示的图层。
+ * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {Object} [options.style] - 图层样式。
  * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
  * @param {(number|L.Point)} [options.tileSize='256'] - 瓦片大小。
  * @param {string} [options.requestEncoding='KVP'] - KVP 或者 REST 的请求方式。
  * @param {string} [options.tilematrixSet] - 瓦片矩阵集。
- * @param {Array.<WMTSLayer.matrix>} [options.matrixIds] - 瓦片矩阵对象。不设置时，默认为获取当前级别为tilematrix参数。
+ * @param {Array.<WMTSLayer.matrix>} [options.matrixIds] - 瓦片矩阵对象。不设置时，默认为获取当前级别为 tilematrix 参数。
  * @param {string} [options.version='1.0.0'] - 版本。
  * @param {string} [options.attribution] - 版权信息。
- * @param {string} [options.noWrap=true] - 图层是否X方向平铺。
+ * @param {string} [options.noWrap=true] - 图层是否 X 方向平铺。
  * @usage
  */
 /**
@@ -74,7 +74,7 @@ export var WMTSLayer = L.TileLayer.extend({
 
     /**
      * @function WMTSLayer.prototype.getTileUrl
-     * @description 根据行列号获取切片地址。
+     * @description 获取切片地址。
      * @param {Object} coords - 行列号。
      * @returns {string} 切片地址。
      */

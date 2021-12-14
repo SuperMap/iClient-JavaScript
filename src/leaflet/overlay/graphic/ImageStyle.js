@@ -10,7 +10,7 @@ import '../../core/Base';
  * @classdesc 自定义图形要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 图形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {HTMLImageElement} options.img - image 对象。
  * @param {Array} [options.origin=[0.0]] - 中心点。
  * @param {Array} [options.anchor] - 偏移量。

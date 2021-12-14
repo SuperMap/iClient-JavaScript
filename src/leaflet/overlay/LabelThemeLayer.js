@@ -15,7 +15,7 @@
  * @category Visualization Theme
  * @extends GeoFeatureThemeLayer
  * @param {string} name - 图层名。
- * @param {Object} options - 图层参数。
+ * @param {Object} options - 参数。
  * @param {string} options.themeFields - 指定创建专题图字段。 
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
@@ -27,11 +27,9 @@
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
- * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
- *                                        禁止对专题要素使用数据（feature）的 style。
- *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
+ * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 的 style 中的有效属性应用到专题图层。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @usage
  */
 export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
@@ -118,7 +116,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function LabelThemeLayer.prototype.onAdd
      * @description 添加专题图。
-     * @param {L.Map} map - 要添加的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      * @private
      */
     onAdd: function (map) {

@@ -13,9 +13,9 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @classdesc 数据流组件功能类。
  * @version 9.1.1
  * @category Components DataFlow
- * @param {L.Map} map - 当前组件所在的地图。
+ * @param {L.Map} map - Leaflet Map 对象。
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 参数。
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
  `function (feature) {
                                                     return {
@@ -25,7 +25,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
                                                         weight: 0
                                                     };
                                             }`
- * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作。
+ * @param {Function} [options.onEachFeature] - 给该元素绑定事件和弹窗，默认对新创建的图层不执行任何操作。
  * @fires DataFlowViewModel#dataflowservicesubscribed
  * @fires DataFlowViewModel#subscribesucceeded
  * @fires DataFlowViewModel#subscribefailed
@@ -53,7 +53,7 @@ export var DataFlowViewModel = L.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} DataFlowViewModel.prototype.map
-             * @description 当前组件所在的地图。
+             * @description Leaflet Map 对象。
              */
             this.map = map;
         } else {
@@ -142,7 +142,7 @@ export var DataFlowViewModel = L.Evented.extend({
             //派发出订阅返回的数据：
             /**
              * @event DataFlowViewModel#dataupdated
-             * @description 数据返回成功之后触发。
+             * @description 数据返回成功后触发。
              * @property {Object} result - 返回的数据。
              */
             this.fire("dataupdated", {result: result});

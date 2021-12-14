@@ -13,7 +13,7 @@ import Attributions from '../core/Attributions'
  * @category  Visualization ECharts
  * @extends {L.Layer}
  * @param {Object} echartsOptions - 图表参数。
- * @param {Object} options - 可选图层参数。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权信息。
  * @usage
@@ -65,7 +65,7 @@ export const EchartsLayer = L.Layer.extend({
      * @private
      * @function EchartsLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.Map} map - 待添加的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onAdd: function (map) {
         this._map = map;
@@ -230,7 +230,7 @@ export const EchartsLayer = L.Layer.extend({
  * @class LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类。
- * @param {L.Map} leafletMap - 地图。
+ * @param {L.Map} leafletMap - Leaflet Map 对象。
  */
 export function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;

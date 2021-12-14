@@ -13,7 +13,7 @@ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {string} url - 矢量瓦片 PBF(MVT) 表述出图服务地址。
+ * @param {string} url - 服务地址。
  */
 export var VectorTilePBF = L.Class.extend({
 

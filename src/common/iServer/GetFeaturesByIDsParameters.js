@@ -9,7 +9,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @class GetFeaturesByIDsParameters
  * @deprecatedclass SuperMap.GetFeaturesByIDsParameters
  * @category  iServer Data FeatureResults
- * @classdesc ID查询参数类。
+ * @classdesc ID 查询参数类。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.IDs - 指定查询的元素 ID 信息。
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。

@@ -14,7 +14,7 @@
  * @version 9.1.1
  * @category Components Search
  * @param {L.Map} map - Leaflet Map 对象。
- * @param {Object} options - 可选参
+ * @param {Object} options - 参数。
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""}，默认为 online 本地搜索服务。
  * @fires SearchViewModel#newlayeradded
  * @fires SearchViewModel#searchlayersucceeded

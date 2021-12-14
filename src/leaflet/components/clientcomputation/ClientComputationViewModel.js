@@ -102,7 +102,7 @@ export class ClientComputationViewModel extends L.Evented {
 
     /**
      * @function ClientComputationViewModel.prototype.analysis
-     * @description 进行客户端计算。
+     * @description 客户端计算。
      * @param {Object} params - 客户端计算参数。
      * @param {L.Map} map - Leaflet Map 对象。
      */

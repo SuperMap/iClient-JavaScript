@@ -11,7 +11,7 @@ import '../../core/Base';
  * @classdesc 客户端计算图层对象。
  * @version 9.1.1
  * @param {Object} layerObject -  图层对象。
- * @param {string} layerObject.layerName -  图层名。
+ * @param {string} layerObject.layerName -  图层名称。
  * @param {L.GeoJSON} layerObject.layer -  图层。
  * @param {Array.<string>} [layerObject.fields] - 字段数组。
  * @category Components ClientComputation

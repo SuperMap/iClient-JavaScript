@@ -56,7 +56,7 @@ export const CommontypesConversion = {
     /**
      * @function CommontypesConversion.isArray
      * @description 判断是否为数组格式。
-     * @param {Object} obj - 待判断对象。
+     * @param {Object} obj - 待判断的对象。
      * @returns {boolean} 是否是数组。
      */
     isArray,
