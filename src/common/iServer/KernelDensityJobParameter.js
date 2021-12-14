@@ -143,9 +143,9 @@ export class KernelDensityJobParameter {
 
     /**
      * @function KernelDensityJobParameter.toObject
-     * @param {KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
-     * @param {KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
-     * @description 将密度分析任务参数对象转换为 JSON 对象。
+     * @param {KernelDensityJobParameter} kernelDensityJobParameter - 核密度分析服务参数类。
+     * @param {KernelDensityJobParameter} tempObj - 核密度分析服务参数对象。
+     * @description 将核密度分析服务参数对象转换为 JSON 对象。
      * @returns JSON 对象。
      */
     static toObject(kernelDensityJobParameter, tempObj) {

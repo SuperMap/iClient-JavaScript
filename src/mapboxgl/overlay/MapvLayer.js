@@ -9,7 +9,7 @@ import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
  * @class MapvLayer
  * @category  Visualization MapV
  * @classdesc Mapv 图层。
- * @param {mapboxgl.Map} map - mapboxgl 地图对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
+ * @param {mapboxgl.Map} map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - Mapv 参数。
  * @param {string} [mapVOptions.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("mapvLayer_") 创建专题图层 ID。
@@ -52,7 +52,7 @@ export class MapvLayer {
 
     /**
      * @function MapvLayer.prototype.setVisibility
-     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @description 设置图层可见性。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
@@ -70,7 +70,7 @@ export class MapvLayer {
      * @function MapvLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.canvas.id);
@@ -94,7 +94,7 @@ export class MapvLayer {
 
     /**
      * @function MapvLayer.prototype.getTopLeft
-     * @description 获取左上的距离。
+     * @description 获取左上的坐标。
      */
     getTopLeft() {
         var map = this.map;

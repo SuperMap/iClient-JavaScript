@@ -15,8 +15,8 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
  *  .queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 与客户端交互的实时数据服务地址。
- * @param {Object} options - 加载实时数据可选参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -110,7 +110,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
-     * @param {JSON} obj - JSON 格式的要素数据。
+     * @param {JSON} obj - 要素数据。
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);

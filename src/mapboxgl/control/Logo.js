@@ -16,9 +16,9 @@ import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
  * (end)
  * @param {Object} options - logo 控件配置项。
  * @param {string} [options.imageUrl] - logo 图片地址。
- * @param {string} [options.width] - logo 图片宽。
- * @param {string} [options.height] - logo 图片高。
- * @param {string} [options.link] - logo 图片跳转链接。
+ * @param {string} [options.width] - logo 图片宽度。
+ * @param {string} [options.height] - logo 图片高度。
+ * @param {string} [options.link] - logo图片跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
  * @usage
  */
@@ -39,8 +39,8 @@ export class Logo {
 
     /**
      * @function Logo.prototype.onAdd
-     * @description 添加一个 logo。
-     * @returns {HTMLElement} 返回创建的 logo 元素。
+     * @description 添加Logo。
+     * @returns {HTMLElement} 返回创建的 Logo 元素。
      */
     onAdd(map) {
         this._map = map;

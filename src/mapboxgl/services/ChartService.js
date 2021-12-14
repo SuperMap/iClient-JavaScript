@@ -21,8 +21,8 @@ import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/C
  *  .queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 与客户端交互的海图服务地址。
- * @param {Object} options - 交互时所需可选参数。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -37,9 +37,9 @@ export class ChartService extends ServiceBase {
     /**
      * @function ChartService.prototype.queryChart
      * @description 查询海图服务。
-     * @param {ChartQueryParameters} params - 海图查询所需参数类。
+     * @param {ChartQueryParameters} params - 海图查询参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果格式类型。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryChart(params, callback, resultFormat) {
         var me = this,

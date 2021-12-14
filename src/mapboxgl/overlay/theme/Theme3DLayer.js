@@ -9,7 +9,7 @@ import '../../core/Base';
  * @classdesc 三维专题图基类,不能直接实例化。
  * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions -专题图图层配置项。
- * @param  {number} [layerOptions.opacity=1] - 图层透明度。
+ * @param  {number} [layerOptions.opacity=1] - 图层不透明度。
  * @param  {boolean} [layerOptions.parseNumber=fasle] - 是否预处理数据，将数据转换为 number。
  * @param  {boolean} [layerOptions.enableHighlight=false] - 是否开启高亮。
  * @param  {string} [layerOptions.highlight="#ADA91E"] - 高亮颜色。
@@ -41,7 +41,7 @@ export class Theme3DLayer {
         this.map = null;
         /**
          * @member {number} [Theme3DLayer.prototype.opacity=1] 
-         * @description 图层透明度。
+         * @description 图层不透明度。
          */
         this.opacity = 1;
         /**
@@ -124,7 +124,7 @@ export class Theme3DLayer {
      * @function Theme3DLayer.prototype.setLayerOptions
      * @description 设置图层相关参数。
      * @param {Object} layerOptions - 该专题图图层相关参数。
-     * @param {number} [layerOptions.opacity=1] - 图层透明度。
+     * @param {number} [layerOptions.opacity=1] - 图层不透明度。
      * @param {boolean} [layerOptions.parseNumber=false] - 是否预处理数据，将数据转换为 number。
      * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段
      * @param {number} [layerOptions.height] - 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
@@ -191,7 +191,7 @@ export class Theme3DLayer {
     /**
      * @function Theme3DLayer.prototype.addTo
      * @description 添加图层到地图上。
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
      * @returns {this} this 对象。
      */
     addTo(map) {

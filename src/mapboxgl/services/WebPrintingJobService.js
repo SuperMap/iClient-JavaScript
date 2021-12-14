@@ -15,7 +15,7 @@ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geo
  *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
  * @extends {ServiceBase}
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
- * @param {Object} options - 服务交互时所需的可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -35,7 +35,7 @@ export class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
-     * @param {WebPrintingJobParameters} params - 打印的请求参数。
+     * @param {WebPrintingJobParameters} params - Web 打印参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     createWebPrintingJob(params, callback) {

@@ -24,7 +24,7 @@ const defaultProps = {
  * @category  Visualization Graphic
  * @classdesc 高效率点图层。
  * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
- * @param {Object} options -  图层配置项。
+ * @param {Object} options - 参数。
  * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
  * @param {number} [options.radius=10] - 半径。
@@ -61,8 +61,8 @@ export class GraphicLayer {
 
     /**
      * @function GraphicLayer.prototype.addTo
-     * @description 图层添加到地图，将在下个版本废弃，请使用 onAdd() 代替。
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
+     * @description 添加该图层，将在下个版本废弃，请使用 onAdd() 代替。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
      * @returns this
      */
     addTo(map) {
@@ -71,8 +71,8 @@ export class GraphicLayer {
 
     /**
      * @function GraphicLayer.prototype.onAdd
-     * @description 图层添加到地图。
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
+     * @description 添加该图层。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
      * @returns {GraphicLayer}
      */
     onAdd(map) {
@@ -354,7 +354,7 @@ export class GraphicLayer {
     /**
      * @function GraphicLayer.prototype.removeFromMap
      * @deprecated
-     * @description 删除该图层。
+     * @description 删除该图层，并释放图层资源。
      */
     removeFromMap() {
         this.remove();
@@ -365,7 +365,7 @@ export class GraphicLayer {
      * @function GraphicLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -389,7 +389,7 @@ export class GraphicLayer {
 
     /**
      * @function GraphicLayer.prototype.setVisibility
-     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @description 设置图层可见性。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {

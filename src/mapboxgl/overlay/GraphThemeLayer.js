@@ -15,38 +15,38 @@ import {
  * @classdesc 统计专题图层。
  * @param {string} name - 图层名。
  * @param {string} chartsType - 图表类别。
- * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
- * @param {string} opt_options.themeFields - 指定创建专题图字段。
- * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {string} [opt_options.chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
- * @param {Object} opt_options.chartsSetting - 符号 Circle 配置对象。
- * @param {Array.<number>} opt_options.chartsSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
- * @param {number} [opt_options.chartsSetting.maxR] - 圆形的最大半径。
- * @param {number} [opt_options.chartsSetting.minR] - 圆形的最小半径。
- * @param {string} opt_options.chartsSetting.fillColor - 圆形的填充色，如：fillColor: "#FFB980"。
- * @param {Object} opt_options.chartsSetting.circleStyle - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
- * @param {number} opt_options.chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @param {Object} opt_options.chartsSetting.circleHoverStyle - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
- * @param {boolean} [opt_options.chartsSetting.circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- * @param {boolean} [opt_options.chartsSetting.circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * @param {Object} options - 参数。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {number} [options.opacity=1] - 图层不透明度。
+ * @param {string} options.themeFields - 指定创建专题图字段。
+ * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
+ * @param {string} [options.chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param {Object} options.chartsSetting - 符号 Circle 配置对象。
+ * @param {Array.<number>} options.chartsSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
+ * @param {number} [options.chartsSetting.maxR] - 圆形的最大半径。
+ * @param {number} [options.chartsSetting.minR] - 圆形的最小半径。
+ * @param {string} options.chartsSetting.fillColor - 圆形的填充色，如：fillColor: "#FFB980"。
+ * @param {Object} options.chartsSetting.circleStyle - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ * @param {number} options.chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。默认不对数据做小数位处理。
+ * @param {Object} options.chartsSetting.circleHoverStyle - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ * @param {boolean} [options.chartsSetting.circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * @param {boolean} [options.chartsSetting.circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends {ThemeLayer}
  * @fires Graph#beforefeaturesadded
  * @usage
  */
 export class Graph extends Theme {
 
-    constructor(name, chartsType, opt_options) {
-        super(name, opt_options);
-        this.chartsSetting = opt_options.chartsSetting || {};
-        this.themeFields = opt_options.themeFields || null;
-        this.overlayWeightField = opt_options.overlayWeightField || null;
-        this.isOverLay = opt_options.isOverLay === undefined ? true : opt_options.isOverLay;
-        this.charts = opt_options.charts || [];
-        this.cache = opt_options.cache || {};
+    constructor(name, chartsType, options) {
+        super(name, options);
+        this.chartsSetting = options.chartsSetting || {};
+        this.themeFields = options.themeFields || null;
+        this.overlayWeightField = options.overlayWeightField || null;
+        this.isOverLay = options.isOverLay === undefined ? true : options.isOverLay;
+        this.charts = options.charts || [];
+        this.cache = options.cache || {};
         this.chartsType = chartsType;
     }
 
@@ -90,9 +90,8 @@ export class Graph extends Theme {
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param {mapboxgl.LngLatBounds} extent - 重绘的范围。
      */
-    redrawThematicFeatures(extent) { // eslint-disable-line no-unused-vars
+    redrawThematicFeatures() {
         this.clearCache();
         //清除当前所有可视元素
         this.renderer.clearAll();

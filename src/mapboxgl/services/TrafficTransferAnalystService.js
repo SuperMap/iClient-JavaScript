@@ -19,7 +19,7 @@ import { TransferSolutionService } from '@supermap/iclient-common/iServer/Transf
  *      //doSomething
  * })
  * @param {string} url - 服务地址。
- * @param {Object} option - 参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -35,7 +35,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
     /**
      * @function TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
-     * @param {StopQueryParameters} params - 查询相关参数类。
+     * @param {StopQueryParameters} params - 站点查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop(params, callback) {
@@ -58,7 +58,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
     /**
      * @function TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
-     * @param {TransferPathParameters} params - 查询相关参数类。
+     * @param {TransferPathParameters} params - 交通换乘线路查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath(params, callback) {
@@ -81,7 +81,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
     /**
      * @function TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
-     * @param {TransferSolutionParameters} params - 查询相关参数类。
+     * @param {TransferSolutionParameters} params - 交通换乘方案查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution(params, callback) {

@@ -90,7 +90,7 @@ export var FeatureService = ServiceBase.extend({
     /**
      * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 buffer 查询服务。
-     * @param {GetFeaturesByBufferParameters} params - 数据服务中数据集缓冲区查询参数类。
+     * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -113,7 +113,7 @@ export var FeatureService = ServiceBase.extend({
     /**
      * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
-     * @param {GetFeaturesBySQLParameters} params - 数据服务中数据集 SQL 查询参数类。
+     * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */

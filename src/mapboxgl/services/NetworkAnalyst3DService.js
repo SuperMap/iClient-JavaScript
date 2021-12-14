@@ -19,10 +19,10 @@ import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServ
  *  .sinksFacilityAnalyst(params,function(result){
  *     //doSomething
  * })
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：</br>
+ * @param {string} url - 服务地址。请求网络分析服务，URL应为：</br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param {Object} options - 服务所需可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

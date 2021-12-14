@@ -14,9 +14,9 @@ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {mapboxgl.Map} opt_options.map - MapBoxGL Map 对象。
  * @param {string} opt_options.themeFields - 指定创建专题图字段。
+ * @param {number} [opt_options.opacity=1] - 图层不透明度。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {string} [opt_options.chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
  * @param {Object} [opt_options.symbolSetting] - 各类型图表的 symbolSetting 对象可设属性请参考具体图表模型类的注释中对 symbolSetting 对象可设属性的描述。symbolSetting 对象通常都具有以下 5 个基础可设属性:

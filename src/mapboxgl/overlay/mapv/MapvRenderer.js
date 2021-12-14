@@ -18,7 +18,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @param {Object} map - 地图。
  * @param {Object} layer - 图层。
  * @param {MapV.DataSet} dataSet - 数据集。
- * @param {Object} options - 交互时所需可选参数。
+ * @param {Object} options - 参数。
  * @extends {MapV.BaseLayer}
  *
  */
