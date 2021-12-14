@@ -5,71 +5,19 @@ import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParamete
 import { QueryService } from '../../services/QueryService';
 import { FeatureService } from '../../services/FeatureService';
 
-/**
- * @function getFeatureProperties
- * @memberof Util
- * @description 从feature中获取properties
- * @param {array} features 要素数组
- * @returns {array} 属性
- * @usage
- * ```
- * // 浏览器
- * <script type="text/javascript" src="{cdn}"></script>
- * <script>
- *   new {namespace}.Util.getFeatureProperties(features);
- *
- * </script>
- *
- * // ES6 Import
- * import { getFeatureProperties } from '{npm}';
- *
- * getFeatureProperties(features);
- * ```
- */
 export function getFeatureProperties(features) {
-    let properties = [];
-    if (isArray(features) && features.length) {
-      features.forEach((feature) => {
-        let property = feature.get('attributes');
-        property && properties.push(property);
-      });
-    }
-    return properties;
+  let properties = [];
+  if (isArray(features) && features.length) {
+    features.forEach((feature) => {
+      let property = feature.get('attributes');
+      property && properties.push(property);
+    });
   }
+  return properties;
+}
 
-/**
- * @function getFeatureBySQL
- * @memberof Util
- * @description 获取feature
- * @param {string} url - 获取feature的请求地址
- * @param {string} datasetNames - 数据集名称
- * @param {object} serviceOptions - 服务类需要的参数
- * @param {function} processCompleted - 成功请求的回调函数
- * @param {function} processFaild - 失败请求的回调函数
- * @param {string | number} targetEpsgCode - 动态投影的目标坐标系对应的 EPSG Code
- * @usage
- * ```
- * // 浏览器
- * <script type="text/javascript" src="{cdn}"></script>
- * <script>
- *   new {namespace}.Util.getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode);
- *
- * </script>
- * // ES6 Import
- * import { getFeatureBySQL } from '{npm}';
- *
- * getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode);
- * ```
- */
 export function getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode) {
- getFeatureBySQLWithConcurrent(
-   url,
-   datasetNames,
-   processCompleted,
-   processFaild,
-   serviceOptions,
-   targetEpsgCode
- );
+  getFeatureBySQLWithConcurrent(url, datasetNames, processCompleted, processFaild, serviceOptions, targetEpsgCode);
 }
 export function queryFeatureBySQL(
   url,
@@ -177,7 +125,14 @@ export function getFeatureBySQLWithConcurrent(
     });
 }
 
-export function _getFeaturesBySQLParameters(queryParameter, datasetNames, fromIndex, toIndex, maxFeatures, targetEpsgCode) {
+export function _getFeaturesBySQLParameters(
+  queryParameter,
+  datasetNames,
+  fromIndex,
+  toIndex,
+  maxFeatures,
+  targetEpsgCode
+) {
   return new GetFeaturesBySQLParameters({
     queryParameter,
     datasetNames,

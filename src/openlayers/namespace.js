@@ -70,8 +70,6 @@ import {
   ImageCollectionService
 } from './services';
 
-import { getFeatureBySQL, getFeatureProperties } from './mapping/webmap/Util';
-
 if (window && window.ol) {
   let ol = window.ol;
   ol.supermap = { ...SuperMap, ...ol.supermap };
@@ -83,8 +81,6 @@ if (window && window.ol) {
   // core
   ol.supermap.StyleUtils = StyleUtils;
   ol.supermap.Util = Util;
-  ol.supermap.Util.getFeatureProperties = getFeatureProperties;
-  ol.supermap.Util.getFeatureBySQL = getFeatureBySQL;
   // mapping
   ol.source.BaiduMap = BaiduMap;
   ol.source.ImageSuperMapRest = ImageSuperMapRest;
