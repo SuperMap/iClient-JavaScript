@@ -9,6 +9,7 @@ import Sortby from './Sortby';
 /**
  * @class ImageSearchParameter
  * @deprecatedclass SuperMap.ImageSearchParameter
+ * @classdesc 影像服务查询参数类
  * @param {Object} options - 可选参数。
  * @param {Array.<number>} [options.bbox] 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
  * @param {Array.<string>} [options.collections] 影像集合的ID数组，将在该指定的Collection中搜索Items。

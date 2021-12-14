@@ -2,10 +2,12 @@ import * as tf from '@tensorflow/tfjs';
 import MachineLearningBase from './MachineLearningBase';
 
 /**
- * @class SuperMap.ObjectDetection
+ * @class ObjectDetection
+ * @deprecatedclass SuperMap.ObjectDetection
  * @classdesc 目标检测类。
  * @category ObjectDetection
- * @extends {SuperMap.MachineLearningBase}
+ * @extends {MachineLearningBase}
+ * @usage
  */
 
 export class ObjectDetection extends MachineLearningBase {
@@ -13,7 +15,7 @@ export class ObjectDetection extends MachineLearningBase {
         super(options);
     }
     /**
-     * @function  SuperMap.ObjectDetection.prototype.predict
+     * @function  ObjectDetection.prototype.predict
      * @description 对模型进行预测
      * @returns {Object} 预测后的数据
      */
@@ -32,7 +34,7 @@ export class ObjectDetection extends MachineLearningBase {
     }
 
     /**
-     * @function  SuperMap.ObjectDetection.prototype.handleResult
+     * @function  ObjectDetection.prototype.handleResult
      * @description 对预测数据进行处理
      * @param {object} result - 预测后的数据。
      * @returns {Object} 处理返回的数据
@@ -160,7 +162,7 @@ export class ObjectDetection extends MachineLearningBase {
     }
 
     /**
-     * @function SuperMap.ObjectDetection.prototype.nms
+     * @function ObjectDetection.prototype.nms
      * @param {array} bbox - 包围框数据。
      * @param {array} scores - 模型得分数据。
      * @returns {array} 返回去重后的包围框数据
@@ -172,7 +174,7 @@ export class ObjectDetection extends MachineLearningBase {
     }
 
     /**
-     * @function SuperMap.ObjectDetection.prototype.getIntervalFromArray
+     * @function ObjectDetection.prototype.getIntervalFromArray
      * @param {array} array - 数组。
      * @param {number} interval - 取值的间隔。
      * @param {number} start - 取值的起始位置。
@@ -188,7 +190,7 @@ export class ObjectDetection extends MachineLearningBase {
     }
 
     /**
-     * @function  SuperMap.ObjectDetection.prototype.handleInputParams
+     * @function  ObjectDetection.prototype.handleInputParams
      * @description 处理输入张量
      * @param {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} image - 图片对象。
      * @param {number} width - 图片宽度。

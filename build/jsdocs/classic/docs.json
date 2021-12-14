@@ -1,38 +1,47 @@
 {
-    "opts": {
-        "recurse": true,
-        "template": "../template",
-        "configPath": "../classic",
-        "destination": "./docs/classic"
+  "opts": {
+    "recurse": true,
+    "template": "../template",
+    "configPath": "../classic",
+    "destination": "./docs/classic"
+  },
+  "disqus": "",
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "i18n": {
+    "defaultLang": "en",
+    "possibleLang": ["en"],
+    "dbFilePath": "./build/jsdocs/classic"
+  },
+  "source": {
+    "includePattern": ".+\\.js?$",
+    "include": [
+      "src/classic",
+      "src/common/thirdparty/elasticsearch",
+      "src/common/iServer/CommonServiceBase.js",
+      "src/common/iServer/GeoCodingParameter.js",
+      "src/common/iServer/GeoDecodingParameter.js",
+      "src/common/iServer/CreateDatasetParameters.js",
+      "src/common/iServer/UpdateDatasetParameters.js"
+    ],
+    "exclude": [
+      "src/classic/libs",
+      "src/classic/theme",
+      "src/classic/resource",
+      "src/common/overlay/levelRenderer",
+      "src/common/lang/locales"
+    ]
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": false
     },
-    "disqus":"",
-    "tags": {
-        "allowUnknownTags": true
-    },
-    "i18n": {
-        "defaultLang": "en",
-        "possibleLang": ["en"],
-        "dbFilePath":"./build/jsdocs/classic"
-    },
-    "source": {
-        "includePattern": ".+\\.js?$",
-        "include": [
-            "src/classic","src/common/thirdparty","src/common/iServer/CommonServiceBase.js",
-            "src/common/iServer/GeoCodingParameter.js","src/common/iServer/GeoDecodingParameter.js"
-        ],
-        "exclude": [
-            "src/classic/libs","src/classic/theme","src/classic/resource","src/common/overlay/levelRenderer","src/common/lang/locales"
-        ]
-    },
-    "plugins": ["plugins/markdown"],
-    "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false,
-        "default": {
-            "outputSourceFiles": false
-        },
-        "namespace": "SuperMap",
-        "npm":"@supermap/iclient-classic",
-        "cdn":"https://iclient.supermap.io/dist/classic/iclient-classic.js"
-    }
+    "namespace": "SuperMap",
+    "npm": "@supermap/iclient-classic",
+    "cdn": "https://iclient.supermap.io/dist/classic/iclient-classic.js"
+  }
 }

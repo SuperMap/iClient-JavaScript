@@ -20,7 +20,7 @@ import {
  * @class KernelDensityJobParameter
  * @deprecatedclass SuperMap.KernelDensityJobParameter
  * @category iServer ProcessingService DensityAnalyst
- * @classdesc 密度分析任务参数类。
+ * @classdesc 核密度分析服务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.fields - 权重索引。

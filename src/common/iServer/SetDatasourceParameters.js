@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class SetDatasourceParameters
  * @deprecatedclass SuperMap.SetDatasourceParameters
  * @category iServer Data Datasource
- * @classdesc 数据源信息查询参数类。
+ * @classdesc 设置数据源信息参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称。
  * @param {string} options.description - 数据源描述信息。

@@ -80,7 +80,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据。
-     * @param {(ServerFeature|L.supermap.ThemeFeature)} features - 待添加的要素。
+     * @param {(ServerFeature|ThemeFeature)} features - 待添加的要素。
      */
     addFeatures(features) {
         var ret = this.dispatchEvent({

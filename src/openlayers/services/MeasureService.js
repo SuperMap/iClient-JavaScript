@@ -9,7 +9,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @class MeasureService
  * @category  iServer Map Measure
- * @classdesc 测量服务。
+ * @classdesc 量算服务。
  * @extends {ServiceBase}
  * @param {string} url -  服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options -  参数。
@@ -51,7 +51,7 @@ export class MeasureService extends ServiceBase {
      * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 类型。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {MeasureService} 测量服务。
+     * @returns {MeasureService} 量算服务。
      */
     measure(params, type, callback) {
         var me = this;
