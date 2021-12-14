@@ -13,19 +13,19 @@ import {Theme} from './ThemeLayer';
  * @category Visualization Theme
  * @classdesc 地理几何专题要素型专题图层。
  * @param {string} name - 图层名。
- * @param {Object} opt_options - 参数。
- * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
- * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {number} [opt_options.nodesClipPixel=2] - 节点抽稀像素距离。
- * @param {boolean} [opt_options.isHoverAble=false] - 图形是否在 hover 时高亮。
- * @param {boolean} [opt_options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
- * @param {boolean} [opt_options.isClickAble=true] - 图形是否可点击。
- * @param {boolean} [opt_options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ * @param {Object} options - 参数。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
+ * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
+ * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
+ * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
+ * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @extends {ThemeLayer}
  * @fires GeoFeature#beforefeaturesadded
  * @usage
@@ -33,8 +33,8 @@ import {Theme} from './ThemeLayer';
 
 export class GeoFeature extends Theme {
 
-    constructor(name, opt_options) {
-        super(name, opt_options);
+    constructor(name, options) {
+        super(name, options);
         /**
          * @member {string} GeoFeatureThemeLayer.prototype.name 
          * @description 专题图图层名称。
@@ -81,11 +81,11 @@ export class GeoFeature extends Theme {
          *               的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
          */
         this.isAllowFeatureStyle = false;
-        Util.extend(this, opt_options);
-        this.cache = opt_options.cache || {};
-        this.cacheFields = opt_options.cacheFields || [];
-        this.maxCacheCount = opt_options.maxCacheCount || 0;
-        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
+        Util.extend(this, options);
+        this.cache = options.cache || {};
+        this.cacheFields = options.cacheFields || [];
+        this.maxCacheCount = options.maxCacheCount || 0;
+        this.isCustomSetMaxCacheCount = options.isCustomSetMaxCacheCount === undefined ? false : options.isCustomSetMaxCacheCount;
 
     }
 
@@ -116,9 +116,8 @@ export class GeoFeature extends Theme {
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {GeometryVector} features - 要删除的要素对象。
      */
-    removeFeatures(features) { // eslint-disable-line no-unused-vars
+    removeFeatures() {
         this.clearCache();
         Theme.prototype.removeFeatures.apply(this, arguments);
     }

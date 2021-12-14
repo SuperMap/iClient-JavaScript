@@ -8,7 +8,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @class GetFeaturesBySQLParameters
  * @deprecatedclass SuperMap.GetFeaturesBySQLParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据服务中数据集 SQL 查询参数类。
+ * @classdesc 数据集 SQL 查询参数类。
  * @param {Object} options - 参数。
  * @param {FilterParameter} options.queryParameter - 查询过滤条件参数。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。

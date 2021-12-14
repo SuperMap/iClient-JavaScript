@@ -9,7 +9,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @class EditFeaturesParameters
  * @deprecatedclass SuperMap.EditFeaturesParameters
  * @category iServer Data Feature
- * @classdesc 数据服务中数据集添加、修改、删除参数类。
+ * @classdesc 数据集添加、修改、删除参数类。
  * @category iServer Data
  * @param {Object} options - 参数。
  * @param {Array.<GeometryVector|GeoJSONObject|ol.feature>} options.features - 当前需要创建或者是修改的要素集。

@@ -100,7 +100,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addKernelDensityJob
      * @description 密度分析。
-     * @param {KernelDensityJobParameter} params - 密度分析任务参数类。
+     * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。

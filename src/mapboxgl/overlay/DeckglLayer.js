@@ -30,7 +30,7 @@ import { Util } from '../core/Util';
  * @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
  * @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
  * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
- * @param {number} [options.props.opacity=1] - 公共配置项：图层透明度。
+ * @param {number} [options.props.opacity=1] - 公共配置项：图层不透明度度。
  * @param {boolean} [options.props.pickable=false] - 公共配置项：是否响应鼠标事件（鼠标点击，鼠标滑动)。
  * @param {function} [options.props.autoHighlight=false] - 公共配置项：鼠标滑动高亮要素。
  * @param {function} [options.props.highlightColor=[0, 0, 128, 128]] - 公共配置项：鼠标滑动高亮颜色。
@@ -101,7 +101,7 @@ export class DeckglLayer {
 
     /**
      * @function DeckglLayer.prototype.onAdd
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
      * @returns {DeckglLayer}
      */
     onAdd(map) {
@@ -153,7 +153,7 @@ export class DeckglLayer {
     /**
      * @function DeckglLayer.prototype.removeFromMap
      * @deprecated
-     * @description 删除该图层。
+     * @description 删除该图层，并释放图层资源。
      */
     removeFromMap() {
         this.remove();
@@ -164,7 +164,7 @@ export class DeckglLayer {
      * @function DeckglLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前（如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后）。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -188,7 +188,7 @@ export class DeckglLayer {
 
     /**
      * @function DeckglLayer.prototype.setVisibility
-     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @description 设置图层可见性。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {

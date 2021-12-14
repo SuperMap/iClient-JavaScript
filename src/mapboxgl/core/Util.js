@@ -96,7 +96,7 @@ export const Util = {
     /**
      * @function Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式。
-     * @param {Object} smObj - 待转参数。
+     * @param {Object} smObj - 待转对象。
      */
     toGeoJSON(smObj) {
         if (smObj) {
@@ -189,8 +189,8 @@ export const Util = {
     },
     /**
      * @description 十六进制转 RGBA 格式。
-     * @param {Object} hex - 十六进制格式参数。
-     * @param {number} opacity -Alpha 参数。
+     * @param {Object} hex - 十六进制格式。
+     * @param {number} opacity - 不透明度Alpha。
      * @returns {string} 生成的 RGBA 格式。
      */
     hexToRgba(hex, opacity) {
@@ -214,7 +214,7 @@ export const Util = {
 
     /**
      * @param {string} featureName 原始数据中的地名
-     * @param {string} fieldName 需要匹配的地名
+     * @param {string} fieldName 待匹配的地名
      * @returns {boolean} 是否匹配
      */
     isMatchAdministrativeName(featureName, fieldName) {

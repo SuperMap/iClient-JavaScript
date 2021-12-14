@@ -16,25 +16,25 @@ import { GeoFeature } from './theme/GeoFeatureThemeLayer';
  * @category  Visualization Theme
  * @classdesc  标签专题图层。
  * @param {string} name - 图层名。
- * @param {Object} opt_options - 参数。
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map 对象。
- * @param {string} opt_options.themeField - 指定创建专题图字段。
- * @param {Object} opt_options.style - 专题图样式。
- * @param {Object} opt_options.styleGroups - 各专题类型样式组。
- * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {string} [opt_options.id] - 专题图层 ID。专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {Object} options - 参数。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {string} options.themeField - 指定创建专题图字段。
+ * @param {Object} options.style - 专题图样式。
+ * @param {Object} options.styleGroups - 各专题类型样式组。
+ * @param {Object} [options.highlightStyle] - hover 的高亮样式。
+ * @param {string} [options.id] - 专题图层 ID。专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {boolean} [opt_options.isHoverAble] - 是否开启 hover 事件。
+ * @param {boolean} [options.isHoverAble] - 是否开启 hover 事件。
  * @extends {GeoFeatureThemeLayer}
  * @usage
  */
 export class Label extends GeoFeature {
 
-    constructor(name, opt_options) {
-        super(name, opt_options);
+    constructor(name, options) {
+        super(name, options);
         /**
          * @member {boolean} [LabelThemeLayer.prototype.isOverLay=true] 
          * @description 是否进行压盖处理，如果设为 true，将隐藏被压盖的标签。
@@ -65,7 +65,7 @@ export class Label extends GeoFeature {
          */
         this.styleGroups = null;
 
-        Util.extend(this, opt_options);
+        Util.extend(this, options);
         this.defaultStyle = {
             //默认文本样式
             fontColor: "#000000",
@@ -125,9 +125,8 @@ export class Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {GeometryVector} features - 要删除的要素对象。
      */
-    removeFeatures(features) { // eslint-disable-line no-unused-vars
+    removeFeatures() {
         this.labelFeatures = [];
         super.removeFeatures.call(this, arguments);
     }

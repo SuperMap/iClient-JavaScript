@@ -70,8 +70,8 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能依赖 <a href='https://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 和 <a href='https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js'>JsonSql</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="https://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`</br>
- *      `<script type="text/javascript" src="https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"></script>`
+ *      <p style="font-size: 13px">&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/geostats/geostats.js"&gt;&lt;/script&gt;</p>
+ *      <p style="font-size: 13px">&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"&gt;&lt;/script&gt;</p>
  * </div>
  * @param {number} id - iPortal|Online 地图 ID。
  * @param {Object} options - 参数。
@@ -80,7 +80,7 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
+ * @param {boolean} [options.excludePortalProxyUrl] - 服务端传递过来的 URL 是否带有代理。
  * @fires WebMap#getmapfailed
  * @fires WebMap#getwmtsfailed
  * @fires WebMap#getlayersfailed
@@ -103,8 +103,7 @@ export class WebMap extends mapboxgl.Evented {
 	}
 	/**
 	 * @function WebMap.prototype.resize
-	 * @description map resize。
-   * @version 9.1.2
+	 * @description 地图 resize。
 	 */
 	resize() {
 		this.map.resize();
@@ -114,7 +113,6 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype.setMapId
 	 * @param {string} mapId - webMap 地图 ID。
 	 * @description 设置 WebMap ID。
-   * @version 9.1.2
 	 */
 	setMapId(mapId) {
 		this.mapId = mapId;
@@ -125,7 +123,6 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype.setWebMapOptions
 	 * @param {Object} webMapOptions - webMap 参数。
 	 * @description 设置 webMap 参数。
-   * @version 9.1.2
 	 */
 	setWebMapOptions(webMapOptions) {
 		this.server = webMapOptions.server;
@@ -136,7 +133,6 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype.setMapOptions
 	 * @param {Object} mapOptions - map 参数。
 	 * @description 设置 map 参数。
-   * @version 9.1.2
 	 */
 	setMapOptions(mapOptions) {
 		let { center, zoom, maxBounds, minZoom, maxZoom, isWorldCopy, bearing, pitch } = mapOptions;
@@ -1720,8 +1716,8 @@ export class WebMap extends mapboxgl.Evented {
 			 * @description 添加图层成功。
 			 * @property {mapboxgl.Map} map - MapBoxGL Map 对象。
 			 * @property {Object} mapparams - 地图信息。
-			 * @property {string} mapParams.title - 地图标题。
-			 * @property {string} mapParams.description - 地图描述。
+			 * @property {string} mapparams.title - 地图标题。
+			 * @property {string} mapparams.description - 地图描述。
 			 * @property {Array.<Object>} layers - 地图上所有的图层对象
 			 */
 			this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: this.layers });

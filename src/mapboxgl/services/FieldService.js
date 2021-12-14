@@ -15,7 +15,7 @@ import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldSta
  * new FieldService(url).getFields(function(result){
  *     //doSomething
  * });
- * @param {string} url - 与客户端交互的服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -56,7 +56,7 @@ export class FieldService extends ServiceBase {
     /**
      * @function FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务。
-     * @param {FieldStatisticsParameters} params - 查询所需参数类。
+     * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
      * @param {RequestCallback} callback 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {

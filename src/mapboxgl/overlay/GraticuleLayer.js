@@ -17,11 +17,11 @@ import mapboxgl from 'mapbox-gl';
  * @category Visualization GraticuleLayer
  * @classdesc 经纬网。
  * @version 10.1.1
- * @param {Object} options -经纬网参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("graticuleLayer_") 创建图层 ID。
  * @param {boolean} [options.visible=true] - 是否显示经纬网。
  * @param {boolean} [options.showLabel=true] - 是否显示标签。
- * @param {number} [options.opacity=1] - 画布透明度。
+ * @param {number} [options.opacity=1] - 画布不透明度。
  * @param {number|Function} [options.interval = 10] - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
  * @param {mapboxgl.LngLatBounds} [options.extent] - 经纬网渲染的边界范围（[minx, miny, maxx, maxy]），不传为整个地图范围。
  * @param {number} [options.minZoom] - 最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。
@@ -36,8 +36,8 @@ import mapboxgl from 'mapbox-gl';
 
 /**
  * @typedef {Object} GraticuleLayer.LabelStyle - 标签样式
- * @property {Array.<string>} [textFont = ['Calibri','sans-serif']] - 字体样式。
- * @property {string} [textSize = '12px'] - 字体大小。
+ * @property {Array.<string>} [textFont = ['Calibri','sans-serif']] - 字体样式
+ * @property {string} [textSize = '12px'] - 字体大小
  * @property {string} [textColor ='rgba(0,0,0,1)'] - 字体颜色
  * @property {string} [textHaloColor ='rgba(255,255,255,1)'] - 描边颜色
  * @property {number} [textHaloWidth = 1] - 描边宽度
@@ -46,11 +46,11 @@ import mapboxgl from 'mapbox-gl';
 
 /**
  * @typedef {Object} GraticuleLayer.StrokeStyle - 线样式
- * @property {string} [lineColor = 'red'] - 线颜色。
- * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square。
- * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter。
- * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式。
- * @property {number} [lineWidth = 1] - 线宽。
+ * @property {string} [lineColor = 'red'] - 线颜色
+ * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square
+ * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter
+ * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式
+ * @property {number} [lineWidth = 1] - 线宽
  */
 
 const defaultTextStyle = {
@@ -118,7 +118,7 @@ export class GraticuleLayer {
 
     /**
      * @function GraticuleLayer.prototype.setVisibility
-     * @description 设置是否可见。
+     * @description 设置可见性。
      * @param {boolean} visible - 是否可见。
      */
     setVisibility(visible) {

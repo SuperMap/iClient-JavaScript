@@ -19,11 +19,11 @@ import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名。
  * @param {Object} options -可选参数。
- * @param {mapboxgl.Map} options.map - 当前 mapboxgl map 对象，将在下个版本弃用，请用 map.addLayer()方法添加图层。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer()方法添加图层。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {boolean} [options.visibility=true] - 图层是否可见。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @fires ThemeLayer#changelayer
  * @fires ThemeLayer#featuresremoved
  * @usage
@@ -45,7 +45,7 @@ export class Theme {
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
          * @member {float} [ThemeLayer.prototype.opacity=1]
-         * @description 图层透明度。
+         * @description 图层不透明度。
          */
         this.opacity = options.opacity ? options.opacity : 1;
 
@@ -63,7 +63,7 @@ export class Theme {
 
         /**
          * @member {mapboxgl.Map} ThemeLayer.prototype.map
-         * @description map 对象。
+         * @description MapBoxGL Map 对象。
          */
         this.map = options.map ? options.map : null;
 
@@ -79,7 +79,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.onAdd
-     * @description 向底图添加该图层。
+     * @description 添加该图层。
      */
     onAdd(map) {
         this.map = map;
@@ -156,7 +156,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.setVisibility
-     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @description 设置图层可见性。
      * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
@@ -169,7 +169,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.display
-     * @description 临时隐藏或者显示图层。通过对 CSS 控制产生即时效果，重新渲染失效。一般用 setVisibility 方法来动态控制图层的显示和隐藏。
+     * @description 隐藏或者显示图层。（通过对 CSS 控制产生即时效果，重新渲染失效。）
      * @param {boolean} [display] - 是否显示图层。
      */
     display(display) {
@@ -178,8 +178,8 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.setOpacity
-     * @description 设置图层的不透明度,取值[0-1]之间。
-     * @param {number} [opacity] - 不透明度。
+     * @description 设置图层的不透明度。
+     * @param {number} [opacity] - 不透明度，取值[0-1]之间。
      */
     setOpacity(opacity) {
         if (opacity !== this.opacity) {
@@ -203,7 +203,7 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.addFeatures
      * @param {ThemeFeature|ServerFeature|GeoJSONObject} features - 待添加要素。
-     * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
+     * @description 向专题图图层中添加数据
      */
     addFeatures(features) { // eslint-disable-line no-unused-vars
 
@@ -211,12 +211,10 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @param {Array.<GeometryVector>} features - 要删除 feature 的数组。
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param {Array.<GeometryVector>} features - 待删除 features。
+     * @description 删除专题图中的features。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
-     *              如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
-     *              删除所有 feature 后再重新添加。这样效率会更高。
+     *              如果要删除的 features 数组中的元素过多，推荐使用 removeAllFeatures删除所有 feature后，再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
         if (!features || features.length === 0) {
@@ -256,7 +254,7 @@ export class Theme {
          * @event ThemeLayer#featuresremoved
          * @description 要素删除之后触发。
          * @property {Array.<GeometryVector>} features - 未被成功删除的要素。
-         * @property {boolean} succeed - 删除成功与否。
+         * @property {boolean} succeed - 是否删除成功。
          */
         mapboxgl.Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
     }
@@ -289,11 +287,10 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.getFeatureBy
-     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
-     *              返回此 feature（并且只返回第一个）。
-     * @param {string} property - feature 的某个属性名称。
-     * @param {string} value - property 所对应的值。
-     * @returns {GeometryVector} 第一个匹配属性和值的矢量要素。
+     * @description 在专题图的要素中，获取第一个feature[property] === value的矢量要素。
+     * @param {string} property - 属性名称。
+     * @param {string} value - 属性值。
+     * @returns {GeometryVector} 矢量要素。
      */
     getFeatureBy(property, value) {
         var feature = null;
@@ -308,9 +305,9 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.getFeatureById
-     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @description 获取指定featureId的矢量要素。
      * @param {string} featureId - 矢量要素的属性 id。
-     * @returns {GeometryVector} 对应 id 的 feature，如果不存在则返回 null。
+     * @returns {GeometryVector} 对应featureId的矢量要素，不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -318,10 +315,10 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.getFeaturesByAttribute
-     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @description 通过属性的 key 值和 value 值，获取匹配的要素数组。
      * @param {string} attrName - 属性的 key。
-     * @param {string} attrValue - 矢量要素的属性 id。
-     * @returns {Array.<GeometryVector>} 一个匹配的 feature 数组。
+     * @param {string} attrValue - 属性的 value。
+     * @returns {Array.<GeometryVector>} 要素数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -339,7 +336,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.redrawThematicFeatures
-     * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
+     * @description 重绘专题要素。
      * @param {mapboxgl.LngLatBounds} extent - 重绘的范围。
      */
     redrawThematicFeatures(extent) { // eslint-disable-line no-unused-vars
@@ -347,7 +344,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.on
-     * @description 添加专题要素事件监听。添加专题要素事件监听。
+     * @description 添加专题要素事件监听。
      * @param {Event} event - 监听事件。
      * @param {function} callback - 回调函数。
      * @param {string} context - 信息。
@@ -380,7 +377,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.addTFEvents
-     * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
+     * @description 将事件监听添加到图层。
      * @private
      */
     addTFEvents() {
@@ -569,7 +566,7 @@ export class Theme {
      * @function ThemeLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.div.id);

@@ -16,12 +16,12 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @param {string} opt_options.themeField - 指定创建专题图字段。
  * @param {Object} opt_options.style - 专题图样式。
  * @param {Object} opt_options.styleGroups - 各专题类型样式组。
- * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
+ * @param {mapboxgl.Map} opt_options.map - MapBoxGL Map 对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {number} [opt_options.opacity=1] - 图层不透明度。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
- * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
+ * @param {Object} [opt_options.highlightStyle] -  hover 的高亮样式。
  * @extends {GeoFeature}
  * @usage
  */

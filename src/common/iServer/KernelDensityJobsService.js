@@ -53,7 +53,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function KernelDensityJobsService.prototype.addKernelDensityJob
      * @description 新建核密度分析服务
-     * @param {KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
+     * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addKernelDensityJob(params, seconds) {

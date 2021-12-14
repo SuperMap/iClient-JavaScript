@@ -10,7 +10,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @class DatasourceService
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。
- * @param {string} url - 与客户端交互的服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -87,7 +87,7 @@ export class DatasourceService extends ServiceBase {
      *  new DatasourceService(url).setDatasource(params, function(result){
      *     //doSomething
      *   });
-     * @param {SetDatasourceParameters} params - 数据源信息设置参数类。
+     * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setDatasource(params, callback) {

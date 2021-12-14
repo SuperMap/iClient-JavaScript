@@ -203,7 +203,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.clearAll
      * @description 清除所有 threejs 对象。
-     * @param {boolean} clearCamera - 是否同时清除相机。
+     * @param {boolean} clearCamera - 是否清除相机。
      * @returns {this} this 对象。
      */
     clearAll(clearCamera) {
@@ -374,11 +374,6 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.draw
      * @description 提供给外部的 threejs 模型绘制接口。
-     * @param {THREE.WebGLRenderer|THREE.CanvasRenderer} gl - threejs 渲染器上下文 。详情请参考：</br>
-     *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
-     *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
-     * @param {THREE.Scene} scene - threejs 场景对象。详情请参考：[THREE.Scene]{@link https://threejs.org/docs/index.html#api/scenes/Scene}
-     * @param {THREE.Camera} camera - threejs 相机对象。详情请参考：[THREE.Camera]{@link https://threejs.org/docs/index.html#api/cameras/Camera}
      * @returns {this} this对象。
      * @example
      * var threeLayer = new ThreeLayer('three');
@@ -388,7 +383,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * }
      * threeLayer.addTo(map);
      */
-    draw(gl, scene, camera) {// eslint-disable-line no-unused-vars
+    draw() {
         return this;
     }
 

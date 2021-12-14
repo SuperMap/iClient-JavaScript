@@ -8,4 +8,3 @@ export { Tianditu } from './Tianditu';
 export { TileSuperMapRest } from './TileSuperMapRest';
 export { WebMap } from './WebMap';
 export { ImageTileSuperMapRest } from './ImageTileSuperMapRest';
-export { getFeatureBySQL, getFeatureProperties } from './webmap/Util';
