@@ -15,13 +15,13 @@
  import Attributions from '../core/Attributions';
 
 /**
- * @class TileVectorLayer
+ * @class TiledVectorLayer
  * @deprecatedclassinstance L.supermap.tiledVectorLayer
  * @classdesc SuperMap iServer 的矢量瓦片图层。
  * @category Visualization VectorTile
  * @extends VectorGrid
  * @example
- *      new TileVectorLayer(url).addTo(map);
+ *      new TiledVectorLayer(url).addTo(map);
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} options.layerNames - 指定图层的名称列表，支持的类型为矢量图层。
@@ -39,7 +39,7 @@
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
  * @usage
  */
-export var TileVectorLayer = VectorGrid.extend({
+export var TiledVectorLayer = VectorGrid.extend({
     options: {
         crs: null,
         //客户端cartocss样式
@@ -97,7 +97,7 @@ export var TileVectorLayer = VectorGrid.extend({
 
     /**
      * @private
-     * @function TileVectorLayer.prototype.onAdd
+     * @function TiledVectorLayer.prototype.onAdd
      * @description 添加地图。
      * @param {L.Map} map - Leaflet Map 对象。
      */
@@ -112,7 +112,7 @@ export var TileVectorLayer = VectorGrid.extend({
 
     /**
      * @private
-     * @function TileVectorLayer.prototype.initLayersInfo
+     * @function TiledVectorLayer.prototype.initLayersInfo
      * @description 获取服务器图层资源下的风格信息（当 CartoCSS 中不存在相应图层渲染信息时使用）。
      */
     initLayersInfo: function () {
@@ -147,7 +147,7 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function TileVectorLayer.prototype.getLayerStyleInfo
+     * @function TiledVectorLayer.prototype.getLayerStyleInfo
      * @description 获取图层样式信息。
      * @param {string} layerName - 图层名称。
      */
@@ -197,7 +197,7 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /*
-     * @function TileVectorLayer.prototype.getVectorStylesFromServer
+     * @function TiledVectorLayer.prototype.getVectorStylesFromServer
      * @description 等待服务器的 carto 返回之后拼接本地配置的 cartoCSS, 并调用 onAdd 出图。
      */
     getVectorStylesFromServer: function () {
@@ -225,14 +225,14 @@ export var TileVectorLayer = VectorGrid.extend({
 
     /**
      * @private
-     * @function TileVectorLayer.prototype.setServerCartoCSS
+     * @function TiledVectorLayer.prototype.setServerCartoCSS
      * @description 设置服务端获取到的 cartoCSS 样式, cartoCSS 请求回来之后自动调用。
      */
     setServerCartoCSS: function (cartoCSSStr) {
         this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, true);
     },
     /**
-     * @function TileVectorLayer.prototype.setClientCartoCSS
+     * @function TiledVectorLayer.prototype.setClientCartoCSS
      * @description 客户端设置 cartoCSS 样式。
      */
     setClientCartoCSS: function (cartoCSSStr) {
@@ -245,7 +245,7 @@ export var TileVectorLayer = VectorGrid.extend({
 
     /**
      * @private
-     * @function TileVectorLayer.prototype.getVectorTileLayerStyle
+     * @function TiledVectorLayer.prototype.getVectorTileLayerStyle
      * @description 获取图层风格信息，当 CartoCSS 中包含有对该图层的渲染信息时，优先获取，否则获取图层资源下图层样式的渲染信息。
      * @param {Object} coords - 图层坐标参数对象。
      * @param {Object} feature - 需要获取的要素。
@@ -306,7 +306,7 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function TileVectorLayer.prototype.getScale
+     * @function TiledVectorLayer.prototype.getScale
      * @description 通过缩放级别获取比例尺。
      * @param {number} zoom - 缩放级别。
      * @returns {number} 比例尺。
@@ -319,7 +319,7 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function TileVectorLayer.prototype.getScaleFromCoords
+     * @function TiledVectorLayer.prototype.getScaleFromCoords
      * @description 通过行列号获取比例尺。
      * @param {Object} coords - 行列号。
      * @returns {number} 比例尺。
@@ -338,7 +338,7 @@ export var TileVectorLayer = VectorGrid.extend({
 
     /**
      * @private
-     * @function TileVectorLayer.prototype.getDefaultScale
+     * @function TiledVectorLayer.prototype.getDefaultScale
      * @description 根据行列号获取默认比例尺。
      * @param {Object} coords - 行列号。
      * @returns {number} 默认比例尺。
@@ -502,5 +502,5 @@ export var TileVectorLayer = VectorGrid.extend({
 });
 
 export var tiledVectorLayer = function (url, options) {
-    return new TileVectorLayer(url, options);
+    return new TiledVectorLayer(url, options);
 };

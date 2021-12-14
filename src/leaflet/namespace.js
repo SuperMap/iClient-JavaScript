@@ -70,8 +70,8 @@ import {
   RankSymbolThemeLayer,
   rankSymbolThemeLayer,
   TileVectorLayer,
+  TiledVectorLayer,
   tiledVectorLayer,
-  tileVectorLayer,
   TurfLayer,
   turfLayer,
   UnicodeMarker,
@@ -333,8 +333,8 @@ L.supermap.RangeThemeLayer = RangeThemeLayer;
 L.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
 L.supermap.RankSymbolThemeLayer = RankSymbolThemeLayer;
 L.supermap.tiledVectorLayer = tiledVectorLayer;
-L.supermap.tileVectorLayer = tileVectorLayer;
 L.supermap.TileVectorLayer = TileVectorLayer;
+L.supermap.TiledVectorLayer = TiledVectorLayer;
 L.supermap.turfLayer = turfLayer;
 L.supermap.TurfLayer = TurfLayer;
 L.supermap.unicodeMarker = unicodeMarker;
