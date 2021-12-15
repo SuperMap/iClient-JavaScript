@@ -628,7 +628,8 @@
           '</a>' +
           '</li>';
         for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
-          pageHtml += '<li onclick="clickPage(' + i - 1 + ')"><a href="#">' + i + '</a></li>';
+          var pageIndex = i - 1;
+          pageHtml += '<li onclick="clickPage('+ pageIndex + ')"><a href="#">' + i + '</a></li>';
         }
         pageHtml +=
           '<li id="next-page" style="margin-right: 0">' +
@@ -678,7 +679,7 @@
       }
 
       function clickPage(i) {
-        currentIndex = i;
+        currentIndex = parseInt(i);
         var start = tableMax * currentIndex;
         $($('#pagination').children('.active')).removeClass('active');
         $(
