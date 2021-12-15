@@ -83,10 +83,21 @@ export class VectorTileStyles extends Observable {
                                 cartoCss = cartoCss.replace(/[@]/gi, "___");
                                 cartoCss = cartoCss.replace(/\\#/gi, "___");
                                 //替换一些关键符号
-                                for (var attr in layersInfo) {
+                                var cachedLayer = {};
+                                layersInfo && Object.keys(layersInfo).sort().forEach(function (attr) {
                                     var newAttr = attr.replace(/[@#\s]/gi, "___");
-                                    cartoCss = cartoCss.replace(attr.replace(/[#]/gi, "\\#"), newAttr);
-                                }
+                                    var to = attr;
+                                    var keys = Object.keys(cachedLayer);
+                                    for (let index = keys.length; index > -1; index--) {
+                                        if (attr.indexOf(keys[index]) > -1) {
+                                            to = attr.replace(keys[index], cachedLayer[keys[index]]);
+                                            break;
+                                        }
+                                    }
+                                    to = to.replace(/[#]/gi, "\#");
+                                    cachedLayer[attr] = newAttr;
+                                    cartoCss = cartoCss.replace(new RegExp(to, "g"), newAttr);
+                                })
                                 cartoCss = cartoCss.replace(/[#]/gi, "\n#");
                                 //将zoom转化为scale，以免引起混淆
                                 cartoCss = cartoCss.replace(/\[zoom/gi, "[scale");
