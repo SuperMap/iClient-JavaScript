@@ -524,7 +524,7 @@ export class GeoJSON extends JSONFormat {
             "type": null
         };
         if (Util.isArray(obj)) {
-            GeoJSON.type = "FeatureCollection";
+            geojson.type = "FeatureCollection";
             var numFeatures = obj.length;
             geojson.features = new Array(numFeatures);
             for (var i = 0; i < numFeatures; ++i) {
