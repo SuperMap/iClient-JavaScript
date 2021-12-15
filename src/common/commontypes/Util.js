@@ -804,12 +804,15 @@ SuperMap.Util.toJSON = function (obj) {
             objInn = objInn.replace(/%/g, "%25");
             objInn = objInn.replace(/&/g, "%26");
             return objInn;
-        case Array:
-            var arr = [];
+       case Array:
+            var arr = '';
             for (var i = 0, len = objInn.length; i < len; i++) {
-                arr.push(SuperMap.Util.toJSON(objInn[i]));
+              arr += SuperMap.Util.toJSON(objInn[i]);
+              if (i !== objInn.length - 1) {
+                arr += ',';
+              }
             }
-            return "[" + arr.join(",") + "]";
+            return "[" + arr + "]";
         case Number:
             return isFinite(objInn) ? String(objInn) : null;
         case Boolean:

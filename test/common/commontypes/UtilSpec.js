@@ -253,6 +253,11 @@ describe('Util', () => {
         var funResults = Util.toJSON(funObj);
         expect(funResults).toEqual("aaa");
     });
+    it('toJSON_array_null', () => {
+        var obj = {test:['a',null,'b']};
+        var result = Util.toJSON(obj);
+        expect(result).toContain(',null,')
+    });
 
     it('getResolutionFromScaleDpi', () => {
         var scale = 4.629244301712164E-9;
