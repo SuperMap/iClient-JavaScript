@@ -4,7 +4,7 @@
 import { ShapeParameters } from './ShapeParameters';
 
 /**
- * @class  Point
+ * @class  ShapeParametersPoint
  * @aliasclass Feature.ShapeParameters.Point
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Point
  * @category Visualization Theme
@@ -20,19 +20,19 @@ export class Point extends ShapeParameters {
     constructor(x, y) {
         super(x, y);
         /**
-         * @member {number}  Point.prototype.x
+         * @member {number}  ShapeParametersPoint.prototype.x
          * @description 点 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
         /**
-         * @member {number}  Point.prototype.y
+         * @member {number}  ShapeParametersPoint.prototype.y
          * @description 点 y 坐标。
          */
         this.y = !isNaN(y) ? y : 0;
 
         /**
-         * @member {number}  Point.prototype.r
+         * @member {number}  ShapeParametersPoint.prototype.r
          * @description 点的半径。
          */
         this.r = 6;
@@ -43,7 +43,7 @@ export class Point extends ShapeParameters {
 
 
     /**
-     * @function Point.prototype.destroy
+     * @function ShapeParametersPoint.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {

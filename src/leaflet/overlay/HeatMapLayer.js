@@ -31,7 +31,7 @@ export var HeatMapFeature = L.Class.extend({
     /**
      * @function HeatMapFeature.prototype.toFeature
      * @description 转为内部矢量要素。
-     * @returns {GeometryVector} 内部矢量要素。
+     * @returns {FeatureVector} 内部矢量要素。
      */
     toFeature: function () {
         var geometry = this.geometry;
@@ -452,7 +452,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function HeatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<GeometryVector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>} features - 热点信息数组。
      */
     removeFeatures: function (features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -481,7 +481,7 @@ export var HeatMapLayer = L.Layer.extend({
         /**
          * @event HeatMapLayer#featuresremoved
          * @description 删除features成功后触发。
-         * @property {Array.<GeometryVector>} features  - 事件对象。
+         * @property {Array.<FeatureVector>} features  - 事件对象。
          * @property {boolean} succeed  - 删除是否成功，false 为失败，true 为成功。
          */
         this._map.fire("featuresremoved", {features: heatPointsFailedRemoved, succeed: succeed});
@@ -558,7 +558,7 @@ export var HeatMapLayer = L.Layer.extend({
      * @function HeatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {(GeoJSONObject|HeatMapFeature)} features - 待添加的要素数组。
-     * @returns {GeometryVector} 转换后的 iClient 要素。
+     * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
         if (!L.Util.isArray(features)) {

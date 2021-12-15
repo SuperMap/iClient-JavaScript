@@ -19,7 +19,7 @@ import {Collection} from '../commontypes/geometry/Collection';
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
  * @param {string} [options.type] - 数据类型，如："LINEM"。
- * @extends {Collection}
+ * @extends GeometryCollection
  * @usage
  */
 export class Route extends Collection {

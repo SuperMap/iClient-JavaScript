@@ -4,22 +4,22 @@
 import {Graph} from './Graph';
 
 /**
- * @class CommonRankSymbol
+ * @class FeatureThemeRankSymbol
  * @aliasclass Feature.Theme.RankSymbol
  * @deprecatedclass SuperMap.Feature.Theme.RankSymbol
  * @classdesc 符号专题要素基类。
  * @category Visualization Theme
  * @description 此类定义了符号专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
- * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <CommonRankSymbol.setting> 的基础属性只有 5 个，
+ * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <FeatureThemeRankSymbol.setting> 的基础属性只有 5 个，
  * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  * 此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
- * @param {GeometryVector} data - 用户数据。
+ * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
  * @param {Object} setting - 图表配置对象。
- * @param {CommonRankSymbolLonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
- * @extends CommonGraph
+ * @extends FeatureThemeGraph
  * @usage
  */
 export class RankSymbol extends Graph {
@@ -27,7 +27,7 @@ export class RankSymbol extends Graph {
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
         /**
-         * @member CommonRankSymbol.prototype.setting -{Object}
+         * @member FeatureThemeRankSymbol.prototype.setting -{Object}
          * @description 符号配置对象，该对象控制着图表的可视化显示。
          * 下面是此配置对象的 5 个基础可设属性：<br>
          * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
@@ -48,7 +48,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function CommonRankSymbol.prototype.destroy
+     * @function FeatureThemeRankSymbol.prototype.destroy
      * @description 销毁专题要素。
      */
     destroy() {
@@ -58,7 +58,7 @@ export class RankSymbol extends Graph {
 
 
     /**
-     * @function CommonRankSymbol.prototype.initBaseParameter
+     * @function FeatureThemeRankSymbol.prototype.initBaseParameter
      * @description 初始化专题要素（图形）基础参数。
      * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
      * 调用此函数关系到 setting 对象的以下属性。

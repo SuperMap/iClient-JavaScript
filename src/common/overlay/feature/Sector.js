@@ -4,7 +4,7 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  Sector
+ * @class  ShapeParametersSector
  * @aliasclass Feature.ShapeParameters.Sector
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Sector
  * @category Visualization Theme
@@ -23,43 +23,43 @@ export class Sector extends ShapeParameters {
     constructor(x, y, r, startAngle, endAngle, r0, clockWise) {
         super(x, y, r, startAngle, endAngle, r0, clockWise);
         /**
-         * @member {number} Sector.prototype.x
+         * @member {number} ShapeParametersSector.prototype.x
          * @description  圆心 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
         /**
-         * @member {number} Sector.prototype.Y
+         * @member {number} ShapeParametersSector.prototype.Y
          * @description  圆心 Y 坐标。
          */
         this.y = !isNaN(y) ? y : 0;
 
         /**
-         * @member {number} Sector.prototype.r
+         * @member {number} ShapeParametersSector.prototype.r
          * @description  外圆半径。
          */
         this.r = !isNaN(r) ? r : 0;
 
         /**
-         * @member {number} Sector.prototype.startAngle
+         * @member {number} ShapeParametersSector.prototype.startAngle
          * @description  起始角度。取值范围[0, 360)，默认值：null。
          */
         this.startAngle = !isNaN(startAngle) ? startAngle : 0;
 
         /**
-         * @member {number} Sector.prototype.endAngle
+         * @member {number} ShapeParametersSector.prototype.endAngle
          * @description  结束角度。取值范围(0, 360]，默认值：null。
          */
         this.endAngle =  !isNaN(endAngle) ? endAngle : 0;
 
         /**
-         * @member {number} [Sector.prototype.r0=0]
+         * @member {number} [ShapeParametersSector.prototype.r0=0]
          * @description 内圆半径，指定后将出现内弧，同时扇边长度为 r 减 r0。取值范围[0, r)。
          */
         this.r0 = !isNaN(r0) ? r0 : 0;
 
         /**
-         * @member {number} [Sector.prototype.clockWise=false]
+         * @member {number} [ShapeParametersSector.prototype.clockWise=false]
          * @description 是否是顺时针。默认值：false。
          */
         this.clockWise = clockWise;
@@ -68,7 +68,7 @@ export class Sector extends ShapeParameters {
     }
 
     /**
-     * @function Sector.prototype.destroy
+     * @function ShapeParametersSector.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {

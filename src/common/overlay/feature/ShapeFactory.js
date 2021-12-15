@@ -20,29 +20,29 @@ import {SmicSector} from '../levelRenderer/SmicSector';
 import {Util} from '../../commontypes/Util';
 
 /**
- * @class  ShapeFactory
- * @aliasclass Feature.ShapeParameters.ShapeFactory
+ * @class  FeatureShapeFactory
+ * @aliasclass Feature.ShapeFactory
  * @deprecatedclass SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
  * @classdesc 图形工厂类。
  * 目前支持创建的图形有：<br>
  * 用于统计专题图：<br>
- * 点 - 参数对象 <{@link Point}> <br>
- * 线 - 参数对象 <{@link FeatureLine}> <br>
- * 面 - 参数对象 <{@link FeaturePolygon}> <br>
- * 矩形 - 参数对象 <{@link FeatureRectangle}> <br>
- * 扇形 - 参数对象 <{@link Sector}> <br>
- * 标签 - 参数对象 <{@link CommonLabel}> <br>
- * 图片 - 参数对象 <{@link Image}> <br>
+ * 点 - 参数对象 <{@link ShapeParametersPoint}> <br>
+ * 线 - 参数对象 <{@link ShapeParametersLine}> <br>
+ * 面 - 参数对象 <{@link ShapeParametersPolygon}> <br>
+ * 矩形 - 参数对象 <{@link ShapeParametersPolygon}> <br>
+ * 扇形 - 参数对象 <{@link ShapeParametersSector}> <br>
+ * 标签 - 参数对象 <{@link ShapeParametersLabel}> <br>
+ * 图片 - 参数对象 <{@link ShapeParametersImage}> <br>
  * 用于符号专题图：<br>
- * 圆形 -  参数对象：<{@link FeatureCircle}>
+ * 圆形 -  参数对象：<{@link ShapeParametersCircle}>
  * @param {Object} [shapeParameters] - 图形参数对象，<{@link ShapeParameters}> 子类对象。
  * @usage
  */
 export class ShapeFactory {
     constructor(shapeParameters) {
         /**
-         * @member {Object} ShapeParameters.prototype.shapeParameters
+         * @member {Object} FeatureShapeFactory.prototype.shapeParameters
          * @description  图形参数对象，<{@link ShapeParameters}> 子类对象。必设参数，默认值 null。
          */
         this.shapeParameters = shapeParameters;
@@ -52,7 +52,7 @@ export class ShapeFactory {
 
 
     /**
-     * @function  ShapeParameters.prototype.destroy
+     * @function  FeatureShapeFactory.prototype.destroy
      * @description 销毁图形工厂类对象。
      */
     destroy() {
@@ -61,7 +61,7 @@ export class ShapeFactory {
 
 
     /**
-     * @function  ShapeParameters.prototype.createShape
+     * @function  FeatureShapeFactory.prototype.createShape
      * @description 创建一个图形。具体图形由 shapeParameters 决定。
      * @param {Object} shapeParameters - 图形参数对象，<{@link ShapeParameters}> 子类对象。
      * 此参数可选，如果使用此参数（不为 null），shapeParameters 属性值将被修改为参数的值，然后再使用 shapeParameters 属性值创建图形；
@@ -255,7 +255,7 @@ export class ShapeFactory {
 
 
     /**
-     * @function  ShapeParameters.prototype.transformStyle
+     * @function  FeatureShapeFactory.prototype.transformStyle
      * @description 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
      * @param {Object} style - 用户 style。
      * @returns {Object} 符合 levelRenderer 的 style。
@@ -368,12 +368,12 @@ export class ShapeFactory {
     }
 
     /**
-     * @function  ShapeParameters.prototype.Background
+     * @function  FeatureShapeFactory.prototype.Background
      * @description 创建一个矩形背景框图形对象。
-     * @param {ShapeFactory} shapeFactory - 图形工厂对象。
+     * @param {FeatureShapeFactory} shapeFactory - 图形工厂对象。
      * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
      * @param {Object} setting - 图表配置参数。本函数中图形配置对象 setting 可设属性：
-     * @param {Object} setting.backgroundStyle - 背景样式，此样式对象对象可设属性：<FeatureRectangle#style>。
+     * @param {Object} setting.backgroundStyle - 背景样式，此样式对象对象可设属性：<ShapeParametersRectangle#style>。
      * @param {Array} [setting.backgroundRadius=[0,0,0,0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
      * @returns {Object} 背景框图形，一个可视化图形（矩形）对象。
      */
@@ -406,23 +406,23 @@ export class ShapeFactory {
     }
 
     /**
-     * @function  ShapeParameters.prototype.GraphAxis
+     * @function  FeatureShapeFactory.prototype.GraphAxis
      * @description 创建一个统计图表坐标轴图形对象组。
-     * @param {ShapeFactory} shapeFactory - 图形工厂对象。
+     * @param {FeatureShapeFactory} shapeFactory - 图形工厂对象。
      * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
      * @param {Object} setting - 图表配置参数。
-     * @param {Object} setting.axisStyle - 坐标轴样式，此样式对象对象可设属性：<FeatureLine#style>。
+     * @param {Object} setting.axisStyle - 坐标轴样式，此样式对象对象可设属性：<ShapeParametersLine#style>。
      * @param {boolean} [setting.axisUseArrow=false] - 坐标轴是否使用箭头。
      * @param {number} [setting.axisYTick=0] - y 轴刻度数量，0表示不使用箭头。
      * @param {Array.<string>} setting.axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
-     * @param {Object} setting.axisYLabelsStyle - y 轴上的标签组样式，此样式对象对象可设属性：<CommonLabel#style>。
+     * @param {Object} setting.axisYLabelsStyle - y 轴上的标签组样式，此样式对象对象可设属性：<ShapeParametersLabel#style>。
      * @param {Array.<number>} [setting.axisYLabelsOffset=[0,0]] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
      * @param {Array.<string>} setting.axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
      * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，否则沿数据视图框下面条边等距排布标签。
-     * @param {Object} setting.axisXLabelsStyle - x 轴上的标签组样式，此样式对象对象可设属性：<CommonLabel#style>。
+     * @param {Object} setting.axisXLabelsStyle - x 轴上的标签组样式，此样式对象对象可设属性：<ShapeParametersLabel#style>。
      * @param {Array.<number>} [setting.axisXLabelsOffset=[0,0]] - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。
      * @param {boolean} setting.useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
-     * @param {Object} setting.xReferenceLineStyle - 水平参考线样式，此样式对象对象可设属性：<FeatureLine#style>。
+     * @param {Object} setting.xReferenceLineStyle - 水平参考线样式，此样式对象对象可设属性：<ShapeParametersLine#style>。
      * @param {number} [setting.axis3DParameter=0] - 3D 坐标轴参数，此属性值在大于等于 15 时有效。
      * @param {Object} xShapeInfo - X 方向上的图形信息对象，包含两个属性。
      * @param {Array.<number>} xShapeInfo.xPositions - 图形在 x 轴方向上的像素坐标值，是一个一维数组，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
@@ -751,7 +751,7 @@ export class ShapeFactory {
     }
 
     /**
-     * @function  ShapeParameters.prototype.ShapeStyleTool
+     * @function  FeatureShapeFactory.prototype.ShapeStyleTool
      * @description 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
      * @param {Object} defaultStyle - 默认style，此样式对象可设属性根据图形类型参考 <{@link ShapeParameters}> 子类对象的 style 属性。
      * @param {Object} style - 图形对象基础 style，此参数控制图形的基础样式，可设属性根据图形类型参考 <{@link ShapeParameters}> 子类对象的 style 属性。优先级低于 styleGroup，styleByCodomain。

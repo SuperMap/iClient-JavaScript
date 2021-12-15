@@ -10,7 +10,7 @@ import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
 import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
 import { Point  } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
 import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
 
 /**
@@ -139,7 +139,7 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.destroyFeatures
      * @description 销毁某个要素。
-     * @param {GeometryVector} features - 将被销毁的要素。
+     * @param {FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -211,7 +211,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @param {Array.<GeometryVector>} features - 待删除 features。
+     * @param {Array.<FeatureVector>} features - 待删除 features。
      * @description 删除专题图中的features。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果要删除的 features 数组中的元素过多，推荐使用 removeAllFeatures删除所有 feature后，再重新添加。这样效率会更高。
@@ -253,7 +253,7 @@ export class Theme {
         /**
          * @event ThemeLayer#featuresremoved
          * @description 要素删除之后触发。
-         * @property {Array.<GeometryVector>} features - 未被成功删除的要素。
+         * @property {Array.<FeatureVector>} features - 未被成功删除的要素。
          * @property {boolean} succeed - 是否删除成功。
          */
         mapboxgl.Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
@@ -274,7 +274,7 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {GeometryVector} 用户加入图层的有效数据。
+     * @returns {FeatureVector} 用户加入图层的有效数据。
      */
     getFeatures() {
         var len = this.features.length;
@@ -290,7 +290,7 @@ export class Theme {
      * @description 在专题图的要素中，获取第一个feature[property] === value的矢量要素。
      * @param {string} property - 属性名称。
      * @param {string} value - 属性值。
-     * @returns {GeometryVector} 矢量要素。
+     * @returns {FeatureVector} 矢量要素。
      */
     getFeatureBy(property, value) {
         var feature = null;
@@ -307,7 +307,7 @@ export class Theme {
      * @function ThemeLayer.prototype.getFeatureById
      * @description 获取指定featureId的矢量要素。
      * @param {string} featureId - 矢量要素的属性 id。
-     * @returns {GeometryVector} 对应featureId的矢量要素，不存在则返回 null。
+     * @returns {FeatureVector} 对应featureId的矢量要素，不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -318,7 +318,7 @@ export class Theme {
      * @description 通过属性的 key 值和 value 值，获取匹配的要素数组。
      * @param {string} attrName - 属性的 key。
      * @param {string} attrValue - 属性的 value。
-     * @returns {Array.<GeometryVector>} 要素数组。
+     * @returns {Array.<FeatureVector>} 要素数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -411,7 +411,7 @@ export class Theme {
      * @function ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素。
      * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
-     * @returns {GeometryVector} 转换后的 iClient 要素。
+     * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -423,8 +423,8 @@ export class Theme {
             //ThemeFeature 类型
             if (features[i] instanceof ThemeFeature) {
                 featuresTemp.push(features[i].toFeature());
-            } else if (features[i] instanceof GeometryVector) {
-                // 若是 GeometryVector 直接返回
+            } else if (features[i] instanceof FeatureVector) {
+                // 若是 FeatureVector 直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 //GeoJSON 规范数据类型
@@ -446,7 +446,7 @@ export class Theme {
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
      * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
-     * @returns {GeometryVector} 转换后的 iClient 要素。
+     * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature(features) {
         return this.toiClientFeature(features);

@@ -5,7 +5,7 @@ import {Geometry} from '../Geometry';
 import {Bounds} from '../Bounds';
 
 /**
- * @class  Rectangle
+ * @class  GeometryRectangle
  * @aliasclass Geometry.Rectangle
  * @deprecatedclass SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
@@ -21,7 +21,7 @@ import {Bounds} from '../Bounds';
  *  var y = 2;
  *  var w = 10;
  *  var h = 20;
- *  var recttangle = new Rectangle(x, y, w, h);
+ *  var recttangle = new GeometryRectangle(x, y, w, h);
  * @usage
  */
 
@@ -31,25 +31,25 @@ export class Rectangle extends Geometry {
     constructor(x, y, width, height) {
         super(x, y, width, height);
         /**
-         * @member {float} Rectangle.prototype.x
+         * @member {float} GeometryRectangle.prototype.x
          * @description 矩形左下角点的横坐标。
          */
         this.x = x;
 
         /**
-         * @member {float} Rectangle.prototype.y
+         * @member {float} GeometryRectangle.prototype.y
          * @description 矩形左下角点的纵坐标。
          */
         this.y = y;
 
         /**
-         * @member {float} Rectangle.prototype.width
+         * @member {float} GeometryRectangle.prototype.width
          * @description 矩形的宽度。
          */
         this.width = width;
 
         /**
-         * @member {float} Rectangle.prototype.height
+         * @member {float} GeometryRectangle.prototype.height
          * @description 矩形的高度。
          */
         this.height = height;
@@ -59,7 +59,7 @@ export class Rectangle extends Geometry {
     }
 
     /**
-     * @function Rectangle.prototype.calculateBounds
+     * @function GeometryRectangle.prototype.calculateBounds
      * @description 计算出此矩形对象的 bounds。
      */
     calculateBounds() {
@@ -70,7 +70,7 @@ export class Rectangle extends Geometry {
 
 
     /**
-     * @function Rectangle.prototype.getArea
+     * @function GeometryRectangle.prototype.getArea
      * @description 获取矩形对象的面积。
      * @returns {float} 矩形对象面积。
      */

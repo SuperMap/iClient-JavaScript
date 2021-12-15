@@ -17,7 +17,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {string} options.sourceDataset - 源数据集名称。
  * @param {Array.<string>} [options.operateDatasetFields] - 叠加分析中操作数据集保留在结果数据集中的字段名列表。
  * @param {FilterParameter} [options.operateDatasetFilter] - 设置操作数据集中空间对象过滤条件。
- * @param {Array.<Polygon|L.Polygon|ol.geom.Polygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
+ * @param {Array.<GeometryPolygon|L.Polygon|ol.geom.Polygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
  * @param {Array.<string>} [options.sourceDatasetFields] - 叠加分析中源数据集保留在结果数据集中的字段名列表。
  * @param {FilterParameter} [options.sourceDatasetFilter] - 设置源数据集中空间对象过滤条件。
  * @param {number} [options.tolerance=0] - 容限。
@@ -50,7 +50,7 @@ export class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
         this.operateDatasetFilter = new FilterParameter();
 
         /**
-         * @member {Array.<Polygon|L.Polygon|ol.geom.Polygon>} [DatasetOverlayAnalystParameters.prototype.operateRegions]
+         * @member {Array.<GeometryPolygon|L.Polygon|ol.geom.Polygon>} [DatasetOverlayAnalystParameters.prototype.operateRegions]
          * @description 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
          */
         this.operateRegions = [];

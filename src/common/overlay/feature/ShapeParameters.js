@@ -27,7 +27,7 @@ export class ShapeParameters {
 
         /**
          * @member {string} ShapeParameters.prototype.refDataID
-         * @description 图形所关联数据的 ID（<{@link GeometryVector}> 的 id）。
+         * @description 图形所关联数据的 ID（<{@link FeatureVector}> 的 id）。
          */
         this.refDataID = null;
 

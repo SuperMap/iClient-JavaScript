@@ -69,7 +69,7 @@ export const Util = {
      * @function Util.toSuperMapPolygon
      * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
      * @param {mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
-     * @returns {Polygon}
+     * @returns {GeometryPolygon}
      */
     toSuperMapPolygon(lnglatBounds) {
         const west = lnglatBounds.getWest();

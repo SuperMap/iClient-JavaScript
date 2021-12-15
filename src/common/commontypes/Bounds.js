@@ -170,7 +170,7 @@ export class Bounds {
     // * var bounds = new Bounds(-180,-90,100,80);
     // * // Polygon对象
     // * var geo = bounds.toGeometry();
-    // * @returns {Polygon} 基于当前 bounds 坐标创建的新的多边形。
+    // * @returns {GeometryPolygon} 基于当前 bounds 坐标创建的新的多边形。
     // */
     // toGeometry() {
     //     return new Polygon([

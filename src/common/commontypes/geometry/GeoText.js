@@ -10,7 +10,7 @@ import '../Pixel';
 import '../LonLat';
 
 /**
- * @class GeoText
+ * @class GeometryGeoText
  * @aliasclass Geometry.GeoText
  * @deprecatedclass SuperMap.Geometry.GeoText
  * @classdesc 文本标签类。
@@ -26,25 +26,25 @@ export class GeoText extends Geometry {
     constructor(x, y, text) {
         super(x, y, text);
         /**
-         * @member {float} GeoText.prototype.x
+         * @member {float} GeometryGeoText.prototype.x
          * @description 横坐标。
          */
         this.x = parseFloat(x);
 
         /**
-         * @member {float} GeoText.prototype.y
+         * @member {float} GeometryGeoText.prototype.y
          * @description 纵坐标。
          */
         this.y = parseFloat(y);
 
         /**
-         * @member {string} GeoText.prototype.text
+         * @member {string} GeometryGeoText.prototype.text
          * @description 标签中的文本内容。
          */
         this.text = text.toString();
 
         /**
-         * @member {Object} GeoText.prototype.bsInfo
+         * @member {Object} GeometryGeoText.prototype.bsInfo
          * @description 标签范围的基础信息。
          * @property {number} w - bounds 的宽。
          * @property {number} h - bounds 的高度。
@@ -59,7 +59,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.destroy
+     * @function GeometryGeoText.prototype.destroy
      * @description 销毁文本标签类。
      */
     destroy() {
@@ -70,7 +70,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.getCentroid
+     * @function GeometryGeoText.prototype.getCentroid
      * @description 获取标签对象的质心。
      * @returns {GeometryPoint} 标签对象的质心。
      */
@@ -79,9 +79,9 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.clone
+     * @function GeometryGeoText.prototype.clone
      * @description 克隆标签对象。
-     * @returns {GeoText} 克隆后的标签对象。
+     * @returns {GeometryGeoText} 克隆后的标签对象。
      */
     clone(obj) {
         if (obj == null) {
@@ -92,7 +92,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.calculateBounds
+     * @function GeometryGeoText.prototype.calculateBounds
      * @description 计算标签对象的范围。
      */
     calculateBounds() {
@@ -101,7 +101,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.getLabelPxBoundsByLabel
+     * @function GeometryGeoText.prototype.getLabelPxBoundsByLabel
      * @description 根据绘制好的标签获取文字标签的像素范围，参数的单位是像素；此方法相对于 getLabelPxBoundsByText 效率较低，但支持所有格式的文本。
      * @param {Object} locationPixel - 标签的位置点，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {string} labelWidth - 标签的宽度，如：“90px”。
@@ -174,7 +174,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.getLabelPxBoundsByText
+     * @function GeometryGeoText.prototype.getLabelPxBoundsByText
      * @description 根据文本内容获取文字标签的像素范围。
      * @param {Object} locationPixel - 标签的位置点，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Object} style - 标签的样式。
@@ -241,7 +241,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.getLabelPxSize
+     * @function GeometryGeoText.prototype.getLabelPxSize
      * @description 获取 label 的像素大小。
      * @param {Object} style - 标签样式。
      * @returns {Object} 标签大小对象，属性 w 表示标签的宽度，属性 h 表示标签的高度。
@@ -293,7 +293,7 @@ export class GeoText extends Geometry {
     }
 
     /**
-     * @function GeoText.prototype.getTextCount
+     * @function GeometryGeoText.prototype.getTextCount
      * @description 获取 text 中的字符个数。
      * @param {string} text - 字符串。
      * @returns {Object} 字符个数统计结果，属性 cnC 表示中文字符个数，属性 enC 表示英文字符个数，属性 textC 表示字符总个数。

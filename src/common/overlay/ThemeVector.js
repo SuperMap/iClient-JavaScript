@@ -24,13 +24,13 @@ import {LonLat} from '../commontypes/LonLat';
 
 
 /**
- * @class ThemeVector
+ * @class FeatureThemeVector
  * @aliasclass Feature.Theme.ThemeVector
  * @deprecatedclass SuperMap.Feature.Theme.ThemeVector
  * @classdesc 矢量专题要素类。
  * @category Visualization Theme
  * @extends FeatureTheme
- * @param {GeometryVector} data - 用户数据，的类型为矢量数据 feature。
+ * @param {FeatureVector} data - 用户数据，的类型为矢量数据 feature。
  * @param {SuperMap.Layer} layer - 此专题要素所在图层。
  * @param {Object} style - 样式。
  * @param {Object} options - 创建专题要素时的可选参数。
@@ -54,49 +54,49 @@ export class ThemeVector extends Theme {
         }
 
         /**
-         * @member {Bounds} [ThemeVector.prototype.dataBounds]
+         * @member {Bounds} [FeatureThemeVector.prototype.dataBounds]
          * @description 用户数据的（feature.geometry）地理范围。
          */
         this.dataBounds = data.geometry.getBounds();
 
         /**
-         * @member {number} [ThemeVector.prototype.nodesClipPixel=2]
+         * @member {number} [FeatureThemeVector.prototype.nodesClipPixel=2]
          * @description 节点抽稀像素距离。
          */
         this.nodesClipPixel = 2;
 
         /**
-         * @member {boolean} [ThemeVector.prototype.isHoverAble=true]
+         * @member {boolean} [FeatureThemeVector.prototype.isHoverAble=true]
          * @description 图形是否可 hover。
          */
         this.isHoverAble = true;
 
         /**
-         * @member {boolean} [ThemeVector.prototype.isMultiHover=true]
+         * @member {boolean} [FeatureThemeVector.prototype.isMultiHover=true]
          * @description 是否使用多图形高亮，isHoverAble 为 true 时生效。
          */
         this.isMultiHover = true;
 
         /**
-         * @member {boolean} [ThemeVector.prototype.isClickAble=true]
+         * @member {boolean} [FeatureThemeVector.prototype.isClickAble=true]
          * @description 图形是否可点击。
          */
         this.isClickAble = true;
 
         /**
-         * @member {Object} [ThemeVector.prototype.highlightStyle]
+         * @member {Object} [FeatureThemeVector.prototype.highlightStyle]
          * @description 高亮样式。
          */
         this.highlightStyle = null;
 
         /**
-         * @member {Object} [ThemeVector.prototype.shapeOptions]
+         * @member {Object} [FeatureThemeVector.prototype.shapeOptions]
          * @description 添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做。
          */
         this.shapeOptions = {};
 
         /**
-         * @member {Object} [ThemeVector.prototype.style]
+         * @member {Object} [FeatureThemeVector.prototype.style]
          * @description 可视化图形的 style。在子类中规定其对象结构和默认属性值。
          */
         this.style = style || {};
@@ -145,7 +145,7 @@ export class ThemeVector extends Theme {
     }
 
     /**
-     * @function ThemeVector.prototype.destroy
+     * @function FeatureThemeVector.prototype.destroy
      * @override
      */
     destroy() {
@@ -162,9 +162,9 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.lineToTF
+     * @function FeatureThemeVector.prototype.lineToTF
      * @description 转换线和线环要素。
-     * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 LineString 或 LineRing。
+     * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 GeometryLineString 或 GeometryLineRing。
      */
     lineToTF(geometry) {
         var components = geometry.components;
@@ -239,7 +239,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.multiPointToTF
+     * @function FeatureThemeVector.prototype.multiPointToTF
      * @description 转多点要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 MultiPoint。
      */
@@ -323,7 +323,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.multiLineStringToTF
+     * @function FeatureThemeVector.prototype.multiLineStringToTF
      * @description 转换多线要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 MultiLineString。
      */
@@ -338,7 +338,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.multiPolygonToTF
+     * @function FeatureThemeVector.prototype.multiPolygonToTF
      * @description 转换多面要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 MultiPolygon。
      */
@@ -353,7 +353,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.pointToTF
+     * @function FeatureThemeVector.prototype.pointToTF
      * @description 转换点要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 Point。
      */
@@ -401,7 +401,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.polygonToThemeFeature
+     * @function FeatureThemeVector.prototype.polygonToThemeFeature
      * @description 转换面要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 Polygon。
      */
@@ -524,7 +524,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.rectangleToTF
+     * @function FeatureThemeVector.prototype.rectangleToTF
      * @description 转换矩形要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 Rectangle。
      */
@@ -580,7 +580,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.geoTextToTF
+     * @function FeatureThemeVector.prototype.geoTextToTF
      * @description 转换文本要素。
      * @param {Geometry} geometry - 用户数据几何地理信息，这里必须是 GeoText。
      */
@@ -629,7 +629,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.updateAndAddShapes
+     * @function FeatureThemeVector.prototype.updateAndAddShapes
      * @description 修改位置，针对地图平移操作，地图漫游操作后调用此函数。
      */
     updateAndAddShapes() {
@@ -647,7 +647,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.getShapesCount
+     * @function FeatureThemeVector.prototype.getShapesCount
      * @description 获得专题要素中可视化图形的数量。
      * @returns {number} 可视化图形的数量。
      */
@@ -657,7 +657,7 @@ export class ThemeVector extends Theme {
 
 
     /**
-     * @function ThemeVector.prototype.getLocalXY
+     * @function FeatureThemeVector.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {LonLat} lonlat - 专题要素地理位置。
      */

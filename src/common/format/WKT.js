@@ -13,10 +13,10 @@ import {Polygon} from '../commontypes/geometry/Polygon';
 import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
 
 /**
- * @class WKT
+ * @class WKTFormat
  * @aliasclass Format.WKT
  * @deprecatedclass SuperMap.Format.WKT
- * @classdesc 用于读写常见文本的类。通过 {@link WKT} 构造器来创建一个新的实例。
+ * @classdesc 用于读写常见文本的类。通过 {@link WKTFormat} 构造器来创建一个新的实例。
  * @category BaseTypes Format
  * @extends {Format}
  * @param {Object} options - 可选的选项对象，其属性将被设置到实例。option 具体配置项继承自 {@link Format}。
@@ -51,7 +51,7 @@ export class WKT extends Format {
 
             /**
              * @description  Return a comma delimited string of point coordinates from a multipoint.
-             * @param {MultiPoint} multipoint
+             * @param {GeometryMultiPoint} multipoint
              * @returns  {string} A string of point coordinate strings representing
              *                  the multipoint
              */
@@ -67,7 +67,7 @@ export class WKT extends Format {
 
             /**
              * @description  Return a comma delimited string of point coordinates from a line.
-             * @param {LineString} linestring
+             * @param {GeometryLineString} linestring
              * @returns  {string} A string of point coordinate strings representing
              *                  the linestring
              */
@@ -81,7 +81,7 @@ export class WKT extends Format {
 
             /**
              * @description  Return a comma delimited string of linestring strings from a multilinestring.
-             * @param {MultiLineString} multilinestring
+             * @param {GeometryMultiLineString} multilinestring
              * @returns  {string} A string of of linestring strings representing
              *                  the multilinestring
              */
@@ -97,7 +97,7 @@ export class WKT extends Format {
 
             /**
              * @description  Return a comma delimited string of linear ring arrays from a polygon.
-             * @param {Polygon} polygon
+             * @param {GeometryPolygon} polygon
              * @returns  {string} An array of linear ring arrays representing the polygon
              */
             'polygon'(polygon) {
@@ -112,7 +112,7 @@ export class WKT extends Format {
 
             /**
              * @description  Return an array of polygon arrays from a multipolygon.
-             * @param {MultiPolygon} multipolygon
+             * @param {GeometryMultiPolygon} multipolygon
              * @returns  {string} An array of polygon arrays representing
              *                  the multipolygon
              */
@@ -127,8 +127,8 @@ export class WKT extends Format {
             },
 
             /**
-             * @description  Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <Collection>
-             * @param {Collection} collection
+             * @description  Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <GeometryCollection>
+             * @param {GeometryCollection} collection
              * @returns  {string} internal WKT representation of the collection
              */
             'collection'(collection) {
@@ -151,7 +151,7 @@ export class WKT extends Format {
              * @private
              * @description  Return point feature given a point WKT fragment.
              * @param {string} str A WKT fragment representing the point
-             * @returns  {GeometryVector} A point feature
+             * @returns  {FeatureVector} A point feature
              *
              */
             'point': function (str) {
@@ -163,7 +163,7 @@ export class WKT extends Format {
             /**
              * @description  Return a multipoint feature given a multipoint WKT fragment.
              * @param {string} A WKT fragment representing the multipoint
-             * @returns  {GeometryVector} A multipoint feature
+             * @returns  {FeatureVector} A multipoint feature
              * @private
              */
             'multipoint': function (str) {
@@ -182,7 +182,7 @@ export class WKT extends Format {
             /**
              * @description  Return a linestring feature given a linestring WKT fragment.
              * @param {string} A WKT fragment representing the linestring
-             * @returns  {GeometryVector} A linestring feature
+             * @returns  {FeatureVector} A linestring feature
              * @private
              */
             'linestring': function (str) {
@@ -199,7 +199,7 @@ export class WKT extends Format {
             /**
              * @description  Return a multilinestring feature given a multilinestring WKT fragment.
              * @param {string} A WKT fragment representing the multilinestring
-             * @returns  {GeometryVector} A multilinestring feature
+             * @returns  {FeatureVector} A multilinestring feature
              * @private
              */
             'multilinestring': function (str) {
@@ -218,7 +218,7 @@ export class WKT extends Format {
             /**
              * @description  Return a polygon feature given a polygon WKT fragment.
              * @param {string} A WKT fragment representing the polygon
-             * @returns  {GeometryVector} A polygon feature
+             * @returns  {FeatureVector} A polygon feature
              * @private
              */
             'polygon': function (str) {
@@ -240,7 +240,7 @@ export class WKT extends Format {
              * @private
              * @description  Return a multipolygon feature given a multipolygon WKT fragment.
              * @param {string} A WKT fragment representing the multipolygon
-             * @returns  {GeometryVector} A multipolygon feature
+             * @returns  {FeatureVector} A multipolygon feature
              *
              */
             'multipolygon': function (str) {
@@ -260,7 +260,7 @@ export class WKT extends Format {
             /**
              * @description  Return an array of features given a geometrycollection WKT fragment.
              * @param {string} A WKT fragment representing the geometrycollection
-             * @returns  {Array} An array of GeometryVector
+             * @returns  {Array} An array of FeatureVector
              * @private
              */
             'geometrycollection': function (str) {
@@ -280,13 +280,13 @@ export class WKT extends Format {
 
 
     /**
-     * @function WKT.prototype.read
+     * @function WKTFormat.prototype.read
      * @description Deserialize a WKT string and return a vector feature or an
      * array of vector features.  Supports WKT for POINT, MULTIPOINT,
      * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
      * GEOMETRYCOLLECTION.
      * @param {string} wkt - A WKT string
-     * @returns {GeometryVector|Array} A feature or array of features for
+     * @returns {FeatureVector|Array} A feature or array of features for
      * GEOMETRYCOLLECTION WKT.
      */
     read(wkt) {
@@ -305,9 +305,9 @@ export class WKT extends Format {
 
 
     /**
-     * @function WKT.prototype.write
+     * @function WKTFormat.prototype.write
      * @description Serialize a feature or array of features into a WKT string.
-     * @param {(GeometryVector|Array)} features - A feature or array of features
+     * @param {(FeatureVector|Array)} features - A feature or array of features
      * @returns {string} The WKT string representation of the input geometries
      */
     write(features) {
@@ -337,7 +337,7 @@ export class WKT extends Format {
     }
 
     /**
-     * @function WKT.prototype.extractGeometry
+     * @function WKTFormat.prototype.extractGeometry
      * @description Entry point to construct the WKT for a single Geometry object.
      * @param {Geometry} geometry
      * @returns {string} A WKT string of representing the geometry

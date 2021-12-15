@@ -4,16 +4,16 @@
 import {Collection} from './Collection';
 
 /**
- * @class MultiPoint
+ * @class GeometryMultiPoint
  * @aliasclass Geometry.MultiPoint
  * @deprecatedclass SuperMap.Geometry.MultiPoint
  * @classdesc 几何对象多点类。
  * @category BaseTypes Geometry
- * @extends {Collection}
+ * @extends GeometryCollection
  * @param {Array.<GeometryPoint>} components - 点对象数组。
  * @example
  * var point1 = new GeometryPoint(5,6);
- * var poine2 = new GeometryPoint(7,8);
+ * var poine2 = new GeometryMultiPoint(7,8);
  * var multiPoint = new MultiPoint([point1,point2]);
  * @usage
  */
@@ -23,7 +23,7 @@ export class MultiPoint extends Collection {
     constructor(components) {
         super(components);
         /**
-         * @member {Array.<string>} [MultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
+         * @member {Array.<string>} [GeometryMultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
          * @description components 存储的的几何对象所支持的几何类型数组。
          * @readonly
          */
@@ -33,8 +33,8 @@ export class MultiPoint extends Collection {
     }
 
     /**
-     * @function MultiPoint.prototype.addPoint
-     * @description 添加点，封装了 {@link Collection|Collection.addComponent} 方法。
+     * @function GeometryMultiPoint.prototype.addPoint
+     * @description 添加点，封装了 {@link GeometryCollection|GeometryCollection.addComponent} 方法。
      * @param {GeometryPoint} point - 添加的点。
      * @param {integer} [index] - 下标。
      */
@@ -44,8 +44,8 @@ export class MultiPoint extends Collection {
 
 
     /**
-     * @function MultiPoint.prototype.removePoint
-     * @description 移除点，封装了 {@link Collection|Collection.removeComponent} 方法。
+     * @function GeometryMultiPoint.prototype.removePoint
+     * @description 移除点，封装了 {@link GeometryCollection|GeometryCollection.removeComponent} 方法。
      * @param {GeometryPoint} point - 移除的点对象。
      */
     removePoint(point) {

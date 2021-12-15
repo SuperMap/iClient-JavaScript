@@ -159,7 +159,7 @@ export class Geometry {
 
     // /**
     //  * @function Geometry.prototype.toString
-    //  * @description 返回geometry对象的字符串表述，需要引入{@link WKT}。此方法只能在子类实现，在父类使用会报错。
+    //  * @description 返回geometry对象的字符串表述，需要引入{@link WKTFormat}。此方法只能在子类实现，在父类使用会报错。
     //  * @returns {string} geometry对象的字符串表述(Well-Known Text)
     //  */
     // toString() {

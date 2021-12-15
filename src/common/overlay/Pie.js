@@ -6,22 +6,22 @@ import {Sector} from './feature/Sector';
 import {Graph} from './Graph';
 
 /**
- * @class Pie
+ * @class FeatureThemePie
  * @aliasclass Feature.Theme.Pie
  * @deprecatedclass SuperMap.Feature.Theme.Pie
  * @classdesc 饼图。
  * @category Visualization Theme
- * @param {GeometryVector} data - 用户数据。
+ * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
- * @param {OverlayPoint.setting} setting - 图表配置对象。
+ * @param {FeatureThemePoint.setting} setting - 图表配置对象。
  * @param {LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @extends CommonGraph
+ * @extends FeatureThemeGraph
  * @example
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <Sector.style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <ShapeParametersSector.style> 。
  * // sectorStyleByCodomain 数组形如：
  * [
  *   {
@@ -64,7 +64,7 @@ export class Pie extends Graph {
     }
 
     /**
-     * @function Pie.prototype.destroy
+     * @function FeatureThemePie.prototype.destroy
      * @description 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
     destroy() {
@@ -72,7 +72,7 @@ export class Pie extends Graph {
     }
 
     /**
-     * @function Pie.prototype.assembleShapes
+     * @function FeatureThemePie.prototype.assembleShapes
      * @description 装配图形（扩展接口）。
      */
     assembleShapes() {
@@ -120,7 +120,7 @@ export class Pie extends Graph {
             valueSum += Math.abs(fv[i]);
         }
 
-        // 重要步骤：定义图表 Pie 数据视图框中单位值的含义，单位值：每度代表的数值
+        // 重要步骤：定义图表 FeatureThemePie 数据视图框中单位值的含义，单位值：每度代表的数值
         this.DVBUnitValue = 360 / valueSum;
         var uv = this.DVBUnitValue;
 

@@ -13,7 +13,7 @@ import {Util} from '../commontypes/Util';
  * @param {string} options.resultGridName - 指定结果数据集名称。
  * @param {string} options.expression - 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10。
  * @param {string} options.targetDatasource - 指定存储结果数据集的数据源。
- * @param {(Polygon|L.Polygon|ol.geom.Polygon)} [options.extractRegion] - 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
+ * @param {GeometryPolygon|L.Polygon|ol.geom.Polygon} [options.extractRegion] - 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
  *                                                                                        如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
  * @param {boolean} [options.isZip=false] - 是否对结果数据集进行压缩处理。
  * @param {boolean} [options.ignoreNoValue=false] - 是否忽略无值栅格数据。true 表示忽略无值数据，即无值栅格不参与运算。
@@ -35,7 +35,7 @@ export class MathExpressionAnalysisParameters {
         this.dataset = null;
 
         /**
-         * @member {(Polygon|L.Polygon|ol.geom.Polygon)} [MathExpressionAnalysisParameters.prototype.extractRegion]
+         * @member {GeometryPolygon|L.Polygon|ol.geom.Polygon} [MathExpressionAnalysisParameters.prototype.extractRegion]
          * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
          * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
          */

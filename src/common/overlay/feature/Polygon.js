@@ -4,7 +4,7 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  FeaturePolygon
+ * @class  ShapeParametersPolygon
  * @aliasclass Feature.ShapeParameters.Polygon
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Polygon
  * @category Visualization Theme
@@ -18,7 +18,7 @@ export class Polygon extends ShapeParameters {
     constructor(pointList) {
         super(pointList);
         /**
-         * @member {Array} FeaturePolygon.prototype.pointList
+         * @member {Array} ShapeParametersPolygon.prototype.pointList
          * @description 面要素节点数组，二维数组。
          * 数组形如：
          * (start code)
@@ -32,7 +32,7 @@ export class Polygon extends ShapeParameters {
         this.pointList = pointList;
 
         /**
-         * @member {Array} FeaturePolygon.prototype.holePolygonPointLists
+         * @member {Array} ShapeParametersPolygon.prototype.holePolygonPointLists
          * @description 岛洞面多边形顶点数组（三维数组）
          */
         this.holePolygonPointLists = null;
@@ -41,7 +41,7 @@ export class Polygon extends ShapeParameters {
     }
 
     /**
-     * @function FeaturePolygon.prototype.destroy
+     * @function ShapeParametersPolygon.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {

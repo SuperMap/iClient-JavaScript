@@ -4,12 +4,12 @@
 import {MultiPoint} from './MultiPoint';
 
 /**
- * @class Curve
+ * @class GeometryCurve
  * @aliasclass Geometry.Curve
  * @deprecatedclass SuperMap.Geometry.Curve
  * @classdesc 几何对象曲线类。
  * @category BaseTypes Geometry
- * @extends {MultiPoint}
+ * @extends GeometryMultiPoint
  * @param {Array.<GeometryPoint>} components - 几何对象数组。
  * @example
  * var point1 = new GeometryPoint(10,20);
@@ -22,7 +22,7 @@ export class Curve extends MultiPoint {
     constructor(components) {
         super(components);
         /**
-         * @member {Array.<string>} [Curve.prototype.componentTypes=["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"]]
+         * @member {Array.<string>} [GeometryCurve.prototype.componentTypes=["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"]]
          * @description components 存储的的几何对象所支持的几何类型数组。
          * @readonly
          */

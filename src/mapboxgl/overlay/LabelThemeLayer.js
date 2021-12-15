@@ -171,8 +171,8 @@ export class Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
-     * @param {Array.<GeometryVector>} labelFeatures - 所有标签要素的数组。
-     * @returns {Array.<GeometryVector>} 最终要绘制的标签要素数组。
+     * @param {Array.<FeatureVector>} labelFeatures - 所有标签要素的数组。
+     * @returns {Array.<FeatureVector>} 最终要绘制的标签要素数组。
      */
     getDrawnLabels(labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
@@ -335,7 +335,7 @@ export class Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
-     * @param {GeometryVector} feat - 矢量要素对象。
+     * @param {FeatureVector} feat - 矢量要素对象。
      * @returns {Array.<ThemeStyle>} 专题要素的 Style。
      */
     getStyleByData(feat) {
@@ -384,8 +384,8 @@ export class Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.setLabelsStyle
      * @description 设置标签要素的 Style。
-     * @param {Array.<GeometryVector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @returns {Array.<GeometryVector>} 赋予 Style 后的标签要素数组。
+     * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
+     * @returns {Array.<FeatureVector>} 赋予 Style 后的标签要素数组。
      */
     setLabelsStyle(labelFeatures) {
         var fea, labelFeas = [];
@@ -412,7 +412,7 @@ export class Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.setStyle
      * @description 设置标签要素的Style。
-     * @param {GeometryVector} feat - 需要赋予 style 的要素。
+     * @param {FeatureVector} feat - 需要赋予 style 的要素。
      */
     setStyle(feat) {
         var feature = feat;
@@ -462,7 +462,7 @@ export class Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
-     * @param {GeometryVector} feature - 标签要素。
+     * @param {FeatureVector} feature - 标签要素。
      * @returns {mapboxgl.Point} 标签位置。
      */
     getLabelPxLocation(feature) {
@@ -490,7 +490,7 @@ export class Label extends GeoFeature {
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {GeometryVector} feature - 需要计算 bounds 的标签要素数。 
+     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。 
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -549,7 +549,7 @@ export class Label extends GeoFeature {
      * @function LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {GeometryVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

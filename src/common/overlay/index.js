@@ -24,22 +24,7 @@ import {
   ShapeParametersSector,
   FeatureTheme
 } from './feature';
-import {
-  LevelRenderer,
-  Render,
-  Color,
-  Shape,
-  SmicBrokenLine,
-  SmicCircle,
-  SmicEllipse,
-  SmicImage,
-  SmicPoint,
-  SmicPolygon,
-  SmicRectangle,
-  SmicSector,
-  SmicText,
-  SUtil
-} from './levelRenderer';
+import {LevelRenderer} from './levelRenderer';
 
 export { FeatureThemeBar };
 export { FeatureThemeBar3D };
@@ -64,19 +49,4 @@ export {
   ShapeParametersSector,
   FeatureTheme
 };
-export {
-  LevelRenderer,
-    Render,
-    Color,
-    Shape,
-    SmicBrokenLine,
-    SmicCircle,
-    SmicEllipse,
-    SmicImage,
-    SmicPoint,
-    SmicPolygon,
-    SmicRectangle,
-    SmicSector,
-    SmicText,
-    SUtil
-};
+export { LevelRenderer };

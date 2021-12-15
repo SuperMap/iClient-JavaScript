@@ -4,16 +4,14 @@
 import {Feature} from './Feature';
 import {Util} from './Util';
 
-
-
 /**
- * @class GeometryVector
+ * @class FeatureVector
  * @aliasclass Feature.Vector
  * @deprecatedclass SuperMap.Feature.Vector
  * @category BaseTypes Geometry
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
- * 其中，默认的样式在 {@link GeometryVector.style} 类中定义，如果没有特别的指定将使用默认的样式。
+ * 其中，默认的样式在 {@link FeatureVector.style} 类中定义，如果没有特别的指定将使用默认的样式。
  * @extends {Feature}
  * @param {Geometry} geometry - 要素的几何信息。
  * @param {Object} [attributes] - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的对象。
@@ -26,7 +24,7 @@ import {Util} from './Util';
      *      strokeWidth:3,
      *      pointRadius:6
      *  }
- *  var pointFeature = new GeometryVector(geometry,null,style);
+ *  var pointFeature = new FeatureVector(geometry,null,style);
  *  vectorLayer.addFeatures(pointFeature);
  * @usage
  */
@@ -44,19 +42,19 @@ export class Vector extends Feature {
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
         /**
-         * @member {string} GeometryVector.prototype.fid
+         * @member {string} FeatureVector.prototype.fid
          * @description fid
          */
         this.fid = null;
 
         /**
-         * @member {Geometry} GeometryVector.prototype.geometry
+         * @member {Geometry} FeatureVector.prototype.geometry
          * @description 存放几何信息。
          */
         this.geometry = geometry ? geometry : null;
 
         /**
-         * @member {Object} GeometryVector.prototype.attributes
+         * @member {Object} FeatureVector.prototype.attributes
          * @description 描述要素的任意的可序列化属性。
          */
         this.attributes = {};
@@ -66,7 +64,7 @@ export class Vector extends Feature {
         }
 
         /**
-         * @member {Bounds} GeometryVector.prototype.bounds
+         * @member {Bounds} FeatureVector.prototype.bounds
          * @description The box bounding that feature's geometry, that
          *     property can be set by an <Format> object when
          *     deserializing the feature, so in most cases it represents an
@@ -75,19 +73,19 @@ export class Vector extends Feature {
         this.bounds = null;
 
         /**
-         * @member {string} GeometryVector.prototype.state
+         * @member {string} FeatureVector.prototype.state
          * @description state
          */
         this.state = null;
 
         /**
-         * @member {Object} GeometryVector.prototype.style
+         * @member {Object} FeatureVector.prototype.style
          * @description 要素的样式属性，地图查询返回的 feature 的 style，8C 变为null。
          */
         this.style = style ? style : null;
 
         /**
-         * @member {string} GeometryVector.prototype.url
+         * @member {string} FeatureVector.prototype.url
          * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 {@link HTTP} 。
          */
         this.url = null;
@@ -176,7 +174,7 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function GeometryVector.prototype.destroy
+     * @function FeatureVector.prototype.destroy
      * @description nullify references to prevent circular references and memory leaks
      */
     destroy() {
@@ -190,10 +188,10 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function GeometryVector.prototype.clone
+     * @function FeatureVector.prototype.clone
      * @description Create a clone of this vector feature.  Does not set any non-standard
      *     properties.
-     * @returns {GeometryVector} An exact clone of this vector feature.
+     * @returns {FeatureVector} An exact clone of this vector feature.
      */
     clone() {
         return new Vector(
@@ -203,7 +201,7 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function GeometryVector.prototype.toState
+     * @function FeatureVector.prototype.toState
      * @description 设置新状态。
      * @param {string} state - 状态。
      */
@@ -245,7 +243,7 @@ export class Vector extends Feature {
 }
 /**
  *
- * @typedef {Object} GeometryVector.style
+ * @typedef {Object} FeatureVector.style
  * @description Feature 有大量的样式属性，如果没有特别的指定将使用默认的样式，
  * 大部分样式通过 SVG 标准定义属性。
  * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
@@ -302,7 +300,7 @@ export class Vector extends Feature {
  *  // label的用法如下：
  *  function addGeoTest(){
  *  var geometry = new GeometryPoint(105, 35);
- *  var pointFeature = new GeometryVector(geometry);
+ *  var pointFeature = new FeatureVector(geometry);
  *  var styleTest = {
  *        label:"supermap",
  *        fontColor:"#0000ff",

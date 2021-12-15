@@ -7,7 +7,7 @@
  import { GeoFeatureThemeLayer } from './theme/GeoFeatureThemeLayer';
  import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
  import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
- import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+ import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
 /**
  * @class LabelThemeLayer
  * @deprecatedclassinstance L.supermap.labelThemeLayer
@@ -144,7 +144,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      /**
      * @function LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {Array.<GeometryVector>} features - 要删除的要素。
+     * @param {Array.<FeatureVector>} features - 要删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
@@ -163,8 +163,8 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function LabelThemeLayer.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
-     * @param {Array.<GeometryVector>}  labelFeatures - 所有标签要素的数组。
-     * @returns {Array.<GeometryVector>}  最终要绘制的标签要素数组。
+     * @param {Array.<FeatureVector>}  labelFeatures - 所有标签要素的数组。
+     * @returns {Array.<FeatureVector>}  最终要绘制的标签要素数组。
      */
     getDrawnLabels: function (labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
@@ -307,7 +307,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
                 label.calculateBounds();
                 styTmp = Util.cloneObject(fi.style);
                 feaSty = Util.cloneObject(Util.copyAttributes(styTmp, styleTemp));
-                fea = new GeometryVector(label, fi.attributes, feaSty);
+                fea = new FeatureVector(label, fi.attributes, feaSty);
                 //赋予id
                 fea.id = fi.id;
                 fea.fid = fi.fid;
@@ -322,7 +322,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function LabelThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
-     * @param {GeometryVector} feat - 矢量要素对象。
+     * @param {FeatureVector} feat - 矢量要素对象。
      * @returns {Array.<ThemeStyle>} 专题要素的 Style。
      */
     getStyleByData: function (feat) {
@@ -371,8 +371,8 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function LabelThemeLayer.prototype.setLabelsStyle
      * @description 设置标签要素的 Style。
-     * @param {Array.<GeometryVector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @returns {Array.<GeometryVector>}  赋予 Style 后的标签要素数组。
+     * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
+     * @returns {Array.<FeatureVector>}  赋予 Style 后的标签要素数组。
      */
     setLabelsStyle: function (labelFeatures) {
         var fea, labelFeas = [];
@@ -399,7 +399,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function LabelThemeLayer.prototype.setStyle
      * @description 设置标签要素的 Style。
-     * @param {GeometryVector} feat - 需要赋予 style 的要素。
+     * @param {FeatureVector} feat - 需要赋予 style 的要素。
      */
     setStyle: function (feat) {
         var feature = feat;
@@ -449,7 +449,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function LabelThemeLayer.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
-     * @param {GeometryVector} feature - 标签要素。
+     * @param {FeatureVector} feature - 标签要素。
      * @returns {L.point} 标签位置。
      */
     getLabelPxLocation: function (feature) {
@@ -477,7 +477,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {GeometryVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -536,7 +536,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {GeometryVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

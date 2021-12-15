@@ -1269,7 +1269,7 @@ export var WebMap = L.LayerGroup.extend({
                 /**
                  * @event WebMap#featureunselected
                  * @description 重置选中的要素为空。
-                 * @property {GeometryVector} feature - 在重置之前选中的要素。
+                 * @property {FeatureVector} feature - 在重置之前选中的要素。
                  */
                 this.fire('featureunselected', {
                     feature: this.selectedFeature
@@ -1285,7 +1285,7 @@ export var WebMap = L.LayerGroup.extend({
                 /**
                  * @event WebMap#featureselected
                  * @description 点击要素，要素存在之后触发。设置选中的要素。
-                 * @property {GeometryVector} feature - 点击的要素。
+                 * @property {FeatureVector} feature - 点击的要素。
                  */
                 this.fire('featureselected', {
                     feature: feature
@@ -1305,7 +1305,7 @@ export var WebMap = L.LayerGroup.extend({
                     /**
                      * @event WebMap#featuremousemove
                      * @description 鼠标移动到要素上之后触发。
-                     * @property {GeometryVector} feature - 当前被移动到的要素。
+                     * @property {FeatureVector} feature - 当前被移动到的要素。
                      */
                     this.fire('featuremousemove', {
                         feature: feature

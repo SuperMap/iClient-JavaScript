@@ -315,7 +315,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {Array.<GeometryVector>} features - 待删除的要素。
+     * @param {Array.<FeatureVector>} features - 待删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
@@ -360,7 +360,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.getWeightFieldValue
      * @description 获取权重字段的值。
-     * @param {GeometryVector} feature - 矢量要素。
+     * @param {FeatureVector} feature - 矢量要素。
      * @param {Array.<string>} weightField - 字段名数组。
      * @param {number} defaultValue - 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */

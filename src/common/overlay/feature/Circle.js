@@ -4,7 +4,7 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class FeatureCircle
+ * @class ShapeParametersCircle
  * @aliasclass Feature.ShapeParameters.Circle
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Circle
  * @classdesc 圆形参数对象。
@@ -21,19 +21,19 @@ export class Circle extends ShapeParameters {
     constructor(x, y, r) {
         super(x, y, r);
         /**
-         * @member {number} FeatureCircle.prototype.x
+         * @member {number} ShapeParametersCircle.prototype.x
          * @description 圆心 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
         /**
-         * @member {number} FeatureCircle.prototype.y
+         * @member {number} ShapeParametersCircle.prototype.y
          * @description 圆心 y 坐标。
          */
         this.y =  !isNaN(y) ? y : 0;
 
         /**
-         * @member {number} FeatureCircle.prototype.r
+         * @member {number} ShapeParametersCircle.prototype.r
          * @description 圆半径。
          */
         this.r =  !isNaN(r) ? r : 0;
@@ -44,7 +44,7 @@ export class Circle extends ShapeParameters {
 
 
     /**
-     * @function FeatureCircle.prototype.destroy
+     * @function ShapeParametersCircle.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {

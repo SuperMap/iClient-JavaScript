@@ -206,7 +206,7 @@ export class GeoFeature extends Theme {
     /**
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
-     * @param {GeometryVector} feature - 要素对象。
+     * @param {FeatureVector} feature - 要素对象。
      */
     createThematicFeature(feature) {
         var style = Util.copyAttributesWithClip(this.style);

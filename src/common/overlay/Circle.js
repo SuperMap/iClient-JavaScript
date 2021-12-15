@@ -7,16 +7,16 @@ import {ShapeFactory} from './feature/ShapeFactory';
 import {RankSymbol} from './RankSymbol';
 
 /**
- * @class Circle
+ * @class FeatureThemeCircle
  * @aliasclass Feature.Theme.Circle
  * @deprecatedclass SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
  * @category Visualization Theme
- * @extends CommonRankSymbol
- * @param {GeometryVector} data - 用户数据。
+ * @extends FeatureThemeRankSymbol
+ * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
- * @param {Circle.setting} setting - 图表配置对象。
+ * @param {FeatureThemeCircle.setting} setting - 图表配置对象。
  * @param {LonLat} [lonlat] - 专题要素地理位置，默认为 data 指代的地理要素 Bounds 中心。
  * @usage
  * @private
@@ -29,7 +29,7 @@ export class Circle extends RankSymbol {
     }
 
     /**
-     * @function Circle.prototype.destroy
+     * @function FeatureThemeCircle.prototype.destroy
      * @override
      */
     destroy() {
@@ -37,7 +37,7 @@ export class Circle extends RankSymbol {
     }
 
     /**
-     * @function Circle.prototype.assembleShapes
+     * @function FeatureThemeCircle.prototype.assembleShapes
      * @description 装配图形（扩展接口）。
      */
     assembleShapes() {

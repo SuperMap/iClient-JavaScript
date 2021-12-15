@@ -4,7 +4,7 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  FeatureLine
+ * @class  ShapeParametersLine
  * @aliasclass Feature.ShapeParameters.Line
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Line
  * @category Visualization Theme
@@ -17,7 +17,7 @@ export class Line extends ShapeParameters {
     constructor(pointList) {
         super(pointList);
         /**
-         * @member {Array} FeatureLine.prototype.pointList
+         * @member {Array} ShapeParametersLine.prototype.pointList
          * @description 线要素节点数组，二维数组。
          * 数组形如：
          * (start code)
@@ -35,7 +35,7 @@ export class Line extends ShapeParameters {
     }
 
     /**
-     * @function FeatureLine.prototype.destroy
+     * @function ShapeParametersLine.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {

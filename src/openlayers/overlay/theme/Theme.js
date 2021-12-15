@@ -8,7 +8,7 @@ import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
 import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
 import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
 import {ThemeFeature} from './ThemeFeature';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
@@ -140,7 +140,7 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
      * @description 销毁某个要素。
-     * @param {GeometryVector} features - 将被销毁的要素。
+     * @param {FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -177,7 +177,7 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.addFeatures
      * @param {(ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
-     *              专题图仅接收 GeometryVector 类型数据，
+     *              专题图仅接收 FeatureVector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
      */
     addFeatures(features) { // eslint-disable-line no-unused-vars
@@ -186,7 +186,7 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function ol.source.Theme.prototype.removeFeatures
-     * @param {Array.<GeometryVector>} features - 要删除 feature 的数组。
+     * @param {Array.<FeatureVector>} features - 要删除 feature 的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
@@ -245,7 +245,7 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {GeometryVector} 用户加入图层的有效数据。
+     * @returns {FeatureVector} 用户加入图层的有效数据。
      */
     getFeatures() {
         var len = this.features.length;
@@ -263,7 +263,7 @@ export class Theme extends ImageCanvasSource {
      *              返回此 feature（并且只返回第一个）。
      * @param {string} property - feature 的某个属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {GeometryVector} 第一个匹配属性和值的矢量要素。
+     * @returns {FeatureVector} 第一个匹配属性和值的矢量要素。
      */
     getFeatureBy(property, value) {
         var feature = null;
@@ -281,7 +281,7 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.getFeatureById
      * @description 通过给定一个 ID，返回对应的矢量要素。
      * @param {string} featureId - 矢量要素的属性 ID。
-     * @returns {GeometryVector} 对应 ID 的 feature，如果不存在则返回 null。
+     * @returns {FeatureVector} 对应 ID 的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -292,7 +292,7 @@ export class Theme extends ImageCanvasSource {
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性的 key。
      * @param {string} attrValue - 矢量要素的属性 ID。
-     * @returns {Array.<GeometryVector>} 一个匹配的 feature 数组。
+     * @returns {Array.<FeatureVector>} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -499,7 +499,7 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {(ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
-     * @returns {GeometryVector} 转换后的 iClient 要素
+     * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -518,8 +518,8 @@ export class Theme extends ImageCanvasSource {
                 //_toFeature 统一处理 ol/Feature 所有 geometry 类型
                 featuresTemp.push(this._toFeature(features[i]));
                 continue;
-            } else if (features[i] instanceof GeometryVector) {
-                // 若是 GeometryVector 直接返回
+            } else if (features[i] instanceof FeatureVector) {
+                // 若是 FeatureVector 直接返回
                 featuresTemp.push(features[i]);
                 continue;
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -542,7 +542,7 @@ export class Theme extends ImageCanvasSource {
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
      * @param {(ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
-     * @returns {GeometryVector} 转换后的 iClient 要素
+     * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);

@@ -7,16 +7,16 @@ import {Polygon} from './feature/Polygon';
 import {Graph} from './Graph';
 
 /**
- * @class Bar3D
+ * @class FeatureThemeBar3D
  * @aliasclass Feature.Theme.Bar3D
  * @deprecatedclass SuperMap.Feature.Theme.Bar3D
  * @classdesc 三维柱状图 。
  * @category Visualization Theme
- * @extends CommonGraph
- * @param {GeometryVector} data - 用户数据。
+ * @extends FeatureThemeGraph
+ * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
- * @param {Bar3D.setting} setting - 图表配置对象。
+ * @param {FeatureThemeBar3D.setting} setting - 图表配置对象。
  * @param {LonLat} [lonlat] - 专题要素地理位置，默认为 data 指代的地理要素 Bounds 中心。
  *
 
@@ -26,7 +26,7 @@ import {Graph} from './Graph';
  * // barFaceStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <FeaturePolygon.style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <ShapeParametersPolygon.style> 。
  * // barFaceStyleByCodomain 数组形如：
  * [
  *   {
@@ -64,7 +64,7 @@ import {Graph} from './Graph';
  * // barSideStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <FeaturePolygon.style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <ShapeParametersPolygon.style> 。
  * // barSideStyleByCodomain 数组形如：
  * [
  *   {
@@ -102,7 +102,7 @@ import {Graph} from './Graph';
  * // barTopStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性：<FeaturePolygon.style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性：<ShapeParametersPolygon.style> 。
  * // barTopStyleByCodomain 数组形如：
  * [
  *   {
@@ -146,7 +146,7 @@ export class Bar3D extends Graph {
     }
 
     /**
-     * @function Bar3D.prototype.destroy
+     * @function FeatureThemeBar3D.prototype.destroy
      * @override
      */
     destroy() {
@@ -154,7 +154,7 @@ export class Bar3D extends Graph {
     }
 
     /**
-     * @function Bar3D.prototype.assembleShapes
+     * @function FeatureThemeBar3D.prototype.assembleShapes
      * @description 图形装配实现（扩展接口）。
      */
     assembleShapes() {
@@ -181,7 +181,7 @@ export class Bar3D extends Graph {
 
         // 值域
         var codomain = this.DVBCodomain;
-        // 重要步骤：定义图表 Bar 数据视图框中单位值的含义
+        // 重要步骤：定义图表 FeatureThemeBar 数据视图框中单位值的含义
         this.DVBUnitValue = (codomain[1] - codomain[0]) / this.DVBHeight;
         // 数据视图域
         var dvb = this.dataViewBox;
@@ -335,7 +335,7 @@ export class Bar3D extends Graph {
     }
 
     /**
-     * @function Bar3D.prototype.calculateXShapeInfo
+     * @function FeatureThemeBar3D.prototype.calculateXShapeInfo
      * @description 计算 X 轴方向上的图形信息，此信息是一个对象，包含两个属性，
      *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
      *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。

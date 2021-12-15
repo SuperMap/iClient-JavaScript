@@ -68,7 +68,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
      * @private
      * @function UniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
-     * @param {GeometryVector} feat - 用户要素数据。
+     * @param {FeatureVector} feat - 用户要素数据。
      * @returns {Array.<ThemeStyle>} 返回包含专题要素 style 的对象。
      */
     getStyleByData: function (feat) {

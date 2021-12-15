@@ -6,16 +6,16 @@ import './LineString';
 
 
 /**
- * @class MultiLineString
+ * @class GeometryMultiLineString
  * @aliasclass Geometry.MultiLineString
  * @deprecatedclass SuperMap.Geometry.MultiLineString
  * @classdesc 几何对象多线类。
  * @category BaseTypes Geometry
- * @extends {Collection}
- * @param {Array.<LineString>} components - LineString 数组。
+ * @extends GeometryCollection
+ * @param {Array.<GeometryLineString>} components - GeometryLineString 数组。
  * @example
- * var multi = new MultiLineString([
- *      new LineString([
+ * var multi = new GeometryMultiLineString([
+ *      new GeometryLineString([
  *          new GeometryPoint(1, 0),
  *          new GeometryPoint(0, 1)
  *      ])
@@ -28,7 +28,7 @@ export class MultiLineString extends Collection {
     constructor(components) {
         super(components);
         /**
-         * @member {Array.<string>} [MultiLineString.prototype.componentTypes=["SuperMap.Geometry.LineString"]]
+         * @member {Array.<string>} [GeometryMultiLineString.prototype.componentTypes=["SuperMap.Geometry.LineString"]]
          * @description components 存储的的几何对象所支持的几何类型数组。
          * @readonly
          */

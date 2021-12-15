@@ -157,7 +157,7 @@ export class ServerGeometry {
 
     /**
      * @function ServerGeometry.prototype.toGeoLine
-     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括 GeometryLinearRing、GeometryLineString、GeometryMultiLineString。
      * @returns {Geometry} 转换后的客户端几何对象。
      */
     toGeoLine() {
@@ -196,7 +196,7 @@ export class ServerGeometry {
 
     /**
      * @function ServerGeometry.prototype.toGeoLineEPS
-     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括 GeometryLinearRing、GeometryLineString、GeometryMultiLineString。
      * @returns {Geometry} 转换后的客户端几何对象。
      */
     toGeoLineEPS() {
@@ -250,7 +250,7 @@ export class ServerGeometry {
 
     /**
      * @function ServerGeometry.prototype.toGeoRegion
-     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 GeometryPolygon。
      * @returns {Geometry} 转换后的客户端几何对象。
      */
     toGeoRegion() {

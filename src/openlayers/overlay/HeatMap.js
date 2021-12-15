@@ -6,7 +6,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
 import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
 import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
-import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
 import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
@@ -366,7 +366,7 @@ export class HeatMap extends ImageCanvasSource {
     /**
      * @function ol.source.HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<GeometryVector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -409,7 +409,7 @@ export class HeatMap extends ImageCanvasSource {
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {GeoJSONObject|Array.<ol/Feature>} features - 待添加的要素数组。
-     * @returns {GeometryVector} 转换后的 iClient 要素
+     * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {
@@ -423,7 +423,7 @@ export class HeatMap extends ImageCanvasSource {
                     geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
                     //固定属性字段为 "Properties"
                     attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                    featuresTemp.push(new GeometryVector(geometry, attributes));
+                    featuresTemp.push(new FeatureVector(geometry, attributes));
                 }
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 let format = new GeoJSONFormat();

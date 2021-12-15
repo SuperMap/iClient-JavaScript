@@ -98,8 +98,8 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
-     * @description 删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {GeometryVector} features - 需要删除的要素。
+     * @description 删除专题图中 features。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @param {FeatureVector} features - 待删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -189,7 +189,11 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
+<<<<<<< Updated upstream
      * @param {GeometryVector} feature - 需要创建的要素。
+=======
+     * @param {FeatureVector} feature - 要创建的要素。
+>>>>>>> Stashed changes
      */
     createThematicFeature: function (feature) {
         var me = this;

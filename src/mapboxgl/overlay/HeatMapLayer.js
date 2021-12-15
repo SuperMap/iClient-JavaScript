@@ -7,7 +7,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
 import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
 import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
-import { Vector as GeometryVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
 import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
 import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 /**
@@ -104,7 +104,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.featureWeight = _options.featureWeight ? _options.featureWeight : null;
 
         /**
-         * @member {Array.<GeometryVector>} HeatMapLayer.prototype.features
+         * @member {Array.<FeatureVector>} HeatMapLayer.prototype.features
          * @description 热点信息数组，记录存储图层上添加的所有热点信息。
          */
         this.features = [];
@@ -504,8 +504,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
         }
         let featuresTemp = [];
         for (let i = 0; i < features.length; i++) {
-            if (features[i] instanceof GeometryVector) {
-                // 若是 GeometryVector 直接返回
+            if (features[i] instanceof FeatureVector) {
+                // 若是 FeatureVector 直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 //GeoJSON 规范数据类型
@@ -524,7 +524,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function HeatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<GeometryVector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -553,7 +553,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         /**
          * @event HeatMapLayer#featuresremoved
          * @description 要素删除之后触发。
-         * @property {Array.<GeometryVector>} features - 需要被删除的要素。
+         * @property {Array.<FeatureVector>} features - 需要被删除的要素。
          * @property {boolean} succeed - 要素删除成功与否。
          */
         this.fire(this.EVENT_TYPES[1], {features: heatPointsFailedRemoved, succeed: succeed});

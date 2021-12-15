@@ -14,7 +14,7 @@ import {Util} from '../../commontypes/Util';
  * @classdesc 专题要素基类。
  * @param {Object} data - 用户数据，用于生成可视化 shape。
  * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层。
- * @usage
+ * @usage 
  */
 export class Theme {
     constructor(data, layer) {
@@ -48,7 +48,7 @@ export class Theme {
         /**
          * @readonly
          * @member {Object} FeatureTheme.prototype.data
-         * @description 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如：<GeometryVector>。
+         * @description 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如：<FeatureVector>。
          */
         this.data = data;
 
@@ -88,7 +88,7 @@ export class Theme {
     /**
      * @function FeatureTheme.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
-     * @param {(GeometryPoint|GeoText|LonLat)} coordinate - 地理坐标点。
+     * @param {GeometryPoint|GeometryGeoText|LonLat} coordinate - 地理坐标点。
      * @returns {Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getLocalXY(coordinate) {

@@ -14,8 +14,8 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {Object} options - 参数。
  * @param {Object} options.operateGeometry - 叠加分析的操作几何对象。 </br>
  *                                   点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
- *                                   线类型可以是：{@link LineString}|{@link LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
- *                                   面类型可以是：{@link Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。
+ *                                   线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
+ *                                   面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。
  * @param {Array.<Object>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。
  * @param {Array.<Object>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。

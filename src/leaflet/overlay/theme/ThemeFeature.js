@@ -28,7 +28,7 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function ThemeFeature.prototype.toFeature
      * @description 转为内部矢量要素。
-     * @returns {GeometryVector} 内部矢量要素。
+     * @returns {FeatureVector} 内部矢量要素。
      */
     toFeature: function () {
         let geometry = this.geometry;

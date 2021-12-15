@@ -338,20 +338,7 @@ import {
     ShapeParametersRectangle,
     ShapeParametersSector,
     FeatureTheme,
-    LevelRenderer,
-    Render,
-    Color,
-    Shape,
-    SmicBrokenLine,
-    SmicCircle,
-    SmicEllipse,
-    SmicImage,
-    SmicPoint,
-    SmicPolygon,
-    SmicRectangle,
-    SmicSector,
-    SmicText,
-    SUtil
+    LevelRenderer
 } from './overlay';
 import {
     FileTypes,
@@ -728,20 +715,7 @@ export {
     ShapeParametersRectangle,
     ShapeParametersSector,
     FeatureTheme,
-    LevelRenderer,
-    Render,
-    Color,
-    Shape,
-    SmicBrokenLine,
-    SmicCircle,
-    SmicEllipse,
-    SmicImage,
-    SmicPoint,
-    SmicPolygon,
-    SmicRectangle,
-    SmicSector,
-    SmicText,
-    SUtil
+    LevelRenderer
 };
 export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
 export { CartoCSS, ThemeStyle };

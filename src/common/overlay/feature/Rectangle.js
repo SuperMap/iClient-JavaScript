@@ -4,7 +4,7 @@
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @class  FeatureRectangle
+ * @class  ShapeParametersRectangle
  * @aliasclass Feature.ShapeParameters.Rectangle
  * @deprecatedclass SuperMap.Feature.ShapeParameters.Rectangle
  * @category Visualization Theme
@@ -21,25 +21,25 @@ export class Rectangle extends ShapeParameters {
     constructor(x, y, width, height) {
         super(x, y, width, height);
         /**
-         * @member {number} FeatureRectangle.prototype.x
+         * @member {number} ShapeParametersRectangle.prototype.x
          * @description 左上角 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
         /**
-         * @member {number} FeatureRectangle.prototype.y
+         * @member {number} ShapeParametersRectangle.prototype.y
          * @description 左上角 y 坐标。
          */
         this.y = !isNaN(x) ? y : 0;
 
         /**
-         * @member {number} FeatureRectangle.prototype.width
+         * @member {number} ShapeParametersRectangle.prototype.width
          * @description 宽度。
          */
         this.width = !isNaN(width) ? width : 0;
 
         /**
-         * @member {number} FeatureRectangle.prototype.height
+         * @member {number} ShapeParametersRectangle.prototype.height
          * @description 高度。
          */
         this.height = !isNaN(height) ? height : 0;
@@ -49,7 +49,7 @@ export class Rectangle extends ShapeParameters {
 
 
     /**
-     * @function FeatureRectangle.prototype.destroy
+     * @function ShapeParametersRectangle.prototype.destroy
      * @description 销毁对象。
      */
     destroy() {
