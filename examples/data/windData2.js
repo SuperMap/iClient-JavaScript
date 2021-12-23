@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.*/
 var xiamenWind2 = [
     [
         [98.37296620776067, -8.372966207759667],

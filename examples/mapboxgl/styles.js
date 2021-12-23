@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.*/
 var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +

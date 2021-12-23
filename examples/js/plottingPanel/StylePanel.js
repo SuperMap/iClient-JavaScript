@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.*/
 var selectFeatures = [];
 //var groupIndex = 0;
 L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
