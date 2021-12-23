@@ -59,10 +59,10 @@
             inputScript("https://iclient.supermap.io/web/libs/iclient8c/libs/SuperMap.Include.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/mapv/2.0.62/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'nanoscroller')) {
             inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/nanoscroller.css");
@@ -150,7 +150,7 @@
             inputScript("https://iclient.supermap.io/web/libs/iclient8c/resource/Plugins/Plotting/DefaultStyleConfiguration.js");
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
+          inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');
         }
     }
 

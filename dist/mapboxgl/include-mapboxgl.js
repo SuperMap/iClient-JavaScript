@@ -53,15 +53,15 @@
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         if (!inArray(includes, 'mapbox-gl-enhance') && !inArray(excludes, 'mapbox-gl')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/mapbox-gl@1.13.1/dist/mapbox-gl.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/mapbox-gl@1.13.1/dist/mapbox-gl.min.js');
+            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/1.13.1/mapbox-gl.css');
+            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/1.13.1/mapbox-gl.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
             inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'draw')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.3.0/mapbox-gl-draw.css');
@@ -69,46 +69,46 @@
         }
 
         if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
-          inputScript('https://cdn.jsdelivr.net/gh/CartoDB/mapboxgl-draw-rectangle-drag@1.0.1/build/mapboxgl-draw-rectangle-drag.browser.js');
+          inputScript('https://iclient.supermap.io/web/libs/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js');
       }
         if (inArray(includes, 'compare')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
             inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
-            inputScript('https://cdn.jsdelivr.net/npm/echarts-liquidfill@2.0.6/dist/echarts-liquidfill.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
             inputScript('https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js');
         }
         if (inArray(includes, 'echarts-vue')) {
-            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
-            inputScript('https://cdn.jsdelivr.net/npm/vue-echarts@4.1.0/dist/vue-echarts.min.js');
-            inputScript('https://cdn.jsdelivr.net/npm/echarts-liquidfill@2.0.6/dist/echarts-liquidfill.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/vue-echarts/4.1.0/vue-echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
             inputScript('https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js');
         }
         if (inArray(includes, 'three')) {
-            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/build/three.jss');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript('https://cdn.jsdelivr.net/npm/xlsx@0.17.2/dist/xlsx.core.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/xlsx/0.17.2/xlsx.core.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://cdn.jsdelivr.net/npm/proj4@2.7.5/dist/proj4.js');
+            inputScript('https://iclient.supermap.io/web/libs/proj4/2.7.5/proj4.js');
         }
         if (inArray(includes, 'shapefile')) {
-            inputScript('https://cdn.jsdelivr.net/npm/shapefile@0.6.6/dist/shapefile.js');
+            inputScript('https://iclient.supermap.io/web/libs/shapefile/shapefile.js');
         }
         if (inArray(includes, 'ant-design-vue')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.8/dist/antd.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.8/dist/antd.min.js');
+            inputCSS('https://iclient.supermap.io/web/libs/ant-design-vue/1.7.8/antd.min.css');
+            inputScript('https://iclient.supermap.io/web/libs/ant-design-vue/1.7.8/antd.min.js');
         }
         if (inArray(includes, 'antd')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/antd@3.25.3/dist/antd.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js');
-            inputScript('https://cdn.jsdelivr.net/npm/antd@3.25.3/dist/antd.min.js');
+            inputCSS('https://iclient.supermap.io/web/libs/antd/3.25.3/antd.min.css');
+            inputScript('https://iclient.supermap.io/web/libs/moment/2.29.1/moment.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/antd/3.25.3/antd.min.js');
         }
         if (inArray(includes, 'deck')) {
             inputScript('https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js');
@@ -126,14 +126,14 @@
             inputScript('https://iclient.supermap.io/web/libs/xml-js/1.6.8/xml-js.min.js');
         }
         if (inArray(includes, 'LegacyJSONLoader')) {
-            inputScript('https://cdn.jsdelivr.net/npm/three@0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
         }
         if (inArray(includes, 'OBJLoader')) {
-            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/OBJLoader.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/OBJLoader.js');
         }
 
         if (inArray(includes, 'three92')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/three.js/92/three.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/92/three.min.js');
         }
         if (inArray(includes, 'LoaderSupport')) {
             inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderCommons.js');
@@ -144,10 +144,10 @@
             inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/OBJLoader2.js');
         }
         if (inArray(includes, 'MTLLoader')) {
-            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/MTLLoader.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/MTLLoader.js');
         }
         if (inArray(includes, 'GLTFLoader')) {
-            inputScript('https://cdn.jsdelivr.net/npm/three@0.121.1/examples/js/loaders/GLTFLoader.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/GLTFLoader.js');
         }
         if (inArray(includes, 'echarts-gl')) {
             inputScript('https://iclient.supermap.io/web/libs/echarts-gl/1.1.2-fix/echarts-gl.min.js');
@@ -156,13 +156,13 @@
             inputScript('https://iclient.supermap.io/web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
         }
         if (inArray(includes, 'moment')) {
-            inputScript('https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/moment/2.29.1/moment.min.js');
         }
         if (inArray(includes, 'lodash')) {
-            inputScript('https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/lodash/4.17.21/lodash.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-            inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');
         }
 
         // dist
@@ -185,7 +185,7 @@
             inputScript('../../dist/mapboxgl/iclient-mapboxgl-react.min.js');
         }
         if (inArray(includes, 'vue-cesium')) {
-            inputScript('https://cdn.jsdelivr.net/npm/vue-cesium@2.1.4/lib/index.umd.js');
+            inputScript('https://iclient.supermap.io/web/libs/vue-cesium/2.1.4/index.umd.min.js');
         }
     }
 

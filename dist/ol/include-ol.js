@@ -54,34 +54,34 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css');
-            inputScript('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js');
+            inputCSS('https://iclient.supermap.io/web/libs/openlayers/6.9.0/ol.css');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/6.9.0/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.css');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.js');
+            inputCSS('https://iclient.supermap.io/web/libs/openlayers/4.6.5/ol.css');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/4.6.5/ol.js');
         }
         if (inArray(includes, 'ol-debug')) {
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.css');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.js');
+            inputCSS('https://iclient.supermap.io/web/libs/openlayers/4.6.5/ol-debug.css');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/4.6.5/ol-debug.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://cdn.jsdelivr.net/npm/proj4@2.7.5/dist/proj4.js');
+            inputScript('https://iclient.supermap.io/web/libs/proj4/2.7.5/proj4.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.4/dist/ol3Echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/ol3-echarts/2.0.4/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
-            inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol-mapbox-style')) {
             inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-4/olms.js');
@@ -96,8 +96,8 @@
             inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js');
         }
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/src/ol-layerswitcher.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/dist/ol-layerswitcher.min.js');
+            inputCSS('https://iclient.supermap.io/web/libs/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.css');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
         }
         if (inArray(includes, 'jsonsql')) {
             inputScript('https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js');
@@ -109,7 +109,7 @@
             inputScript('https://iclient.supermap.io/web/libs/canvg/canvg.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
+          inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');
         }
 
         // dist

@@ -18,7 +18,7 @@
 在 HTML 文件中引入 CSS  文件
 
 ```html
-<link href='https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css' rel='stylesheet' />
+<link href='https://iclient.supermap.io/web/libs/openlayers/6.1.1/ol.css' rel='stylesheet' />
 
 <link href='https://iclient.supermap.io/dist/ol/iclient-ol.min.css' rel='stylesheet' />
 ```
