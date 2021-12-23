@@ -133,7 +133,7 @@ window.examplesResources = {
         "join": "Join us: SuperMap Web Client Team",
         "join_tips1": "(Please send email to: ",
         "join_tips2": " and attach your resume)",
-        "copyright": "Copyright © 2000-2021 SuperMap Software Co., Ltd. All rights reserved"
+        "copyright": "Copyright © 2000-2022 SuperMap Software Co., Ltd. All rights reserved"
     },
     "editor": {
         "expand": " Expand",
