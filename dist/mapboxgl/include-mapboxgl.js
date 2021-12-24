@@ -90,7 +90,7 @@
             inputScript('https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js');
         }
         if (inArray(includes, 'three')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/build/three.jss');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/build/three.js');
         }
         if (inArray(includes, 'xlsx')) {
             inputScript('https://iclient.supermap.io/web/libs/xlsx/0.17.2/xlsx.core.min.js');
