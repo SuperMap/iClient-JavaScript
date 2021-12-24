@@ -55,7 +55,7 @@ module.exports = function (config) {
       /***测试文件***/
       './tool/**.js',
       './resources/**.js',
-      './resources/img/**.png',
+      // './resources/img/**.png',
       /***classic的源码***/
       /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
       { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', include: false },
