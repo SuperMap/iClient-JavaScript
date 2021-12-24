@@ -13,8 +13,8 @@
     box-shadow: 0 0 3px #999;
     color: #f0f0f0;
     cursor: default;
-    font-size: 10px;
-    line-height: 12px;
+    font-size: 20px;
+    /* line-height: 12px; */
     /* text-indent: 3px; */
     position: absolute;
     /* top: 2px; */
@@ -29,9 +29,9 @@
     border: 0;
     outline: 0;
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: normal;
-    line-height: 30px;
+    line-height: 32px;
     color: #000;
     vertical-align: baseline;
     list-style-type: none;
@@ -46,7 +46,7 @@
     border: 2px solid rgba(0, 0, 0, 0.2);
     background-clip: padding-box;
     box-shadow: none;
-    width: 30px;
+    width: 32px;
     overflow: visible;
     /* box-shadow: 0 1px 5px rgba(0,0,0,0.65); */
     border-radius: 4px;
@@ -64,9 +64,9 @@
 .plotting-menu > li,
 .plotting-menu > li:hover {
 	background-color: #fff;
-	border-bottom: 1px solid #ccc;
-	width: 30px;
-	height: 30px;
+	border-bottom: 0px solid #ccc;
+	width: 32px;
+	height: 32px;
 	/* line-height: 18px; */
 	display: block;
 	/* text-align: center; */
@@ -104,7 +104,7 @@
 /*    background-position: 8px;
     background-repeat: no-repeat; */
     color: #000;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: normal;
     /* min-height: 20px; */
     text-decoration: none;
@@ -131,8 +131,8 @@
     position: absolute;
     left: -1px;
     top: -1px;
-    width: 60px;
-    height: 30px;
+    width: 64px;
+    height: 32px;
     /* overflow: hidden; */
     background-color: #fff;
     background-color: rgba(255, 255, 255, 1);
@@ -147,7 +147,7 @@
 }
 
 .plotting-menu > li > ul > li {
-    width: 30px;
+    width: 32px;
     padding: 0px;
     /* vertical-align: baseline; */
     float: left;
