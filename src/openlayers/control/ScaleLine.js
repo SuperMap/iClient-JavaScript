@@ -37,15 +37,15 @@ export class ScaleLine extends Scale {
                 this.viewState_ = frameState.viewState; //NOSONAR
             }
             this.updateElementRepair(); //NOSONAR
-        }
+        };
         super(options); //NOSONAR
     }
 
     updateElementRepair() {
-        const viewState = this.viewState_ || this.o;
+        const viewState = this.viewState_ || this.o || this.Om;
 
         if (!viewState) {
-            this.renderedVisible_ = this.renderedVisible_ || this.j;
+            this.renderedVisible_ = this.renderedVisible_ || this.j || this.yn;
             if (this.renderedVisible_) {
                 this.element_ = this.element_ || this.c;
                 this.element.style.display = 'none';
@@ -62,7 +62,7 @@ export class ScaleLine extends Scale {
             "m";
         let pointResolution =
         olProj.getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
-        this.minWidth_ = this.minWidth_ || this.v;
+        this.minWidth_ = this.minWidth_ || this.v || this.Em;
         let nominalCount = this.minWidth_ * pointResolution;
         let suffix = '';
         if (units == "degrees") {
@@ -136,10 +136,10 @@ export class ScaleLine extends Scale {
             }
             ++i;
         }
-        this.renderedHTML_ = this.renderedHTML_ || this.D;
-        this.innerElement_ = this.innerElement_ || this.l;
-        this.renderedWidth_ = this.renderedWidth_ || this.B;
-        this.renderedVisible_ = this.renderedVisible_ || this.j;
+        this.renderedHTML_ = this.renderedHTML_ || this.D || this.am;
+        this.innerElement_ = this.innerElement_ || this.l || this.Tm;
+        this.renderedWidth_ = this.renderedWidth_ || this.B || this.Am;
+        this.renderedVisible_ = this.renderedVisible_ || this.j || this.yn;
         this.element_ = this.element_ || this.c;
         let html= count.toFixed(decimalCount < 0 ? -decimalCount : 0) + ' ' + suffix;
         if (this.renderedHTML_ != html) {

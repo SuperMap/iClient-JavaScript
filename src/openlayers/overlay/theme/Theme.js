@@ -47,6 +47,13 @@ export class Theme extends ImageCanvasSource {
             resolutions: options.resolutions,
             state: options.state
         });
+        /**
+        * @function ol.source.Theme.prototype.on
+        * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
+        * @param {string} event - 事件名称。
+        * @param {RequestCallback} callback - 事件回调函数。
+        */
+        this.on = this.onInternal;
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
@@ -320,12 +327,13 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.on
+     * @private
+     * @function ol.source.Theme.prototype.onInternal
      * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      * @param {string} event - 事件名称。
      * @param {RequestCallback} callback - 事件回调函数。
      */
-    on(event, callback) {
+    onInternal(event, callback) {
         var cb = callback;
         if (!this.renderer) {
             var evn = [];
