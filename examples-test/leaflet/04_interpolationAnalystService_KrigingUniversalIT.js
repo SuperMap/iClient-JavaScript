@@ -3,6 +3,7 @@ var request = require('request');
 require('../base/ExampleTestGlobeParameter');
 
 module.exports = {
+    '@disabled': true,
     'leaflet_04_interpolationAnalystService_KrigingUniversal': function (browser) {
         var type = 'leaflet';
         var exampleName = '04_interpolationAnalystService_KrigingUniversal';
