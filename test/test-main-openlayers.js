@@ -1,5 +1,6 @@
 /*openlayers -- control*/
 import './openlayers/control/ChangeTileVersionSpec.js';
+import './openlayers/control/ScaleLineSpec';
 
 /*openlayers -- core*/
 import './openlayers/core/StyleUtilsSpec.js';
