@@ -227,7 +227,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.rootCanvas.width = this.maxWidth = parseInt(mapCanvas.style.width);
         this.rootCanvas.height = this.maxHeight = parseInt(mapCanvas.style.height);
         this.canvasContext = this.rootCanvas.getContext('2d');
-        let devicePixelRatio = window.devicePixelRatio || 1;
+        const devicePixelRatio = window.devicePixelRatio || 1;
         devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
 
         CommonUtil.modifyDOMElement(this.rootCanvas, null, {x: 0, y: 0}, {w: this.maxWidth, h: this.maxHeight},
@@ -626,7 +626,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.rootCanvas.style.height = canvas.style.height;
         this.rootCanvas.width = this.maxWidth = parseInt(canvas.style.width);
         this.rootCanvas.height = this.maxHeight = parseInt(canvas.style.height);
-        let devicePixelRatio = window.devicePixelRatio || 1;
+        const devicePixelRatio = window.devicePixelRatio || 1;
         devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         this.refresh();
     }
