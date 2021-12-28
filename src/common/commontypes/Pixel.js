@@ -157,7 +157,7 @@ export class Pixel {
 }
 /**
  * @enum Mode
- * @memberOf SuperMap
+ * @memberOf Pixel
  * @readonly
  * @description 模式。
  * @type {string}

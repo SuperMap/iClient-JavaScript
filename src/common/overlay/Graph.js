@@ -471,7 +471,7 @@ export class Graph extends Theme {
     /**
      * @function FeatureThemeGraph.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
-     * @param {Lonlat} lonlat - 带转换的地理坐标。
+     * @param {LonLat} lonlat - 带转换的地理坐标。
      * @returns 屏幕像素坐标。
      */
     getLocalXY(lonlat) {

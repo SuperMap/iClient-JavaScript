@@ -35,7 +35,7 @@ var typeLinks = {
     "ol/StyleFunction": olapi + "module-ol_style_Style.html#~StyleFunction",
     "ol/control/ScaleLine": olapi + "module-ol_control_ScaleLine-ScaleLine.html",
     "ol/control/Control": olapi + "module-ol_control_Control-Control.html",
-
+    "ol/extent": olapi + "module-ol_extent.html",
 
     //leaflet
     "L.Marker": lfapi + '#marker',
@@ -77,6 +77,7 @@ var typeLinks = {
     "SuperMap.Layer.Theme": classicapi + '/Layer/Theme-js.html#SuperMap.Layer.Theme',
     "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
     "SuperMap.Layer.RankSymbol": classicapi + '/Layer/Theme/RankSymbol-js.html#SuperMap.Layer.RankSymbol',
+    "SuperMap.Map":classicapi + '/Map-js.html',
 
 	   //GeoJSON
     "GeoJSONObject": geojsonapi,

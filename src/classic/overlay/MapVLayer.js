@@ -103,7 +103,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {mapv.DataSet} dataSet - mapv 的 dataSet 对象。
+     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
      * @param {Object} options - mapv 绘图风格配置信息。
      */
     addData(dataSet, options) {
@@ -113,7 +113,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {mapv.DataSet} dataSet - mapv 的 dataSet 对象。
+     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
      * @param {Object} options - mapv 绘图风格配置信息。
      */
     setData(dataSet, options) {
@@ -123,7 +123,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} - mapv 的 dataSet 对象。
+     * @returns {Mapv.DataSet} - mapv 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {
@@ -177,7 +177,7 @@ export class MapVLayer extends SuperMap.Layer {
      * @function SuperMap.Layer.MapVLayer.prototype.moveTo
      * @description 重置当前 MapV 图层的 div，再一次与 Map 控件保持一致。
      *              修改当前显示范围，当平移或者缩放结束后开始重绘 MapV 图的渲染效果。
-     * @param {SuperMap.Bounds} bounds - 图层范围。
+     * @param {Bounds} bounds - 图层范围。
      * @param {boolean} [zoomChanged] - 缩放级别是否改变。
      * @param {boolean} [dragging] - 是否拖动。
      */
@@ -222,7 +222,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
-     * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
+     * @param {LonLat} latLng - 经纬度坐标。
      * @deprecated
      */
     transferToMapLatLng(latLng) {

@@ -12,7 +12,7 @@ import {Util} from '../commontypes/Util';
  * @param {string} options.dataset - 要用来做核密度分析数据源中数据集的名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_P@Jingjin。
  * @param {string} options.fieldName - 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段。
  * @param {string} options.resultGridName - 指定结果数据集名称。
- * @param {(Bounds|L.Bounds|ol.extent)} [options.bounds] - 核密度分析的范围，用于确定结果栅格数据集的范围。如果缺省，则默认为原数据集的范围。
+ * @param {(Bounds|L.Bounds|ol/extent)} [options.bounds] - 核密度分析的范围，用于确定结果栅格数据集的范围。如果缺省，则默认为原数据集的范围。
  * @param {number} [options.searchRadius] - 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。
  * @param {number} [options.resultGridDatasetResolution] - 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。
  * @param {string} [options.targetDatasource] - 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。
@@ -32,7 +32,7 @@ export class DensityKernelAnalystParameters {
         this.dataset = null;
 
         /**
-         * @member {(Bounds|L.Bounds|ol.extent)} [DensityKernelAnalystParameters.prototype.bounds]
+         * @member {(Bounds|L.Bounds|ol/extent)} [DensityKernelAnalystParameters.prototype.bounds]
          * @description 核密度分析的范围，用于确定结果栅格数据集的范围。
          * 如果缺省，则默认为原数据集的范围。
          */

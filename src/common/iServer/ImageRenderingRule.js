@@ -196,7 +196,7 @@ export default class ImageRenderingRule {
 
 /**
  * @enum DisplayMode
- * @memberOf SuperMap
+ * @memberOf ImageRenderingRule
  * @readonly
  * @type {string}
  */
@@ -207,7 +207,7 @@ ImageRenderingRule.DisplayMode = {
 
 /**
  * @enum InterpolationMode
- * @memberOf SuperMap
+ * @memberOf ImageRenderingRule
  * @readonly
  * @type {string}
  */

@@ -12,7 +12,7 @@ import './ClipParameter';
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 插值分析参数类。
  * @param {Object} options - 参数。
- * @param {(Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
+ * @param {(Bounds|L.Bounds|ol/extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
  * @param {string} [options.zValueFieldName] - 进行插值分析的字段名称，插值分析不支持文本类型的字段。
@@ -33,7 +33,7 @@ export class InterpolationAnalystParameters {
             return;
         }
         /**
-         * @member {(Bounds|L.Bounds|ol.extent)} InterpolationAnalystParameters.prototype.bounds
+         * @member {(Bounds|L.Bounds|ol/extent)} InterpolationAnalystParameters.prototype.bounds
          * @description 插值分析的范围，用于确定结果栅格数据集的范围。
          * 如果缺省，则默认为原数据集的范围。鉴于此插值方法为内插方法，原数据集的范围内的插值结果才相对有参考价值，
          * 因此建议此参数不大于原数据集范围。

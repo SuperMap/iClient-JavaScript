@@ -51,7 +51,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * 计算量大，且变异函数有时需要根据经验人为选定。
  * @param {Object} options - 参数。
  * @param {string} options.type - 克吕金插值的类型。
- * @param {(Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
+ * @param {(Bounds|L.Bounds|ol/extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。

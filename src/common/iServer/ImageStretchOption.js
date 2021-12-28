@@ -100,7 +100,7 @@ export default class ImageStretchOption {
 }
 /**
  * @enum StretchType
- * @memberOf SuperMap
+ * @memberOf ImageStretchOption
  * @readonly
  * @type {string}
  */

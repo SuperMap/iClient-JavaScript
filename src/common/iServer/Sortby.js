@@ -60,7 +60,7 @@ export default class Sortby {
 }
 /**
  * @enum Direction
- * @memberOf SuperMap
+ * @memberOf Sortby
  * @readonly
  * @type {string}
  */

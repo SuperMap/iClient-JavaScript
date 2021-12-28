@@ -25,7 +25,7 @@ export class DatasourceService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.REST.supermap.DatasourceService.prototype.getDatasources
+     * @function SuperMap.REST.DatasourceService.prototype.getDatasources
      * @description 数据源集查询服务。
      * @example
      *   new SuperMap.REST.DatasourceService(url).getDatasources(function(result){
@@ -79,13 +79,13 @@ export class DatasourceService extends CommonServiceBase {
     }
 
    /**
-     * @function SuperMap.REST.supermap.DatasourceService.prototype.setDatasource
+     * @function SuperMap.REST.DatasourceService.prototype.setDatasource
      * @description 数据源信息设置服务。可实现更改当前数据源信息。
      * @example
      *  new SuperMap.REST.DatasourceService(url).setDatasource(params, function(result){
      *     //doSomething
      *   });
-     * @param {SuperMap.SetDatasourceParameters} params - 数据源信息查询参数类。
+     * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     setDatasource(params, callback) {

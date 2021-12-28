@@ -13,7 +13,7 @@ import { MappingParameters } from './MappingParameters';
  * @classdesc 缓冲区分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(Bounds|L.Bounds|ol.extent)} [options.bounds] - 分析范围（默认为全图范围）。
+ * @param {(Bounds|L.Bounds|ol/extent)} [options.bounds] - 分析范围（默认为全图范围）。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
  * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位单位。
@@ -30,7 +30,7 @@ export class BuffersAnalystJobsParameter {
         this.datasetName = '';
 
         /**
-         * @member {(Bounds|L.Bounds|ol.extent)} BuffersAnalystJobsParameter.prototype.bounds
+         * @member {(Bounds|L.Bounds|ol/extent)} BuffersAnalystJobsParameter.prototype.bounds
          * @description 分析范围。
          */
         this.bounds = '';
