@@ -224,11 +224,14 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.rootCanvas = document.createElement("canvas");
         this.rootCanvas.id = this.id;
         var mapCanvas = this.map.getCanvas();
-        this.rootCanvas.width = this.maxWidth = parseInt(mapCanvas.width);
-        this.rootCanvas.height = this.maxHeight = parseInt(mapCanvas.height);
-        CommonUtil.modifyDOMElement(this.rootCanvas, null, null, null,
-            "absolute", null, null, this.opacity);
+        this.rootCanvas.width = this.maxWidth = parseInt(mapCanvas.style.width);
+        this.rootCanvas.height = this.maxHeight = parseInt(mapCanvas.style.height);
         this.canvasContext = this.rootCanvas.getContext('2d');
+        let devicePixelRatio = window.devicePixelRatio || 1;
+        devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
+
+        CommonUtil.modifyDOMElement(this.rootCanvas, null, {x: 0, y: 0}, {w: this.maxWidth, h: this.maxHeight},
+            "absolute", null, null, this.opacity);
         this.mapContainer.appendChild(this.rootCanvas);
     }
 
@@ -394,6 +397,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         if (this.maxHeight > 0 && this.maxWidth > 0) {
             //清空
             var ctx = this.canvasContext;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             this.canvasContext.clearRect(0, 0, this.maxWidth, this.maxHeight);
             this.drawCircle(this.useRadius);
             this.createGradient();
@@ -620,8 +624,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
         var canvas = this.map.getCanvas();
         this.rootCanvas.style.width = canvas.style.width;
         this.rootCanvas.style.height = canvas.style.height;
-        this.rootCanvas.width = this.maxWidth = parseInt(canvas.width);
-        this.rootCanvas.height = this.maxHeight = parseInt(canvas.height);
+        this.rootCanvas.width = this.maxWidth = parseInt(canvas.style.width);
+        this.rootCanvas.height = this.maxHeight = parseInt(canvas.style.height);
         let devicePixelRatio = window.devicePixelRatio || 1;
         devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         this.refresh();
