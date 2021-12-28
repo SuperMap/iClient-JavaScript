@@ -18,7 +18,7 @@
         baseUrl = host + "/iserver/services/map-temperature/rest/maps/全国温度变化图",
         serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([-2640403.63, 1873792.1], [3247669.39, 5921501.4]),
             origin: L.point(-2640403.63, 5921501.4)
         }),

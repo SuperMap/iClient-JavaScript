@@ -15,7 +15,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, url = host + "/iserver/services/map-changchun/rest/maps/长春市区图";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),

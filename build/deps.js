@@ -444,7 +444,7 @@ deps = {
             "TileVectorLayer": {
                 "name": "矢量瓦片",
                 "src": [
-                    './src/leaflet/overlay/TileVectorLayer.js'
+                    './src/leaflet/overlay/TiledVectorLayer.js'
                 ],
                 "modules": [{
                     "name": "L.supermap.tiledVectorLayer",

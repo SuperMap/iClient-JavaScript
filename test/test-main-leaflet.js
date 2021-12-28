@@ -26,7 +26,7 @@ import './leaflet/overlay/LabelThemeLayerSpec.js';
 import './leaflet/overlay/MapVLayerSpec.js';
 import './leaflet/overlay/RangeThemeLayerSpec.js';
 import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
-import './leaflet/overlay/TileVectorLayerSpec.js';
+import './leaflet/overlay/TiledVectorLayerSpec.js';
 import './leaflet/overlay/UniqueThemeLayerSpec.js';
 import './leaflet/overlay/vectortile/PointSymbolizerSpec.js';
 import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';

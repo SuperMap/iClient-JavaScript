@@ -9,7 +9,7 @@ import {LabelThemeLayer, labelThemeLayer} from './LabelThemeLayer';
 import {MapVLayer, mapVLayer} from './MapVLayer';
 import {RangeThemeLayer, rangeThemeLayer} from './RangeThemeLayer';
 import {RankSymbolThemeLayer, rankSymbolThemeLayer} from './RankSymbolThemeLayer';
-import {TiledVectorLayer, tiledVectorLayer, TiledVectorLayer as TileVectorLayer } from './TileVectorLayer';
+import {TiledVectorLayer, tiledVectorLayer, TiledVectorLayer as TileVectorLayer } from './TiledVectorLayer';
 import {TurfLayer, turfLayer} from './TurfLayer';
 import {UnicodeMarker, unicodeMarker} from './UnicodeMarker';
 import {UniqueThemeLayer, uniqueThemeLayer} from './UniqueThemeLayer';
