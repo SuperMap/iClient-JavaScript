@@ -41,6 +41,10 @@
         .ol-overlaycontainer-stopevent{
             height: 0% !important;
         }
+
+        .ol-overlaycontainer {
+            pointer-events: auto !important;
+        }
     </style>
 </head>
 
@@ -51,7 +55,7 @@
     </div>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script>
-       
+
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
         var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
@@ -161,7 +165,7 @@
 
                 var pointRightBottom = [api.value(3), api.value(4)];
                 pointRightBottom = map.getPixelFromCoordinate(pointRightBottom);
-              
+
                 return {
                     type: 'rect',
                     shape: {
