@@ -1,3 +1,38 @@
+# 10.2.1 #
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.featureService` 删除要素接口 URL 未编码的问题
+
+### for OpenLayers
+
+- 修复 `ol.supermap.FeatureService` 删除要素接口 URL 未编码的问题
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.FeatureService` 删除要素接口 URL 未编码的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复属性表组件(sm-attributes)切换数据后再次选中数据显示的总数不正确的问题
+
+  - 修复图层管理组件(sm-layer-manage)销毁时没清除已添加图层的问题
+
+  - 修复属性表组件(sm-attributes)切换数据后再次选中数据显示的总数不正确的问题
+
+  - 修复图层列表组件(sm-layer-manage) 销毁时没清除已添加图层的问题
+
+  - 修复文本列表组件(sm-text-list)修改排序后未正确高亮的问题
+
+  - 修复属性表组件 (sm-attributes)点击搜索按钮时会触发排序的问题
+
+  - 修复场景组件（sm-scene)无法打开三维地球v2版本成果的问题
+
+  - 修复幻灯片组件(sm-slide-show)在幻灯片总数为 3，切换方式为方块时，首尾页切换重叠的问题
+
 # 10.2.0 #
 
 ## 新特性
@@ -833,7 +868,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -849,7 +884,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -923,7 +958,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -939,7 +974,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -961,7 +996,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -977,7 +1012,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -999,7 +1034,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -1015,7 +1050,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -1224,7 +1259,7 @@
 
 ![1001-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-1.png)
 
-（具体兼容情况详见compatibility一节）
+（具体兼容情况详见compatibility一节)
 
 ### 新增 SuperMap iPortal 资源访问系列接口和范例，支持对资源中心的地图、服务、大屏、洞察等资源进行更新
 ![1001-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-6.png)
@@ -1425,7 +1460,7 @@
 
 - 可视化 – Pixi
 
-  - 新增 “纽约出租车上车点分布图（140万点数据绘制）” 示例
+  - 新增 “纽约出租车上车点分布图（140万点数据绘制)” 示例
 
 ### for OpenLayers
 
@@ -1456,7 +1491,7 @@
 
   - 矢量瓦片
 
-    - 多面（MultiPolygon）
+    - 多面（MultiPolygon)
   
     - 中文沿线标注
 
@@ -1619,7 +1654,7 @@
 ## 新特性
 
 ### 积木式搭建应用：[SuperMap iClient Vue 组件库](https://github.com/SuperMap/vue-iclient)
- - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel）同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
+ - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel)同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
 ![1000-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-2.png)
 
 ### 开箱即用：丰富的组件选择
@@ -1662,7 +1697,7 @@
 
 ## 新特性
 
-- iClient for MapboxGL（for vue）组件库新增示例，新增房产项目可视化监控平台示例，使用 iClient Vue 组件快速搭建行业大屏应用
+- iClient for MapboxGL（for vue)组件库新增示例，新增房产项目可视化监控平台示例，使用 iClient Vue 组件快速搭建行业大屏应用
 
 ![whatsNewComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-1.gif)
 
@@ -1722,9 +1757,9 @@
 
 ## 新特性
 
-### iClient for MapboxGL 新增组件（for vue）
+### iClient for MapboxGL 新增组件（for vue)
 
-- iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格）
+- iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格)
 
 ![whatsNewMapboxGlComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
  
@@ -1806,7 +1841,7 @@
 
 - iClient for MapboxGL新增支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，覆盖MVT矢量瓦片、栅格瓦片、可视化图层、标绘等功能
 
-- 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
+- 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0)
  https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
 
 ![whatsNewMultiCoordinate](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-1.png)
@@ -1942,7 +1977,7 @@
     - `removeGraphics` 接口新增删除单个或多个要素的功能
 
 ### Classic
-- `SuperMap.Layer.MapVLayer` 支持北京54 等其他坐标系（注：数据坐标系要求与地图保持一致）
+- `SuperMap.Layer.MapVLayer` 支持北京54 等其他坐标系（注：数据坐标系要求与地图保持一致)
 
 ## Fixed
 
