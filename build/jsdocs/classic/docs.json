@@ -38,6 +38,7 @@
       "src/common/iServer/OverlayGeoJobParameter.js",
       "src/common/iServer/ServerColor.js",
       "src/common/iServer/DatasourceConnectionInfo.js",
+      "src/common/iServer/SetDatasourceParameters.js",
       "src/common/commontypes/Bounds.js",
       "src/common/commontypes/Geometry.js",
       "src/common/commontypes/LonLat.js",
