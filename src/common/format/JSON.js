@@ -44,7 +44,7 @@ export class JSONFormat extends Format {
         this.newline = "\n";
 
         /**
-         * @member {integer} [JSONFormat.prototype.level=0]
+         * @member {number} [JSONFormat.prototype.level=0]
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         this.level = 0;

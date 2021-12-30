@@ -279,7 +279,7 @@ export var NumberExt = {
      * @function NumberExt.limitSigDigs
      * @description 限制浮点数的有效数字位数。
      * @param {number} num - 浮点数。
-     * @param {integer} sig - 有效位数。
+     * @param {number} sig - 有效位数。
      * @returns {number} 将数字四舍五入到指定数量的有效位数。
      */
     limitSigDigs: function (num, sig) {
@@ -294,7 +294,7 @@ export var NumberExt = {
      * @function NumberExt.format
      * @description 数字格式化输出。
      * @param {number} num - 数字。
-     * @param {integer} [dec=0]  - 数字的小数部分四舍五入到指定的位数。设置为 null 值时小数部分不变。
+     * @param {number} [dec=0]  - 数字的小数部分四舍五入到指定的位数。设置为 null 值时小数部分不变。
      * @param {string} [tsep=','] - 千位分隔符。
      * @param {string} [dsep='.'] - 小数点分隔符。
      * @returns {string} 数字格式化后的字符串。
@@ -342,8 +342,8 @@ if (!Number.prototype.limitSigDigs) {
     /**
      * APIMethod: Number.limitSigDigs
      * 限制浮点数的有效数字位数.
-     * @param {integer} sig -有效位数。
-     * @returns {integer} 将数字四舍五入到指定数量的有效位数。
+     * @param {number} sig -有效位数。
+     * @returns {number} 将数字四舍五入到指定数量的有效位数。
      *           如果传入值 为 null、0、或者是负数, 返回值 0。
      */
     Number.prototype.limitSigDigs = function (sig) {

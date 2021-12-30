@@ -44,7 +44,7 @@ export class Theme {
          */
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
-         * @member {float} [ThemeLayer.prototype.opacity=1]
+         * @member {number} [ThemeLayer.prototype.opacity=1]
          * @description 图层不透明度。
          */
         this.opacity = options.opacity ? options.opacity : 1;

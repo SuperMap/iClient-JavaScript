@@ -142,7 +142,7 @@ export class Bounds {
      * var str2 = bounds.toBBOX(1);
      * //str2 = "-1.8,-1.1,1.6,1.4";
      * var str2 = bounds.toBBOX(1,true);
-     * @param {integer} [decimal=6] - 边界方位坐标的有效数字个数。
+     * @param {number} [decimal=6] - 边界方位坐标的有效数字个数。
      * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。
      * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
      * @returns {string} 边界对象的字符串表示形式，如："5,42,10,45"。
@@ -190,7 +190,7 @@ export class Bounds {
      * var bounds = new Bounds(-180,-90,100,80);
      * //width = 280;
      * var width = bounds.getWidth();
-     * @returns {float} 获取当前 bounds 的宽度（right 减去 left）。
+     * @returns {number} 获取当前 bounds 的宽度（right 减去 left）。
      */
     getWidth() {
         return (this.right - this.left);
@@ -203,7 +203,7 @@ export class Bounds {
      * var bounds = new Bounds(-180,-90,100,80);
      * //height = 170;
      * var height = bounds.getHeight();
-     * @returns {float} 边界高度（top 减去 bottom）。
+     * @returns {number} 边界高度（top 减去 bottom）。
      */
     getHeight() {
         return (this.top - this.bottom);
@@ -257,7 +257,7 @@ export class Bounds {
      * @example
      * var bounds = new Bounds(-50,-50,40,40);
      * var bounds2 = bounds.scale(2);
-     * @param {float} [ratio=1] - 需要扩大的比例。
+     * @param {number} [ratio=1] - 需要扩大的比例。
      * @param {(Pixel|LonLat)} [origin] - 扩大时的基准点，默认为当前 bounds 的中心点。
      * @returns {Bounds} 通过 ratio、origin 计算得到的新的边界范围。
      */
@@ -293,8 +293,8 @@ export class Bounds {
      * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds2 是新的 bounds
      * var bounds2 = bounds.add(20,10);
-     * @param {float} x - 坐标点的 x 坐标。
-     * @param {float} y - 坐标点的 y 坐标。
+     * @param {number} x - 坐标点的 x 坐标。
+     * @param {number} y - 坐标点的 y 坐标。
      * @returns {Bounds} 新的 bounds，此 bounds 的坐标是由传入的 x，y 参数与当前 bounds 坐标计算所得。
      */
     add(x, y) {
@@ -421,8 +421,8 @@ export class Bounds {
      * var bounds = new Bounds(-50,-50,40,40);
      * //isContains = true
      * var isContains = bounds.contains(40,40,true);
-     * @param {float} x - x 坐标值。
-     * @param {float} y - y 坐标值。
+     * @param {number} x - x 坐标值。
+     * @param {number} y - y 坐标值。
      * @param {boolean} [inclusive=true] - 是否包含边界。
      * @returns {boolean} 传入的 x，y 坐标是否在当前范围内。
      */
@@ -593,8 +593,8 @@ export class Bounds {
      * var newBounds = bounds.wrapDateLine(maxExtent);
      * @param {Bounds} maxExtent - 最大的边界范围（一般是全球范围）。
      * @param {Object} options - 可选选项参数。
-     * @param {float} [options.leftTolerance=0] - left 允许的误差。
-     * @param {float} [options.rightTolerance=0] - right 允许的误差。
+     * @param {number} [options.leftTolerance=0] - left 允许的误差。
+     * @param {number} [options.rightTolerance=0] - right 允许的误差。
      * @returns {Bounds} 克隆当前边界。如果当前边界完全在最大范围之外此函数则返回一个不同值的边界，
      *                            若落在最大边界的左边，则给当前的bounds值加上最大范围的宽度，即向右移动，
      *                            若落在右边，则向左移动，即给当前的bounds值加上负的最大范围的宽度。
@@ -690,7 +690,7 @@ export class Bounds {
      * @description 通过边界框数组创建 Bounds。
      * @example
      * var bounds = Bounds.fromArray([-180,-90,100,80]);
-     * @param {Array.<float>} bbox - 边界值数组。（e.g. <i>[5,42,10,45]</i>）。
+     * @param {Array.<number>} bbox - 边界值数组。（e.g. <i>[5,42,10,45]</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
      * @returns {Bounds} 根据传入的数组创建的新的边界对象。
      */

@@ -15,7 +15,7 @@ import {Geometry} from '../commontypes/Geometry';
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 数据集名称。
  * @param {string} options.zValueFieldName - 字段名称。
- * @param {integer} options.resolution - 指定中间结果（栅格数据集）的分辨率。
+ * @param {number} options.resolution - 指定中间结果（栅格数据集）的分辨率。
  * @param {SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。获取或设置表面分析参数。
  * @param {FilterParameter} [options.filterQueryParameter] - 查询过滤条件参数。
  * @param {DataReturnOption} [options.resultSetting] - 结果返回设置类。

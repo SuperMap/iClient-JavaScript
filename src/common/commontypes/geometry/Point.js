@@ -12,10 +12,10 @@ import {Util} from '../Util';
  * @classdesc 点几何对象类。
  * @category BaseTypes Geometry
  * @extends {Geometry}
- * @param {float} x - x 坐标。
- * @param {float} y - y 坐标。
+ * @param {number} x - x 坐标。
+ * @param {number} y - y 坐标。
  * @param {string} [type = 'Point'] - 点的类型。
- * @param {float} [tag] - 额外的属性，比如差值分析中的 Z 值。
+ * @param {number} [tag] - 额外的属性，比如差值分析中的 Z 值。
  * @example
  * var point = new GeometryPoint(-111.04, 45.68);
  * @usage
@@ -26,13 +26,13 @@ export class Point extends Geometry {
     constructor(x, y, type, tag) {
         super(x, y, type, tag);
         /**
-         * @member {float} GeometryPoint.prototype.x
+         * @member {number} GeometryPoint.prototype.x
          * @description 横坐标。
          */
         this.x = parseFloat(x);
 
         /**
-         * @member {float} GeometryPoint.prototype.y
+         * @member {number} GeometryPoint.prototype.y
          * @description 纵坐标。
          */
         this.y = parseFloat(y);
@@ -100,8 +100,8 @@ export class Point extends Geometry {
     /**
      * @function GeometryPoint.prototype.move
      * @description 沿着 x、y 轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
-     * @param {float} x - x 轴正方向上的偏移量。
-     * @param {float} y - y 轴正方向上偏移量。
+     * @param {number} x - x 轴正方向上的偏移量。
+     * @param {number} y - y 轴正方向上偏移量。
      */
     move(x, y) {
         this.x = this.x + x;

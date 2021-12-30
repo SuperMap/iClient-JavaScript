@@ -16,8 +16,8 @@ import '../LonLat';
  * @classdesc 文本标签类。
  * @category BaseTypes Geometry
  * @extends {Geometry}
- * @param {float} x - x 坐标。
- * @param {float} y - y 坐标。
+ * @param {number} x - x 坐标。
+ * @param {number} y - y 坐标。
  * @param {string} text - 标签中的文本内容。
  * @usage
  */
@@ -26,13 +26,13 @@ export class GeoText extends Geometry {
     constructor(x, y, text) {
         super(x, y, text);
         /**
-         * @member {float} GeometryGeoText.prototype.x
+         * @member {number} GeometryGeoText.prototype.x
          * @description 横坐标。
          */
         this.x = parseFloat(x);
 
         /**
-         * @member {float} GeometryGeoText.prototype.y
+         * @member {number} GeometryGeoText.prototype.y
          * @description 纵坐标。
          */
         this.y = parseFloat(y);

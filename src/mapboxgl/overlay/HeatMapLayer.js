@@ -93,7 +93,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
         /**
          * @member {string} HeatMapLayer.prototype.featureWeight
-         * @description 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
+         * @description 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
          * @example
          * //feature.attributes中表示权重的字段为 height,则在 HeatMapLayer 的 featureWeight 参数赋值为 "height"。
          * feature1.attributes.height = 7.0;

@@ -96,7 +96,7 @@ export class Pixel {
    * var distance = pixcel.distanceTo(pixcel2);
    *
    * @param {Pixel} px - 需要计算的 pixel。
-   * @returns {float} 作为参数传入的像素与当前像素点的距离。
+   * @returns {number} 作为参数传入的像素与当前像素点的距离。
    */
   distanceTo(px) {
     return Math.sqrt(Math.pow(this.x - px.x, 2) + Math.pow(this.y - px.y, 2));

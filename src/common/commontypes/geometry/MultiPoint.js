@@ -36,7 +36,7 @@ export class MultiPoint extends Collection {
      * @function GeometryMultiPoint.prototype.addPoint
      * @description 添加点，封装了 {@link GeometryCollection|GeometryCollection.addComponent} 方法。
      * @param {GeometryPoint} point - 添加的点。
-     * @param {integer} [index] - 下标。
+     * @param {number} [index] - 下标。
      */
     addPoint(point, index) {
         this.addComponent(point, index);

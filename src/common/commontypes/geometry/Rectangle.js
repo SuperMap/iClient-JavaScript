@@ -10,10 +10,10 @@ import {Bounds} from '../Bounds';
  * @deprecatedclass SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
  * @category BaseTypes Geometry
- * @param {float} x - 矩形左下角点的横坐标。
- * @param {float} y - 矩形左下角点的纵坐标。
- * @param {float} width - 矩形的宽度。
- * @param {float} height -  矩形的高度。
+ * @param {number} x - 矩形左下角点的横坐标。
+ * @param {number} y - 矩形左下角点的纵坐标。
+ * @param {number} width - 矩形的宽度。
+ * @param {number} height -  矩形的高度。
  * @extends {Geometry}
  * @example
  *  //x 为矩形左下角点的横坐标；y 为矩形左下角点的纵坐标；w 为矩形的宽度；h 为矩形的高度
@@ -31,25 +31,25 @@ export class Rectangle extends Geometry {
     constructor(x, y, width, height) {
         super(x, y, width, height);
         /**
-         * @member {float} GeometryRectangle.prototype.x
+         * @member {number} GeometryRectangle.prototype.x
          * @description 矩形左下角点的横坐标。
          */
         this.x = x;
 
         /**
-         * @member {float} GeometryRectangle.prototype.y
+         * @member {number} GeometryRectangle.prototype.y
          * @description 矩形左下角点的纵坐标。
          */
         this.y = y;
 
         /**
-         * @member {float} GeometryRectangle.prototype.width
+         * @member {number} GeometryRectangle.prototype.width
          * @description 矩形的宽度。
          */
         this.width = width;
 
         /**
-         * @member {float} GeometryRectangle.prototype.height
+         * @member {number} GeometryRectangle.prototype.height
          * @description 矩形的高度。
          */
         this.height = height;
@@ -72,7 +72,7 @@ export class Rectangle extends Geometry {
     /**
      * @function GeometryRectangle.prototype.getArea
      * @description 获取矩形对象的面积。
-     * @returns {float} 矩形对象面积。
+     * @returns {number} 矩形对象面积。
      */
     getArea() {
         var area = this.width * this.height;
