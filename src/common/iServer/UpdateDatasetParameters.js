@@ -15,7 +15,7 @@ import {Util} from '../commontypes/Util';
  * @param {String} options.description - 数据集描述信息。
  * @param {String} options.prjCoordSys - 投影坐标系。
  * @param {Object} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。
- * @param {Array.<string} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
+ * @param {Array.<string>} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
  * @param {number} options.noValue - 栅格数据集中没有数据的像元的栅格值。当数据集类型为栅格数据集时，可以传递此参数。
  * @usage
  */
