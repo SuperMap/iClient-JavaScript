@@ -11,10 +11,10 @@ import {Util} from '../Util';
  * @classdesc 点几何对象类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
- * @param {float} x - x 坐标。
- * @param {float} y - y 坐标。
+ * @param {number} x - x 坐标。
+ * @param {number} y - y 坐标。
  * @param {string} [type = 'Point'] - 用来存储点的类型。
- * @param {float} [tag] - 用来存储额外的属性，比如差值分析中的 Z 值。
+ * @param {number} [tag] - 用来存储额外的属性，比如差值分析中的 Z 值。
  * @example
  * var point = new SuperMap.Geometry.Point(-111.04, 45.68);
  */
@@ -24,13 +24,13 @@ export class Point extends Geometry {
     constructor(x, y, type, tag) {
         super(x, y, type, tag);
         /**
-         * @member {float} SuperMap.Geometry.Point.prototype.x
+         * @member {number} SuperMap.Geometry.Point.prototype.x
          * @description 横坐标。
          */
         this.x = parseFloat(x);
 
         /**
-         * @member {float} SuperMap.Geometry.Point.prototype.y
+         * @member {number} SuperMap.Geometry.Point.prototype.y
          * @description 纵坐标。
          */
         this.y = parseFloat(y);
@@ -98,8 +98,8 @@ export class Point extends Geometry {
     /**
      * @function SuperMap.Geometry.Point.prototype.move
      * @description 沿着 x、y 轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
-     * @param {float} x - x 轴正方向上的偏移量。
-     * @param {float} y - y 轴正方向上偏移量。
+     * @param {number} x - x 轴正方向上的偏移量。
+     * @param {number} y - y 轴正方向上偏移量。
      */
     move(x, y) {
         this.x = this.x + x;

@@ -41,7 +41,7 @@ export class OnlineQueryDatasParameter {
          */
         this.serviceId = null;
         /**
-         * @member {Array.<integer>} SuperMap.OnlineQueryDatasParameter.prototype.ids 
+         * @member {Array.<number>} SuperMap.OnlineQueryDatasParameter.prototype.ids 
          * @description  由数据项 ID 组成的整型数组。
          */
         this.ids = null;

@@ -40,7 +40,7 @@ export class LinearRing extends LineString {
      * 重复的点是不能被添加的。这将影响未关闭环的关闭。
      * 这个方法可以通过将非空索引（组件数组的下标）作为第二个参数重写。
      * @param {SuperMap.Geometry.Point} point - 点对象。
-     * @param {integer} [index] - 插入组件数组的下标。
+     * @param {number} [index] - 插入组件数组的下标。
      * @returns {boolean} 点对象是否添加成功。
      */
     addComponent(point, index) {
@@ -86,7 +86,7 @@ export class LinearRing extends LineString {
     /**
      * @function SuperMap.Geometry.LinearRing.prototype.getArea
      * @description 获得当前几何对象区域大小，如果是沿顺时针方向的环则是正值，否则为负值。
-     * @returns {float} 环的面积。
+     * @returns {number} 环的面积。
      */
     getArea() {
         var area = 0.0;

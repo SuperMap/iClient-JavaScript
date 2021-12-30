@@ -38,7 +38,7 @@ export class Geometry {
         this.bounds = null;
 
         /**
-         * @member {interger} SuperMap.Geometry.prototype.SRID
+         * @member {number} SuperMap.Geometry.prototype.SRID
          * @description 投影坐标参数。通过该参数，服务器判断 Geometry 对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
          * @example
          *   var geometry= new SuperMap.Geometry();
@@ -147,7 +147,7 @@ export class Geometry {
     /**
      * @function SuperMap.Geometry.prototype.getArea
      * @description 计算几何对象的面积 ，此方法需要在子类中定义。
-     * @returns {float} The area of the collection by summing its parts
+     * @returns {number} The area of the collection by summing its parts
      */
     getArea() {
         //to be overridden by geometries that actually have an area

@@ -14,12 +14,12 @@ import './Route';
  * 如果用户两种参数均设置，优先选择 Dataset 方式。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Route|L.Polyline|ol.geom.LineString)} options.sourceRoute - 路由对象。
- * @param {float} options.measure - 定位点的 M 值。只当路由对象定位点时有意义。
+ * @param {number} options.measure - 定位点的 M 值。只当路由对象定位点时有意义。
  * @param {string} [options.type] -  类型：点 or 线。
- * @param {float} [options.offset=0] - 定位点偏移量。只当路由对象定位点时有意义。
+ * @param {number} [options.offset=0] - 定位点偏移量。只当路由对象定位点时有意义。
  * @param {boolean} [options.isIgnoreGap=false] - 是否忽略子对象之间的距离。即不忽略子对象之间的距离。
- * @param {float} [options.startMeasure] - 定位线的起始 M 值。只当路由对象定位线时有意义。
- * @param {float} [options.endMeasure] - 定位线的终止 M 值。只当路由对象定位线时有意义。
+ * @param {number} [options.startMeasure] - 定位线的起始 M 值。只当路由对象定位线时有意义。
+ * @param {number} [options.endMeasure] - 定位线的终止 M 值。只当路由对象定位线时有意义。
  */
 export class RouteLocatorParameters {
 
@@ -63,13 +63,13 @@ export class RouteLocatorParameters {
         this.type = null;
 
         /**
-         * @member {float} SuperMap.RouteLocatorParameters.prototype.measure
+         * @member {number} SuperMap.RouteLocatorParameters.prototype.measure
          * @description 定位点的 M 值。只当路由对象定位点时有意义。
          */
         this.measure = null;
 
         /**
-         * @member {float} [SuperMap.RouteLocatorParameters.prototype.offset=0]
+         * @member {number} [SuperMap.RouteLocatorParameters.prototype.offset=0]
          * @description 定位点偏移量。只当路由对象定位点时有意义。
          */
         this.offset = 0;
@@ -81,13 +81,13 @@ export class RouteLocatorParameters {
         this.isIgnoreGap = false;
 
         /**
-         *  @member {float} [SuperMap.RouteLocatorParameters.prototype.startMeasure]
+         *  @member {number} [SuperMap.RouteLocatorParameters.prototype.startMeasure]
          *  @description 定位线的起始 M 值。只当路由对象定位线时有意义。
          */
         this.startMeasure = null;
 
         /**
-         *  @member {float} [SuperMap.RouteLocatorParameters.prototype.endMeasure]
+         *  @member {number} [SuperMap.RouteLocatorParameters.prototype.endMeasure]
          *  @description 定位线的终止 M 值。只当路由对象定位线时有意义。
          */
         this.endMeasure = null;

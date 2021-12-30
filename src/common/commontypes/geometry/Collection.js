@@ -125,7 +125,7 @@ export class Collection extends Geometry {
      * @function SuperMap.Geometry.Collection.prototype.addComponent
      * @description 添加一个几何对象到集合中。如果设置了 componentTypes 类型，则添加的几何对象必须是 componentTypes 中的类型。
      * @param {SuperMap.Geometry} component - 待添加的几何对象。
-     * @param {int} [index] - 几何对象插入的位置。
+     * @param {number} [index] - 几何对象插入的位置。
      * @returns {boolean} 是否添加成功。
      */
     addComponent(component, index) {

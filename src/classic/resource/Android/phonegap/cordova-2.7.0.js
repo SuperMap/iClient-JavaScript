@@ -3654,10 +3654,10 @@ define("cordova/plugin/MediaFileData", function(require, exports, module) {
  * MediaFileData encapsulates format information of a media file.
  *
  * @param {DOMString} codecs
- * @param {long} bitrate
- * @param {long} height
- * @param {long} width
- * @param {float} duration
+ * @param {number} bitrate
+ * @param {number} height
+ * @param {number} width
+ * @param {number} duration
  */
 var MediaFileData = function(codecs, bitrate, height, width, duration){
     this.codecs = codecs || null;
@@ -6314,7 +6314,7 @@ module.exports = {
     /**
      * Causes the device to vibrate.
      *
-     * @param {Integer} mills       The number of milliseconds to vibrate for.
+     * @param {number} mills       The number of milliseconds to vibrate for.
      */
     vibrate: function(mills) {
         exec(null, null, "Notification", "vibrate", [mills]);
@@ -6324,7 +6324,7 @@ module.exports = {
      * Causes the device to beep.
      * On Android, the default notification ringtone is played "count" times.
      *
-     * @param {Integer} count       The number of beeps.
+     * @param {number} count       The number of beeps.
      */
     beep: function(count) {
         exec(null, null, "Notification", "beep", [count]);

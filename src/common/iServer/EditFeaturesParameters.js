@@ -15,7 +15,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {Array.<SuperMap.Feature.Vector|GeoJSONObject|ol.feature>} options.features - 当前需要创建或者是修改的要素集。 
  * @param {boolean} [options.returnContent=false] - 是返回创建要素的 ID 数组还是返回 featureResult 资源的 URI。 
  * @param {SuperMap.EditType} [options.editType=SuperMap.EditType.ADD] - POST 动作类型 (ADD、UPDATE、DELETE)。 
- * @param {Array.<string|integer>} [options.IDs] - 删除要素时的要素的 ID 数组。 
+ * @param {Array.<string|number>} [options.IDs] - 删除要素时的要素的 ID 数组。 
  */
 export class EditFeaturesParameters {
 

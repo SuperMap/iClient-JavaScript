@@ -12,7 +12,7 @@ import './Route';
  * @param {Object} options - 参数。
  * @param {(SuperMap.Route|L.Polyline|ol.geom.LineString)} options.sourceRoute - 路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。
  * @param {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point)} options.point - 二维地理坐标点对象，包含 x,y 坐标值属性的对象。
- * @param {float} [options.tolerance] - 容限值。
+ * @param {number} [options.tolerance] - 容限值。
  * @param {boolean} [options.isIgnoreGap=false] - 是否忽略子对象之间的距离。
  */
 export class RouteCalculateMeasureParameters {
@@ -34,7 +34,7 @@ export class RouteCalculateMeasureParameters {
         this.point = null;
 
         /**
-         * @member {float} [SuperMap.RouteCalculateMeasureParameters.prototype.tolerance]
+         * @member {number} [SuperMap.RouteCalculateMeasureParameters.prototype.tolerance]
          * @description 容限值。
          */
         this.tolerance = null;

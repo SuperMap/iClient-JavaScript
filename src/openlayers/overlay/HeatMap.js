@@ -23,7 +23,7 @@ import Point from 'ol/geom/Point';
  * @param {Object} options - 构造参数。
  * @param {ol/Map} options.map - openlayers 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
- * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
+ * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。

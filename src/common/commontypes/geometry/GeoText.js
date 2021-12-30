@@ -15,8 +15,8 @@ import '../LonLat';
  * @classdesc 文本标签类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
- * @param {float} x - x 坐标。
- * @param {float} y - y 坐标。
+ * @param {number} x - x 坐标。
+ * @param {number} y - y 坐标。
  * @param {string} text - 标签中的文本内容。
  */
 export class GeoText extends Geometry {
@@ -24,13 +24,13 @@ export class GeoText extends Geometry {
     constructor(x, y, text) {
         super(x, y, text);
         /**
-         * @member {float} SuperMap.Geometry.GeoText.prototype.x
+         * @member {number} SuperMap.Geometry.GeoText.prototype.x
          * @description 横坐标。
          */
         this.x = parseFloat(x);
 
         /**
-         * @member {float} SuperMap.Geometry.GeoText.prototype.y
+         * @member {number} SuperMap.Geometry.GeoText.prototype.y
          * @description 纵坐标。
          */
         this.y = parseFloat(y);

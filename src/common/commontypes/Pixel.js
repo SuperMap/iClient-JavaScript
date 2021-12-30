@@ -115,7 +115,7 @@ export class Pixel {
      * var distance = pixcel.distanceTo(pixcel2);
      *
      * @param {SuperMap.Pixel} px - 用于计算的一个 pixel。
-     * @returns {float} 作为参数传入的像素与当前像素点的距离。
+     * @returns {number} 作为参数传入的像素与当前像素点的距离。
      */
     distanceTo(px) {
         return Math.sqrt(

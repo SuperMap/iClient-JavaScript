@@ -40,7 +40,7 @@ export class Polygon extends Collection {
     /**
      * @function SuperMap.Geometry.Polygon.prototype.getArea
      * @description 获得区域面积，从区域的外部口径减去计此区域内部口径算所得的面积。
-     * @returns {float} 几何对象的面积。
+     * @returns {number} 几何对象的面积。
      */
     getArea() {
         var area = 0.0;

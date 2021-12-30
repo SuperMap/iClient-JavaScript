@@ -15,7 +15,7 @@ import {Geometry} from '../commontypes/Geometry';
  * @param {Object} options - 参数。 
  * @param {string} options.dataset - 要用来做数据集表面分析的数据源中数据集的名称。 
  * @param {string} options.zValueFieldName - 获取或设置用于提取操作的字段名称。 
- * @param {integer} options.resolution - 获取或设置指定中间结果（栅格数据集）的分辨率。 
+ * @param {number} options.resolution - 获取或设置指定中间结果（栅格数据集）的分辨率。 
  * @param {SuperMap.SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。获取或设置表面分析参数。 
  * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 获取或设置查询过滤条件参数。 
  * @param {SuperMap.DataReturnOption} [options.resultSetting] - 结果返回设置类。 

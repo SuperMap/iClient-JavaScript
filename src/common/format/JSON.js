@@ -44,7 +44,7 @@ export class JSONFormat extends Format {
         this.newline = "\n";
 
         /**
-         * @member {integer} [SuperMap.Format.JSON.prototype.level=0] 
+         * @member {number} [SuperMap.Format.JSON.prototype.level=0] 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         this.level = 0;

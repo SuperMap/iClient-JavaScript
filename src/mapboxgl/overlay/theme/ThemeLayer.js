@@ -45,7 +45,7 @@ export class Theme {
          */
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
-         * @member {float} [mapboxgl.supermap.ThemeLayer.prototype.opacity=1]
+         * @member {number} [mapboxgl.supermap.ThemeLayer.prototype.opacity=1]
          * @description 图层透明度。
          */
         this.opacity = options.opacity ? options.opacity : 1;
