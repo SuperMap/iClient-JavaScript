@@ -13,7 +13,7 @@ import Observable from 'ol/Observable';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {ol/Observable}
+ * @extends {ol.Observable}
  */
 export class ServiceBase extends Observable {
     constructor(url, options) {

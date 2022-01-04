@@ -32,7 +32,7 @@ const CSS_TRANSFORM = (function () {
  * @class GraphicWebGLRenderer
  * @classdesc 高效率点图层 webgl 渲染器。
  * @category Visualization Graphic
- * @extends {ol/Object}
+ * @extends {ol.Object}
  * @param {ol.source.Graphic} layer - 高效率点图层。
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度。

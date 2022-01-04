@@ -16,7 +16,7 @@ import {
  * @param {string} chartsType - 图表类别。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
- * @param {ol/Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
  * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下几个基础可设属性。
  * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度。
@@ -30,11 +30,11 @@ import {
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity = 1] - 图层透明度。
  * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
- * @param {ol/proj/Projection} [opt_options.projection] - {@link ol/proj/Projection} 投影信息。
+ * @param {ol.proj.Projection} [opt_options.projection] - {@link ol.proj.Projection} 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比, 1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {ol/source/State} [opt_options.state] - 资源状态。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.Theme}
  */

@@ -20,7 +20,7 @@ function scale(pixelP, center, scaleRatio) {
  * @class GraphicCanvasRenderer
  * @classdesc 高效率点图层 canvas 渲染器。
  * @category Visualization Graphic
- * @extends {ol/Object}
+ * @extends {ol.Object}
  * @param {ol.source.Graphic} layer - 高效率点图层。
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度。

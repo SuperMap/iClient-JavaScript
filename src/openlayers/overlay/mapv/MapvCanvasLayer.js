@@ -79,7 +79,7 @@ export class MapvCanvasLayer {
     /**
      * @function MapvCanvasLayer.prototype.getContainer
      * @description 获取容器。
-     * @returns {Element} 包含 Mapv 图层的 DOM 对象。
+     * @returns {HTMLElement} 包含 Mapv 图层的 DOM 对象。
      */
     getContainer() {
         return this.canvas;

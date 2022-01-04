@@ -58,7 +58,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
-     * @param {JSON} obj - JSON 格式的要素数据。
+     * @param {JSONObject} obj - JSON 格式的要素数据。
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);

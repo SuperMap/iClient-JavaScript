@@ -11,7 +11,7 @@ import { Util } from '../core/Util';
  * @category  Visualization Turf
  * @classdesc Turf.js 图层源。
  * @param {Object} opt_options - 参数。
- * @extends {ol/source/Vector}
+ * @extends {ol.source.Vector}
  */
 export class Turf extends VectorSource {
 

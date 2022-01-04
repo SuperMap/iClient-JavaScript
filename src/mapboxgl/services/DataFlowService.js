@@ -110,7 +110,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.broadcast
      * @description 加载广播数据。
-     * @param {JSON} obj - 要素数据。
+     * @param {JSONObject} obj - 要素数据。
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);

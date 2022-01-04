@@ -12,7 +12,7 @@ import Attributions from '../core/Attributions'
  * @classdesc MapV 图层。
  * @category Visualization MapV
  * @extends {L.Layer}
- * @param {mapv.DataSet} dataSet - MapV 图层数据集。
+ * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - MapV 图层参数。
  * @param {Object} options - 参数。
  * @param {string} [options.attributionPrefix] - 版权信息前缀。
@@ -106,7 +106,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} mapv 数据集。
+     * @returns {Mapv.DataSet} mapv 数据集。
      */
     getData: function () {
         if (this.renderer) {

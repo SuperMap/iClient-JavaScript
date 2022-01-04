@@ -165,7 +165,7 @@ export class Events {
     /**
      * @function Events.prototype.attachToElement
      * @description 给 DOM 元素绑定浏览器事件。
-     * @param {HTMLDOMElement} element - 绑定浏览器事件的 DOM 元素。
+     * @param {HTMLElement} element - 绑定浏览器事件的 DOM 元素。
      */
     attachToElement(element) {
         if (this.element) {

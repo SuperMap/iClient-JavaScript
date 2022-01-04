@@ -14,7 +14,7 @@ import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
  * @param {string} options.queryMode - 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。
  * @param {Array.<string>} options.chartLayerNames - 查询的海图图层的名称。
  * @param {Array.<{ChartQueryFilterParameter}>} options.chartQueryFilterParameters - 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
- * @param {(Bounds|L.Bounds|ol/extent)} [options.bounds] - 海图查询范围。当进行海图范围查询时，此参数为必选。
+ * @param {(Bounds|L.Bounds|ol.extent)} [options.bounds] - 海图查询范围。当进行海图范围查询时，此参数为必选。
  * @param {boolean} [options.returnContent=true] - 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。
  * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.expectCount] - 期望查询结果返回的记录数，该值大于0。
@@ -31,7 +31,7 @@ export class ChartQueryParameters {
         this.queryMode = null;
 
         /**
-         * @member {(Bounds|L.Bounds|ol/extent)} ChartQueryParameters.prototype.bounds
+         * @member {(Bounds|L.Bounds|ol.extent)} ChartQueryParameters.prototype.bounds
          * @description 海图查询范围。
          */
         this.bounds = null;

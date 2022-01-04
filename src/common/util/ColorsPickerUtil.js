@@ -11,11 +11,12 @@ var ColorRender = new Color();
  */
 export class ColorsPickerUtil  {
     /**
-     * 创建DOM canvas
-     * @param height canvas 高度
-     * @param width canvas 宽度
-     *
+     * @function ColorsPickerUtil.createCanvas
+     * @description 创建DOM canvas
+     * @param {number} height - canvas 高度。
+     * @param {number} width - canvas 宽度。
      */
+
     static createCanvas (height, width){
         var canvas = document.createElement("canvas");
         canvas.height = height;
@@ -25,17 +26,16 @@ export class ColorsPickerUtil  {
     }
 
     /**
-     * 线性渐变。
-     * Parameters:
-     * x0 - {Number} 渐变起点。
-     * y0 - {Number}
-     * x1 - {Number} 渐变终点。
-     * y1 - {Number}
-     * colorList - {Array} 颜色列表。
-     *
-     * Returns:
-     * {CanvasGradient} Cavans 渐变颜色。
+     * @function ColorsPickerUtil.getLinearGradient
+     * @description 线性渐变。
+     * @param {number} x0 - 渐变起点 x 坐标。
+     * @param {number} y0 - 渐变起点 y 坐标。
+     * @param {number} x1 - 渐变终点 x 坐标。
+     * @param {number} y1 - 渐变终点 y 坐标。
+     * @param {array} colorList 颜色列表。
+     * @returns {CanvasGradient} Cavans 渐变颜色。
      */
+
     static getLinearGradient (x0, y0, x1, y1, colorList){
         if (!this._ctx) {
             this._ctx = this.getContext();
@@ -53,11 +53,11 @@ export class ColorsPickerUtil  {
     }
 
     /**
-     * 获取 Cavans 上下文
-     *
-     * Returns:
-     * {Object} Cavans 上下文。
+     * @function ColorsPickerUtil.getContext
+     * @description 获取 Cavans 上下文。
+     * @returns {object} Cavans 上下文。
      */
+
     static getContext () {
         if (!this._ctx) {
             this._ctx = document.createElement('canvas').getContext('2d');
@@ -66,17 +66,15 @@ export class ColorsPickerUtil  {
     }
 
     /**
-     * 获取两种颜色之间渐变颜色数组。
-     *
-     * Parameters:
-     * start - {color} 起始颜色。
-     * end - {color} 结束颜色。
-     * step - {Number} 渐变级数。
-     * colorList - {Array} 颜色列表。
-     *
-     * Returns:
-     * {Array} 颜色数组。
+     * @function ColorsPickerUtil.getStepColors
+     * @description 获取两种颜色之间渐变颜色数组。
+     * @param {string} start - 起始颜色。
+     * @param {string} end - 结束颜色。
+     * @param {number} step - 渐变级数。
+     * @param {array} colorList - 颜色列表。
+     * @returns {array} 颜色数组。
      */
+
     static getStepColors (start, end, step){
         start = ColorRender.toRGBA(start);
         end = ColorRender.toRGBA(end);
@@ -111,17 +109,14 @@ export class ColorsPickerUtil  {
     }
 
     /**
-     * APIMethod: getGradientColors
-     * 获取指定级数的渐变颜色数组。
-     *
-     * Parameters:
-     * colors - {Array{String}} 颜色组。
-     * total - {Number}  颜色总数。
-     * total - {String}  专题类型
-     *
-     * Returns:
-     * {Array{String}} 颜色数组。
+     * @function ColorsPickerUtil.getGradientColors
+     * @description 获取指定级数的渐变颜色数组。
+     * @param {Array.<string>} colors - 颜色组。
+     * @param {number} total - 颜色总数。
+     * @param {string} themeType - 专题类型。
+     * @returns {Array.<string>} 颜色数组。
      */
+
     static getGradientColors (colors, total, themeType){
         var ret = [], step;
         var i, n, len = colors.length;

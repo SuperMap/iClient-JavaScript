@@ -13,7 +13,7 @@ import { MappingParameters } from './MappingParameters';
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(Bounds|L.Bounds|ol/extent)} [options.query] - 分析范围（默认为全图范围）。
+ * @param {(Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -55,7 +55,7 @@ export class SummaryRegionJobParameter {
         this.sumShape = true;
 
         /**
-         * @member {(Bounds|L.Bounds|ol/extent)} SummaryRegionJobParameter.prototype.query
+         * @member {(Bounds|L.Bounds|ol.extent)} SummaryRegionJobParameter.prototype.query
          * @description 分析范围。
          */
         this.query = "";

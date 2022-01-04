@@ -101,8 +101,8 @@ export class MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 追加数据
-     * @param {oject} data - 待添加的数据。
-     * @param {oject} options - 待添加的数据信息。
+     * @param {object} data - 待添加的数据。
+     * @param {object} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;
@@ -116,8 +116,8 @@ export class MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.updateData
      * @description 更新覆盖原数据。
-     * @param {oject} data - 待更新的数据。
-     * @param {oject} options - 待更新的数据信息。
+     * @param {object} data - 待更新的数据。
+     * @param {object} options - 待更新的数据信息。
      */
     setData(data, options) {
         var _data = data;

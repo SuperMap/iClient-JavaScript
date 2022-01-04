@@ -9,7 +9,7 @@ import Control from 'ol/control/Control';
  * @aliasclass control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
- * @extends {ol/control/Control}
+ * @extends {ol.control.Control}
  * @example
  *      var control = new Logo();
  *      map.addControl(control);
@@ -73,7 +73,7 @@ export class Logo extends Control {
         /**
          * @function Logo.prototype.setDivStyle
          * @description 设置对象 style。
-         * @param {HTMLElement} 待设置的 div。
+         * @param {HTMLElement} div 待设置的 div。
          */
         function setDivStyle(div) {
             var attributionsElem = document.getElementsByClassName('ol-attribution');

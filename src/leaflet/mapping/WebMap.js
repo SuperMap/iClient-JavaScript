@@ -168,7 +168,7 @@ export var WebMap = L.LayerGroup.extend({
      * @private
      * @function WebMap.prototype.createLayersByJson
      * @description 通过 JSON 创建图层。
-     * @param {JSON} layersJson - 图层的 JSON 信息。
+     * @param {JSONObject} layersJson - 图层的 JSON 信息。
      */
     createLayersByJson: function (layersJson) {
         if (!L.Util.isArray(layersJson)) {

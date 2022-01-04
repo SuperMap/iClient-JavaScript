@@ -14,7 +14,7 @@ import { Util } from '../core/Util';
  * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
- * @extends {ol/source/TileImage}
+ * @extends {ol.source.TileImage}
  */
 export class BaiduMap extends TileImage {
     constructor(opt_options) {
@@ -82,7 +82,7 @@ export class BaiduMap extends TileImage {
     /**
      * @function ol.source.BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网。
-     * @returns {ol/tilegrid/TileGrid} 返回瓦片格网对象。
+     * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象。
      */
     static defaultTileGrid() {
         var tileGird = new TileGrid({

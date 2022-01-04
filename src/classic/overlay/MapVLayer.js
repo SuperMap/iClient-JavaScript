@@ -21,7 +21,7 @@ export class MapVLayer extends SuperMap.Layer {
         super(name, options);
 
         /**
-         * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @member {Mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
          * @description mapv 的 dataset 对象。
          */
         this.dataSet = null;

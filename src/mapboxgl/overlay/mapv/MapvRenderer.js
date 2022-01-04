@@ -17,7 +17,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @classdesc MapV图层渲染。
  * @param {Object} map - 地图。
  * @param {Object} layer - 图层。
- * @param {MapV.DataSet} dataSet - 数据集。
+ * @param {Mapv.DataSet} dataSet - 数据集。
  * @param {Object} options - 参数。
  * @extends {MapV.BaseLayer}
  *
@@ -107,8 +107,8 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 添加数据。
-     * @param {oject} data - 待添加的数据。
-     * @param {oject} options - 待添加的数据信息。
+     * @param {object} data - 待添加的数据。
+     * @param {object} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;

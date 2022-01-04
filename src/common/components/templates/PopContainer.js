@@ -60,7 +60,7 @@ export class PopContainer extends TemplateBase {
     /**
      * @function PopContainer.prototype.appendContent
      * @description 追加内容。
-     * @param {Element} dom - 内容元素。
+     * @param {HTMLElement} dom - 内容元素。
      */
     appendContent(dom) {
         this.content.appendChild(dom);

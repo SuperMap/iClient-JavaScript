@@ -365,8 +365,8 @@
     * @function Util.setMask
     * @description 为图层设置掩膜。
     * @version 10.1.0
-    * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层
-    * @param {ol/geom/Geometry|ol/feature} polygon 掩膜矢量要素，支持面类型的要素。
+    * @param {ol.layer.Layer|Array.<ol.layer.Layer>} layers 图层
+    * @param {ol.geom.Geometry|ol.Feature} polygon 掩膜矢量要素，支持面类型的要素。
     */
    setMask(layers, polygon) {
      if (!polygon) {
@@ -414,7 +414,7 @@
     * @function Util.unsetMask
     * @description 取消图层掩膜。
     * @version 10.1.0
-    * @param {ol/layer/Layer|Array.<ol/layer/Layer>} layers 图层
+    * @param {ol.layer.Layer|Array.<ol.layer.Layer>} layers 图层
     */
    unsetMask
  }

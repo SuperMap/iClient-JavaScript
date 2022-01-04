@@ -23,7 +23,7 @@ export class TemplateBase {
         this.id = options.id ? options.id : null;
 
         /**
-         * @member {Element} [TemplateBase.prototype.rootContainer=null]
+         * @member {HTMLElement} [TemplateBase.prototype.rootContainer=null]
          * @description  组件 dom 元素对象。
          */
         this.rootContainer = null;
@@ -32,7 +32,7 @@ export class TemplateBase {
     /**
      * @function TemplateBase.prototype.getElement
      * @description 获取当前组件元素对象。
-     * @return {Element} 组件 dom 元素对象
+     * @return {HTMLElement} 组件 dom 元素对象
      */
     getElement() {
         //todo 其实感觉再这里给组件设置不太合理

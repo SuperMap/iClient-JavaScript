@@ -130,7 +130,7 @@ export class MapvLayer {
     /**
      * @function MapvLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} mapv 数据集。
+     * @returns {Mapv.DataSet} mapv 数据集。
      */
     getData() {
         if (this.renderer) {

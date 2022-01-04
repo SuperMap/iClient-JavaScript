@@ -36,11 +36,11 @@ const Renderer = ['canvas', 'webgl'];
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
  * @param {Object} options - 参数。
- * @param {ol/map} options.map - openlayers 地图对象。
- * @param {ol/Graphic} options.graphics - 高效率点图层点要素。
+ * @param {ol.map} options.map - openlayers 地图对象。
+ * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
- * @param {ol/style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
+ * @param {ol.style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
@@ -52,7 +52,7 @@ const Renderer = ['canvas', 'webgl'];
  * @param {boolean} [options.outline=false] - 是否显示边框。
  * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
- * @extends {ol/source/ImageCanvas}
+ * @extends {ol.source.ImageCanvas}
  */
 export class Graphic extends ImageCanvasSource {
     constructor(options) {
@@ -168,7 +168,7 @@ export class Graphic extends ImageCanvasSource {
          * @param {string} coordinate -坐标。
          * @param {number} resolution -分辨率。
          * @param {RequestCallback} callback -回调函数。
-         * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
             let graphics = me.getGraphicsInExtent();
@@ -482,9 +482,9 @@ export class Graphic extends ImageCanvasSource {
      * @function ol.source.Graphic.prototype._highLight
      * @description 高亮显示选中要素。
      * @param {Array.<number>} center - 中心点。
-     * @param {ol/style/Style} image - 点样式。
+     * @param {ol.style.Style} image - 点样式。
      * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
-     * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+     * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
      * @private
      */
     _highLight(center, image, selectGraphic, evtPixel) {

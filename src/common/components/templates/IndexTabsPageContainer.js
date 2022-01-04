@@ -45,7 +45,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     /**
      * @function IndexTabsPageContainer.prototype.setTabs
      * @description 设置标签元素。
-     * @param {Array.<Element>} tabs
+     * @param {Array.<HTMLElement>} tabs
      */
     setTabs(tabs) {
         this.removeAllTabs();
@@ -55,7 +55,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     /**
      * @function IndexTabsPageContainer.prototype.appendTabs
      * @description 追加标签元素。
-     * @param {Array.<Element>} tabs
+     * @param {Array.<HTMLElement>} tabs
      */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {

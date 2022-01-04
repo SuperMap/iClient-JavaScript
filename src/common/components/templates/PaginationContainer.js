@@ -75,7 +75,7 @@ export class PaginationContainer extends TemplateBase {
     /**
      * @function PaginationContainer.prototype.setContent
      * @description 设置页面内容。
-     * @param {Element} element - 页面内容元素。
+     * @param {HTMLElement} element - 页面内容元素。
      */
     setContent(element) {
         this.clearContent();
@@ -85,7 +85,7 @@ export class PaginationContainer extends TemplateBase {
     /**
      * @function PaginationContainer.prototype.appendContent
      * @description 追加内容。
-     * @param {Element} element - 页面内容元素。
+     * @param {HTMLElement} element - 页面内容元素。
      */
     appendContent(element) {
         this.content.appendChild(element);

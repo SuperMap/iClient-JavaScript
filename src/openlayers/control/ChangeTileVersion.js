@@ -9,7 +9,7 @@ import Control from 'ol/control/Control';
  * @aliasclass control.ChangeTileVersion
  * @category  Control
  * @classdesc 版本切换控件（目前仅支持 IE10 及以上）暂时不支持自定义位置。
- * @extends {ol/control/Control}
+ * @extends {ol.control.Control}
  * @param {options} options -参数。
  * @param {string} [options.title='switch tile version'] - 提示信息。
  * @param {string} [options.tooltip='top'] - 提示显示位置 top | right | bottom | left。
@@ -194,7 +194,7 @@ export class ChangeTileVersion extends Control {
          * @param {string} tagName - 标签名。
          * @param {string} className - 类名。
          * @param {Object} container - 容器。
-         * @returns {object|Element} 元素
+         * @returns {object|HTMLElement} 元素
          */
         function createElement(tagName, className, container) {
             var el = document.createElement(tagName);
@@ -213,7 +213,7 @@ export class ChangeTileVersion extends Control {
          * @param {string} type - 事件类型。
          * @param {Object} fn -容器。
          * @param {Object} context -当前环境。
-         * @returns {addDomEvent} 添加的事件
+         * @returns {function} 添加的事件
          */
         function addDomEvent(obj, type, fn, context) {
             var handler = function(e) {

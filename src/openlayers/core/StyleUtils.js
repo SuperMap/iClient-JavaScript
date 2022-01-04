@@ -30,7 +30,7 @@ export class StyleUtils {
    * @param {Object} layerInfo - 图层信息。
    * @param {ol.Feature} feature - 要素。
    * @param {string} url - 图层数据地址。
-   * @returns {ol/style/Style} 返回图层样式。
+   * @returns {ol.style.Style} 返回图层样式。
    */
   static getValidStyleFromLayerInfo(layerInfo, feature, url) {
     var type = feature.getGeometry().getType().toUpperCase(),
@@ -323,7 +323,7 @@ export class StyleUtils {
    * @function StyleUtils.toOLPointStyle
    * @description 点样式。
    * @param {Object} style - 样式参数。
-   * @returns {ol/style/Style} 获取点样式。
+   * @returns {ol.style.Style} 获取点样式。
    */
   static toOLPointStyle(style) {
     if (style.pointFile !== '') {
@@ -351,7 +351,7 @@ export class StyleUtils {
    * @function StyleUtils.toOLLineStyle
    * @description 线样式。
    * @param {Object} style - 样式参数。
-   * @returns {ol/style/Style} 获取线的样式。
+   * @returns {ol.style.Style} 获取线的样式。
    */
   static toOLLineStyle(style) {
     return new Style({
@@ -371,7 +371,7 @@ export class StyleUtils {
    * @function StyleUtils.toOLPolygonStyle
    * @description 面样式。
    * @param {Object} style - 样式参数。
-   * @returns {ol/style/Style} 获取面的样式。
+   * @returns {ol.style.Style} 获取面的样式。
    */
   static toOLPolygonStyle(style) {
     var fill = new FillStyle({
@@ -397,7 +397,7 @@ export class StyleUtils {
    * @description 文本样式。
    * @param {Object} style - 样式对象。
    * @param {string} text - 文本参数。
-   * @returns {ol/style/Style} 获取的文本样式。
+   * @returns {ol.style.Style} 获取的文本样式。
    */
   static toOLTextStyle(style, text) {
     return new Style({
@@ -595,7 +595,7 @@ export class StyleUtils {
    * @description 将样式对象转换成openlayer要求的ol.style
    * @param {string} style - 样式对象
    * @param {string} type - feature的类型
-   * @returns {ol/style/Style}
+   * @returns {ol.style.Style}
    */
   static toOpenLayersStyle(style, type) {
     style = style || this.getDefaultStyle();

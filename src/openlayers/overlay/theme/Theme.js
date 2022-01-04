@@ -21,16 +21,16 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。
- * @param {ol/Map} opt_option.map - 当前 openlayers 的 Map 对象。
+ * @param {ol.Map} opt_option.map - 当前 openlayers 的 Map 对象。
  * @param {string} [opt_option.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_option.opacity=1] - 图层透明度。
  * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
- * @param {ol/proj/Projection} [opt_option.projection] - 投影信息。
+ * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
- * @param {ol/source/State} [opt_option.state] - 资源状态。
+ * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol/source/ImageCanvas}
+ * @extends {ol.source.ImageCanvas}
  */
 export class Theme extends ImageCanvasSource {
 
@@ -175,7 +175,7 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param {(ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
+     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 FeatureVector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -498,7 +498,7 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
+     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
@@ -514,8 +514,8 @@ export class Theme extends ImageCanvasSource {
                 featuresTemp.push(features[i].toFeature());
                 continue;
             } else if (features[i] instanceof Feature) {
-                //ol/Feature 数据类型
-                //_toFeature 统一处理 ol/Feature 所有 geometry 类型
+                //ol.Feature 数据类型
+                //_toFeature 统一处理 ol.Feature 所有 geometry 类型
                 featuresTemp.push(this._toFeature(features[i]));
                 continue;
             } else if (features[i] instanceof FeatureVector) {
@@ -541,14 +541,14 @@ export class Theme extends ImageCanvasSource {
      * @function ol.source.Theme.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
+     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);
     }
 
-    //统一处理 ol/feature所有 geometry 类型
+    //统一处理 ol.feature所有 geometry 类型
     _toFeature(feature) {
         let geoFeature = (new GeoJSON()).writeFeature(feature);
         return new GeoJSONFormat().read(geoFeature, "Feature");
