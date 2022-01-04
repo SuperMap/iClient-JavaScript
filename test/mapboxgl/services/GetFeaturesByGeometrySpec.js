@@ -1,5 +1,7 @@
 import { FeatureService } from '../../../src/mapboxgl/services/FeatureService';
 import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import mapboxgl from 'mapbox-gl';
 
@@ -135,7 +137,7 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
     });
 
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var queryPolygonGeometry = {
             type: 'Polygon',
             coordinates: [
@@ -170,7 +172,7 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var queryPolygonGeometry = {
             type: 'Polygon',
             coordinates: [

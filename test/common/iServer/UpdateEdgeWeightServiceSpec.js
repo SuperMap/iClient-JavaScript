@@ -1,5 +1,6 @@
 import {UpdateEdgeWeightService} from '../../../src/common/iServer/UpdateEdgeWeightService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
 
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
 var initUpdateEdgeWeightService_RegisterListener = (url,updateEdgeWeightFailed,updateEdgeWeightCompleted) => {
@@ -30,7 +31,7 @@ describe('UpdateEdgeWeightService', () => {
         expect(myUpdateEdgeWeightService.headers).not.toBeNull();
         myUpdateEdgeWeightService.destroy();
     });
-    
+
     it('crossOrigin', () => {
         var myUpdateEdgeWeightService = new UpdateEdgeWeightService(GlobeParameter.networkAnalystURL, { crossOrigin: false });
         expect(myUpdateEdgeWeightService).not.toBeNull();
@@ -61,7 +62,7 @@ describe('UpdateEdgeWeightService', () => {
                 done();
             }
         };
-        var updateEdgeWeightParam = new SuperMap.UpdateEdgeWeightParameters({
+        var updateEdgeWeightParam = new UpdateEdgeWeightParameters({
             edgeId:"20",
             fromNodeId:"26",
             toNodeId:"109",

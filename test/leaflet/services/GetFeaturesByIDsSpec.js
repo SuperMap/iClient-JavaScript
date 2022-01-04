@@ -1,5 +1,7 @@
 import { featureService } from '../../../src/leaflet/services/FeatureService';
 import { GetFeaturesByIDsParameters } from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
@@ -249,7 +251,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var getFeaturesByIDsService = featureService(dataServiceURL, options);
         var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             datasetNames: ['World1:Capitals'],
@@ -275,7 +277,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var getFeaturesByIDsService = featureService(dataServiceURL, options);
         var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             datasetNames: ['World1:Capitals'],

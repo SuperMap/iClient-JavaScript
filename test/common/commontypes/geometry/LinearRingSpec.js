@@ -1,11 +1,13 @@
-require('../../../../src/common/commontypes/geometry/LinearRing');
+import { LinearRing as GeometryLinearRing } from '../../../../src/common/commontypes/geometry/LinearRing';
+import { Point as GeometryPoint } from '../../../../src/common/commontypes/geometry/Point';
+
 describe('LinearRing', function () {
-    var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
-        new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
-        new SuperMap.Geometry.Point(5006.0235999418364, -3358.8890067038628),
-        new SuperMap.Geometry.Point(5075.3145648369318, -3378.0037556404409),
-        new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)];
-    var linearRing = new SuperMap.Geometry.LinearRing(points);
+    var points = [new GeometryPoint(4933.319287022352, -3337.3849141502124),
+        new GeometryPoint(4960.9674060199022, -3349.3316322355736),
+        new GeometryPoint(5006.0235999418364, -3358.8890067038628),
+        new GeometryPoint(5075.3145648369318, -3378.0037556404409),
+        new GeometryPoint(5305.19551436013, -3376.9669111768926)];
+    var linearRing = new GeometryLinearRing(points);
 
     it('initialize, getArea', function () {
         expect(linearRing).not.toBeNull();
@@ -23,7 +25,7 @@ describe('LinearRing', function () {
 
     // 添加一个点到几何图形数组中
     it('addComponent', function () {
-        var addPoint = new SuperMap.Geometry.Point(5365.09521434033, -3324.5789112568386);
+        var addPoint = new GeometryPoint(5365.09521434033, -3324.5789112568386);
         var addSuccess = linearRing.addComponent(addPoint, 6);
         expect(addSuccess).toBeTruthy();
         expect(linearRing.components.length).toEqual(7);

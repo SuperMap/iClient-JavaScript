@@ -2,6 +2,7 @@ import {ProcessingService} from '../../../src/classic/services/ProcessingService
 import {SecurityManager} from '../../../src/common/security/SecurityManager';
 import {KernelDensityJobParameter} from '../../../src/common/iServer/KernelDensityJobParameter';
 import {SummaryMeshJobParameter} from '../../../src/common/iServer/SummaryMeshJobParameter';
+import {SummaryAttributesJobsParameter} from '../../../src/common/iServer/SummaryAttributesJobsParameter';
 import {SingleObjectQueryJobsParameter} from '../../../src/common/iServer/SingleObjectQueryJobsParameter';
 import {SummaryRegionJobParameter} from '../../../src/common/iServer/SummaryRegionJobParameter';
 import {VectorClipJobsParameter} from '../../../src/common/iServer/VectorClipJobsParameter';
@@ -1853,7 +1854,7 @@ describe('classic_ProcessingService', () => {
             }
             return Promise.resolve();
         });
-        var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
+        var summaryAttributesJobsParameter = new SummaryAttributesJobsParameter({
             datasetName: "smtiles_processing_newyorkZone_R",
             groupField: "",
             attributeField: "",

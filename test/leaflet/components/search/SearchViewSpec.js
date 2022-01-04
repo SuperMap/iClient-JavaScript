@@ -1,9 +1,9 @@
-import { search } from '../../../../src/leaflet/components/search/SearchView'
+import { SearchView } from '../../../../src/leaflet/components/search/SearchView';
+import { GeoJSONLayerWithName } from '../../../../src/leaflet/components/commonmodels/GeoJSONLayerWithName';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import { QueryBySQLService } from '../../../../src/common/iServer/QueryBySQLService';
 import { QueryBySQLParameters } from '../../../../src/common/iServer/QueryBySQLParameters';
-import { QueryOption } from '../../../../src/common/REST';
-import { FilterParameter } from '../../../../src/common/iServer/FilterParameter';
+
 
 var map, url = GlobeParameter.WorldURL, testDiv;
 var poiSearch;
@@ -53,7 +53,7 @@ describe('leaflet_search_SearchView', () => {
                 zoom: 2
             });
 
-            poiSearch = L.supermap.components.search({
+            poiSearch = new SearchView({
                 cityGeoCodingConfig: {
                     addressUrl: "http://test:8090/iserver/services/localsearch/rest/searchdatas/China/poiinfos"
                 },
@@ -90,7 +90,7 @@ describe('leaflet_search_SearchView', () => {
                             });
                         },
                     }).addTo(map);
-                    poiSearch.addSearchLayer([L.supermap.components.geoJSONLayerWithName("首都", resultLayer)]);
+                    poiSearch.addSearchLayer([new GeoJSONLayerWithName("首都", resultLayer)]);
                     done();
                 } catch (exception) {
                     expect(false).toBeTruthy();

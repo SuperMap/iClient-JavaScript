@@ -1,5 +1,7 @@
 import { FeatureService } from '../../../src/mapboxgl/services/FeatureService';
 import { GetFeaturesByIDsParameters } from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
@@ -101,7 +103,7 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var idsParam = new GetFeaturesByIDsParameters({
             IDs: [247],
             datasetNames: ['World:Countries'],
@@ -124,7 +126,7 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var idsParam = new GetFeaturesByIDsParameters({
             IDs: [247],
             datasetNames: ['World:Countries'],

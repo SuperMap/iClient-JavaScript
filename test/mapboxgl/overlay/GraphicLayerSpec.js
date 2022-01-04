@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import { GraphicLayer } from '../../../src/mapboxgl/overlay/GraphicLayer';
+import { Graphic } from '../../../src/mapboxgl/overlay/Graphic';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('mapboxgl_GraphicLayer', () => {
@@ -20,7 +21,7 @@ describe('mapboxgl_GraphicLayer', () => {
         lng: parseFloat(coors[i][0]),
         lat: parseFloat(coors[i][1])
       };
-      graphics.push(new mapboxgl.supermap.Graphic(lngLat));
+      graphics.push(new Graphic(lngLat));
       graphics[i].setId(i);
       graphics[i].setAttributes({ name: "graphic_" + i });
     }
@@ -159,7 +160,7 @@ describe('mapboxgl_GraphicLayer', () => {
           lng: parseFloat(coors[i][0]),
           lat: parseFloat(coors[i][1])
         };
-        graphics.push(new mapboxgl.supermap.Graphic(lngLat));
+        graphics.push(new Graphic(lngLat));
         graphics[i].setId(i);
         graphics[i].setAttributes({ name: "graphic_" + i });
       }
@@ -180,7 +181,7 @@ describe('mapboxgl_GraphicLayer', () => {
           lng: parseFloat(coors[i][0]),
           lat: parseFloat(coors[i][1])
         };
-        graphics.push(new mapboxgl.supermap.Graphic(lngLat));
+        graphics.push(new Graphic(lngLat));
         graphics[i].setId(i);
         graphics[i].setAttributes({ name: "graphic_" + i });
       }

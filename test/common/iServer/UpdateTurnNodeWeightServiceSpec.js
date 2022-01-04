@@ -1,6 +1,6 @@
 import {UpdateTurnNodeWeightService} from '../../../src/common/iServer/UpdateTurnNodeWeightService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import {SuperMap} from "@supermap/iclient-common";
+import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
 
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
 var initUpdateTurnNodeWeightService_RegisterListener = (url,updateTurnNodeWeightFailed,updateTurnNodeWeightCompleted) => {
@@ -31,7 +31,7 @@ describe('UpdateTurnNodeWeightService', () => {
         expect(myUpdateTurnNodeWeightService.headers).not.toBeNull();
         myUpdateTurnNodeWeightService.destroy();
     });
-    
+
     it('crossOrigin', () => {
         var myUpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(GlobeParameter.networkAnalystURL, { crossOrigin: false });
         expect(myUpdateTurnNodeWeightService).not.toBeNull();
@@ -62,7 +62,7 @@ describe('UpdateTurnNodeWeightService', () => {
                 done();
             }
         };
-        var updateTurnNodeWeightParam = new SuperMap.UpdateTurnNodeWeightParameters({
+        var updateTurnNodeWeightParam = new UpdateTurnNodeWeightParameters({
            nodeId:"106",
            fromEdgeId:"6508",
            toEdgeId:"6504",

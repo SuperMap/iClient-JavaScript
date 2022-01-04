@@ -1,5 +1,7 @@
 import { FeatureService } from '../../../src/mapboxgl/services/FeatureService';
 import { GetFeaturesByBoundsParameters } from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import mapboxgl from 'mapbox-gl';
 
@@ -108,7 +110,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBounds', () => {
         var sw = new mapboxgl.LngLat(-20, -20);
         var ne = new mapboxgl.LngLat(20, 20);
         var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var params = new GetFeaturesByBoundsParameters({
             datasetNames: ['World:Capitals'],
             bounds: lngLatBounds,
@@ -129,7 +131,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBounds', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var sw = new mapboxgl.LngLat(-20, -20);
         var ne = new mapboxgl.LngLat(20, 20);
         var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);

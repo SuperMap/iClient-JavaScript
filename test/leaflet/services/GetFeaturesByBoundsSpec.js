@@ -1,5 +1,7 @@
 import { featureService } from '../../../src/leaflet/services/FeatureService';
 import { GetFeaturesByBoundsParameters } from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
@@ -247,7 +249,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var polygon = L.polygon([
             [-20, 20],
             [0, 20],
@@ -275,7 +277,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var polygon = L.polygon([
             [-20, 20],
             [0, 20],

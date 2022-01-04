@@ -1,10 +1,11 @@
-require('../../../../src/common/commontypes/geometry/Collection');
+import { Point as GeometryPoint } from '../../../../src/common/commontypes/geometry/Point';
+import { Collection as GeometryCollection } from '../../../../src/common/commontypes/geometry/Collection';
 
 describe('Collection', function () {
     it('clone, getComponentsString, removeComponents', function () {
-        var point1 = new SuperMap.Geometry.Point(10, 20);
-        var point2 = new SuperMap.Geometry.Point(30, 40);
-        var collection = new SuperMap.Geometry.Collection([point1, point2]);
+        var point1 = new GeometryPoint(10, 20);
+        var point2 = new GeometryPoint(30, 40);
+        var collection = new GeometryCollection([point1, point2]);
         var collection1 = collection.clone();
         expect(collection.CLASS_NAME).toEqual(collection1.CLASS_NAME);
         expect(collection.components.length).toEqual(collection1.components.length);
@@ -24,11 +25,11 @@ describe('Collection', function () {
     });
 
     it('addComponent_index<components.length', function () {
-        var point1 = new SuperMap.Geometry.Point(10, 20);
-        var point2 = new SuperMap.Geometry.Point(30, 40);
-        var collection = new SuperMap.Geometry.Collection([point1, point2]);
+        var point1 = new GeometryPoint(10, 20);
+        var point2 = new GeometryPoint(30, 40);
+        var collection = new GeometryCollection([point1, point2]);
         expect(collection.components.length).toEqual(2);
-        var point3 = new SuperMap.Geometry.Point(10, 10);
+        var point3 = new GeometryPoint(10, 10);
         collection.addComponent(point3, 0);
         expect(collection.components.length).toEqual(3);
         expect(collection.components[0].x).toEqual(10);
@@ -41,9 +42,9 @@ describe('Collection', function () {
     });
 
     it('getArea', function () {
-        var point1 = new SuperMap.Geometry.Point(1, 2);
-        var point2 = new SuperMap.Geometry.Point(3, 2);
-        var collection = new SuperMap.Geometry.Collection([point1, point2]);
+        var point1 = new GeometryPoint(1, 2);
+        var point2 = new GeometryPoint(3, 2);
+        var collection = new GeometryCollection([point1, point2]);
         var area = collection.getArea();
         expect(area).toEqual(0);
         collection.destroy();
@@ -51,21 +52,21 @@ describe('Collection', function () {
 
     it('equals', function () {
         //CLASS_NAME is not equal
-        var point = new SuperMap.Geometry.Point(1, 2);
-        var point1 = new SuperMap.Geometry.Point(2, 2);
-        var collection = new SuperMap.Geometry.Collection([point]);
+        var point = new GeometryPoint(1, 2);
+        var point1 = new GeometryPoint(2, 2);
+        var collection = new GeometryCollection([point]);
         var isEqual = collection.equals(point);
         expect(isEqual).toBeFalsy();
         //length of components is not equal
-        var collection1 = new SuperMap.Geometry.Collection([point, point1]);
+        var collection1 = new GeometryCollection([point, point1]);
         var isEqual1 = collection.equals(collection1);
         expect(isEqual1).toBeFalsy();
         //components[i] is not equal
-        var collection2 = new SuperMap.Geometry.Collection([point1]);
+        var collection2 = new GeometryCollection([point1]);
         var isEqual2 = collection.equals(collection2);
         expect(isEqual2).toBeFalsy();
         //equal
-        var collection3 = new SuperMap.Geometry.Collection([point]);
+        var collection3 = new GeometryCollection([point]);
         var isEqual3 = collection.equals(collection3);
         expect(isEqual3).toBeTruthy();
         collection.destroy();
@@ -75,9 +76,9 @@ describe('Collection', function () {
     });
 
     it('getVertices', function () {
-        var point1 = new SuperMap.Geometry.Point(10, 0);
-        var point2 = new SuperMap.Geometry.Point(30, 0);
-        var collection = new SuperMap.Geometry.Collection([point1, point2]);
+        var point1 = new GeometryPoint(10, 0);
+        var point2 = new GeometryPoint(30, 0);
+        var collection = new GeometryCollection([point1, point2]);
         var vertices = collection.getVertices(false);
         expect(vertices.length).toEqual(2);
         expect(collection.components[0].x).toEqual(10);

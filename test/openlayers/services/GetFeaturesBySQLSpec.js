@@ -1,5 +1,7 @@
 import { FeatureService } from '../../../src/openlayers/services/FeatureService';
 import { GetFeaturesBySQLParameters } from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
@@ -116,7 +118,7 @@ describe('openlayers_FeatureService_getFeaturesBySQL', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: 'Countries@World',
@@ -140,7 +142,7 @@ describe('openlayers_FeatureService_getFeaturesBySQL', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: 'Countries@World',

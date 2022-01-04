@@ -1,5 +1,7 @@
 import { FeatureService } from '../../../src/openlayers/services/FeatureService';
 import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import Polygon from 'ol/geom/Polygon';
 
@@ -126,7 +128,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var polygon = new Polygon([
             [
                 [0, 0],
@@ -156,7 +158,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var polygon = new Polygon([
             [
                 [0, 0],
