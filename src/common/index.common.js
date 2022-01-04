@@ -86,15 +86,8 @@ import {
     GeometryPoint,
     GeometryPolygon,
     GeometryRectangle,
-    inheritExt,
-    mixinExt,
-    StringExt,
-    NumberExt,
-    FunctionExt,
-    ArrayExt,
     Bounds,
     Credential,
-    DateExt,
     Event,
     Events,
     Feature,
@@ -106,7 +99,7 @@ import {
     Browser,
     FeatureVector
 } from './commontypes';
-import { Format, GeoJSONFormat, JSONFormat } from './format';
+import { Format, GeoJSONFormat, JSONFormat, WKTFormat } from './format';
 
 import { TimeControlBase, TimeFlowControl } from './control';
 import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
@@ -317,6 +310,7 @@ import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter
 import { ElasticSearch } from './thirdparty';
 import {
     isCORS,
+    setCORS,
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
@@ -333,6 +327,8 @@ import {
     ShapeParameters,
     ShapeParametersImage,
     ShapeParametersLabel,
+    ShapeParametersCircle,
+    ShapeParametersPoint,
     ShapeParametersLine,
     ShapeParametersPolygon,
     ShapeParametersRectangle,
@@ -467,15 +463,8 @@ export {
     GeometryPoint,
     GeometryPolygon,
     GeometryRectangle,
-    inheritExt,
-    mixinExt,
-    StringExt,
-    NumberExt,
-    FunctionExt,
-    ArrayExt,
     Bounds,
     Credential,
-    DateExt,
     Event,
     Events,
     Feature,
@@ -488,9 +477,10 @@ export {
     FeatureVector
 };
 export { TimeControlBase, TimeFlowControl };
-export { Format, GeoJSONFormat, JSONFormat };
+export { Format, GeoJSONFormat, JSONFormat, WKTFormat };
 export {
     isCORS,
+    setCORS,
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
@@ -710,6 +700,8 @@ export {
     ShapeParameters,
     ShapeParametersImage,
     ShapeParametersLabel,
+    ShapeParametersCircle,
+    ShapeParametersPoint,
     ShapeParametersLine,
     ShapeParametersPolygon,
     ShapeParametersRectangle,

@@ -178,7 +178,6 @@ var RequestTimeout;
  * @function setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
- * @private
  * @usage
  * ```
  * // 浏览器

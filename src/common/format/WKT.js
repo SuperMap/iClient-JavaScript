@@ -21,7 +21,6 @@ import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
  * @extends {Format}
  * @param {Object} options - 可选的选项对象，其属性将被设置到实例。option 具体配置项继承自 {@link Format}。
  * @usage
- * @private
  */
 export class WKT extends Format {
 

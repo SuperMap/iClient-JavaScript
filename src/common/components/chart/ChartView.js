@@ -10,7 +10,7 @@ import {
 } from "../messagebox/MessageBox";
 
 /**
- * @class Chart
+ * @class ChartView
  * @aliasclass Components.Chart
  * @deprecatedclass SuperMap.Components.Chart
  * @classdesc 图表组件

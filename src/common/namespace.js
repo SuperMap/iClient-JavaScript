@@ -107,6 +107,7 @@ import {
   Format,
   GeoJSONFormat,
   JSONFormat,
+  WKTFormat,
   FeatureVector,
   TimeControlBase,
   TimeFlowControl,
@@ -320,6 +321,7 @@ import {
   // WebMachineLearning,
   ElasticSearch,
   isCORS,
+  setCORS, 
   FetchRequest,
   ColorsPickerUtil,
   ArrayStatistic,
@@ -332,6 +334,8 @@ import {
   ShapeParameters,
   ShapeParametersImage,
   ShapeParametersLabel,
+  ShapeParametersCircle,
+  ShapeParametersPoint,
   ShapeParametersLine,
   ShapeParametersPolygon,
   ShapeParametersRectangle,
@@ -432,8 +436,7 @@ import {
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
 import { UGCImage } from './iServer/Image';
-import { setCORS, setRequestTimeout, getRequestTimeout } from './util/FetchRequest';
-import { WKTFormat } from './format';
+import { setRequestTimeout, getRequestTimeout } from './util/FetchRequest';
 import {
   FeatureThemeBar,
   FeatureThemeBar3D,
@@ -441,9 +444,7 @@ import {
   FeatureThemeLine,
   FeatureThemePie,
   FeatureThemePoint,
-  FeatureThemeRing,
-  ShapeParametersCircle,
-  ShapeParametersPoint
+  FeatureThemeRing
 } from './overlay';
 
 if (window && window.SuperMap) {

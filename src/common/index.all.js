@@ -76,3 +76,5 @@ export {
   ImageCollectionService,
   ImageService
 } from './iServer';
+export { DateExt } from './commontypes/Date';
+export { inheritExt, mixinExt, StringExt, NumberExt, FunctionExt, ArrayExt } from './commontypes/BaseTypes';
