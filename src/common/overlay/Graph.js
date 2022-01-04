@@ -30,7 +30,7 @@ export class Graph extends Theme {
         super(data, layer, fields, setting, lonlat, options);
 
         /**
-         * @member {ShapeFactory} FeatureThemeGraph.prototype.shapeFactory
+         * @member {FeatureShapeFactory} FeatureThemeGraph.prototype.shapeFactory
          * @description 内置的图形工厂对象，调用其 createShape 方法创建图形。
          */
         this.shapeFactory = new ShapeFactory();

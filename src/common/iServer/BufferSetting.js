@@ -40,7 +40,7 @@ export class BufferSetting {
          * @member {BufferDistance} [BufferSetting.prototype.rightDistance=100]
          * @description 右侧缓冲距离。
          * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
+         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting#radiusUnit}设置（默认全部为米）。
          */
         this.rightDistance = new BufferDistance();
 
@@ -52,7 +52,7 @@ export class BufferSetting {
 
         /**
          * @member {BufferRadiusUnit} [BufferSetting.prototype.radiusUnit = BufferRadiusUnit.METER]
-         * @description 缓冲半径单位，可以是{@link BufferRadiusUnit.METER}、{@link BufferRadiusUnit.MILIMETER}、
+         * @description 缓冲半径单位，可以是{@link BufferRadiusUnit.METER}、{@link BufferRadiusUnit.MILLIMETER}、
          * {@link BufferRadiusUnit.CENTIMETER}、{@link BufferRadiusUnit.DECIMETER}、{@link BufferRadiusUnit.KILOMETER}、
          * {@link BufferRadiusUnit.FOOT}、{@link BufferRadiusUnit.INCH}、{@link BufferRadiusUnit.MILE}、{@link BufferRadiusUnit.YARD}。
          * 仅对BufferAnalyst有效。

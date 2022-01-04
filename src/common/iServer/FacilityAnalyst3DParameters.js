@@ -54,7 +54,7 @@ export class FacilityAnalyst3DParameters {
 
     /**
      * @function FacilityAnalyst3DParameters.prototype.destroy
-     * @override
+     * @description 释放资源，将资源的属性置空。
      */
     destroy() {
         var me = this;

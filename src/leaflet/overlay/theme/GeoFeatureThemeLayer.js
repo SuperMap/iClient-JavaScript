@@ -189,11 +189,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
-<<<<<<< Updated upstream
-     * @param {GeometryVector} feature - 需要创建的要素。
-=======
      * @param {FeatureVector} feature - 要创建的要素。
->>>>>>> Stashed changes
      */
     createThematicFeature: function (feature) {
         var me = this;

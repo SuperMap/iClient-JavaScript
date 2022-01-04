@@ -26,7 +26,7 @@ import {GeoFeature} from './theme/GeoFeature';
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {GeoFeature}
+ * @extends {ol.source.GeoFeature}
  */
 export class Range extends GeoFeature {
 

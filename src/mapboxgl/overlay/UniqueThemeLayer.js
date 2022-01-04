@@ -22,7 +22,7 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @param {number} [opt_options.opacity=1] - 图层不透明度。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] -  hover 的高亮样式。
- * @extends {GeoFeature}
+ * @extends {GeoFeatureThemeLayer}
  * @usage
  */
 export class Unique extends GeoFeature {

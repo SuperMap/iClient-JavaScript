@@ -57,7 +57,7 @@ export class GeoJsonLayersDataModel {
  * @class GeoJsonLayerDataModel
  * @classdesc 图层数据模型，可用于图层要素数据、属性管理等。
  * @param {L.GeoJSON} layer - GeoJSON 图层。
- * 注：leaflet没有 feature 的概念
+ * 注：leaflet 没有 feature 的概念
  * @usage
  */
 export class GeoJsonLayerDataModel {
@@ -93,7 +93,7 @@ export class GeoJsonLayerDataModel {
     /**
      * @function GeoJsonLayerDataModel.prototype.getAllAttributeNames
      * @description 获取图层所有属性名称。
-     * @returns {Array.<string>} - 返回图层所有属性名称。
+     * @returns {Array.<string>} 返回图层所有属性名称。
      */
     getAllAttributeNames() {
         return this.attributeNames;
@@ -103,7 +103,7 @@ export class GeoJsonLayerDataModel {
      * @function GeoJsonLayerDataModel.prototype.getAttributeNamesByType
      * @description 获取指定类型的图层属性字段。
      * @param {string} [type] - 类型参数。默认返回所有字段，可选 'Num'。
-     * @returns {Array.<string>} - 返回指定类型的图层属性字段。
+     * @returns {Array.<string>} 返回指定类型的图层属性字段。
      */
     getAttributeNamesByType(type) {
         //图层属性字段
@@ -126,7 +126,7 @@ export class GeoJsonLayerDataModel {
     /**
      * @function GeoJsonLayerDataModel.prototype.getAllFeatures
      * @description 获取图层所有要素。
-     * @returns {Array.<Object>} - 返回图层所有要素。
+     * @returns {Array.<Object>} 返回图层所有要素。
      */
     getAllFeatures() {
         return this.features;
@@ -136,7 +136,7 @@ export class GeoJsonLayerDataModel {
      * @function GeoJsonLayerDataModel.prototype.getAttributeValueByAttributeName
      * @description 获取属性值。
      * @param {string} attributeName - 属性名称。
-     * @returns {Object} - 返回属性值对象。
+     * @returns {Object} 返回属性值对象。
      */
     getAttributeValueByAttributeName(attributeName) {
         //如果图层属性对象中已存在该属性，则直接返回
@@ -164,7 +164,7 @@ export class GeoJsonLayerDataModel {
      * @function GeoJsonLayerDataModel.prototype.getFeaturesByKeyWord
      * @description 查询要素对象。
      * @param {string} keyWord - 查询关键字。
-     * @returns {Array.<Object>} - 返回要素对象数组。
+     * @returns {Array.<Object>} 返回要素对象数组。
      */
     getFeaturesByKeyWord(keyWord) {
         let features = [], keyReg = new RegExp(keyWord.toLowerCase());

@@ -322,7 +322,7 @@ export class SecurityManager {
      * @version 10.1.2
      * @function SecurityManager.appendCredential
      * @param {string} url - 服务URL
-     * @returns {string} - 绑定了token或者key的服务URL
+     * @returns {string} 绑定了token或者key的服务URL
      */
     static appendCredential(url) {
         var newUrl = url;

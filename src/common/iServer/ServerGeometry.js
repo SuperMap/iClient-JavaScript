@@ -239,7 +239,7 @@ export class ServerGeometry {
     }
 
     /**
-     * @function ServerGeometry.prototype.toGeoLine
+     * @function ServerGeometry.prototype.toGeoLinem
      * @description 将服务端的路由线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
      * @returns {Geometry} 转换后的客户端几何对象。
      */

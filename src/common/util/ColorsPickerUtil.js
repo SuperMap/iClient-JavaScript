@@ -5,9 +5,9 @@ var ColorRender = new Color();
 // 					"www.qzct.net": "#7ed321" = new LevelRenderer.Tool.Color();
 
 /**
- * Created by yzy on 2016/11/9.
- * 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
- *
+ * @class ColorsPickerUtil
+ * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
+ * @usage
  */
 export class ColorsPickerUtil  {
     /**

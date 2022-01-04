@@ -15,23 +15,22 @@ import { ShapeParameters } from './ShapeParameters';
  * @param {string} text - 图形中的附加文本。
  * @usage
  * ```
- * 
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   new {namespace}.Feature.ShapeParameters.Label(components);
- * 
+ *   new {namespace}.Feature.ShapeParameters.Label(x, y, text);
+ *
  *   // 弃用的写法
- *   new SuperMap.Feature.ShapeParameters.Label(components);
+ *   new SuperMap.Feature.ShapeParameters.Label(x, y, text);
  *
  * </script>
  * // ES6 Import
  * import { ShapeParametersLabel } from '{npm}';
- * new ShapeParametersLabel(components);
- * 
+ * new ShapeParametersLabel(x, y, text);
+ *
  * // 弃用的写法
  * import { Label } from '{npm}';
- * new Label(components);
+ * new Label(x, y, text);
  *
  * ```
  */

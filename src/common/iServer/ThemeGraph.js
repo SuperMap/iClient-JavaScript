@@ -102,7 +102,7 @@ export class ThemeGraph extends Theme {
         /**
          * @member {Array.<number>} ThemeGraph.prototype.memoryKeys
          * @description 以内存数组方式制作专题图时的键数组。
-         *              键数组内的数值代表 SmID 值，它与 ThemeGraphItem 类中的值数组（ThemeGraphItem.memoryDoubleValues）要关联起来应用。
+         *              键数组内的数值代表 SmID 值，它与 {@link ThemeGraphItem} 类中的值数组（{@link ThemeGraphItem#memoryDoubleValues}）要关联起来应用。
          *              键数组中数值的个数必须要与值数组的数值个数一致。值数组中的值将代替原来的专题值来制作统计专题图。
          *              目前所有的专题图都支持以内存数组的方式制作专题图，但统计专题图与其他专题图指定内存数组的方式不同，
          *              统计专题图使用 memoryKeys 指定内存数组，而其他专题图则使用 memoryData 来指定内存数组。

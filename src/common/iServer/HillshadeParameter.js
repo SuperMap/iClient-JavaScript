@@ -53,7 +53,7 @@ export class HillshadeParameter extends RasterFunctionParameter {
         this.zFactor = 1;
 
         /**
-         * @member {RasterFunctionType} RasterFunctionParameter.prototype.type
+         * @member {RasterFunctionType} HillshadeParameter.prototype.type
          * @description 栅格分析方法。
          */
         this.type = RasterFunctionType.HILLSHADE;

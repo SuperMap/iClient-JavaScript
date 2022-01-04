@@ -111,6 +111,7 @@ export class Point extends Geometry {
 
     /**
      * @function GeometryPoint.prototype.toShortString
+     * @description 将 x/y 坐标转换成简单字符串。
      * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)
      */
     toShortString() {

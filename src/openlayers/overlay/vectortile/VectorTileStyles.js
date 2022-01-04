@@ -373,7 +373,7 @@ export class VectorTileStyles extends Observable {
     }
 
     /**
-     * @function VectorTileStyles.setSelectedRegionStyle
+     * @function VectorTileStyles.setSelectedTextStyle
      * @description 设置选择后文本样式。
      * @param {Object} selectedTextStyle - 选择后文本样式。
      */

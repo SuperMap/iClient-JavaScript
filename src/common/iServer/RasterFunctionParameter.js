@@ -15,11 +15,13 @@ import { Util } from '../commontypes/Util';
 export class RasterFunctionParameter {
     constructor(options) {
         options = options || {};
+
         /**
          * @member {RasterFunctionType} [RasterFunctionParameter.prototype.type]
          * @description 栅格分析方法。
          */
         this.type = null;
+
         Util.extend(this, options);
         this.CLASS_NAME = 'SuperMap.RasterFunctionParameter';
     }

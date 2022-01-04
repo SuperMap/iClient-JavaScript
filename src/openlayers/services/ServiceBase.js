@@ -14,6 +14,7 @@ import Observable from 'ol/Observable';
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {ol.Observable}
+ * @usage
  */
 export class ServiceBase extends Observable {
     constructor(url, options) {

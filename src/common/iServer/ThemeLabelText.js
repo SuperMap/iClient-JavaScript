@@ -26,28 +26,28 @@ export class ThemeLabelText {
         /**
          * @member {number} [ThemeLabelText.prototype.maxTextHeight=0]
          * @description 标签中文本的最大高度。当标签文本不固定大小时，即 ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为 0.1 毫米。
+         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为毫米。
          */
         this.maxTextHeight = 0;
 
         /**
          * @member {number} [ThemeLabelText.prototype.maxTextWidth=0]
          * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为 0.1 毫米。
+         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为毫米。
          */
         this.maxTextWidth = 0;
 
         /**
          * @member {number} [ThemeLabelText.prototype.minTextHeight=0]
          * @description 标签中文本的最小高度。当标签文本不固定大小时，即 ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本高度小于最小高度之后就不再缩小。高度单位为 0.1 毫米。
+         *              当缩小后的文本高度小于最小高度之后就不再缩小。高度单位为毫米。
          */
         this.minTextHeight = 0;
 
         /**
          * @member {number} [ThemeLabelText.prototype.minTextWidth=0]
          * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为 0.1 毫米。
+         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为毫米。
          */
         this.minTextWidth = 0;
 

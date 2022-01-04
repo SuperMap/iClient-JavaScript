@@ -158,11 +158,6 @@ export class ChangeTileVersion extends Control {
             } else {
                 this._sliderContainer.style.width = 150 + 'px';
             }
-
-            /**
-             * @function ChangeTileVersion.prototype.addDomEvent
-             * @description 为元素添加事件。
-             */
             addDomEvent(
                 this._container,
                 'click',

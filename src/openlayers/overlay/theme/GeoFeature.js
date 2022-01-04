@@ -249,7 +249,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.setMaxCacheCount
+     * @function ol.source.GeoFeature.prototype.getShapesByFeatureID
      * @param {number} featureID - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */

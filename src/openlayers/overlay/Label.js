@@ -32,7 +32,7 @@ import Point from 'ol/geom/Point';
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @extends {GeoFeature}
+ * @extends {ol.source.GeoFeature}
  */
 export class Label extends GeoFeature {
 

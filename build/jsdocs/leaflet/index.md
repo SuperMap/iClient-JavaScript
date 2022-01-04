@@ -28,7 +28,7 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%">投影</th>
 </tr><tr>
     <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库[ECharts](https://echarts.baidu.com/)，[MapV](https://mapv.baidu.com/)</p>
-        <a href="TileVectorLayer.html">TileVectorLayer</a><br>
+        <a href="TiledVectorLayer.html">TiledVectorLayer</a><br>
         <a href="GraphicLayer.html">GraphicLayer</a><br>
         <a href="DataFlowLayer.html">DataFlowLayer</a><br>
         <a href="RangeThemeLayer.html">RangeThemeLayer</a><br>

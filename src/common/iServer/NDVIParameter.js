@@ -40,7 +40,7 @@ export class NDVIParameter extends RasterFunctionParameter {
             '0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff';
 
         /**
-         * @member {RasterFunctionType} [RasterFunctionParameter.prototype.type]
+         * @member {RasterFunctionType} [NDVIParameter.prototype.type]
          * @description 栅格分析方法。
          */
         this.type = RasterFunctionType.NDVI;

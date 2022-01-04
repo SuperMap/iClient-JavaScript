@@ -136,7 +136,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.count
+     * @function  ElasticSearch.prototype.create
      * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
@@ -543,7 +543,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.update
+     * @function  ElasticSearch.prototype.updateByQuery
      * @description 通过查询API来更新文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>

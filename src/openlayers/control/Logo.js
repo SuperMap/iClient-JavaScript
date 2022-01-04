@@ -11,8 +11,8 @@ import Control from 'ol/control/Control';
  * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @extends {ol.control.Control}
  * @example
- *      var control = new Logo();
- *      map.addControl(control);
+ * var control = new Logo();
+ * map.addControl(control);
  * @param {Object} options - 参数。
  * @param {string} [options.imageUrl] - logo 图片地址。
  * @param {number} [options.width] - logo 图片宽。
@@ -73,7 +73,7 @@ export class Logo extends Control {
         /**
          * @function Logo.prototype.setDivStyle
          * @description 设置对象 style。
-         * @param {HTMLElement} div 待设置的 div。
+         * @param {HTMLElement} div - 待设置的 div。
          */
         function setDivStyle(div) {
             var attributionsElem = document.getElementsByClassName('ol-attribution');

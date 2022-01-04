@@ -98,7 +98,7 @@ export class SummaryMeshJobParameter {
 
     /**
      * @function SummaryMeshJobParameter.destroy
-     * @override
+     * @description 释放资源，将资源的属性置空。
      */
     destroy() {
         this.datasetName = null;
