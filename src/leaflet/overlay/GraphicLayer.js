@@ -46,8 +46,8 @@ const DEFAULT_ZOOM_OFFSET = {
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {Function} [options.onClick] -  图层鼠标点击响应事件（支持 webgl、canvas 渲染）。
- * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只支持 webgl 渲染）。
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件（支持 webgl、canvas 渲染）。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只支持 webgl 渲染）。
  * @usage
  */
 export var GraphicLayer = L.Path.extend({
@@ -138,7 +138,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 指定属性名和属性值，获取第一个匹配的要素数组。
      * @param {string} property - 属性名称。
      * @param {string} value - 属性值。
-     * @returns {ol.Graphic} 返回匹配的 graphic 。
+     * @returns {Graphic} 返回匹配的 graphic 。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -155,7 +155,7 @@ export var GraphicLayer = L.Path.extend({
      * @function GraphicLayer.prototype.getGraphicById
      * @description 获取指定 id 的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id。
-     * @returns {ol.Graphic} 返回匹配的 graphic。
+     * @returns {Graphic} 返回匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy('id', graphicId);
@@ -166,7 +166,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 指定属性名和属性值，获取所有匹配的要素数组。
      * @param {string} attrName - 属性名称。
      * @param {string} attrValue - 属性值。
-     * @returns {Array.<ol.Graphic>} 返回匹配的 graphic 数组。
+     * @returns {Array.<Graphic>} 返回匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -185,7 +185,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function GraphicLayer.prototype.removeGraphics
      * @description 删除要素数组，默认删除所有要素。
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组。
+     * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -222,7 +222,7 @@ export var GraphicLayer = L.Path.extend({
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
+     * @param {array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。

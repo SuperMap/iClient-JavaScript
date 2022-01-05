@@ -218,7 +218,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function HeatMapLayer.prototype.updateHeatPoints
      * @description 刷新热点图显示。
-     * @param {L.LngLatBounds} bounds - 当前显示范围。
+     * @param {L.LatLngBounds} bounds - 当前显示范围。
      */
     updateHeatPoints: function (bounds) {
         if (this.features && this.features.length > 0) {
@@ -231,7 +231,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function HeatMapLayer.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
-     * @param {L.LngLatBounds} bounds - 当前显示范围。
+     * @param {L.LatLngBounds} bounds - 当前显示范围。
      * @private
      */
     convertFastToPixelPoints: function (bounds) {
@@ -291,7 +291,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function HeatMapLayer.prototype.draw
      * @description 绘制热点图。
-     * @param {Array} data - convertToPixelPoints 方法计算出的点。
+     * @param {array} data - convertToPixelPoints 方法计算出的点。
      * @param {number} maxWeight - 最大权重。
      * @private
      */
@@ -321,8 +321,8 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function HeatMapLayer.prototype.colorize
      * @description 根据渐变色重置热点图 rgb 值。
-     * @param {Array} pixels 像素 RGBA 值。
-     * @param {Array} gradient 渐变 canvas.getImageData.data。
+     * @param {array} pixels 像素 RGBA 值。
+     * @param {array} gradient 渐变 canvas.getImageData.data。
      * @private
      */
     colorize: function (pixels, gradient) {
@@ -411,7 +411,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function HeatMapLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
-     * @param {Array} coordinate - 地理坐标。
+     * @param {array} coordinate - 地理坐标。
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {

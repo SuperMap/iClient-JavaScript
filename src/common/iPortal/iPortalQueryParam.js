@@ -17,13 +17,13 @@ import {Util} from '../commontypes/Util';
  * @param {OrderBy} [params.orderBy] - 排序字段。
  * @param {OrderType} [params.orderType] - 根据升序还是降序过滤。
  * @param {SearchType} [params.searchType] - 根据查询的范围进行过滤。
- * @param {Array} [params.tags] - 标签。
- * @param {Array} [params.dirIds] - 目录 id
- * @param {Array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
+ * @param {array} [params.tags] - 标签。
+ * @param {array} [params.dirIds] - 目录 id
+ * @param {array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
  * @param {AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
  * @param {string} [params.text] - 	搜索的关键词。
- * @param {Array} [params.groupIds] - 	根据群组进行过滤。
- * @param {Array} [params.departmentIds] - 根据部门进行过滤。
+ * @param {array} [params.groupIds] - 	根据群组进行过滤。
+ * @param {array} [params.departmentIds] - 根据部门进行过滤。
  * @usage
  */
 export class IPortalQueryParam {

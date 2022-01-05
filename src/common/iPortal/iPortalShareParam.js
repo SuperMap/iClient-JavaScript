@@ -12,7 +12,7 @@ import {Util} from '../commontypes/Util';
  * @category iPortal/Online
  * @param {Object} params - 可选参数。
  * @param {ResourceType} [params.resourceType] - 资源类型。
- * @param {Array} [params.ids] - 资源的id数组。
+ * @param {array} [params.ids] - 资源的id数组。
  * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
  * @usage
  */

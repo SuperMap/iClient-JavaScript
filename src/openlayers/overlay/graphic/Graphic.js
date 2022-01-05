@@ -122,7 +122,7 @@ export class Graphic extends BaseObject {
     /**
      * @function ol.Graphic.prototype.getStyleFunction
      * @description 获取样式函数。
-     * @returns {Function} 样式函数。
+     * @returns {function} 样式函数。
      */
     getStyleFunction() {
         return this.styleFunction_;

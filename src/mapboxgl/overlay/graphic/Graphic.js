@@ -74,7 +74,7 @@ export class Graphic {
      * @function Graphic.prototype.setStyle
      * @description 设置点样式。
      * @param {Object} style -样式选项。
-     * @param {Array} [style.color] - 颜色。
+     * @param {array} [style.color] - 颜色。
      * @param {number} [style.radius] - 半径。
      */
     setStyle(style) {

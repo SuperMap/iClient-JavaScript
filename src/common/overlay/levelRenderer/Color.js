@@ -27,7 +27,7 @@ export class Color {
         this._ctx = null;
 
         /**
-         * @member {Array} LevelRenderer.Tool.Color.prototype.palette
+         * @member {array} LevelRenderer.Tool.Color.prototype.palette
          * @description 默认色板。色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
          */
         this.palette = [
@@ -40,7 +40,7 @@ export class Color {
         ];
 
         /**
-         * @member {Array} LevelRenderer.Tool.Color.prototype._palette
+         * @member {array} LevelRenderer.Tool.Color.prototype._palette
          * @description 复位色板，用于复位  palette
          */
         this._palette = this.palette;
@@ -223,7 +223,7 @@ export class Color {
     /**
      * @function LevelRenderer.Tool.Color.prototype.customPalette
      * @description 自定义调色板。
-     * @param {Array} userPalete - 颜色板。
+     * @param {array} userPalete - 颜色板。
      */
     customPalette(userPalete) {
         this.palette = userPalete;
@@ -241,7 +241,7 @@ export class Color {
      * @function LevelRenderer.Tool.Color.prototype.getColor
      * @description 获取色板颜色。
      * @param {number} idx - 色板位置。
-     * @param {Array} userPalete - 色板。
+     * @param {array} userPalete - 色板。
      * @returns {string} 颜色值。
      */
     getColor(idx, userPalete) {
@@ -285,7 +285,7 @@ export class Color {
      * @param {number} x1 - 渐变终点横坐标。
      * @param {number} y1 - 渐变终点纵坐标。
      * @param {number} r1 - 半径
-     * @param {Array} colorList - 颜色列表。
+     * @param {array} colorList - 颜色列表。
      * @returns {CanvasGradient} Cavans 渐变颜色。
      */
     getRadialGradient(x0, y0, r0, x1, y1, r1, colorList) {
@@ -311,7 +311,7 @@ export class Color {
      * @param {number} y0 - 渐变起点纵坐标。
      * @param {number} x1 - 渐变终点横坐标。
      * @param {number} y1 - 渐变终点纵坐标。
-     * @param {Array} colorList - 颜色列表。
+     * @param {array} colorList - 颜色列表。
      * @returns {CanvasGradient} Cavans 渐变颜色。
      */
     getLinearGradient(x0, y0, x1, y1, colorList) {
@@ -334,7 +334,7 @@ export class Color {
      * @param {Object} start - 起始颜色对象。
      * @param {Object} end - 结束颜色对象。
      * @param {number} step - 渐变级数。
-     * @returns {Array} 颜色数组。
+     * @returns {array} 颜色数组。
      */
     getStepColors(start, end, step) {
         start = this.toRGBA(start);
@@ -399,7 +399,7 @@ export class Color {
     /**
      * @function LevelRenderer.Tool.Color.prototype.toColor
      * @description 颜色值数组转为指定格式颜色。
-     * @param {Array} data - 颜色值数组。
+     * @param {array} data - 颜色值数组。
      * @param {string} format - 格式，默认'rgb'
      * @returns {string} 颜色。
      */
@@ -465,7 +465,7 @@ export class Color {
     /**
      * @function LevelRenderer.Tool.Color.prototype.convert
      * @description 颜色格式转化。
-     * @param {Array} data - 颜色值数组。
+     * @param {array} data - 颜色值数组。
      * @param {string} format - 格式，默认'rgb'
      * @returns {string} 颜色。
      */
@@ -842,7 +842,7 @@ export class Color {
     /**
      * @function LevelRenderer.Tool.Color.prototype.map
      * @description 数组映射
-     * @param {Array} array - 数组。
+     * @param {array} array - 数组。
      * @param {function} fun - 函数。
      * @returns {string} 数组映射结果
      */

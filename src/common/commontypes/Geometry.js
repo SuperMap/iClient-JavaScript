@@ -140,7 +140,7 @@ export class Geometry {
      * @function Geometry.prototype.getVertices
      * @description 返回几何图形的所有顶点的列表（需要在子类中实现此方法）。
      * @param {boolean} [nodes] - 如果是 true，线则只返回线的末端点，如果 false，仅仅返回顶点，如果没有设置，则返回顶点。
-     * @returns {Array} 几何图形的顶点列表。
+     * @returns {array} 几何图形的顶点列表。
      */
     getVertices(nodes) { // eslint-disable-line no-unused-vars
     }

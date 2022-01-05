@@ -80,7 +80,7 @@ export class WebPrintingService extends CommonServiceBase {
     /**
      * @function WebPrintingService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
-     * @param {String} jobId - Web 打印任务 ID
+     * @param {string} jobId - Web 打印任务 ID
      */
     getPrintingJob(jobId) {
         var me = this;
@@ -99,7 +99,7 @@ export class WebPrintingService extends CommonServiceBase {
     /**
      * @function WebPrintingService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
-     * @param {String} jobId - Web 打印输入文档任务 ID。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
      */
     getPrintingJobResult(jobId) {
         var me = this;

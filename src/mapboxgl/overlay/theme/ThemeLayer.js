@@ -408,7 +408,7 @@ export class Theme {
     }
 
     /**
-     * @function ThemeLayer.prototype.toFeature
+     * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。

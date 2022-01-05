@@ -100,7 +100,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息。
-     * @param {(HTMLElement|String)} tooltip - 提示信息。
+     * @param {(HTMLElement|string)} tooltip - 提示信息。
      * @returns {this} this
      */
     setToolTip: function (tooltip) {

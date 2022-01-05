@@ -21,7 +21,7 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+ * @param {array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  *
  */
 export class SmicStar extends Shape {

@@ -114,7 +114,7 @@ export class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.getErrMsgPromise
      * @description 获取包含错误信息的Promise对象。
      * @version 10.1.0
-     * @param {String} errMsg - 传入的错误信息。
+     * @param {string} errMsg - 传入的错误信息。
      * @returns {Promise} 返回包含错误信息的 Promise 对象。
      */
     getErrMsgPromise(errMsg) {
@@ -221,10 +221,10 @@ export class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.publishOrUnpublish
      * @description 发布/取消发布。
      * @version 10.1.0
-     * @param {object} options - 发布/取消发布数据服务所需的参数。
-     * @param {object} options.dataId - 数据项id。
-     * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
-     * @param {object} [options.dataServiceId] - 发布的服务 id。
+     * @param {Object} options - 发布/取消发布数据服务所需的参数。
+     * @param {Object} options.dataId - 数据项id。
+     * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
+     * @param {Object} [options.dataServiceId] - 发布的服务 id。
      * @param {boolean} forPublish - 是否取消发布。
      * @returns {Promise} 返回发布/取消发布数据服务的 Promise 对象。
      */
@@ -272,10 +272,10 @@ export class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.unPublishedDataService
      * @description 取消发布。
      * @version 10.1.0
-     * @param {object} options - 取消发布服务具体参数。
-     * @param {object} options.dataId - 数据项id。
-     * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
-     * @param {object} [options.dataServiceId] - 发布的服务 id。
+     * @param {Object} options - 取消发布服务具体参数。
+     * @param {Object} options.dataId - 数据项id。
+     * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
+     * @param {Object} [options.dataServiceId] - 发布的服务 id。
      * @returns {Promise} 返回取消发布数据服务的 Promise 对象。
      */
     unPublishDataService(option){
@@ -286,10 +286,10 @@ export class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.publishedDataService
      * @description 发布数据服务。
      * @version 10.1.0
-     * @param {object} options - 发布数据服务具体参数。
-     * @param {object} options.dataId - 数据项id。
-     * @param {object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
-     * @param {object} [options.dataServiceId] - 发布的服务 id。
+     * @param {Object} options - 发布数据服务具体参数。
+     * @param {Object} options.dataId - 数据项id。
+     * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
+     * @param {Object} [options.dataServiceId] - 发布的服务 id。
      * @returns {Promise} 返回发布数据服务的 Promise 对象。
      */
     publishDataService(option){

@@ -19,21 +19,21 @@ export class Storage {
         this._elements = {};
 
         /**
-         * @member {Array} LevelRenderer.Storage.prototype._hoverElements
+         * @member {array} LevelRenderer.Storage.prototype._hoverElements
          * @description 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
          *
          */
         this._hoverElements = [];
 
         /**
-         * @member {Array} LevelRenderer.Storage.prototype._roots
+         * @member {array} LevelRenderer.Storage.prototype._roots
          * @description _roots。
          *
          */
         this._roots = [];
 
         /**
-         * @member {Array} LevelRenderer.Storage.prototype._shapeList
+         * @member {array} LevelRenderer.Storage.prototype._shapeList
          * @description _shapeList。
          *
          */
@@ -63,7 +63,7 @@ export class Storage {
      * @function LevelRenderer.Storage.prototype.iterShape
      * @description 遍历迭代器。
      *
-     * @param {Function} fun - 迭代回调函数，return true终止迭代。
+     * @param {function} fun - 迭代回调函数，return true终止迭代。
      * @param {Object} option - 迭代参数，缺省为仅降序遍历普通层图形。
      * @param {boolean} [hover=true] - 是否是高亮层图形。
      * @param {string} [normal='down'] - 是否是普通层图形，迭代时是否指定及z轴顺序。可设值：'down' ，'up'。

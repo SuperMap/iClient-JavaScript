@@ -107,8 +107,8 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 添加数据。
-     * @param {object} data - 待添加的数据。
-     * @param {object} options - 待添加的数据信息。
+     * @param {Object} data - 待添加的数据。
+     * @param {Object} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;

@@ -230,7 +230,7 @@ export class Collection extends Geometry {
      * @function GeometryCollection.prototype.getVertices
      * @description 返回几何对象的所有结点的列表。
      * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
-     * @returns {Array} 几何对象的顶点列表。
+     * @returns {array} 几何对象的顶点列表。
      */
     getVertices(nodes) {
         var vertices = [];

@@ -72,7 +72,7 @@ export default class MachineLearningModelBase {
     /**
      * @function  MachineLearningBase.prototype.predict
      * @description 对模型进行预测
-     * @returns {object}
+     * @returns {Object}
      */
 
     async predict() {

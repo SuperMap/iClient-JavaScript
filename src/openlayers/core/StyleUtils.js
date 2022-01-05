@@ -244,7 +244,7 @@ export class StyleUtils {
    * @description 从 Carto 中获取有效的样式。
    * @param {number} zoom -缩放级别。
    * @param {number} scale - 比例尺。
-   * @param {Array} shader - 渲染器对象数组。
+   * @param {array} shader - 渲染器对象数组。
    * @param {Object} feature - 要素。
    * @param {string} fromServer - 服务源。
    * @param {string} url - 地址。
@@ -724,7 +724,7 @@ export class StyleUtils {
    * @param {string} fontSize - 字体大小，如12px
    * @param {number} offsetX - X方向偏移分数
    * @param {number} offsetY - Y方向偏移分数
-   * @returns {object}
+   * @returns {Object}
    */
   static getTextOffset(fontSize, offsetX=0, offsetY=0) {
     const radius = fontSize.substr(0, fontSize.length - 2) / 2;
@@ -780,7 +780,7 @@ export class StyleUtils {
   }
   /**
    * 创建当前feature对应的canvas
-   * @param style  {object}
+   * @param {Object} style  
    * @returns {HTMLElement}
    */
   static createCanvas(style) {
@@ -938,8 +938,8 @@ export class StyleUtils {
   /**
    * @function StyleUtils.formatRGB
    * @description 将颜色数组转换成标准的rgb颜色格式
-   * @param {Array} colorArray - 颜色数组
-   * @returns {String} 'rgb(0,0,0)'或者 rgba(0,0,0,0)
+   * @param {array} colorArray - 颜色数组
+   * @returns {string} 'rgb(0,0,0)'或者 rgba(0,0,0,0)
    */
   static formatRGB(colorArray) {
     let rgb;
@@ -962,7 +962,7 @@ export class StyleUtils {
    * @function StyleUtils.getCanvasFromSVG
    * @description 将SVG转换成Canvas
    * @param {string} svgUrl - 颜色数组
-   * @param {object} divDom - div的dom对象
+   * @param {Object} divDom - div的dom对象
    * @param {function} callBack - 转换成功执行的回调函数
    */
   static getCanvasFromSVG(svgUrl, divDom, callBack) {
@@ -994,8 +994,8 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getMarkerDefaultStyle 获取默认标注图层feature的样式
-   * @param featureType {String} feature的类型
-   * @param server {String}  当前地图前缀
+   * @param {string} featureType feature的类型
+   * @param {string} server 当前地图前缀
    * @returns {Object} style对象
    */
   static getMarkerDefaultStyle(featureType, server) {
@@ -1038,9 +1038,9 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getOpenlayerStyle 获取专题图对应的openlayers格式的style
-   * @param styleParams {String} 样式参数
-   * @param featureType {String} feature类型
-   * @param isRank {Boolean} 是否为等级符号
+   * @param {string} styleParams 样式参数
+   * @param {string} featureType feature类型
+   * @param {boolean} isRank 是否为等级符号
    * @returns {Object} style对象
    */
   static getOpenlayersStyle(styleParams, featureType, isRank) {
@@ -1059,7 +1059,7 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getSymbolStyle 获取符号样式
-   * @param {object} parameters - 样式参数
+   * @param {Object} parameters - 样式参数
    * @returns {Object} style对象
    */
   static getSymbolStyle(parameters, isRank) {
@@ -1102,7 +1102,7 @@ export class StyleUtils {
   }
   /**
    * @function StyleUtils.getSVGStyle 获取svg的样式
-   * @param {object} styleParams - 样式参数
+   * @param {Object} styleParams - 样式参数
    * @returns {Object} style对象
    */
   static getSVGStyle(styleParams) {
@@ -1131,8 +1131,8 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.setColorToCanvas 将颜色，透明度等样式设置到canvas上
-   * @param {object} canvas - 渲染的canvas对象
-   * @param {object} parameters - 样式参数
+   * @param {Object} canvas - 渲染的canvas对象
+   * @param {Object} parameters - 样式参数
    * @returns {Object} style对象
    */
   static setColorToCanvas(canvas, parameters) {
@@ -1150,7 +1150,7 @@ export class StyleUtils {
   }
   /**
    * @function StyleUtils.getImageStyle 获取图片样式
-   * @param {object} styleParams - 样式参数
+   * @param {Object} styleParams - 样式参数
    * @returns {Object} style对象
    */
   static getImageStyle(styleParams) {
@@ -1178,8 +1178,8 @@ export class StyleUtils {
   }
   /**
    * @function StyleUtils.getRoadPath 获取道路样式
-   * @param {object} style - 样式参数
-   * @param {object} outlineStyle - 轮廓样式参数
+   * @param {Object} style - 样式参数
+   * @param {Object} outlineStyle - 轮廓样式参数
    * @returns {Object} style对象
    */
   static getRoadPath(style, outlineStyle) {
@@ -1213,8 +1213,8 @@ export class StyleUtils {
   }
   /**
    * @function StyleUtils.getPathway 获取铁路样式
-   * @param {object} style - 样式参数
-   * @param {object} outlineStyle - 轮廓样式参数
+   * @param {Object} style - 样式参数
+   * @param {Object} outlineStyle - 轮廓样式参数
    * @returns {Object} style对象
    */
   static getPathway(style, outlineStyle) {

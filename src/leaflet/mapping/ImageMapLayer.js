@@ -301,7 +301,7 @@ export var ImageMapLayer = Layer.extend({
             /**
              * @event ImageMapLayer#load
              * @description 请求图层加载完成后触发。
-             * @property {L.bounds} bounds  - 图层 bounds。
+             * @property {L.Bounds} bounds  - 图层 bounds。
              */
             this.fire('load', { bounds: bounds });
         };
@@ -325,7 +325,7 @@ export var ImageMapLayer = Layer.extend({
         /**
          * @event ImageMapLayer#loading
          * @description 请求图层加载中触发。
-         * @property {L.bounds} bounds  - 图层 bounds。
+         * @property {L.Bounds} bounds  - 图层 bounds。
          */
         this.fire('loading', { bounds: bounds });
     },

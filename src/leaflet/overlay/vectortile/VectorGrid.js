@@ -63,7 +63,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @function VectorGrid.prototype.createTile
      * @description 创建切片图层。
      * @param {Object} coords - 切片坐标参数对象。
-     * @param {Function} done - todo。
+     * @param {function} done - todo。
      */
     createTile: function (coords, done) {
         var me = this;
@@ -114,7 +114,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @description 指定要素 ID 和图层名称设置要素风格。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
-     * @param {(Array|Function)} layerStyle - 图层样式。
+     * @param {(array|Function)} layerStyle - 图层样式。
      * @returns {this} this
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
@@ -159,7 +159,7 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function VectorGrid.prototype.getDataLayerNames
      * @description 获取数据图层名称。
-     * @returns {Array} 返回数据图层名称数组。
+     * @returns {array} 返回数据图层名称数组。
      */
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);

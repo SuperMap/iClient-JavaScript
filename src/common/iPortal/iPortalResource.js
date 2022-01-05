@@ -12,7 +12,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @category iPortal/Online
  * @param {string} portalUrl - 服务地址。
  * @param {Object} resourceInfo - 可选参数。
- * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息
+ * @param {array} [resourceInfo.authorizeSetting] - 资源的授权信息
  * @param {string} [resourceInfo.bounds] - 资源的坐标范围
  * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为EPSG 4326坐标系统后的地理范围。
  * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED
@@ -28,7 +28,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @param {string} [resourceInfo.resourceSubType] - 某类资源的具体子类型。
  * @param {ResourceType} [resourceInfo.resourceType] - 资源类型
  * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID
- * @param {Array} [resourceInfo.tags] - 资源的标签
+ * @param {array} [resourceInfo.tags] - 资源的标签
  * @param {string} [resourceInfo.thumbnail] - 资源的缩略图
  * @param {Date} [resourceInfo.updateTime] - 资源的更新时间
  * @param {string} [resourceInfo.userName] - 搜索的关键词

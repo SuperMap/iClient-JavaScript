@@ -22,7 +22,7 @@
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {number} [options.opacity=1] - 图层透明度。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
+ * @param {array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
@@ -128,7 +128,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param {L.bounds} bounds - 重绘范围。
+     * @param {L.Bounds} bounds - 重绘范围。
      */
     redrawThematicFeatures: function (bounds) {
         if (this.features.length > 0 && this.labelFeatures.length == 0) {
@@ -450,7 +450,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function LabelThemeLayer.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
      * @param {FeatureVector} feature - 标签要素。
-     * @returns {L.point} 标签位置。
+     * @returns {L.Point} 标签位置。
      */
     getLabelPxLocation: function (feature) {
         var geoText = feature.geometry;
@@ -478,7 +478,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @description 获得标签要素的最终范围。
      *
      * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
-     * @param {L.point} loc - 标签位置。
+     * @param {L.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
@@ -537,7 +537,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
      * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
-     * @param {L.point} loc - 标签位置。
+     * @param {L.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */

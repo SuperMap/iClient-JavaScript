@@ -214,7 +214,7 @@ export class HeatMap extends ImageCanvasSource {
     /**
      * @function ol.source.HeatMap.prototype.draw
      * @description 绘制热点图。
-     * @param {Array} data - convertToPixelPoints 方法计算出的点。
+     * @param {array} data - convertToPixelPoints 方法计算出的点。
      * @param {number} maxWeight -最大权重。
      * @private
      */
@@ -245,7 +245,7 @@ export class HeatMap extends ImageCanvasSource {
      * @function ol.source.HeatMap.prototype.colorize
      * @description 根据渐变色重置热点图 rgb 值。
      * @param {Object} pixels - 像素 rgba 值。
-     * @param {Array} gradient - 渐变 canvas.getImageData.data。
+     * @param {array} gradient - 渐变 canvas.getImageData.data。
      * @private
      */
     colorize(pixels, gradient) {

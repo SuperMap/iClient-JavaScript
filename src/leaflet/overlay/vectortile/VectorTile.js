@@ -23,7 +23,7 @@ import {VectorTileFormat} from '../VectorTileFormat';
  * @param {string} [options.format] - 返回值类型。
  * @param {Object} [options.coords] -  坐标系统对象。
  * @param {Object} [options.renderer] - 渲染器对象。
- * @param {Function} done - 回调函数。
+ * @param {function} done - 回调函数。
  */
 export var VectorTile = L.Class.extend({
 

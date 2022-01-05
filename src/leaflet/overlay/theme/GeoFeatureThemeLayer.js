@@ -19,7 +19,7 @@
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
+ * @param {array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
@@ -120,7 +120,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param {L.bounds} bounds - 重绘的范围。
+     * @param {L.Bounds} bounds - 重绘的范围。
      */
     redrawThematicFeatures: function (bounds) {
         var me = this;

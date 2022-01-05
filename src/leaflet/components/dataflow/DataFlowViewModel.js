@@ -16,7 +16,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @param {L.Map} map - Leaflet Map 对象。
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Object} options - 参数。
- * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",
@@ -25,7 +25,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
                                                         weight: 0
                                                     };
                                             }`
- * @param {Function} [options.onEachFeature] - 给该元素绑定事件和弹窗，默认对新创建的图层不执行任何操作。
+ * @param {function} [options.onEachFeature] - 给该元素绑定事件和弹窗，默认对新创建的图层不执行任何操作。
  * @fires DataFlowViewModel#dataflowservicesubscribed
  * @fires DataFlowViewModel#subscribesucceeded
  * @fires DataFlowViewModel#subscribefailed

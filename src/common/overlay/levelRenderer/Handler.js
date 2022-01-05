@@ -54,7 +54,7 @@ export class Handler extends Eventful {
          */
         this._mouseY = 0;
         /**
-         * @member {Function} LevelRenderer.Handler.prototype._findHover
+         * @member {function} LevelRenderer.Handler.prototype._findHover
          * @description 查找 Hover 图形
          */
         this._findHover = null;
@@ -489,11 +489,11 @@ export class Handler extends Eventful {
          * bind 一个参数的 function。
          *
          * Parameters:
-         * handler - {Function} 要 bind 的 function。
+         * handler - {function} 要 bind 的 function。
          * context - {Object} 运行时 this 环境。
          *
          * Returns:
-         * {Function}
+         * {function}
          */
         function bind1Arg(handler, context) {
             return function (e) {
@@ -525,7 +525,7 @@ export class Handler extends Eventful {
          * instance - {<LevelRenderer.Handler>} 控制类实例 。
          *
          * Returns:
-         * {Function}
+         * {function}
          */
         function initDomHandler(instance) {
             var domHandlerNames = [

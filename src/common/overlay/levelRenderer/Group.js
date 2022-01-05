@@ -27,7 +27,7 @@ import {Transformable} from './Transformable';
  *     }));
  *     LR.addGroup(g);
  * (end)
- * @param {Array} options - Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
+ * @param {array} options - Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
  */
 
 export class Group extends mixin(Eventful, Transformable) {
@@ -55,13 +55,13 @@ export class Group extends mixin(Eventful, Transformable) {
         this.clipShape = null;
 
         /**
-         * @member {Array} LevelRenderer.Group.prototype._children
+         * @member {array} LevelRenderer.Group.prototype._children
          * @description _children。
          */
         this._children = [];
 
         /**
-         * @member {Array} LevelRenderer.Group.prototype._storage
+         * @member {array} LevelRenderer.Group.prototype._storage
          * @description _storage。
          */
         this._storage = null;

@@ -259,7 +259,7 @@ export class WKT extends Format {
             /**
              * @description  Return an array of features given a geometrycollection WKT fragment.
              * @param {string} A WKT fragment representing the geometrycollection
-             * @returns  {Array} An array of FeatureVector
+             * @returns  {array} An array of FeatureVector
              * @private
              */
             'geometrycollection': function (str) {
@@ -285,7 +285,7 @@ export class WKT extends Format {
      * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
      * GEOMETRYCOLLECTION.
      * @param {string} wkt - A WKT string
-     * @returns {FeatureVector|Array} A feature or array of features for
+     * @returns {FeatureVector|array} A feature or array of features for
      * GEOMETRYCOLLECTION WKT.
      */
     read(wkt) {

@@ -133,7 +133,7 @@ export class ChartModel {
      * @private
      * @function ChartModel.prototype.getServiceInfo
      * @description 用iportal获取dataItemServices。
-     * @param {String} url
+     * @param {string} url
      * @param {Callbacks} success - 成功回调函数。
      * */
     getServiceInfo(url, success) {
@@ -184,7 +184,7 @@ export class ChartModel {
      * @private
      * @function ChartModel.prototype.getDatafromURL
      * @description 用iportal获取数据。（通过固定的url来请求，但是不能请求工作空间的数据）
-     * @param {String} url
+     * @param {string} url
      * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromContent(url, success) {
@@ -329,7 +329,7 @@ export class ChartModel {
      * @private
      * @function ChartModel.prototype.getDatafromRestData
      * @description 请求restdata服务
-     * @param {String} url
+     * @param {string} url
      * @param {Array<string>} dataSource [数据源名:数据集名]
      * @param {Callbacks} success - 成功回调函数。
      */
@@ -355,8 +355,8 @@ export class ChartModel {
      * @private
      * @function ChartModel.prototype.getDatafromRestMap
      * @description 请求restmap服务
-     * @param {String} dataSource layerName
-     * @param {String} path - map服务地址。
+     * @param {string} dataSource layerName
+     * @param {string} path - map服务地址。
      * @param {Callbacks} success - 成功回调函数。
      */
     getDatafromRestMap(dataSource, path, success) {
@@ -479,8 +479,8 @@ export class ChartModel {
     /**
      * @function ChartModel.prototype._processFormat
      * @description 将数据转换成geojson。
-     * @param {object} resultFormat - 返回结果集。
-     * @return {object} [resultFormat=DataFormat.GEOJSON] - 结果类型。
+     * @param {Object} resultFormat - 返回结果集。
+     * @return {Object} [resultFormat=DataFormat.GEOJSON] - 结果类型。
      */
     _processFormat(resultFormat) {
         return resultFormat ? resultFormat : DataFormat.GEOJSON;
@@ -506,7 +506,7 @@ export class ChartModel {
      * @function ChartModel.prototype._excelData2Feature
      * @param content  文件内容
      * @param layerInfo  图层信息
-     * @returns {Array}  feature的数组集合
+     * @returns {array}  feature的数组集合
      */
     _excelData2Feature(dataContent) {
         let fieldCaptions = dataContent.colTitles;
@@ -554,7 +554,7 @@ export class ChartModel {
      * @private
      * @description 请求数据失败的事件
      * @function ChartModel.prototype._fireFailedEvent
-     * @param {object} error  错误信息
+     * @param {Object} error  错误信息
      */
     _fireFailedEvent(error) {
         let errorData = error

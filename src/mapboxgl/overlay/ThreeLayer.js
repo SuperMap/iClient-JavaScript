@@ -73,8 +73,8 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.toThreeShape
      * @description  创建 threejs shape 对象。
-     * @param {Array} coordinates - 坐标点数组。
-     * @returns THREE.Shape{@link https://threejs.org/docs/index.html#api/extras/core/Shape} threejs shape 对象。
+     * @param {array} coordinates - 坐标点数组。
+     * @returns {THREE.Shape} threejs shape 对象。
      */
     toThreeShape(coordinates) {
         if (!coordinates) {
@@ -95,9 +95,9 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @description 创建 threejs Mesh 对象。将地理坐标转换成 threejs 3D 模型（适用于挤压模型，如城市建筑）。
      * @param {Array.<Object>} coordinates - 坐标点数组。
      * @param {number} amount - 高度。
-     * @param {THREE.Material} material - Threejs 材质对象。参考：[THREE.Material]{@link https://threejs.org/docs/index.html#api/extras/core/Material}
+     * @param {THREE.Material} material - Threejs 材质对象。
      * @param {boolean} [removeDuplicated] - 是否移除重复的坐标点。
-     * @returns {THREE.Mesh} threejs Mesh 对象。参考：[THREE.Mesh]{@link https://threejs.org/docs/index.html#api/objects/Mesh}
+     * @returns {THREE.Mesh} threejs Mesh 对象。
      */
     toThreeMesh(coordinates, amount, material, removeDuplicated) {
         if (!coordinates) {
@@ -123,7 +123,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.addObject
      * @description 设置threejs 3D 对象的坐标（经纬度）。
-     * @param {THREE.Object3D} object3D - threejs 3D 对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象。
+     * @param {THREE.Object3D} object3D - threejs 3D 对象及子类对象。
      * @param {(Array.<number>|Object)} coordinate - 添加的 three 对象坐标（经纬度）。
      * @returns {this} this
      */
@@ -137,7 +137,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.getScene
      * @description 获取threejs 场景对象
-     * @returns {THREE.Scene} threejs 场景对象,参考：[THREE.Scene]{@link https://threejs.org/docs/index.html#api/scenes/Scene}
+     * @returns {THREE.Scene} threejs 场景对象。
      */
     getScene() {
         return this.renderer.scene;
@@ -146,7 +146,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.getCamera
      * @description 获取threejs 相机。
-     * @returns {THREE.Camera} threejs 相机。参考：[THREE.Camera]{@link https://threejs.org/docs/index.html#api/cameras/Camera}
+     * @returns {THREE.Camera} threejs 相机。
      */
     getCamera() {
         return this.renderer.camera;
@@ -155,9 +155,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.getThreeRenderer
      * @description 获取 threejs renderer。
-     * @returns {THREE.WebGLRenderer|THREE.CanvasRenderer} threejs renderer。参考：
-     *                      [THREE.WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
-     *                      [THREE.CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
+     * @returns {THREE.WebGLRenderer|THREE.CanvasRenderer} threejs renderer。
      */
     getThreeRenderer() {
         return this.renderer.context;
@@ -166,7 +164,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     // /**
     //  * @function ThreeLayer.prototype.getObject
     //  * @description 根据条件获取添加到场景中的对象
-    //  * @return {THREE.Object3D} threejs 3D对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+    //  * @return {THREE.Object3D} threejs 3D 对象及子类对象。
     //  */
     // getObject(conditions) {
     //     if(!conditions){
@@ -223,7 +221,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.setPosition
      * @description 设置 threejs 3D 对象的坐标（经纬度）。
-     * @param {THREE.Object3D} object3D - threejs 3D 对象，参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象。
+     * @param {THREE.Object3D} object3D - threejs 3D 对象及子类对象。
      * @param {(Array.<number>|Object)} coordinate - 添加的 three 对象坐标（经纬度）。
      * @returns {this} this 对象。
      */
@@ -242,7 +240,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @function ThreeLayer.prototype.lngLatToPosition
      * @description 经纬度转threejs 3D 失量对象。
      * @param {(Array.<number>|Object)} lngLat - 经纬度坐标。
-     * @returns {THREE.Vector3} threejs 3D 失量对象。参考：[THREE.Vector3]{@link https://threejs.org/docs/index.html#api/math/Vector3}
+     * @returns {THREE.Vector3} threejs 3D 失量对象。
      */
     lngLatToPosition(lngLat) {
         let zoom = Transform.projection.nativeMaxZoom;
@@ -256,7 +254,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @param {number} x - x 轴距离,单位米。
      * @param {number} y - y 轴距离,单位米。
      * @param {(Array.<number>|Object)} lngLat - 源坐标。
-     * @returns {THREE.Vector3} 目标点的 threejs 3D 失量对象。参考：[THREE.Vector3]{@link https://threejs.org/docs/index.html#api/math/Vector3}
+     * @returns {THREE.Vector3} 目标点的 threejs 3D 失量对象。
      */
     distanceToThreeVector3(x, y, lngLat) {
         let map = this._map;

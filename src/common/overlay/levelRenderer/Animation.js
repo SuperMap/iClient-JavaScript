@@ -54,7 +54,7 @@ export class Animation extends Eventful {
         };
 
         /**
-         * @member {Array} LevelRenderer.Animation.prototype._clips
+         * @member {array} LevelRenderer.Animation.prototype._clips
          * @description _clips。
          */
         this._clips = [];
@@ -367,19 +367,19 @@ export class Animator {
         this._delay = 0;
 
         /**
-         * @member {Array} LevelRenderer.Animation.Animator.prototype._doneList
+         * @member {array} LevelRenderer.Animation.Animator.prototype._doneList
          * @description _doneList。
          */
         this._doneList = [];
 
         /**
-         * @member {Array} LevelRenderer.Animation.Animator.prototype._onframeList
+         * @member {array} LevelRenderer.Animation.Animator.prototype._onframeList
          * @description _onframeList。
          */
         this._onframeList = [];
 
         /**
-         * @member {Array} LevelRenderer.Animation.Animator.prototype._clipList
+         * @member {array} LevelRenderer.Animation.Animator.prototype._clipList
          * @description _clipList。
          */
         this._clipList = [];

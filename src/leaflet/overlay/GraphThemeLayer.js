@@ -28,7 +28,7 @@
  * @param {Object} [options.charts] - 图表。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
+ * @param {array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
  * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
  * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。 
  * @param {number} options.chartsSetting.height - 专题要素（图表）高度。 
@@ -103,7 +103,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素 此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
-     * @param {L.bounds} bounds - 重绘的范围。
+     * @param {L.Bounds} bounds - 重绘的范围。
      */
     redrawThematicFeatures: function (bounds) {
         var me = this;

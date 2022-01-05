@@ -292,7 +292,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.point
              * @description 从一个点对象中返回一个坐标组。
              * @param {GeometryPoint} point - 一个点对象。
-             * @returns {Array} 一个表示一个点的坐标组。
+             * @returns {array} 一个表示一个点的坐标组。
              */
             'point': function (point) {
                 var p = [point.x, point.y];
@@ -308,7 +308,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.point
              * @description 从一个文本对象中返回一个坐标组。
              * @param {Object} geo - 一个文本对象。
-             * @returns {Array} 一个表示一个点的坐标组。
+             * @returns {array} 一个表示一个点的坐标组。
              */
             'text': function (geo) {
                 return [geo.points[0].x, geo.points[0].y];
@@ -318,7 +318,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.multipoint
              * @description 从一个多点对象中返一个坐标组数组。
              * @param {GeometryMultiPoint} multipoint - 多点对象。
-             * @returns {Array} 一个表示多点的坐标组数组。
+             * @returns {array} 一个表示多点的坐标组数组。
              */
             'multipoint': function (multipoint) {
                 var array = [];
@@ -332,7 +332,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.linestring
              * @description 从一个线对象中返回一个坐标组数组。
              * @param {Linestring} linestring - 线对象。
-             * @returns {Array} 一个表示线对象的坐标组数组。
+             * @returns {array} 一个表示线对象的坐标组数组。
              */
             'linestring': function (linestring) {
                 var array = [];
@@ -347,7 +347,7 @@ export class GeoJSON extends JSONFormat {
              * @description 从一个多线对象中返回一个线数组。
              * @param {MultiLinestring} multilinestring - 多线对象。
              *
-             * @returns {Array} 一个表示多线的线数组。
+             * @returns {array} 一个表示多线的线数组。
              */
             'multilinestring': function (multilinestring) {
                 var array = [];
@@ -361,7 +361,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.polygon
              * @description 从一个面对象中返回一组线环。
              * @param {GeometryPolygon} polygon - 面对象。
-             * @returns {Array} 一组表示面的线环。
+             * @returns {array} 一组表示面的线环。
              */
             'polygon': function (polygon) {
                 var array = [];
@@ -375,7 +375,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.multipolygon
              * @description 从一个多面对象中返回一组面。
              * @param {GeometryMultiPolygon} multipolygon - 多面对象。
-             * @returns {Array} 一组表示多面的面。
+             * @returns {array} 一组表示多面的面。
              */
             'multipolygon': function (multipolygon) {
                 var array = [];
@@ -389,7 +389,7 @@ export class GeoJSON extends JSONFormat {
              * @function GeoJSONFormat.extract.collection
              * @description 从一个几何要素集合中一组几何要素数组。
              * @param {GeometryCollection} collection - 几何要素集合。
-             * @returns {Array} 一组表示几何要素集合的几何要素数组。
+             * @returns {array} 一组表示几何要素集合的几何要素数组。
              */
             'collection': function (collection) {
                 var len = collection.components.length;
@@ -407,7 +407,7 @@ export class GeoJSON extends JSONFormat {
      * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为 SuperMap Feature 对象。
      * @param {GeoJSONObject} json - GeoJSON 对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
-     * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
+     * @param {function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
      * @returns {Object}  返回值依赖于 type 参数的值。
      *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link FeatureVector} 数组。
      *     -如果 type 为 "Geometry",输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link Geometry}。
@@ -499,7 +499,7 @@ export class GeoJSON extends JSONFormat {
      * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为iServer Feature JSON。
      * @param {GeoJSONObject} json - GeoJSON 对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
-     * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
+     * @param {function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
      * @returns {Object}  iServer Feature JSON。
      */
     fromGeoJSON(json, type, filter) {

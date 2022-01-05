@@ -264,8 +264,8 @@ export class Util {
      * @function LevelRenderer.Tool.Util.prototype.inherits
      * @description 构造类继承关系
      *
-     * @param {Function} clazz - 源类。
-     * @param {Function} baseClazz - 基类。
+     * @param {function} clazz - 源类。
+     * @param {function} baseClazz - 基类。
      * @return {Object} 偏移量。
      */
     inherits(clazz, baseClazz) {

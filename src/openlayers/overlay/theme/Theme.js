@@ -27,7 +27,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
- * @param {Array} [opt_option.resolutions] - 分辨率数组。
+ * @param {array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
@@ -312,7 +312,7 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function ol.source.Theme.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
-     * @param {Array} extent - 当前级别下计算出的地图范围。
+     * @param {array} extent - 当前级别下计算出的地图范围。
      */
     redrawThematicFeatures(extent) { //eslint-disable-line no-unused-vars
     }

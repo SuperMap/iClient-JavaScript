@@ -7,21 +7,21 @@
  * @deprecatedclass SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。
- * @param {Array} srcData - 原始值数组。
- * @param {Array} targetData - 外部值数组。
+ * @param {array} srcData - 原始值数组。
+ * @param {array} targetData - 外部值数组。
  * @usage
  */
 export class ThemeMemoryData {
 
     constructor(srcData, targetData) {
         /**
-         * @member {Array} ThemeMemoryData.prototype.srcData
+         * @member {array} ThemeMemoryData.prototype.srcData
          * @description 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
          */
         this.srcData = srcData;
 
         /**
-         * @member {Array} ThemeMemoryData.prototype.targetData
+         * @member {array} ThemeMemoryData.prototype.targetData
          * @description 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
          */
         this.targetData = targetData;

@@ -23,7 +23,7 @@ L.Proj._isProj4Obj = function(a) {
  * @extends {L.Class}
  * @param {string} code - proj srsCode
  * @param {string} def - 投影的 proj4 定义。{@link [详细]{https://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
- * @param {L.bounds} bounds -  投影范围参数
+ * @param {L.Bounds} bounds -  投影范围参数
  */
 L.Proj.Projection = L.Class.extend({
     initialize: function(code, def, bounds, wrapLng) {

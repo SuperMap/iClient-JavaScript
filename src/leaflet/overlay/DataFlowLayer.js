@@ -27,11 +27,11 @@ import {
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
- * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
+ * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
- * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",

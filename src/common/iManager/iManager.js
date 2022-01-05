@@ -68,7 +68,7 @@ export class IManager extends IManagerServiceBase {
 
     /**
      * @function IManager.prototype.startNodes
-     * @param {Array} ids - 需要启动节点的 ID 数组。e.g:['1']。
+     * @param {array} ids - 需要启动节点的 ID 数组。e.g:['1']。
      * @description 启动节点。
      * @returns {Promise} Promise 对象。
      */
@@ -78,7 +78,7 @@ export class IManager extends IManagerServiceBase {
 
     /**
      * @function IManager.prototype.stopNodes
-     * @param {Array} ids - 需要停止节点的 ID 数组。e.g:['1']。
+     * @param {array} ids - 需要停止节点的 ID 数组。e.g:['1']。
      * @description 停止节点。
      * @returns {Promise} Promise 对象。
      */

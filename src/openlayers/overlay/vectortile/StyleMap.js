@@ -63,7 +63,7 @@ export var polygonMap = {
 };
 
 /**
- * @constant StyleMap {object}
+ * @constant StyleMap {Object}
  * @description 地图样式。
  */
 export var StyleMap = {

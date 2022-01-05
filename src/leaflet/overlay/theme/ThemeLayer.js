@@ -25,7 +25,7 @@ import Attributions from '../../core/Attributions'
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
+ * @param {array} [options.TFEvents] - 专题要素事件临时存储。
  * @fires ThemeLayer#featuresremoved
  * @usage
  */
@@ -36,7 +36,7 @@ export var ThemeLayer = L.Layer.extend({
         alwaysMapCRS: false,
         id: CommonUtil.createUniqueID("themeLayer_"),
         opacity: 1,
-        // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
+        // {array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
         TFEvents: [],
         attribution: Attributions.Common.attribution
@@ -131,7 +131,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.redrawThematicFeatures
      * @description 抽象方法，实例化子类前先执行此方法。
-     * @param {L.bounds} bounds - 重绘专题要素范围。
+     * @param {L.Bounds} bounds - 重绘专题要素范围。
      */
     redrawThematicFeatures: function (bounds) { // eslint-disable-line no-unused-vars
         //子类必须实现此方法
@@ -236,7 +236,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {Array} 返回图层中的有效数据。
+     * @returns {array} 返回图层中的有效数据。
      */
     getFeatures: function () {
         var me = this;
@@ -281,7 +281,7 @@ export var ThemeLayer = L.Layer.extend({
      * @description 指定属性名和属性值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性名。
      * @param {string} attrValue - 属性值。
-     * @returns {Array} 返回所有匹配的要素数组。
+     * @returns {array} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
         var me = this,
@@ -299,7 +299,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.update
      * @description 更新图层。
-     * @param {L.bounds} bounds - 图层范围。
+     * @param {L.Bounds} bounds - 图层范围。
      */
     update: function (bounds) {
         var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
@@ -370,7 +370,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function ThemeLayer.prototype.on
      * @description 监听事件。监听专题要素事件。
      * @param {Event} event - 监听事件。
-     * @param {Function} callback - 回调函数。
+     * @param {function} callback - 回调函数。
      * @param {string} context - 信息。
      */
     on: function (event, callback, context) { // eslint-disable-line no-unused-vars
@@ -386,7 +386,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function ThemeLayer.prototype.off
      * @description 移除事件监听。
      * @param {Event} event - 监听事件。
-     * @param {Function} callback - 回调函数。
+     * @param {function} callback - 回调函数。
      * @param {string} context -  信息。
      */
     off: function (event, callback, context) { // eslint-disable-line no-unused-vars
@@ -424,7 +424,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
-     * @param {Array} coordinate
+     * @param {array} coordinate
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {

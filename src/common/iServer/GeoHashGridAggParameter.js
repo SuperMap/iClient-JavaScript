@@ -43,7 +43,7 @@ export class GeoHashGridAggParameter extends BucketAggParameter {
      * @function GeoHashGridAggParameter.toJsonParameters
      * @description 将对象转为 JSON 格式。
      * @param param 转换对象。
-     * @returns {object}
+     * @returns {Object}
      */
     static toJsonParameters(param) {
         var parameters = {

@@ -7,6 +7,7 @@ var geojsonapi = "https://geojson.org";
 var geometryapi="https://datatracker.ietf.org/doc/html/rfc7946#section-3.1";
 var helpDocApi = "https://iportal.supermap.io/iportal/help/html/zh/index.htm";
 var webApi = "https://developer.mozilla.org/zh-CN/docs/Web/";
+var threeApi = "https://threejs.org/docs/index.html";
 var typeLinks = {
     //openlayers
     "ol.Map": olapi + "module-ol_Map-Map",
@@ -64,6 +65,7 @@ var typeLinks = {
     'L.LatLngBounds': lfapi+ '#latlngbounds',
     'L.Map': lfapi + '#map-example',
     'L.Evented':lfapi +'#evented',
+    'L.Browser':lfapi +'#browser',
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
@@ -94,6 +96,19 @@ var typeLinks = {
     "JSONObject": webApi + 'JavaScript/Reference/Global_Objects/JSON',
     "CanvasRenderingContext2D": webApi + 'API/CanvasRenderingContext2D',
     "HTMLElement": webApi + 'API/HTMLElement',
-    "CanvasGradient": webApi + 'API/CanvasGradient'
+    "HTMLCanvasElement": webApi + 'API/HTMLCanvasElement',
+    "HTMLImageElement": webApi + 'API/HTMLImageElement',
+    "CanvasGradient": webApi + 'API/CanvasGradient',
+
+    // THREE
+    "THREE.Object3D": threeApi + '#api/core/Object3D',
+    "THREE.Camera": threeApi + '#api/cameras/Camera',
+    "THREE.Vector3": threeApi + '#api/math/Vector3',
+    "THREE.Scene": threeApi + '#api/scenes/Scene',
+    "THREE.WebGLRenderer": threeApi + '#api/renderers/WebGLRenderer',
+    "THREE.CanvasRenderer": threeApi + '#examples/renderers/CanvasRenderer',
+    "THREE.Material": threeApi + '#api/en/materials/Material',
+    "THREE.Mesh": threeApi + '#api/objects/Mesh',
+    "THREE.Shape": threeApi + '#api/extras/core/Shape'
 }
 exports.typeLinks = typeLinks;

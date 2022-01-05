@@ -45,7 +45,7 @@ export class LineString extends Curve {
 
     /**
      * @function GeometryLineString.prototype.getSortedSegments
-     * @returns {Array} An array of segment objects.  Segment objects have properties
+     * @returns {array} An array of segment objects.  Segment objects have properties
      *     x1, y1, x2, and y2.  The start point is represented by x1 and y1.
      *     The end point is represented by x2 and y2.  Start and end are
      *     ordered so that x1 < x2.
@@ -85,7 +85,7 @@ export class LineString extends Curve {
      * @function GeometryLineString.prototype.getVertices
      * @description 返回几何图形的所有顶点的列表。
      * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点。如果没有设置此参数，则返回所有顶点。
-     * @returns {Array} 几何图形的顶点列表。
+     * @returns {array} 几何图形的顶点列表。
      */
     getVertices(nodes) {
         var vertices;

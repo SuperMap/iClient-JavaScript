@@ -35,7 +35,7 @@ export class WebPrintingJobScaleBarOptions {
          */
         this.type = null;
         /**
-         * @member {object} [WebPrintingJobScaleBarOptions.prototype.intervals]
+         * @member {Object} [WebPrintingJobScaleBarOptions.prototype.intervals]
          * @description 比例尺条的段数。
          */
         this.intervals = null;

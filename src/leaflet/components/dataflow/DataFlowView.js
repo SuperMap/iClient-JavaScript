@@ -16,7 +16,7 @@
  * @category Components DataFlow
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
- * @param {Function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。<br>
+ * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。<br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",

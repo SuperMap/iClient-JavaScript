@@ -55,7 +55,7 @@ export class ColorsPickerUtil  {
     /**
      * @function ColorsPickerUtil.getContext
      * @description 获取 Cavans 上下文。
-     * @returns {object} Cavans 上下文。
+     * @returns {Object} Cavans 上下文。
      */
 
     static getContext () {

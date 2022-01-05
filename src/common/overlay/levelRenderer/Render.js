@@ -48,7 +48,7 @@ export class Render {
         this.handler = new Handler(dom, this.storage, this.painter);
 
         /**
-         * @member {Array} LevelRenderer.Render.prototype.animatingElements
+         * @member {array} LevelRenderer.Render.prototype.animatingElements
          * @description 动画控制数组。
          *
          */
@@ -227,7 +227,7 @@ export class Render {
      * @function LevelRenderer.Render.prototype.render
      * @description 渲染。
      *
-     * @callback {Function} callback - 渲染结束后回调函数。
+     * @callback {function} callback - 渲染结束后回调函数。
      * @return {LevelRenderer.Render} this。
      */
     render(callback) {
@@ -240,7 +240,7 @@ export class Render {
      * @function LevelRenderer.Render.prototype.refresh
      * @description 视图更新。
      *
-     * @callback {Function} callback - 视图更新后回调函数。
+     * @callback {function} callback - 视图更新后回调函数。
      * @return {LevelRenderer.Render} this。
      */
     refresh(callback) {
@@ -262,7 +262,7 @@ export class Render {
     /**
      * @function LevelRenderer.Render.prototype.refreshHover
      * @description 绘制（视图更新）高亮层。
-     * @callback {Function} callback - 视图更新后回调函数。
+     * @callback {function} callback - 视图更新后回调函数。
      * @return {LevelRenderer.Render} this。
      */
     refreshHover(callback) {
@@ -275,7 +275,7 @@ export class Render {
      * @description 视图更新。
      *
      * @param {Array.<LevelRenderer.Shape>} shapeList - 需要更新的图形列表。
-     * @callback {Function} callback - 视图更新后回调函数。
+     * @callback {function} callback - 视图更新后回调函数。
      * @return {LevelRenderer.Render} this。
      */
     refreshShapes(shapeList, callback) {
@@ -306,7 +306,7 @@ export class Render {
      *
      * @param {Array.<(LevelRenderer.Shape/LevelRenderer.Group)>} el - 动画对象。
      * @param {string} path - 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<LevelRenderer.Group>,path需为空字符串。
-     * @param {Function} loop - 动画是否循环。
+     * @param {function} loop - 动画是否循环。
      * @return {LevelRenderer.animation.Animator} Animator。
      */
     animate(el, path, loop) {
@@ -424,7 +424,7 @@ export class Render {
      * @description 事件绑定。
      *
      * @param {string} eventName - 事件名称。
-     * @param {Function} eventHandler - 响应函数。
+     * @param {function} eventHandler - 响应函数。
      * @return {LevelRenderer.Render} this。
      */
     on(eventName, eventHandler) {
@@ -437,7 +437,7 @@ export class Render {
      * @description 事件解绑定，参数为空则解绑所有自定义事件。
      *
      * @param {string} eventName - 事件名称。
-     * @param {Function} eventHandler - 响应函数。
+     * @param {function} eventHandler - 响应函数。
      * @return {LevelRenderer.Render} this。
      */
     un(eventName, eventHandler) {

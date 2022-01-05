@@ -9,7 +9,7 @@ import L from 'leaflet';
  * @classdesc 平面无投影对象。
  * @category BaseTypes Projection
  * @extends {L.Class}
- * @param {L.bounds} bounds - 坐标范围
+ * @param {L.Bounds} bounds - 坐标范围
  */
 export var NonProjection = L.Class.extend({
     initialize: function (bounds) {
@@ -39,7 +39,7 @@ export var nonProjection = function (bounds) {
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {Object} options.origin - 原点。
- * @param {L.bounds} options.bounds - 范围。
+ * @param {L.Bounds} options.bounds - 范围。
  * @param {Array.<number>} [options.resolutions] - 分辨率。
  * @usage
  */
@@ -101,8 +101,8 @@ export var NonEarthCRS = L.Class.extend({
     /**
      * @function NonEarthCRS.prototype.distance
      * @description 通过两个坐标点计算之间的距离。
-     * @param {L.latLng} latlng1 - 坐标点1。
-     * @param {L.latLng} latlng2 - 坐标点2。
+     * @param {L.LatLng} latlng1 - 坐标点1。
+     * @param {L.LatLng} latlng2 - 坐标点2。
      * @returns {number} 返回距离长度。
      */
     distance: function (latlng1, latlng2) {

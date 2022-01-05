@@ -9,11 +9,11 @@ import {Util} from '../commontypes/Util';
  * @category iServer Data Dataset
  * @classdesc 数据集信息更改参数类。
  * @param {Object} options - 参数。
- * @param {String} options.datasourceName - 数据源名称。
- * @param {String} options.datasetName - 数据集名称。
+ * @param {string} options.datasourceName - 数据源名称。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {boolean} options.isFileCache - 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。
- * @param {String} options.description - 数据集描述信息。
- * @param {String} options.prjCoordSys - 投影坐标系。
+ * @param {string} options.description - 数据集描述信息。
+ * @param {string} options.prjCoordSys - 投影坐标系。
  * @param {Object} options.charset - 矢量数据集的字符集。当数据集类型为矢量数据集时，可以传递此参数。如果用户传递空值，则编码方式保持不变。
  * @param {Array.<string>} options.palette - 影像数据的颜色调色板。当数据集类型为影像数据集时，可以传递此参数。
  * @param {number} options.noValue - 栅格数据集中没有数据的像元的栅格值。当数据集类型为栅格数据集时，可以传递此参数。
@@ -45,13 +45,13 @@ export class UpdateDatasetParameters {
         this.isFileCache = null;
 
         /**
-         * @member {String} UpdateDatasetParameters.prototype.description
+         * @member {string} UpdateDatasetParameters.prototype.description
          * @description 数据集描述信息。
          */
         this.description = null;
 
         /**
-         * @member {String} UpdateDatasetParameters.prototype.prjCoordSys
+         * @member {string} UpdateDatasetParameters.prototype.prjCoordSys
          * @description 投影坐标系。
          */
         this.prjCoordSys = null;

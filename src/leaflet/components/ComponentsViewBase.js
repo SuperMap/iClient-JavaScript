@@ -68,7 +68,7 @@ export var ComponentsViewBase = L.Control.extend({
     /**
      * @function ComponentsViewBase.prototype.on
      * @param {string} eventType - 监听的事件类型。
-     * @param {Function} callback - 监听事件的回调函数。
+     * @param {function} callback - 监听事件的回调函数。
      */
     on(eventType, callback) {
         this._event.on(eventType, callback);
@@ -78,7 +78,7 @@ export var ComponentsViewBase = L.Control.extend({
      * @function ComponentsViewBase.prototype.off
      * @description 事件关闭。
      * @param {string} eventType - 监听的事件名。
-     * @param {Function} callback - 监听事件的回调函数。
+     * @param {function} callback - 监听事件的回调函数。
      */
     off(eventType, callback) {
         this._event.off(eventType, callback);

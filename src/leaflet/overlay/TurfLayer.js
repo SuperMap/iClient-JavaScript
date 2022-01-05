@@ -231,7 +231,7 @@ export var TurfLayer = L.GeoJSON.extend({
      * @description 执行 Turf.js 提供的相关空间分析方法。
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
-     * @param {Function} callback - 空间分析完成执行的回调函数，返回执行的结果。
+     * @param {function} callback - 空间分析完成执行的回调函数，返回执行的结果。
      * @param {boolean} [addFeaturesToMap=true] - 是否添加到地图。
      */
     process: function (type, args, callback, addFeaturesToMap) {

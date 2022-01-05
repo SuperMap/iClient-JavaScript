@@ -20,7 +20,7 @@ import ImageCanvasSource from 'ol/source/ImageCanvas';
  * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
- * @param {Array} [opt_option.resolutions] - 分辨率数组。
+ * @param {array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}

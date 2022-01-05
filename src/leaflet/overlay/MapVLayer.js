@@ -118,7 +118,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function MapVLayer.prototype.removeData
      * @description 删除数据。
-     * @param {Function} filter - 过滤条件。指定数据项后，返回值为 true，表示删除该元素；否则表示不删除。
+     * @param {function} filter - 过滤条件。指定数据项后，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){

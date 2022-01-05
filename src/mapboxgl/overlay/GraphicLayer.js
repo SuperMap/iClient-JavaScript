@@ -166,7 +166,7 @@ export class GraphicLayer {
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
+     * @param {array}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
@@ -233,7 +233,7 @@ export class GraphicLayer {
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
      * @param {string} property - graphic 的某个属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -250,7 +250,7 @@ export class GraphicLayer {
      * @function GraphicLayer.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy("id", graphicId);
@@ -261,7 +261,7 @@ export class GraphicLayer {
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - graphic 的某个属性名称。
      * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @returns {Array.<Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -280,7 +280,7 @@ export class GraphicLayer {
     /**
      * @function GraphicLayer.prototype.removeGraphics
      * @description 删除要素数组，默认将删除所有要素
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
+     * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素

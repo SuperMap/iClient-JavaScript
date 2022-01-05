@@ -18,14 +18,14 @@ const emptyFunc = L.Util.falseFn;
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]]  - 颜色，目前只支持 rgba 数组。
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
- * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
+ * @param {array}  [options.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
  * @param {number} [options.radiusScale=1] - 点放大倍数。
  * @param {number} [options.radiusMinPixels=0] - 半径最小值，单位为像素。
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {Function} [options.onClick] - 点击事件。
- * @param {Function} [options.onHover] - 悬停事件。
+ * @param {function} [options.onClick] - 点击事件。
+ * @param {function} [options.onHover] - 悬停事件。
 
  */
 const CSS_TRANSFORM = (function () {

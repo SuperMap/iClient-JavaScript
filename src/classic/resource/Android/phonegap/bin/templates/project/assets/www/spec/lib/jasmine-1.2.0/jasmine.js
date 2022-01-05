@@ -53,7 +53,7 @@ jasmine.getGlobal = function() {
  * @ignore
  * @private
  * @param base {Object} bound 'this' for the function
- * @param name {Function} function to find
+ * @param name {function} function to find
  */
 jasmine.bindOriginal_ = function(base, name) {
   var original = base[name];
@@ -123,7 +123,7 @@ jasmine.getEnv = function() {
  * @ignore
  * @private
  * @param value
- * @returns {Boolean}
+ * @returns {boolean}
  */
 jasmine.isArray_ = function(value) {
   return jasmine.isA_("Array", value);
@@ -133,7 +133,7 @@ jasmine.isArray_ = function(value) {
  * @ignore
  * @private
  * @param value
- * @returns {Boolean}
+ * @returns {boolean}
  */
 jasmine.isString_ = function(value) {
   return jasmine.isA_("String", value);
@@ -143,7 +143,7 @@ jasmine.isString_ = function(value) {
  * @ignore
  * @private
  * @param value
- * @returns {Boolean}
+ * @returns {boolean}
  */
 jasmine.isNumber_ = function(value) {
   return jasmine.isA_("Number", value);
@@ -152,9 +152,9 @@ jasmine.isNumber_ = function(value) {
 /**
  * @ignore
  * @private
- * @param {String} typeName
+ * @param {string} typeName
  * @param value
- * @returns {Boolean}
+ * @returns {boolean}
  */
 jasmine.isA_ = function(typeName, value) {
   return Object.prototype.toString.apply(value) === '[object ' + typeName + ']';
@@ -164,7 +164,7 @@ jasmine.isA_ = function(typeName, value) {
  * Pretty printer for expecations.  Takes any object and turns it into a human-readable string.
  *
  * @param value {Object} an object to be outputted
- * @returns {String}
+ * @returns {string}
  */
 jasmine.pp = function(value) {
   var stringPrettyPrinter = new jasmine.StringPrettyPrinter();
@@ -176,7 +176,7 @@ jasmine.pp = function(value) {
  * Returns true if the object is a DOM Node.
  *
  * @param {Object} obj object to check
- * @returns {Boolean}
+ * @returns {boolean}
  */
 jasmine.isDomNode = function(obj) {
   return obj.nodeType > 0;
@@ -253,7 +253,7 @@ jasmine.objectContaining = function (sample) {
  *
  * @constructor
  * @see spyOn, jasmine.createSpy, jasmine.createSpyObj
- * @param {String} name
+ * @param {string} name
  */
 jasmine.Spy = function(name) {
   /**
@@ -337,7 +337,7 @@ jasmine.Spy.prototype.andReturn = function(value) {
  * // defining a spy on an existing property: foo.bar() throws an exception w/ message 'ouch'
  * spyOn(foo, 'bar').andThrow('baz');
  *
- * @param {String} exceptionMsg
+ * @param {string} exceptionMsg
  */
 jasmine.Spy.prototype.andThrow = function(exceptionMsg) {
   this.plan = function() {
@@ -359,7 +359,7 @@ jasmine.Spy.prototype.andThrow = function(exceptionMsg) {
  * // defining a spy on an existing property: foo.bar() calls an anonymnous function
  * spyOn(foo, 'bar').andCall(function() { return 'baz';} );
  *
- * @param {Function} fakeFunc
+ * @param {function} fakeFunc
  */
 jasmine.Spy.prototype.andCallFake = function(fakeFunc) {
   this.plan = fakeFunc;
@@ -416,7 +416,7 @@ jasmine.createSpy = function(name) {
  * Determines whether an object is a spy.
  *
  * @param {jasmine.Spy|Object} putativeSpy
- * @returns {Boolean}
+ * @returns {boolean}
  */
 jasmine.isSpy = function(putativeSpy) {
   return putativeSpy && putativeSpy.isSpy;
@@ -426,8 +426,8 @@ jasmine.isSpy = function(putativeSpy) {
  * Creates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something
  * large in one call.
  *
- * @param {String} baseName name of spy class
- * @param {Array} methodNames array of names of methods to make spies
+ * @param {string} baseName name of spy class
+ * @param {array} methodNames array of names of methods to make spies
  */
 jasmine.createSpyObj = function(baseName, methodNames) {
   if (!jasmine.isArray_(methodNames) || methodNames.length === 0) {
@@ -480,8 +480,8 @@ if (isCommonJS) exports.spyOn = spyOn;
  *   expect(true).toEqual(true);
  * });
  *
- * @param {String} desc description of this specification
- * @param {Function} func defines the preconditions and expectations of the spec
+ * @param {string} desc description of this specification
+ * @param {function} func defines the preconditions and expectations of the spec
  */
 var it = function(desc, func) {
   return jasmine.getEnv().it(desc, func);
@@ -493,8 +493,8 @@ if (isCommonJS) exports.it = it;
  *
  * A convenience method that allows existing specs to be disabled temporarily during development.
  *
- * @param {String} desc description of this specification
- * @param {Function} func defines the preconditions and expectations of the spec
+ * @param {string} desc description of this specification
+ * @param {function} func defines the preconditions and expectations of the spec
  */
 var xit = function(desc, func) {
   return jasmine.getEnv().xit(desc, func);
@@ -517,7 +517,7 @@ if (isCommonJS) exports.expect = expect;
 /**
  * Defines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.
  *
- * @param {Function} func Function that defines part of a jasmine spec.
+ * @param {function} func Function that defines part of a jasmine spec.
  */
 var runs = function(func) {
   jasmine.getEnv().currentSpec.runs(func);
@@ -528,7 +528,7 @@ if (isCommonJS) exports.runs = runs;
  * Waits a fixed time period before moving to the next block.
  *
  * @deprecated Use waitsFor() instead
- * @param {Number} timeout milliseconds to wait
+ * @param {number} timeout milliseconds to wait
  */
 var waits = function(timeout) {
   jasmine.getEnv().currentSpec.waits(timeout);
@@ -538,9 +538,9 @@ if (isCommonJS) exports.waits = waits;
 /**
  * Waits for the latchFunction to return true before proceeding to the next block.
  *
- * @param {Function} latchFunction
- * @param {String} optional_timeoutMessage
- * @param {Number} optional_timeout
+ * @param {function} latchFunction
+ * @param {string} optional_timeoutMessage
+ * @param {number} optional_timeout
  */
 var waitsFor = function(latchFunction, optional_timeoutMessage, optional_timeout) {
   jasmine.getEnv().currentSpec.waitsFor.apply(jasmine.getEnv().currentSpec, arguments);
@@ -552,7 +552,7 @@ if (isCommonJS) exports.waitsFor = waitsFor;
  *
  * Used for spec setup, including validating assumptions.
  *
- * @param {Function} beforeEachFunction
+ * @param {function} beforeEachFunction
  */
 var beforeEach = function(beforeEachFunction) {
   jasmine.getEnv().beforeEach(beforeEachFunction);
@@ -564,7 +564,7 @@ if (isCommonJS) exports.beforeEach = beforeEach;
  *
  * Used for restoring any state that is hijacked during spec execution.
  *
- * @param {Function} afterEachFunction
+ * @param {function} afterEachFunction
  */
 var afterEach = function(afterEachFunction) {
   jasmine.getEnv().afterEach(afterEachFunction);
@@ -583,8 +583,8 @@ if (isCommonJS) exports.afterEach = afterEach;
  *
  * // TODO: a simple suite with a nested describe block
  *
- * @param {String} description A string, usually the class under test.
- * @param {Function} specDefinitions function that defines several specs.
+ * @param {string} description A string, usually the class under test.
+ * @param {function} specDefinitions function that defines several specs.
  */
 var describe = function(description, specDefinitions) {
   return jasmine.getEnv().describe(description, specDefinitions);
@@ -594,8 +594,8 @@ if (isCommonJS) exports.describe = describe;
 /**
  * Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.
  *
- * @param {String} description A string, usually the class under test.
- * @param {Function} specDefinitions function that defines several specs.
+ * @param {string} description A string, usually the class under test.
+ * @param {function} specDefinitions function that defines several specs.
  */
 var xdescribe = function(description, specDefinitions) {
   return jasmine.getEnv().xdescribe(description, specDefinitions);
@@ -639,8 +639,8 @@ jasmine.util = {};
  * Declare that a child class inherit it's prototype from the parent class.
  *
  * @private
- * @param {Function} childClass
- * @param {Function} parentClass
+ * @param {function} childClass
+ * @param {function} parentClass
  */
 jasmine.util.inherit = function(childClass, parentClass) {
   /**
@@ -1010,7 +1010,7 @@ jasmine.Reporter.prototype.log = function(str) {
  *
  * @constructor
  * @param {jasmine.Env} env
- * @param {Function} func
+ * @param {function} func
  * @param {jasmine.Spec} spec
  */
 jasmine.Block = function(env, func, spec) {
@@ -1426,8 +1426,8 @@ jasmine.Matchers.prototype.toBeGreaterThan = function(expected) {
  * Matcher that checks that the expected item is equal to the actual item
  * up to a given level of decimal precision (default 2).
  *
- * @param {Number} expected
- * @param {Number} precision
+ * @param {number} expected
+ * @param {number} precision
  */
 jasmine.Matchers.prototype.toBeCloseTo = function(expected, precision) {
   if (!(precision === 0)) {
@@ -1442,7 +1442,7 @@ jasmine.Matchers.prototype.toBeCloseTo = function(expected, precision) {
 /**
  * Matcher that checks that the expected exception was thrown by the actual.
  *
- * @param {String} expected
+ * @param {string} expected
  */
 jasmine.Matchers.prototype.toThrow = function(expected) {
   var result = false;
@@ -1822,7 +1822,7 @@ jasmine.NestedResults.prototype.addResult = function(result) {
 };
 
 /**
- * @returns {Boolean} True if <b>everything</b> below passed
+ * @returns {boolean} True if <b>everything</b> below passed
  */
 jasmine.NestedResults.prototype.passed = function() {
   return this.passedCount === this.totalCount;
@@ -2132,7 +2132,7 @@ jasmine.Runner.prototype.results = function() {
  * @constructor
  * @param {jasmine.Env} env
  * @param {jasmine.Suite} suite
- * @param {String} description
+ * @param {string} description
  */
 jasmine.Spec = function(env, suite, description) {
   if (!env) {
@@ -2205,7 +2205,7 @@ jasmine.Spec.prototype.expect = function(actual) {
  * Waits a fixed time period before moving to the next block.
  *
  * @deprecated Use waitsFor() instead
- * @param {Number} timeout milliseconds to wait
+ * @param {number} timeout milliseconds to wait
  */
 jasmine.Spec.prototype.waits = function(timeout) {
   var waitsFunc = new jasmine.WaitsBlock(this.env, timeout, this);
@@ -2216,9 +2216,9 @@ jasmine.Spec.prototype.waits = function(timeout) {
 /**
  * Waits for the latchFunction to return true before proceeding to the next block.
  *
- * @param {Function} latchFunction
- * @param {String} optional_timeoutMessage
- * @param {Number} optional_timeout
+ * @param {function} latchFunction
+ * @param {string} optional_timeoutMessage
+ * @param {number} optional_timeout
  */
 jasmine.Spec.prototype.waitsFor = function(latchFunction, optional_timeoutMessage, optional_timeout) {
   var latchFunction_ = null;
@@ -2374,8 +2374,8 @@ jasmine.Spec.prototype.removeAllSpies = function() {
  *
  * @constructor
  * @param {jasmine.Env} env
- * @param {String} description
- * @param {Function} specDefinitions
+ * @param {string} description
+ * @param {function} specDefinitions
  * @param {jasmine.Suite} parentSuite
  */
 jasmine.Suite = function(env, description, specDefinitions, parentSuite) {
@@ -2472,9 +2472,9 @@ jasmine.WaitsBlock.prototype.execute = function (onComplete) {
  * @constructor
  * @extends jasmine.Block
  * @param {jasmine.Env} env The Jasmine environment.
- * @param {Number} timeout The maximum time in milliseconds to wait for the condition to become true.
- * @param {Function} latchFunction A function which returns true when the desired condition has been met.
- * @param {String} message The message to display if the desired condition hasn't been met within the given time period.
+ * @param {number} timeout The maximum time in milliseconds to wait for the condition to become true.
+ * @param {function} latchFunction A function which returns true when the desired condition has been met.
+ * @param {string} message The message to display if the desired condition hasn't been met within the given time period.
  * @param {jasmine.Spec} spec The Jasmine spec.
  */
 jasmine.WaitsForBlock = function(env, timeout, latchFunction, message, spec) {

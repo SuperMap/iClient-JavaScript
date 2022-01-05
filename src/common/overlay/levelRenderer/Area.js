@@ -67,13 +67,13 @@ export class Area {
         this.PI2 = Math.PI * 2;
 
         /**
-         * @member {Array} LevelRenderer.Tool.Areal.prototype.roots
+         * @member {array} LevelRenderer.Tool.Areal.prototype.roots
          * @description 临时数组
          */
         this.roots = [-1, -1, -1];
 
         /**
-         * @member {Array} LevelRenderer.Tool.Areal.prototype.extrema
+         * @member {array} LevelRenderer.Tool.Areal.prototype.extrema
          * @description 临时数组
          */
         this.extrema = [-1, -1];
@@ -573,7 +573,7 @@ export class Area {
     /**
      * @function LevelRenderer.Tool.Areal.prototype.isInsideBrokenLine
      * @description 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
-     * @param {Array} points - 曲线点对象。
+     * @param {array} points - 曲线点对象。
      * @param {number} lineWidth - 线宽。
      * @param {number} x - 鼠标位置横坐标。
      * @param {number} y - 鼠标位置纵坐标。

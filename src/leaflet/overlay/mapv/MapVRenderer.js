@@ -173,7 +173,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function MapVRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {Function} filter - 过滤条件。参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
+     * @param {function} filter - 过滤条件。参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {

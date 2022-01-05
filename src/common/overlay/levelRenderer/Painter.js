@@ -26,7 +26,7 @@ export class Painter {
         this.root = root;
 
         /**
-         * @member {Array} LevelRenderer.Painter.prototype.storage
+         * @member {array} LevelRenderer.Painter.prototype.storage
          * @description 图形仓库。
          *
          */
@@ -47,7 +47,7 @@ export class Painter {
         this._layers = {};
 
         /**
-         * @member {Array} LevelRenderer.Painter.prototype._zlevelList
+         * @member {array} LevelRenderer.Painter.prototype._zlevelList
          * @description  层列表。
          *
          */
@@ -68,7 +68,7 @@ export class Painter {
         this._bgDom = null;
 
         /**
-         * @member {Function} LevelRenderer.Painter.prototype.shapeToImage
+         * @member {function} LevelRenderer.Painter.prototype.shapeToImage
          * @description 形状转图像函数。
          *
          */
@@ -150,7 +150,7 @@ export class Painter {
      * @function LevelRenderer.Painter.prototype.render
      * @description 渲染。首次绘图，创建各种 dom 和 context。
      *
-     * @param {Function} callback - 绘画结束后的回调函数。
+     * @param {function} callback - 绘画结束后的回调函数。
      * @return {LevelRenderer.Painter} this。
      */
     render(callback) {
@@ -165,7 +165,7 @@ export class Painter {
      * @function LevelRenderer.Painter.prototype.refresh
      * @description 刷新。
      *
-     * @param {Function} callback - 刷新结束后的回调函数。
+     * @param {function} callback - 刷新结束后的回调函数。
      * @param {boolean} paintAll - 强制绘制所有 shape。
      * @return {LevelRenderer.Painter} this。
      */
@@ -828,7 +828,7 @@ export class Painter {
     /**
      * @function LevelRenderer.Painter.prototype.updateHoverLayer
      * @description 更新设置显示高亮图层。
-     * @param {Array} shapes - 图形数组。
+     * @param {array} shapes - 图形数组。
      */
     updateHoverLayer(shapes) {
         if (!(shapes instanceof Array)) {

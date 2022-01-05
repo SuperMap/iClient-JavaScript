@@ -374,7 +374,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function SpatialAnalystService.prototype.geometrybatchAnalysis
      * @description 批量空间分析。
-     * @param {Array} params - 批量分析参数对象数组。
+     * @param {array} params - 批量分析参数对象数组。
      * @param {Array.<Object>} params.analystName - 空间分析方法的名称。包括：</br>
      *                                              "buffer"，"overlay"，"interpolationDensity"，"interpolationidw"，"interpolationRBF"，"interpolationKriging"，"isoregion"，"isoline"。
      * @param {Object} params.param - 空间分析类型对应的请求参数，包括：</br>

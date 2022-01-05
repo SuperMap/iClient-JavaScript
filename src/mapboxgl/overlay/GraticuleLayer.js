@@ -22,12 +22,12 @@ import mapboxgl from 'mapbox-gl';
  * @param {boolean} [options.visible=true] - 是否显示经纬网。
  * @param {boolean} [options.showLabel=true] - 是否显示标签。
  * @param {number} [options.opacity=1] - 画布不透明度。
- * @param {number|Function} [options.interval = 10] - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
+ * @param {number|function} [options.interval = 10] - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
  * @param {mapboxgl.LngLatBounds} [options.extent] - 经纬网渲染的边界范围（[minx, miny, maxx, maxy]），不传为整个地图范围。
  * @param {number} [options.minZoom] - 最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。
  * @param {number} [options.maxZoom] - 该图层可见的最大视图缩放级别（含）。
- * @param {Function} [options.lngLabelFormatter = null] - 经度标签转换函数。
- * @param {Function} [options.latLabelFormatter = null] - 纬度标签转换函数。
+ * @param {function} [options.lngLabelFormatter = null] - 经度标签转换函数。
+ * @param {function} [options.latLabelFormatter = null] - 纬度标签转换函数。
  * @param {GraticuleLayer.LabelStyle} [options.lngLabelStyle] - 经度标签样式。
  * @param {GraticuleLayer.LabelStyle} [options.latLabelStyle] - 纬度标签样式。
  * @param {GraticuleLayer.StrokeStyle} [options.strokeStyle] - 绘制经纬线的样式。
@@ -218,7 +218,7 @@ export class GraticuleLayer {
     /**
      * @function GraticuleLayer.prototype.setIntervals
      * @description 设置经纬度的间隔（以度为单位)
-     * @param {number|Function} interval - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
+     * @param {number|function} interval - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
      */
     setIntervals(interval) {
         this.options.interval = interval;

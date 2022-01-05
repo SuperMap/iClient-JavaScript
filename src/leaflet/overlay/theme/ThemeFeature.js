@@ -55,7 +55,7 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function ThemeFeature.prototype.reverseLatLngs
      * @description 坐标反转。
-     * @param {L.Latlng} latlngs - 坐标值。
+     * @param {L.LatLng} latlngs - 坐标值。
      */
     reverseLatLngs: function (latlngs) {
         if (!L.Util.isArray(latlngs)) {

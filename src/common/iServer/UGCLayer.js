@@ -55,7 +55,7 @@ export class UGCLayer {
         this.queryable = null;
 
         /**
-         * @member {Array} UGCLayer.prototype.subLayers
+         * @member {array} UGCLayer.prototype.subLayers
          * @description 子图层集。
          */
         this.subLayers = null;

@@ -216,7 +216,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createMap
      * @description 创建地图对象以及注册地图事件
-     * @param {object} mapSetting - 关于地图的设置以及需要注册的事件
+     * @param {Object} mapSetting - 关于地图的设置以及需要注册的事件
      */
     createMap(mapSetting) {
         let overlays, controls, interactions;
@@ -239,7 +239,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.registerMapEvent
      * @description 注册地图事件
-     * @param {object} mapSetting - 关于地图的设置以及需要注册的事件
+     * @param {Object} mapSetting - 关于地图的设置以及需要注册的事件
      */
     registerMapEvent(mapSetting) {
         let map = this.map;
@@ -464,9 +464,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getResFromScale
      * @description 将比例尺转换为分辨率
-     * @param {Number} scale - 比例尺
-     * @param {String} coordUnit - 比例尺单位
-     * @param {Number} dpi
+     * @param {number} scale - 比例尺
+     * @param {string} coordUnit - 比例尺单位
+     * @param {number} dpi
      */
     getResFromScale(scale, coordUnit = "DEGREE", dpi = 96) {
         let mpu = metersPerUnit[coordUnit.toUpperCase()];
@@ -476,9 +476,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getScaleFromRes
      * @description 将分辨率转换为比例尺
-     * @param {Number} resolution - 分辨率
-     * @param {String} coordUnit - 比例尺单位
-     * @param {Number} dpi
+     * @param {number} resolution - 分辨率
+     * @param {string} coordUnit - 比例尺单位
+     * @param {number} dpi
      */
     getScaleFromRes(resolution, coordUnit = "DEGREE", dpi = 96) {
         let scale, mpu = metersPerUnit[coordUnit.toUpperCase()];
@@ -498,7 +498,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createSpecLayer
      * @description 创建坐标系为0和-1000的图层
-     * @param {object} mapInfo - 地图信息
+     * @param {Object} mapInfo - 地图信息
      */
     createSpecLayer(mapInfo) {
         let me = this,
@@ -596,7 +596,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addSpecToMap
      * @description 将坐标系为0和-1000的图层添加到地图上
-     * @param {object} mapInfo - 地图信息
+     * @param {Object} mapInfo - 地图信息
      */
     addSpecToMap(source) {
         let layer = new olLayer.Tile({
@@ -610,8 +610,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getWMTSScales
      * @description 获取wmts的比例尺
-     * @param {object} identifier - 图层存储的标识信息
-     * @param {object} capabilitiesText - wmts信息
+     * @param {Object} identifier - 图层存储的标识信息
+     * @param {Object} capabilitiesText - wmts信息
      */
     getWMTSScales(identifier, capabilitiesText) {
         const format = new WMTSCapabilities();
@@ -764,8 +764,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addMVTMapLayer
      * @description 添加地图服务mapboxstyle图层
-     * @param {object} mapInfo - 地图信息
-     * @param {object} layerInfo - mapboxstyle图层信息
+     * @param {Object} mapInfo - 地图信息
+     * @param {Object} layerInfo - mapboxstyle图层信息
      */
     addMVTMapLayer(mapInfo, layerInfo, zIndex) {
         layerInfo.zIndex = zIndex;
@@ -796,7 +796,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createView
      * @description 创建地图视图
-     * @param {object} options - 关于地图的信息
+     * @param {Object} options - 关于地图的信息
      */
     createView(options) {
         let oldcenter = options.center,
@@ -870,10 +870,10 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createBaseLayer
      * @description 创建矢量图层，包括底图及其叠加的矢量图层
-     * @param {object} layerInfo - 关于地图的信息
+     * @param {Object} layerInfo - 关于地图的信息
      * @param {number} index - 当前图层在地图中的index
      * @param {boolean} isCallBack - 是否调用回调函数
-     * @param {scope} {object} this对象
+     * @param {scope} {Object} this对象
      */
     createBaseLayer(layerInfo, index, isCallBack, scope, isBaseLayer) {
         let source, that = this;
@@ -974,7 +974,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.updateTileToMap
      * @description 获取底图对应的图层信息，不是用请求回来的底图信息
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {number} layerIndex - 图层index
      */
     updateTileToMap(layerInfo, layerIndex) {
@@ -986,7 +986,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getInternetMapInfo
      * @description 获取底图对应的图层信息，不是用请求回来的底图信息
-     * @param {object} baseLayerInfo - 底图信息
+     * @param {Object} baseLayerInfo - 底图信息
      * @returns {Object} 底图的具体信息
      */
     getInternetMapInfo(baseLayerInfo) {
@@ -1112,7 +1112,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createDynamicTiledSource
      * @description 获取supermap iServer类型的地图的source。
-     * @param {object} layerInfo
+     * @param {Object} layerInfo
      * @param {boolean} isBaseLayer 是否是底图
      */
     createDynamicTiledSource(layerInfo, isBaseLayer) {
@@ -1177,7 +1177,7 @@ export class WebMap extends Observable {
     * @private
     * @function WebMap.prototype.getResolutionsFromBounds
     * @description 获取比例尺数组
-    * @param bounds {Array} 范围数组
+    * @param {array} bounds 范围数组
     * @returns {styleResolutions} 比例尺数组
     */
     getResolutionsFromBounds(bounds) {
@@ -1328,7 +1328,7 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.getTileLayerExtentInfo
      * @description 获取rest map的图层参数。
      * @param {Object} layerInfo - 图层信息。
-     * @param {Boolean} isDynamic - 是否请求动态投影信息
+     * @param {boolean} isDynamic - 是否请求动态投影信息
      */
     getTileLayerExtentInfo(layerInfo, isDynamic = true) {
         let that = this,
@@ -1658,7 +1658,7 @@ export class WebMap extends Observable {
      * @param {number} scales - 图层比例尺
      * @param {string} unit - 单位
      * @param {number} dpi - dpi
-     * @param {Array} origin 瓦片的原点
+     * @param {array} origin 瓦片的原点
      * @returns {ol.tilegrid.WMTS} wmts的瓦片
      */
     getWMTSTileGrid(extent, scales, unit, dpi, origin, matrixIds) {
@@ -1679,7 +1679,7 @@ export class WebMap extends Observable {
      * @param {number} dpi - 地图dpi
      * @param {string} unit - 单位
      * @param {number} datumAxis
-     * @returns {{res: Array, matrixIds: Array}}
+     * @returns {{res: array, matrixIds: array}}
      */
     getReslutionsFromScales(scales, dpi, unit, datumAxis) {
         unit = (unit && unit.toLowerCase()) || 'degrees';
@@ -1716,7 +1716,7 @@ export class WebMap extends Observable {
      * @param {number} dpi - 地图dpi
      * @param {string} unit - 单位
      * @param {number} datumAxis
-     * @returns {{res: Array, matrixIds: Array}}
+     * @returns {{res: array, matrixIds: array}}
      */
     getResolutionFromScale(scale, dpi = dpiConfig.default, unit, datumAxis) {
         //radio = 10000;
@@ -1736,7 +1736,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.isValidResponse
      * @description 返回信息是否符合对应类型的标准
-     * @param {object} response - 返回的信息
+     * @param {Object} response - 返回的信息
      * @returns {boolean}
      */
     isValidResponse(response) {
@@ -1755,7 +1755,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addLayers
      * @description 添加叠加图层
-     * @param {object} mapInfo - 地图信息
+     * @param {Object} mapInfo - 地图信息
      */
     addLayers(mapInfo) {
         let layers = mapInfo.layers,
@@ -1952,10 +1952,10 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addGeojsonFromUrl
      * @description 从web服务输入geojson地址的图层
-     * @param {object} layerInfo - 图层信息
-     * @param {Number} len - 总的图层数量
-     * @param {Number} layerIndex - 当前图层index
-     * @param {Boolean} withCredentials - 是否携带cookie
+     * @param {Object} layerInfo - 图层信息
+     * @param {number} len - 总的图层数量
+     * @param {number} layerIndex - 当前图层index
+     * @param {boolean} withCredentials - 是否携带cookie
      */
     addGeojsonFromUrl(layerInfo, len, layerIndex, withCredentials = this.withCredentials) {
         // 通过web添加geojson不需要携带cookie
@@ -2013,12 +2013,12 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getServiceInfoFromLayer
      * @description 判断使用哪种服务上图
-     * @param {Number} layerIndex - 图层对应的index
-     * @param {Number} len - 成功添加的图层个数
+     * @param {number} layerIndex - 图层对应的index
+     * @param {number} len - 成功添加的图层个数
      * @param {Object} layer - 图层信息
-     * @param {Array} dataItemServices - 数据发布的服务
-     * @param {String} datasetName - 数据服务的数据集名称
-     * @param {String} featureType - feature类型
+     * @param {array} dataItemServices - 数据发布的服务
+     * @param {string} datasetName - 数据服务的数据集名称
+     * @param {string} featureType - feature类型
      * @param {Object} info - 数据服务的信息
      */
     getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info) {
@@ -2092,7 +2092,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getDataflowInfo
      * @description 获取数据流服务的参数
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {function} success - 成功回调函数
      * @param {function} faild - 失败回调函数
      */
@@ -2124,9 +2124,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getFeaturesFromRestData
      * @description 从数据服务中获取feature
-     * @param {object} layer - 图层信息
-     * @param {Number} layerIndex - 图层index
-     * @param {Number} layerLength - 图层数量
+     * @param {Object} layer - 图层信息
+     * @param {number} layerIndex - 图层index
+     * @param {number} layerLength - 图层数量
      */
     getFeaturesFromRestData(layer, layerIndex, layerLength) {
         let that = this, dataSource = layer.dataSource,
@@ -2167,10 +2167,10 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getFeatures
      * @description 从地图中获取feature
-     * @param {object} fields - 图层信息
-     * @param {Number} layerInfo - 图层index
-     * @param {Number} success - 成功回调
-     * @param {Number} faild - 失败回调
+     * @param {Object} fields - 图层信息
+     * @param {number} layerInfo - 图层index
+     * @param {number} success - 成功回调
+     * @param {number} faild - 失败回调
      */
     getFeatures(fields, layerInfo, success, faild) {
         var that = this;
@@ -2210,9 +2210,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.excelData2Feature
      * @description 将csv和xls文件内容转换成ol.feature
-     * @param {object} content - 文件内容
-     * @param {object} layerInfo - 图层信息
-     * @returns {Array}  ol.feature的数组集合
+     * @param {Object} content - 文件内容
+     * @param {Object} layerInfo - 图层信息
+     * @returns {array}  ol.feature的数组集合
      */
     async excelData2Feature(content, layerInfo) {
         let rows = content.rows,
@@ -2305,9 +2305,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.excelData2FeatureByDivision
      * @description 行政区划数据处理
-     * @param {object} content - 文件内容
-     * @param {object} layerInfo - 图层信息
-     * @returns {object}  geojson对象
+     * @param {Object} content - 文件内容
+     * @param {Object} layerInfo - 图层信息
+     * @returns {Object}  geojson对象
      */
     excelData2FeatureByDivision(content, divisionType, divisionField) {
         let me = this;
@@ -2330,7 +2330,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype._parseGeoJsonData2Feature
      * @description 将geojson的数据转换成ol.Feature
-     * @param {object} metaData - 文件内容
+     * @param {Object} metaData - 文件内容
      * @returns {Array.<ol.Feature>} features
      */
     _parseGeoJsonData2Feature(metaData) {
@@ -2357,7 +2357,7 @@ export class WebMap extends Observable {
      * @param {array} datas - 数据内容
      * @param {string} divisionType - 行政区划类型
      * @param {string} divisionField - 行政区划字段
-     * @returns {object} geojson对象
+     * @returns {Object} geojson对象
      */
     changeExcel2Geojson(features, datas, divisionType, divisionField) {
         let geojson = {
@@ -2396,8 +2396,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.geojsonToFeature
      * @description geojson 转换为 feature
-     * @param {object} layerInfo - 图层信息
-     * @returns {Array}  ol.feature的数组集合
+     * @param {Object} layerInfo - 图层信息
+     * @returns {array}  ol.feature的数组集合
      */
     geojsonToFeature(geojson, layerInfo) {
         let allFeatures = geojson.features,
@@ -2491,8 +2491,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.parseGeoJsonData2Feature
      * @description 将从restData地址上获取的json转换成feature（从iserver中获取的json转换成feature）
-     * @param {object} metaData - json内容
-     * @returns {Array}  ol.feature的数组集合
+     * @param {Object} metaData - json内容
+     * @returns {array}  ol.feature的数组集合
      */
     parseGeoJsonData2Feature(metaData) {
         let allFeatures = metaData.allDatas.features,
@@ -2525,7 +2525,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addLayer
      * @description 将叠加图层添加到地图上
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features - 图层上的feature集合
      * @param {number} index 图层的顺序
      */
@@ -2614,7 +2614,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.updateFeaturesToMap
      * @description 更新地图上的feature,适用于专题图
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {number} index 图层的顺序
      */
     updateFeaturesToMap(layerInfo, layerIndex) {
@@ -2652,9 +2652,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addVectorTileLayer
      * @description 添加vectorTILE图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {number} index 图层的顺序
-     * @param {String} type 创建的图层类型，restData为创建数据服务的mvt, restMap为创建地图服务的mvt
+     * @param {string} type 创建的图层类型，restData为创建数据服务的mvt, restMap为创建地图服务的mvt
      * @returns {ol.layer.VectorTile}  图层对象
      */
     addVectorTileLayer(layerInfo, index, type) {
@@ -2681,7 +2681,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createDataVectorTileLayer
      * @description 创建vectorTILE图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @returns {ol.layer.VectorTile} 图层对象
      */
     createDataVectorTileLayer(layerInfo) {
@@ -2713,7 +2713,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getDataVectorTileStyle
      * @description 获取数据服务的mvt上图的默认样式
-     * @param {String} featureType - 要素类型
+     * @param {string} featureType - 要素类型
      * @returns {Object} 样式参数
      */
     getDataVectorTileStyle(featureType) {
@@ -2797,7 +2797,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createGraphicLayer
      * @description 添加大数据图层到地图上
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features - feature的集合
      * @return {ol.layer.image} 大数据图层
      */
@@ -2820,7 +2820,7 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.getGraphicsFromFeatures
      * @description 将feature转换成大数据图层对应的Graphics要素
      * @param {array} features - feature的集合
-     * @param {object} style - 图层样式
+     * @param {Object} style - 图层样式
      * @param {string} featureType - feature的类型
      * @return {array} 大数据图层要素数组
      */
@@ -2842,7 +2842,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createSymbolLayer
      * @description 添加符号图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features - feature的集合
      * @return {ol.layer.Vector} 符号图层
      */
@@ -2862,7 +2862,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addLabelLayer
      * @description 添加标签图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features -feature的集合
      * @returns {ol.layer.Vector} 图层对象
      */
@@ -2903,8 +2903,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.setVisibleScales
      * @description 改变图层可视范围
-     * @param {object} layer - 图层对象。ol.Layer
-     * @param {object} visibleScale - 图层样式参数
+     * @param {Object} layer - 图层对象。ol.Layer
+     * @param {Object} visibleScale - 图层样式参数
      */
     setVisibleScales(layer, visibleScale) {
         let maxResolution = this.resolutions[visibleScale.minScale],
@@ -2918,8 +2918,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getLabelStyle
      * @description 获取标签样式
-     * @param {object} parameters - 标签图层样式参数
-     * @param {object} layerInfo - 图层样式参数
+     * @param {Object} parameters - 标签图层样式参数
+     * @param {Object} layerInfo - 图层样式参数
      * @returns {ol.style.Style} 标签样式
      */
     getLabelStyle(parameters, layerInfo) {
@@ -2971,7 +2971,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createVectorLayer
      * @description 创建vector图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features -feature的集合
      * @returns {ol.layer.Vector} 矢量图层
      */
@@ -2998,7 +2998,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createHeatLayer
      * @description 创建热力图图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features -feature的集合
      * @returns {ol.layer.Heatmap} 热力图图层
      */
@@ -3110,7 +3110,7 @@ export class WebMap extends Observable {
      * @description 创建单值图层的source
      * @param {layerInfo} parameters- 图层信息
      * @param {array} features - feature 数组
-     * @returns {{map: *, style: *, isHoverAble: *, highlightStyle: *, themeField: *, styleGroups: Array}}
+     * @returns {{map: *, style: *, isHoverAble: *, highlightStyle: *, themeField: *, styleGroups: array}}
      */
     createUniqueSource(parameters, features) {
         //找到合适的专题字段
@@ -3129,9 +3129,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getUniqueStyleGroup
      * @description 获取单值专题图的styleGroup
-     * @param {object} parameters- 图层信息
+     * @param {Object} parameters- 图层信息
      * @param {array} features - feature 数组
-     * @returns {Array} 单值样式
+     * @returns {array} 单值样式
      */
     getUniqueStyleGroup(parameters, features) {
         // 找出所有的单值
@@ -3212,7 +3212,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createRangeLayer
      * @description 创建分段图层
-     * @param {object} layerInfo- 图层信息
+     * @param {Object} layerInfo- 图层信息
      * @param {array} features - 所有feature结合
      * @returns {ol.layer.Vector} 单值图层
      */
@@ -3254,7 +3254,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createRangeSource
      * @description 创建分段专题图的图层source
-     * @param {object} parameters- 图层信息
+     * @param {Object} parameters- 图层信息
      * @param {array} features - 所以的feature集合
      * @returns {Object} 图层source
      */
@@ -3276,9 +3276,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getRangeStyleGroup
      * @description 获取分段专题图的styleGroup样式
-     * @param {object} parameters- 图层信息
+     * @param {Object} parameters- 图层信息
      * @param {array} features - 所以的feature集合
-     * @returns {Array} styleGroups
+     * @returns {array} styleGroups
      */
     getRangeStyleGroup(parameters, features) {
         // 找出分段值
@@ -3412,7 +3412,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createDataflowLayer
      * @description 创建数据流图层
-     * @param {object} layerInfo- 图层信息
+     * @param {Object} layerInfo- 图层信息
      * @param {number} layerIndex - 图层的zindex
      * @returns {ol.layer.Vector} 数据流图层
      */
@@ -3492,9 +3492,9 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addDataflowFeature
      * @description 添加数据流的feature
-     * @param {object} feature - 服务器更新的feature
+     * @param {Object} feature - 服务器更新的feature
      * @param {string} identifyField - 标识feature的字段
-     * @param {object} options - 其他参数
+     * @param {Object} options - 其他参数
      */
     addDataflowFeature(feature, identifyField, options) {
         options.dataflowSource && this.addFeatureFromDataflowService(options.dataflowSource, feature, identifyField, options.featureCache);
@@ -3505,10 +3505,10 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addPathFeature
      * @description 添加数据流图层中轨迹线的feature
-     * @param {object} source - 轨迹线图层的source
-     * @param {object} feature - 轨迹线feature
+     * @param {Object} source - 轨迹线图层的source
+     * @param {Object} feature - 轨迹线feature
      * @param {string} identifyField - 标识feature的字段
-     * @param {object} featureCache - 存储feature
+     * @param {Object} featureCache - 存储feature
      * @param {number} maxPointCount - 轨迹线最多点个数数量
      */
     addPathFeature(source, feature, identifyField, featureCache, maxPointCount) {
@@ -3535,7 +3535,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.setFeatureStyle
      * @description 设置feature样式
-     * @param {object} layer - 图层对象
+     * @param {Object} layer - 图层对象
      * @param {string} directionField - 方向字段
      * @param {string} styleType - 样式的类型
      */
@@ -3568,7 +3568,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createDataflowHeatLayer
      * @description 创建数据流服务的热力图图层
-     * @param {object} layerInfo - 图层参数
+     * @param {Object} layerInfo - 图层参数
      * @returns {ol.layer.Heatmap} 热力图图层对象
      */
     createDataflowHeatLayer(layerInfo) {
@@ -3592,7 +3592,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createDataflowHeatSource
      * @description 创建数据流服务的热力图的source
-     * @param {object} layerInfo - 图层参数
+     * @param {Object} layerInfo - 图层参数
      * @returns {ol.souce.Vector} 热力图source对象
      */
     createDataflowHeatSource(layerInfo) {
@@ -3635,10 +3635,10 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addFeatureFromDataflowService
      * @description 将feature添加到数据流图层
-     * @param {object} source - 图层对应的source
-     * @param {object} feature - 需要添加到图层的feature
-     * @param {object} identifyField - feature的标识字段
-     * @param {object} featureCache - 存储已添加到图层的feature对象
+     * @param {Object} source - 图层对应的source
+     * @param {Object} feature - 需要添加到图层的feature
+     * @param {Object} identifyField - feature的标识字段
+     * @param {Object} featureCache - 存储已添加到图层的feature对象
      */
     addFeatureFromDataflowService(source, feature, identifyField, featureCache) {
         //判断是否有这个feature，存在feature就更新位置。
@@ -3661,8 +3661,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createDataflowService
      * @description 将feature添加到数据流图层
-     * @param {object} layerInfo - 图层参数
-     * @param {object} callback - 回调函数
+     * @param {Object} layerInfo - 图层参数
+     * @param {Object} callback - 回调函数
      */
     createDataflowService(layerInfo, callback) {
         let that = this;
@@ -3721,7 +3721,7 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.setFeatureInfo
      * @description 为feature设置属性
      * @param {array} feature - 单个feature
-     * @returns {object} 属性
+     * @returns {Object} 属性
      */
     setFeatureInfo(feature) {
         let attributes = feature.get('attributes'),
@@ -3746,7 +3746,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createRankSymbolLayer
      * @description 创建等级符号图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @param {array} features - 添加到图层上的features
      * @returns {ol.layer.Vector} 矢量图层
      */
@@ -3777,10 +3777,10 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createRankSymbolLayer
      * @description 创建等级符号图层的source
-     * @param {object} parameters - 图层信息
+     * @param {Object} parameters - 图层信息
      * @param {array} features - 添加到图层上的features
      * @param {string} featureType - feature的类型
-     * @returns {object} styleGroups
+     * @returns {Object} styleGroups
      */
     createRankStyleSource(parameters, features, featureType) {
         let themeSetting = parameters.themeSetting,
@@ -3794,7 +3794,7 @@ export class WebMap extends Observable {
      * @description 获取等级符号的style
      * @param {string} themeField - 分段字段
      * @param {array} features - 添加到图层上的features
-     * @param {object} parameters - 图层参数
+     * @param {Object} parameters - 图层参数
      * @param {string} featureType - feature的类型
      * @returns {array} stylegroup
      */
@@ -3869,7 +3869,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.checkUploadToRelationship
      * @description 检查是否上传到关系型
-     * @param {String} fileId - 文件的id
+     * @param {string} fileId - 文件的id
      * @returns {Promise<T | never>} 关系型文件一些参数
      */
     checkUploadToRelationship(fileId) {
@@ -3886,7 +3886,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getDatasources
      * @description 获取关系型文件发布的数据服务中数据源的名称
-     * @param {String} url - 获取数据源信息的url
+     * @param {string} url - 获取数据源信息的url
      *  @returns {Promise<T | never>} 数据源名称
      */
     getDatasources(url) {
@@ -3905,8 +3905,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getDataService
      * @description 获取上传的数据信息
-     * @param {String} fileId - 文件id
-     * @param {String} datasetName 数据服务的数据集名称
+     * @param {string} fileId - 文件id
+     * @param {string} datasetName 数据服务的数据集名称
      *  @returns {Promise<T | never>} 数据的信息
      */
     getDataService(fileId, datasetName) {
@@ -3969,7 +3969,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getTileLayerInfo
      * @description 获取地图服务的信息
-     * @param {String} url 地图服务的url（没有地图名字）
+     * @param {string} url 地图服务的url（没有地图名字）
      * @returns {Promise<T | never>} 地图服务信息
      */
     getTileLayerInfo(url) {
@@ -4004,10 +4004,10 @@ export class WebMap extends Observable {
     /**
      * 通过wkt参数扩展支持多坐标系
      *
-     * @param {String} wkt 字符串
+     * @param {string} wkt 字符串
      * @param {string} crsCode epsg信息，如： "EPSG:4490"
      *
-     * @returns {Boolean} 坐标系是否添加成功
+     * @returns {boolean} 坐标系是否添加成功
      */
     addProjctionFromWKT(wkt, crsCode) {
         if (typeof (wkt) !== 'string') {
@@ -4038,8 +4038,8 @@ export class WebMap extends Observable {
     /**
      * 通过wkt参数获取坐标信息
      *
-     * @param {String} wkt 字符串
-     * @returns {String} epsg 如："EPSG:4326"
+     * @param {string} wkt 字符串
+     * @returns {string} epsg 如："EPSG:4326"
      */
     getEpsgInfoFromWKT(wkt) {
         if (typeof (wkt) !== 'string') {
@@ -4062,7 +4062,7 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.createMigrationLayer
      * @description 创建迁徙图
      * @param {Object} layerInfo 图层信息
-     * @param {Array} features 要素数组
+     * @param {array} features 要素数组
      * @returns {ol.layer} 图层
      */
     createMigrationLayer(layerInfo, features) {
@@ -4133,8 +4133,8 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.createOptions
      * @description 创建echarts的options
      * @param {Object} layerInfo 图层信息
-     * @param {Array} lineData 线数据
-     * @param {Array} pointData 点数据
+     * @param {array} lineData 线数据
+     * @param {array} pointData 点数据
      * @returns {Object} echarts参数
      */
     createOptions(layerInfo, lineData, pointData) {
@@ -4157,7 +4157,7 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.createLineSeries
      * @description 创建线系列
      * @param {Object} layerInfo 图层参数
-     * @param {Array} lineData 线数据
+     * @param {array} lineData 线数据
      * @returns {Object} 线系列
      */
     createLineSeries(layerInfo, lineData) {
@@ -4204,7 +4204,7 @@ export class WebMap extends Observable {
      * @function WebMap.prototype.createPointSeries
      * @description 创建点系列
      * @param {Object} layerInfo 图层参数
-     * @param {Array} pointData 点数据
+     * @param {array} pointData 点数据
      * @returns {Object} 点系列
      */
     createPointSeries(layerInfo, pointData) {
@@ -4250,10 +4250,10 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.createPointsData
-     * @param {Array} lineData 线数据
+     * @param {array} lineData 线数据
      * @param {Object} layerInfo 图层信息
-     * @param {Array} properties 属性
-     * @returns {Array} 点数据
+     * @param {array} properties 属性
+     * @returns {array} 点数据
      */
     createPointsData(lineData, layerInfo, properties) {
         let data = [],
@@ -4294,8 +4294,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createLinesData
      * @param {Object} layerInfo 图层信息
-     * @param {Array} properties 属性
-     * @returns {Array} 线数据
+     * @param {array} properties 属性
+     * @returns {array} 线数据
      */
     createLinesData(layerInfo, properties) {
         let data = [];
@@ -4348,8 +4348,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getService
      * @description 获取当前数据发布的服务中的某种类型服务
-     * @param {Array} services 服务集合
-     * @param {String} type 服务类型，RESTDATA, RESTMAP
+     * @param {array} services 服务集合
+     * @param {string} type 服务类型，RESTDATA, RESTMAP
      * @returns {Object} 服务
      */
     getService(services, type) {
@@ -4363,8 +4363,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.isMvt
      * @description 判断当前能否使用数据服务的mvt上图方式
-     * @param {String} serviceUrl 数据服务的地址
-     * @param {String} datasetName 数据服务的数据集名称
+     * @param {string} serviceUrl 数据服务的地址
+     * @param {string} datasetName 数据服务的数据集名称
      * @returns {Object} 数据服务的信息
      */
     isMvt(serviceUrl, datasetName) {
@@ -4391,8 +4391,8 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getDatasetsInfo
      * @description 获取数据集信息
-     * @param {String} serviceUrl 数据服务的地址
-     * @param {String} datasetName 数据服务的数据集名称
+     * @param {string} serviceUrl 数据服务的地址
+     * @param {string} datasetName 数据服务的数据集名称
      * @returns {Object} 数据服务的信息
      */
     getDatasetsInfo(serviceUrl, datasetName) {
@@ -4419,7 +4419,7 @@ export class WebMap extends Observable {
     * @function WebMap.prototype.isRestMapMapboxStyle
     * @description 仅判断是否为restmap mvt地图服务 rest-map服务的Mapbox Style资源地址是这样的： .../iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true
     * @param {Object} layerInfo webmap中的MapStylerLayer
-    * @returns {Boolean} 是否为restmap mvt地图服务
+    * @returns {boolean} 是否为restmap mvt地图服务
     */
     isRestMapMapboxStyle(layerInfo) {
         const restMapMVTStr = '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
@@ -4663,7 +4663,7 @@ export class WebMap extends Observable {
      * @function  WebMap.prototype.getStyleResolutions
      * @description 创建图层分辨率
      * @param {Object} bounds  图层上下左右范围
-     * @returns {Array} styleResolutions 样式分辨率
+     * @returns {array} styleResolutions 样式分辨率
      */
     getStyleResolutions(bounds, minZoom = 0, maxZoom = 22) {
         let styleResolutions = [];
@@ -4685,11 +4685,11 @@ export class WebMap extends Observable {
      * @private
      * @function  WebMap.prototype.createVisibleResolution
      * @description 创建图层可视分辨率
-     * @param {Array} visibleScales 可视比例尺范围
-     * @param {Array} indexbounds
+     * @param {array} visibleScales 可视比例尺范围
+     * @param {array} indexbounds
      * @param {Object} bounds  图层上下左右范围
-     * @param {String} coordUnit
-     * @returns {Array} visibleResolution
+     * @param {string} coordUnit
+     * @returns {array} visibleResolution
      */
     createVisibleResolution(visibleScales, indexbounds, bounds, coordUnit) {
         let visibleResolution = [];
@@ -4712,7 +4712,7 @@ export class WebMap extends Observable {
      * @private
      * @function  WebMap.prototype.createVisibleResolution
      * @description 图层边界范围
-     * @param {Array} indexbounds
+     * @param {array} indexbounds
      * @param {Object} bounds  图层上下左右范围
      * @returns {Object} envelope
      */
@@ -4732,7 +4732,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createMVTLayer
      * @description 创建矢量瓦片图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      */
     createMVTLayer(layerInfo) {
         // let that = this;
@@ -4879,7 +4879,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getFirefoxVersion
      * @description 获取火狐浏览器的版本号
-     * @returns {Number}
+     * @returns {number}
      */
     getFirefoxVersion() {
         let userAgent = navigator.userAgent.toLowerCase(),
@@ -4891,7 +4891,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.getChromeVersion
      * @description 获取谷歌浏览器版本号
-     * @returns {Number}
+     * @returns {number}
      */
     getChromeVersion() {
         let userAgent = navigator.userAgent.toLowerCase(),
@@ -4903,7 +4903,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.addGraticule
      * @description 创建经纬网
-     * @param {object} mapInfo - 地图信息
+     * @param {Object} mapInfo - 地图信息
      */
     addGraticule(mapInfo) {
         if(this.isHaveGraticule) {
@@ -4918,7 +4918,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createGraticuleLayer
      * @description 创建经纬网图层
-     * @param {object} layerInfo - 图层信息
+     * @param {Object} layerInfo - 图层信息
      * @returns {ol.layer.Vector} 矢量图层
      */
     createGraticuleLayer(layerInfo) {

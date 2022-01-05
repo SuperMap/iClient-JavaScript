@@ -521,7 +521,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @private
 	 * @function WebMap.prototype._createXYZLayer
 	 * @description 创建 XYZ 底图。
-	 * @param {String} url - url 地址。
+	 * @param {string} url - url 地址。
 	 */
 	_createXYZLayer(layerInfo, url) {
 		let urlArr = [];
@@ -588,7 +588,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype._createVectorLayer
 	 * @description 创建 Vector 图层。
 	 * @param {Object} layerInfo - map 信息。
-	 * @param {Array} features - 属性 信息。
+	 * @param {array} features - 属性 信息。
 	 */
 	_createVectorLayer(layerInfo, features) {
 		let style = layerInfo.style;
@@ -997,7 +997,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype._createGraphicLayer
 	 * @description 创建 Graphic 图层。
 	 * @param {Object} layerInfo - map 信息。
-	 * @param {Array} features - 属性 信息。
+	 * @param {array} features - 属性 信息。
 	 */
 	_createGraphicLayer(layerInfo, features) {
 		let style = layerInfo.style;
@@ -1392,7 +1392,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype._changeWeight
 	 * @description 改变当前权重字段
 	 * @param {Array.<GeoJSON>} features - feature。
-	 * @param {String} weightFeild - 权重字段
+	 * @param {string} weightFeild - 权重字段
 	 */
 	_changeWeight(features, weightFeild) {
 		this.fieldMaxValue = {};
@@ -1410,7 +1410,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype._getMaxValue
 	 * @description 获取当前字段对应的最大值，用于计算权重。
 	 * @param {Array.<GeoJSON>} features - feature。
-	 * @param {String} weightFeild - 权重字段
+	 * @param {string} weightFeild - 权重字段
 	 */
 	_getMaxValue(features, weightField) {
 		let values = [],
@@ -1483,7 +1483,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @private
 	 * @function WebMap.prototype._getFiterFeatures
 	 * @description 通过过滤条件查询满足的 feature。
-	 * @param {String} filterCondition - 过滤条件。
+	 * @param {string} filterCondition - 过滤条件。
 	 * @param {array} allFeatures - 图层上的 feature 集合
 	 */
 	_getFiterFeatures(filterCondition, allFeatures) {
@@ -1515,7 +1515,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @private
 	 * @function WebMap.prototype._replaceFilterCharacter
 	 * @description 获取过滤字符串。
-	 * @param {String} filterString - 过滤条件。
+	 * @param {string} filterString - 过滤条件。
 	 */
 	_replaceFilterCharacter(filterString) {
 		filterString = filterString
@@ -1642,7 +1642,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @description csv 和 xls 文件内容转换成 geojson
 	 * @param content  文件内容
 	 * @param layerInfo  图层信息
-	 * @returns {Array}  feature的数组集合
+	 * @returns {array}  feature的数组集合
 	 */
 	_excelData2Feature(dataContent) {
 		let fieldCaptions = dataContent.colTitles;
@@ -1748,7 +1748,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @private
 	 * @param {Object} obj - 待添加的参数。
 	 * @param {string} existingUrl - 待添加参数的 url。
-	 * @param {Boolean} [uppercase] - 参数是否转换为大写。
+	 * @param {boolean} [uppercase] - 参数是否转换为大写。
 	 */
 	_getParamString(obj, existingUrl, uppercase) {
 		var params = [];
@@ -1801,8 +1801,8 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype._transformStyleToMapBoxGl
 	 * @description 根据图层类型将 layerInfo 中的 style 属性格式转换为 mapboxgl 中的 style 格式。
 	 * @param {Object} style - layerInfo中的style属性
-	 * @param {String} type - 图层类型
-	 * @param {Array} [expression] - 存储颜色值得表达式
+	 * @param {string} type - 图层类型
+	 * @param {array} [expression] - 存储颜色值得表达式
 	 */
 	_transformStyleToMapBoxGl(style, type, expression) {
 		let transTable = {};
@@ -1922,7 +1922,7 @@ export class WebMap extends mapboxgl.Evented {
 	 * @function WebMap.prototype._addOverlayToMap
 	 * @description 添加基础矢量图层到 MAP
 	 * @param {Object} style - mabgl style
-	 * @param {String} type - 图层类型
+	 * @param {string} type - 图层类型
 	 */
 	_addOverlayToMap(type, source, layerID, layerStyle) {
 		let mbglTypeMap = {
@@ -1973,8 +1973,8 @@ export class WebMap extends mapboxgl.Evented {
 	 * @private
 	 * @function WebMap.prototype._parseGeoJsonData2Feature
 	 * @description 将从restData地址上获取的json转换成feature（从iserver中获取的json转换成feature）
-	 * @param {object} metaData - json内容
-	 * @returns {Array}  ol.feature的数组集合
+	 * @param {Object} metaData - json内容
+	 * @returns {array}  ol.feature的数组集合
 	 */
 	_parseGeoJsonData2Feature(metaData) {
 		let allFeatures = metaData.allDatas.features,

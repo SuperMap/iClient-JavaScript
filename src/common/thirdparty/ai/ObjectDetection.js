@@ -36,7 +36,7 @@ export class ObjectDetection extends MachineLearningBase {
     /**
      * @function  ObjectDetection.prototype.handleResult
      * @description 对预测数据进行处理
-     * @param {object} result - 预测后的数据。
+     * @param {Object} result - 预测后的数据。
      * @returns {Object} 处理返回的数据
      */
 

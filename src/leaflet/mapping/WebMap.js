@@ -1101,7 +1101,7 @@ export var WebMap = L.LayerGroup.extend({
             /**
              * @event WebMap#coordconvertsuccess
              * @description 坐标转换成功后触发。
-             * @property {L.latLng} newCoor  - 转换成功后的坐标。
+             * @property {L.LatLng} newCoor  - 转换成功后的坐标。
              */
             me.fire('coordconvertsuccess', {
                 newCoor: newCoor
