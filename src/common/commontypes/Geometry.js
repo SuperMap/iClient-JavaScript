@@ -26,8 +26,7 @@ export class Geometry {
 
         /**
          * @member {Geometry} Geometry.prototype.parent
-         * @description This is set when a Geometry is added as component
-         * of another geometry
+         * @description 父类几何对象。
          */
         this.parent = null;
 

@@ -29,8 +29,8 @@ const {
  * @param {string} [renderer="gl"] - 图层渲染方式( canvas 或 WebGL )。取值："gl","canvas"。
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
- *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}
- *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
+ *          {@link THREE.WebGLRenderer}
+ *          THREE.CanvasRenderer
  *
  * @extends {mapboxgl.Evented}
  * @fires ThreeLayer#render
@@ -396,7 +396,7 @@ export class ThreeLayer extends mapboxgl.Evented {
         /**
          * @event ThreeLayer#renderscene
          * @description renderScene 事件，场景渲染后触发。
-         */ 
+         */
         this.fire("renderscene");
         return this;
     }

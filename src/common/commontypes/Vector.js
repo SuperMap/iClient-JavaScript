@@ -175,7 +175,7 @@ export class Vector extends Feature {
 
     /**
      * @function FeatureVector.prototype.destroy
-     * @description nullify references to prevent circular references and memory leaks
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         if (this.layer) {
@@ -189,9 +189,8 @@ export class Vector extends Feature {
 
     /**
      * @function FeatureVector.prototype.clone
-     * @description Create a clone of this vector feature.  Does not set any non-standard
-     *     properties.
-     * @returns {FeatureVector} An exact clone of this vector feature.
+     * @description 复制矢量要素，并返回复制后的新对象。
+     * @returns {FeatureVector} 相同要素的新的矢量要素。
      */
     clone() {
         return new Vector(

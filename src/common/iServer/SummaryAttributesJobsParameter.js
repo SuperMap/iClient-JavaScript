@@ -61,7 +61,7 @@ export class SummaryAttributesJobsParameter {
     }
 
     /**
-     * @function SummaryAttributesJobsParameter.destroy
+     * @function SummaryAttributesJobsParameter.prototype.destroy
      * @description 释放资源，将资源的属性置空。
      */
     destroy() {

@@ -106,7 +106,6 @@ var typeLinks = {
     "THREE.Vector3": threeApi + '#api/math/Vector3',
     "THREE.Scene": threeApi + '#api/scenes/Scene',
     "THREE.WebGLRenderer": threeApi + '#api/renderers/WebGLRenderer',
-    "THREE.CanvasRenderer": threeApi + '#examples/renderers/CanvasRenderer',
     "THREE.Material": threeApi + '#api/en/materials/Material',
     "THREE.Mesh": threeApi + '#api/objects/Mesh',
     "THREE.Shape": threeApi + '#api/extras/core/Shape'

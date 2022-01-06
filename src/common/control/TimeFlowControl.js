@@ -143,7 +143,7 @@ export class TimeFlowControl extends TimeControlBase {
 
     /**
      * @function TimeFlowControl.prototype.update
-     * @override
+     * @description 更新控件。
      */
     update() {
         var me = this;

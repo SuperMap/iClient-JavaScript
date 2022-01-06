@@ -45,10 +45,7 @@ export class LineString extends Curve {
 
     /**
      * @function GeometryLineString.prototype.getSortedSegments
-     * @returns {array} An array of segment objects.  Segment objects have properties
-     *     x1, y1, x2, and y2.  The start point is represented by x1 and y1.
-     *     The end point is represented by x2 and y2.  Start and end are
-     *     ordered so that x1 < x2.
+     * @returns {array} 升序排列的点坐标对象数组。
      */
     getSortedSegments() {
         var numSeg = this.components.length - 1;

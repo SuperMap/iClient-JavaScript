@@ -183,7 +183,7 @@ export class InterpolationKrigingAnalystParameters extends InterpolationAnalystP
         this.maxPointCountForInterpolation = 200;
 
         /**
-         * @member {number} [InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation=50]
+         * @member {number} [InterpolationKrigingAnalystParameters.prototype.maxPointCountInNode=50]
          * @description 【块查找】方式下，设置单个块内最多参与运算点数。
          * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
          */

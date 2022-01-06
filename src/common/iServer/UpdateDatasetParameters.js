@@ -40,7 +40,7 @@ export class UpdateDatasetParameters {
 
         /**
          * @member {boolean} UpdateDatasetParameters.prototype.isFileCache
-         * @description 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。。
+         * @description 是否使用文件形式的缓存。仅对数据库型数据源中的矢量数据集有效。
          */
         this.isFileCache = null;
 

@@ -73,7 +73,7 @@ export class OverlayGeoJobParameter {
     }
 
     /**
-     * @function OverlayGeoJobParameter.destroy
+     * @function OverlayGeoJobParameter.prototype.destroy
      * @description 释放资源，将资源的属性置空。
      */
     destroy() {

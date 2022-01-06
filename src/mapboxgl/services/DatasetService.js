@@ -18,6 +18,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {ServiceBase}
+ * @usage
  */
 
 export class DatasetService extends ServiceBase {
@@ -46,7 +47,7 @@ export class DatasetService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            
+
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -120,7 +121,7 @@ export class DatasetService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            
+
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback

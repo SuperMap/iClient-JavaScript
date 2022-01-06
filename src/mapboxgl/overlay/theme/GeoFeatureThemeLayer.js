@@ -27,7 +27,7 @@ import {Theme} from './ThemeLayer';
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @extends {ThemeLayer}
- * @fires GeoFeature#beforefeaturesadded
+ * @fires GeoFeatureThemeLayer#beforefeaturesadded
  * @usage
  */
 
@@ -36,18 +36,18 @@ export class GeoFeature extends Theme {
     constructor(name, options) {
         super(name, options);
         /**
-         * @member {string} GeoFeatureThemeLayer.prototype.name 
+         * @member {string} GeoFeatureThemeLayer.prototype.name
          * @description 专题图图层名称。
          */
         this.name = null;
         /**
-         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.style 
+         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.style
          * @description 专题图图层全局样式。
          */
         this.style = null;
 
         /**
-         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.highlightStyle 
+         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.highlightStyle
          * @description 专题图图层高亮样式。
          */
         this.highlightStyle = null;
@@ -69,7 +69,7 @@ export class GeoFeature extends Theme {
          */
         this.isMultiHover = false;
         /**
-         * @member {boolean} [GeoFeatureThemeLayer.prototype.isClickAble=true] 
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isClickAble=true]
          * @description  图形是否可点击。
          */
         this.isClickAble = true;
@@ -96,7 +96,7 @@ export class GeoFeature extends Theme {
      */
     addFeatures(features) {
         /**
-         * @event GeoFeature#beforefeaturesadded
+         * @event GeoFeatureThemeLayer#beforefeaturesadded
          * @description 要素添加之前触发。
          * @property {ThemeFeature|ServerFeature} features - 被添加的要素。
          */
@@ -271,7 +271,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function GeoFeatureThemeLayer.prototype.setMaxCacheCount
+     * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @param {number} [featureID=si.refDataID] - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */

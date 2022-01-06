@@ -46,6 +46,7 @@ export class ServerTheme extends UGCSubLayer {
 
     /**
      * @function ServerTheme.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      * @override
      */
     destroy() {

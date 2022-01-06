@@ -14,7 +14,7 @@ import {Util} from '../../commontypes/Util';
  * @classdesc 专题要素基类。
  * @param {Object} data - 用户数据，用于生成可视化 shape。
  * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层。
- * @usage 
+ * @usage
  */
 export class Theme {
     constructor(data, layer) {
@@ -48,7 +48,7 @@ export class Theme {
         /**
          * @readonly
          * @member {Object} FeatureTheme.prototype.data
-         * @description 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如：<FeatureVector>。
+         * @description 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如：<{@link FeatureVector}>。
          */
         this.data = data;
 
