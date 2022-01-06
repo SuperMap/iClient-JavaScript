@@ -29,7 +29,7 @@ import {Util} from './Util';
  * @usage
  */
 // TRASH THIS
-const State = {
+export const State = {
   /** states */
   UNKNOWN: 'Unknown',
   INSERT: 'Insert',

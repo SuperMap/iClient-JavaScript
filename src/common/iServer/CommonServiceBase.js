@@ -314,8 +314,7 @@ export class CommonServiceBase {
                 return requestResult;
             })
             .catch(function (e) {
-                var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                failure(e);
+                return { error: e };
             })
             .then((requestResult) => {
                 if (requestResult.error) {

@@ -14,7 +14,6 @@ import {ShapeParameters} from './ShapeParameters';
  * @param {number} y - 圆心 y 坐标。
  * @param {number} r - 圆半径。
  * @usage
- * @private
  */
 
 export class Circle extends ShapeParameters {

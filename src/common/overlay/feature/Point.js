@@ -13,7 +13,6 @@ import { ShapeParameters } from './ShapeParameters';
  * @param {number} x - 点 x 坐标。
  * @param {number} y - 点 y 坐标。
  * @usage
- * @private
  */
 
 export class Point extends ShapeParameters {
