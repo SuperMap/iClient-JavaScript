@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class TransferPathParameters
  * @deprecatedclass SuperMap.TransferPathParameters
- * @category  iServer TrafficTransferAnalyst TransferPaths
+ * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 交通换乘线路查询参数类。
  * @param {Object} options - 参数。
  * @param {Array.<TransferLine>} options.transferLines - 本换乘分段内可乘车的路线集合。

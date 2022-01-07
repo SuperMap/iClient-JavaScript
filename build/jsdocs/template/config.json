@@ -102,17 +102,17 @@
             "name": "邻近分析",
             "name_en": "ThiessenPolygonAnalyst"
           },
-          "GeorelationAnalyst": {
+          "GeoRelationAnalyst": {
             "name": "空间关系分析",
-            "name_en": "GeorelationAnalyst"
+            "name_en": "GeoRelationAnalyst"
           },
           "GridMathAnalyst": {
             "name": "栅格代数运算",
             "name_en": "GridMathAnalyst"
           },
-          "SolarradiationAnalyst": {
+          "SolarRadiationAnalyst": {
             "name": "太阳辐射分析",
-            "name_en": "SolarradiationAnalyst"
+            "name_en": "SolarRadiationAnalyst"
           },
           "RouteCalculateMeasure": {
             "name": "路由计算",
@@ -165,7 +165,7 @@
             "name_en": "ServiceArea"
           },
           "UpstreamCirticalFaclilities": {
-            "name": "上游关键设施查找",
+            "name": "上游/下游关键设施查找",
             "name_en": "UpstreamCirticalFaclilities"
           },
           "WeightMatrix": {

@@ -16,6 +16,9 @@ import {UniqueThemeLayer, uniqueThemeLayer} from './UniqueThemeLayer';
 import {HeatMapLayer, heatMapLayer, HeatMapFeature, heatMapFeature} from './HeatMapLayer';
 import {VectorTileFormat} from './VectorTileFormat';
 
+import {NormalRenderer} from './dataflow/NormalRenderer';
+import {MapvRenderer} from './dataflow/MapvRenderer';
+
 import {
     CartoCSSToLeaflet, DefaultStyle,
     CartoStyleMap, ServerStyleMap, CompOpMap
@@ -58,6 +61,9 @@ export {UnicodeMarker, unicodeMarker};
 export {UniqueThemeLayer, uniqueThemeLayer};
 export {HeatMapLayer, heatMapLayer,HeatMapFeature,heatMapFeature};
 export {VectorTileFormat};
+
+export {NormalRenderer};
+export {MapvRenderer};
 
 export {
     CartoCSSToLeaflet, DefaultStyle,

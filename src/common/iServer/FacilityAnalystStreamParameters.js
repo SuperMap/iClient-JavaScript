@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class FacilityAnalystStreamParameters
  * @deprecatedclass SuperMap.FacilityAnalystStreamParameters
- * @category iServer NetworkAnalyst UpstreamCriticalFacilities
+ * @category iServer NetworkAnalyst UpstreamCirticalFaclilities
  * @classdesc 上游/下游关键设施查找资源参数类。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。

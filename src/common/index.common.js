@@ -232,7 +232,6 @@ import {
     TerrainCurvatureCalculationParameters,
     Theme,
     ThemeDotDensity,
-    ThemeFlow,
     ThemeGraduatedSymbol,
     ThemeGraduatedSymbolStyle,
     ThemeGraph,
@@ -333,13 +332,9 @@ import {
     ShapeParametersPolygon,
     ShapeParametersRectangle,
     ShapeParametersSector,
-    FeatureTheme,
-    LevelRenderer
+    FeatureTheme
 } from './overlay';
 import {
-    FileTypes,
-    FileConfig,
-    FileModel,
     MessageBox,
     CommonContainer,
     DropDownBox,
@@ -359,9 +354,6 @@ import {
 import { Lang } from './lang';
 
 export {
-    FileTypes,
-    FileConfig,
-    FileModel,
     MessageBox,
     CommonContainer,
     DropDownBox,
@@ -618,7 +610,6 @@ export {
     TerrainCurvatureCalculationParameters,
     Theme as CommonTheme,
     ThemeDotDensity,
-    ThemeFlow,
     ThemeGraduatedSymbol,
     ThemeGraduatedSymbolStyle,
     ThemeGraph,
@@ -706,8 +697,7 @@ export {
     ShapeParametersPolygon,
     ShapeParametersRectangle,
     ShapeParametersSector,
-    FeatureTheme,
-    LevelRenderer
+    FeatureTheme
 };
 export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
 export { CartoCSS, ThemeStyle };

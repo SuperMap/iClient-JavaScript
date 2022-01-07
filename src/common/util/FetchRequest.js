@@ -279,7 +279,36 @@ export var setRequestTimeout = function (timeout) {
 export var getRequestTimeout = function () {
     return RequestTimeout || 45000;
 }
+
+/**
+ * @name FetchRequest
+ * @namespace
+ * @category BaseTypes Util
+ * @description 获取请求。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cnd}"></script>
+  <script>
+    const fetchRequest = {namespace}.FetchRequest;
+
+  </script>
+
+  // ES6 Import
+  import { FetchRequest } from '{npm}';
+
+ * ```
+ */
 export var FetchRequest = {
+    /**
+     * @function FetchRequest.commit
+     * @description commit 请求。
+     * @param {string} method - 请求方法。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -295,6 +324,13 @@ export var FetchRequest = {
                 return this.get(url, params, options);
         }
     },
+    /**
+     * @function FetchRequest.supportDirectRequest
+     * @description supportDirectRequest 请求。
+     * @param {string} url - 请求地址。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {boolean} 是否允许跨域请求。
+     */
     supportDirectRequest: function (url, options) {
         if (Util.isInTheSameDomain(url)) {
             return true;
@@ -305,6 +341,14 @@ export var FetchRequest = {
             return isCORS() || options.proxy;
         }
     },
+    /**
+     * @function FetchRequest.get
+     * @description get 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
@@ -324,7 +368,14 @@ export var FetchRequest = {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
         }
     },
-
+    /**
+     * @function FetchRequest.delete
+     * @description delete 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options -请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
@@ -343,6 +394,14 @@ export var FetchRequest = {
         }
         return this._fetch(url, params, options, type);
     },
+    /**
+     * @function FetchRequest.post
+     * @description post 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     post: function (url, params, options) {
         options = options || {};
         if (!this.supportDirectRequest(url, options)) {
@@ -355,7 +414,14 @@ export var FetchRequest = {
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
-
+    /**
+     * @function FetchRequest.put
+     * @description put 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     put: function (url, params, options) {
         options = options || {};
         url = this._processUrl(url, options);
@@ -369,6 +435,12 @@ export var FetchRequest = {
         }
         return this._fetch(url, params, options, 'PUT');
     },
+    /**
+     * @function FetchRequest.urlIsLong
+     * @description url 的字节长度是否太长。
+     * @param {string} url - 请求地址。
+     * @returns {boolean} url 的字节长度是否太长。
+     */
     urlIsLong: function (url) {
         //当前url的字节长度。
         var totalLength = 0,

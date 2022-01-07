@@ -8,7 +8,7 @@ import {ServerStyle} from './ServerStyle';
 /**
  * @class Vector
  * @deprecatedclass SuperMap.Vector
- * @category  iServer Map TileFeature
+ * @category  iServer Map Layer
  * @classdesc UGC 矢量图层类。
  * @extends {UGCSubLayer}
  * @param {Object} options - 可选参数。

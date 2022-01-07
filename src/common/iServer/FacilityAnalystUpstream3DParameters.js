@@ -7,7 +7,7 @@ import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
 /**
  * @class FacilityAnalystUpstream3DParameters
  * @deprecatedclass SuperMap.FacilityAnalystUpstream3DParameters
- * @category iServer FacilityAnalyst3D UpstreamCriticalFacilities
+ * @category iServer FacilityAnalyst3D UpstreamCirticalFaclilities
  * @classdesc 上游关键设施查找资源参数类。
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。

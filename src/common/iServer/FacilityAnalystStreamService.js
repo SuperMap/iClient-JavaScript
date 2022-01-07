@@ -8,7 +8,7 @@ import { FacilityAnalystStreamParameters } from './FacilityAnalystStreamParamete
 /**
  * @class FacilityAnalystStreamService
  * @deprecatedclass SuperMap.FacilityAnalystStreamService
- * @category iServer NetworkAnalyst UpstreamCriticalFacilities
+ * @category iServer NetworkAnalyst UpstreamCirticalFaclilities
  * @classdesc 上游/下游 关键设施查找资源服务类；即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  * @extends NetworkAnalystServiceBase
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
