@@ -223,26 +223,6 @@ a:hover, a:active, a:focus{
     margin-right: 4px;
 }
 
-.main span.number {
-    background-color: gray !important;
-}
-
-.main span.string {
-    background-color: gray !important;
-}
-
-.main span.object {
-    background-color: #2a6496 !important;
-}
-
-.main span.array {
-    background-color: #2a6496 !important;
-}
-
-.main span.boolean {
-    background-color: #ee7d7d !important;
-}
-
 .main .subsection-title {
     font-size: 1.75rem;
     margin-top: 36px;
