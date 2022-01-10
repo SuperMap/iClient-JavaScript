@@ -141,7 +141,9 @@
             inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderWorkerSupport.js');
         }
         if (inArray(includes, 'OBJLoader2')) {
-            inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/OBJLoader2.js');
+            inputScript('https://iclient.supermap.io/web/libs/three/0.129.0/build/three.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/three-wtm/1.0.0/three-wtm.js');
+            inputScript('https://iclient.supermap.io/web/libs/wwobjloader2/4.0.0/wwobjloader2.js');
         }
         if (inArray(includes, 'MTLLoader')) {
             inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/MTLLoader.js');
