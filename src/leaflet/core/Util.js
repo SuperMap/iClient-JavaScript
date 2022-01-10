@@ -5,30 +5,53 @@
  import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
  import { getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
  
-/**
- * @name Util
- * @namespace
+ /**
+ * @function toGeoJSON
  * @category BaseTypes Util
- * @description 工具类。
+ * @description 将传入对象转为 GeoJSON 格式。
+ * @param {Object} feature - 待转参数。
  * @usage
  * ```
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const util = {namespace}.Util;
+ *   {namespace}.Util.toGeoJSON(feature);
  *
  * </script>
- * // ES6 Import
- * import { Util } from '{npm}';
  *
+ * // ES6 Import
+ * import { toGeoJSON } from '{npm}';
+ *
+ * toGeoJSON(feature);
  * ```
  */
-export var toGeoJSON = function(feature) {
+ export var toGeoJSON = function(feature) {
     if (!feature) {
         return feature;
     }
     return new GeoJSONFormat().toGeoJSON(feature);
 };
+
+ /**
+ * @function toSuperMapGeometry
+ * @category BaseTypes Util
+ * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
+ * @param {GeoJSONObject} geometry - GeoJSON 对象。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.Util.toSuperMapGeometry(geometry);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { toSuperMapGeometry } from '{npm}';
+ *
+ * toSuperMapGeometry(geometry);
+ * ```
+ */
 export var toSuperMapGeometry = function(geometry) {
     if (!geometry) {
         return geometry;
@@ -59,6 +82,30 @@ export var toSuperMapGeometry = function(geometry) {
 };
 export var getMeterPerMapUnit = MeterPerMapUnit;
 
+
+ /**
+ * @function resolutionToScale
+ * @category BaseTypes Util
+ * @description 通过分辨率计算比例尺。
+ * @param {number} resolution - 分辨率。
+ * @param {number} dpi - 屏幕分辨率。
+ * @param {string} mapUnit - 地图单位。
+ * @returns {number} 比例尺。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.Util.resolutionToScale(resolution, dpi, mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { resolutionToScale } from '{npm}';
+ *
+ * resolutionToScale(resolution, dpi, mapUnit);
+ * ```
+ */
 export var resolutionToScale = function(resolution, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     // 地球半径。
@@ -67,6 +114,30 @@ export var resolutionToScale = function(resolution, dpi, mapUnit) {
     scale = 1 / scale;
     return scale;
 };
+
+ /**
+ * @function scaleToResolution
+ * @category BaseTypes Util
+ * @description 通过比例尺计算分辨率。
+ * @param {number} scale - 比例尺。
+ * @param {number} dpi - 屏幕分辨率。
+ * @param {string} mapUnit - 地图单位。
+ * @returns {number} 分辨率。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.Util.scaleToResolution(scale, dpi, mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { scaleToResolution } from '{npm}';
+ *
+ * scaleToResolution(scale, dpi, mapUnit);
+ * ```
+ */
 export var scaleToResolution = function(scale, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
@@ -75,10 +146,55 @@ export var scaleToResolution = function(scale, dpi, mapUnit) {
     return resolution;
 };
 
+ /**
+ * @function NormalizeScale
+ * @category BaseTypes Util
+ * @description 转换比例尺。
+ * @param {number} scale - 比例尺。
+ * @returns {number} 正常的 scale 值。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.Util.NormalizeScale(scale);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { NormalizeScale } from '{npm}';
+ *
+ * NormalizeScale(scale);
+ * ```
+ */
 export var NormalizeScale = function(scale) {
   return scale > 1.0 ? 1.0 / scale : scale;
 };
 
+ /**
+ * @function GetResolutionFromScaleDpi
+ * @category BaseTypes Util
+ * @description 根据比例尺和 dpi 计算屏幕分辨率。
+ * @param {number} scale - 比例尺。
+ * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
+ * @param {string} [coordUnit] - 投影坐标系统的地图单位。
+ * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
+ * @returns {number} 当前比例尺下的屏幕分辨率。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.Util.GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { GetResolutionFromScaleDpi } from '{npm}';
+ *
+ * GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
+ * ```
+ */
 export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;

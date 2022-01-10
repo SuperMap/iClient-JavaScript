@@ -181,7 +181,7 @@ var RequestTimeout;
  * @usage
  * ```
  * // 浏览器
- * <script type="text/javascript" src="{cnd}"></script>
+ * <script type="text/javascript" src="{cdn}"></script>
  * <script>
  *   {namespace}.setCORS(cors);
  *
@@ -206,7 +206,7 @@ export var setCORS = function (cors) {
  * @usage
  * ```
  * // 浏览器
- * <script type="text/javascript" src="{cnd}"></script>
+ * <script type="text/javascript" src="{cdn}"></script>
  * <script>
  *   {namespace}.isCORS();
  *
@@ -235,7 +235,7 @@ export var isCORS = function () {
  * @usage
  * ```
  * // 浏览器
-  <script type="text/javascript" src="{cnd}"></script>
+  <script type="text/javascript" src="{cdn}"></script>
   <script>
     {namespace}.setRequestTimeout(timeout);
 
@@ -261,7 +261,7 @@ export var setRequestTimeout = function (timeout) {
  * @usage
  * ```
  * // 浏览器
-  <script type="text/javascript" src="{cnd}"></script>
+  <script type="text/javascript" src="{cdn}"></script>
   <script>
     {namespace}.getRequestTimeout();
 
@@ -288,7 +288,7 @@ export var getRequestTimeout = function () {
  * @usage
  * ```
  * // 浏览器
-  <script type="text/javascript" src="{cnd}"></script>
+  <script type="text/javascript" src="{cdn}"></script>
   <script>
     const fetchRequest = {namespace}.FetchRequest;
 
