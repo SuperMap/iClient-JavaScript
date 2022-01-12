@@ -83,6 +83,8 @@ var typeLinks = {
     "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
     "SuperMap.Layer.RankSymbol": classicapi + '/Layer/Theme/RankSymbol-js.html#SuperMap.Layer.RankSymbol',
     "SuperMap.Map":classicapi + '/Map-js.html',
+    "SuperMap.Bounds":classicapi + '/BaseTypes/Bounds-js.html',
+    "SuperMap.LonLat":classicapi + '/BaseTypes/LonLat-js.html',
 
 	   //GeoJSON
     "GeoJSONObject": geojsonapi,

@@ -13,6 +13,7 @@ import {Util} from './Util';
  * @example
  * var lonLat = new LonLat(30,45);
  * @usage
+ * @private
  */
 export class LonLat {
 

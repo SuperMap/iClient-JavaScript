@@ -2,8 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../SuperMap';
-import { Util } from '@supermap/iclient-common/commontypes/Util'
-import { LonLat } from '@supermap/iclient-common/commontypes/LonLat'
 import { MapVRenderer } from './mapv/MapVRenderer';
 
 /**
@@ -52,7 +50,7 @@ export class MapVLayer extends SuperMap.Layer {
         this.canvasContext = null;
 
         if (options) {
-            Util.extend(this, options);
+          SuperMap.Util.extend(this, options);
         }
         
         //MapV图要求使用canvas绘制，判断是否支持
@@ -177,7 +175,7 @@ export class MapVLayer extends SuperMap.Layer {
      * @function SuperMap.Layer.MapVLayer.prototype.moveTo
      * @description 重置当前 MapV 图层的 div，再一次与 Map 控件保持一致。
      *              修改当前显示范围，当平移或者缩放结束后开始重绘 MapV 图的渲染效果。
-     * @param {Bounds} bounds - 图层范围。
+     * @param {SuperMap.Bounds} bounds - 图层范围。
      * @param {boolean} [zoomChanged] - 缩放级别是否改变。
      * @param {boolean} [dragging] - 是否拖动。
      */
@@ -222,7 +220,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
-     * @param {LonLat} latLng - 经纬度坐标。
+     * @param {SuperMap.LonLat} latLng - 经纬度坐标。
      * @deprecated
      */
     transferToMapLatLng(latLng) {
@@ -232,7 +230,7 @@ export class MapVLayer extends SuperMap.Layer {
         if (['m', 'meter'].indexOf(unit.toLowerCase()) > -1) {
             dest = 'EPSG:3857';
         }
-        return new LonLat(latLng.lon, latLng.lat).transform(source, dest);
+        return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 }
 SuperMap.Layer.MapVLayer = MapVLayer;
