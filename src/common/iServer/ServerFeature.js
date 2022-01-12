@@ -10,8 +10,8 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.ServerFeature
  * @category  iServer
  * @classdesc 服务端矢量要素类。该类描述了服务端返回的矢量要素的相关信息，包括字段和几何信息。
- * @param {Object} options - 参数。
  * @param {ServerGeometry} geometry - 矢量要素的几何信息。
+ * @param {Object} options - 参数。
  * @param {Array.<string>} [options.fieldNames] - 矢量要素的属性字段名集合。
  * @param {Array.<string>} [options.fieldValues] - 矢量要素的属性字段值集合。
  * @usage

@@ -45,7 +45,7 @@ import {
  * @class GeoJSONFormat
  * @aliasclass Format.GeoJSON
  * @deprecatedclass SuperMap.Format.GeoJSON
- * @classdesc  GeoJSON 的读和写。使用 {@link GeoJSON} 构造器创建一个 GeoJSON 解析器。
+ * @classdesc  GeoJSON 的读和写。使用 {@link GeoJSONObject} 构造器创建一个 GeoJSON 解析器。
  * @category BaseTypes Format
  * @param {Object} [options] - 可选参数。
  * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
