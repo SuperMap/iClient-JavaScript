@@ -140,6 +140,7 @@ a:hover, a:active, a:focus{
 
 .main-sidebar li.item .itemMembers {
     display: none;
+    text-indent: 1em;
 }
 
 .main {
