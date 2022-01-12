@@ -100,7 +100,6 @@ import {
   Events,
   Feature,
   Geometry,
-  LonLat,
   Pixel,
   Size,
   CommonUtil,
