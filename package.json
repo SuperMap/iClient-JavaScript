@@ -116,7 +116,7 @@
     "@supermap/iclient-common": "file:src/common",
     "@tensorflow/tfjs": "^3.9.0",
     "@turf/turf": "6.5.0",
-    "canvg": "3.0.7",
+    "canvg": "3.0.9",
     "echarts": "4.9.0",
     "elasticsearch": "16.7.2",
     "fetch-ie8": "1.5.0",
