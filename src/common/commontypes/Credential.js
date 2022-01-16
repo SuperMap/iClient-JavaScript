@@ -37,6 +37,7 @@ export class Credential {
 
     /**
      * @function Credential.prototype.getUrlParameters
+     * @description 获取 name=value 的表达式。
      * @example
      * var credential = new Credential("valueString","token");
      * //这里 str = "token=valueString";

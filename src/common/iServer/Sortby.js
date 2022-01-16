@@ -41,6 +41,7 @@ export default class Sortby {
 
   /**
    * @function Sortby.prototype.constructFromObject
+   * @description 目标对象新增该类的可选参数。
    * @param {Object} data 要转换的数据。
    * @param {Sortby} obj 返回的模型。
    * @return {Sortby} 返回结果。
@@ -60,6 +61,7 @@ export default class Sortby {
 }
 /**
  * @enum Direction
+ * @description 排序的类型枚举。
  * @memberOf Sortby
  * @readonly
  * @type {string}

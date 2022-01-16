@@ -65,10 +65,7 @@ export class Vector extends Feature {
 
         /**
          * @member {Bounds} FeatureVector.prototype.bounds
-         * @description The box bounding that feature's geometry, that
-         *     property can be set by an <Format> object when
-         *     deserializing the feature, so in most cases it represents an
-         *     information set by the server.
+         * @description 限制要素几何的边界。
          */
         this.bounds = null;
 

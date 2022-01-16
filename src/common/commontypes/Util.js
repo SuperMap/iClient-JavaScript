@@ -326,16 +326,10 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description Takes an object and copies any properties that don't exist from
-   *     another properties, by analogy with CommonUtil.extend() from
-   *     Prototype.js.
-   *
+   * @description 比较两个对象并合并。
    * @param {Object} [to] - 目标对象。
-   * @param {Object} from - 源对象。Any properties of this object that
-   *     are undefined in the to object will be set on the to object.
-   *
-   * @returns {Object} A reference to the to object.  Note that the to argument is modified
-   *     in place and returned by this function.
+   * @param {Object} from - 源对象。
+   * @returns {Object} 返回合并后的对象。
    */
   applyDefaults: function (to, from) {
     to = to || {};
@@ -552,6 +546,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
+   * @description 判断并转化比例尺。
    * @param {number} scale - 比例尺。
    * @returns {number} 正常的 scale 值。
    */

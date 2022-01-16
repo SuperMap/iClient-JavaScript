@@ -91,6 +91,7 @@ const dpiConfig = {
  * @param {string} [options.googleMapsAPIKey] - 谷歌底图需要的key
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
  * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
+ * @param {Object} [options.mapSetting] - 地图可选参数
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @param {function} [options.mapSetting.overlays] - 地图的overlays
  * @param {function} [options.mapSetting.controls] - 地图的控件
@@ -3192,10 +3193,10 @@ export class WebMap extends Observable {
     }
 
     /**
-     * 获取单值专题图自定义样式对象
-     * @param {*} style 图层上的样式
-     * @param {*} color 单值对应的颜色
-     * @param {*} featureType 要素类型
+     * @description 获取单值专题图自定义样式对象
+     * @param {Object} style - 图层上的样式
+     * @param {string} color - 单值对应的颜色
+     * @param {string} featureType - 要素类型
      */
     getCustomSetting(style, color, featureType) {
         let newProps = {};
@@ -3940,8 +3941,8 @@ export class WebMap extends Observable {
     }
 
     /**
-     * 给url带上凭证密钥
-     * @param {*} url 地址
+     * @description 给url带上凭证密钥
+     * @param {string} url - 地址
      */
     formatUrlWithCredential(url) {
         if (this.credentialValue) {

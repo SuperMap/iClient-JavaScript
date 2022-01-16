@@ -19,6 +19,7 @@ var typeLinks = {
     "ol.geom.Point": olapi + "module-ol_geom_Point-Point.html",
     "ol.geom.Geometry":olapi + "module-ol_geom_Geometry-Geometry.html",
     "ol.format.GeoJSON": olapi + "module-ol_format_GeoJSON-GeoJSON.html",
+    "ol.format.MVT": olapi + "module-ol_format_MVT-MVT.html",
     "ol.proj.Projection": olapi + "module-ol_proj_Projection-Projection.html",
     "ol.Observable": olapi + "module-ol_Observable-Observable.html",
     "ol.style.Image": olapi + "module-ol_style_Image-ImageStyle.html",
@@ -34,6 +35,7 @@ var typeLinks = {
     "ol.Pixel": olapi + "module-ol_pixel.html",
     "ol.source.State": olapi + "module-ol_source_State.html",
     "ol.layer.Layer": olapi + "module-ol_layer_Layer-Layer.html",
+    "ol.layer.VectorTile": olapi + "module-ol_layer_VectorTile-VectorTileLayer.html",
     "ol.StyleFunction": olapi + "module-ol_style_Style.html#~StyleFunction",
     "ol.control.ScaleLine": olapi + "module-ol_control_ScaleLine-ScaleLine.html",
     "ol.control.ScaleLine.Units": olapi + "module-ol_control_ScaleLine.html",
@@ -86,7 +88,7 @@ var typeLinks = {
     "SuperMap.Bounds":classicapi + '/BaseTypes/Bounds-js.html',
     "SuperMap.LonLat":classicapi + '/BaseTypes/LonLat-js.html',
 
-	   //GeoJSON
+    // GeoJSON
     "GeoJSONObject": geojsonapi,
     "GeoJSONGeometry": geometryapi,
 

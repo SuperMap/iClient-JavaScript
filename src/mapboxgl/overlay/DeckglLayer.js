@@ -19,7 +19,7 @@ import { Util } from '../core/Util';
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
  * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；
  * @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项：* @param {boolean}
- * options.props.lightSettings - 公共配置项：光照，包含以下几个配置；
+ * @param {Object} options.props.lightSettings - 光照配置项。
  * @param {array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
  * @param {array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
  * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
@@ -118,7 +118,7 @@ export class DeckglLayer {
         } else {
             this.coordinateSystem = 1;
             this.isGeographicCoordinateSystem = false;
-        } 
+        }
         //创建图层容器
         this._initContainer();
 

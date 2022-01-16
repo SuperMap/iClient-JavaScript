@@ -14,7 +14,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * 阻抗就是指从一点到另一点的耗费，在实际应用中我们可以将距离、时间、花费等作为阻抗条件。
  * 阻抗最小也就可以理解为从一点到另一点距离最短、时间最少、花费最低等。当两点间距离最短时为最短路径，它是最佳路径问题的一个特例。
  * 阻抗值通过 TransportationAnalystParameter.weightFieldName 设置。
- * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 {@link TransportationAnalystParameter.turnWeightField} 设置。
+ * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 {@link TransportationAnalystParameter#turnWeightField} 设置。
  *
  * @param {Object} options - 参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 最佳路径分析经过的结点或设施点数组。该字段至少包含两个点。

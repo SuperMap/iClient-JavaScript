@@ -61,7 +61,7 @@ export class AreaSolarRadiationParameters {
         this.durationDatasetGridName = null;
 
         /**
-         * @member {string} AreaSolarRadiationParameters.prototype.durationDatasetGridName
+         * @member {string} AreaSolarRadiationParameters.prototype.directDatasetGridName
          * @description 指定地区太阳辐射直射辐射量数据集的名称。
          */
         this.directDatasetGridName = null;

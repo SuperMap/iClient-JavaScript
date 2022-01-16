@@ -45,6 +45,7 @@ export class LineString extends Curve {
 
     /**
      * @function GeometryLineString.prototype.getSortedSegments
+     * @description 获取升序排列的点坐标对象数组。
      * @returns {array} 升序排列的点坐标对象数组。
      */
     getSortedSegments() {

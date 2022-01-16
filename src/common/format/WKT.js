@@ -280,13 +280,9 @@ export class WKT extends Format {
 
     /**
      * @function WKTFormat.prototype.read
-     * @description Deserialize a WKT string and return a vector feature or an
-     * array of vector features.  Supports WKT for POINT, MULTIPOINT,
-     * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
-     * GEOMETRYCOLLECTION.
-     * @param {string} wkt - A WKT string
-     * @returns {FeatureVector|array} A feature or array of features for
-     * GEOMETRYCOLLECTION WKT.
+     * @description 反序列化 WKT 字符串并返回向量特征或向量特征数组。 支持 POINT、MULTIPOINT、LINESTRING、MULTILINESTRING、POLYGON、MULTIPOLYGON 和 GEOMETRYCOLLECTION 的 WKT。
+     * @param {string} wkt - WKT 字符串。
+     * @returns {FeatureVector|array} GEOMETRYCOLLECTION WKT 的矢量要素或者矢量要素数组。
      */
     read(wkt) {
         var features, type, str;
@@ -305,9 +301,9 @@ export class WKT extends Format {
 
     /**
      * @function WKTFormat.prototype.write
-     * @description Serialize a feature or array of features into a WKT string.
-     * @param {(FeatureVector|Array)} features - A feature or array of features
-     * @returns {string} The WKT string representation of the input geometries
+     * @description 将矢量要素或矢量要素数组序列化为 WKT 字符串。
+     * @param {(FeatureVector|Array)} features - 矢量要素或矢量要素数组。
+     * @returns {string} 表示几何的 WKT 字符串。
      */
     write(features) {
         var collection, geometry, isCollection;
@@ -337,9 +333,9 @@ export class WKT extends Format {
 
     /**
      * @function WKTFormat.prototype.extractGeometry
-     * @description Entry point to construct the WKT for a single Geometry object.
-     * @param {Geometry} geometry
-     * @returns {string} A WKT string of representing the geometry
+     * @description 为单个 Geometry 对象构造 WKT 的入口点。
+     * @param {Geometry} geometry - Geometry 对象。
+     * @returns {string} 表示几何的 WKT 字符串。
      */
     extractGeometry(geometry) {
         var type = geometry.CLASS_NAME.split('.')[2].toLowerCase();

@@ -17,7 +17,7 @@ import '../../core/Base';
  * @param  {number} [layerOptions.height] - 高度。如果数据指定的 heightField (为height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param  {string} [layerOptions.heightField] - 数据中表示高度的字段。
  * @param  {string} [layerOptions.themeField] - 专题展示的字段。
- * @param  {boolean} [playerOptions.showLegend=true] - 是否显示图例。
+ * @param  {boolean} [layerOptions.showLegend=true] - 是否显示图例。
  * @param  {string} [layerOptions.legendTitle] - 图例标题。
  * @param  {string} [layerOptions.legendTheme='light'] - 图例主题，取值：'light','dark'。
  * @param  {string} [layerOptions.legendOrientation='horizontal'] - 图例方向，取值：'horizontal','vertical'。
@@ -29,18 +29,18 @@ export class Theme3DLayer {
 
     constructor(id, layerOptions) {
         /**
-         * @member {string} Theme3DLayer.prototype.id 
+         * @member {string} Theme3DLayer.prototype.id
          * @description Mapbox GL 图层 id。
          */
         this.id = id;
 
         /**
-         * @member {Object} Theme3DLayer.prototype.map 
+         * @member {Object} Theme3DLayer.prototype.map
          * @description Mapbox GL 地图对象。
          */
         this.map = null;
         /**
-         * @member {number} [Theme3DLayer.prototype.opacity=1] 
+         * @member {number} [Theme3DLayer.prototype.opacity=1]
          * @description 图层不透明度。
          */
         this.opacity = 1;
@@ -62,19 +62,19 @@ export class Theme3DLayer {
         this.highlight = {color: "#ADA91E"};
 
         /**
-         * @member {string} Theme3DLayer.prototype.baseHeightField 
+         * @member {string} Theme3DLayer.prototype.baseHeightField
          * @description 数据中表示基础高度的字段。
          */
         this.baseHeightField = null;
 
         /**
-         * @member {number} Theme3DLayer.prototype.height 
+         * @member {number} Theme3DLayer.prototype.height
          * @description 高度。如果数据指定的 heightField (默认 height) 没有可以表示高度的字段，可以为所有数据统一设置一个高度。
          */
         this.height = null;
 
         /**
-         * @member {string} Theme3DLayer.prototype.heightField 
+         * @member {string} Theme3DLayer.prototype.heightField
          * @description 数据中表示高度的字段。
          */
         this.heightField = 'height';
@@ -111,7 +111,7 @@ export class Theme3DLayer {
          */
         this.legendOrientation = 'horizontal';
         /**
-         * @member {string} Theme3DLayer.prototype.legendPosition 
+         * @member {string} Theme3DLayer.prototype.legendPosition
          * @description 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'。
          * @default 'bottom-right'
          */

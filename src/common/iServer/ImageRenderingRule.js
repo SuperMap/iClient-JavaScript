@@ -135,6 +135,7 @@ export default class ImageRenderingRule {
 
   /**
    * @function ImageRenderingRule.prototype.constructFromObject
+   * @description 目标对象新增该类的可选参数。
    * @param {Object} data 要转换的数据.
    * @param {ImageRenderingRule} obj 返回的模型.
    * @return {ImageRenderingRule} 返回结果
@@ -196,6 +197,7 @@ export default class ImageRenderingRule {
 
 /**
  * @enum DisplayMode
+ * @description 影像显示模式。
  * @memberOf ImageRenderingRule
  * @readonly
  * @type {string}
@@ -207,6 +209,7 @@ ImageRenderingRule.DisplayMode = {
 
 /**
  * @enum InterpolationMode
+ * @description 影像显示时使用的插值算法枚举。
  * @memberOf ImageRenderingRule
  * @readonly
  * @type {string}

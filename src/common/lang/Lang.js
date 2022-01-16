@@ -8,6 +8,22 @@
  * @namespace
  * @category BaseTypes
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const Lang = {namespace}.Lang;
+ *
+ *   // 弃用的写法
+ *   const Lang = SuperMap.Lang;
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { Lang } from '{npm}';
+ *
+ * ```
  */
 let Lang = {
    'en-US': en,

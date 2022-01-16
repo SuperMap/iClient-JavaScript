@@ -115,6 +115,7 @@ export class TimeControlBase {
 
     /**
      * @function TimeControlBase.prototype.updateOptions
+     * @description 更新参数。
      * @param {Object} options - 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
      */
     updateOptions(options) {

@@ -43,6 +43,7 @@ export default class ImageGFAspect {
 
   /**
   * @function ImageGFAspect.prototype.constructFromObject
+  * @description 目标对象新增该类的可选参数。
   * @param {Object} data 要转换的数据.
   * @param {ImageGFAspect} obj 返回的模型.
   * @return {ImageGFAspect} 返回结果

@@ -11,8 +11,8 @@
  export var Event = {
 
      /**
-      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
-      * @type {boolean}
+      * @description  事件观察者列表。
+      * @type {Object}
       * @default false
       */
      observers: false,
@@ -90,35 +90,35 @@
 
      /**
       * @description Cross browser event element detection.
-      * @param {Event} event - The event
-      * @returns {HTMLElement} The element that caused the event
+      * @param {Event} event - Event 对象。
+      * @returns {HTMLElement} 触发事件的 DOM 元素。
       */
      element: function (event) {
          return event.target || event.srcElement;
      },
 
      /**
-      * @description Determine whether event was caused by a single touch
-      * @param {Event} event - The event
-      * @returns {boolean}
+      * @description 判断事件是否由单次触摸引起。
+      * @param {Event} event - Event 对象。
+      * @returns {boolean} 是否有且只有一个当前在与触摸表面接触的 Touch 对象。
       */
      isSingleTouch: function (event) {
          return event.touches && event.touches.length === 1;
      },
 
      /**
-      * @description Determine whether event was caused by a multi touch
-      * @param {Event} event - The event
-      * @returns {boolean}
+      * @description 判断事件是否由多点触控引起。
+      * @param {Event} event - Event 对象。
+      * @returns {boolean} 是否存在多个当前在与触摸表面接触的 Touch 对象。
       */
      isMultiTouch: function (event) {
          return event.touches && event.touches.length > 1;
      },
 
      /**
-      * @description Determine whether event was caused by a left click.
-      * @param {Event} event - The event
-      * @returns {boolean}
+      * @description 确定事件是否由左键单击引起。
+      * @param {Event} event - Event 对象。
+      * @returns {boolean} 是否点击鼠标左键。
       */
      isLeftClick: function (event) {
          return (((event.which) && (event.which === 1)) ||
@@ -126,9 +126,9 @@
      },
 
      /**
-      * @description Determine whether event was caused by a right mouse click.
-      * @param {Event} event - The event
-      * @returns {boolean}
+      * @description 确定事件是否由鼠标右键单击引起。
+      * @param {Event} event - Event 对象。
+      * @returns {boolean} 是否点击鼠标右键。
       */
      isRightClick: function (event) {
          return (((event.which) && (event.which === 3)) ||
@@ -136,9 +136,9 @@
      },
 
      /**
-      * @description Stops an event from propagating.
-      * @param {Event} event - The event
-      * @param {boolean} allowDefault - If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
+      * @description 阻止事件冒泡。
+      * @param {Event} event - Event 对象。
+      * @param {boolean} allowDefault - 默认为 false，表示阻止事件的默认行为。
       */
      stop: function (event, allowDefault) {
 
@@ -158,9 +158,9 @@
      },
 
      /**
-      * @param {Event} event - The event。
+      * @param {Event} event - Event 对象。
       * @param {string} tagName - html 标签名。
-      * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
+      * @returns {HTMLElement} DOM 元素。
       */
      findElement: function (event, tagName) {
          var element = Event.element(event);
@@ -231,23 +231,14 @@
      },
 
      /**
-      * @description Given the id of an element to stop observing, cycle through the
-      *   element's cached observers, calling stopObserving on each one,
-      *   skipping those entries which can no longer be removed.
-      *
-      * @param {(HTMLElement|string)} elementParam -
+      * @description 移除给定 DOM 元素的监听事件。
+      * @param {(HTMLElement|string)} elementParam - 待监听的 DOM 对象或者其 ID 标识。
       */
      stopObservingElement: function (elementParam) {
          var element = Util.getElement(elementParam);
          var cacheID = element._eventCacheID;
          this._removeElementObservers(Event.observers[cacheID]);
      },
-
-     /**
-      * @param {Array.<Object>} elementObservers - Array of (element, name,
-      *                                         observer, usecapture) objects,
-      *                                         taken directly from hashtable
-      */
      _removeElementObservers: function (elementObservers) {
          if (elementObservers) {
              for (var i = elementObservers.length - 1; i >= 0; i--) {
@@ -265,7 +256,7 @@
       * @param {string} name - 需要移除的被监听事件名称。
       * @param {function} observer - 需要移除的事件处理方法。
       * @param {boolean} [useCapture=false] - 是否捕获。
-      * @returns {boolean} Whether or not the event observer was removed
+      * @returns {boolean} 监听事件是否被移除。
       */
      stopObserving: function (elementParam, name, observer, useCapture) {
          useCapture = useCapture || false;
@@ -317,8 +308,7 @@
      },
 
      /**
-      * @description Cycle through all the element entries in the events cache and call
-      *   stopObservingElement on each.
+      * @description 移除缓存中的监听事件。
       */
      unloadCache: function () {
          // check for Event before checking for observers, because

@@ -37,7 +37,7 @@ export class Graph extends Theme {
 
         /**
          * @member {Object} FeatureThemeGraph.prototype.shapeParameters
-         * @description 当前图形参数对象，<ShapeParameters> 的子类对象。
+         * @description 当前图形参数对象，<{@link ShapeParameters}> 的子类对象。
          */
         this.shapeParameters = null;
 
@@ -345,7 +345,7 @@ export class Graph extends Theme {
      * @function FeatureThemeGraph.prototype.resetLocation
      * @description 根据地理位置 lonlat 重置专题要素（图表）位置。
      * @param {LonLat} lonlat - 专题要素新的像素中心位置。
-     * @returns {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @returns {Array.<number>} 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
         if (lonlat) {

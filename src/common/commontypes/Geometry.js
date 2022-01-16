@@ -97,10 +97,8 @@ export class Geometry {
 
     /**
      * @function Geometry.prototype.extendBounds
-     * @description Extend the existing bounds to include the new bounds.
-     * If geometry's bounds is not yet set, then set a new Bounds.
-     *
-     * @param {Bounds} newBounds - 范围。
+     * @description 扩展现有边界以包含新边界。如果尚未设置几何边界，则设置新边界。
+     * @param {Bounds} newBounds - 几何对象的 bounds。
      */
     extendBounds(newBounds) {
         var bounds = this.getBounds();
@@ -147,7 +145,7 @@ export class Geometry {
     /**
      * @function Geometry.prototype.getArea
      * @description 计算几何对象的面积 ，此方法需要在子类中定义。
-     * @returns {number} The area of the collection by summing its parts
+     * @returns {number} 计算后的对象面积。
      */
     getArea() {
         //to be overridden by geometries that actually have an area

@@ -7,7 +7,7 @@ import {TemplateBase} from './TemplateBase';
  * @class IndexTabsPageContainer
  * @aliasclass Components.IndexTabsPageContainer
  * @deprecatedclass SuperMap.Components.IndexTabsPageContainer
- * @description 标签索引组件。
+ * @classdesc 标签索引组件。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。

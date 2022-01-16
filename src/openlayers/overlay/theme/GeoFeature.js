@@ -20,12 +20,12 @@ import {Theme} from './Theme';
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {array} [opt_options.resolutions] - 分辨率数组。
- * @param {ol.source.State} [opt_option.state] - 资源状态。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {Object} [opt_options.style] - 专题图样式。
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.Theme}
  */
 

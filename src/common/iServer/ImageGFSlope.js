@@ -52,6 +52,7 @@ export default class ImageGFSlope {
 
   /**
   * @function ImageGFSlope.prototype.constructFromObject
+  * @description 目标对象新增该类的可选参数。
   * @param {Object} data 要转换的数据.
   * @param {ImageGFSlope} obj 返回的模型.
   * @return {ImageGFSlope} 返回结果

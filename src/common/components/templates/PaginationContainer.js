@@ -10,7 +10,7 @@ import {TemplateBase} from './TemplateBase';
  * @classdesc 分页组件模板。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
- * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {string} options.id - 组件 dom 元素 id。
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
  * @extends {TemplateBase}

@@ -13,8 +13,8 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 下拉框 title。
  * @param {string} options.remark - 下拉框解释标记文本。
- * @param {string} options.icon - 下拉框图标。
  * @param {string} [options.dataValue] - 下拉框 attribute 名为 data-value 的值 。
+ * @param {string} [options.icon] - 下拉框图标。
  * @param {string} [options.icon.className] - 下拉框图标类名。
  * @param {string} [options.icon.background] - 下拉框图标背景 url。
  * @category Components Common

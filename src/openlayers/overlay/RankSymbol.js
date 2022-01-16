@@ -13,7 +13,7 @@ import {Graph} from './Graph';
  * @param {Object} opt_options - 参数。
  * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {string} opt_options.themeFields - 指定创建专题图字段。
- * @param {Object} opt_options.symbolSetting - 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>）。
+ * @param {Object} opt_options.symbolSetting - 符号 Circle 配置对象 symbolSetting（<{@link SuperMap.Layer.RankSymbol}>）。
  * @param {Array.<number>} opt_options.symbolSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
  * @param {number} [opt_options.symbolSetting.maxR] - 圆形的最大半径。
  * @param {number} [opt_options.symbolSetting.minR] - 圆形的最小半径。
@@ -31,7 +31,7 @@ import {Graph} from './Graph';
  * @param {array} [opt_options.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {Graph}
  */
 export class RankSymbol extends Graph {

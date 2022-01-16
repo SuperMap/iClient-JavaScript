@@ -11,7 +11,7 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {boolean} [options.isTempLayers=false] - 是否是临时图层。
  * @param {string} options.resourceID - 临时图层资源 ID。
- * @param {string} options.layersInfo - 要更新的图层信息。
+ * @param {Object} options.layersInfo - 要更新的图层信息。
  * @usage
  */
 export class SetLayersInfoParameters {
