@@ -19,21 +19,21 @@ export class Storage {
         this._elements = {};
 
         /**
-         * @member {array} LevelRenderer.Storage.prototype._hoverElements
+         * @member {Array} LevelRenderer.Storage.prototype._hoverElements
          * @description 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
          *
          */
         this._hoverElements = [];
 
         /**
-         * @member {array} LevelRenderer.Storage.prototype._roots
+         * @member {Array} LevelRenderer.Storage.prototype._roots
          * @description _roots。
          *
          */
         this._roots = [];
 
         /**
-         * @member {array} LevelRenderer.Storage.prototype._shapeList
+         * @member {Array} LevelRenderer.Storage.prototype._shapeList
          * @description _shapeList。
          *
          */

@@ -10,14 +10,14 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 线参数对象。
  * @extends {ShapeParameters}
- * @param {array} pointList - 线要素节点数组，二维数组。
+ * @param {Array} pointList - 线要素节点数组，二维数组。
  * @usage
  */
 export class Line extends ShapeParameters {
     constructor(pointList) {
         super(pointList);
         /**
-         * @member {array} ShapeParametersLine.prototype.pointList
+         * @member {Array} ShapeParametersLine.prototype.pointList
          * @description 线要素节点数组，二维数组。
          * 数组形如：
          * (start code)

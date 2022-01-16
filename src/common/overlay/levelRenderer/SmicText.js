@@ -19,7 +19,7 @@ import {SUtil} from './SUtil';
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * @param {array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  */
 export class SmicText extends Shape {
     constructor(options) {
@@ -466,7 +466,7 @@ export class SmicText extends Shape {
      * @param {number} rx - 旋转中心点横坐标。
      * @param {number} ry - 旋转中心点纵坐标。
      * @param {number} angle - 旋转角度（度）。
-     * @return {array} 旋转后的坐标位置，长度为 2 的一维数组，数组第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @return {Array.<number>} 旋转后的坐标位置，长度为 2 的一维数组，数组第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getRotatedLocation(x, y, rx, ry, angle) {
         var loc = new Array(), x0, y0;

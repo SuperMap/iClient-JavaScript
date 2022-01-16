@@ -114,7 +114,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @description 指定要素 ID 和图层名称设置要素风格。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
-     * @param {(array|Function)} layerStyle - 图层样式。
+     * @param {(Array|function)} layerStyle - 图层样式。
      * @returns {this} this
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
@@ -159,7 +159,7 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function VectorGrid.prototype.getDataLayerNames
      * @description 获取数据图层名称。
-     * @returns {array} 返回数据图层名称数组。
+     * @returns {Array} 返回数据图层名称数组。
      */
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);

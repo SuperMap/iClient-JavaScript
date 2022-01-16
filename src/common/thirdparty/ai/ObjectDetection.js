@@ -163,9 +163,9 @@ export class ObjectDetection extends MachineLearningBase {
 
     /**
      * @function ObjectDetection.prototype.nms
-     * @param {array} bbox - 包围框数据。
-     * @param {array} scores - 模型得分数据。
-     * @returns {array} 返回去重后的包围框数据
+     * @param {Array} bbox - 包围框数据。
+     * @param {Array} scores - 模型得分数据。
+     * @returns {Array} 返回去重后的包围框数据
      */
 
     async nms(bbox, scores) {
@@ -175,10 +175,10 @@ export class ObjectDetection extends MachineLearningBase {
 
     /**
      * @function ObjectDetection.prototype.getIntervalFromArray
-     * @param {array} array - 数组。
+     * @param {Array} array - 数组。
      * @param {number} interval - 取值的间隔。
      * @param {number} start - 取值的起始位置。
-     * @returns {array} 返回被间隔取值后的数组
+     * @returns {Array} 返回被间隔取值后的数组
      */
 
     getIntervalFromArray(array, interval, start) {

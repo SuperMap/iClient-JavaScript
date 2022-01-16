@@ -48,7 +48,7 @@ export class Render {
         this.handler = new Handler(dom, this.storage, this.painter);
 
         /**
-         * @member {array} LevelRenderer.Render.prototype.animatingElements
+         * @member {Array} LevelRenderer.Render.prototype.animatingElements
          * @description 动画控制数组。
          *
          */

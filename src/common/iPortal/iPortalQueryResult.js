@@ -11,7 +11,7 @@ import {Util} from '../commontypes/Util';
  * @version 10.0.1
  * @category iPortal/Online
  * @param {Object} queryResult - 可选参数。
- * @param {array} [queryResult.content] - 页面内容。
+ * @param {Array} [queryResult.content] - 页面内容。
  * @param {number} [queryResult.total] - 总记录数。
  * @param {number} [queryResult.currentPage] - 当前第几页。
  * @param {number} [queryResult.pageSize] - 每页大小。

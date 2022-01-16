@@ -380,7 +380,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function HeatMapLayer.prototype.draw
      * @description 绘制热点图。
-     * @param {array} data - convertToPixelPoints方法计算出的点。
+     * @param {Array} data - convertToPixelPoints方法计算出的点。
      * @private
      */
     draw(data, maxWeight) {
@@ -409,8 +409,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function HeatMapLayer.prototype.colorize
      * @description 根据渐变色重置热点图rgb值。
-     * @param {array} pixels - 像素 RGBA 值。
-     * @param {array} gradient - 渐变 canvas.getImageData.data。
+     * @param {Array} pixels - 像素 RGBA 值。
+     * @param {Array} gradient - 渐变 canvas.getImageData.data。
      * @private
      */
     colorize(pixels, gradient) {

@@ -25,7 +25,7 @@ import {
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
- * @param {array} [options.TFEvents] - 专题要素事件临时存储。 
+ * @param {Array} [options.TFEvents] - 专题要素事件临时存储。 
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @usage
  */
@@ -34,7 +34,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
     /** 
      * @member {Object} RankSymbolThemeLayer.prototype.symbolSetting
      * @description 符号 Circle 配置对象。
-     * @property {array} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。  
+     * @property {Array} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。  
      * @property {number} [maxR] - 圆形的最大半径。 
      * @property {number} [minR] - 圆形的最小半径。 
      * @property {string} [fillColor] - 圆形的填充色，如：fillColor: "#FFB980"。 

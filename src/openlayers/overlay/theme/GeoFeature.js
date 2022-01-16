@@ -19,7 +19,7 @@ import {Theme} from './Theme';
  * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
- * @param {array} [opt_options.resolutions] - 分辨率数组。
+ * @param {Array} [opt_options.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {Object} [opt_options.style] - 专题图样式。
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。

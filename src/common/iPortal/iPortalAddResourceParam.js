@@ -12,7 +12,7 @@
   * @category iPortal/Online
   * @param {Object} params - 可选参数。
   * @param {string} [params.rootUrl] - 服务地址。
-  * @param {array} [params.tags] - 标签。
+  * @param {Array} [params.tags] - 标签。
   * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
   * @usage
   */

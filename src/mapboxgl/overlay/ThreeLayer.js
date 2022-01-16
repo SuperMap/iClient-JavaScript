@@ -73,7 +73,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.toThreeShape
      * @description  创建 threejs shape 对象。
-     * @param {array} coordinates - 坐标点数组。
+     * @param {Array} coordinates - 坐标点数组。
      * @returns {THREE.Shape} threejs shape 对象。
      */
     toThreeShape(coordinates) {

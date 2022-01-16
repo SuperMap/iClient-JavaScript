@@ -71,7 +71,7 @@ export class SecurityManager {
     /**
      * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
      * @function SecurityManager.registerKey
-     * @param {array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
+     * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
      * @param {string} key - key
      */
     static registerKey(ids, key) {

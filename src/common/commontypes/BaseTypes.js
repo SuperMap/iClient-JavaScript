@@ -164,7 +164,7 @@ export var StringExt = {
      * (end)
      * @param {string} template - 带标记的字符串将要被替换。参数 template 格式为"${token}"，此处的 token 标记会替换为 context["token"] 属性的值。
      * @param {Object} [context=window] - 带有属性的可选对象的属性用于匹配格式化字符串中的标记。如果该参数为空，将使用 window 对象。
-     * @param {array} [args] - 可选参数传递给在 context 对象上找到的函数。
+     * @param {Array.<number>} [args] - 可选参数传递给在 context 对象上找到的函数。
      * @returns {string} 从 context 对象属性中替换字符串标记位的字符串。
      */
     format: function (template, context, args) {
@@ -436,12 +436,12 @@ export var ArrayExt = {
     /**
      * @function ArrayExt.filter
      * @description 过滤数组，提供了 ECMA-262 标准中 Array.prototype.filter 函数的扩展。详见：{@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
-     * @param {array} array - 要过滤的数组。
+     * @param {Array} array - 要过滤的数组。
      * @param {function} callback - 数组中的每一个元素调用该函数。</br>
      *     如果函数的返回值为 true，该元素将包含在返回的数组中。该函数有三个参数: 数组中的元素，元素的索引，数组自身。</br>
      *     如果设置了可选参数 caller，在调用 callback 时，使用可选参数 caller 设置为 callback 的参数。</br>
      * @param {Object} [caller] - 在调用 callback 时，使用参数 caller 设置为 callback 的参数。
-     * @returns {array} callback 函数返回 true 时的元素将作为返回数组中的元素。
+     * @returns {Array} callback 函数返回 true 时的元素将作为返回数组中的元素。
      */
     filter: function (array, callback, caller) {
         var selected = [];

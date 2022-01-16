@@ -243,9 +243,9 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 从数组中删除某一项。
-   * @param {array} array - 数组。
+   * @param {Array} array - 数组。
    * @param {Object} item - 数组中要删除的一项。
-   * @returns {array} 执行删除操作后的数组。
+   * @returns {Array} 执行删除操作后的数组。
    */
   removeItem: function (array, item) {
     for (var i = array.length - 1; i >= 0; i--) {
@@ -260,7 +260,7 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 获取某对象在数组中的索引值。
-   * @param {array} array - 数组。
+   * @param {Array.<Object>} array - 数组。
    * @param {Object} obj - 对象。
    * @returns {number} 某对象在数组中的索引值。
    */

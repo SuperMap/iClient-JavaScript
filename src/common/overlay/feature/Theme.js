@@ -40,7 +40,7 @@ export class Theme {
         this.lonlat = null;
 
         /**
-         * @member {array} FeatureTheme.prototype.location
+         * @member {Array.<number>} FeatureTheme.prototype.location
          * @description 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         this.location = [];
@@ -54,7 +54,7 @@ export class Theme {
 
         /**
          * @readonly
-         * @member {array} FeatureTheme.prototype.shapes
+         * @member {Array.<Object>} FeatureTheme.prototype.shapes
          * @description 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
          */
         this.shapes = [];
@@ -89,7 +89,7 @@ export class Theme {
      * @function FeatureTheme.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {GeometryPoint|GeometryGeoText|LonLat} coordinate - 地理坐标点。
-     * @returns {array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @returns {Array.<number>} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getLocalXY(coordinate) {
         var resolution = this.layer.map.getResolution();

@@ -14,7 +14,7 @@ import {SUtil} from './SUtil';
  * @classdesc 图形（shape）基类。
  * @extends LevelRenderer.Eventful
  * @extends LevelRenderer.Transformable
- * @param {array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  */
 export class Shape extends mixin(Eventful, Transformable) {
     constructor(options) {
@@ -96,8 +96,8 @@ export class Shape extends mixin(Eventful, Transformable) {
         this.__dirty = true;
 
         /**
-         * @member {array} LevelRenderer.Shape.prototype.__clipShapes
-         * @description {array}
+         * @member {Array} LevelRenderer.Shape.prototype.__clipShapes
+         * @description {Array}
          *
          */
         this.__clipShapes = [];
@@ -146,7 +146,7 @@ export class Shape extends mixin(Eventful, Transformable) {
 
         //地理扩展
         /**
-         * @member {array} LevelRenderer.Shape.prototype.refOriginalPosition
+         * @member {Array.<number>} LevelRenderer.Shape.prototype.refOriginalPosition
          * @description 图形参考原点位置，图形的参考中心位置。
          * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          *

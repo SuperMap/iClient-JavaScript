@@ -427,7 +427,7 @@ jasmine.isSpy = function(putativeSpy) {
  * large in one call.
  *
  * @param {string} baseName name of spy class
- * @param {array} methodNames array of names of methods to make spies
+ * @param {Array.<string>} methodNames array of names of methods to make spies
  */
 jasmine.createSpyObj = function(baseName, methodNames) {
   if (!jasmine.isArray_(methodNames) || methodNames.length === 0) {

@@ -391,7 +391,7 @@ export class Graphic extends ImageCanvasSource {
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。

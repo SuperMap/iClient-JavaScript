@@ -12,7 +12,7 @@
 export class ShapeParameters {
     constructor() {
         /**
-         * @member {array} [ShapeParameters.prototype.refOriginalPosition=[0,0]]
+         * @member {Array.<number>} [ShapeParameters.prototype.refOriginalPosition=[0,0]]
          * @description 图形参考原点位置，图形的参考中心位置。
          * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，

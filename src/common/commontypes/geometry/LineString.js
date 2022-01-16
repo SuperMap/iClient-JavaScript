@@ -46,7 +46,7 @@ export class LineString extends Curve {
     /**
      * @function GeometryLineString.prototype.getSortedSegments
      * @description 获取升序排列的点坐标对象数组。
-     * @returns {array} 升序排列的点坐标对象数组。
+     * @returns {Array} 升序排列的点坐标对象数组。
      */
     getSortedSegments() {
         var numSeg = this.components.length - 1;
@@ -83,7 +83,7 @@ export class LineString extends Curve {
      * @function GeometryLineString.prototype.getVertices
      * @description 返回几何图形的所有顶点的列表。
      * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点。如果没有设置此参数，则返回所有顶点。
-     * @returns {array} 几何图形的顶点列表。
+     * @returns {Array} 几何图形的顶点列表。
      */
     getVertices(nodes) {
         var vertices;

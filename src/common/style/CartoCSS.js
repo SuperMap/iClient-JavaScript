@@ -890,7 +890,7 @@ export class CartoCSS {
     /**
      * @function CartoCSS.prototype.toShaders
      * @description 将CartoCSS规则集转化为着色器
-     * @returns {array} CartoCSS着色器集
+     * @returns {Array} CartoCSS着色器集
      */
     toShaders() {
         if (this.ruleSet) {
@@ -1022,7 +1022,7 @@ export class CartoCSS {
     /**
      * @function CartoCSS.prototype.getShaders
      * @description 获取CartoCSS着色器
-     * @returns {array} 着色器集
+     * @returns {Array} 着色器集
      * @example
      *   //shaders的结构大概如下：
      *   var shaders=[

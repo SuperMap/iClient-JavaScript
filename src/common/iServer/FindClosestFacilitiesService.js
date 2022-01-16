@@ -80,7 +80,7 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
      * @function FindClosestFacilitiesService.prototype.getJson
      * @description 将对象转化为JSON字符串。
      * @param {boolean} isAnalyzeById - 是否通过ID来分析
-     * @param {array} params - 分析参数数组
+     * @param {Array.<Object>} params - 分析参数数组
      * @returns {Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {

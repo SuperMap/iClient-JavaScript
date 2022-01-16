@@ -29,7 +29,7 @@ function scale(pixelP, center, scaleRatio) {
  * @param {Array.<number>} [options.colo=[0, 0, 0, 255]] - 颜色，目前只支持rgba数组。默认[0, 0, 0, 255],
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
- * @param {array}  [options.highlightColor] - 高亮颜色，目前只支持rgba数组。
+ * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持rgba数组。
  * @param {number} [options.radiusScale] - 点放大倍数。
  * @param {number} [options.radiusMinPixels] - 半径最小值（像素）。
  * @param {number} [options.radiusMaxPixels] - 半径最大值（像素）。

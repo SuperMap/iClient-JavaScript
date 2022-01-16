@@ -132,7 +132,7 @@ export class Point extends Geometry {
     /**
      * @function GeometryPoint.prototype.getVertices
      * @description 获取几何图形所有顶点的列表。
-     * @returns {array} 几何图形的顶点列表。
+     * @returns {Array} 几何图形的顶点列表。
      */
     getVertices() {
         return [this];

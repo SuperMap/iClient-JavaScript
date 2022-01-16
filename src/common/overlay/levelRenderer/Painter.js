@@ -26,7 +26,7 @@ export class Painter {
         this.root = root;
 
         /**
-         * @member {array} LevelRenderer.Painter.prototype.storage
+         * @member {Array} LevelRenderer.Painter.prototype.storage
          * @description 图形仓库。
          *
          */
@@ -47,7 +47,7 @@ export class Painter {
         this._layers = {};
 
         /**
-         * @member {array} LevelRenderer.Painter.prototype._zlevelList
+         * @member {Array} LevelRenderer.Painter.prototype._zlevelList
          * @description  层列表。
          *
          */
@@ -828,7 +828,7 @@ export class Painter {
     /**
      * @function LevelRenderer.Painter.prototype.updateHoverLayer
      * @description 更新设置显示高亮图层。
-     * @param {array} shapes - 图形数组。
+     * @param {Array} shapes - 图形数组。
      */
     updateHoverLayer(shapes) {
         if (!(shapes instanceof Array)) {

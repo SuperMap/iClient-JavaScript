@@ -10,8 +10,8 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @classdesc 三维分段专题图。
  * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
- * @param  {array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
- * @param  {array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
+ * @param  {Array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
+ * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @param  {number} [layerOptions.base] - 新增参数，数据分段线性增量。
  * @param  {number} [layerOptions.legendRatio=1] - 新增参数，图例数值扩大系数。
  * @example
@@ -33,13 +33,13 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     constructor(id, layerOptions) {
         super(id, layerOptions);
         /**
-         * @member  {array} RangeTheme3DLayer.prototype.heightStops 
+         * @member  {Array} RangeTheme3DLayer.prototype.heightStops 
          * @description 数据高度分段数组。
          */
         this.heightStops = null;
 
         /**
-         * @member  {array} RangeTheme3DLayer.prototype.colorStops 
+         * @member  {Array} RangeTheme3DLayer.prototype.colorStops 
          * @description 数据颜色分段数组。
          */
         this.colorStops = null;

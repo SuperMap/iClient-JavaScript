@@ -101,7 +101,7 @@
    /**
     * @function Util.toProcessingParam
     * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
-    * @param {array} points - Region 各个节点数组。
+    * @param {Array} points - Region 各个节点数组。
     * @returns processing 服务裁剪、查询分析的分析参数。
     */
    toProcessingParam(points) {

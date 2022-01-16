@@ -6265,7 +6265,7 @@ module.exports = {
      * @param {string} message              Message to print in the body of the alert
      * @param {function} resultCallback     The callback that is called when user clicks on a button.
      * @param {string} title                Title of the alert dialog (default: Confirm)
-     * @param {array} buttonLabels          Array of the labels of the buttons (default: ['OK', 'Cancel'])
+     * @param {Array.<string>} buttonLabels          Array of the labels of the buttons (default: ['OK', 'Cancel'])
      */
     confirm: function(message, resultCallback, title, buttonLabels) {
         var _title = (title || "Confirm");
@@ -6302,7 +6302,7 @@ module.exports = {
      * @param {string} message              Dialog message to display (default: "Prompt message")
      * @param {function} resultCallback     The callback that is called when user clicks on a button.
      * @param {string} title                Title of the dialog (default: "Prompt")
-     * @param {array} buttonLabels          Array of strings for the button labels (default: ["OK","Cancel"])
+     * @param {Array.<string>} buttonLabels          Array of strings for the button labels (default: ["OK","Cancel"])
      */
     prompt: function(message, resultCallback, title, buttonLabels) {
         var _message = (message || "Prompt message");

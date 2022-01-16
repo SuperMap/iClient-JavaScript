@@ -20,7 +20,7 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * @param {array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+ * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
  */
 export class SmicPolygon extends Shape {
     constructor(options) {
@@ -32,7 +32,7 @@ export class SmicPolygon extends Shape {
         this.type = 'smicpolygon';
 
         /**
-         * @member {array} LevelRenderer.Shape.SmicPolygon.prototype._holePolygonPointList
+         * @member {Array} LevelRenderer.Shape.SmicPolygon.prototype._holePolygonPointList
          * @description 岛洞面多边形顶点数组（三维数组）
          *
          */

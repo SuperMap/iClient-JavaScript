@@ -195,7 +195,7 @@ export class VectorTileStyles extends Observable {
     /**
      * @function VectorTileStyles.setCartoShaders
      * @description 设置服务端 Carto 的阴影。
-     * @param {array} cartoShaders - 服务端 Carto 阴影。
+     * @param {Array} cartoShaders - 服务端 Carto 阴影。
      */
     static setCartoShaders(cartoShaders) {
         this.cartoShaders = cartoShaders;
@@ -212,7 +212,7 @@ export class VectorTileStyles extends Observable {
     /**
      * @function VectorTileStyles.setClientCartoShaders
      * @description 设置客户端 Carto 的阴影。
-     * @param {array} clientCartoShaders - 客户端 Carto 阴影。
+     * @param {Array} clientCartoShaders - 客户端 Carto 阴影。
      */
     static setClientCartoShaders(clientCartoShaders) {
         this.clientCartoShaders = clientCartoShaders;

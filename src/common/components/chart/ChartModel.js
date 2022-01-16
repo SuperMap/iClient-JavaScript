@@ -245,8 +245,8 @@ export class ChartModel {
      * @param {string} serviceType 服务类型
      * @param {string} address 地址
      * @param {Callbacks} success - 成功回调函数。
-     * @return{array} [数据源名:数据集名]
-     * @return{string} 图层名
+     * @return {Array.<string>} ["数据源名:数据集名"]
+     * @return {string} 图层名
      */
     getDatafromRest(serviceType, address, success) {
         let me = this,
@@ -506,7 +506,7 @@ export class ChartModel {
      * @function ChartModel.prototype._excelData2Feature
      * @param content  文件内容
      * @param layerInfo  图层信息
-     * @returns {array}  feature的数组集合
+     * @returns {Array}  feature的数组集合
      */
     _excelData2Feature(dataContent) {
         let fieldCaptions = dataContent.colTitles;

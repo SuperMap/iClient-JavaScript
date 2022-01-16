@@ -244,7 +244,7 @@ export class StyleUtils {
    * @description 从 Carto 中获取有效的样式。
    * @param {number} zoom -缩放级别。
    * @param {number} scale - 比例尺。
-   * @param {array} shader - 渲染器对象数组。
+   * @param {Array.<Object>} shader - 渲染器对象数组。
    * @param {Object} feature - 要素。
    * @param {string} fromServer - 服务源。
    * @param {string} url - 地址。
@@ -701,7 +701,7 @@ export class StyleUtils {
    * @description 获取图标的锚点
    * @param {number} offsetX - X方向偏移分数
    * @param {number} offsetY - Y方向偏移分数
-   * @returns {array}
+   * @returns {Array.<number>}
    */
   static getIconAnchor(offsetX=0.5, offsetY=0.5) {
     return [offsetX, offsetY];
@@ -712,7 +712,7 @@ export class StyleUtils {
    * @param {number} radius - 圆圈半径
    * @param {number} offsetX - X方向偏移分数
    * @param {number} offsetY - Y方向偏移分数
-   * @returns {array}
+   * @returns {Array.<number>}
    */
   static getCircleDisplacement(radius, offsetX=0, offsetY=0) {
       const dispX = radius*offsetX, dispY = radius*offsetY;
@@ -938,8 +938,8 @@ export class StyleUtils {
   /**
    * @function StyleUtils.formatRGB
    * @description 将颜色数组转换成标准的rgb颜色格式
-   * @param {array} colorArray - 颜色数组
-   * @returns {string} 'rgb(0,0,0)'或者 rgba(0,0,0,0)
+   * @param {Array} colorArray - 颜色数组
+   * @returns {string} 'rgb(0,0,0)'或者 'rgba(0,0,0,0)'
    */
   static formatRGB(colorArray) {
     let rgb;

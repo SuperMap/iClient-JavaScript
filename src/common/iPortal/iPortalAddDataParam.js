@@ -13,7 +13,7 @@
   * @param {Object} params - 参数。
   * @param {string} params.fileName - 文件名称
   * @param {DataItemType} params.type - 数据类型。
-  * @param {array} [params.tags] - 数据的标签
+  * @param {Array} [params.tags] - 数据的标签
   * @param {IPortalDataMetaInfoParam} [params.dataMetaInfo] - 数据元信息
   * @usage
   */

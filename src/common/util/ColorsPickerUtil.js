@@ -32,7 +32,7 @@ export class ColorsPickerUtil  {
      * @param {number} y0 - 渐变起点 y 坐标。
      * @param {number} x1 - 渐变终点 x 坐标。
      * @param {number} y1 - 渐变终点 y 坐标。
-     * @param {array} colorList 颜色列表。
+     * @param {Array} colorList 颜色列表。
      * @returns {CanvasGradient} Cavans 渐变颜色。
      */
 
@@ -71,8 +71,7 @@ export class ColorsPickerUtil  {
      * @param {string} start - 起始颜色。
      * @param {string} end - 结束颜色。
      * @param {number} step - 渐变级数。
-     * @param {array} colorList - 颜色列表。
-     * @returns {array} 颜色数组。
+     * @returns {Array} 颜色数组。
      */
 
     static getStepColors (start, end, step){

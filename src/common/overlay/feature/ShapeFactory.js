@@ -374,7 +374,7 @@ export class ShapeFactory {
      * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
      * @param {Object} setting - 图表配置参数。本函数中图形配置对象 setting 可设属性：
      * @param {Object} setting.backgroundStyle - 背景样式，此样式对象对象可设属性：<ShapeParametersRectangle#style>。
-     * @param {array} [setting.backgroundRadius=[0,0,0,0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
+     * @param {Array.<number>} [setting.backgroundRadius=[0,0,0,0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
      * @returns {Object} 背景框图形，一个可视化图形（矩形）对象。
      */
     static Background(shapeFactory, box, setting) {

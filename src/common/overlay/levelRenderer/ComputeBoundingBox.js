@@ -23,8 +23,8 @@ export class ComputeBoundingBox {
      * @function LevelRenderer.Tool.ComputeBoundingBox.prototype.computeBoundingBox
      * @description 从顶点数组中计算出最小包围盒，写入'min'和'max'中。
      * @param {Array.<Object>} points - 顶点数组。
-     * @param {array} min - 最小
-     * @param {array} max - 最大
+     * @param {Array.<number>} min - 最小
+     * @param {Array.<number>} max - 最大
      */
     computeBoundingBox(points, min, max) {
         if (points.length === 0) {

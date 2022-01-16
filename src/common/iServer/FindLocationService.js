@@ -83,7 +83,7 @@ export class FindLocationService extends NetworkAnalystServiceBase {
     /**
      * @function FindLocationService.prototype.getCentersJson
      * @description 将数组对象转化为JSON字符串。
-     * @param {array} params - 需要转换的参数
+     * @param {Array} params - 需要转换的参数
      * @returns {string} 转化后的JSON字符串。
      */
     getCentersJson(params) {

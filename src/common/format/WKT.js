@@ -259,7 +259,7 @@ export class WKT extends Format {
             /**
              * @description  Return an array of features given a geometrycollection WKT fragment.
              * @param {string} A WKT fragment representing the geometrycollection
-             * @returns  {array} An array of FeatureVector
+             * @returns  {Array} An array of FeatureVector
              * @private
              */
             'geometrycollection': function (str) {
@@ -282,7 +282,7 @@ export class WKT extends Format {
      * @function WKTFormat.prototype.read
      * @description 反序列化 WKT 字符串并返回向量特征或向量特征数组。 支持 POINT、MULTIPOINT、LINESTRING、MULTILINESTRING、POLYGON、MULTIPOLYGON 和 GEOMETRYCOLLECTION 的 WKT。
      * @param {string} wkt - WKT 字符串。
-     * @returns {FeatureVector|array} GEOMETRYCOLLECTION WKT 的矢量要素或者矢量要素数组。
+     * @returns {FeatureVector|Array} GEOMETRYCOLLECTION WKT 的矢量要素或者矢量要素数组。
      */
     read(wkt) {
         var features, type, str;
