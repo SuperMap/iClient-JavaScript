@@ -59,13 +59,13 @@ var DataItemOrderBy = {
 var FilterField = {
     /** LINKPAGE */
     LINKPAGE: "LINKPAGE",
-    /** LINKPAGE */
+    /** MAPTITLE */
     MAPTITLE: "MAPTITLE",
-    /** LINKPAGE */
+    /** NICKNAME */
     NICKNAME: "NICKNAME",
-    /** LINKPAGE */
+    /** RESTITLE */
     RESTITLE: "RESTITLE",
-    /** LINKPAGE */
+    /** USERNAME */
     USERNAME: "USERNAME"
 };
 export {

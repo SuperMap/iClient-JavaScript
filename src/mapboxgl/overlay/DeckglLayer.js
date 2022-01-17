@@ -13,7 +13,9 @@ import { Util } from '../core/Util';
  *            正六边形图层（蜂巢图层）、网格图层，只需给定相依配置，因此，在创建图层之前，请仔细阅读参数配置。
  * @param {string} layerTypeID - 高效率图层类型 ID，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
  *                 "polygon-layer" 高效率面图层、 "arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
+ *
  * @param {Object} options -  图层配置项，包括以下参数：
+ * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
  * @param {Array.<GeoJSONObject>} options.data - 图层数据,支持 GeoJSON 规范数据类型。
  * @param {Object} options.callback - deckgl 图层回调函数配置项。
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
@@ -29,7 +31,6 @@ import { Util } from '../core/Util';
  * @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
  * @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
  * @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
- * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
  * @param {number} [options.props.opacity=1] - 公共配置项：图层不透明度度。
  * @param {boolean} [options.props.pickable=false] - 公共配置项：是否响应鼠标事件（鼠标点击，鼠标滑动)。
  * @param {function} [options.props.autoHighlight=false] - 公共配置项：鼠标滑动高亮要素。

@@ -83,9 +83,9 @@ var QueryOption = {
  * @type {string}
  */
 var JoinType = {
-    /** INNERJOIN */
+    /** 内连接 */
     INNERJOIN: "INNERJOIN",
-    /** LEFTJOIN */
+    /** 左连接 */
     LEFTJOIN: "LEFTJOIN"
 };
 
@@ -1333,11 +1333,11 @@ var WebScaleType = {
  * @type {string}
  */
 var WebScaleUnit = {
-    /** meter */
+    /** 米 */
     METER: "METER",
-    /** foot */
+    /** 英尺 */
     FOOT: "FOOT",
-    /** degrees */
+    /** 度 */
     DEGREES: "DEGREES"
 }
 export {

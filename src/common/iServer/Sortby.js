@@ -6,6 +6,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class Sortby
  * @deprecatedclass SuperMap.Sortby
+ * @classdesc 通过指定字段进行排序的方法类。
  * @param {Object} options - 参数。
  * @param {string} options.field 属性名称。
  * @param {Sortby.Direction} options.direction 排序规则， 默认升序。
