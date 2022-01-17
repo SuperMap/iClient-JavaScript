@@ -529,14 +529,16 @@ exports.publish = function (taffyData, opts, tutorials) {
         if (doclet.kind === 'member') {
             addSignatureTypes(doclet);
         }
-
-        if (doclet.kind === 'constant') {
-            addSignatureTypes(doclet);
+        var docMemberParent = find({ longname: doclet.memberof})[0];
+        if (doclet.kind === 'constant' || (docMemberParent && docMemberParent.kind === 'class' && doclet.scope === 'static')) {
+            doclet.kind === 'constant' && addSignatureTypes(doclet);
             var attribs = helper.getAttribs(doclet);
             var attribsString = buildAttribsString(attribs);
-
+            if(!attribs.length) {
+                return;
+            };
             doclet.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
-            doclet.kind = 'member';
+            doclet.kind === 'constant' && (doclet.kind = 'member');
         }
     });
     for (const typeLink in view.typeLinks) {
@@ -666,6 +668,9 @@ exports.publish = function (taffyData, opts, tutorials) {
 
         if (attribs && attribs.length) {
             attribsString = htmlsafe(util.format('(%s) ', attribs.join(', ')));
+        }
+        if(attribs.length === 1) {
+            attribsString = attribsString.replace(/\(|\)/g,'');
         }
 
         return attribsString;

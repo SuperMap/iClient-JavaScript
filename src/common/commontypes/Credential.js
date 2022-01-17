@@ -22,13 +22,13 @@ export class Credential {
     constructor(value, name) {
 
         /**
-         * @member {string} Bounds.prototype.value
+         * @member {string} Credential.prototype.value
          * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
          */
         this.value = value ? value : "";
 
         /**
-         * @member {string} [Bounds.prototype.name='token']
+         * @member {string} [Credential.prototype.name='token']
          * @description 验证信息前缀，name=value 部分的 name 部分。
          */
         this.name = name ? name : "token";
@@ -51,7 +51,7 @@ export class Credential {
 
 
     /**
-     * @function Bounds.prototype.getValue
+     * @function Credential.prototype.getValue
      * @description 获取 value。
      * @example
      * var credential = new Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
@@ -81,7 +81,6 @@ export class Credential {
 /**
  * @member {Credential} Credential.CREDENTIAL
  * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
- * @constant
  * @example
  * 代码实例:
  *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。

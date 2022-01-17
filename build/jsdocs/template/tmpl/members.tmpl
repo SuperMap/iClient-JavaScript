@@ -16,7 +16,7 @@ if (data.type && data.type.names) {
         <h5>Usage</h5>
         <?js= self.partial('usage.tmpl', data.usage) ?>
         <?js }else{ ?>
-        <?js= data.attribs + (data.scope === 'static' ? longname : name)  + typeSignature ?>
+        <?js= data.attribs + name + typeSignature ?>
         <?js } ?>
         </h4>
     </div>
