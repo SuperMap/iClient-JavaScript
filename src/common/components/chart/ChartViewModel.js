@@ -13,7 +13,7 @@ import { Events } from '../../commontypes/Events';
  * @version 10.0.0
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {Chart.Datasets} options.datasets - 数据来源。
+ * @param {ChartView.Datasets} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选配置。
  * @param {Array.<Object>} options.chartOptions.xAxis - X轴可选参数。
  * @param {string} options.chartOptions.xAxis.field - X轴字段名。
@@ -257,7 +257,7 @@ export class ChartViewModel {
     /**
      * @function ChartViewModel.prototype.updateData
      * @description 改变图表类型。
-     * @param {Chart.Datasets} datasets - 数据来源。
+     * @param {ChartView.Datasets} datasets - 数据来源。
      * @param {function} success 成功回调函数。
      */
     updateData(datasets, chartOption, success) {
