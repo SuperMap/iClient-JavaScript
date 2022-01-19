@@ -80,6 +80,7 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.destroy
+     * @description 销毁此图层，销毁后此图层的所有属性为 null。
      * @override
      */
     destroy() {
@@ -121,7 +122,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {Mapv.DataSet} - mapv 的 dataSet 对象。
+     * @returns {Mapv.DataSet} mapv 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {

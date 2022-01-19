@@ -125,7 +125,7 @@ export class ProcessingService extends CommonServiceBase {
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
      * @param {string} id - 密度分析的 id。
-     * @returns {Object} - 密度分析的状态。
+     * @returns {Object} 密度分析的状态。
      */
     getKernelDensityJobState(id) {
         return this.kernelDensityJobs[id];

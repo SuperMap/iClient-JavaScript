@@ -18,7 +18,8 @@ import {
     resolutionToScale,
     scaleToResolution,
     GetResolutionFromScaleDpi,
-    NormalizeScale
+    NormalizeScale,
+    transform
 } from './core';
 import {
     BaiduTileLayer,
@@ -213,7 +214,8 @@ export {
     resolutionToScale,
     scaleToResolution,
     GetResolutionFromScaleDpi,
-    NormalizeScale
+    NormalizeScale,
+    transform
 };
 export {
     BaiduTileLayer,

@@ -39,6 +39,9 @@
       "src/common/iServer/ServerColor.js",
       "src/common/iServer/DatasourceConnectionInfo.js",
       "src/common/iServer/SetDatasourceParameters.js",
+      "src/common/commontypes/Bounds.js",
+      "src/common/commontypes/LonLat.js",
+      "src/common/commontypes/Pixel.js",
       "src/common/REST.js"
     ],
     "exclude": [

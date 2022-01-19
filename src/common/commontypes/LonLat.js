@@ -5,7 +5,6 @@ import {Util} from './Util';
 
 /**
  * @class LonLat
- * @deprecatedclass SuperMap.LonLat
  * @category BaseTypes Geometry
  * @classdesc  这个类用来表示经度和纬度对。
  * @param {number|Array.<number>} [lon=0.0] - 地图单位上的 X 轴坐标或者横纵坐标组成的数组；如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的 x 坐标。
@@ -13,7 +12,6 @@ import {Util} from './Util';
  * @example
  * var lonLat = new LonLat(30,45);
  * @usage
- * @private
  */
 export class LonLat {
 
