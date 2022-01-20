@@ -93,4 +93,8 @@ $(function () {
         })
 
     });
+    $(window).resize(function () {
+      var height = $('.navigationDiv .sidebar').height();
+      $('.main-sidebar #categories').css('height', height - 50 + 'px');
+    })
 });
