@@ -62,8 +62,11 @@ $(function () {
         });
         // // Show an item related a current documentation automatically
         var filename = $('.page-title').data('filename').replace(/\.[a-z]+$/, '');
+        var isGlobal = window.location.href.indexOf('global.html') > -1;
+        if (isGlobal) {
+          filename = window.location.hash.substring(1);
+        }
         var $currentItem = $('.main-sidebar .item[data-name="' + filename + '"]:eq(0)');
-
         if ($currentItem.length) {
             //$("section#sidebar #ul").addClass("active");
             $currentItem.parent('ul').parents('li.treeview').addClass("active");

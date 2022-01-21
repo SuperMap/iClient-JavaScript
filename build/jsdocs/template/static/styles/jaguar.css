@@ -70,7 +70,7 @@ a:hover, a:active, a:focus{
 
 .main-sidebar .list {
     height: 100%;
-    padding: 5px 5px 0 5px;
+    padding: 5px 5px 10px 5px;
     position: relative;
     overflow: auto;
     width: 100%;
