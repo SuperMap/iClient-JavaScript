@@ -157,7 +157,7 @@ export class TileSuperMapRest extends TileImage {
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 if (options.extent) {
-                    me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
+                    me.tileGrid = TileSuperMapRest.createTileGrid(options.extent,options.maxZoom, options.minZoom, options.tileSize);
                     if (me.resolutions) {
                         me.tileGrid.resolutions = me.resolutions;
                     }
@@ -168,11 +168,11 @@ export class TileSuperMapRest extends TileImage {
                             -20037508.3427892,
                             20037508.3427892,
                             20037508.3427892
-                        ]);
+                        ],options.maxZoom, options.minZoom, options.tileSize);
                         me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === 'EPSG:4326') {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90], options.maxZoom, options.minZoom, options.tileSize);
                         me.extent = [-180, -90, 180, 90];
                     }
                 }
