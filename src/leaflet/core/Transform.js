@@ -17,7 +17,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.transform(feature, sourceCRS, targetCRS);
+ *   const result = {namespace}.Util.transform(feature, sourceCRS, targetCRS);
  * 
  *   // 弃用的写法: 
  *   L.Util.transform(feature, sourceCRS, targetCRS);
@@ -27,7 +27,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * // ES6 Import
  * import { transform } from '{npm}';
  *
- * transform(feature, sourceCRS, targetCRS);
+ * const result = transform(feature, sourceCRS, targetCRS);
  * ```
  */
 export var transform = function (feature, sourceCRS = L.CRS.EPSG4326, targetCRS) {

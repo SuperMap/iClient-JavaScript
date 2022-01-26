@@ -12,6 +12,19 @@ import { Geometry } from './Geometry';
  *     * "firefox" -- Firefox
  *     * "mozilla" -- Mozilla
  * @constant {Object}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.Browser.name;
+ *
+ * </script>
+ * // ES6 Import
+ * import { Browser } from '{npm}';
+ *
+ * const result = Browser.name;
+ * ```
  */
 const Browser = (function () {
   var name = '',
@@ -98,16 +111,17 @@ const DOTS_PER_INCH = 96;
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const commonUtil = {namespace}.CommonUtil;
+ *   const result = {namespace}.CommonUtil.getElement();
  *
  *   // 弃用的写法
- *   const commonUtil = SuperMap.Util;
+ *   const result = SuperMap.Util.getElement();
  *
  * </script>
  *
  * // ES6 Import
  * import { CommonUtil } from '{npm}';
  *
+ * const result = CommonUtil.getElement();
  * ```
  */
 

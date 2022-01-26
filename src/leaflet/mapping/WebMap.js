@@ -7,7 +7,7 @@ import proj4 from "proj4";
 import "../core/Base";
 import { BaiduCRS, TianDiTu_WGS84CRS, TianDiTu_MercatorCRS} from '../core/ExtendsCRS'
 import { crs as CRS } from '../core/Proj4Leaflet'
-import { toGeoJSON, GetResolutionFromScaleDpi } from '../core/Util'
+import { toGeoJSON, getResolutionFromScaleDpi } from '../core/Util'
 import { FetchRequest as Request } from '@supermap/iclient-common/util/FetchRequest';
 import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
 import { DataFormat } from '@supermap/iclient-common/REST';
@@ -290,7 +290,7 @@ export var WebMap = L.LayerGroup.extend({
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(getResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     },

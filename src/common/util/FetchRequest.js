@@ -208,17 +208,17 @@ export var setCORS = function (cors) {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.isCORS();
+ *   const result = {namespace}.isCORS();
  *
  *   // 弃用的写法
- *   SuperMap.isCORS();
+ *   const result = SuperMap.isCORS();
  *
  * </script>
  *
  * // ES6 Import
  * import { isCORS } from '{npm}';
  *
- * isCORS();
+ * const result = isCORS();
  * ```
  */
 export var isCORS = function () {
@@ -288,15 +288,17 @@ export var getRequestTimeout = function () {
  * @usage
  * ```
  * // 浏览器
-  <script type="text/javascript" src="{cdn}"></script>
-  <script>
-    const fetchRequest = {namespace}.FetchRequest;
-
-  </script>
-
-  // ES6 Import
-  import { FetchRequest } from '{npm}';
-
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FetchRequest.commit(method, url, params, options);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { FetchRequest } from '{npm}';
+ * 
+ * const result = FetchRequest.commit(method, url, params, options);
+ *
  * ```
  */
 export var FetchRequest = {

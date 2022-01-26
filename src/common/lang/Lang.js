@@ -13,15 +13,17 @@
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const Lang = {namespace}.Lang;
+ *   const result = {namespace}.Lang.getCode();
  *
  *   // 弃用的写法
- *   const Lang = SuperMap.Lang;
+ *   const result = SuperMap.Lang.getCode();
  *
  * </script>
  *
  * // ES6 Import
  * import { Lang } from '{npm}';
+ * 
+ * const result = Lang.getCode();
  *
  * ```
  */

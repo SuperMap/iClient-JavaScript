@@ -15,14 +15,14 @@
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.toGeoJSON(feature);
+ *   const result = {namespace}.Util.toGeoJSON(feature);
  *
  * </script>
  *
  * // ES6 Import
  * import { toGeoJSON } from '{npm}';
  *
- * toGeoJSON(feature);
+ * const result = toGeoJSON(feature);
  * ```
  */
  export var toGeoJSON = function(feature) {
@@ -42,14 +42,14 @@
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.toSuperMapGeometry(geometry);
+ *   const result = {namespace}.Util.toSuperMapGeometry(geometry);
  *
  * </script>
  *
  * // ES6 Import
  * import { toSuperMapGeometry } from '{npm}';
  *
- * toSuperMapGeometry(geometry);
+ * const result = toSuperMapGeometry(geometry);
  * ```
  */
 export var toSuperMapGeometry = function(geometry) {
@@ -96,14 +96,14 @@ export var getMeterPerMapUnit = MeterPerMapUnit;
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.resolutionToScale(resolution, dpi, mapUnit);
+ *   const result = {namespace}.Util.resolutionToScale(resolution, dpi, mapUnit);
  *
  * </script>
  *
  * // ES6 Import
  * import { resolutionToScale } from '{npm}';
  *
- * resolutionToScale(resolution, dpi, mapUnit);
+ * const result = resolutionToScale(resolution, dpi, mapUnit);
  * ```
  */
 export var resolutionToScale = function(resolution, dpi, mapUnit) {
@@ -128,14 +128,14 @@ export var resolutionToScale = function(resolution, dpi, mapUnit) {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.scaleToResolution(scale, dpi, mapUnit);
+ *   const result = {namespace}.Util.scaleToResolution(scale, dpi, mapUnit);
  *
  * </script>
  *
  * // ES6 Import
  * import { scaleToResolution } from '{npm}';
  *
- * scaleToResolution(scale, dpi, mapUnit);
+ * const result = scaleToResolution(scale, dpi, mapUnit);
  * ```
  */
 export var scaleToResolution = function(scale, dpi, mapUnit) {
@@ -147,7 +147,7 @@ export var scaleToResolution = function(scale, dpi, mapUnit) {
 };
 
  /**
- * @function NormalizeScale
+ * @function normalizeScale
  * @category BaseTypes Util
  * @description 转换比例尺。
  * @param {number} scale - 比例尺。
@@ -157,22 +157,25 @@ export var scaleToResolution = function(scale, dpi, mapUnit) {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.NormalizeScale(scale);
+ *   const result = {namespace}.Util.normalizeScale(scale);
  *
+ *  // 弃用的写法
+ *   const result = L.supermap.Util.NormalizeScale(scale);
+ *   const result = L.Util.NormalizeScale(scale);
  * </script>
  *
  * // ES6 Import
- * import { NormalizeScale } from '{npm}';
+ * import { normalizeScale } from '{npm}';
  *
- * NormalizeScale(scale);
+ * const result = normalizeScale(scale);
  * ```
  */
-export var NormalizeScale = function(scale) {
+export var normalizeScale = function(scale) {
   return scale > 1.0 ? 1.0 / scale : scale;
 };
 
  /**
- * @function GetResolutionFromScaleDpi
+ * @function getResolutionFromScaleDpi
  * @category BaseTypes Util
  * @description 根据比例尺和 dpi 计算屏幕分辨率。
  * @param {number} scale - 比例尺。
@@ -185,24 +188,27 @@ export var NormalizeScale = function(scale) {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   {namespace}.Util.GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
- *
+ *   const result = {namespace}.Util.getResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
+ * 
+ *   // 弃用的写法
+ *   const result = L.supermap.Util.GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
+ *   const result = L.Util.GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
  * </script>
  *
  * // ES6 Import
- * import { GetResolutionFromScaleDpi } from '{npm}';
+ * import { getResolutionFromScaleDpi } from '{npm}';
  *
- * GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
+ * const result = getResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis);
  * ```
  */
-export var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
+export var getResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
     //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
     datumAxis = datumAxis || 6378137;
     coordUnit = coordUnit || '';
     if (scale > 0 && dpi > 0) {
-        scale = NormalizeScale(scale);
+        scale = normalizeScale(scale);
         if (
             coordUnit.toLowerCase() === 'degree' ||
             coordUnit.toLowerCase() === 'degrees' ||

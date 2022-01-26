@@ -24,7 +24,9 @@ import {
   getMeterPerMapUnit,
   resolutionToScale,
   scaleToResolution,
+  getResolutionFromScaleDpi,
   GetResolutionFromScaleDpi,
+  normalizeScale,
   NormalizeScale,
   transform
 } from './core';
@@ -204,8 +206,10 @@ L.supermap.Util.scaleToResolution = scaleToResolution;
 L.Util.getMeterPerMapUnit = getMeterPerMapUnit;
 L.supermap.Util.getMeterPerMapUnit = getMeterPerMapUnit;
 L.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+L.supermap.Util.getResolutionFromScaleDpi = getResolutionFromScaleDpi;
 L.supermap.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
 L.Util.NormalizeScale = NormalizeScale;
+L.supermap.Util.normalizeScale = normalizeScale;
 L.supermap.Util.NormalizeScale = NormalizeScale;
 L.Util.transform = transform;
 L.supermap.Util.transform = transform;

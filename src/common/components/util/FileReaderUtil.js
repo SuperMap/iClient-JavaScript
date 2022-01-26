@@ -16,16 +16,17 @@ import {Lang} from '../../lang/Lang';
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const FileReaderUtil = {namespace}.Components.FileReaderUtil;
+ *   const result = {namespace}.Components.FileReaderUtil.isXField(data);
  *
  *   // 弃用的写法
- *   const FileReaderUtil = SuperMap.Components.FileReaderUtil;
+ *   const result = SuperMap.Components.FileReaderUtil.isXField(data);
  *
  * </script>
  *
  * // ES6 Import
  * import { FileReaderUtil } from '{npm}';
  *
+ * const result = FileReaderUtil.isXField(data);
  * ```
  */
 export let FileReaderUtil = {

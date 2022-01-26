@@ -8,6 +8,19 @@ import '../core/Base';
  * @category Visualization VectorTile
  * @description 矢量瓦片格式
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.VectorTileFormat.JSON;
+ *
+ * </script>
+ * // ES6 Import
+ * import { VectorTileFormat } from '{npm}';
+ * 
+ * const result = VectorTileFormat.JSON;
+ * ```
  */
 var VectorTileFormat = {
     /** JSON */

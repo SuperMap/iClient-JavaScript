@@ -6,6 +6,19 @@
  * @enum DataFormat
  * @description 服务请求返回结果数据类型
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataFormat.GEOJSON;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataFormat } from '{npm}';
+ *
+ * const result = DataFormat.GEOJSON;
+ * ```
  */
 var DataFormat = {
     /** GEOJSON */
@@ -18,6 +31,19 @@ var DataFormat = {
  * @enum ServerType
  * @description 服务器类型
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ServerType.ISERVER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ServerType } from '{npm}';
+ *
+ * const result = ServerType.ISERVER;
+ * ```
  */
 var ServerType = {
     /** ISERVER */
@@ -32,6 +58,19 @@ var ServerType = {
  * @enum GeometryType
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GeometryType.LINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GeometryType } from '{npm}';
+ * 
+ * const result = GeometryType.LINE;
+ * ```
  */
 var GeometryType = {
     /** LINE */
@@ -66,6 +105,19 @@ var GeometryType = {
  * @enum QueryOption
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.QueryOption.ATTRIBUTE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { QueryOption } from '{npm}';
+ *
+ * const result = QueryOption.ATTRIBUTE;
+ * ```
  */
 var QueryOption = {
     /** 属性 */
@@ -81,6 +133,19 @@ var QueryOption = {
  * @description 关联查询时的关联类型常量。
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.JoinType.INNERJOIN;
+ *
+ * </script>
+ * // ES6 Import
+ * import { JoinType } from '{npm}';
+ *
+ * const result = JoinType.INNERJOIN;
+ * ```
  */
 var JoinType = {
     /** 内连接 */
@@ -93,6 +158,19 @@ var JoinType = {
  * @enum SpatialQueryMode
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SpatialQueryMode.CONTAIN;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SpatialQueryMode } from '{npm}';
+ *
+ * const result = SpatialQueryMode.CONTAIN;
+ * ```
  */
 var SpatialQueryMode = {
     /** 包含空间查询模式 */
@@ -120,6 +198,19 @@ var SpatialQueryMode = {
  * @description  数据集对象间的空间关系枚举。
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SpatialRelationType.CONTAIN;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SpatialRelationType } from '{npm}';
+ *
+ * const result = {namespace}.SpatialRelationType.CONTAIN;
+ * ```
  */
 var SpatialRelationType = {
     /** 包含关系 */
@@ -135,6 +226,19 @@ var SpatialRelationType = {
  * @type {string}
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.MeasureMode.DISTANCE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { MeasureMode } from '{npm}';
+ * 
+ * const result = MeasureMode.DISTANCE;
+ * ```
  */
 var MeasureMode = {
     /** 距离测量 */
@@ -148,6 +252,19 @@ var MeasureMode = {
  * @description  距离单位枚举。
  * 该类定义了一系列距离单位类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.Unit.METER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { Unit } from '{npm}';
+ *
+ * const result = Unit.METER;
+ * ```
  */
 var Unit = {
     /**  米 */
@@ -183,6 +300,19 @@ var Unit = {
  * @description  缓冲区距离单位枚举。
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BufferRadiusUnit.CENTIMETER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BufferRadiusUnit } from '{npm}';
+ *
+ * const result = BufferRadiusUnit.CENTIMETER;
+ * ```
  */
 var BufferRadiusUnit = {
     /**  厘米 */
@@ -209,6 +339,19 @@ var BufferRadiusUnit = {
  * @enum EngineType
  * @description  数据源引擎类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.EngineType.IMAGEPLUGINS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { EngineType } from '{npm}';
+ *
+ * const result = EngineType.IMAGEPLUGINS;
+ * ```
  */
 var EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
@@ -229,6 +372,19 @@ var EngineType = {
  * @enum ThemeGraphTextFormat
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ThemeGraphTextFormat.CAPTION;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ThemeGraphTextFormat } from '{npm}';
+ *
+ * const result = ThemeGraphTextFormat.CAPTION;
+ * ```
  */
 var ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
@@ -248,6 +404,19 @@ var ThemeGraphTextFormat = {
  * @enum ThemeGraphType
  * @description  统计专题图类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ThemeGraphType.AREA;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ThemeGraphType } from '{npm}';
+ *
+ * const result = ThemeGraphType.AREA;
+ * ```
  */
 var ThemeGraphType = {
     /**  面积图。 */
@@ -282,6 +451,19 @@ var ThemeGraphType = {
  * @enum GraphAxesTextDisplayMode
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GraphAxesTextDisplayMode.ALL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GraphAxesTextDisplayMode } from '{npm}';
+ *
+ * const result = GraphAxesTextDisplayMode.ALL;
+ * ```
  */
 var GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
@@ -297,6 +479,19 @@ var GraphAxesTextDisplayMode = {
  * @description  专题图分级模式枚举。
  *
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GraduatedMode.CONSTANT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GraduatedMode } from '{npm}';
+ *
+ * const result = GraduatedMode.CONSTANT;
+ * ```
  */
 var GraduatedMode = {
     /**  常量分级模式。 */
@@ -311,6 +506,19 @@ var GraduatedMode = {
  * @enum RangeMode
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.RangeMode.CUSTOMINTERVAL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { RangeMode } from '{npm}';
+ *
+ * const result = RangeMode.CUSTOMINTERVAL;
+ * ```
  */
 var RangeMode = {
     /**  自定义分段法。 */
@@ -331,6 +539,19 @@ var RangeMode = {
  * @enum ThemeType
  * @description  专题图类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ThemeType.DOTDENSITY;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ThemeType } from '{npm}';
+ *
+ * const result = ThemeType.DOTDENSITY;
+ * ```
  */
 var ThemeType = {
     /** 点密度专题图。 */
@@ -351,6 +572,19 @@ var ThemeType = {
  * @enum ColorGradientType
  * @description  渐变颜色枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorGradientType.BLACK_WHITE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ColorGradientType } from '{npm}';
+ *
+ * const result = ColorGradientType.BLACK_WHITE;
+ * ```
  */
 var ColorGradientType = {
     /** 黑白渐变色。 */
@@ -413,6 +647,19 @@ var ColorGradientType = {
  * @enum TextAlignment
  * @description  文本对齐枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TextAlignment.TOPLEFT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TextAlignment } from '{npm}';
+ *
+ * const result = TextAlignment.TOPLEFT;
+ * ```
  */
 var TextAlignment = {
     /** 左上角对齐。 */
@@ -445,6 +692,19 @@ var TextAlignment = {
  * @enum FillGradientMode
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FillGradientMode.NONE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { FillGradientMode } from '{npm}';
+ *
+ * const result = FillGradientMode.NONE;
+ * ```
  */
 var FillGradientMode = {
     /** 无渐变。 */
@@ -463,6 +723,19 @@ var FillGradientMode = {
  * @enum AlongLineDirection
  * @description  标签沿线标注方向枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AlongLineDirection.NORMAL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AlongLineDirection } from '{npm}';
+ *
+ * const result = AlongLineDirection.NORMAL;
+ * ```
  */
 var AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
@@ -481,6 +754,19 @@ var AlongLineDirection = {
  * @enum LabelBackShape
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.LabelBackShape.DIAMOND;
+ *
+ * </script>
+ * // ES6 Import
+ * import { LabelBackShape } from '{npm}';
+ *
+ * const result = LabelBackShape.DIAMOND;
+ * ```
  */
 var LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
@@ -503,6 +789,19 @@ var LabelBackShape = {
  * @enum LabelOverLengthMode
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.LabelOverLengthMode.NEWLINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { LabelOverLengthMode } from '{npm}';
+ *
+ * const result = LabelOverLengthMode.NEWLINE;
+ * ```
  */
 var LabelOverLengthMode = {
     /** 换行显示。 */
@@ -518,6 +817,19 @@ var LabelOverLengthMode = {
  * @description  网络分析中方向枚举。
  * 在行驶引导子项中使用。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DirectionType.EAST;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DirectionType } from '{npm}';
+ *
+ * const result = DirectionType.EAST;
+ * ```
  */
 var DirectionType = {
     /** 东。 */
@@ -537,6 +849,19 @@ var DirectionType = {
  * @description  行驶位置枚举。
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SideType.LEFT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SideType } from '{npm}';
+ *
+ * const result = SideType.LEFT;
+ * ```
  */
 var SideType = {
     /** 路的左侧。 */
@@ -555,6 +880,19 @@ var SideType = {
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SupplyCenterType.FIXEDCENTER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SupplyCenterType } from '{npm}';
+ *
+ * const result = SupplyCenterType.FIXEDCENTER;
+ * ```
  */
 var SupplyCenterType = {
     /** 固定中心点。 */
@@ -570,6 +908,19 @@ var SupplyCenterType = {
  * @description  转弯方向枚举。
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TurnType.AHEAD;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TurnType } from '{npm}';
+ *
+ * const result = TurnType.AHEAD;
+ * ```
  */
 var TurnType = {
     /** 向前直行。 */
@@ -590,6 +941,19 @@ var TurnType = {
  * @enum BufferEndType
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BufferEndType.FLAT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BufferEndType } from '{npm}';
+ *
+ * const result = BufferEndType.FLAT;
+ * ```
  */
 var BufferEndType = {
     /** FLAT */
@@ -601,6 +965,19 @@ var BufferEndType = {
  * @enum OverlayOperationType
  * @description  叠加分析类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OverlayOperationType.CLIP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OverlayOperationType } from '{npm}';
+ *
+ * const result = OverlayOperationType.CLIP;
+ * ```
  */
  var OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
@@ -623,6 +1000,19 @@ var BufferEndType = {
  * @enum OutputType
  * @description  分布式分析输出类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OutputType.INDEXEDHDFS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OutputType } from '{npm}';
+ *
+ * const result = OutputType.INDEXEDHDFS;
+ * ```
  */
 var OutputType =  {
     /** INDEXEDHDFS */
@@ -640,6 +1030,19 @@ var OutputType =  {
  * @description  光滑方法枚举。
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SmoothMethod.BSPLINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SmoothMethod } from '{npm}';
+ *
+ * const result = SmoothMethod.BSPLINE;
+ * ```
  */
  var SmoothMethod = {
     /** B 样条法。 */
@@ -653,6 +1056,19 @@ var OutputType =  {
  * @description  表面分析方法枚举。
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SurfaceAnalystMethod.ISOLINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SurfaceAnalystMethod } from '{npm}';
+ *
+ * const result = SurfaceAnalystMethod.ISOLINE;
+ * ```
  */
 var SurfaceAnalystMethod = {
     /** 等值线提取。 */
@@ -666,6 +1082,19 @@ var SurfaceAnalystMethod = {
  * @description  数据返回模式枚举。
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataReturnMode.DATASET_AND_RECORDSET;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataReturnMode } from '{npm}';
+ *
+ * const result = DataReturnMode.DATASET_AND_RECORDSET;
+ * ```
  */
 var DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
@@ -681,6 +1110,19 @@ var DataReturnMode = {
  * @description  要素集更新模式枚举。
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.EditType.ADD;
+ *
+ * </script>
+ * // ES6 Import
+ * import { EditType } from '{npm}';
+ *
+ * const result = {namespace}.EditType.ADD;
+ * ```
  */
 var EditType = {
     /** 增加操作。 */
@@ -696,6 +1138,19 @@ var EditType = {
  * @description  公交换乘策略枚举。
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TransferTactic.LESS_TIME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TransferTactic } from '{npm}';
+ *
+ * const result = TransferTactic.LESS_TIME;
+ * ```
  */
 var TransferTactic = {
     /** 时间短。 */
@@ -713,6 +1168,19 @@ var TransferTactic = {
  * @description  公交换乘策略枚举。
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TransferPreference.BUS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TransferPreference } from '{npm}';
+ *
+ * const result = TransferPreference.BUS;
+ * ```
  */
 var TransferPreference = {
     /** 公交汽车优先。 */
@@ -729,6 +1197,19 @@ var TransferPreference = {
  * @enum GridType
  * @description  地图背景格网类型枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GridType.CROSS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GridType } from '{npm}';
+ *
+ * const result = GridType.CROSS;
+ * ```
  */
 var GridType =  {
     /** 十字叉丝。 */
@@ -747,6 +1228,19 @@ var GridType =  {
  * 针对上述不同成色方式，SuperMap 提供两种色彩空间，
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorSpaceType.CMYK;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ColorSpaceType } from '{npm}';
+ *
+ * const result = ColorSpaceType.CMYK;
+ * ```
  */
 var ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
@@ -759,6 +1253,19 @@ var ColorSpaceType = {
  * @enum LayerType
  * @description  图层类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.LayerType.UGC;
+ *
+ * </script>
+ * // ES6 Import
+ * import { LayerType } from '{npm}';
+ *
+ * const result = LayerType.UGC;
+ * ```
  */
 var LayerType = {
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
@@ -775,6 +1282,19 @@ var LayerType = {
  * @enum UGCLayerType
  * @description  UGC图层类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.UGCLayerType.THEME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { UGCLayerType } from '{npm}';
+ *
+ * const result = UGCLayerType.THEME;
+ * ```
  */
 var UGCLayerType = {
     /** 专题图层。 */
@@ -791,6 +1311,19 @@ var UGCLayerType = {
  * @enum StatisticMode
  * @description  字段统计方法类型。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.StatisticMode.AVERAGE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { StatisticMode } from '{npm}';
+ *
+ * const result = StatisticMode.AVERAGE;
+ * ```
  */
 var StatisticMode = {
     /** 统计所选字段的平均值。 */
@@ -811,6 +1344,19 @@ var StatisticMode = {
  * @enum PixelFormat
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.PixelFormat.BIT16;
+ *
+ * </script>
+ * // ES6 Import
+ * import { PixelFormat } from '{npm}';
+ *
+ * const result = PixelFormat.BIT16;
+ * ```
  */
 var PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
@@ -839,6 +1385,19 @@ var PixelFormat = {
  * @enum SearchMode
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SearchMode.KDTREE_FIXED_COUNT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SearchMode } from '{npm}';
+ *
+ * const result = SearchMode.KDTREE_FIXED_COUNT;
+ * ```
  */
 var SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
@@ -855,6 +1414,19 @@ var SearchMode = {
  * @enum InterpolationAlgorithmType
  * @description  插值分析的算法的类型
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.InterpolationAlgorithmType.KRIGING;
+ *
+ * </script>
+ * // ES6 Import
+ * import { InterpolationAlgorithmType } from '{npm}';
+ *
+ * const result = InterpolationAlgorithmType.KRIGING;
+ * ```
  */
 var InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
@@ -869,6 +1441,19 @@ var InterpolationAlgorithmType = {
  * @enum VariogramMode
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.VariogramMode.EXPONENTIAL;
+ *
+ * </script>
+ * // ES6 Import
+ * import { VariogramMode } from '{npm}';
+ *
+ * const result = VariogramMode.EXPONENTIAL;
+ * ```
  */
 var VariogramMode = {
     /** 指数函数。 */
@@ -883,6 +1468,19 @@ var VariogramMode = {
  * @enum Exponent
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.Exponent.EXP1;
+ *
+ * </script>
+ * // ES6 Import
+ * import { Exponent } from '{npm}';
+ *
+ * const result = Exponent.EXP1;
+ * ```
  */
 var Exponent = {
     /** 阶数为1。 */
@@ -895,6 +1493,19 @@ var Exponent = {
  * @enum ClientType
  * @description token申请的客户端标识类型
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ClientType.IP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ClientType } from '{npm}';
+ *
+ * const result = ClientType.IP;
+ * ```
  */
 var ClientType = {
     /** 指定的 IP 地址。 */
@@ -915,6 +1526,19 @@ var ClientType = {
  * @enum ChartType
  * @description 客户端专题图图表类型
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ChartType.BAR;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ChartType } from '{npm}';
+ *
+ * const result = ChartType.BAR;
+ * ```
  */
 var ChartType = {
     /** 柱状图。 */
@@ -937,6 +1561,19 @@ var ChartType = {
  * @enum ClipAnalystMode
  * @description  裁剪分析模式
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ClipAnalystMode.CLIP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ClipAnalystMode } from '{npm}';
+ *
+ * const result = ClipAnalystMode.CLIP;
+ * ```
  */
 var ClipAnalystMode = {
     /** CLIP。 */
@@ -949,6 +1586,19 @@ var ClipAnalystMode = {
  * @enum AnalystAreaUnit
  * @description 分布式分析面积单位
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AnalystAreaUnit.SQUAREMETER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AnalystAreaUnit } from '{npm}';
+ *
+ * const result = AnalystAreaUnit.SQUAREMETER;
+ * ```
  */
 var AnalystAreaUnit = {
     /** 平方米。 */
@@ -973,6 +1623,19 @@ var AnalystAreaUnit = {
  * @enum AnalystSizeUnit
  * @description 分布式分析单位
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AnalystSizeUnit.METER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AnalystSizeUnit } from '{npm}';
+ *
+ * const result = AnalystSizeUnit.METER;
+ * ```
  */
 var AnalystSizeUnit = {
     /** 米。 */
@@ -991,6 +1654,19 @@ var AnalystSizeUnit = {
  * @enum StatisticAnalystMode
  * @description 分布式分析统计模式
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.StatisticAnalystMode.MAX;
+ *
+ * </script>
+ * // ES6 Import
+ * import { StatisticAnalystMode } from '{npm}';
+ *
+ * const result = StatisticAnalystMode.MAX;
+ * ```
  */
 var StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
@@ -1011,6 +1687,19 @@ var StatisticAnalystMode = {
  * @enum SummaryType
  * @description 分布式分析聚合类型
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SummaryType.SUMMARYMESH;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SummaryType } from '{npm}';
+ *
+ * const result = SummaryType.SUMMARYMESH;
+ * ```
  */
 var SummaryType = {
     /** 格网聚合。 */
@@ -1023,6 +1712,19 @@ var SummaryType = {
  * @enum TopologyValidatorRule
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.TopologyValidatorRule.REGIONNOOVERLAP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { TopologyValidatorRule } from '{npm}';
+ *
+ * const result = TopologyValidatorRule.REGIONNOOVERLAP;
+ * ```
  */
 var TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
@@ -1045,6 +1747,19 @@ var TopologyValidatorRule = {
  * @enum BucketAggType
  * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BucketAggType.GEOHASH_GRID;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BucketAggType } from '{npm}';
+ * 
+ * const result = BucketAggType.GEOHASH_GRID;
+ * ```
  */
 var BucketAggType = {
     /** 格网聚合类型 */
@@ -1055,6 +1770,19 @@ var BucketAggType = {
  * @enum MetricsAggType
  * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.MetricsAggType.AVG;
+ *
+ * </script>
+ * // ES6 Import
+ * import { MetricsAggType } from '{npm}';
+ *
+ * const result = MetricsAggType.AVG;
+ * ```
  */
 var MetricsAggType = {
   /** 平均值聚合类型 */
@@ -1071,6 +1799,19 @@ var MetricsAggType = {
  * @enum GetFeatureMode
  * @description feature 查询方式。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GetFeatureMode.BOUNDS;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GetFeatureMode } from '{npm}';
+ *
+ * const result = GetFeatureMode.BOUNDS;
+ * ```
  */
 var GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
@@ -1089,6 +1830,19 @@ var GetFeatureMode = {
  * @enum RasterFunctionType
  * @description 栅格分析方法。
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GetFeatureMode.NDVI;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GetFeatureMode } from '{npm}';
+ *
+ * const result = GetFeatureMode.NDVI;
+ * ```
  */
 var RasterFunctionType = {
     /** 归一化植被指数。 */
@@ -1102,6 +1856,19 @@ var RasterFunctionType = {
  * @description iportal资源类型。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.GetFeatureMode.MAP;
+ *
+ * </script>
+ * // ES6 Import
+ * import { GetFeatureMode } from '{npm}';
+ *
+ * const result = GetFeatureMode.MAP;
+ * ```
  */
 var ResourceType = {
     /** 地图。 */
@@ -1123,6 +1890,19 @@ var ResourceType = {
  * @description iportal资源排序字段。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OrderBy.UPDATETIME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OrderBy } from '{npm}';
+ *
+ * const result = OrderBy.UPDATETIME;
+ * ```
  */
 var OrderBy = {
     /** 按更新时间排序 */
@@ -1138,6 +1918,19 @@ var OrderBy = {
  * @description iportal资源升序还是降序过滤
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.OrderType.ASC;
+ *
+ * </script>
+ * // ES6 Import
+ * import { OrderType } from '{npm}';
+ *
+ * const result = OrderType.ASC;
+ * ```
  */
 var OrderType = {
     /** 升序 */
@@ -1151,6 +1944,19 @@ var OrderType = {
  * @description iportal资源查询的范围进行过滤
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.SearchType.PUBLIC;
+ *
+ * </script>
+ * // ES6 Import
+ * import { SearchType } from '{npm}';
+ *
+ * const result = SearchType.PUBLIC;
+ * ```
  */
 var SearchType = {
     /** 公开资源。 */
@@ -1170,6 +1976,19 @@ var SearchType = {
  * @description iportal资源聚合查询的类型
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.AggregationTypes.TAG;
+ *
+ * </script>
+ * // ES6 Import
+ * import { AggregationTypes } from '{npm}';
+ *
+ * const result = AggregationTypes.TAG;
+ * ```
  */
 var AggregationTypes = {
     /** 标签 */
@@ -1183,6 +2002,19 @@ var AggregationTypes = {
  * @description iportal资源权限类型。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.PermissionType.SEARCH;
+ *
+ * </script>
+ * // ES6 Import
+ * import { PermissionType } from '{npm}';
+ *
+ * const result = PermissionType.SEARCH;
+ * ```
  */
 var PermissionType = {
     /** 可检索 */
@@ -1202,6 +2034,19 @@ var PermissionType = {
  * @description iportal资源实体类型。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.EntityType.DEPARTMENT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { EntityType } from '{npm}';
+ *
+ * const result = EntityType.DEPARTMENT;
+ * ```
  */
 var EntityType = {
     /** 部门 */
@@ -1221,6 +2066,19 @@ var EntityType = {
  * @description iportal数据类型。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataItemType.GEOJSON;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataItemType } from '{npm}';
+ *
+ * const result = DataItemType.GEOJSON;
+ * ```
  */
 var DataItemType = {
     /** geojson数据。 */
@@ -1286,6 +2144,19 @@ var DataItemType = {
  * @description Web 打印输出的格式。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebExportFormatType.PNG;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebExportFormatType } from '{npm}';
+ *
+ * const result = WebExportFormatType.PNG;
+ * ```
  */
 var WebExportFormatType = {
     /** png */
@@ -1299,6 +2170,19 @@ var WebExportFormatType = {
  * @description Web 比例尺的方位样式。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebScaleOrientationType.HORIZONTALLABELSBELOW;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebScaleOrientationType } from '{npm}';
+ *
+ * const result = WebScaleOrientationType.HORIZONTALLABELSBELOW;
+ * ```
  */
 var WebScaleOrientationType = {
     /** horizontal labels below */
@@ -1316,6 +2200,19 @@ var WebScaleOrientationType = {
  * @description Web 比例尺的样式。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebScaleType.LINE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebScaleType } from '{npm}';
+ *
+ * const result = WebScaleType.LINE;
+ * ```
  */
 var WebScaleType = {
     /** line */
@@ -1331,6 +2228,19 @@ var WebScaleType = {
  * @description Web 比例尺的单位制。
  * @version 10.0.1
  * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.WebScaleUnit.METER;
+ *
+ * </script>
+ * // ES6 Import
+ * import { WebScaleUnit } from '{npm}';
+ *
+ * const result = WebScaleUnit.METER;
+ * ```
  */
 var WebScaleUnit = {
     /** 米 */

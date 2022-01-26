@@ -13,12 +13,13 @@ import {FileTypes} from '../CommonTypes';
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const util = {namespace}.ComponentsUtil;
+ *   const result = {namespace}.ComponentsUtil.getFileType(fileName);
  *
  * </script>
  * // ES6 Import
  * import { ComponentsUtil } from '{npm}';
  *
+ * const result = ComponentsUtil.getFileType(fileName);
  * ```
  */
 export let ComponentsUtil = {

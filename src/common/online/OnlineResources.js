@@ -6,6 +6,19 @@
  * @enum ServiceStatus
  * @category iPortal/Online
  * @description 服务发布状态。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ServiceStatus.DOES_NOT_INVOLVE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ServiceStatus } from '{npm}';
+ *
+ * const result = ServiceStatus.DOES_NOT_INVOLVE;
+ * ```
  */
 var ServiceStatus = {
     /** 不涉及，不可发布。 */
@@ -27,6 +40,19 @@ var ServiceStatus = {
  * @enum DataItemOrderBy
  * @category iPortal/Online
  * @description 数据排序字段。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataItemOrderBy.FILENAME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataItemOrderBy } from '{npm}';
+ * 
+ * const result = DataItemOrderBy.FILENAME;
+ * ```
  */
 var DataItemOrderBy = {
     /** FILENAME */
@@ -55,6 +81,19 @@ var DataItemOrderBy = {
  * @enum FilterField {number}
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FilterField.LINKPAGE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { FilterField } from '{npm}';
+ *
+ * const result = FilterField.LINKPAGE;
+ * ```
  */
 var FilterField = {
     /** LINKPAGE */

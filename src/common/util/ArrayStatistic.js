@@ -11,6 +11,7 @@
  * </script>
  * // ES6 Import
  * import { ArrayStatistic } from '{npm}';
+ * 
  * new ArrayStatistic();
  * ```
  */

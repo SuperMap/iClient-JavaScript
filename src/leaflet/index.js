@@ -17,7 +17,9 @@ import {
     toSuperMapGeometry,
     resolutionToScale,
     scaleToResolution,
+    getResolutionFromScaleDpi,
     GetResolutionFromScaleDpi,
+    normalizeScale,
     NormalizeScale,
     transform
 } from './core';
@@ -213,7 +215,9 @@ export {
     toSuperMapGeometry,
     resolutionToScale,
     scaleToResolution,
+    getResolutionFromScaleDpi,
     GetResolutionFromScaleDpi,
+    normalizeScale,
     NormalizeScale,
     transform
 };

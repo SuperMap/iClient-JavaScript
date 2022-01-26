@@ -22,13 +22,14 @@
   * // 浏览器
   * <script type="text/javascript" src="{cdn}"></script>
   * <script>
-  *   const util = {namespace}.Util;
+  *   const result = {namespace}.Util.getOlVersion();
   *
   * </script>
   *
   * // ES6 Import
   * import { Util } from '{npm}';
   *
+  * const result = Util.getOlVersion();
   * ```
   */
  export const Util = {

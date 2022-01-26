@@ -24,12 +24,13 @@ const isString = function (str) {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const util = {namespace}.Util;
+ *   const result = {namespace}.Util.toSuperMapGeometry(geoJSON);
  *
  * </script>
  * // ES6 Import
  * import { Util } from '{npm}';
  *
+ * const result = Util.toSuperMapGeometry(geoJSON);
  * ```
  */
 

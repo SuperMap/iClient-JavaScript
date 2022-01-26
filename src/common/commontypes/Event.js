@@ -7,6 +7,23 @@
   * @name Event
   * @namespace
   * @description 事件处理函数.
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const element = {namespace}.Event.element();
+  *
+  *   // 弃用的写法
+  *   const result = SuperMap.Event.element();
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { Event } from '{npm}';
+  * 
+  * const result = Event.element();
+  * ```
   */
  export var Event = {
 
