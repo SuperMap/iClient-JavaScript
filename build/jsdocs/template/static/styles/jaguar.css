@@ -432,6 +432,10 @@ a:hover, a:active, a:focus{
     list-style-type: none;
 }
 
+.container-overview .params tbody>tr:hover {
+    background-color: rgba(0,0,0,0.04);
+}
+
 .treeview > a {
     cursor: pointer;
 }
