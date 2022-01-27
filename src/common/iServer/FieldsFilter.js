@@ -8,6 +8,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class FieldsFilter
  * @deprecatedclass SuperMap.FieldsFilter
+ * @category iServer Data Field
  * @classdesc 指定返回的用于描述 Feature 的字段。
  * @param {Object} options - 可选参数。
  * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表

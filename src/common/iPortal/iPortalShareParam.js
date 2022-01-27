@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.iPortalShareParam
  * @classdesc iPortal 资源共享参数。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources ResourcesShare
  * @param {Object} params - 可选参数。
  * @param {ResourceType} [params.resourceType] - 资源类型。
  * @param {Array} [params.ids] - 资源的id数组。

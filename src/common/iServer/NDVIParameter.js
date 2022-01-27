@@ -8,7 +8,7 @@ import { RasterFunctionType } from '../REST';
 /**
  * @class NDVIParameter
  * @deprecatedclass SuperMap.NDVIParameter
- * @category iServer Map
+ * @category iServer Map Tile
  * @classdesc 归一化植被指数参数类
  * @param {Object} options - 参数。
  * @param {number} [options.redIndex=0] - 红光谱波段索引。

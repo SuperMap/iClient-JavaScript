@@ -5,7 +5,7 @@ import '../core/Base';
 
 /**
  * @enum VectorTileFormat
- * @category Visualization VectorTile
+ * @category BaseTypes Constant
  * @description 矢量瓦片格式
  * @type {string}
  * @usage

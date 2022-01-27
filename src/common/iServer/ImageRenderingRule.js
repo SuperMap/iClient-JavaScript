@@ -9,6 +9,7 @@ import ImageStretchOption from './ImageStretchOption';
  * @class ImageRenderingRule
  * @deprecatedclass SuperMap.ImageRenderingRule
  * @classdesc 定义请求的影像如何进行渲染或者处理，如：影像的拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。
+ * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {ImageRenderingRule.DisplayMode} [options.displayMode] 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
  * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为STRETCHED，该属性指定一个波段的索引号(波段索引号从0开始计数)；若影像的显示模式为COMPOSITE，该属性为组合的波段索引号，例如：属性值3,2,1表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。

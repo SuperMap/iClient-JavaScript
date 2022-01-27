@@ -11,7 +11,7 @@ import { FunctionExt } from '../commontypes/BaseTypes';
 /**
  * @class CommonServiceBase
  * @deprecatedclass SuperMap.CommonServiceBase
- * @category  iServer
+ * @category  iServer Core
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -333,6 +333,7 @@ export class CommonServiceBase {
 /**
  * 服务器请求回调函数
  * @callback RequestCallback
+ * @category BaseTypes Util
  * @example
  * var requestCallback = function (serviceResult){
  *      console.log(serviceResult.result);

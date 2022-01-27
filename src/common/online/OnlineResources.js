@@ -4,7 +4,7 @@
 
 /**
  * @enum ServiceStatus
- * @category iPortal/Online
+ * @category BaseTypes Constant
  * @description 服务发布状态。
  * @usage
  * ```
@@ -38,7 +38,7 @@ var ServiceStatus = {
 
 /**
  * @enum DataItemOrderBy
- * @category iPortal/Online
+ * @category BaseTypes Constant
  * @description 数据排序字段。
  * @usage
  * ```
@@ -79,7 +79,7 @@ var DataItemOrderBy = {
 
 /**
  * @enum FilterField {number}
- * @category iPortal/Online
+ * @category BaseTypes Constant
  * @description 关键字查询时的过滤字段。
  * @usage
  * ```

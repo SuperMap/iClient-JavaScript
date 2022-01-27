@@ -7,7 +7,7 @@ import {DataReturnMode} from '../REST';
 /**
  * @class DataReturnOption
  * @deprecatedclass SuperMap.DataReturnOption
- * @category iServer SpatialAnalyst
+ * @category iServer Data Dataset
  * @classdesc 数据返回设置类。
  * @param {Object} options - 参数。
  * @param {number} [options.expectCount=1000] - 设置返回的最大记录数，小于或者等于 0 时表示返回所有记录数。

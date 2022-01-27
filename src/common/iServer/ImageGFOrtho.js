@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
  * @class ImageGFOrtho
  * @deprecatedclass SuperMap.ImageGFOrtho
  * @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
+ * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFOrtho'] 栅格函数名称，参数值为：GFOrtho。
  * @usage

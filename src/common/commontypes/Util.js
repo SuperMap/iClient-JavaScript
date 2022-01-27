@@ -11,6 +11,7 @@ import { Geometry } from './Geometry';
  *     * "safari" -- Safari
  *     * "firefox" -- Firefox
  *     * "mozilla" -- Mozilla
+ * @category BaseTypes Constant
  * @constant {Object}
  * @usage
  * ```
@@ -815,6 +816,7 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 根据比例尺和 dpi 计算屏幕分辨率。
+   * @category BaseTypes Util
    * @param {number} scale - 比例尺。
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
    * @param {string} [coordUnit] - 投影坐标系统的地图单位。

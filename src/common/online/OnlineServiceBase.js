@@ -9,7 +9,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @class OnlineServiceBase
  * @deprecatedclass SuperMap.OnlineServiceBase
  * @classdesc Online 服务基类（使用 key 作为权限限制的类需要实现此类）。
- * @category iPortal/Online
+ * @category iPortal/Online Core
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。

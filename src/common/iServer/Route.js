@@ -10,7 +10,7 @@ import {Collection} from '../commontypes/geometry/Collection';
 /**
  * @class Route
  * @deprecatedclass SuperMap.Route
- * @category  iServer SpatialAnalyst
+ * @category iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
  * @param {Array.<Geometry>} points - 形成路由对象的线数组。
  * @param {Object} options - 参数。

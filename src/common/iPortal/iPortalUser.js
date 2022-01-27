@@ -14,7 +14,7 @@ import { IPortalDataConnectionInfoParam } from "./iPortalDataConnectionInfoParam
  * @deprecatedclass SuperMap.iPortalUser
  * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources
  * @param {string} iportalUrl - 服务地址。
  * @extends {IPortalServiceBase}
  * @usage

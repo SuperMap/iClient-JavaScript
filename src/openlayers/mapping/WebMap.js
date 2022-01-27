@@ -73,7 +73,7 @@ const dpiConfig = {
 }
 /**
  * @class WebMap
- * @category  iPortal/Online
+ * @category  iPortal/Online Resources Map
  * @classdesc 对接 iPortal/Online 地图类
  * @param {Object} options - 参数
  * @param {string} [options.target='map'] - 地图容器id

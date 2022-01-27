@@ -10,7 +10,6 @@ import {ServerGeometry} from './ServerGeometry';
  * @deprecatedclass SuperMap.EditFeaturesParameters
  * @category iServer Data Feature
  * @classdesc 数据集添加、修改、删除参数类。
- * @category iServer Data
  * @param {Object} options - 参数。
  * @param {Array.<FeatureVector|GeoJSONObject|ol.Feature>} options.features - 当前需要创建或者是修改的要素集。
  * @param {boolean} [options.returnContent=false] - 是否返回要素内容。如果为true则返回创建要素的 ID 数组，否则返回 featureResult 资源的 URI。

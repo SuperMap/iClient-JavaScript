@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
  * @class ImageGFAspect
  * @deprecatedclass SuperMap.ImageGFAspect
  * @classdesc 栅格函数对象:对DEM数据生成坡向渲图。
+ * @category iServer Image
  * @param {Object} options -可选参数。
  * @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
  * @param {number} [options.Azimuth] 光源方位角，固定为360度。

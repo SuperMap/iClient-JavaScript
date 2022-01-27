@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class FilterParameter
  * @deprecatedclass SuperMap.FilterParameter
- * @category iServer
+ * @category iServer Data FeatureResults
  * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。
  * @param {Object} options - 参数。
  * @param {string} options.attributeFilter - 属性过滤条件。

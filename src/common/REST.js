@@ -5,6 +5,7 @@
  /**
  * @enum DataFormat
  * @description 服务请求返回结果数据类型
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -30,6 +31,7 @@ var DataFormat = {
 /**
  * @enum ServerType
  * @description 服务器类型
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -57,6 +59,7 @@ var ServerType = {
 /**
  * @enum GeometryType
  * @description 几何对象枚举,定义了一系列几何对象类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -104,6 +107,7 @@ var GeometryType = {
 /**
  * @enum QueryOption
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -132,6 +136,7 @@ var QueryOption = {
  * @enum JoinType
  * @description 关联查询时的关联类型常量。
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -157,6 +162,7 @@ var JoinType = {
 /**
  * @enum SpatialQueryMode
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -197,6 +203,7 @@ var SpatialQueryMode = {
  * @enum SpatialRelationType
  * @description  数据集对象间的空间关系枚举。
  * 该类定义了数据集对象间的空间关系类型常量。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -225,6 +232,7 @@ var SpatialRelationType = {
  * @enum MeasureMode
  * @type {string}
  * @description  量算模式枚举。
+ * @category BaseTypes Constant
  * 该类定义了两种测量模式：距离测量和面积测量。
  * @usage
  * ```
@@ -251,6 +259,7 @@ var MeasureMode = {
  * @enum Unit
  * @description  距离单位枚举。
  * 该类定义了一系列距离单位类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -297,8 +306,8 @@ var Unit = {
 
 /**
  * @enum BufferRadiusUnit
- * @description  缓冲区距离单位枚举。
- * 该类定义了一系列缓冲距离单位类型。
+ * @description  缓冲区距离单位枚举。该类定义了一系列缓冲距离单位类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -338,6 +347,7 @@ var BufferRadiusUnit = {
 /**
  * @enum EngineType
  * @description  数据源引擎类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -371,6 +381,7 @@ var EngineType = {
 /**
  * @enum ThemeGraphTextFormat
  * @description  统计专题图文本显示格式枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -403,6 +414,7 @@ var ThemeGraphTextFormat = {
 /**
  * @enum ThemeGraphType
  * @description  统计专题图类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -450,6 +462,7 @@ var ThemeGraphType = {
 /**
  * @enum GraphAxesTextDisplayMode
  * @description  统计专题图坐标轴文本显示模式。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -477,7 +490,7 @@ var GraphAxesTextDisplayMode = {
 /**
  * @enum GraduatedMode
  * @description  专题图分级模式枚举。
- *
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -505,6 +518,7 @@ var GraduatedMode = {
 /**
  * @enum RangeMode
  * @description  范围分段专题图分段方式枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -538,6 +552,7 @@ var RangeMode = {
 /**
  * @enum ThemeType
  * @description  专题图类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -571,6 +586,7 @@ var ThemeType = {
 /**
  * @enum ColorGradientType
  * @description  渐变颜色枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -646,6 +662,7 @@ var ColorGradientType = {
 /**
  * @enum TextAlignment
  * @description  文本对齐枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -691,6 +708,7 @@ var TextAlignment = {
 /**
  * @enum FillGradientMode
  * @description  渐变填充风格的渐变类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -722,6 +740,7 @@ var FillGradientMode = {
 /**
  * @enum AlongLineDirection
  * @description  标签沿线标注方向枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -753,6 +772,7 @@ var AlongLineDirection = {
 /**
  * @enum LabelBackShape
  * @description  标签专题图中标签背景的形状枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -788,6 +808,7 @@ var LabelBackShape = {
 /**
  * @enum LabelOverLengthMode
  * @description  标签专题图中超长标签的处理模式枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -816,6 +837,7 @@ var LabelOverLengthMode = {
  * @enum DirectionType
  * @description  网络分析中方向枚举。
  * 在行驶引导子项中使用。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -848,6 +870,7 @@ var DirectionType = {
  * @enum SideType
  * @description  行驶位置枚举。
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -879,6 +902,7 @@ var SideType = {
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -907,6 +931,7 @@ var SupplyCenterType = {
  * @enum TurnType
  * @description  转弯方向枚举。
  * 用在行驶引导子项类中，表示转弯的方向。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -940,6 +965,7 @@ var TurnType = {
 /**
  * @enum BufferEndType
  * @description  缓冲区分析BufferEnd类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -964,6 +990,7 @@ var BufferEndType = {
 /**
  * @enum OverlayOperationType
  * @description  叠加分析类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -999,6 +1026,7 @@ var BufferEndType = {
 /**
  * @enum OutputType
  * @description  分布式分析输出类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1029,6 +1057,7 @@ var OutputType =  {
  * @enum SmoothMethod
  * @description  光滑方法枚举。
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1055,6 +1084,7 @@ var OutputType =  {
  * @enum SurfaceAnalystMethod
  * @description  表面分析方法枚举。
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1081,6 +1111,7 @@ var SurfaceAnalystMethod = {
  * @enum DataReturnMode
  * @description  数据返回模式枚举。
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1109,6 +1140,7 @@ var DataReturnMode = {
  * @enum EditType
  * @description  要素集更新模式枚举。
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1137,6 +1169,7 @@ var EditType = {
  * @enum TransferTactic
  * @description  公交换乘策略枚举。
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1167,6 +1200,7 @@ var TransferTactic = {
  * @enum TransferPreference
  * @description  公交换乘策略枚举。
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1196,6 +1230,7 @@ var TransferPreference = {
 /**
  * @enum GridType
  * @description  地图背景格网类型枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1227,6 +1262,7 @@ var GridType =  {
  * 印刷机这类靠使用颜料的印刷设备在生成颜色方式上的区别。
  * 针对上述不同成色方式，SuperMap 提供两种色彩空间，
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1252,6 +1288,7 @@ var ColorSpaceType = {
 /**
  * @enum LayerType
  * @description  图层类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1281,6 +1318,7 @@ var LayerType = {
 /**
  * @enum UGCLayerType
  * @description  UGC图层类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1310,6 +1348,7 @@ var UGCLayerType = {
 /**
  * @enum StatisticMode
  * @description  字段统计方法类型。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1343,6 +1382,7 @@ var StatisticMode = {
 /**
  * @enum PixelFormat
  * @description  栅格与影像数据存储的像素格式枚举。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1384,6 +1424,7 @@ var PixelFormat = {
 /**
  * @enum SearchMode
  * @description  内插时使用的样本点的查找方式枚举
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1413,6 +1454,7 @@ var SearchMode = {
 /**
  * @enum InterpolationAlgorithmType
  * @description  插值分析的算法的类型
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1440,6 +1482,7 @@ var InterpolationAlgorithmType = {
 /**
  * @enum VariogramMode
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1467,6 +1510,7 @@ var VariogramMode = {
 /**
  * @enum Exponent
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1492,6 +1536,7 @@ var Exponent = {
 /**
  * @enum ClientType
  * @description token申请的客户端标识类型
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1525,6 +1570,7 @@ var ClientType = {
 /**
  * @enum ChartType
  * @description 客户端专题图图表类型
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1560,6 +1606,7 @@ var ChartType = {
 /**
  * @enum ClipAnalystMode
  * @description  裁剪分析模式
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1585,6 +1632,7 @@ var ClipAnalystMode = {
 /**
  * @enum AnalystAreaUnit
  * @description 分布式分析面积单位
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1622,6 +1670,7 @@ var AnalystAreaUnit = {
 /**
  * @enum AnalystSizeUnit
  * @description 分布式分析单位
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1653,6 +1702,7 @@ var AnalystSizeUnit = {
 /**
  * @enum StatisticAnalystMode
  * @description 分布式分析统计模式
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1686,6 +1736,7 @@ var StatisticAnalystMode = {
 /**
  * @enum SummaryType
  * @description 分布式分析聚合类型
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1711,6 +1762,7 @@ var SummaryType = {
 /**
  * @enum TopologyValidatorRule
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1746,6 +1798,7 @@ var TopologyValidatorRule = {
 /**
  * @enum BucketAggType
  * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1769,6 +1822,7 @@ var BucketAggType = {
 /**
  * @enum MetricsAggType
  * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1798,6 +1852,7 @@ var MetricsAggType = {
 /**
  * @enum GetFeatureMode
  * @description feature 查询方式。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1829,6 +1884,7 @@ var GetFeatureMode = {
 /**
  * @enum RasterFunctionType
  * @description 栅格分析方法。
+ * @category BaseTypes Constant
  * @type {string}
  * @usage
  * ```
@@ -1854,6 +1910,7 @@ var RasterFunctionType = {
 /**
  * @enum ResourceType
  * @description iportal资源类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -1888,6 +1945,7 @@ var ResourceType = {
 /**
  * @enum OrderBy
  * @description iportal资源排序字段。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -1916,6 +1974,7 @@ var OrderBy = {
 /**
  * @enum OrderType
  * @description iportal资源升序还是降序过滤
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -1942,6 +2001,7 @@ var OrderType = {
 /**
  * @enum SearchType
  * @description iportal资源查询的范围进行过滤
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -1974,6 +2034,7 @@ var SearchType = {
 /**
  * @enum AggregationTypes
  * @description iportal资源聚合查询的类型
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2000,6 +2061,7 @@ var AggregationTypes = {
 /**
  * @enum PermissionType
  * @description iportal资源权限类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2032,6 +2094,7 @@ var PermissionType = {
 /**
  * @enum EntityType
  * @description iportal资源实体类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2064,6 +2127,7 @@ var EntityType = {
 /**
  * @enum DataItemType
  * @description iportal数据类型。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2142,6 +2206,7 @@ var DataItemType = {
 /**
  * @enum WebExportFormatType
  * @description Web 打印输出的格式。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2168,6 +2233,7 @@ var WebExportFormatType = {
 /**
  * @enum WebScaleOrientationType
  * @description Web 比例尺的方位样式。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2198,6 +2264,7 @@ var WebScaleOrientationType = {
 /**
  * @enum WebScaleType
  * @description Web 比例尺的样式。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage
@@ -2226,6 +2293,7 @@ var WebScaleType = {
 /**
  * @enum WebScaleUnit
  * @description Web 比例尺的单位制。
+ * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
  * @usage

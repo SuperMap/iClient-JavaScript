@@ -9,7 +9,7 @@
   * @deprecatedclass SuperMap.iPortalAddResourceParam
   * @classdesc iPortal 添加资源参数。
   * @version 10.0.1
-  * @category iPortal/Online
+  * @category iPortal/Online Resources ResourcesShare
   * @param {Object} params - 可选参数。
   * @param {string} [params.rootUrl] - 服务地址。
   * @param {Array} [params.tags] - 标签。

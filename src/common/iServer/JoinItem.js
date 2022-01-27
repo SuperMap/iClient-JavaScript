@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class JoinItem
  * @deprecatedclass SuperMap.JoinItem
- * @category iServer
+ * @category iServer Data FeatureResults
  * @classdesc 连接信息类。
  * 该类用于矢量数据集与外部表的连接。外部表可以为另一个矢量数据集（其中纯属性数据集中没有空间几何信息）所对应的 DBMS 表，也可以是用户自建的业务表。
  * 需要注意的是，矢量数据集与外部表必须属于同一数据源。表之间的联系的建立有两种方式，一种是连接（join），一种是关联（link）。

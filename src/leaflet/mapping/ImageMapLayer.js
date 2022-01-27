@@ -12,7 +12,7 @@ import { toSuperMapGeometry } from '../core/Util';
  * @class ImageMapLayer
  * @deprecatedclassinstance L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。
- * @category iServer Map
+ * @category iServer Map Tile
  * @extends {L.Layer}
  * @example
  *      new ImageMapLayer(url).addTo(map);

@@ -6,7 +6,7 @@
 /**
  * @name Lang
  * @namespace
- * @category BaseTypes
+ * @category BaseTypes Internationalization
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
  * @usage
  * ```

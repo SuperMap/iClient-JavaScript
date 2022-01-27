@@ -6,6 +6,7 @@
  /**
   * @name Event
   * @namespace
+  * @category BaseTypes Events
   * @description 事件处理函数.
   * @usage
   * ```

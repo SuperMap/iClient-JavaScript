@@ -6,6 +6,7 @@ var ColorRender = new Color();
 
 /**
  * @class ColorsPickerUtil
+ * @category BaseTypes Util
  * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  * @usage
  */

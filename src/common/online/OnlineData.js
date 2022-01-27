@@ -8,7 +8,7 @@ import {OnlineServiceBase} from './OnlineServiceBase';
  * @class OnlineData
  * @deprecatedclass SuperMap.OnlineData
  * @classdesc Online myData 服务。
- * @category iPortal/Online
+ * @category iPortal/Online Resources Data
  * @param {string} serviceRootUrl - 服务地址。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

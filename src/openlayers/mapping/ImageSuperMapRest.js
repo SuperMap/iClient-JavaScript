@@ -15,7 +15,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 
 /**
  * @class ol.source.ImageSuperMapRest
- * @category iServer Map
+ * @category iServer Map Tile
  * @classdesc SuperMap iServer Image 图层源。
  * @param {Object} options - 参数。
  * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。

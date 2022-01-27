@@ -8,7 +8,7 @@ import './OnlineResources';
  * @class OnlineQueryDatasParameter
  * @deprecatedclass SuperMap.OnlineQueryDatasParameter
  * @classdesc myDatas 服务资源查询参数。
- * @category iPortal/Online
+ * @category iPortal/Online Resources Data
  * @param {Object} options - 参数。
  * @usage
  */

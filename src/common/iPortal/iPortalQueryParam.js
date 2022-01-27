@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.iPortalQueryParam
  * @classdesc iPortal 资源查询参数。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources ResourcesQuery
  * @param {Object} params - 可选参数。
  * @param {ResourceType} [params.resourceType] - 资源类型
  * @param {number} [params.pageSize] - 分页中每页大小。

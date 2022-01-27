@@ -9,7 +9,7 @@ import {GeoJSON} from '../format/GeoJSON';
 /**
  * @class SpatialAnalystBase
  * @deprecatedclass SuperMap.SpatialAnalystBase
- * @category  iServer SpatialAnalyst
+ * @category  iServer Core
  * @classdesc 空间分析服务基类。
  * @param {string} url - 地址。
  * @param {Object} options - 可选参数。

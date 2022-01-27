@@ -17,7 +17,7 @@ import {
 /**
  * @class ProcessingServiceBase
  * @deprecatedclass SuperMap.ProcessingServiceBase
- * @category  iServer ProcessingService
+ * @category  iServer Core
  * @classdesc 分布式分析服务基类
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。

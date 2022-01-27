@@ -9,6 +9,7 @@ import { Util } from '../commontypes/Util';
  * @class ImageGFHillShade
  * @deprecatedclass SuperMap.ImageGFHillShade
  * @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。
+ * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFHillShade'] 栅格函数名称，参数值为：GFHillShade。
  * @param {number} [options.Azimuth = 315] 光源方位角。用于确定光源的方向，是从光源所在位置的正北方向线起，依顺时针方向到光源与目标方向线的夹角，范围为 0-360 度，以正北方向为 0 度，依顺时针方向递增。默认值为：315。

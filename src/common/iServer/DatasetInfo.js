@@ -7,7 +7,7 @@ import {Bounds} from '../commontypes/Bounds';
 /**
  * @class DatasetInfo
  * @deprecatedclass SuperMap.DatasetInfo
- * @category  iServer Data
+ * @category  iServer Data Dataset
  * @classdesc 数据集信息类。
  * @description 数据集一般为存储在一起的相关数据的集合；根据数据类型的不同，分为矢量数据集、栅格数据集（griddataset）和
  * 影像数据集（image dataset），以及为了处理特定问题而设计的数据集，如拓扑数据集，网络数据集等。

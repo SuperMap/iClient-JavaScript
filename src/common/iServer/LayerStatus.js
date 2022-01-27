@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class LayerStatus
  * @deprecatedclass SuperMap.LayerStatus
- * @category iServer Map Theme
+ * @category iServer Map TempLayersSet
  * @classdesc 子图层显示参数类。
  * @description 该类存储了各个子图层的名字和是否可见的状态。
  * @param {Object} options - 参数。

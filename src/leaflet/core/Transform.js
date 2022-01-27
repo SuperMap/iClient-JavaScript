@@ -7,6 +7,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
  * @function transform
  * @description 转换要素坐标。
+ * @category BaseTypes Util
  * @param {(L.Marker|L.CircleMarker|L.Polyline|L.Polygon|L.Rectangle|L.LatLngBounds|L.Bounds|Object)} feature - 待转换要素：Leaflet Vector Layers 。
  *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds}|{@link GeoJSONObject} 类型。
  * @param {CRS} [sourceCRS=L.CRS.EPSG4326] - 转换要素的源坐标系。

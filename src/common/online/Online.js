@@ -6,10 +6,10 @@ import {OnlineData} from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class Online
+ * @class Online Resources
  * @deprecatedclass SuperMap.Online
  * @classdesc 对接 SuperMap Online 所有基础服务。
- * @category iPortal/Online
+ * @category iPortal/Online Resources
  * @example
  * var online=new Online();
  * var services = online.queryDatas(param);

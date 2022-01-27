@@ -6,7 +6,7 @@ import L from "leaflet";
 /**
  * @class ServiceBase
  * @classdesc L.supermap 服务基类。
- * @category  iServer
+ * @category  iServer Core
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

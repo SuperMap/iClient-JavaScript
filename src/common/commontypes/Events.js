@@ -10,6 +10,7 @@ import {Util} from './Util';
  * @class Events
  * @deprecatedclass SuperMap.Events
  * @classdesc 事件类。
+ * @category BaseTypes Events
  * @param {Object} object - 当前事件对象被添加到的 JS 对象。
  * @param {HTMLElement} element - 响应浏览器事件的 DOM 元素。
  * @param {Array.<string>} eventTypes - 自定义应用事件的数组。

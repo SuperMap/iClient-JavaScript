@@ -5,7 +5,7 @@ import Observable from 'ol/Observable';
 
 /**
  * @class ServiceBase
- * @category iServer
+ * @category iServer Core
  * @classdesc ol.supermap 的服务基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

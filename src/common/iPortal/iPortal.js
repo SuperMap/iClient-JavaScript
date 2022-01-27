@@ -13,7 +13,7 @@ import { IPortalShareParam } from "./iPortalShareParam";
  * @aliasclass iPortal
  * @deprecatedclass SuperMap.iPortal
  * @classdesc 对接 SuperMap iPortal 基础服务。
- * @category iPortal/Online
+ * @category iPortal/Online Resources
  * @extends {IPortalServiceBase}
  * @param {string} iportalUrl - 服务地址。
  * @param {Object} options - 可选参数。

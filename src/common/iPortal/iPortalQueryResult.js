@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.iPortalQueryResult
  * @classdesc iPortal 资源结果集封装类。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources ResourcesQuery
  * @param {Object} queryResult - 可选参数。
  * @param {Array} [queryResult.content] - 页面内容。
  * @param {number} [queryResult.total] - 总记录数。

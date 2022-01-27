@@ -9,7 +9,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @deprecatedclass SuperMap.iPortalResource
  * @classdesc iPortal 资源详情类。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources
  * @param {string} portalUrl - 服务地址。
  * @param {Object} resourceInfo - 可选参数。
  * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息

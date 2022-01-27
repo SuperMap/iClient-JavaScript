@@ -1,5 +1,6 @@
 /**
  * @class ArrayStatistic
+ * @category BaseTypes Util
  * @classdesc 处理数组。
  * @usage
  * ```

@@ -63,14 +63,25 @@ export var polygonMap = {
 };
 
 /**
- * @constant StyleMap {Object}
+ * @enum StyleMap {Object}
  * @description 地图样式。
+ * @category BaseTypes Constant
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.StyleMap.CartoStyleMap;
+ *
+ * </script>
+ * // ES6 Import
+ * import { StyleMap } from '{npm}';
+ *
+ * const result = StyleMap.CartoStyleMap;
+ * ```
  */
 export var StyleMap = {
-    /**
-     * @constant StyleMap.prototype.CartoStyleMap
-     * @description CartoCSS 中的 style 属性名与 Canvas 的 style 属性名的对应表
-     */
+    /** CartoCSS 中的 style 属性名与 Canvas 的 style 属性名的对应表 */
     CartoStyleMap: {
         "TEXT": {
             //前两个属性值组成font
@@ -102,10 +113,7 @@ export var StyleMap = {
         "POLYGON": polygonMap,
         "MULTIPOLYGON": polygonMap
     },
-    /**
-     * @constant StyleMap.prototype.ServerStyleMap
-     * @description 服务端传过来的 style 属性名与 Canvas 的 style 属性名的对应表。
-     */
+    /** 服务端传过来的 style 属性名与 Canvas 的 style 属性名的对应表。 */
     ServerStyleMap: {
         fillBackOpaque: {
             canvasStyle: "",
@@ -204,10 +212,7 @@ export var StyleMap = {
             defaultValue: 0
         }
     },
-    /**
-     * @constant StyleMap.prototype.CartoCompOpMap
-     * @description Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。
-     */
+    /** Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。 */
     CartoCompOpMap: {
         "clear": "",
         "src": "",

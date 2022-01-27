@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.iPortalShareEntity
  * @classdesc iPortal 资源共享实体参数。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources ResourcesShare
  * @param {Object} shareEntity - 可选参数。
  * @param {PermissionType} [shareEntity.permissionType] - 权限类型。
  * @param {EntityType} [shareEntity.entityType] - 实体类型。

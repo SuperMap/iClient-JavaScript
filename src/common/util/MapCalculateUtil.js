@@ -3,6 +3,7 @@ import { Unit } from '../REST';
 /**
  * @function getMeterPerMapUnit
  * @description 单位换算，把米|度|千米|英寸|英尺换成米。
+ * @category BaseTypes Util
  * @param {string} mapUnit 地图单位。
  * @returns {number} 返回地图的距离单位。
  * @usage
@@ -43,6 +44,7 @@ export var getMeterPerMapUnit = function(mapUnit) {
 /**
  * @function getWrapNum
  * @description 获取该坐标系的经纬度范围的经度或纬度。
+ * @category BaseTypes Util
  * @param {number} x 经度或纬度。
  * @param {boolean} includeMax 是否获取经度或纬度的最大值。
  * @param {boolean} includeMin 是否获取经度或纬度的最小值。
@@ -83,6 +85,7 @@ export function getWrapNum(x, includeMax = true, includeMin = true, range = [-18
 /**
  * @function conversionDegree
  * @description 转换经纬度。
+ * @category BaseTypes Util
  * @param {number} degrees 经度或纬度。
  * @returns {string} 返回度分秒。
  * @usage

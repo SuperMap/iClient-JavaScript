@@ -8,7 +8,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  * @class LinkItem
  * @deprecatedclass SuperMap.LinkItem
  * @constructs LinkItem
- * @category iServer
+ * @category iServer Data FeatureResults
  * @classdesc 关联信息类。
  * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
  *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持 SQL Server 和 Oracle 类型。使用 LinkItem 时，

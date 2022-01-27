@@ -56,6 +56,7 @@ export class GeoJsonLayersDataModel {
 /**
  * @class GeoJsonLayerDataModel
  * @classdesc 图层数据模型，可用于图层要素数据、属性管理等。
+ * @category Components Common
  * @param {L.GeoJSON} layer - GeoJSON 图层。
  * 注：leaflet 没有 feature 的概念
  * @usage

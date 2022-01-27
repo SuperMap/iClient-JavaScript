@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.iPortalRegisterServiceParam
  * @classdesc iPortal 注册服务参数。
  * @version 10.0.1
- * @category iPortal/Online
+ * @category iPortal/Online Resources Data
  * @param {Object} params - 可选参数。
  * @param {string} [params.type] - 服务类型。
  * @param {Array} [params.tags] - 服务标签。
