@@ -66,6 +66,8 @@ a:hover, a:active, a:focus{
 
 .main-sidebar .search {
     padding: 10px 15px;
+    z-index: 1;
+    position: relative;
 }
 
 .main-sidebar .list {
