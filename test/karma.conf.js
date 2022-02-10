@@ -1,7 +1,8 @@
 // Karma configuration
 // Generated on Fri Feb 17 2017 15:57:25 GMT+0800 (中国标准时间)
 const fileUtil = require('karma-sonarqube-unit-reporter/src/file-util.js');
-const program = require('commander');
+const { Command } = require('commander');
+const program = new Command();
 const testPath = ['./test'];
 const testFilePattern = 'Spec.js';
 const filesForDescriptions = fileUtil.getFilesForDescriptions(testPath, testFilePattern);
