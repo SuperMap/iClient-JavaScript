@@ -95,7 +95,7 @@
             inputScript('https://iclient.supermap.io/web/libs/elasticsearch/16.7.1/elasticsearch.min.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript('https://iclient.supermap.io/web/libs/xlsx/0.17.2/xlsx.core.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.0/xlsx.core.min.js');
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {

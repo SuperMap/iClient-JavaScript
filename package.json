@@ -132,7 +132,7 @@
     "proj4": "2.7.5",
     "promise-polyfill": "8.2.0",
     "three": "0.126.1",
-    "xlsx": "0.17.2",
+    "xlsx": "^0.18.0",
     "xml-js": "1.6.11"
   },
   "pre-commit": [

@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "mapv": "2.0.62",
-    "xlsx": "0.17.2",
+    "xlsx": "0.18.0",
     "@supermap/iclient-common": "11.0.0-dev"
   }
 }
