@@ -447,10 +447,6 @@
     "name": "基础类",
     "name_en": "BaseTypes",
     "content": {
-      "Namespace": {
-        "name": "命名空间",
-        "name_en": "Namespace"
-      },
       "Internationalization": {
         "name": "国际化",
         "name_en": "Internationalization"
