@@ -339,6 +339,10 @@ a:hover, a:active, a:focus{
     color: #fff;
 }
 
+.main .nameContainer .attribs {
+    margin-right: 5px;
+}
+
 .main pre {
     font-size: 11px;
 }
@@ -434,7 +438,7 @@ a:hover, a:active, a:focus{
     list-style-type: none;
 }
 
-.container-overview .params tbody>tr:hover {
+.params tbody>tr:hover {
     background-color: rgba(0,0,0,0.04);
 }
 
