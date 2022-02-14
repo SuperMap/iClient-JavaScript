@@ -65,6 +65,9 @@ $(function () {
         var isGlobal = window.location.href.indexOf('global.html') > -1;
         if (isGlobal) {
           filename = window.location.hash.substring(1);
+          // global.html#GraduatedMode#.CONSTANT
+          var secIndex = filename.indexOf('#');
+          filename = secIndex > -1 ? filename.substring(0, secIndex) : filename;
         }
         var $currentItem = $('.main-sidebar .item[data-name="' + filename + '"]:eq(0)');
         if ($currentItem.length) {
