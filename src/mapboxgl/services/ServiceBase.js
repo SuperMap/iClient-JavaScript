@@ -7,7 +7,7 @@ import '../core/Base';
 /**
  * @class ServiceBase
  * @category  iServer Core
- * @description mapboxgl.supermap 服务基类。
+ * @classdesc mapboxgl.supermap 服务基类。
  * @param {string} url - 服务地址。 
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

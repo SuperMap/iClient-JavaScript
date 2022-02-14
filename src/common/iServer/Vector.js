@@ -32,6 +32,7 @@ export class Vector extends UGCSubLayer {
 
     /**
      * @function Vector.prototype.destroy
+     * @description 销毁对象，将其属性置空。
      * @override
      */
     destroy() {

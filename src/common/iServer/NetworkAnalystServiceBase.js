@@ -10,7 +10,6 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @deprecatedclass SuperMap.NetworkAnalystServiceBase
  * @category iServer Core
  * @classdesc 网络分析服务基类。
- * @description 网络分析服务基类。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 可选参数。

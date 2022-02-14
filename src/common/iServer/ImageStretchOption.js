@@ -7,6 +7,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageStretchOption
  * @deprecatedclass SuperMap.ImageStretchOption
+ * @classdesc 影像拉伸类。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {ImageStretchOption.StretchType} [options.stretchType] 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。

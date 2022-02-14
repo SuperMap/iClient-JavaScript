@@ -36,8 +36,8 @@ export class LabelMixedTextStyle {
         /**
          * @member {string} LabelMixedTextStyle.prototype.separator
          * @description 文本的分隔符，分隔符的风格与前一个字符的风格一样。文本的分隔符是一个将文本分割开的符号，
-         *              比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
-         *              在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
+         *              比如文本 “5_109” 被 “ _ ” 分隔为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
+         *              在显示时，“5” 和分隔符 “ _ ” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
          */
         this.separator = null;
 

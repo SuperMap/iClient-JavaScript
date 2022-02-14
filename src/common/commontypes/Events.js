@@ -46,7 +46,7 @@ export class Events {
 
         /**
          * @member {Object} Events.prototype.listeners
-         * @description Hashtable of Array(function): events listener functions
+         * @description 事件监听器函数
          */
         this.listeners = {};
 
@@ -101,6 +101,7 @@ export class Events {
 
         /**
          * @member {Object} Events.prototype.extensionCount
+         * @description 事件扩展数量。
          */
         this.extensionCount = {};
         /**

@@ -9,7 +9,7 @@ import { Credential } from '../commontypes/Credential';
  * @class SecurityManager
  * @deprecatedclass SuperMap.SecurityManager
  * @category Security
- * @description 安全管理中心，提供 iServer,iPortal,Online 统一权限认证管理。
+ * @classdesc 安全管理中心，提供 iServer,iPortal,Online 统一权限认证管理。
  *  > 使用说明：
  *  > 创建任何一个服务之前调用 {@link SecurityManager.registerToken}或
  *  > {@link SecurityManager.registerKey}注册凭据。

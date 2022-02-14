@@ -375,8 +375,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {Array.<Object>} params - 批量分析参数对象数组，包括：
      * @param {string} params.analystName - 空间分析方法的名称。包括：</br>
      *                                      "buffer"，"overlay"，"interpolationDensity"，"interpolationidw"，"interpolationRBF"，"interpolationKriging"，"isoregion"，"isoline"。
-     * @param {GeometryBufferAnalystParameters|GeometryOverlayAnalystParameters|InterpolationAnalystParameters|SurfaceAnalystParameters} params.param - 空间分析类型对应的请求参数，包括：</br>
-     * 几何对象缓冲区分析参数类、几何对象叠加分析参数类、插值分析参数类、表面分析提取操作参数类。
+     * @param {Object} params.param - 空间分析类型对应的请求参数，包括：</br>
+     *                                {@link GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
+     *                                {@link GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
+     *                                {@link InterpolationAnalystParameters} 插值分析参数类。</br>
+     *                                {@link SurfaceAnalystParameters} 表面分析参数类。</br>
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
