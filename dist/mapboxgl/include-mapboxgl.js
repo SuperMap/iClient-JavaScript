@@ -53,8 +53,8 @@
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         if (!inArray(includes, 'mapbox-gl-enhance') && !inArray(excludes, 'mapbox-gl')) {
-            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/1.13.1/mapbox-gl.css');
-            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/1.13.1/mapbox-gl.js');
+            inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js/1.13.2/mapbox-gl.css');
+            inputScript('https://iclient.supermap.io/web/libs/mapbox-gl-js/1.13.2/mapbox-gl.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
