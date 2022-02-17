@@ -10,8 +10,7 @@ import {SurfaceAnalystParametersSetting} from './SurfaceAnalystParametersSetting
  * @class SurfaceAnalystParameters
  * @deprecatedclass SuperMap.SurfaceAnalystParameters
  * @category  iServer SpatialAnalyst SurfaceAnalyst
- * @classdesc 表面分析提取操作参数类。
- * @description 通过该类可以为进行表面分析提供参数信息，包括表面分析的方法提取等值线、提取等值面和中间结果的分辨率，
+ * @classdesc 表面分析提取操作参数类。通过该类可以为进行表面分析提供参数信息，包括表面分析的方法提取等值线、提取等值面和中间结果的分辨率，
  * {@link DatasetSurfaceAnalystParameters} 和 {@link GeometrySurfaceAnalystParameters} 继承自该类。
  * @param {Object} options - 参数。
  * @param {SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。

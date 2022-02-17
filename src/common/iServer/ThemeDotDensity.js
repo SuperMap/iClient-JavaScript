@@ -9,8 +9,7 @@ import {ServerStyle} from './ServerStyle';
  * @class ThemeDotDensity
  * @deprecatedclass SuperMap.ThemeDotDensity
  * @category  iServer Map Theme
- * @classdesc 点密度专题图。
- * @description 点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。
+ * @classdesc 点密度专题图。点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。
  *              点密度专题图利用图层的某一数值属性信息（专题值）映射为不同等级，每一级别使用不同数量或表现为密度的点符号来表示。
  *              该专题值在各个分区内的分布情况，体现不同区域的相对数量差异。多用于具有数量特征的地图上，
  *              比如表示不同地区的粮食产量、GDP、人口等的分级，主要针对区域或面状的要素，因而，点密度专题图适用于面数据集。

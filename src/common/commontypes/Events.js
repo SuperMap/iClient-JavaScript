@@ -106,6 +106,7 @@ export class Events {
         this.extensionCount = {};
         /**
          * @member {Object} Events.prototype.clearMouseListener
+         * @description 待移除的鼠标监听事件。
          */
         this.clearMouseListener = null;
 
@@ -444,6 +445,7 @@ export class Events {
 
     /**
      * @function Events.prototype.getMousePosition
+     * @description 获取当前鼠标的位置。
      * @param {Event} evt - 事件对象。
      * @returns {Pixel} 当前的鼠标的 xy 坐标点。
      */

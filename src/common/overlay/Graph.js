@@ -9,12 +9,12 @@ import {ShapeFactory} from './feature/ShapeFactory';
  * @class FeatureThemeGraph
  * @aliasclass Feature.Theme.Graph
  * @deprecatedclass SuperMap.Feature.Theme.Graph
- * @classdesc 统计专题要素基类。
  * @category Visualization Theme
- * @description 此类定义了统计专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
- *              统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <FeatureThemeGraph.setting> 的基础属性只有 7 个，
- *              它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
- *              此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
+ * @classdesc 统计专题要素基类。
+ * 此类定义了统计专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
+ * 统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <FeatureThemeGraph.setting> 的基础属性只有 7 个，
+ * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
+ * 此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
  * @extends FeatureTheme
  * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层。

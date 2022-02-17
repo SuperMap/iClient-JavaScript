@@ -25,6 +25,7 @@ var typeLinks = {
     "ol.style.Image": olapi + "module-ol_style_Image-ImageStyle.html",
     "ol.style.Fill": olapi + "module-ol_style_Fill-Fill.html",
     "ol.style.Stroke": olapi + "module-ol_style_Stroke-Stroke.html",
+    "ol.style.RegularShape": olapi + "module-ol_style_RegularShape.html",
     "ol.Object": olapi + "module-ol_Object-BaseObject.html",
     "ol.source.ImageCanvas": olapi + "module-ol_source_ImageCanvas-ImageCanvasSource.html",
     "ol.source.TileImage": olapi + "module-ol_source_TileImage-TileImage.html",

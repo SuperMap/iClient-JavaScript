@@ -7,10 +7,9 @@
 /**
  * @class UniqueThemeLayer
  * @deprecatedclassinstance L.supermap.uniqueThemeLayer
- * @classdesc 客户端单值专题图。
  * @category Visualization Theme
- * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。
- *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
+ * @classdesc 客户端单值专题图。单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。
+ * 比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends GeoFeatureThemeLayer
  * @param {string} name - 专题图层名。
  * @param {Object} options - 参数。

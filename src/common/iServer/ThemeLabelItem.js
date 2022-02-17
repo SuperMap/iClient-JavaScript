@@ -8,12 +8,12 @@ import {ServerTextStyle} from './ServerTextStyle';
  * @class ThemeLabelItem
  * @deprecatedclass SuperMap.ThemeLabelItem
  * @category  iServer Map Theme
- * @classdesc 分段标签专题图的子项。
- * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression
- *              字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，
- *              每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，
- *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 ThemeLabelItem[0].start=0，
- *              ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
+ * @classdesc 分段标签专题图的子项。标签专题图用专题值对点、线、面等对象做标注。
+ * 值得注意的是，分段标签专题图允许用户通过 rangeExpression 字段指定用于分段的数值型字段，
+ * 同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，
+ * 每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，
+ * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 ThemeLabelItem[0].start=0，
+ *  ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
  * @param {Object} options - 可选参数。
  * @param {string} [options.caption] - 子项的名称。
  * @param {number} [options.end=0] - 子项的终止值。
