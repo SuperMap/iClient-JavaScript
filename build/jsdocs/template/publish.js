@@ -530,9 +530,12 @@ exports.publish = function (taffyData, opts, tutorials) {
             addSignatureTypes(doclet);
         }
         var docMemberParent = find({ longname: doclet.memberof})[0];
-        if (doclet.kind === 'constant' || (docMemberParent && docMemberParent.kind === 'class' && doclet.scope === 'static')) {
+        if (doclet.kind === 'constant' || (docMemberParent && docMemberParent.kind === 'class' && doclet.scope === 'static') || doclet.deprecated) {
             doclet.kind === 'constant' && addSignatureTypes(doclet);
             var attribs = helper.getAttribs(doclet);
+            if(doclet.deprecated) {
+                attribs.unshift('deprecated');
+            }
             var attribsString = buildAttribsString(attribs);
             if(!attribs.length) {
                 return;
