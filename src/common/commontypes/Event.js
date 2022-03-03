@@ -107,7 +107,7 @@
 
 
      /**
-      * @description Cross browser event element detection.
+      * @description 监听浏览器 DOM 事件。
       * @param {Event} event - Event 对象。
       * @returns {HTMLElement} 触发事件的 DOM 元素。
       */
@@ -176,6 +176,7 @@
      },
 
      /**
+      * @description 查询触发指定事件的 DOM 元素。
       * @param {Event} event - Event 对象。
       * @param {string} tagName - html 标签名。
       * @returns {HTMLElement} DOM 元素。

@@ -13,7 +13,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * 顺序访问 1、2、3、4 四个结点的最佳路径就是 R = R1—2 + R2—3 + R3—4。
  * 阻抗就是指从一点到另一点的耗费，在实际应用中我们可以将距离、时间、花费等作为阻抗条件。
  * 阻抗最小也就可以理解为从一点到另一点距离最短、时间最少、花费最低等。当两点间距离最短时为最短路径，它是最佳路径问题的一个特例。
- * 阻抗值通过 TransportationAnalystParameter.weightFieldName 设置。
+ * 阻抗值通过 {@link TransportationAnalystParameter#weightFieldName}设置。
  * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 {@link TransportationAnalystParameter#turnWeightField} 设置。
  *
  * @param {Object} options - 参数。
