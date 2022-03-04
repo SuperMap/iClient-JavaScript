@@ -421,7 +421,7 @@ export class WebMap extends Observable {
         let scales = [], resolutions = {}, res, scale, resolutionArray = [],
             coordUnit = baseLayerInfo.coordUnit || olProj.get(baseLayerInfo.projection).getUnits();
         if (!coordUnit) {
-            coordUnit = this.baseProjection === "EPSG:3857" ? "m" : "degree";
+            coordUnit = this.baseProjection == "EPSG:3857" ? "m" : "degree";
         }
         if (baseLayerInfo.visibleScales && baseLayerInfo.visibleScales.length > 0) {
             //底部设置过固定比例尺，则使用设置的

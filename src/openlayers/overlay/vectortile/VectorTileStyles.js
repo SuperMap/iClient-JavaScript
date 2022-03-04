@@ -108,7 +108,7 @@ export class VectorTileStyles extends Observable {
                             }
                             var cartoShadersArray = new CartoCSS(cartoCss).getShaders();
                             var cartoShaders = {};
-                            cartoShadersArray.map(function (cartoShader) {
+                            cartoShadersArray.forEach(function (cartoShader) {
                                 cartoShaders[cartoShader.elements[0].clean] = cartoShaders[cartoShader.elements[0].clean] || {};
                                 cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] = cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] || [];
                                 cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment].push(cartoShader);
@@ -122,7 +122,7 @@ export class VectorTileStyles extends Observable {
                 if (VectorTileStyles.getCartoCss()) {
                     var clientCartoShadersArray = new CartoCSS(VectorTileStyles.getCartoCss()).getShaders();
                     var clientCartoShaders = {};
-                    clientCartoShadersArray.map(function (cartoShader) {
+                    clientCartoShadersArray.forEach(function (cartoShader) {
                         clientCartoShaders[cartoShader.elements[0].clean] = clientCartoShaders[cartoShader.elements[0].clean] || {};
                         clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] = clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] || [];
                         clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment].push(cartoShader);
