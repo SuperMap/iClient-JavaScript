@@ -19,6 +19,7 @@ import {
 import Overlay from 'ol/Overlay';
 import * as olControl from 'ol/control';
 import Feature from 'ol/Feature';
+import * as olProj from 'ol/proj';
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
@@ -1032,4 +1033,53 @@ describe('openlayers_WebMap', () => {
             done();
         }, 1000)
     })
+    
+    it('getScales EPSG:1', (done) => {
+      //第二次请求wmts参数值太大
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('map.json') > -1) {
+          var mapJson = datavizWebMap_WMTS;
+          return Promise.resolve(new Response(mapJson));
+        }
+        return Promise.resolve();
+      });
+      let proj = new olProj.Projection({
+        units: '',
+        code: 'EPSG:1'
+      });
+      olProj.addProjection(proj);
+      var datavizWebmap = new WebMap(id, {});
+      var layerInfo = JSON.parse(wmtsInfo);
+      datavizWebmap.baseProjection = 'EPSG:1';
+      datavizWebmap.getScales({...layerInfo, projection:'EPSG:1'});
+
+      setTimeout(() => {
+        expect(datavizWebmap.scales[0]).toBe('1:65789415978977.37');
+        done();
+      }, 1000);
+    });
+    it('getScales EPSG:3857', (done) => {
+      //第二次请求wmts参数值太大
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('map.json') > -1) {
+          var mapJson = datavizWebMap_WMTS;
+          return Promise.resolve(new Response(mapJson));
+        }
+        return Promise.resolve();
+      });
+      let proj = new olProj.Projection({
+        units: '',
+        code: 'EPSG:1'
+      });
+      olProj.addProjection(proj);
+      var datavizWebmap = new WebMap(id, {});
+      var layerInfo = JSON.parse(wmtsInfo);
+      datavizWebmap.baseProjection = 'EPSG:3857';
+      datavizWebmap.getScales({...layerInfo, projection:'EPSG:1'});
+
+      setTimeout(() => {
+        expect(datavizWebmap.scales[0]).toBe('1:591658710.9091312');
+        done();
+      }, 1000);
+    });
 });
