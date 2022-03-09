@@ -75,7 +75,7 @@
             <?js if (params.hasDefault) {?>
                 <td class="default">
                 <?js if (typeof param.defaultvalue !== 'undefined') { ?>
-                    <?js= (typeof param.defaultvalue === 'string') ?self.linkto( param.defaultvalue, self.htmlsafe( param.defaultvalue)): self.htmlsafe( param.defaultvalue) ?>
+                    <?js= (typeof param.defaultvalue === 'string') ?self.linkto( param.defaultvalue, self.htmlsafe( param.defaultvalue), 'defaultvalue'): self.htmlsafe( param.defaultvalue) ?>
                 <?js } ?>
                 </td>
             <?js } ?>
