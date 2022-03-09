@@ -41,7 +41,7 @@ export default class MachineLearningModelBase {
      * @function  MachineLearningBase.prototype._loadModel
      * @description 加载模型
      * @param {string} modelUrl - 模型地址。
-     * @returns {Promise<tf.GraphModel>}
+     * @returns {Promise.<tf.GraphModel>}
      */
 
     async _loadModel(modelUrl) {

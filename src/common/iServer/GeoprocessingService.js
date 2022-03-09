@@ -79,7 +79,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
-     * @param {Callback} options.statusCallback - 任务状态的回调函数。
+     * @param {function} options.statusCallback - 任务状态的回调函数。
      */
     waitForJobCompletion(jobId, identifier, options) {
         const me = this;

@@ -14,8 +14,8 @@ import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParame
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
  * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
- * 泰森多边形分析的参数支持两种，当参数为 {DatasetThiessenAnalystParameters} 类型
- * 时，执行数据集泰森多边形分析，当参数为 {GeometryThiessenAnalystParameters} 类型时，
+ * 泰森多边形分析的参数支持两种，当参数为 {@link DatasetThiessenAnalystParameters} 类型
+ * 时，执行数据集泰森多边形分析，当参数为 {@link GeometryThiessenAnalystParameters} 类型时，
  * 执行几何对象泰森多边形分析。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
@@ -61,7 +61,7 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
     /**
      * @function ThiessenAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {(DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters)} parameter - 泰森多边形分析参数基类。
+     * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} parameter - 泰森多边形分析参数基类。
      */
     processAsync(parameter) {
         var parameterObject = {};

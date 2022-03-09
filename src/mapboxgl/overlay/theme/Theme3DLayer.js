@@ -135,7 +135,7 @@ export class Theme3DLayer {
      * @param {string} [layerOptions.legendTheme='light'] - 图例主题，取值：'light','dark'。
      * @param {string} [layerOptions.legendOrientation='horizontal'] - 图例方向，取值：'horizontal','vertical'。
      * @param {string} [layerOptions.legendPosition] - 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'。
-     * @returns {this}
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     setLayerOptions(layerOptions) {
         this._extend(this, layerOptions);
@@ -148,7 +148,7 @@ export class Theme3DLayer {
      * @param {Object} highlightOptions - 该专题图图层高亮相关参数。
      * @param {string} [highlightOptions.color] - 颜色。
      * @param {function} highlightOptions.callback - 回调,返回数据参数（data,event）。
-     * @returns {this}
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     setHighlightStyleOptions(highlightOptions) {
         this._extend(this.highlight, highlightOptions);
@@ -192,7 +192,7 @@ export class Theme3DLayer {
      * @function Theme3DLayer.prototype.addTo
      * @description 添加图层到地图上。
      * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
-     * @returns {this} this 对象。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     addTo(map) {
         this.map = map;
@@ -208,7 +208,7 @@ export class Theme3DLayer {
      * @function Theme3DLayer.prototype.show
      * @description 显示图层。
      * @param {Object} options - 图层配置项。
-     * @returns {this} this 对象。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     show(options) {
         this._extend(this, options);
@@ -228,7 +228,7 @@ export class Theme3DLayer {
     /**
      * @function Theme3DLayer.prototype.remove
      * @description 从地图上移除图层。
-     * @returns {this} this 对象。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     remove() {
         if (!this.map) {

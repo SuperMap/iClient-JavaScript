@@ -47,7 +47,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射。
-     * @param {mapboxgl} params -查询相关参数类。
+     * @param {AreaSolarRadiationParameters} params -查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */

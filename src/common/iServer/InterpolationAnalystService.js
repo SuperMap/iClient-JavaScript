@@ -63,7 +63,7 @@ export class InterpolationAnalystService extends SpatialAnalystBase {
     /**
      * @function InterpolationAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {InterpolationAnalystParameters} parameter - 插值分析参数类。
+     * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} parameter - 插值分析参数类。
      */
     processAsync(parameter) {
         var parameterObject = {};

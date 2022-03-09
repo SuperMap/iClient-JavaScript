@@ -4,7 +4,6 @@
 import {
     Util
 } from '../commontypes/Util';
-import './ClipParameter';
 
 /**
  * @class InterpolationAnalystParameters
@@ -118,7 +117,7 @@ export class InterpolationAnalystParameters {
         this.InterpolationAnalystType = "dataset";
 
         /**
-         * @member {Object} InterpolationAnalystParameters.prototype.clipParam
+         * @member {ClipParameter} InterpolationAnalystParameters.prototype.clipParam
          * @description 对插值分析结果进行裁剪的参数。
          */
         this.clipParam = null;

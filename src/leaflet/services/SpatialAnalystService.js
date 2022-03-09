@@ -173,7 +173,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析。
-     * @param {InterpolationRBFAnalystParameters} params - 样条插值（径向基函数插值法）分析参数类。
+     * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值（径向基函数插值法）分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -348,7 +348,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
-     * @param {DatasetThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
+     * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */

@@ -100,7 +100,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @returns {this} this
+     * @returns {DataFlowService} DataFlowService的实例对象。
      */
     initSubscribe() {
         var me = this;
@@ -125,7 +125,7 @@ export class DataFlowService extends CommonServiceBase {
      * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param {Object} excludeField - 排除字段
-     * @returns {this} this
+     * @returns {DataFlowService} DataFlowService的实例对象。
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
@@ -137,7 +137,7 @@ export class DataFlowService extends CommonServiceBase {
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
-     * @returns {this} this
+     * @returns {DataFlowService} DataFlowService的实例对象。
      */
     setGeometry(geometry) {
         this.geometry = geometry;

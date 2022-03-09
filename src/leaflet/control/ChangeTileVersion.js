@@ -86,7 +86,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @function ChangeTileVersion.prototype.setVersionName
      * @description  设置版本号。
      * @param {string} content - 版本信息。
-     * @returns {this} this
+     * @returns {ChangeTileVersion} ChangeTileVersion的实例对象。
      */
     setVersionName: function (content) {
         var value = content;
@@ -101,7 +101,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @function ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息。
      * @param {(HTMLElement|string)} tooltip - 提示信息。
-     * @returns {this} this
+     * @returns {ChangeTileVersion} ChangeTileVersion的实例对象。
      */
     setToolTip: function (tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -177,7 +177,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function ChangeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本，首次调用该函数默认为无版本。
-     * @returns {this} this
+     * @returns {ChangeTileVersion} ChangeTileVersion的实例对象。
      */
     nextTilesVersion: function () {
         if (this.firstLoad) {

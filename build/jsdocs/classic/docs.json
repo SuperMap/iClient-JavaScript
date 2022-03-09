@@ -40,8 +40,13 @@
       "src/common/iServer/DatasourceConnectionInfo.js",
       "src/common/iServer/SetDatasourceParameters.js",
       "src/common/commontypes/Bounds.js",
+      "src/common/commontypes/Size.js",
+      "src/common/commontypes/geometry/Point.js",
+      "src/common/commontypes/Geometry.js",
       "src/common/commontypes/LonLat.js",
       "src/common/commontypes/Pixel.js",
+      "src/common/commontypes/Events.js",
+      "src/common/commontypes/Event.js",
       "src/common/REST.js"
     ],
     "exclude": [

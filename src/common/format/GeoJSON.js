@@ -345,7 +345,7 @@ export class GeoJSON extends JSONFormat {
             /**
              * @function GeoJSONFormat.extract.multilinestring
              * @description 从一个多线对象中返回一个线数组。
-             * @param {MultiLinestring} multilinestring - 多线对象。
+             * @param {GeometryMultiLineString} multilinestring - 多线对象。
              *
              * @returns {Array} 一个表示多线的线数组。
              */

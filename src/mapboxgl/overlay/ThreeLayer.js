@@ -125,7 +125,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @description 设置threejs 3D 对象的坐标（经纬度）。
      * @param {THREE.Object3D} object3D - threejs 3D 对象及子类对象。
      * @param {(Array.<number>|Object)} coordinate - 添加的 three 对象坐标（经纬度）。
-     * @returns {this} this
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      */
     addObject(object3D, coordinate) {
         if (coordinate && object3D) {
@@ -183,7 +183,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.clearMesh
      * @description 清除所有 threejs mesh 对象。
-     * @returns {this} this 对象。
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      */
     clearMesh() {
         let scene = this.renderer.scene;
@@ -202,7 +202,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @function ThreeLayer.prototype.clearAll
      * @description 清除所有 threejs 对象。
      * @param {boolean} clearCamera - 是否清除相机。
-     * @returns {this} this 对象。
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      */
     clearAll(clearCamera) {
         let scene = this.renderer.scene;
@@ -223,7 +223,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @description 设置 threejs 3D 对象的坐标（经纬度）。
      * @param {THREE.Object3D} object3D - threejs 3D 对象及子类对象。
      * @param {(Array.<number>|Object)} coordinate - 添加的 three 对象坐标（经纬度）。
-     * @returns {this} this 对象。
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      */
     setPosition(object3D, coordinate) {
         if (!object3D || !coordinate) {
@@ -321,7 +321,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @function ThreeLayer.prototype.addTo
      * @description 添加图层到地图。
      * @param {Object} map - 地图对象。
-     * @returns {this} this 对象。
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      */
     addTo(map) {
         var me = this;
@@ -372,7 +372,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.draw
      * @description 提供给外部的 threejs 模型绘制接口。
-     * @returns {this} this对象。
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      * @example
      * var threeLayer = new ThreeLayer('three');
      * //可以通过重写 draw 实现模型绘制
@@ -389,7 +389,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function ThreeLayer.prototype.renderScene
      * @description 渲染场景。
-     * @returns {this} this
+     * @returns {ThreeLayer} ThreeLayer的实例对象。
      */
     renderScene() {
         this.renderer.renderScene();

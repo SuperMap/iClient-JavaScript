@@ -138,7 +138,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {Object} options - 参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {RequestCallback} options.statusCallback - 任务状态的回调函数。
-     * @param {Callback} callback 回调函数。
+     * @param {function} callback 回调函数。
      */
     waitForJobCompletion: function (jobId, identifier, options, callback) {
         const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {

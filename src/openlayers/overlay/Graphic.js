@@ -36,11 +36,11 @@ const Renderer = ['canvas', 'webgl'];
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
  * @param {Object} options - 参数。
- * @param {ol.map} options.map - openlayers 地图对象。
+ * @param {ol.Map} options.map - openlayers 地图对象。
  * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
- * @param {ol.style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
+ * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。

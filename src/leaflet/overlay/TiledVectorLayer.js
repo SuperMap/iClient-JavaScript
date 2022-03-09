@@ -35,7 +35,7 @@
  * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
  * @param {Object} [options.tileTemplate] - 瓦片模板，如果设置了此参数，则按此模板出图。默认出图方式为 URL 对接的第三方瓦片。
  * @param {string} [options.subdomains] - 子域名。
- * @param {num} [options.timeout=10000] - 延时。
+ * @param {number} [options.timeout=10000] - 延时。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
  * @usage
  */

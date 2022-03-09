@@ -26,6 +26,7 @@ var typeLinks = {
     "ol.style.Fill": olapi + "module-ol_style_Fill-Fill.html",
     "ol.style.Stroke": olapi + "module-ol_style_Stroke-Stroke.html",
     "ol.style.RegularShape": olapi + "module-ol_style_RegularShape.html",
+    "ol.style.Style": olapi + "module-ol_style_Style-Style.html",
     "ol.Object": olapi + "module-ol_Object-BaseObject.html",
     "ol.source.ImageCanvas": olapi + "module-ol_source_ImageCanvas-ImageCanvasSource.html",
     "ol.source.TileImage": olapi + "module-ol_source_TileImage-TileImage.html",
@@ -101,8 +102,10 @@ var typeLinks = {
     "JSONObject": webApi + 'JavaScript/Reference/Global_Objects/JSON',
     "CanvasRenderingContext2D": webApi + 'API/CanvasRenderingContext2D',
     "HTMLElement": webApi + 'API/HTMLElement',
+    "HTMLVideoElement": webApi + 'API/HTMLVideoElement',
     "HTMLCanvasElement": webApi + 'API/HTMLCanvasElement',
     "HTMLImageElement": webApi + 'API/HTMLImageElement',
+    "ImageData": webApi + 'API/ImageData',
     "CanvasGradient": webApi + 'API/CanvasGradient',
 
     // THREE
@@ -113,6 +116,9 @@ var typeLinks = {
     "THREE.WebGLRenderer": threeApi + '#api/renderers/WebGLRenderer',
     "THREE.Material": threeApi + '#api/en/materials/Material',
     "THREE.Mesh": threeApi + '#api/objects/Mesh',
-    "THREE.Shape": threeApi + '#api/extras/core/Shape'
+    "THREE.Shape": threeApi + '#api/extras/core/Shape',
+
+    // TF
+    'tf.GraphModel': 'https://js.tensorflow.org/api/latest/#class:GraphModel'
 }
 exports.typeLinks = typeLinks;

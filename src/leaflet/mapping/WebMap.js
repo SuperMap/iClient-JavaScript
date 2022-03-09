@@ -151,7 +151,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param {L.Layer} layer - Leaflet Layer 对象。
      * @param {boolean} [isBaseLayer] - 是否为底图层。
      * @param {Object} options - 参数。
-     * @returns {this} this
+     * @returns {WebMap} WebMap的实例对象。
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {

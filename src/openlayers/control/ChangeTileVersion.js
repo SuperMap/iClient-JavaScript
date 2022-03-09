@@ -10,7 +10,7 @@ import Control from 'ol/control/Control';
  * @category  Control
  * @classdesc 版本切换控件（目前仅支持 IE10 及以上）暂时不支持自定义位置。
  * @extends {ol.control.Control}
- * @param {options} options -参数。
+ * @param {Object} options -参数。
  * @param {string} [options.title='switch tile version'] - 提示信息。
  * @param {string} [options.tooltip='top'] - 提示显示位置 top | right | bottom | left。
  * @param {boolean} [options.collapsed=true] - 是否折叠。
@@ -294,7 +294,7 @@ export class ChangeTileVersion extends Control {
      * @function ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息。
      * @param {string} tooltip - 提示信息。
-     * @returns {this} this
+     * @returns {ChangeTileVersion} ChangeTileVersion的实例对象。
      */
     setToolTip(tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -370,7 +370,7 @@ export class ChangeTileVersion extends Control {
     /**
      * @function ChangeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本，第一次不进行加减，是无版本的状态。
-     * @returns {this} this
+     * @returns {ChangeTileVersion} ChangeTileVersion的实例对象。
      */
     nextTilesVersion() {
         if (this.firstLoad) {
@@ -389,7 +389,7 @@ export class ChangeTileVersion extends Control {
     /**
      * @function ChangeTileVersion.prototype.lastTilesVersion
      * @description 获取上一个版本信息。
-     * @returns {this} this
+     * @returns {ChangeTileVersion} ChangeTileVersion的实例对象。
      */
     lastTilesVersion() {
         if (parseInt(this.slider.value) < this.min + 1) {

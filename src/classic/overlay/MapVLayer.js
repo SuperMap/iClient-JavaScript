@@ -37,7 +37,7 @@ export class MapVLayer extends SuperMap.Layer {
         this.supported = false;
 
         /**
-         * @member {Canvas} SuperMap.Layer.MapVLayer.prototype.canvas
+         * @member {HTMLCanvasElement} SuperMap.Layer.MapVLayer.prototype.canvas
          * @description MapV 图主绘制面板。
          */
         this.canvas = null;

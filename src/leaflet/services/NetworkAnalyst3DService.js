@@ -62,7 +62,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 源查找服务。
      * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找资源）。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {this} this
+     * @returns {NetworkAnalyst3DService} NetworkAnalyst3DService的实例对象。
      */
     sourcesFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -85,7 +85,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 上游追踪资源服务。
      * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {this} this
+     * @returns {NetworkAnalyst3DService} NetworkAnalyst3DService的实例对象。
      */
     traceUpFacilityAnalyst: function (params, callback) {
         var me = this;
