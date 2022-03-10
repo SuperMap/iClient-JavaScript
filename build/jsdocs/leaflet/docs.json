@@ -26,9 +26,9 @@
             "src/common/overlay/levelRenderer",
             "src/common/lang/locales",
             "src/common/iPortal/iPortalQueryResult",
-            "src/common/iManager/iManagerServiceBase",
             "src/common/online/OnlineServiceBase",
             "src/common/online/OnlineData",
+            "src/common/iManager/iManagerServiceBase",
             "src/common/iServer/GetFeaturesServiceBase",
             "src/common/iServer/NetworkAnalystServiceBase",
             "src/common/iServer/SpatialAnalystBase",
@@ -61,6 +61,7 @@
             "src/common/components/templates/PopContainer",
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
+            "src/common/components/templates/TemplateBase",
 
             "src/leaflet/components/clientcomputation/ClientComputationViewModel",
             "src/leaflet/components/dataflow/DataFlowViewModel",
@@ -73,7 +74,6 @@
             "src/leaflet/components/commonmodels/GeoJsonLayersModel" ,
             "src/leaflet/core/CommontypesConversion"
         ]
-
     },
     "plugins": ["plugins/markdown","../plugins/usage"],
     "markdown": {

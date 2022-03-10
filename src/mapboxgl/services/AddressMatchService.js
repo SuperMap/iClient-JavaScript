@@ -32,7 +32,7 @@ export class AddressMatchService extends ServiceBase {
     /**
      * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param {Object} params - 正向匹配参数。
+     * @param {GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback - 回调函数。
      */
     code(params, callback) {
@@ -55,7 +55,7 @@ export class AddressMatchService extends ServiceBase {
     /**
      * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param {Object} params -反向匹配参数。
+     * @param {GeoDecodingParameter} params -反向匹配参数。
      * @param {RequestCallback} callback - 回调函数。
      */
     decode(params, callback) {

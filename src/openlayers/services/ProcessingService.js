@@ -499,7 +499,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getOverlayGeoJobs
+     * @function ProcessingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -524,7 +524,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getOverlayGeoJob
+     * @function ProcessingService.prototype.getOverlayGeoJob
      * @description 获取叠加分析。
      * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback 回调函数。
@@ -550,7 +550,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.addOverlayGeoJob
+     * @function ProcessingService.prototype.addOverlayGeoJob
      * @description 叠加分析。
      * @param {OverlayGeoJobParameter} params - 叠加分析任务参数类。
      * @param {RequestCallback} callback 回调函数。
@@ -581,7 +581,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getoverlayGeoJobState
+     * @function ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
      * @param {string} id - 叠加分析的 ID。
      * @returns {Object} 叠加分析的状态
@@ -591,7 +591,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getBuffersJobs
+     * @function ProcessingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -616,7 +616,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getBuffersJob
+     * @function ProcessingService.prototype.getBuffersJob
      * @description 获取缓冲区分析。
      * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback 回调函数。
@@ -642,7 +642,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.addBuffersJob
+     * @function ProcessingService.prototype.addBuffersJob
      * @description 缓冲区分析。
      * @param {BuffersAnalystJobsParameter} params - 缓冲区分析任务参数类。
      * @param {RequestCallback} callback 回调函数。
@@ -673,7 +673,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getBuffersJobState
+     * @function ProcessingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
      * @param {string} id - 缓冲区分析的 ID。
      * @returns {Object} 缓冲区分析的状态。
@@ -683,7 +683,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getTopologyValidatorJobs
+     * @function ProcessingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -708,7 +708,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getTopologyValidatorJob
+     * @function ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取拓扑检查分析。
      * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
@@ -734,7 +734,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.addTopologyValidatorJob
+     * @function ProcessingService.prototype.addTopologyValidatorJob
      * @description 拓扑检查分析。
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
      * @param {RequestCallback} callback - 回调函数。
@@ -765,7 +765,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getTopologyValidatorJobState
+     * @function ProcessingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
      * @param {string} id - 拓扑检查分析的 ID。
      * @returns {Object} 拓扑检查分析的状态
@@ -775,7 +775,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getSummaryAttributesJobs
+     * @function ProcessingService.prototype.getSummaryAttributesJobs
      * @description 获取拓扑检查属性汇总分析的列表。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -800,7 +800,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getSummaryAttributesJob
+     * @function ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取属性汇总分析。
      * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
@@ -826,7 +826,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.addSummaryAttributesJob
+     * @function ProcessingService.prototype.addSummaryAttributesJob
      * @description 属性汇总分析。
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
      * @param {RequestCallback} callback - 回调函数。
@@ -857,7 +857,7 @@ export class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function processingService.prototype.getSummaryAttributesJobState
+     * @function ProcessingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
      * @param {string} id - 属性汇总分析的 ID。
      * @returns {Object} 属性汇总分析的状态。

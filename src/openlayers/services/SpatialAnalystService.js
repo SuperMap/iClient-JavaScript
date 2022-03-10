@@ -174,7 +174,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function SpatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析。
-     * @param {InterpolationRBFAnalystParameters} params - 样条插值分析参数类。
+     * @param {InterpolationRBFAnalystParameters|InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
@@ -195,7 +195,6 @@ export class SpatialAnalystService extends ServiceBase {
         });
         interpolationAnalystService.processAsync(me._processParams(params));
     }
-
     /**
      * @function SpatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算。
@@ -349,7 +348,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
-     * @param {DatasetThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
+     * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
