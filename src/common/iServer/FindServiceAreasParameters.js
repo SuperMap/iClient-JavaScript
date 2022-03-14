@@ -13,7 +13,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  *            例如：计算某快餐店能够在30分钟内送达快餐的区域。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.weights - 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致。
- * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 服务站点数组。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.centers - 服务站点数组。
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。
  * @param {boolean} [options.isCenterMutuallyExclusive=false] - 是否中心点互斥。
  * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分析。
@@ -41,7 +41,7 @@ export class FindServiceAreasParameters {
         this.isCenterMutuallyExclusive = false;
 
         /**
-         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} FindServiceAreasParameters.prototype.centers
+         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} FindServiceAreasParameters.prototype.centers
          * @description 服务站点数组。
          *              当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
          */

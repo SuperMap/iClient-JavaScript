@@ -40,7 +40,7 @@ export class WebPrintingJobExportOptions {
          */
         this.rotation = null;
         /**
-         * @member {Array.<(GeometryPoint|L.Point|L.LatLng|ol.geom.Point)>} [WebPrintingJobExportOptions.prototype.center]
+         * @member {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} [WebPrintingJobExportOptions.prototype.center]
          * @description Web 打印输出的地图中心点。
          */
         this.center = null;

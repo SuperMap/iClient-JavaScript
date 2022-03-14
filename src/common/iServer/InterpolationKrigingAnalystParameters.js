@@ -39,7 +39,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  *      的函数或者多项式进行拟合的情况下，适用泛克吕金插值法。<br>
  * @param {Object} options - 参数。
  * @param {string} options.type - 克吕金插值的类型。
- * @param {(Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
@@ -60,7 +60,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
  * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
  * @param {string} [options.dataset] - 要用来做插值分析的数据源中数据集的名称。该名称用形如 ”数据集名称@数据源别名” 形式来表示。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 dataset 时。
- * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 geometry 时。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 geometry 时。
  * @extends {InterpolationAnalystParameters}
  * @example 例如：
  * var myInterpolationKrigingAnalystParameters = new InterpolationKrigingAnalystParameters({

@@ -13,7 +13,7 @@ import { ServerGeometry } from './ServerGeometry';
  * @classdesc 数据集缓冲区查询参数类。
  * @param {Object} options - 参数。
  * @param {number} options.bufferDistance - buffer 距离，单位与所查询图层对应的数据集单位相同。
- * @param {Object} options.geometry - 空间查询条件。
+ * @param {GeoJSONObject} options.geometry - 空间查询条件。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。
  * @param {string} [options.attributeFilter] - 属性查询条件。
@@ -41,11 +41,11 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         this.attributeFilter = null;
 
         /**
-         * @member {Object} GetFeaturesByBufferParameters.prototype.geometry
+         * @member {GeoJSONObject} GetFeaturesByBufferParameters.prototype.geometry
          * @description 空间查询条件。 <br>
-         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
-         * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
-         * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
+         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。</br>
+         * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。</br>
+         * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLatBounds}|{@link GeoJSONObject}。
          */
         this.geometry = null;
 

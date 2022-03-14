@@ -312,7 +312,7 @@ export class Bounds {
      * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds 改变
      * bounds.extend(new LonLat(50,60));
-     * @param {(GeometryPoint|LonLat|Bounds)} object - 可以是 point、lonlat 和 bounds。
+     * @param {GeometryPoint|LonLat|Bounds} object - 可以是 point、lonlat 和 bounds。
      */
     extend(object) {
         var bounds = null;

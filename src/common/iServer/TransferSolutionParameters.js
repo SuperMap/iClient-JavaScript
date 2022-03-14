@@ -10,7 +10,7 @@ import {TransferPreference, TransferTactic} from '../REST';
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询参数类。
  * @param {Object} options - 参数。
- * @param {Array.<(GeometryPoint|L.Point|L.LatLng|ol.geom.Point|number)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
+ * @param {Array.<GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|Array.<number>|number>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
  * @param {number} [options.solutionCount=6] - 乘车方案的数量。
  * @param {TransferTactic} [options.transferTactic=TransferTactic.LESS_TIME] - 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
  * @param {TransferPreference} [options.transferPreference=TransferPreference.NONE] - 乘车偏好枚举。
@@ -62,7 +62,7 @@ export class TransferSolutionParameters {
         this.walkingRatio = null;
 
         /**
-         *  @member {Array.<(GeometryPoint|L.Point|L.LatLng|ol.geom.Point|string)>} TransferSolutionParameters.prototype.points
+         *  @member {Array.<GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|Array.<number>|number>} TransferSolutionParameters.prototype.points
          *  @description 两种查询方式：</br>
          *           1. 按照公交站点的起止 ID 进行查询，则 points 参数的类型为 int[]，形如：[起点 ID、终点 ID]，公交站点的 ID 对应服务提供者配置中的站点 ID 字段；
          *           2. 按照起止点的坐标进行查询，则 points 参数的类型为 Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。

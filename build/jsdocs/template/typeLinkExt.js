@@ -4,7 +4,7 @@ var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
 var geojsonapi = "https://geojson.org";
-var geometryapi="https://datatracker.ietf.org/doc/html/rfc7946#section-3.1";
+var geometryapi="https://datatracker.ietf.org/doc/html/rfc7946";
 var helpDocApi = "https://iportal.supermap.io/iportal/help/html/zh/index.htm";
 var webApi = "https://developer.mozilla.org/zh-CN/docs/Web/";
 var threeApi = "https://threejs.org/docs/index.html";
@@ -92,8 +92,8 @@ var typeLinks = {
 
     // GeoJSON
     "GeoJSONObject": geojsonapi,
-    "GeoJSONGeometry": geometryapi,
-
+    "GeoJSONGeometry": geometryapi +'#section-3.1',
+    "GeoJSONFeature": geometryapi + '#section-3.2',
     // WebMap 结构
     "WebMapSummaryObject": helpDocApi + '#iP/Appendix/WebMap/WebMapSummary.htm',
 

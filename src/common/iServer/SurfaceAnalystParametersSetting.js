@@ -13,7 +13,7 @@ import {Geometry} from '../commontypes/Geometry';
  * @classdesc 表面分析参数设置类。
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
  * @param {Object} options - 参数。
- * @param {GeometryPolygon|L.Polygon|ol.geom.Polygon} [options.clipRegion] - 裁剪面对象，如果不需要对操作结果进行裁剪，可以使用 null 值取代该参数。
+ * @param {GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject} [options.clipRegion] - 裁剪面对象，如果不需要对操作结果进行裁剪，可以使用 null 值取代该参数。
  * @param {number} [options.datumValue=0] - 提取等值线、提取等值面的基准值。
  * @param {Array.<number>} options.expectedZValues - 期望分析结果的 Z 值集合。
  * @param {number} [options.interval=0] - 等值距。等值距是两条等值线之间的间隔值。
@@ -26,7 +26,7 @@ export class SurfaceAnalystParametersSetting {
 
     constructor(options) {
         /**
-         * @member {GeometryPolygon|L.Polygon|ol.geom.Polygon} [SurfaceAnalystParametersSetting.prototype.clipRegion]
+         * @member {GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject} [SurfaceAnalystParametersSetting.prototype.clipRegion]
          * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用 null 值取代该参数。
          */
         this.clipRegion = null;

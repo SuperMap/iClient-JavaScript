@@ -10,8 +10,8 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @category iServer NetworkAnalyst MTSPPath
  * @classdesc 多旅行商分析参数类
  * @param {Object} options - 参数。
- * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 配送中心集合。
- * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.centers - 配送中心集合。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.nodes - 配送目标集合。
  * @param {boolean} [options.hasLeastTotalCost=false] - 配送模式是否为总花费最小方案。
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点，即通过坐标点指定。
  * @param {TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
@@ -22,7 +22,7 @@ export class FindMTSPPathsParameters {
 
     constructor(options) {
         /**
-         * @member FindMTSPPathsParameters.prototype.centers - {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>}
+         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} FindMTSPPathsParameters.prototype.centers
          * @description 配送中心集合。
          *              当 FindMTSPPathsParameters.isAnalyzeById = false 时，centers 应为点的坐标数组；
          *              当 FindMTSPPathsParameters.isAnalyzeById = true 时，centers 应为点的 ID 数组。
@@ -44,7 +44,7 @@ export class FindMTSPPathsParameters {
         this.isAnalyzeById = false;
 
         /**
-         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} FindMTSPPathsParameters.prototype.nodes
+         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} FindMTSPPathsParameters.prototype.nodes
          * @description 配送目标集合。
          *              当 FindMTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；
          *              当 FindMTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。

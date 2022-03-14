@@ -24,7 +24,7 @@ import {
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.fields - 权重索引。
- * @param {(Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} [options.resolution=80] - 分辨率。
  * @param {number} [options.method=0] - 分析方法。
  * @param {number} [options.meshType=0] - 分析类型。
@@ -46,7 +46,7 @@ export class KernelDensityJobParameter {
         this.datasetName = "";
 
         /**
-         * @member {Bounds|L.Bounds|ol.extent} [KernelDensityJobParameter.prototype.query]
+         * @member {SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject} [KernelDensityJobParameter.prototype.query]
          * @description 分析范围。
          */
         this.query = "";

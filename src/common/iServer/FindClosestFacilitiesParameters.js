@@ -10,8 +10,8 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @category iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析参数类。
  * @param {Object} options - 参数。
- * @param {(GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number)} options.event - 事件点，一般为需要获得服务设施服务的事件位置。
- * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置。
+ * @param {GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} options.event - 事件点，一般为需要获得服务设施服务的事件位置。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置。
  * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。
  * @param {boolean} [options.fromEvent=false] - 是否从事件点到设施点进行查找。
  * @param {boolean} [options.isAnalyzeById=false] - 事件点和设施点是否通过节点 ID 号来指定。
@@ -24,7 +24,7 @@ export class FindClosestFacilitiesParameters {
 
     constructor(options) {
         /**
-         * @member {(GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number)} FindClosestFacilitiesParameters.prototype.event
+         * @member {GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} FindClosestFacilitiesParameters.prototype.event
          * @description 事件点，一般为需要获得服务设施服务的事件位置。
          *              可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。
          */
@@ -37,7 +37,7 @@ export class FindClosestFacilitiesParameters {
         this.expectFacilityCount = 1;
 
         /**
-         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} [FindClosestFacilitiesParameters.prototype.facilities=false]
+         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} [FindClosestFacilitiesParameters.prototype.facilities=false]
          * @description 设施点集合，一般为提供服务的服务设施位置。
          *              可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
          */

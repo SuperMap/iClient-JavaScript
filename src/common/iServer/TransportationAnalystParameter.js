@@ -15,7 +15,7 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。
  * @param {string} options.turnWeightField - 转向权重字段的名称。
  * @param {TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容。
- * @param {Array.<(GeometryPoint|L.Point|L.LatLng|ol.geom.Point)>} [options.barrierPoints] - 网络分析中 Point2D 类型的障碍点数组。
+ * @param {Array.<GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} [options.barrierPoints] - 网络分析中 Point2D 类型的障碍点数组。
  * @param {string} [options.weightFieldName] - 阻力字段的名称。
  * @usage
  */
@@ -39,7 +39,7 @@ export class TransportationAnalystParameter {
         this.barrierNodeIDs = null;
 
         /**
-         * @member {Array.<(GeometryPoint|L.Point|L.LatLng|ol.geom.Point)>}  TransportationAnalystParameter.prototype.barrierPoints
+         * @member {Array.<GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>}  TransportationAnalystParameter.prototype.barrierPoints
          * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>
          * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。
          */

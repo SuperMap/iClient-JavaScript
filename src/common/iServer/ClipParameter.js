@@ -12,7 +12,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {Object} options - 可选参数。
  * @param {string} [options.clipDatasetName] - 裁剪的数据集名。
  * @param {string} [options.clipDatasourceName] - 裁剪的数据集所在数据源的名字。
- * @param {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON} [options.clipRegion] - 用户指定的裁剪区域。
+ * @param {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject}} [options.clipRegion] - 用户指定的裁剪区域。
  * @param {boolean} [options.isClipInRegion=true] - 是否对裁剪区内的数据集进行裁剪。
  * @param {boolean} [options.isExactClip=true] - 是否使用精确裁剪。
  * @usage
@@ -34,7 +34,7 @@ export class ClipParameter {
         this.clipDatasourceName = null;
 
         /**
-         * @member {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON} ClipParameter.prototype.clipRegion
+         * @member {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject} ClipParameter.prototype.clipRegion
          * @description 用户指定的裁剪区域，优先使用，clipDatasetName 与 clipRegion 必须设置一个。
          */
         this.clipRegion = null;

@@ -9,8 +9,8 @@ import {Util} from '../commontypes/Util';
  * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc 基于路由对象计算指定点 M 值操作的参数类。通过该类提供参数信息。
  * @param {Object} options - 参数。
- * @param {(Route|L.Polyline|ol.geom.LineString)} options.sourceRoute - 路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。
- * @param {(GeometryPoint|L.LatLng|L.Point|ol.geom.Point)} options.point - 二维地理坐标点对象，包含 x,y 坐标值属性的对象。
+ * @param {(Route|L.Polyline|ol.geom.LineString|GeoJSONObject)} options.sourceRoute - 路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。
+ * @param {GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>} options.point - 二维地理坐标点对象，包含 x,y 坐标值属性的对象。
  * @param {number} [options.tolerance] - 容限值。
  * @param {boolean} [options.isIgnoreGap=false] - 是否忽略子对象之间的距离。
  * @usage
@@ -22,13 +22,13 @@ export class RouteCalculateMeasureParameters {
             return this;
         }
         /**
-         * @member {(Route|L.Polyline|ol.geom.LineString)} RouteCalculateMeasureParameters.prototype.sourceRoute
+         * @member {(Route|L.Polyline|ol.geom.LineString|GeoJSONObject)} RouteCalculateMeasureParameters.prototype.sourceRoute
          * @description 路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。
          */
         this.sourceRoute = null;
 
         /**
-         * @member {(GeometryPoint|L.LatLng|L.Point|ol.geom.Point)} RouteCalculateMeasureParameters.prototype.point
+         * @member {GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>} RouteCalculateMeasureParameters.prototype.point
          * @description 二维地理坐标点对象，包含 x,y 坐标值属性的对象。
          */
         this.point = null;

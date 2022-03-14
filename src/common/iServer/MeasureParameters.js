@@ -9,7 +9,7 @@ import {Unit} from '../REST';
  * @deprecatedclass SuperMap.MeasureParameters
  * @category iServer Map Measure
  * @classdesc 量算参数类。
- * @param {Object} geometry - 要量算的几何对象。
+ * @param {GeoJSONObject} geometry - 要量算的几何对象。
  * @param {Object} options - 可选参数。
  * @param {Unit} [options.unit=Unit.METER] - 量算单位。
  * @param {string} [options.prjCoordSys] - 用来指定该量算操作所使用的投影。
@@ -25,11 +25,11 @@ export class MeasureParameters {
             return;
         }
         /**
-         * @member {Object} MeasureParameters.prototype.geometry
+         * @member {GeoJSONObject} MeasureParameters.prototype.geometry
          * @description 要量算的几何对象。<br>
-         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。<br>
-         * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。<br>
-         * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。
+         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。<br>
+         * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。<br>
+         * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。
          */
         this.geometry = geometry;
 

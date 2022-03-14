@@ -23,7 +23,7 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
 export class WebPrintingJobLittleMapOptions {
     constructor(option) {
         /**
-         * @member {Array.<(GeometryPoint|L.Point|L.LatLng|ol.geom.Point)>} WebPrintingJobLittleMapOptions.prototype.center
+         * @member {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} WebPrintingJobLittleMapOptions.prototype.center
          * @description 小地图的中心点。
          */
         this.center = null;

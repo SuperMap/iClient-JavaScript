@@ -11,7 +11,7 @@ import {QueryParameters} from './QueryParameters';
  * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
- * @param {(Bounds|L.Bounds|ol.extent)} options.bounds - 指定的查询范围。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 指定的查询范围。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
@@ -39,7 +39,7 @@ export class QueryByBoundsParameters extends QueryParameters {
         this.returnContent = true;
 
         /**
-         * @member {(Bounds|L.Bounds|ol.extent)} QueryByBoundsParameters.prototype.bounds
+         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} QueryByBoundsParameters.prototype.bounds
          * @description 指定的查询范围。
          */
         this.bounds = null;

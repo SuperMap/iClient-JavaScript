@@ -506,7 +506,7 @@ export class SpatialAnalystService extends ServiceBase {
             }
             params.operateGeometries = operateGeometries;
         }
-        //components 几何对象数组
+        //components 几何对象数组      Route
         if (params.sourceRoute && params.sourceRoute.components && Util.isArray(params.sourceRoute.components)) {
             params.sourceRoute.components.map(function (geometry, key) {
                 params.sourceRoute.components[key] = Util.toSuperMapGeometry(geometry);

@@ -16,7 +16,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @param {Object} options - 参数。
  * @param {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。
- * @param {Array.<(GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number)>} options.nodes - 配送目标集合。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.nodes - 配送目标集合。
  * @param {TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  * @usage
  */
@@ -38,7 +38,7 @@ export class FindTSPPathsParameters {
         this.isAnalyzeById = false;
 
         /**
-         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|number>} FindTSPPathsParameters.prototype.nodes
+         * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} FindTSPPathsParameters.prototype.nodes
          * @description 旅行商分析途经点数组。
          *              当 FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；
          *              当 FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。

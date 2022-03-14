@@ -556,12 +556,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     baseTypes.forEach((reg) => {
       linkNames = linkNames.replace(new RegExp(reg, 'ig'), '');
     });
-    return linkNames
-      .replace(/\|/g, '')
-      .replace(/\(\)/g, '')
-      .replace(/(\.<>)/g, '')
-      .replace(/(\.<>)/g, '')
-      .replace(/(\.<>)/g, '');
+    return linkNames.replace(/\|/g, '').replace(/\(/g, '').replace(/\)/g, '').replace(/\./g, '').replace(/</g, '').replace(/>/g, '');
   }
   function getLinkHref(str) {
     const haslink_reg = /<a[^>]*href=["'](?<url>[^"']*?)["'][^>]*>(?<text>[\w\W]*?)<\/a>/g;
