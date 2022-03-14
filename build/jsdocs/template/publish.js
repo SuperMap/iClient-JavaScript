@@ -796,7 +796,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     return pages.filter(item => types.some(type => item.endsWith(type)));
   }
 
-  const allFiles = getFileNames();
-  console.error('not linked by others: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
-  console.error('don\'t have link: ', getWrongLink(allFiles));
+  // const allFiles = getFileNames();
+  // console.error('not linked by others: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
+  // console.error('don\'t have link: ', getWrongLink(allFiles));
 };
