@@ -48,6 +48,7 @@
             "src/common/overlay/feature/Point",
             "src/common/overlay/feature/Polygon",
             "src/common/overlay/feature/Sector",
+            "src/common/overlay/feature/Theme",
             "src/common/commontypes/Credential",
             "src/common/components/chart/ChartViewModel",
             "src/common/components/util/Util",

@@ -72,7 +72,7 @@ export class Point extends Graph {
     }
 
     /**
-     * @function FeatureTheme.prototype.Point.assembleShapes
+     * @function FeatureThemePoint.prototype.Point.assembleShapes
      * @description 装配图形（扩展接口）。
      */
     assembleShapes() {

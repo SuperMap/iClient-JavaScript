@@ -126,7 +126,6 @@ function getPathFromDoclet(doclet) {
 }
 
 function generateNav(navObject) {
-
   // var docData = {
   //     filename: "",
   //     title: title,
@@ -371,6 +370,255 @@ function buildNavMap(members) {
   });
   return navMap;
 }
+// 白名单， 公开接口生成文档白名单
+var whiteLists = {
+  classic: [
+    'SuperMap.REST.AddressMatchService',
+    'SuperMap.REST.DatasetService',
+    'SuperMap.REST.DatasourceService',
+    'SuperMap.REST.ProcessingService',
+    'SuperMap.Layer.MapVLayer',
+    'ElasticSearch'
+  ],
+  leaflet: [
+    'AddressMatchService',
+    'ChartService',
+    'CommonServiceBase',
+    'DataFlowService',
+    'DatasetService',
+    'DatasourceService',
+    'FeatureService',
+    'FieldService',
+    'GeoprocessingService',
+    'GridCellInfosService',
+    'ImageCollectionService',
+    'ImageService',
+    'LayerInfoService',
+    'MapService',
+    'MeasureService',
+    'NetworkAnalyst3DService',
+    'NetworkAnalystService',
+    'ProcessingService',
+    'QueryService',
+    'SpatialAnalystService',
+    'ThemeService',
+    'TrafficTransferAnalystService',
+    'WebPrintingJobService',
+    'BaiduTileLayer',
+    'ClientComputationLayer',
+    'CloudTileLayer',
+    'DataFlowLayer',
+    'EchartsLayer',
+    'GraphicLayer',
+    'HeatMapLayer',
+    'ImageMapLayer',
+    'ImageTileLayer',
+    'LabelThemeLayer',
+    'RangeThemeLayer',
+    'RankSymbolThemeLayer',
+    'TiandituTileLayer',
+    'TiledVectorLayer',
+    'TurfLayer',
+    'UniqueThemeLayer',
+    'ArrayStatistic',
+    'BaiduCRS',
+    'CartoCSS',
+    'ChangeTileVersion',
+    'ChartView',
+    'ClientComputationView',
+    'ColorsPickerUtil',
+    'CommonUtil',
+    'DataFlowView',
+    'DataServiceQueryView',
+    'DistributedAnalysisView',
+    'ElasticSearch',
+    'FetchRequest',
+    'FileReaderUtil',
+    'GeoJSONFormat',
+    'GeoJSONLayerWithName',
+    'GeometryGeoText',
+    'GeometryMultiLineString',
+    'GeometryMultiPolygon',
+    'GeometryRectangle',
+    'Grid',
+    'IManager',
+    'IPortal',
+    'IPortalResource',
+    'IPortalUser',
+    'Lang',
+    'Logo',
+    'MessageBox',
+    'NonEarthCRS',
+    'Online',
+    'OpenFileView',
+    'SearchView',
+    'SecurityManager',
+    'ThemeDotDensity',
+    'ThemeGraduatedSymbol',
+    'ThemeGridRange',
+    'ThemeGridUnique',
+    'ThemeRange',
+    'ThemeUnique',
+    'TianDiTu_MercatorCRS',
+    'TianDiTu_WGS84CRS',
+    'TimeFlowControl',
+    'UnicodeMarker',
+    'WebMachineLearning',
+    'WebMap',
+    'WKTFormat'
+  ],
+  mapboxgl: [
+    'AddressMatchService',
+    'ChartService',
+    'CommonServiceBase',
+    'DataFlowService',
+    'DatasetService',
+    'DatasourceService',
+    'FeatureService',
+    'FieldService',
+    'GeoprocessingService',
+    'GridCellInfosService',
+    'ImageCollectionService',
+    'ImageService',
+    'LayerInfoService',
+    'MapService',
+    'MeasureService',
+    'NetworkAnalyst3DService',
+    'NetworkAnalystService',
+    'ProcessingService',
+    'QueryService',
+    'SpatialAnalystService',
+    'ThemeService',
+    'TrafficTransferAnalystService',
+    'WebPrintingJobService',
+    'HillshadeParameter',
+    'NDVIParameter',
+    'DeckglLayer',
+    'GraphicLayer',
+    'GraticuleLayer',
+    'HeatMapLayer',
+    'LabelThemeLayer',
+    'MapvLayer',
+    'RangeTheme3DLayer',
+    'RangeThemeLayer',
+    'RankSymbolThemeLayer',
+    'Theme3DLayer',
+    'ThreeLayer',
+    'UniqueTheme3DLayer',
+    'UniqueThemeLayer',
+    'ArrayStatistic',
+    'CartoCSS',
+    'ChartView',
+    'ColorsPickerUtil',
+    'CommonUtil',
+    'ElasticSearch',
+    'FetchRequest',
+    'FileReaderUtil',
+    'GeoJSONFormat',
+    'GeometryGeoText',
+    'GeometryMultiLineString',
+    'GeometryMultiPolygon',
+    'GeometryRectangle',
+    'Grid',
+    'IManager',
+    'IPortal',
+    'IPortalResource',
+    'IPortalUser',
+    'Lang',
+    'Logo',
+    'MessageBox',
+    'SecurityManager',
+    'ThemeDotDensity',
+    'ThemeGraduatedSymbol',
+    'ThemeGridRange',
+    'ThemeGridUnique',
+    'ThemeRange',
+    'ThemeUnique',
+    'TimeFlowControl',
+    'WebMachineLearning',
+    'WebMap',
+    'WKTFormat'
+  ],
+  openlayers: [
+    'AddressMatchService',
+    'ChartService',
+    'CommonServiceBase',
+    'DataFlowService',
+    'DatasetService',
+    'DatasourceService',
+    'FeatureService',
+    'FieldService',
+    'GeoprocessingService',
+    'GridCellInfosService',
+    'ImageCollectionService',
+    'ImageService',
+    'LayerInfoService',
+    'MapService',
+    'MeasureService',
+    'NetworkAnalyst3DService',
+    'NetworkAnalystService',
+    'ProcessingService',
+    'QueryService',
+    'SpatialAnalystService',
+    'ThemeService',
+    'TrafficTransferAnalystService',
+    'WebPrintingJobService',
+    'ol.source.BaiduMap',
+    'ol.source.DataFlow',
+    'ol.source.Graphic',
+    'ol.source.HeatMap',
+    'ol.source.ImageSuperMapRest',
+    'ol.source.ImageTileSuperMapRest',
+    'ol.source.Label',
+    'ol.source.Mapv',
+    'ol.source.Range',
+    'ol.source.RankSymbol',
+    'ol.source.SuperMapCloud',
+    'ol.source.Tianditu',
+    'ol.source.TileSuperMapRest',
+    'ol.source.Turf',
+    'ol.source.Unique',
+    'ol.source.VectorTileSuperMapRest',
+    'ol.style.HitCloverShape',
+    'ArrayStatistic',
+    'CartoCSS',
+    'ChangeTileVersion',
+    'ChartView',
+    'ColorsPickerUtil',
+    'CommonUtil',
+    'ElasticSearch',
+    'FetchRequest',
+    'FileReaderUtil',
+    'GeoJSONFormat',
+    'GeometryGeoText',
+    'GeometryMultiLineString',
+    'GeometryMultiPolygon',
+    'GeometryRectangle',
+    'Grid',
+    'IManager',
+    'IPortal',
+    'IPortalResource',
+    'IPortalUser',
+    'Lang',
+    'Logo',
+    'MapboxStyles',
+    'MessageBox',
+    'Online',
+    'ScaleLine',
+    'SecurityManager',
+    'ThemeDotDensity',
+    'ThemeGraduatedSymbol',
+    'ThemeGridRange',
+    'ThemeGridUnique',
+    'ThemeRange',
+    'ThemeUnique',
+    'TimeFlowControl',
+    'VectorTileStyles',
+    'WebMachineLearning',
+    'WebMap',
+    'WKTFormat'
+  ]
+};
 
 /**
  @param {TAFFY} taffyData See <http://taffydb.com/>.
@@ -521,33 +769,50 @@ exports.publish = function (taffyData, opts, tutorials) {
 
   // do this after the urls have all been generated
   data().each(function (doclet) {
-
     doclet.ancestors = getAncestorLinks(doclet);
     if (doclet.kind === 'member') {
       addSignatureTypes(doclet);
     }
-    var docMemberParent = find({ longname: doclet.memberof})[0];
-        if (doclet.kind === 'constant' || (docMemberParent && docMemberParent.kind === 'class' && doclet.scope === 'static') || doclet.deprecated) {
-            doclet.kind === 'constant' && addSignatureTypes(doclet);
-            var attribs = helper.getAttribs(doclet);
-            if(doclet.deprecated) {
-                attribs.unshift('deprecated');
-            }
-            var attribsString = buildAttribsString(attribs);
-            if(!attribs.length) {
-                return;
-            };
-            doclet.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
-            doclet.kind === 'constant' && (doclet.kind = 'member');
-        }
-    });
+    var docMemberParent = find({ longname: doclet.memberof })[0];
+    if (
+      doclet.kind === 'constant' ||
+      (docMemberParent && docMemberParent.kind === 'class' && doclet.scope === 'static') ||
+      doclet.deprecated
+    ) {
+      doclet.kind === 'constant' && addSignatureTypes(doclet);
+      var attribs = helper.getAttribs(doclet);
+      if (doclet.deprecated) {
+        attribs.unshift('deprecated');
+      }
+      var attribsString = buildAttribsString(attribs);
+      if (!attribs.length) {
+        return;
+      }
+      doclet.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
+      doclet.kind === 'constant' && (doclet.kind = 'member');
+    }
+  });
   for (const typeLink in view.typeLinks) {
     registerLink(typeLink, view.typeLinks[typeLink]);
   }
   var members = helper.getMembers(data);
   members.tutorials = tutorials.children;
   // add template helpers
-  var baseTypes = ['array', 'object', 'number', 'string', 'boolean', 'date', 'function', 'any', 'undefined', 'promise', 'THREE.CanvasRenderer', 'pixeldata', 'imagebitmap'];
+  var baseTypes = [
+    'array',
+    'object',
+    'number',
+    'string',
+    'boolean',
+    'date',
+    'function',
+    'any',
+    'undefined',
+    'promise',
+    'THREE.CanvasRenderer',
+    'pixeldata',
+    'imagebitmap'
+  ];
   let linkToMap = new Map();
   let linkHrefs = [];
   function getDeledLinkName(linkName) {
@@ -556,7 +821,13 @@ exports.publish = function (taffyData, opts, tutorials) {
     baseTypes.forEach((reg) => {
       linkNames = linkNames.replace(new RegExp(reg, 'ig'), '');
     });
-    return linkNames.replace(/\|/g, '').replace(/\(/g, '').replace(/\)/g, '').replace(/\./g, '').replace(/</g, '').replace(/>/g, '');
+    return linkNames
+      .replace(/\|/g, '')
+      .replace(/\(/g, '')
+      .replace(/\)/g, '')
+      .replace(/\./g, '')
+      .replace(/</g, '')
+      .replace(/>/g, '');
   }
   function getLinkHref(str) {
     const haslink_reg = /<a[^>]*href=["'](?<url>[^"']*?)["'][^>]*>(?<text>[\w\W]*?)<\/a>/g;
@@ -623,7 +894,8 @@ exports.publish = function (taffyData, opts, tutorials) {
         left: 'module:'
       }
     }),
-    members.modules);
+    members.modules
+  );
 
   // only output pretty-printed source files if requested; do this before generating any other
   // pages, so the other pages can link to the source files
@@ -759,7 +1031,7 @@ exports.publish = function (taffyData, opts, tutorials) {
   function getWrongLink(allFiles) {
     const privateHtml = linkHrefs.filter((link) => {
       const index = allFiles.findIndex((item) => item == link);
-      return index === -1
+      return index === -1;
     });
     privateHtml.forEach((item) => {
       setMap(item.replace('.html', ''));
@@ -771,32 +1043,40 @@ exports.publish = function (taffyData, opts, tutorials) {
     let allHtmlLinks = [];
     allFiles.forEach((fileName) => {
       const html = fs.readFileSync(path.resolve(outdir, fileName));
-      let urls = getLinkHref(html).filter(item => item !== fileName);
+      let urls = getLinkHref(html).filter((item) => item !== fileName);
       allHtmlLinks = allHtmlLinks.concat([], urls);
     });
     return Array.from(new Set(allHtmlLinks));
   }
-  function getMorePages(allFiles, allHtmlLinks, whiteList = ['global.html']) {
+  function getMorePages(allFiles, allHtmlLinks, whiteList = getWhiteLists().concat(['global'])) {
     const pages = allFiles.filter((item) => !allHtmlLinks.includes(item));
-    let res = pages.filter((item) => !whiteList.includes(item));
-    console.log('not linked by others length: ', res.length);
-    res = res.map(item => item.replace('.html', ''));
+    let res = pages.filter((item) => {
+      const fileName = item.replace('.html', '')
+      return !whiteList.includes(fileName);
+    });
+    res = res.map((item) => item.replace('.html', ''));
     const service = getCategoryPage(res, ['Service', 'ServiceBase']);
     const parameter = getCategoryPage(res, ['Parameter', 'Parameters']);
     const layer = getCategoryPage(res, ['Layer']);
-    const others = res.filter(item => !['Layer', 'Service', 'ServiceBase','Parameter', 'Parameters'].some(type => item.endsWith(type)));
+    const others = res.filter(
+      (item) => !['Layer', 'Service', 'ServiceBase', 'Parameter', 'Parameters'].some((type) => item.endsWith(type))
+    );
     return {
       service,
       parameter,
       layer,
       others
-    }
+    };
   }
   function getCategoryPage(pages, types = ['Service']) {
-    return pages.filter(item => types.some(type => item.endsWith(type)));
+    return pages.filter((item) => types.some((type) => item.endsWith(type)));
+  }
+  function getWhiteLists() {
+    const dir = outdir.replace('./docs/', '');
+    return whiteLists[dir];
   }
 
-  // const allFiles = getFileNames();
-  // console.error('not linked by others: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
-  // console.error('don\'t have link: ', getWrongLink(allFiles));
+  const allFiles = getFileNames();
+  console.error('生成的多余的文档页面: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
+  console.error('没有链接的类型: ', getWrongLink(allFiles));
 };

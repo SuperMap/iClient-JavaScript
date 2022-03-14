@@ -94,6 +94,7 @@ export class Label extends GeoFeature {
     }
 
     /**
+     * @private
      * @function ol.source.Label.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 矢量要素。

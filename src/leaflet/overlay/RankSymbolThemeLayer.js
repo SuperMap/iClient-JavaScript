@@ -63,6 +63,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
     },
 
     /**
+     * @private
      * @function RankSymbolThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素（图形）。
      * @param {FeatureVector} feature - 要创建的专题图形要素。
