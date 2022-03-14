@@ -547,7 +547,7 @@ exports.publish = function (taffyData, opts, tutorials) {
   var members = helper.getMembers(data);
   members.tutorials = tutorials.children;
   // add template helpers
-  var baseTypes = ['array', 'object', 'number', 'string', 'boolean', 'date', 'function', 'any', 'undefined', 'promise', 'THREE.CanvasRenderer'];
+  var baseTypes = ['array', 'object', 'number', 'string', 'boolean', 'date', 'function', 'any', 'undefined', 'promise', 'THREE.CanvasRenderer', 'pixeldata', 'imagebitmap'];
   let linkToMap = new Map();
   let linkHrefs = [];
   function getDeledLinkName(linkName) {
@@ -796,7 +796,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     return pages.filter(item => types.some(type => item.endsWith(type)));
   }
 
-  // const allFiles = getFileNames();
-  // console.error('not linked by others: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
-  // console.error('don\'t have link: ', getWrongLink(allFiles));
+  const allFiles = getFileNames();
+  console.error('not linked by others: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
+  console.error('don\'t have link: ', getWrongLink(allFiles));
 };
