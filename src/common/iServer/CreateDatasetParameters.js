@@ -9,8 +9,8 @@ import {Util} from '../commontypes/Util';
  * @category iServer Data Dataset
  * @classdesc 数据集创建参数类。
  * @param {Object} options - 参数。
- * @param {string} options.datasourceName - 数据源名称(必选)。
- * @param {string} options.datasetName - 数据集名称(必选)。
+ * @param {string} options.datasourceName - 数据源名称，此为必选参数。
+ * @param {string} options.datasetName - 数据集名称，此为必选参数。
  * @param {string} options.datasetType - 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
  * @usage
  */
@@ -23,15 +23,15 @@ export class CreateDatasetParameters {
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasourceName
-         * @description 数据源名称。
+         * @description 数据源名称，此为必选参数。
          */
-        this.datasourceName = null;
+         this.datasourceName = null;
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasetName
-         * @description 数据集名称。
+         * @description 数据集名称，此为必选参数。
          */
-        this.datasetName = null;
+         this.datasetName = null;
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasetType
