@@ -13,8 +13,8 @@ import {ClientType} from '../REST';
  * @param {string} options.username - 用户名。
  * @param {string} options.password - 密码。
  * @param {SuperMap.ClientType} [options.clientType='SuperMap.ClientType.NONE'] - token 申请的客户端标识类型。
- * @param {string} [options.ip] - clientType=IP 时，必选。
- * @param {string} [options.referer] -clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
+ * @param {string} [options.ip] - clientType=IP 时，此为必选参数。
+ * @param {string} [options.referer] -clientType=Referer 时，此为必选参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
  * @param {number} [options.expiration=60] - 申请令牌的有效期,从发布令牌的时间开始计算,单位为分钟。
  *
  *
@@ -41,13 +41,13 @@ export class TokenServiceParameter {
 
         /**
          * @member {string} [SuperMap.TokenServiceParameter.prototype.ip]
-         * @description clientType=IP 时，必选。
+         * @description clientType=IP 时，此为必选参数。
          */
 
         this.ip = null;
         /**
          * @member {string} [SuperMap.TokenServiceParameter.prototype.referer]
-         * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
+         * @description clientType=Referer 时，此为必选参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
          */
         this.referer = null;
 
