@@ -14,6 +14,7 @@ import {QueryParameters} from './QueryParameters';
  * @param {Object} options - 参数。
  * @param {Object} options.geometry - 用于查询的几何对象。
  * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
+ * @param {number} options.distance - 查询距离，单位与所查询图层对应的数据集单位相同。距离查询时，表示距离地物的距离。最近地物查询时，表示距离的容限。此为必选参数。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
  * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
@@ -22,7 +23,6 @@ import {QueryParameters} from './QueryParameters';
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
- * @param {number} [options.distance=0] - 查询距离。
  * @param {boolean} [options.isNearest=false] - 是否为最近距离查询。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
@@ -36,9 +36,8 @@ export class QueryByDistanceParameters extends QueryParameters {
         /**
          * @member {number} [SuperMap.QueryByDistanceParameters.prototype.distance=0]
          * @description 查询距离，单位与所查询图层对应的数据集单位相同。
-         *              当查找最近地物时，该属性无效。
+         *              距离查询时，表示距离地物的距离。最近地物查询时，表示距离的容限。
          */
-        this.distance = 0;
 
         /**
          * @member SuperMap.QueryByDistanceParameters.prototype.geometry

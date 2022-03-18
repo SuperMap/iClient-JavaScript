@@ -18,7 +18,7 @@ import './ClipParameter';
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。 
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。 
  * @param {string} [options.zValueFieldName] - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。
- * @param {string} [options.dataset] - 用于做插值分析的数据源中数据集的名称。当插值分析类型（InterpolationAnalystType）为 dataset 时，此参数为必选。 
+ * @param {string} [options.dataset] - 用于做插值分析的数据源中数据集的名称。当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必选参数。 
  * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。 
  * @param {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。 
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。 
@@ -99,7 +99,7 @@ export class InterpolationAnalystParameters {
         /**
          * @member {string} [SuperMap.InterpolationAnalystParameters.prototype.dataset]
          * @description 用来做插值分析的数据源中数据集的名称，该名称用形如 "数据集名称@数据源别名" 形式来表示。
-         * 当插值分析类型（InterpolationAnalystType）为 dataset 时，此参数为必选。
+         * 当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必选参数。
          */
         this.dataset = null;
 

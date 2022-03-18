@@ -159,7 +159,7 @@ export class InterpolationKrigingAnalystParameters extends InterpolationAnalystP
 
         /**
          * @member {SuperMap.SearchMode} SuperMap.InterpolationKrigingAnalystParameters.prototype.searchMode
-         * @description 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。
+         * @description 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。此为必选参数。
          * 简单克吕金和泛克吕金不支持块查找。
          * 具体如下：<br>
          * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。<br>
