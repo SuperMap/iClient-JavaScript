@@ -6,4 +6,4 @@ export { WebMap } from './WebMap';
 export { VideoMapDraw } from './VideoMapDraw';
 export { VideoMap } from './VideoMap';
 export { default as VideoMarker } from './VideoMarker';
-export { default as VideoPopup } from './VideoPopup';
+export { default as VideoMapPopup } from './VideoMapPopup';

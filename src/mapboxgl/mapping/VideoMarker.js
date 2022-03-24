@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import { transformCoord } from './util';
-import VideoPopup from './VideoPopup';
+import VideoMapPopup from './VideoMapPopup';
 import { SuperMap } from '@supermap/iclient-common';
 
 const MARKER_EVENTS = ['drag', 'dragstart', 'dragend'];
@@ -50,7 +50,7 @@ export default class VideoMarker extends mapboxgl.Evented {
    * @returns {Marker} Marker 实例。
    */
   setPopup(popup) {
-    if (popup instanceof VideoPopup) {
+    if (popup instanceof VideoMapPopup) {
       this.marker.setPopup(popup.popup);
       return this;
     }

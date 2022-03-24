@@ -5,7 +5,7 @@ import { SuperMap } from '@supermap/iclient-common';
 const POPUP_EVENTS = ['open', 'close'];
 
 /**
- * @class SuperMap.VideoPupup
+ * @class SuperMap.VideoMapPopup
  * @classdesc  视频地图 popup
  * @param {Object} videoMap - 视频地图实例。
  * @param {Object} options - Marker 配置 详见：{@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup-parameters}。

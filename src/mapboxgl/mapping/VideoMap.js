@@ -4,7 +4,7 @@ import Coordtransfer from './coordTransfer';
 import GeojsonLayer from './layers/GeojsonLayer';
 import VideoMarker from './VideoMarker';
 import GeojsonSource from './GeojsonSource';
-import VideoPopup from './VideoPopup';
+import VideoMapPopup from './VideoMapPopup';
 import VideoLayer from './layers/VideoLayer';
 import { coordEach } from '@turf/meta';
 import { transformCoordReverse } from './util';
@@ -73,7 +73,6 @@ const MAP_DRAW_EVENTS = [
 /**
  * @class SuperMap.VideoMap
  * @classdesc 视频地图
- * @category iServer VideoMap
  * @param {Object} options - 参数
  * @param {string} [options.container='map'] - 地图容器id
  * @param {string} [options.src] - 视频地址
@@ -274,7 +273,7 @@ export class VideoMap extends mapboxgl.Evented {
     if (!this._mapExisted()) {
       return;
     }
-    return new VideoPopup(this, options);
+    return new VideoMapPopup(this, options);
   }
   /**
    * @function SuperMap.VideoMap.prototype.addLayer

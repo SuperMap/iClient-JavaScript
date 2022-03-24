@@ -5,7 +5,6 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 /**
  * @class SuperMap.VideoMapDraw
  * @classdesc 视频地图标绘。
- * @category iServer VideoMap
  * @param {Object} options - 标绘配置 详见：{@link https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md}。
  */
 
