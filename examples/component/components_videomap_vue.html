@@ -1,0 +1,2010 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+        <title>视频地图</title>
+        <script src="../../examples/opencv-js/opencv_wasm.js"></script>
+        <script type="text/javascript" src="../js/mapbox-gl-enhance-right.js"></script>
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mapbox-gl@1.12.0/dist/mapbox-gl.min.css" />
+        <link rel="stylesheet" href="../../dist/mapboxgl/iclient-mapboxgl.min.css" /> -->
+        <script type="text/javascript" include="vue,moment,videojs" src="../js/include-web.js"></script>
+        <script
+            include="echarts-vue,iclient-mapboxgl-vue,iclient-mapboxgl,draw"
+            src="../../dist/mapboxgl/include-mapboxgl.js"
+        ></script>
+        <link
+        rel="stylesheet"
+        href="https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css"
+      />
+        <!-- <script src="https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js"></script> -->
+        <!-- <script src="https://cdn.jsdelivr.net/gh/CartoDB/mapboxgl-draw-rectangle-drag@1.0.1/build/mapboxgl-draw-rectangle-drag.browser.js"></script> -->
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background: #fff;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+            }
+
+            .mask-container {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                z-index: 101;
+                background: url('../img/background/mask-banner.png') no-repeat 100% 100%;
+                pointer-events: none;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .template-name {
+                width: 100%;
+                height: 86px;
+                position: absolute;
+                z-index: 103;
+                background: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image91.png')
+                    no-repeat;
+                background-size: 100% 100%;
+                text-align: center;
+                font-size: 1.875vw;
+                font-weight: 600;
+                line-height: 50px;
+                letter-spacing: 8px;
+            }
+
+            .template-name .sm-component-text {
+                padding: 0;
+            }
+
+            .tabs-wrap {
+                position: absolute;
+                top: 90px;
+                z-index: 103;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 300px;
+            }
+
+            .tab-item {
+                position: relative;
+                text-align: center;
+                display: inline-block;
+                width: 140px;
+                height: 40px;
+                line-height: 40px;
+                cursor: pointer;
+            }
+
+            .tab-item:first-child {
+                margin-right: 15px;
+            }
+
+            .tabs-wrap .sm-component-image {
+                position: absolute;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .video-map-wrap {
+                position: absolute;
+                top: 0;
+                z-index: 99;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                background-color: #1c2c3b;
+            }
+
+            .video-map-wrap .mapboxgl-map {
+                width: 100%;
+                height: 100%;
+            }
+
+            .video-map-wrap-visible {
+                /* left: 0; */
+                z-index: 100;
+            }
+
+            .video-oper-wrap {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 102;
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image74.png');
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                width: 182px;
+                height: 102px;
+                display: inline-block;
+                text-align: center;
+            }
+
+            .video-oper-wrap i {
+                font-size: 38px;
+                color: #25f9ff;
+                cursor: pointer;
+            }
+
+            .video-oper-wrap .not-allow-click {
+                cursor: not-allowed;
+            }
+
+            .switch-prev-btn,
+            .switch-next-btn {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            i.switch-prev-btn,
+            i.switch-next-btn {
+                font-size: 30px;
+            }
+
+            .switch-prev-btn {
+                left: 9px;
+            }
+
+            .switch-next-btn {
+                right: 9px;
+            }
+
+            .mapboxgl-popup-tip {
+                align-self: center;
+            }
+
+            .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+                border-top-color: #2b535b;
+            }
+
+            .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+                border-bottom-color: #2b535b;
+            }
+
+            .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+                border-left-color: #2b535b;
+            }
+
+            .mapboxgl-popup-content {
+                padding: 0;
+                border-radius: 0;
+                box-shadow: none;
+                background: transparent;
+            }
+
+            .mapboxgl-popup-close-button {
+                color: #c5d6e8;
+                font-size: 26px;
+                z-index: 10;
+                top: 6px;
+                right: 10px;
+            }
+
+            .custom-popup-content__border {
+                width: 370px;
+                height: 550px;
+                color: #fff;
+            }
+
+            .custom-popup-content__wrap {
+                min-width: 330px;
+            }
+
+            .sm-component-text,
+            .sm-component-indicator,
+            .sm-component-image {
+                background: transparent !important;
+            }
+
+            .custom-popup-content__head-title {
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image2.png');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-color: transparent;
+                width: 100%;
+                height: 45px;
+                text-align: center;
+                padding-top: 6px;
+                margin-bottom: 5px;
+            }
+
+            .custom-popup-content__head-title .sm-component-text {
+                color: #ffac2e !important;
+            }
+
+            .custom-popup-content__body {
+                user-select: none;
+            }
+
+            .custom-popup-content__body .sm-component-text {
+                justify-content: flex-start;
+                color: #fff !important;
+            }
+
+            .custom-popup-content__title-wrap,
+            .custom-popup-content__head-title .sm-component-text {
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .custom-popup-content__title-wrap {
+                margin-bottom: 8px;
+                position: relative;
+                padding-left: 19px;
+                width: 100%;
+                height: 26px;
+                background-image: url(http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image68.png) !important;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+            }
+
+            .custom-popup-content__info-list {
+                margin-bottom: 20px;
+            }
+
+            .custom-popup-content__info-list .info-item {
+                display: flex;
+                font-size: 13px;
+            }
+
+            .custom-popup-content__info-list .info-item .info-item-label {
+                width: 40%;
+            }
+
+            .custom-popup-content__info-list .info-item .info-item-value {
+                flex: 1;
+                color: #00e6ff !important;
+                font-weight: 600;
+            }
+
+            .custom-popup-content__video-border {
+                margin-top: 8px;
+                height: 200px;
+                position: relative;
+            }
+
+            .custom-popup-content__video-player {
+                min-width: 300px;
+                width: 100%;
+                height: 100%;
+            }
+
+            .custom-popup-content__modal-video-player {
+                width: 100%;
+                height: 700px;
+            }
+
+            .custom-popup-content__video-border .mapboxgl-canvas-container.mapboxgl-interactive {
+                cursor: pointer;
+            }
+
+            .switch-model-btn {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-size: 16px;
+                font-weight: 600;
+                height: 24px;
+                line-height: 24px;
+                text-align: right;
+            }
+
+            .switch-model-btn:hover {
+                background-color: rgb(0, 0, 0, 0.65);
+            }
+
+            .switch-model-btn i {
+                cursor: pointer;
+            }
+
+            .flowdata-item-wrap .sm-component-text-list,
+            .global-info-wrap .sm-component-chart .sm-component-collapse-card__content,
+            .order-wrap .sm-component-chart .sm-component-collapse-card__content {
+                width: 100%;
+                height: 100%;
+            }
+
+            .global-info-wrap,
+            .flowdata-wrap {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                z-index: 102;
+                box-sizing: content-box;
+            }
+
+            .global-info-wrap {
+                left: 0;
+                width: 17%;
+                min-width: 260px;
+                padding: 2% 0 0 20px;
+            }
+
+            .global-info-wrap .sm-component-text-list {
+                width: 100%;
+                height: 320px;
+            }
+
+            .global-info-wrap .sm-component-image {
+                width: 25px;
+                height: 26px;
+                margin-right: 6px;
+            }
+
+            .weather-wrap,
+            .indicator-wrap,
+            .pies-wrap {
+                margin-bottom: 8%;
+            }
+
+            .info-title {
+                padding-left: 18px;
+                margin-bottom: 12px;
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image85.png');
+                background-repeat: no-repeat;
+                width: 100%;
+                height: 40px;
+            }
+
+            .info-title .sm-component-text {
+                font-weight: 600;
+            }
+
+            .chart-border-content .sm-component-text {
+                font-size: 12px;
+            }
+
+            .weather-item {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .weather-wrap .temperature-holder,
+            .indicator-wrap .indicator-holder {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .indicator-wrap .indicator-item {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding-bottom: 20px;
+                margin-bottom: 10px;
+            }
+
+            .indicator-wrap .indicator-item .sm-component-image {
+                width: 29px;
+                height: 34px;
+            }
+
+            .indicator-item .indicator-holder,
+            .indicator-item .progress-holder {
+                flex: 1;
+            }
+
+            .progress-holder {
+                width: 40%;
+                font-size: 0;
+                margin-left: 15px;
+            }
+
+            .progress-desc {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+
+            .progress-holder .sm-component-text,
+            .progress-holder .sm-component-progress {
+                line-height: 1;
+                padding: 0;
+            }
+
+            .progress-holder .sm-component-text.sub-text {
+                font-size: 12px;
+            }
+
+            .progress-holder .sm-component-text.emphasis-text {
+                font-size: 19px;
+                font-weight: 600;
+                margin-right: 4px;
+            }
+
+            .progress-holder .sm-component-progress {
+                margin-bottom: 5px;
+            }
+
+            .indicator-wrap .sm-component-chart {
+                height: 160px;
+            }
+
+            .flowdata-wrap {
+                right: 0;
+                padding: 2% 0 0;
+                width: 0;
+                transition: width 0.5s;
+                overflow: hidden;
+            }
+
+            .flowdata-wrap-visible {
+                width: 17%;
+                min-width: 260px;
+                padding: 2% 20px 0 0;
+            }
+
+            .street-info-holder,
+            .accident-wrap,
+            .flowdata-item-wrap {
+                min-width: 260px;
+            }
+
+            .accident-wrap,
+            .flowdata-item-wrap {
+                margin-bottom: 9%;
+            }
+
+            .accident-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .icon-border-holder {
+                position: relative;
+                padding-left: 60px;
+                flex: 1;
+            }
+
+            .icon-border-holder::before {
+                position: absolute;
+                left: 0;
+                top: 0;
+                content: '';
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image84.png');
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                width: 50px;
+                height: 52px;
+            }
+
+            .icon-border-holder::after {
+                position: absolute;
+                left: 5px;
+                top: 6px;
+                content: '';
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                width: 41px;
+                height: 41px;
+            }
+
+            .traffic-light-item::after {
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image90.png');
+            }
+
+            .traffic-accident-item::after {
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image89.png');
+            }
+
+            .traffic-light-item {
+                margin-right: 20px;
+            }
+
+            .accident-holder {
+                background-color: rgb(47 158 252 / 25%);
+                border-radius: 0px 4px 4px 0px;
+            }
+
+            .accident-holder .sm-component-text,
+            .accident-holder .sm-component-indicator {
+                display: flex;
+                line-height: 1;
+            }
+
+            .accident-holder .sm-component-text {
+                font-size: 12px;
+                margin-top: 3px;
+                padding-bottom: 8px;
+            }
+
+            .flowdata-item-wrap .sm-component-chart .sm-component-collapse-card__content {
+                width: 100%;
+                height: 220px;
+            }
+
+            .street-info-holder {
+                position: relative;
+                height: 70px;
+                width: 100%;
+                padding-top: 8px;
+                padding-left: 20%;
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image64.png');
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+
+            .street-info-holder::before {
+                content: '';
+                display: block;
+                position: absolute;
+                left: 11%;
+                bottom: 17px;
+                height: 28px;
+                width: 18px;
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/icon8.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+            .street-info-holder .sm-component-text {
+                font-size: 13px;
+            }
+
+            .pies-wrap {
+                position: relative;
+            }
+
+            .pies-wrap .chart-item {
+                position: relative;
+                margin-bottom: 50px;
+            }
+
+            .pies-wrap .pie-item,
+            .pie-item .pie-text {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .pie-item .chart-item,
+            .pie-item .legend-item {
+                flex: 1;
+            }
+
+            .pie-item-total {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .pie-item-total > div,
+            .legend-item > div {
+                display: flex;
+            }
+
+            .pie-item-total > .sm-component-text {
+                font-size: 12px;
+                padding-top: 0;
+            }
+
+            .pie-item-total > .sm-component-indicator {
+                padding-left: 3px;
+            }
+
+            .chart-item:last-of-type .pie-text {
+                width: 80%;
+            }
+
+            .chart-item:last-of-type .legend-item::before {
+                left: 4%;
+            }
+
+            .pie-text {
+                position: absolute;
+                left: 50%;
+                bottom: -50px;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+
+            .legend-item {
+                position: relative;
+            }
+
+            .legend-item::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 11px;
+                width: 8px;
+                height: 8px;
+            }
+
+            .legend-item:first-child::before {
+                background-color: #4da8fd;
+            }
+
+            .legend-item:nth-of-type(2)::before {
+                background-color: #26d6a0;
+            }
+
+            .legend-item:last-of-type::before {
+                background-color: #ffcb71;
+            }
+
+            .legend-item .legend-value {
+                font-weight: 600;
+            }
+
+            .pie-item .sm-component-chart {
+                height: 160px;
+                background-image: url(http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image86.png);
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .energy-wrap .sm-component-indicator {
+                padding-left: 27px;
+            }
+
+            .energy-wrap .sm-component-indicator .sm-component-indicator__title {
+                margin-right: 10px;
+            }
+
+            .energy-item {
+                position: relative;
+                padding-left: 60px;
+                height: 68px;
+                display: flex;
+                align-items: center;
+            }
+
+            .energy-item::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 68px;
+                height: 68px;
+                background-repeat: no-repeat;
+                background-size: contain;
+                text-align: center;
+                line-height: 68px;
+                color: #fff;
+                font-weight: 600;
+            }
+
+            .energy-item-first {
+                margin: 20px 0;
+            }
+
+            .energy-item-first::before {
+                content: '今年';
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image87.png');
+            }
+
+            .energy-item-second::before {
+                content: '去年';
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image88.png');
+            }
+
+            .energy-value {
+                height: 30px;
+                line-height: 30px;
+                padding-left: 36px;
+                justify-content: flex-start;
+                background-size: 100% 100% !important;
+                background-repeat: no-repeat !important;
+            }
+
+            .energy-item-first .energy-value {
+                flex-basis: 82%;
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image80.png') !important;
+            }
+
+            .energy-item-second .energy-value {
+                flex: 1;
+                background-image: url('http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image81.png') !important;
+            }
+        </style>
+    </head>
+
+    <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
+        <div id="main">
+            <div class="mask-container"></div>
+            <div class="template-name">
+                <sm-text title="智慧园区管理" text-color="#fff" background="transparent"></sm-text>
+            </div>
+            <div class="tabs-wrap">
+                <div class="tab-item" @click="() => tabName = '综合安防'">
+                    <sm-image
+                        :src="'http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image' + (tabName === '综合安防' ? 77 : 78) + '.png'"
+                    >
+                    </sm-image>
+                    <sm-text title="综合安防" :text-color="tabName === '综合安防' ? '#FFCB70' : '#86CAFF'"></sm-text>
+                </div>
+                <div class="tab-item" @click="() => tabName = '综合态势'">
+                    <sm-image
+                        :src="'http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/material/image/image' + (tabName === '综合态势' ? 77 : 78) + '.png'"
+                    >
+                    </sm-image>
+                    <sm-text title="综合态势" :text-color="tabName === '综合态势' ? '#FFCB70' : '#86CAFF'"></sm-text>
+                </div>
+            </div>
+            <div class="video-oper-wrap">
+                <i
+                    :class="isPause ? 'sm-components-icon-zanting' : 'sm-components-icon-bofang3'"
+                    @click="toggleVideoStatus"
+                ></i>
+                <i
+                    :class="{'sm-components-icon-solid-right switch-prev-btn': true, 'not-allow-click': currentVideo === 'video1'}"
+                    @click="() => currentVideo = 'video1'"
+                ></i>
+                <i
+                    :class="{'sm-components-icon-solid-left switch-next-btn': true, 'not-allow-click': currentVideo === 'video2'}"
+                    @click="() => currentVideo = 'video2'"
+                ></i>
+            </div>
+            <sm-video-map
+                :class="{'video-map-wrap': true, 'video-map-wrap-visible': currentVideo === 'video1'}"
+                v-bind="videoParameterList1"
+                container="map1"
+                :play="videoPlayStatus"
+                :autoplay="true"
+            >
+                <sm-video-map-draw position="top-right"></sm-video-map-draw>
+                <sm-video-marker
+                    v-for="marker in markerDatas1"
+                    :key="'videomarker1'+marker.id"
+                    :coordinate="marker.geometry.coordinates"
+                >
+                    <sm-image
+                        slot="marker"
+                        src="../img/background/marker-icon.png"
+                        style="width: 60px; height: 60px; cursor: pointer"
+                    ></sm-image>
+                    <sm-video-popup
+                        :show="false"
+                        :offset="25"
+                        anchor="right"
+                        @open="() => popupOpen(marker.properties)"
+                        @close="() => popupClose(marker.properties)"
+                    >
+                        <sm-custom-popup-content
+                            :key="'custom' + marker.id"
+                            :map-id="'popup_map1' + marker.id"
+                            :data="marker.properties"
+                            :show="popupVisible[marker.properties.NAME]"
+                        >
+                        </sm-custom-popup-content>
+                    </sm-video-popup>
+                </sm-video-marker>
+            </sm-video-map>
+            <sm-video-map
+                :class="{'video-map-wrap': true, 'video-map-wrap-visible': currentVideo === 'video2'}"
+                v-bind="videoParameterList2"
+                container="map2"
+                :play="videoPlayStatus1"
+                :autoplay="true"
+            >
+                <sm-video-map-draw position="top-right"></sm-draw>
+                <sm-video-marker
+                    v-for="marker in markerDatas2"
+                    :key="'videomarker2'+marker.id"
+                    :coordinate="marker.geometry.coordinates"
+                >
+                    <sm-image
+                        slot="marker"
+                        src="../img/background/marker-icon.png"
+                        style="width: 60px; height: 60px; cursor: pointer"
+                    ></sm-image>
+                    <sm-video-popup
+                        :show="true"
+                        :offset="25"
+                        anchor="right"
+                        @open="() => popupOpen(marker.properties)"
+                        @close="() => popupClose(marker.properties)"
+                    >
+                        <sm-custom-popup-content :map-id="'popup_map2' + marker.id" :data="marker.properties" :show="popupVisible[marker.properties.NAME]">
+                        </sm-custom-popup-content>
+                        <sm-custom-popup-content :map-id="'popup_map2' + marker.id" :data="marker.properties" :show="true">
+                        </sm-custom-popup-content>
+                    </sm-video-popup>
+                </sm-video-marker>
+            </sm-video-map>
+            <div class="global-info-wrap">
+                <template v-if="tabName === '综合安防'">
+                    <div class="weather-wrap">
+                        <div class="info-title">
+                            <sm-text title="今日天气" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="weather-item">
+                            <div class="temperature-holder">
+                                <sm-image
+                                    src="http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/templates/qixiang/img/icon_wendu.png"
+                                >
+                                </sm-image>
+                                <sm-text
+                                    :title="`温度：${(globalData.temperature || '')}°C`"
+                                    text-color="#fff"
+                                ></sm-text>
+                            </div>
+                            <div class="temperature-holder">
+                                <sm-image
+                                    src="http://192.168.11.94:8190/iportal/apps/mapdashboard/v2/static/templates/qixiang/img/7.png"
+                                >
+                                </sm-image>
+                                <sm-text :title="`天气：${globalData.weather}`" text-color="#fff"></sm-text>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indicator-wrap">
+                        <div class="info-title">
+                            <sm-text title="摄像头使用状态统计" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="indicator-item">
+                            <div class="indicator-holder">
+                                <sm-image src="../img/background/camera.png"> </sm-image>
+                                <sm-indicator
+                                    title="摄像头总数"
+                                    unit="个"
+                                    :num="(globalData.cameraData || {}).totalNum || 0"
+                                    text-color="#fff"
+                                    indicator-color="#4da8fd"
+                                    text-font-size="14px"
+                                    font-size="30px"
+                                    style="margin-left: 5px"
+                                >
+                                </sm-indicator>
+                            </div>
+                            <div class="progress-holder">
+                                <div class="progress-desc">
+                                    <sm-text
+                                        class="sub-text"
+                                        title="正常"
+                                        text-color="rgba(255,255,255,0.85)"
+                                    ></sm-text>
+                                    <div class="indicator-text">
+                                        <sm-text class="emphasis-text" :title="cameraData.normal" text-color="#4da8fd">
+                                        </sm-text>
+                                        <sm-text
+                                            class="sub-text"
+                                            title="%"
+                                            text-color="rgba(255,255,255,0.85)"
+                                        ></sm-text>
+                                    </div>
+                                </div>
+                                <sm-progress
+                                    background="transparent"
+                                    text-color="#4da8fd"
+                                    :percent="cameraData.normal"
+                                    size="small"
+                                    status="active"
+                                    :stroke-color="{'0%': '#fff', '50%': '#4da8fd'}"
+                                    trail-color="#ffffff26"
+                                    :show-info="false"
+                                >
+                                </sm-progress>
+                                <div class="progress-desc">
+                                    <sm-text
+                                        class="sub-text"
+                                        title="故障"
+                                        text-color="rgba(255,255,255,0.85)"
+                                    ></sm-text>
+                                    <div class="indicator-text">
+                                        <sm-text class="emphasis-text" :title="cameraData.fault" text-color="#ffcb71">
+                                        </sm-text>
+                                        <sm-text
+                                            class="sub-text"
+                                            title="%"
+                                            text-color="rgba(255,255,255,0.85)"
+                                        ></sm-text>
+                                    </div>
+                                </div>
+                                <sm-progress
+                                    background="transparent"
+                                    text-color="#ffcb71"
+                                    :percent="cameraData.fault"
+                                    size="small"
+                                    status="active"
+                                    :stroke-color="{'0%': '#fff', '50%': '#ffcb71'}"
+                                    trail-color="#ffffff26"
+                                    :show-info="false"
+                                >
+                                </sm-progress>
+                                <div class="progress-desc">
+                                    <sm-text
+                                        class="sub-text"
+                                        title="未使用"
+                                        text-color="rgba(255,255,255,0.85)"
+                                    ></sm-text>
+                                    <div class="indicator-text">
+                                        <sm-text class="emphasis-text" :title="cameraData.unused" text-color="#26d6a0">
+                                        </sm-text>
+                                        <sm-text
+                                            class="sub-text"
+                                            title="%"
+                                            text-color="rgba(255,255,255,0.85)"
+                                        ></sm-text>
+                                    </div>
+                                </div>
+                                <sm-progress
+                                    background="transparent"
+                                    text-color="#26d6a0"
+                                    :percent="cameraData.unused"
+                                    size="small"
+                                    status="active"
+                                    :stroke-color="{'0%': '#fff', '50%': '#26d6a0'}"
+                                    trail-color="#ffffff26"
+                                    :show-info="false"
+                                >
+                                </sm-progress>
+                            </div>
+                        </div>
+                        <sm-chart
+                            icon-class=""
+                            text-color="#fff"
+                            :options="cameraPieOptions"
+                            :dataset="cameraDataset"
+                            :dataset-options="cameraDatasetOptions"
+                            :color-group="['#4da8fd', '#ffcb71', '#26d6a0']"
+                            background="transparent"
+                        ></sm-chart>
+                    </div>
+                    <div class="textlist-wrap">
+                        <div class="info-title">
+                            <sm-text title="摄像头周围路况统计" text-color="#fff"></sm-text>
+                        </div>
+                        <sm-text-list
+                            :content="textListContent"
+                            :columns="textListColumns"
+                            :thresholds-style="thresholdsStyle"
+                            :auto-rolling="true"
+                            :rows="6"
+                            :auto-resize="true"
+                            :color-group="['#1f5b8a']"
+                            background="rgb(28 32 39 / 50%)"
+                            text-color="#fff"
+                        >
+                        </sm-text-list>
+                    </div>
+                </template>
+                <template v-else>
+                    <div>
+                        <div class="info-title">
+                            <sm-text title="人车数量统计" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="pies-wrap">
+                            <div class="pie-item">
+                                <div class="chart-item">
+                                    <sm-chart
+                                        icon-class=""
+                                        text-color="#fff"
+                                        :options="humanPieOptions"
+                                        :color-group="['#4da8fd', '#26d6a0', '#ffcb71']"
+                                        background="transparent"
+                                    >
+                                    </sm-chart>
+                                    <div class="pie-item-total">
+                                        <sm-indicator :num="927" title="" unit="" indicator-color="#fff"></sm-indicator>
+                                        <sm-text title="总人数" text-color="#86CAFF"></sm-text>
+                                    </div>
+                                    <div class="pie-text">
+                                        <div class="legend-item">
+                                            <sm-text
+                                                class="legend-label"
+                                                title="员工"
+                                                text-color="rgba(255,255,255,0.65)"
+                                            ></sm-text>
+                                            <sm-text class="legend-value" title="400" text-color="#4da8fd"></sm-text>
+                                        </div>
+                                        <div class="legend-item">
+                                            <sm-text
+                                                class="legend-label"
+                                                title="访客"
+                                                text-color="rgba(255,255,255,0.65)"
+                                            ></sm-text>
+                                            <sm-text class="legend-value" title="290" text-color="#26d6a0"></sm-text>
+                                        </div>
+                                        <div class="legend-item">
+                                            <sm-text
+                                                class="legend-label"
+                                                title="安保"
+                                                text-color="rgba(255,255,255,0.65)"
+                                            ></sm-text>
+                                            <sm-text class="legend-value" title="237" text-color="#ffcb71"></sm-text>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-item">
+                                    <sm-chart
+                                        icon-class=""
+                                        text-color="#fff"
+                                        :options="trafficPieOptions"
+                                        :color-group="['#4da8fd', '#26d6a0']"
+                                        background="transparent"
+                                    ></sm-chart>
+                                    <div class="pie-item-total">
+                                        <sm-indicator :num="344" title="" unit="" indicator-color="#fff"></sm-indicator>
+                                        <sm-text title="总人数" text-color="#86CAFF"></sm-text>
+                                    </div>
+                                    <div class="pie-text">
+                                        <div class="legend-item">
+                                            <sm-text
+                                                class="legend-label"
+                                                title="员工"
+                                                text-color="rgba(255,255,255,0.65)"
+                                            ></sm-text>
+                                            <sm-text class="legend-value" title="244" text-color="#4da8fd"></sm-text>
+                                        </div>
+                                        <div class="legend-item">
+                                            <sm-text
+                                                class="legend-label"
+                                                title="访客"
+                                                text-color="rgba(255,255,255,0.65)"
+                                            ></sm-text>
+                                            <sm-text class="legend-value" title="100" text-color="#26d6a0"></sm-text>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="info-title">
+                            <sm-text title="资产分类统计" text-color="#fff"></sm-text>
+                        </div>
+                        <sm-chart
+                            icon-class=""
+                            text-color="#fff"
+                            :options="assetsBarOptions"
+                            :color-group="['#4da8fd']"
+                            background="transparent"
+                            style="height: 240px; margin-bottom: 30px"
+                        ></sm-chart>
+                    </div>
+                    <div class="energy-wrap">
+                        <div class="info-title">
+                            <sm-text title="耗能统计" text-color="#fff"></sm-text>
+                        </div>
+                        <sm-indicator
+                            num="11.9%"
+                            title="年度累计同比节能"
+                            unit=""
+                            text-color="#fff"
+                            indicator-color="#4da8fd"
+                            mode="horizontal"
+                            font-size="18px"
+                        ></sm-indicator>
+                        <div class="energy-item energy-item-first">
+                            <sm-text class="energy-value" text-color="#fff" title="15,767,165 Kwh"></sm-text>
+                        </div>
+                        <div class="energy-item energy-item-second">
+                            <sm-text class="energy-value" text-color="#fff" title="17,820,290 Kwh"></sm-text>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div
+                :class="{'flowdata-wrap': true, 'flowdata-wrap-visible': tabName !== '综合安防' || clickData && popupVisible[clickData.NAME]}"
+            >
+                <template v-if="tabName === '综合安防'">
+                    <div class="accident-wrap">
+                        <div class="info-title">
+                            <sm-text title="交通事故统计" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="accident-content">
+                            <div class="traffic-light-item icon-border-holder">
+                                <div class="accident-holder">
+                                    <sm-indicator
+                                        :num="(clickData.TRAFFICLIGHTSNUM || 0) + '个'"
+                                        title=""
+                                        unit=""
+                                        font-size="18"
+                                        indicator-color="#fff"
+                                    >
+                                    </sm-indicator>
+                                    <sm-text title="红绿灯" text-color="#85CAFF"></sm-text>
+                                </div>
+                            </div>
+                            <div class="traffic-accident-item icon-border-holder">
+                                <div class="accident-holder">
+                                    <sm-indicator
+                                        :num="(clickData.TRAFFICACCIDENTNUM || 0) + '起'"
+                                        title=""
+                                        unit=""
+                                        font-size="18"
+                                        indicator-color="#fff"
+                                    >
+                                    </sm-indicator>
+                                    <sm-text title="交通事故" text-color="#85CAFF"></sm-text>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flowdata-item-wrap human-flowdata-wrap">
+                        <div class="info-title">
+                            <sm-text title="人流量统计数据" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="chart-border-content">
+                            <sm-text :title="clickData.SHOTTINGDATE" text-color="#fff"></sm-text>
+                            <sm-chart
+                                icon-class=""
+                                :color-group="['#2F9EFC']"
+                                text-color="#fff"
+                                :options="humanEchartOptions"
+                                :dataset="dataset"
+                                :dataset-options="datasetHumanOptions"
+                                background="transparent"
+                            ></sm-chart>
+                        </div>
+                    </div>
+                    <div class="flowdata-item-wrap traffic-flowdata-wrap">
+                        <div class="info-title">
+                            <sm-text title="车流量统计数据" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="chart-border-content">
+                            <sm-text :title="clickData.SHOTTINGDATE" text-color="#fff"></sm-text>
+                            <sm-chart
+                                icon-class=""
+                                :color-group="['#2F9EFC', 'rgba(255,255,255,0.15)']"
+                                text-color="#fff"
+                                :options="trafficEchartOptions"
+                                :dataset="dataset"
+                                :dataset-options="datasetTrafficOptions"
+                                background="transparent"
+                            ></sm-chart>
+                        </div>
+                    </div>
+                    <div class="street-info-holder">
+                        <sm-text :title="'名称：' + clickData.NAME" text-color="#fff"></sm-text>
+                        <sm-text :title="'地址：' + clickData.ADDRESS" text-color="#fff"></sm-text>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="order-wrap">
+                        <div class="info-title">
+                            <sm-text title="工单处理统计" text-color="#fff"></sm-text>
+                        </div>
+                        <sm-chart
+                            icon-class=""
+                            text-color="#fff"
+                            :options="orderLineOptions"
+                            :color-group="['#6BBCFB', '#26D6A0']"
+                            background="transparent"
+                            style="height: 240px; margin-bottom: 40px"
+                        ></sm-chart>
+                    </div>
+                    <div class="accident-wrap" style="margin-bottom: 50px">
+                        <div class="info-title">
+                            <sm-text title="会议室使用率" text-color="#fff"></sm-text>
+                        </div>
+                        <div class="accident-content">
+                            <div class="traffic-light-item icon-border-holder">
+                                <div class="accident-holder">
+                                    <sm-indicator num="6间" title="" unit="" font-size="18" indicator-color="#fff">
+                                    </sm-indicator>
+                                    <sm-text title="已使用" text-color="#85CAFF"></sm-text>
+                                </div>
+                            </div>
+                            <div class="traffic-accident-item icon-border-holder">
+                                <div class="accident-holder">
+                                    <sm-indicator num="15间" title="" unit="" font-size="18" indicator-color="#fff">
+                                    </sm-indicator>
+                                    <sm-text title="总数" text-color="#85CAFF"></sm-text>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0; margin-top: 20px">
+                            <sm-text title="使用率40%" text-color="#fff" :font-style="{fontSize: '14px'}"></sm-text>
+                            <sm-progress
+                                background="transparent"
+                                percent="40"
+                                size="small"
+                                status="active"
+                                :stroke-color="{'0%': '#fff', '50%': '#26D6A0'}"
+                                trail-color="#ffffff26"
+                                :show-info="false"
+                                style="line-height: 1"
+                            >
+                            </sm-progress>
+                        </div>
+                    </div>
+                    <div class="order-wrap">
+                        <div class="info-title">
+                            <sm-text title="智能预警统计" text-color="#fff"></sm-text>
+                        </div>
+                        <sm-chart
+                            icon-class=""
+                            text-color="#fff"
+                            :options="smartRadarOptions"
+                            :color-group="['#6BBCFB', '#26D6A0']"
+                            background="transparent"
+                            style="height: 260px"
+                        >
+                        </sm-chart>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            mapboxgl.accessToken =
+                'pk.eyJ1IjoiZGVtYXdlaWxpeWEiLCJhIjoiY2toZnZlaHFjMGxxdDJ6bHV2aWtpYXBjYyJ9.A-FrtZ8sKDcP5rf8ICRb1A';
+            var dataUrl1 = 'http://172.16.13.67:8090/iserver/services/data-video_1/rest/data';
+            // var dataUrl2 = 'http://172.16.13.67:8090/iserver/services/data-video-2/rest/data';
+            var dataUrl3 = 'http://172.16.13.67:8090/iserver/services/data-latestVideo/rest/data';
+            Vue.component('sm-custom-popup-content', {
+                props: ['data', 'mapId', 'show'],
+                data() {
+                    const commonOptions = { muted: true, loop: true, autoplay: false, controlBar: false };
+                    return {
+                        showModal: false,
+                        videoMapId: 'modal-video-map',
+                        options: { muted: true, loop: true, autoplay: true, controlBar: false, popupToPlay: false },
+                        popupOptions: { ...commonOptions, popupToPlay: true },
+                        showVideo: false
+                    };
+                },
+                watch: {
+                  show(val) {
+                    this.$nextTick(() => {
+                      setTimeout(() => {
+                        this.showVideo = val;
+                        console.log('this.showVideo', this.showVideo)
+                      }, 500)
+                    });
+                  }
+                },
+                mounted(){
+                  console.log('mounted!!!!')
+                },
+                methods: {
+                    toggleSwitchToModal() {
+                        this.showModal = !this.showModal;
+                    }
+                },
+                template: `<sm-border class="custom-popup-content__border" type="border8">
+                <div class="custom-popup-content__wrap">
+                    <div class="custom-popup-content__head-title">
+                        <sm-text :title="data.NAME"></sm-text>
+                    </div>
+                    <div class="custom-popup-content__body">
+                        <sm-text class="custom-popup-content__title-wrap" title="基本信息"></sm-text>
+                        <div class="custom-popup-content__info-list">
+                            <div class="info-item">
+                                <sm-text class="info-item-label" title="名称"></sm-text>
+                                <sm-text class="info-item-value" :title="data.NAME"></sm-text>
+                            </div>
+                            <div class="info-item">
+                                <sm-text class="info-item-label" title="地点"></sm-text>
+                                <sm-text class="info-item-value" :title="data.ADDRESS"></sm-text>
+                            </div>
+                            <div class="info-item">
+                                <sm-text class="info-item-label" title="摄像头型号"></sm-text>
+                                <sm-text class="info-item-value" :title="data.CAMERATYPE"></sm-text>
+                            </div>
+                            <div class="info-item">
+                                <sm-text class="info-item-label" title="摄像头像素"></sm-text>
+                                <sm-text class="info-item-value" :title="data.RESOLUTION"></sm-text>
+                            </div>
+                            <div class="info-item">
+                                <sm-text class="info-item-label" title="安装时间"></sm-text>
+                                <sm-text class="info-item-value" :title="moment(+data.INSTALLEDTIME).format('YYYY年M月D日 HH:mm')"></sm-text>
+                            </div>
+                            <div class="info-item">
+                                <sm-text class="info-item-label" title="200m内摄像头个数"></sm-text>
+                                <sm-text class="info-item-value" :title="data.CAMERASNUM_200M + '个'"></sm-text>
+                            </div>
+                        </div>
+                        <sm-text class="custom-popup-content__title-wrap" title="视频监控"></sm-text>
+                        <sm-border type="border11" class="custom-popup-content__video-border" title="点击放大预览">
+                            <sm-video-player v-if="showVideo" class="custom-popup-content__video-player" :url="data.VIDEO" :options="options">
+                            </sm-video-player>
+                            <div class="switch-model-btn" @click="toggleSwitchToModal">
+                                <i class="sm-components-icon-fullscreen" />
+                            </div>
+                        </sm-border>
+                        <sm-modal
+                            v-model="showModal"
+                            wrapClassName="sm-component-video-player-modal"
+                            :footer="null"
+                            width="60%"
+                            :maskClosable="false"
+                        >
+                            <sm-video-player class="custom-popup-content__modal-video-player" :url="data.VIDEO" :options="options">
+                            </sm-video-player>
+                        </sm-modal>
+                    </div>
+                </div>
+            </sm-border>`
+            });
+            new Vue({
+                el: '#main',
+                data() {
+                    const headerList = ['名称', '红绿灯', '拥堵程度', '交通事故'];
+                    const fields = ['name', 'trafficLightsNum', 'trafficCongestion', 'trafficAccidentNum'];
+                    const textListColumns = fields.map((item, index) => {
+                        let suffix;
+                        if (item === 'trafficLightsNum') {
+                            suffix = '个';
+                        } else if (item === 'trafficAccidentNum') {
+                            suffix = '起';
+                        }
+                        return {
+                            header: headerList[index],
+                            field: item,
+                            fixInfo: {
+                                suffix
+                            },
+                            sort: true,
+                            defaultSortType: 'none'
+                        };
+                    });
+                    const commonOptions = {
+                        xAxis: {
+                            data: [],
+                            axisTick: {
+                                show: false,
+                                alignWithLabel: true
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff',
+                                    opacity: 0.45
+                                }
+                            },
+                            axisLabel: {
+                                rotate: 0,
+                                fontFamily: 'MicrosoftYaHei',
+                                color: 'rgba(255, 255, 255, 0.85)'
+                            },
+                            show: true,
+                            name: '',
+                            nameGap: 2,
+                            nameLocation: 'end',
+                            type: 'category'
+                        },
+                        yAxis: {
+                            name: '',
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#fff',
+                                    opacity: 0.45
+                                }
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#fff',
+                                    opacity: 0.15
+                                }
+                            },
+                            axisLabel: {
+                                rotate: 0,
+                                fontFamily: 'MicrosoftYaHei',
+                                color: 'rgba(255, 255, 255, 0.85)'
+                            },
+                            show: true,
+                            splitArea: {
+                                show: false
+                            },
+                            nameGap: 5,
+                            nameLocation: 'end',
+                            type: 'value',
+                            nameTextStyle: {
+                                padding: [0, 0, 5, 0]
+                            }
+                        },
+                        legend: {
+                            show: false
+                        },
+                        tooltip: {
+                            formatter: '{b0}: {c0}'
+                        },
+                        grid: {
+                            left: 30,
+                            right: 20,
+                            top: 20,
+                            bottom: 25
+                        }
+                    };
+                    return {
+                        currentVideo: 'video2',
+                        videoParameterList1: null,
+                        videoParameterList2: null,
+                        videoPlayStatus: false,
+                        videoPlayStatus1: false,
+                        tabName: '综合安防',
+                        globalData: {},
+                        markerDatas1: [],
+                        markerDatas2: [],
+                        clickData: {},
+                        popupVisible: {},
+                        textListContent: [],
+                        textListColumns,
+                        thresholdsStyle: [
+                            { type: 'color', data: [] },
+                            { type: 'color', data: [] },
+                            { type: 'color', data: [] },
+                            {
+                                type: 'color',
+                                data: [
+                                    { min: 0, max: 3, color: '#26d6a0' },
+                                    { min: 4, color: '#ff2121' }
+                                ]
+                            }
+                        ],
+                        cameraPieOptions: {
+                            title: {
+                                text: '摄像头使用状况',
+                                left: 'center',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'right',
+                                top: 'center',
+                                padding: [0, 20]
+                            },
+                            grid: {
+                                left: 30
+                            },
+                            series: [
+                                {
+                                    name: '摄像头使用状况',
+                                    type: 'pie',
+                                    radius: ['50%', '65%'],
+                                    center: ['38%', '52%'],
+                                    data: [],
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        cameraDataset: {
+                            url: '',
+                            type: 'geoJSON',
+                            geoJSON: {
+                                type: 'FeatureCollection',
+                                features: []
+                            }
+                        },
+                        cameraDatasetOptions: [
+                            {
+                                seriesType: 'pie',
+                                isStastic: true,
+                                xField: 'name',
+                                yField: 'value'
+                            }
+                        ],
+                        humanPieOptions: {
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                show: false,
+                                itemWidth: 8,
+                                itemHeight: 8,
+                                left: 'center',
+                                top: 'bottom',
+                                textStyle: {
+                                    color: 'rgba(255,255,255,0.65)'
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '人数量统计',
+                                    type: 'pie',
+                                    startAngle: -60,
+                                    radius: ['55%', '70%'],
+                                    center: ['50%', '50%'],
+                                    data: [
+                                        { value: 400, name: '员工' },
+                                        { value: 290, name: '访客' },
+                                        { value: 237, name: '安保' }
+                                    ],
+                                    label: {
+                                        show: false,
+                                        position: 'center'
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: false
+                                        },
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        trafficPieOptions: {
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                show: false,
+                                itemGap: 15,
+                                itemWidth: 8,
+                                itemHeight: 8,
+                                left: 'center',
+                                top: 'bottom'
+                            },
+                            series: [
+                                {
+                                    name: '车数量统计',
+                                    type: 'pie',
+                                    startAngle: 45,
+                                    radius: ['55%', '70%'],
+                                    center: ['50%', '50%'],
+                                    data: [
+                                        { value: 244, name: '员工' },
+                                        { value: 100, name: '访客' }
+                                    ],
+                                    label: {
+                                        show: false,
+                                        position: 'center'
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: false
+                                        },
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        assetsBarOptions: {
+                            ...commonOptions,
+                            grid: {
+                                left: 50,
+                                right: 35,
+                                top: 20,
+                                bottom: 25
+                            },
+                            xAxis: {
+                                ...commonOptions.xAxis,
+                                data: ['房屋建筑物', '无形资产', '机器设备', '电子设备', '装修改良']
+                            },
+
+                            yAxis: {
+                                ...commonOptions.yAxis,
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: '#fff',
+                                        opacity: 0.45
+                                    }
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '资产值',
+                                    type: 'bar',
+                                    barWidth: 13,
+                                    data: [100, 600, 2200, 4100, 220]
+                                }
+                            ]
+                        },
+                        trafficEchartOptions: {
+                            ...commonOptions,
+                            series: [
+                                {
+                                    type: '2.5Bar',
+                                    shape: 'rectangle',
+                                    barWidth: 13
+                                },
+                                {
+                                    type: '2.5Bar',
+                                    shape: 'rectangle',
+                                    barWidth: 13
+                                }
+                            ]
+                        },
+                        humanEchartOptions: {
+                            ...commonOptions,
+                            series: [
+                                {
+                                    symbolSize: 5,
+                                    areaStyle: {
+                                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                            {
+                                                offset: 0,
+                                                color: 'rgba(47,158,252,0.8)'
+                                            },
+                                            {
+                                                offset: 1,
+                                                color: 'rgba(47,158,252,0.3)'
+                                            }
+                                        ])
+                                    },
+                                    smooth: true
+                                }
+                            ]
+                        },
+                        orderLineOptions: {
+                            ...commonOptions,
+                            xAxis: {
+                                ...commonOptions.xAxis,
+                                data: ['08-28', '08-29', '08-30', '08-31', '09-01', '09-02', '09-03']
+                            },
+                            grid: {
+                                top: 20,
+                                left: 35,
+                                right: 20,
+                                bottom: 25
+                            },
+                            series: [
+                                {
+                                    type: 'line',
+                                    symbol: 'circle',
+                                    symbolSize: 5,
+                                    data: [3, 5, 4, 2, 9, 6, 5]
+                                },
+                                {
+                                    type: 'line',
+                                    symbol: 'circle',
+                                    symbolSize: 5,
+                                    data: [6, 8, 6, 11, 8, 9, 6]
+                                }
+                            ]
+                        },
+                        smartRadarOptions: {
+                            radar: {
+                                startAngle: 120,
+                                radius: '65%',
+                                indicator: [
+                                    { name: '资产管理', max: 6500, color: 'rgba(255,255,255,0.85)' },
+                                    { name: '能效管理', max: 20000, color: 'rgba(255,255,255,0.85)' },
+                                    { name: '设施管理', max: 58000, color: 'rgba(255,255,255,0.85)' },
+                                    { name: '环境空间', max: 26000, color: 'rgba(255,255,255,0.85)' },
+                                    { name: '便捷通行', max: 52000, color: 'rgba(255,255,255,0.85)' },
+                                    { name: '综合安防', max: 25000, color: 'rgba(255,255,255,0.85)' }
+                                ],
+                                splitArea: { show: false }
+                            },
+                            series: [
+                                {
+                                    name: '智能预警',
+                                    type: 'radar',
+                                    data: [
+                                        {
+                                            value: [5000, 14000, 28000, 26000, 42000, 21000],
+                                            name: '智能预警',
+                                            areaStyle: {
+                                                color: 'rgba(107, 188, 251, 0.25)'
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        dataset: {
+                            url: '',
+                            type: 'geoJSON',
+                            geoJSON: {
+                                type: 'FeatureCollection',
+                                features: []
+                            }
+                        },
+                        datasetTrafficOptions: [
+                            {
+                                seriesType: '2.5Bar',
+                                xField: 'time',
+                                yField: 'pedestrianCounting'
+                            },
+                            {
+                                seriesType: '2.5Bar',
+                                xField: 'time',
+                                yField: 'compare'
+                            }
+                        ],
+                        datasetHumanOptions: [
+                            {
+                                seriesType: 'line',
+                                isStastic: true,
+                                isStack: true,
+                                xField: 'time',
+                                yField: 'trafficCounting'
+                            }
+                        ]
+                    };
+                },
+                watch: {
+                    currentVideo(val) {
+                        if (val === 'video1') {
+                            this.videoPlayStatus1 = false;
+                            this.videoPlayStatus = true;
+                        } else if (val === 'video2') {
+                            this.videoPlayStatus1 = true;
+                            this.videoPlayStatus = false;
+                        }
+                    }
+                },
+                computed: {
+                    isPause() {
+                        return this.currentVideo === 'video1' ? this.videoPlayStatus : this.videoPlayStatus1;
+                    },
+                    cameraData() {
+                        const data = {
+                            normal: 0,
+                            fault: 0,
+                            unused: 0
+                        };
+                        if (this.globalData && this.globalData.cameraData) {
+                            data.normal = Math.round(
+                                (this.globalData.cameraData.normalNum / this.globalData.cameraData.totalNum) * 100
+                            );
+                            data.fault = Math.round(
+                                (this.globalData.cameraData.faultNum / this.globalData.cameraData.totalNum) * 100
+                            );
+                            data.unused = Math.round(
+                                (this.globalData.cameraData.unusedNum / this.globalData.cameraData.totalNum) * 100
+                            );
+                        }
+                        return data;
+                    }
+                },
+                created() {
+                    this.fetchGlobalDatas();
+                    this.fetchVideo1Data();
+                    this.fetchVideo2Data();
+                },
+                beforeDestroy() {
+                    this.popupContentComponents.forEach((item) => item.$destroy());
+                },
+                methods: {
+                    toggleVideoStatus() {
+                        if (this.currentVideo === 'video1') {
+                            this.videoPlayStatus = !this.videoPlayStatus;
+                        } else if (this.currentVideo === 'video2') {
+                            this.videoPlayStatus1 = !this.videoPlayStatus1;
+                        }
+                    },
+                    fetchGlobalDatas(cb) {
+                        // $.get('http://172.16.13.67:3877/globalInfo', (res) => {
+                            const res = {
+                                    data: { 
+                                    temperature: 24,
+                                    weather: "小雨",
+                                    cameraData: {
+                                    totalNum: 34,
+                                    faultNum: 10,
+                                    normalNum: 16,
+                                    unusedNum: 8
+                                    },
+                                    roadData: [{
+                                    name: "十字路口1",
+                                    trafficLightsNum: 4,
+                                    trafficCongestion: "顺畅",
+                                    trafficAccidentNum: 15,
+                                    isConstruction: "否",
+                                    Address: "新川北二路与锦和东三街交叉口"
+                                    },
+                                    {
+                                    name: "小区入口",
+                                    trafficLightsNum: 0,
+                                    trafficCongestion: "顺畅",
+                                    trafficAccidentNum: 5,
+                                    isConstruction: "否",
+                                    Address: "新川北一路与锦和东三街交叉口"
+                                    },
+                                    {
+                                    name: "道路口1",
+                                    trafficLightsNum: 2,
+                                    trafficCongestion: "拥挤",
+                                    trafficAccidentNum: 10,
+                                    isConstruction: "是",
+                                    Address: "新川北二路与新川路交叉口"
+                                    },
+                                    {
+                                    name: "右车道1",
+                                    trafficLightsNum: 0,
+                                    trafficCongestion: "顺畅",
+                                    trafficAccidentNum: 0,
+                                    isConstruction: "否",
+                                    Address: "新川北一路与新川路交叉口"
+                                    },
+                                    {
+                                    name: "左车道1",
+                                    trafficLightsNum: 0,
+                                    trafficCongestion: "拥挤",
+                                    trafficAccidentNum: 0,
+                                    isConstruction: "是",
+                                    Address: "新川南一路与新川路交叉口"
+                                    },
+                                    {
+                                    name: "右车道2",
+                                    trafficLightsNum: 0,
+                                    trafficCongestion: "拥挤",
+                                    trafficAccidentNum: 1,
+                                    isConstruction: "否",
+                                    Address: "新川北二路与锦和与新川路交叉口"
+                                    },
+                                    {
+                                    name: "左车道2",
+                                    trafficLightsNum: 0,
+                                    trafficCongestion: "拥挤",
+                                    trafficAccidentNum: 0,
+                                    isConstruction: "否",
+                                    Address: "新川南二路与新川路交叉口"
+                                    },
+                                    {
+                                    name: "红绿灯十字路口",
+                                    trafficLightsNum: 4,
+                                    trafficCongestion: "拥挤",
+                                    trafficAccidentNum: 32,
+                                    isConstruction: "否",
+                                    Address: "新川锦和交叉路口红绿灯"
+                                    }]
+                                }
+                            };
+                            const globalData = res.data;
+                            this.globalData = globalData;
+                            if (globalData && globalData.cameraData) {
+                                const featureCollection = {
+                                    type: 'FeatureCollection',
+                                    features: [
+                                        {
+                                            properties: { value: globalData.cameraData.normalNum, name: '正常' }
+                                        },
+                                        {
+                                            properties: { value: globalData.cameraData.faultNum, name: '故障' }
+                                        },
+                                        {
+                                            properties: { value: globalData.cameraData.unusedNum, name: '未使用' }
+                                        }
+                                    ]
+                                };
+                                this.$set(this.cameraDataset, 'geoJSON', featureCollection);
+                                this.textListContent = [].concat(globalData.roadData);
+                            }
+                        // });
+                    },
+                    fetchVideo1Data() {
+                        this.fetchVideoParameters();
+                        const pointsParams = new SuperMap.GetFeaturesBySQLParameters({
+                            queryParameter: {
+                                name: 'point@video_1',
+                                attributeFilter: 'SMID > 0'
+                            },
+                            datasetNames: ['video_1:point']
+                        });
+                        this.fetchMarkerDatas({ pointsParams });
+                    },
+                    fetchVideo2Data() {
+                        this.fetchVideoParameters({
+                            dataUrl: dataUrl3,
+                            datasetNames: ['latestVideo:NewVideo'],
+                            videoParameterListVarName: 'videoParameterList2',
+                            // address: 'http://192.168.11.94:8190/iportal/output/video3.mp4'
+                            address: 'http://172.16.13.67:8080/video.mp4'
+                        });
+                        const pointsParams = new SuperMap.GetFeaturesBySQLParameters({
+                            queryParameter: {
+                                name: 'point@latestVideo',
+                                attributeFilter: 'SMID > 0'
+                            },
+                            datasetNames: ['latestVideo:point']
+                        });
+                        this.fetchMarkerDatas({ dataUrl: dataUrl3, pointsParams, markerDatasVarName: 'markerDatas2' });
+                    },
+                    fetchVideoParameters({
+                        dataUrl = dataUrl1,
+                        datasetNames = ['video_1:NewVideo'],
+                        videoParameterListVarName = 'videoParameterList1',
+                        // address = 'http://192.168.11.94:8190/iportal/output/yuanqu.mp4'
+                        address = 'http://172.16.13.67:8080/yuanqu.mp4',
+                    } = {}) {
+                        const idsParam = new SuperMap.GetFeaturesByIDsParameters({
+                            IDs: [1],
+                            datasetNames
+                        });
+                        const service = new mapboxgl.supermap.FeatureService(dataUrl);
+                        const _this = this;
+                        service.getFeaturesByIDs(idsParam, function (serviceResult) {
+                            const res = serviceResult.result.features.features[0].properties.videoInfo;
+                            const calibrationModel = res.videoParameter.calibrationModel;
+                            const { centerX, centerY, fovX, fovY, videoHeight, videoWidth } = calibrationModel;
+                            _this.$set(_this.$data, videoParameterListVarName, {
+                                videoParameters: {
+                                    ...calibrationModel.cameraLocation,
+                                    cx: centerX,
+                                    cy: centerY,
+                                    fx: fovX,
+                                    fy: fovY
+                                },
+                                videoHeight,
+                                videoWidth,
+                                src: address
+                            });
+
+                            // _this.$set(_this.$data, videoParameterListVarName, {
+                            //     videoParameters: {
+                            //         x: 1.3355976039998194E7,
+                            //         y: 3570816.8299734485,
+                            //         z: 84.61937489086995,
+                            //         pitch: -24.96093939608592,
+                            //         roll: -8.415413323689824,
+                            //         yaw: -7.289473927703427,
+                            //         cx: 959.9995045134173,
+                            //         cy: 539.9901454012562,
+                            //         fx: 1520.152911079442,
+                            //         fy: 1575.1348617395925
+                            //     },
+                            //     videoHeight: 1080,
+                            //     videoWidth: 1920,
+                            //     src: address
+                            // });
+                        });
+                    },
+
+                    fetchMarkerDatas({ dataUrl = dataUrl1, pointsParams, markerDatasVarName = 'markerDatas1' } = {}) {
+                        const _this = this;
+                        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+                            pointsParams,
+                            function (serviceResult) {
+                                console.log('serviceResult.result.features.features', serviceResult.result.features.features);
+                                _this[markerDatasVarName] = serviceResult.result.features.features;
+                            }
+                        );
+                    },
+                    popupOpen(data) {
+                        console.log('open', data);
+                        this.clickData = {
+                            ...data,
+                            SHOTTINGDATE: '拍摄于' + moment(+data.SHOTTINGDATE).format('YYYY年M月D日')
+                        };
+                        console.log('data.FLOWDATA', data.FLOWDATA);
+                        if (data.FLOWDATA) {
+                            const flowData = JSON.parse(data.FLOWDATA);
+                            const featureCollection = {
+                                type: 'FeatureCollection',
+                                features: flowData.map((item) => ({
+                                    properties: {
+                                        ...item,
+                                        compare: 100
+                                    }
+                                }))
+                            };
+                            this.$set(this.dataset, 'geoJSON', featureCollection);
+                        }
+                        this.$set(this.popupVisible, data.NAME, true);
+                        console.log('this.popupVisible', this.popupVisible)
+                    },
+                    popupClose(data) {
+                        this.$set(this.popupVisible, data.NAME, false);
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

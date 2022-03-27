@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>二维地图</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mapbox-gl@1.12.0/dist/mapbox-gl.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mapbox-gl@1.12.0/dist/mapbox-gl.min.js"></script>
+        <link rel="stylesheet"
+            href="https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.css">
+        <script type="text/javascript"
+            src="https://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.2.0/mapbox-gl-draw.js"></script>
+        <script type="text/javascript" src="./libs/iclient-mapboxgl-es6.js"></script>
+        <link rel="stylesheet" href="./libs/iclient-mapboxgl.min.css">
+        <script src="https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+        <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/proj4js/2.6.2/proj4.js"></script>
+        <link rel="stylesheet" href="./css/map.css">
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var attribution =
+                "<a href='https://www.mapbox.com/about/maps/' target='_blank'> Mapbox </a>" +
+                "with <span> <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                " Map Data <span> <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var baseUrl =
+                'https://t3.tianditu.gov.cn/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}';
+            // var dataUrl = 'http://172.16.13.211:8090/iserver/services/data-DeQing-2/rest/data';
+            let dataUrl = 'http://172.16.13.67:8090/iserver/services/data-video_1/rest/data';
+            // var dataUrl = 'http://172.16.13.67:8090/iserver/services/data-latestVideo/rest/data';
+            // var dataSetInfo = {
+            //     Point: { dataSetName: 'VideoPoint', dataSourceName: 'DeQing' },
+            //     LineString: { dataSetName: 'VideoLine', dataSourceName: 'DeQing' },
+            //     Polygon: { dataSetName: 'VideoPolygon', dataSourceName: 'DeQing' }
+            // };
+            var dataSetInfo = {
+                Point: { dataSetName: 'point', dataSourceName: 'video_1' },
+                // Point: { dataSetName: 'point', dataSourceName: 'latestVideo' },
+                LineString: { dataSetName: 'line', dataSourceName: 'video_1' },
+                Polygon: { dataSetName: 'polygon', dataSourceName: 'video_1' }
+            };
+
+            var drawFeatures = [];
+            var draw;
+            var map = new mapboxgl.Map({
+                container: 'map', //div id
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            attribution: attribution,
+                            type: 'raster',
+                            tiles: [baseUrl],
+                            tileSize: 256
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'simple-tiles',
+                            type: 'raster',
+                            source: 'raster-tiles',
+                            maxzoom: 18
+                        }
+                    ]
+                },
+                center: [104.09026038193781,30.520905877328072],
+                zoom: 17,
+                maxZoom: 18
+            });
+            map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+            map.loadImage('./marker-icon.png', function (error, image) {
+                map.addImage('marker-icon-22', image);
+                draw = new MapboxDraw({
+                    displayControlsDefault: false,
+                    controls: {
+                        polygon: true,
+                        line_string: true,
+                        point: true,
+                        trash: true
+                    },
+                    styles: [
+                        {
+                            id: 'highlight-active-points',
+                            type: 'symbol',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Point'],
+                                ['==', 'meta', 'feature'],
+                                ['==', 'active', 'true']
+                            ],
+                            layout: {
+                                'icon-image': 'marker-icon-22',
+                                'icon-size': 1
+                            }
+                        },
+                        {
+                            id: 'points-are-blue',
+                            type: 'symbol',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Point'],
+                                ['==', 'meta', 'feature'],
+                                ['==', 'active', 'false']
+                            ],
+                            layout: {
+                                'icon-image': 'marker-icon-22',
+                                'icon-size': 1
+                            }
+                        },
+                        {
+                            id: 'gl-draw-line',
+                            type: 'line',
+                            filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
+                            },
+                            paint: {
+                                'line-color': '#D20C0C',
+                                'line-dasharray': [0.2, 2],
+                                'line-width': 2
+                            }
+                        },
+                        // polygon fill
+                        {
+                            id: 'gl-draw-polygon-fill',
+                            type: 'fill',
+                            filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+                            paint: {
+                                'fill-color': '#D20C0C',
+                                'fill-outline-color': '#D20C0C',
+                                'fill-opacity': 0.1
+                            }
+                        },
+                        // polygon mid points
+                        {
+                            id: 'gl-draw-polygon-midpoint',
+                            type: 'circle',
+                            filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
+                            paint: {
+                                'circle-radius': 3,
+                                'circle-color': '#fbb03b'
+                            }
+                        },
+                        {
+                            id: 'gl-draw-polygon-stroke-active',
+                            type: 'line',
+                            filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
+                            },
+                            paint: {
+                                'line-color': '#D20C0C',
+                                'line-dasharray': [0.2, 2],
+                                'line-width': 2
+                            }
+                        },
+                        // vertex point halos
+                        {
+                            id: 'gl-draw-polygon-and-line-vertex-halo-active',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'vertex'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static']
+                            ],
+                            paint: {
+                                'circle-radius': 5,
+                                'circle-color': '#FFF'
+                            }
+                        },
+                        // vertex points
+                        {
+                            id: 'gl-draw-polygon-and-line-vertex-active',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'vertex'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static']
+                            ],
+                            paint: {
+                                'circle-radius': 3,
+                                'circle-color': '#D20C0C'
+                            }
+                        },
+
+                        // INACTIVE (static, already drawn)
+                        // line stroke
+                        {
+                            id: 'gl-draw-line-static',
+                            type: 'line',
+                            filter: ['all', ['==', '$type', 'LineString'], ['==', 'mode', 'static']],
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
+                            },
+                            paint: {
+                                'line-color': '#000',
+                                'line-width': 3
+                            }
+                        },
+                        // polygon fill
+                        {
+                            id: 'gl-draw-polygon-fill-static',
+                            type: 'fill',
+                            filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
+                            paint: {
+                                'fill-color': '#000',
+                                'fill-outline-color': '#000',
+                                'fill-opacity': 0.1
+                            }
+                        },
+                        // polygon outline
+                        {
+                            id: 'gl-draw-polygon-stroke-static',
+                            type: 'line',
+                            filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
+                            },
+                            paint: {
+                                'line-color': '#000',
+                                'line-width': 3
+                            }
+                        }
+                    ]
+                });
+                map.addControl(draw, 'top-left');
+                map.on('draw.create', addFeature);
+                map.on('draw.delete', deleteFeature);
+            });
+            map.on('load', function () {
+                query();
+            });
+            function query() {
+                window.map = map;
+                addMarker(map, dataUrl);
+                addLine(map, dataUrl);
+                addPolygon(map, dataUrl);
+            }
+
+            function addMarker(map, dataUrl) {
+                var createMarker = function (coordinates) {
+                    coordinates.forEach((coordinate) => {
+                        var marker = new mapboxgl.Marker().setLngLat(coordinate);
+                        marker.addTo(map);
+                    });
+                };
+                var sqlParam = getFeaturesBySQLParameters('Point');
+                new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
+                    var features = serviceResult.result.features.features;
+                    var coordinates = features.map((item) => item.geometry.coordinates);
+                    createMarker(coordinates);
+                    setTooltip(map, features);
+                });
+                var sqlParam2 = getFeaturesBySQLParameters('Point', 'point');
+                new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam2, function (serviceResult) {
+                    var features = serviceResult.result.features.features;
+                    var coordinates = features.map((item) => item.geometry.coordinates);
+                    createMarker(coordinates);
+                    setTooltip(map, features);
+                });
+            }
+
+            function addLine(map, dataUrl) {
+                var sqlParam = getFeaturesBySQLParameters('LineString');
+                var addLineLayer = function (features) {
+                    map.addSource('queryLine', {
+                        type: 'geojson',
+                        data: features
+                    });
+                    map.addLayer({
+                        id: 'queryLine',
+                        type: 'line',
+                        source: 'queryLine',
+                        paint: {
+                            'line-color': '#ff69b4',
+                            'line-width': 5
+                        }
+                    });
+                };
+                new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
+                    addLineLayer(serviceResult.result.features);
+                });
+            }
+
+            function addPolygon(map, dataUrl) {
+                var sqlParam = getFeaturesBySQLParameters('Polygon');
+                var addPolygonLayer = function (features) {
+                    map.addSource('queryPolygon', {
+                        type: 'geojson',
+                        data: features
+                    });
+                    map.addLayer({
+                        id: 'queryPolygon',
+                        type: 'fill',
+                        source: 'queryPolygon',
+                        paint: {
+                            'fill-color': '#ff69b4'
+                        }
+                    });
+                };
+                new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
+                    addPolygonLayer(serviceResult.result.features);
+                });
+            }
+
+            function getFeaturesBySQLParameters(type, dataSetName1, dataSourceName1) {
+                var { dataSetName: datasetName2, dataSourceName: dataSourceName2 } = dataSetInfo[type];
+                var dataSetName = dataSetName1 || datasetName2;
+                var dataSourceName = dataSourceName1 || dataSourceName2;
+                var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                    queryParameter: {
+                        name: dataSetName + '@' + dataSourceName,
+                        attributeFilter: 'SMID > 0'
+                    },
+                    datasetNames: [dataSourceName + ':' + dataSetName],
+                    targetEpsgCode: 4326
+                });
+                return sqlParam;
+            }
+
+            function addFeature(e) {
+                var features = e.features;
+                var type = features[0].geometry.type;
+                var feature = get3857(features)[0];
+                var options = {
+                    ...dataSetInfo[type],
+                    // dataSetName: 'VideoPoint',
+                    editType: 'add',
+                    features: feature,
+                    returnContent: true
+                };
+                console.log('addFeature', e);
+                editFeature(options, dataUrl);
+            }
+
+            function deleteFeature(e) {
+                var features = e.features;
+                var type = features[0].geometry.type;
+                var delDrawId = features[0].id;
+                var delFeatureIndex = drawFeatures.findIndex((item) => item.id === delDrawId);
+                var id = drawFeatures[delFeatureIndex].serviceFeatureId;
+                var options = {
+                    ...dataSetInfo[type],
+                    editType: 'delete',
+                    IDs: [id]
+                };
+                editFeature(options, dataUrl);
+                drawFeatures.splice(delFeatureIndex, 1);
+            }
+
+            function updateFeature(e) {
+                var features = e.features;
+                var type = features[0].geometry.type;
+                var delDrawId = features[0].id;
+                var delFeatureIndex = drawFeatures.findIndex((item) => item.id === delDrawId);
+                var id = drawFeatures[delFeatureIndex].serviceFeatureId;
+                var options = {
+                    ...dataSetInfo[type],
+                    editType: 'update',
+                    IDs: [id]
+                };
+                editFeature(options, dataUrl);
+                console.log('update', e);
+                drawFeatures.splice(delFeatureIndex, 0, e.features[0]);
+            }
+
+            function editFeature(options, dataUrl) {
+                const params = new SuperMap.EditFeaturesParameters(options);
+                const { editType, features } = options;
+                console.log('editFeature', params);
+                new mapboxgl.supermap.FeatureService(dataUrl).editFeatures(params, function (e) {
+                    console.log('success', e);
+                    if (editType === 'add' && e.result['succeed']) {
+                        features.serviceFeatureId = e.result[0];
+                        drawFeatures.push(features);
+                    }
+                });
+            }
+
+            function get3857(features) {
+                return features.map((item) => {
+                    const geometry = item.geometry;
+                    const coordinates = geometry.coordinates;
+                    const type = geometry.type;
+                    if (type === 'Point') {
+                        item.geometry.coordinates = proj4('EPSG:4326', 'EPSG:3857', coordinates);
+                    }
+                    if (type === 'LineString') {
+                        item.geometry.coordinates = coordinates.map((item) => proj4('EPSG:4326', 'EPSG:3857', item));
+                    }
+                    if (type === 'Polygon') {
+                        item.geometry.coordinates = coordinates.map((item) =>
+                            item.map((item) => proj4('EPSG:4326', 'EPSG:3857', item))
+                        );
+                    }
+                    return item;
+                });
+            }
+
+            function drawMarker(map, layerId, feature) {
+                draw.delete(feature.id);
+                var marker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates);
+                marker.addTo(map);
+            }
+            function setTooltip(map, features) {
+                features.forEach((item) => {
+                    
+                    let properties = item.properties;
+                    if(properties['NAME']){
+                        let liHtml = `<li>
+                          <div>${properties['NAME']}</div>
+                    </li>`;
+
+                    new mapboxgl.Popup()
+                        .setLngLat(item.geometry.coordinates)
+                        .setHTML(
+                            `<div class="identify">
+                                <ul>
+                                  ${liHtml}
+                                </ul>
+                            </div>`
+                        )
+                        .addTo(map);
+                    }
+                    
+                });
+            }
+        </script>
+    </body>
+</html>

@@ -114,6 +114,14 @@ var exampleConfig = {
                         thumbnail: 'components_city_smart_livelihood_vue.png',
                         fileName: 'components_city_smart_livelihood_vue',
                         localIgnore: true
+                    },
+                    {
+                      name: '智慧园区管理',
+                      name_en: 'Smart Park Manage',
+                      version: '10.2.0',
+                      thumbnail: 'components_videomap_vue.png',
+                      fileName: 'components_videomap_vue',
+                      localIgnore: true
                     }
                 ]
             }
