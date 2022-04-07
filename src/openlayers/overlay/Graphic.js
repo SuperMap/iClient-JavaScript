@@ -41,10 +41,10 @@ const Renderer = ['canvas', 'webgl'];
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
  * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link ol.Graphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度。
- * @param {number} [options.radius=10] - 要素半径，单位像素。
+ * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link ol.Graphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link ol.Graphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
