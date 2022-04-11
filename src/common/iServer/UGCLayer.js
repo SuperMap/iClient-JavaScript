@@ -8,7 +8,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @class UGCLayer
  * @deprecatedclass SuperMap.UGCLayer
  * @category  iServer Map Layer
- * @classdesc UGC 图层类。
+ * @classdesc SuperMap 图层类。
  * @param {Object} options - 参数。
  * @param {Bounds} options.bounds - 图层范围。
  * @param {string} options.name - 图层的名称。

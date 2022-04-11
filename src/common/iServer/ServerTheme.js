@@ -15,7 +15,7 @@ import {UGCSubLayer} from './UGCSubLayer';
  * @class ServerTheme
  * @deprecatedclass SuperMap.ServerTheme
  * @category  iServer Map Theme
- * @classdesc UGC 专题图图层类。
+ * @classdesc SuperMap 专题图图层类。
  * @extends {UGCSubLayer}
  * @param {CommonTheme} theme - 专题图对象。
  * @param {LonLat} themeElementPosition - 专题图元素位置。

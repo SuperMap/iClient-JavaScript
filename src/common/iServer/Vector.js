@@ -9,7 +9,7 @@ import {ServerStyle} from './ServerStyle';
  * @class Vector
  * @deprecatedclass SuperMap.Vector
  * @category  iServer Map Layer
- * @classdesc UGC 矢量图层类。
+ * @classdesc SuperMap 矢量图层类。
  * @extends {UGCSubLayer}
  * @param {Object} options - 可选参数。
  * @param {ServerStyle} [options.style] - 矢量图层的风格。

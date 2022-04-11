@@ -11,7 +11,7 @@ import {ColorDictionary} from './ColorDictionary';
  * @class Grid
  * @deprecatedclass SuperMap.Grid
  * @category iServer Map Layer
- * @classdesc UGC 栅格图层类。
+ * @classdesc SuperMap 栅格图层类。
  * @extends {UGCSubLayer}
  * @param {Object} options - 可选参数。
  * @param {Array.<Object>} [options.colorDictionary] - 颜色对照表对象。

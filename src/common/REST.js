@@ -1317,7 +1317,7 @@ var LayerType = {
 
 /**
  * @enum UGCLayerType
- * @description  UGC图层类型。
+ * @description  SuperMap 图层类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage

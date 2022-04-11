@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @class UGCImage
  * @deprecatedclass SuperMap.Image
  * @category iServer Map Layer
- * @classdesc UGC 影像图层类
+ * @classdesc SuperMap 影像图层类
  * @extends {UGCSubLayer}
  * @param {Object} options - 可选参数。
  * @param {ColorSpaceType} [options.colorSpaceType] - 返回影像图层的色彩显示模式。

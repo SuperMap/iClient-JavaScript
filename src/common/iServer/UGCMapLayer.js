@@ -8,7 +8,7 @@ import {UGCLayer} from './UGCLayer';
  * @class UGCMapLayer
  * @deprecatedclass SuperMap.UGCMapLayer
  * @category  iServer Map Layer
- * @classdesc UGC 地图图层类。
+ * @classdesc SuperMap 地图图层类。
  * @extends {UGCLayer}
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.completeLineSymbolDisplayed] - 是否显示完整线型。
