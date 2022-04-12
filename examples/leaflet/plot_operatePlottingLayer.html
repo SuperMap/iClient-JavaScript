@@ -10,22 +10,53 @@
 <body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading' id="panelheading">
-        <h5 class='panel-title text-center' data-i18n="resources.title_operatePlottingLayer"></h5></div>
-    <div class='panel-body content' id="panelbodycontent">
+        <h5 class='panel-title text-center' data-i18n="resources.title_operatePlottingLayer"></h5>
+    </div>
+    <div class='input-group' style=" margin-bottom: 10px;top:10px;left:5px;right:5px;width: 340px;">
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createLayer" onclick="createPlottingLayer()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteLayer" onclick="removePlottingLayer()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawMarker" onclick="plotSymbol()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelMarker" onclick="plottingDrawCancel()"/>
     </div>
+    <div class='input-group' style=" margin-bottom: 12px;left:30px;width: 240px;">
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createChildLayer" onclick="createChildPlotLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteChildLayer" onclick="removeChildPlotLayer()"/>
+    </div>
+    <div class='input-group' style=" margin-bottom: 10px;top:10px;left:5px;right:5px;width: 340px;">
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_setPlottingLayerMinScale" onclick="setPlottingLayerMinScale()"/>
+    </div>
+    <div class='input-group' style=" margin-bottom: 10px;top:10px;left:5px;right:15px;width: 340px;">
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_setPlottingLayerMaxScale" onclick="setPlottingLayerMaxScale()"/>
+    </div>
+    <div class='input-group' style=" margin-bottom: 10px;top:10px;left:5px;right:15px;width: 340px;">
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearScale" onclick="clearScale()"/>
+    </div>
+    <div class='input-group' style=" margin-bottom: 10px;top:10px;left:5px;right:5px;width: 340px;">
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_setSymScaleDefinition" onclick="setSymScaleDefinition()"/>
+    </div>
+    <div class='input-group' style=" margin-bottom: 10px;top:10px;left:5px;right:15px;width: 340px;">
+        <div class='input-group' style=" margin-bottom: 10px;left:10px;width: 300px;">
+            <span class='input-group-addon' data-i18n="resources.btn_plotSize"></span>
+            <select class='form-control' id='plotSize'>
+                <option value='0'>false</option>
+                <option value='1' selected>true</option>
+            </select>
+        </div>
+    </div>
 </div>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" include="bootstrap,widgets.alert,jquery" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient-leaflet-css,iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%">
+</div>
+<script type="text/javascript" include="bootstrap,widgets.alert,plottingPanel" src="../js/include-web.js"></script>
+<script type="text/javascript"  include="leaflet,iclient-leaflet,iclient-leaflet-css,iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="PlotPanel,StylePanel,PlotMapPanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+<script type="text/javascript" src="../../node_modules/pako/dist/pako_inflate.js"></script>
+<script type="text/javascript" src="../../node_modules/pako/dist/pako.min.js"></script>
 <script type="text/javascript">
+
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
-    var map,plottingLayer,plottingLayers=[],drawControl;
+    var map,plottingLayer,drawControl,childPlotLayer,visibleFlag;
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -33,36 +64,92 @@
         maxZoom: 18,
         zoom: 3
     });
-    new L.supermap.TiledMapLayer(url).addTo(map);
+
+    L.supermap.tiledMapLayer(url).addTo(map);
     drawControl = L.supermap.plotting.drawControl();
     drawControl.addTo(map);
     var editControl = L.supermap.plotting.editControl();
     editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    var plotMapManager = plotting.getPlotMapManager();
+
     function createPlottingLayer(){
         widgets.alert.clearAlert();
-        var plottingLayerName = "plottingLayer_" + Math.ceil(Math.random() * 1000);
+
+        var plottingLayerName = "图元层";
         plottingLayer = L.supermap.plotting.plottingLayer(plottingLayerName, serverUrl);
-        drawControl.setDrawingLayer(plottingLayer);
         plottingLayer.addTo(map);
-        plottingLayers.push(plottingLayer);
+        plotMapManager.setActivePlottingLayer(plottingLayer);
         var successMessage = "图层 " + plottingLayer.name + " 创建成功";
         widgets.alert.showAlert(successMessage,true);
     }
+
     function removePlottingLayer(){
         widgets.alert.clearAlert();
-        if (plottingLayers.length !== 0) {
-            var tempPlottingLayer = plottingLayers[plottingLayers.length - 1];
+        if (plotMapManager.getPlottingLayers().length !== 0) {
+            var tempPlottingLayer = plotMapManager.getActivePlottingLayer();
             map.removeLayer(tempPlottingLayer);
             var successMessage = "图层 " + tempPlottingLayer.name + " 删除成功";
-            plottingLayers.splice(plottingLayers.length - 1, 1);
-            if(plottingLayers.length > 0){
-                drawControl.setDrawingLayer(plottingLayers[plottingLayers.length-1]);
+            if(plotMapManager.getPlottingLayers().length > 0){
+              plotMapManager.setActivePlottingLayer(plotMapManager.getPlottingLayers()[plotMapManager.getPlottingLayers().length-1]);
             }
             widgets.alert.showAlert(successMessage,true);
         } else {
             widgets.alert.showAlert("当前地图无标绘图层",false);
         }
     }
+
+    function createChildPlotLayer() {
+        widgets.alert.clearAlert();
+        if(plotMapManager.getActivePlottingLayer() !== undefined){
+            var plottingLayerName = "子图层";
+            var plottingLayerCaption = plottingLayerName;
+            childPlotLayer = L.supermap.plotting.childPlotLayer(plottingLayerName,plottingLayerCaption);
+            plottingLayer.addChildPlotLayer(childPlotLayer);
+            plottingLayer.setActiveChildPlotLayer(childPlotLayer);
+        }else{
+            widgets.alert.showAlert("请先添加标绘图层！",true);
+        }
+        var successMessage = "子图层 " + childPlotLayer.name + " 创建成功";
+        widgets.alert.showAlert(successMessage,true);
+    }
+
+    function removeChildPlotLayer(){
+        widgets.alert.clearAlert();
+        var childPlotLayer = plotMapManager.getActiveChildPlotLayer();
+        if (childPlotLayer != null && childPlotLayer.getParent() != null) {
+          childPlotLayer.getParent().removeChildPlotLayer(childPlotLayer);
+          if(childPlotLayer.getParent().getChildPlotLayers().length > 0){
+              plotMapManager.setActiveChildPlotLayer(childPlotLayer.getParent().getChildPlotLayers()[childPlotLayer.getParent().getChildPlotLayers().length-1]);
+          }
+
+          var successMessage = "子图层 " + childPlotLayer.name + " 删除成功";
+          widgets.alert.showAlert(successMessage,true);
+        } else {
+            widgets.alert.showAlert("当前地图无标绘图层或子图层",false);
+        }
+    }
+
+    function setPlottingLayerMinScale() {
+        plotMapManager.getActivePlottingLayer().setMinVisibleScale(map._layers[27].getScale());
+    }
+
+    function setPlottingLayerMaxScale() {
+        plotMapManager.getActivePlottingLayer().setMaxVisibleScale(map._layers[27].getScale());
+    }
+
+    function clearScale() {
+        plotMapManager.getActivePlottingLayer().clearVisibleScale();
+    }
+
+    function setSymScaleDefinition() {
+        if(document.getElementById("plotSize").selectedIndex === 0) {
+            plotMapManager.getActivePlottingLayer().setSymScaleDefinition(map._layers[27].getScale(),false);
+        }else{
+            plotMapManager.getActivePlottingLayer().setSymScaleDefinition(map._layers[27].getScale(),true);
+        }
+    }
+
     function plotSymbol(){
         widgets.alert.clearAlert();
         if(drawControl.drawingLayer !== undefined){
@@ -74,13 +161,16 @@
             widgets.alert.showAlert("请先添加标绘图层！",true);
         }
     }
+
     function plottingDrawCancel(){
         widgets.alert.clearAlert();
         drawControl.handler.disable();
     }
+
     $(document).ready(function(){
         $('#panelheading').click(function(){
             $('#panelbodycontent').toggle();
+            $('#popupWin').toggle();
         });
     });
 </script>

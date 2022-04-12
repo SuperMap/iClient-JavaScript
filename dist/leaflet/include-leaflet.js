@@ -142,11 +142,11 @@
             inputCSS('../../dist/leaflet/iclient-leaflet.min.css');
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS('https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.1/iclient-plot-leaflet.css');
+            inputCSS('https://iclient.supermap.io/web/libs/plotting/leaflet/11.0.0/iclient-plot-leaflet.css');
             if (supportES6()) {
-                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.1/iclient-plot-leaflet-es6.min.js');
+                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/11.0.0/iclient-plot-leaflet-es6.min.js');
             } else {
-                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/10.2.1/iclient-plot-leaflet.min.js');
+                inputScript('https://iclient.supermap.io/web/libs/plotting/leaflet/11.0.0/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
