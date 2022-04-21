@@ -101,17 +101,18 @@
 
     function createChildPlotLayer() {
         widgets.alert.clearAlert();
-        if(plotMapManager.getActivePlottingLayer() !== undefined){
+        if(plotMapManager.getActivePlottingLayer() != null){
             var plottingLayerName = "子图层";
             var plottingLayerCaption = plottingLayerName;
             childPlotLayer = L.supermap.plotting.childPlotLayer(plottingLayerName,plottingLayerCaption);
             plottingLayer.addChildPlotLayer(childPlotLayer);
-            plottingLayer.setActiveChildPlotLayer(childPlotLayer);
+            plotMapManager.setActiveChildPlotLayer(childPlotLayer);
+
+            var successMessage = "子图层 " + childPlotLayer.name + " 创建成功";
+            widgets.alert.showAlert(successMessage,true);
         }else{
             widgets.alert.showAlert("请先添加标绘图层！",true);
         }
-        var successMessage = "子图层 " + childPlotLayer.name + " 创建成功";
-        widgets.alert.showAlert(successMessage,true);
     }
 
     function removeChildPlotLayer(){
@@ -152,7 +153,7 @@
 
     function plotSymbol(){
         widgets.alert.clearAlert();
-        if(drawControl.drawingLayer !== undefined){
+        if(drawControl.drawingLayer != null){
             drawControl.handler.libID = 421;
             drawControl.handler.code = 10100;
             drawControl.handler.serverUrl = serverUrl;
