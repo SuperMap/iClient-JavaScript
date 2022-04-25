@@ -159,34 +159,39 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 将被删除的要素。
+     * @param {(Array.<SuperMap.Feature.Vector>|Function)} features - 将被删除的要素或用来过滤的回调函数。
      */
     removeFeatures: function (features) {
         var me = this;
-        if (!features || features.length === 0) {
+        if (!features) {
             return;
         }
         if (features === me.features) {
             return me.removeAllFeatures();
         }
-        if (!(L.Util.isArray(features))) {
+        if (!L.Util.isArray(features) && !typeof features === 'function') {
             features = [features];
         }
 
         var featuresFailRemoved = [];
 
-        for (var i = features.length - 1; i >= 0; i--) {
-            var feature = features[i];
+        for (var i = 0; i < me.features.length; i++) {
+            var feature = me.features[i];
 
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = L.Util.indexOf(me.features, feature);
-
-            if (findex === -1) {
-                featuresFailRemoved.push(feature);
-                continue;
+            if (features && typeof features === 'function') {
+              if (features(feature)) {
+                me.features.splice(i--, 1);
+              }
+            } else {
+              var findex = L.Util.indexOf(features, feature);
+              if (findex === -1) {
+                  featuresFailRemoved.push(feature);
+              } else {
+                me.features.splice(i--, 1);
+              }
             }
-            me.features.splice(findex, 1);
         }
 
         var drawFeatures = [];
@@ -237,14 +242,16 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
+     * @param {Function} [filter] - 根据条件过滤要素的回调函数。
      * @returns {Array} 返回图层中的有效数据。
      */
-    getFeatures: function () {
-        var me = this;
-        var len = me.features.length;
-        var clonedFeatures = new Array(len);
+    getFeatures: function (filter) {
+        var len = this.features.length;
+        var clonedFeatures = [];
         for (var i = 0; i < len; ++i) {
-            clonedFeatures[i] = me.features[i];
+          if (!filter || (filter && typeof filter === 'function' && filter(this.features[i]))) {
+            clonedFeatures.push(this.features[i]);
+          }
         }
         return clonedFeatures;
     },
