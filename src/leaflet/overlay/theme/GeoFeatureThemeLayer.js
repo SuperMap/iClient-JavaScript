@@ -99,11 +99,11 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 删除专题图中 features。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {FeatureVector} features - 待删除的要素。
+     * @param {(FeatureVector|Function)} features - 待删除的要素或用于过滤的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        ThemeLayer.prototype.removeFeatures.call(this, arguments);
+        ThemeLayer.prototype.removeFeatures.call(this, features);
     },
 
     /**

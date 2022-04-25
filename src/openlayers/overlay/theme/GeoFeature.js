@@ -85,11 +85,11 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {FeatureVector} features - 要删除的要素对象。
+     * @param {(FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        Theme.prototype.removeFeatures.apply(this, arguments);
+        Theme.prototype.removeFeatures.call(this, features);
     }
 
     /**

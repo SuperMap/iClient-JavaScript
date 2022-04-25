@@ -211,52 +211,63 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @param {Array.<FeatureVector>} features - 待删除 features。
+     * @param {(Array.<FeatureVector>|Function)} features - 待删除 feature 的数组或用来过滤的回调函数。
      * @description 删除专题图中的features。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果要删除的 features 数组中的元素过多，推荐使用 removeAllFeatures删除所有 feature后，再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
-        if (!features || features.length === 0) {
-            return;
-        }
-        if (features === this.features) {
-            return this.removeAllFeatures();
-        }
-        if (!(CommonUtil.isArray(features))) {
-            features = [features];
-        }
-        var featuresFailRemoved = [];
-        for (var i = features.length - 1; i >= 0; i--) {
-            var feature = features[i];
-            //如果我们传入的feature在features数组中没有的话，则不进行删除，
-            //并将其放入未删除的数组中。
-            var findex = CommonUtil.indexOf(this.features, feature);
+      var me = this;
+      if (!features) {
+          return;
+      }
+      if (features === me.features) {
+          return me.removeAllFeatures();
+      }
+      if (!CommonUtil.isArray(features) && !typeof features === 'function') {
+          features = [features];
+      }
+
+      var featuresFailRemoved = [];
+
+      for (var i = 0; i < me.features.length; i++) {
+          var feature = me.features[i];
+
+          //如果我们传入的feature在features数组中没有的话，则不进行删除，
+          //并将其放入未删除的数组中。
+          if (features && typeof features === 'function') {
+            if (features(feature)) {
+              me.features.splice(i--, 1);
+            }
+          } else {
+            var findex = CommonUtil.indexOf(features, feature);
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
-                continue;
+            } else {
+              me.features.splice(i--, 1);
             }
-            this.features.splice(findex, 1);
-        }
-        var drawFeatures = [];
-        for (var hex = 0, len = this.features.length; hex < len; hex++) {
-            feature = this.features[hex];
-            drawFeatures.push(feature);
-        }
-        this.features = [];
-        this.addFeatures(drawFeatures);
-        //绘制专题要素
-        if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getBounds());
-        }
-        var succeed = featuresFailRemoved.length == 0 ? true : false;
-        /**
-         * @event ThemeLayer#featuresremoved
-         * @description 要素删除之后触发。
-         * @property {Array.<FeatureVector>} features - 未被成功删除的要素。
-         * @property {boolean} succeed - 是否删除成功。
-         */
-        mapboxgl.Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
+          }
+      }
+
+      var drawFeatures = [];
+      for (var hex = 0, len = this.features.length; hex < len; hex++) {
+          feature = this.features[hex];
+          drawFeatures.push(feature);
+      }
+      this.features = [];
+      this.addFeatures(drawFeatures);
+      //绘制专题要素
+      if (this.renderer) {
+          this.redrawThematicFeatures(this.map.getBounds());
+      }
+      var succeed = featuresFailRemoved.length == 0 ? true : false;
+      /**
+       * @event mapboxgl.supermap.ThemeLayer#featuresremoved
+       * @description 要素删除之后触发。
+       * @property {Array.<SuperMap.Feature.Vector>} features - 未被成功删除的要素。
+       * @property {boolean} succeed - 删除成功与否。
+       */
+      mapboxgl.Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
     }
 
     /**
@@ -274,15 +285,18 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
+     * @param {Function} [filter] - 根据条件过滤要素的回调函数。
      * @returns {FeatureVector} 用户加入图层的有效数据。
      */
-    getFeatures() {
-        var len = this.features.length;
-        var clonedFeatures = new Array(len);
-        for (var i = 0; i < len; ++i) {
-            clonedFeatures[i] = this.features[i];
+    getFeatures(filter) {
+      var len = this.features.length;
+      var clonedFeatures = [];
+      for (var i = 0; i < len; ++i) {
+        if (!filter || (filter && typeof filter === 'function' && filter(this.features[i]))) {
+          clonedFeatures.push(this.features[i]);
         }
-        return clonedFeatures;
+      }
+      return clonedFeatures;
     }
 
     /**

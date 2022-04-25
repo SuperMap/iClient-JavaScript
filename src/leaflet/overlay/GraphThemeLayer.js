@@ -314,12 +314,12 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {Array.<FeatureVector>} features - 待删除的要素。
+     * @param {(Array.<SuperMap.Feature.Vector>|Function)} features - 待删除的要素或用于过滤的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
         me.clearCache();
-        ThemeLayer.prototype.removeFeatures.apply(me, arguments);
+        ThemeLayer.prototype.removeFeatures.call(me, features);
     },
 
     /**
