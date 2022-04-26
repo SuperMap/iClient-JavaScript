@@ -245,7 +245,7 @@ describe('openlayers_Graph', () => {
             graphThemeSource.removeFeatures();
             var length1 = graphThemeSource.features.length;
             expect(length1).toEqual(orignFeatureLength);
-            graphThemeSource.removeFeatures(featureArrays[0]);
+            graphThemeSource.removeFeatures([featureArrays[0]]);
             var length2 = graphThemeSource.features.length;
             expect(length2).toEqual(length1 - 1);
             //removeAllFeatures
