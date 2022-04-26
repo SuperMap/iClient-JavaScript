@@ -509,7 +509,7 @@ export class ServerGeometry {
      */
     static fromGeometry(geometry) {
         if (!geometry) {
-            return;
+          return;
         }
         var id = 0,
             parts = [],
@@ -530,10 +530,11 @@ export class ServerGeometry {
         ) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
-                let partPointsCount = icomponents[i].getVertices().length;
+                const vertices = icomponents[i].getVertices();
+                let partPointsCount = vertices.length;
                 parts.push(partPointsCount);
                 for (let j = 0; j < partPointsCount; j++) {
-                    points.push(new Point(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
+                    points.push(new Point(vertices[j].x, vertices[j].y));
                 }
             }
             //这里className不是多点就全部是算线
@@ -545,18 +546,14 @@ export class ServerGeometry {
                     linearRingOfPolygon = polygon.components,
                     linearRingOfPolygonLen = linearRingOfPolygon.length;
                 for (let j = 0; j < linearRingOfPolygonLen; j++) {
-                    let partPointsCount = linearRingOfPolygon[j].getVertices().length + 1;
+                    const vertices = linearRingOfPolygon[j].getVertices();
+                    const partPointsCount = vertices.length + 1;
                     parts.push(partPointsCount);
                     for (let k = 0; k < partPointsCount - 1; k++) {
-                        points.push(
-                            new Point(
-                                linearRingOfPolygon[j].getVertices()[k].x,
-                                linearRingOfPolygon[j].getVertices()[k].y
-                            )
-                        );
+                        points.push(new Point(vertices[k].x, vertices[k].y));
                     }
                     points.push(
-                        new Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y)
+                        new Point(vertices[0].x, vertices[0].y)
                     );
                 }
             }
@@ -564,21 +561,23 @@ export class ServerGeometry {
         } else if (geometry instanceof Polygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
-                let partPointsCount = icomponents[i].getVertices().length + 1;
+                const vertices = icomponents[i].getVertices();
+                let partPointsCount = vertices.length + 1;
                 parts.push(partPointsCount);
                 for (let j = 0; j < partPointsCount - 1; j++) {
-                    points.push(new Point(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
+                  points.push(new Point(vertices[j].x, vertices[j].y));
                 }
-                points.push(new Point(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
+                points.push(new Point(vertices[0].x, vertices[0].y));
             }
             type = GeometryType.REGION;
         } else {
-            let geometryVerticesCount = geometry.getVertices().length;
+            const vertices = geometry.getVertices();
+            let geometryVerticesCount = vertices.length;
             for (let j = 0; j < geometryVerticesCount; j++) {
-                points.push(new Point(geometry.getVertices()[j].x, geometry.getVertices()[j].y));
+                points.push(new Point(vertices[j].x, vertices[j].y));
             }
             if (geometry instanceof LinearRing) {
-                points.push(new Point(geometry.getVertices()[0].x, geometry.getVertices()[0].y));
+                points.push(new Point(vertices[0].x, vertices[0].y));
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);

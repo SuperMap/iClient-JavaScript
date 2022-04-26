@@ -639,4 +639,122 @@ describe('GeoJSON', () => {
         expect(geo.geometry.coordinates[0]).toEqual(4020.0045221720466);
         expect(geo.geometry.coordinates[1]).toEqual(-4377.027184298267);
     });
+    it('fromGeometry MultiPolygon', () => {
+      var features = {
+        features: [
+          {
+            geometry: {
+              type: 'MultiPolygon',
+              coordinates: [
+                [
+                  [
+                    [10, 10],
+                    [20, 20],
+                    [10, 10]
+                  ]
+                ]
+              ]
+            },
+            properties: {},
+            type: 'Feature'
+          }
+        ],
+        type: 'FeatureCollection'
+      };
+      var obj = new GeoJSON().fromGeoJSON(features)[0];
+  
+      expect(obj.geometry.points[0].x).toBe(10);
+      expect(obj.geometry.points[0].y).toBe(10);
+    });
+  
+    it('fromGeometry MultiPoint', () => {
+      var features = {
+        features: [
+          {
+            geometry: {
+              type: 'MultiPoint',
+              coordinates: [
+                [10, 10],
+                [20, 20]
+              ]
+            },
+            properties: {},
+            type: 'Feature'
+          }
+        ],
+        type: 'FeatureCollection'
+      };
+      var obj = new GeoJSON().fromGeoJSON(features)[0];
+      expect(obj.geometry.points[0].x).toBe(10);
+      expect(obj.geometry.points[0].y).toBe(10);
+    });
+  
+    it('fromGeometry MultiLineString', () => {
+      var features = {
+        features: [
+          {
+            geometry: {
+              type: 'MultiLineString',
+              coordinates: [
+                [
+                  [10, 10],
+                  [20, 20]
+                ]
+              ]
+            },
+            properties: {},
+            type: 'Feature'
+          }
+        ],
+        type: 'FeatureCollection'
+      };
+      var obj = new GeoJSON().fromGeoJSON(features)[0];
+  
+      expect(obj.geometry.points[0].x).toBe(10);
+      expect(obj.geometry.points[0].y).toBe(10);
+    });
+    it('fromGeometry Polygon', () => {
+      var features = {
+        features: [
+          {
+            geometry: {
+              type: 'Polygon',
+              coordinates: [
+                [
+                  [10, 10],
+                  [20, 20],
+                  [10, 10]
+                ]
+              ]
+            },
+            properties: {},
+            type: 'Feature'
+          }
+        ],
+        type: 'FeatureCollection'
+      };
+      var obj = new GeoJSON().fromGeoJSON(features)[0];
+  
+      expect(obj.geometry.points[0].x).toBe(10);
+      expect(obj.geometry.points[0].y).toBe(10);
+    });
+    it('fromGeometry Point', () => {
+      var features = {
+        features: [
+          {
+            geometry: {
+              type: 'Point',
+              coordinates: [10, 10]
+            },
+            properties: {},
+            type: 'Feature'
+          }
+        ],
+        type: 'FeatureCollection'
+      };
+      var obj = new GeoJSON().fromGeoJSON(features)[0];
+  
+      expect(obj.geometry.points[0].x).toBe(10);
+      expect(obj.geometry.points[0].y).toBe(10);
+    });
 });
