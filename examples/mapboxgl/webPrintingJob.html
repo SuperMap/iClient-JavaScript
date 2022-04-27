@@ -275,7 +275,7 @@
             $('#center').val(e.map.getCenter().toArray().join(','));
             var extent = e.map.getCRS().extent;
             var res = Math.max(extent[2] - extent[0], extent[3] - extent[2]) / 512 / Math.pow(2, e.map.getZoom());
-            var scale = mapboxgl.supermap.Util.getScaleFromResolutionDpi(res, 96, e.map.getCRS().unit);
+            var scale = mapboxgl.supermap.CommonUtil.getScaleFromResolutionDpi(res, 96, e.map.getCRS().unit);
             $('#scale').val(scale * 2);
             $('#exportScale').val(scale);
         });
