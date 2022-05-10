@@ -528,7 +528,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function HeatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<FeatureVector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {

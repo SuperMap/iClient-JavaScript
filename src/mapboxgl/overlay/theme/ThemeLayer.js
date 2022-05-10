@@ -138,20 +138,23 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.destroyFeatures
-     * @description 销毁某个要素。
-     * @param {FeatureVector} features - 将被销毁的要素。
+     * @description 销毁要素。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
-        var all = (features == undefined);
-        if (all) {
-            features = this.features;
-        }
-        if (features) {
-            this.removeFeatures(features);
-            for (var i = features.length - 1; i >= 0; i--) {
-                features[i].destroy();
-            }
-        }
+      var all = (features === undefined);
+      if (all) {
+          features = this.features;
+      }
+      if (features) {
+          this.removeFeatures(features);
+          if (!Array.isArray(features)) {
+            features = [features];
+          }
+          for (var i = features.length - 1; i >= 0; i--) {
+              features[i].destroy();
+          }
+      }
     }
 
     /**
@@ -211,7 +214,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @param {(Array.<FeatureVector>|Function)} features - 待删除 feature 的数组或用来过滤的回调函数。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除 feature 的数组或用来过滤的回调函数。 
      * @description 删除专题图中的features。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果要删除的 features 数组中的元素过多，推荐使用 removeAllFeatures删除所有 feature后，再重新添加。这样效率会更高。
@@ -224,7 +227,7 @@ export class Theme {
       if (features === me.features) {
           return me.removeAllFeatures();
       }
-      if (!CommonUtil.isArray(features) && !typeof features === 'function') {
+      if (!CommonUtil.isArray(features) && !(typeof features === 'function')) {
           features = [features];
       }
 
@@ -264,7 +267,7 @@ export class Theme {
       /**
        * @event mapboxgl.supermap.ThemeLayer#featuresremoved
        * @description 要素删除之后触发。
-       * @property {Array.<SuperMap.Feature.Vector>} features - 未被成功删除的要素。
+       * @property {Array.<FeatureVector>} features - 未被成功删除的要素。
        * @property {boolean} succeed - 删除成功与否。
        */
       mapboxgl.Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
@@ -286,7 +289,7 @@ export class Theme {
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
      * @param {Function} [filter] - 根据条件过滤要素的回调函数。
-     * @returns {FeatureVector} 用户加入图层的有效数据。
+     * @returns {Array.<FeatureVector>} 用户加入图层的有效数据。
      */
     getFeatures(filter) {
       var len = this.features.length;
@@ -407,6 +410,7 @@ export class Theme {
      * @function ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {Object} [coordinate] - 坐标位置。
+     * @returns {Array} 像素坐标数组。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
@@ -424,8 +428,8 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
-     * @returns {FeatureVector} 转换后的 iClient 要素。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
+     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -459,7 +463,7 @@ export class Theme {
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature(features) {

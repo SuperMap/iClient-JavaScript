@@ -144,7 +144,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      /**
      * @function LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {(Array.<SuperMap.Feature.Vector>|Function)} features - 要删除的要素或用于过滤的回调函数。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
