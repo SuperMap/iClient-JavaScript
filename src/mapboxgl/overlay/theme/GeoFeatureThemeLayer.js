@@ -205,6 +205,7 @@ export class GeoFeature extends Theme {
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {SuperMap.Feature.Vector} feature - 要素对象。
+     * @returns {Array.<SuperMap.Feature.Vector>} 返回矢量要素
      */
     createThematicFeature(feature) {
         var style = Util.copyAttributesWithClip(this.style);
@@ -272,6 +273,7 @@ export class GeoFeature extends Theme {
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @param {number} [featureID=si.refDataID] - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @returns {Array} 返回图形数组
      */
     getShapesByFeatureID(featureID) {
         var list = [];
