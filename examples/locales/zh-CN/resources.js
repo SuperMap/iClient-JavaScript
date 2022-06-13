@@ -570,6 +570,7 @@ window.examplesResources = {
         "title_componentsLegend_Vue": '图例组件',
         "title_componentsBasic_Vue": '基础组件',
         "title_componentsSlideshow_Vue": '幻灯片组件',
+        "title_componentsVideoPlus_Vue": '视频增强组件',
         "title_componentsMeasure_Vue": '量算组件',
         "title_componentsQuery_Vue": '查询组件',
         "title_componentsSearch_Vue": '搜索组件',

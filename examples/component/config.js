@@ -448,6 +448,14 @@ var exampleConfig = {
               thumbnail: 'components_slideshow_vue.png',
               fileName: 'components_slideshow_vue',
               localIgnore: true
+          },
+          {
+            name: '视频增强组件',
+            name_en: 'VideoPlus',
+            version: '11.0.0',
+            localIgnore: true,
+            thumbnail: 'components_video_plus_vue.png',
+            fileName: 'components_video_plus_vue'
           }
         ]
       },

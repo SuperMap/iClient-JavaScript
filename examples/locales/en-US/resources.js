@@ -624,6 +624,7 @@ window.examplesResources = {
         "title_componentsLegend_Vue": 'Legend component(Vue)',
         "title_componentsBasic_Vue": 'Basic component(Vue)',
         "title_componentsSlideshow_Vue": 'Slideshow component(Vue)',
+        "title_componentsVideoPlus_Vue": 'VideoPlus component(vue)',
         "title_componentsMeasure_Vue": 'Measure component(Vue)',
         "title_componentsQuery_Vue": 'Query component(Vue)',
         "title_componentsSearch_Vue": 'Search component(Vue)',
