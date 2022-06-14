@@ -14,8 +14,6 @@
       height: 100%;
     }
 
-
-
     .mapboxgl-popup-tip {
       align-self: center;
     }
@@ -257,17 +255,13 @@
       },
       methods: {
         handleMapClick(e) {
-          if (e.mapEvent.target.getCanvas().style.cursor !== 'pointer') {
+          if (e.target.getCanvas().style.cursor !== 'pointer') {
             this.popupVisible = false;
           }
         },
         handleLayerClick(e) {
           this.popupVisible = true;
           this.coordinate = e.pixelPoint;
-          const features = e.target.queryRenderedFeatures(
-            [5, -5],
-            { layers: ['smvideopluslayer'] }
-          );
           this.activeData = e.features[0].properties;
         },
         toggleLayerCursor(e) {
