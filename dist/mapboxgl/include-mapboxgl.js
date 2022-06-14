@@ -1,7 +1,7 @@
 ﻿/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-(function () {
+ (function () {
   var r = new RegExp('(^|(.*?\\/))(include-mapboxgl.js)(\\?|$)'),
     s = document.getElementsByTagName('script'),
     targetScript;
@@ -96,6 +96,9 @@
       inputScript('https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'three')) {
+      inputScript('https://iclient.supermap.io/web/libs/three/0.129.0/build/three.min.js');
+    }
+    if (inArray(includes, 'three@0.121.1')) {
       inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/build/three.js');
     }
     if (inArray(includes, 'xlsx')) {
@@ -137,7 +140,7 @@
       );
     }
     if (inArray(includes, 'OBJLoader')) {
-      inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/OBJLoader.js');
+      inputScript('https://iclient.supermap.io/web/libs/three/0.129.0/examples/js/loaders/OBJLoader.js');
     }
 
     if (inArray(includes, 'three92')) {
@@ -149,15 +152,14 @@
       inputScript('https://iclient.supermap.io/web/libs/three/plugins/loaders/LoaderWorkerSupport.js');
     }
     if (inArray(includes, 'OBJLoader2')) {
-      inputScript('https://iclient.supermap.io/web/libs/three/0.129.0/build/three.min.js');
       inputScript('https://iclient.supermap.io/web/libs/three-wtm/1.0.0/three-wtm.js');
       inputScript('https://iclient.supermap.io/web/libs/wwobjloader2/4.0.0/wwobjloader2.js');
     }
     if (inArray(includes, 'MTLLoader')) {
-      inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/MTLLoader.js');
+      inputScript('https://iclient.supermap.io/web/libs/three/0.129.0/examples/js/loaders/MTLLoader.js');
     }
     if (inArray(includes, 'GLTFLoader')) {
-      inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/examples/js/loaders/GLTFLoader.js');
+      inputScript('https://iclient.supermap.io/web/libs/three/0.129.0/examples/js/loaders/GLTFLoader.js');
     }
     if (inArray(includes, 'echarts-gl')) {
       inputScript('https://iclient.supermap.io/web/libs/echarts-gl/1.1.2-fix/echarts-gl.min.js');
