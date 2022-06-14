@@ -504,7 +504,7 @@ window.examplesResources = {
         "title_mvtVectorLayer_mapboxStyle_landuse": "Land Use",
         "title_mvtVectorLayer_overlay": "MVT Overlay",
         "title_onlineSecurity": "Examples of Online SecurityManager",
-        "title_onlineWebMap": "Be a backpacker in 2014",
+        "title_onlineWebMap": "Web Map",
         "title_osmBuildings": "Buildings Stereoscopic Effect of OpenLayers",
         "title_osmBuildingsLeaflet": "Buildings Stereoscopic Effect of Leaflet",
         "title_rankSymbolThemeLayer": "Rank Symbol Thematic Map",

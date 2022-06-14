@@ -445,7 +445,7 @@ window.examplesResources = {
         "title_mvtVectorLayer_mapboxStyle_landuse": "土地利用",
         "title_mvtVectorLayer_overlay": "矢量瓦片叠加",
         "title_onlineSecurity": "Online SecurityManager使用示例",
-        "title_onlineWebMap": "2014当了一回背包客",
+        "title_onlineWebMap": "地图",
         "title_osmBuildings": "openlayers 建筑立体效果",
         "title_osmBuildingsLeaflet": "leaflet 建筑立体效果",
         "title_rankSymbolThemeLayer": "符号等级专题图",
