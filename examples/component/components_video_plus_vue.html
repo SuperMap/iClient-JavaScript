@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="resources.title_componentsVideoPlus_Vue"></title>
+  <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="iclient-mapboxgl-vue,mapbox-gl-enhance,videojs"
+    src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <style>
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mapboxgl-popup-tip {
+      align-self: center;
+    }
+
+    .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+      border-top-color: #2b535b;
+    }
+
+    .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+      border-bottom-color: #2b535b;
+    }
+
+    .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+      border-left-color: #2b535b;
+    }
+
+    .mapboxgl-popup-content {
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .mapboxgl-popup-close-button {
+      color: #c5d6e8;
+      font-size: 26px;
+      z-index: 10;
+      top: 6px;
+      right: 10px;
+    }
+
+    .custom-popup-content__border {
+      width: 370px;
+      height: 450px;
+      color: #fff;
+    }
+
+    .custom-popup-content__wrap {
+      min-width: 330px;
+    }
+
+    .sm-component-text,
+    .sm-component-indicator,
+    .sm-component-image {
+      background: transparent !important;
+    }
+
+    .custom-popup-content__head-title {
+      background-image: url('./img/video-plus/header.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      width: 100%;
+      height: 45px;
+      text-align: center;
+      padding-top: 6px;
+      margin-bottom: 5px;
+    }
+
+    .custom-popup-content__head-title .sm-component-text {
+      color: #ffac2e !important;
+    }
+
+    .custom-popup-content__body {
+      user-select: none;
+    }
+
+    .custom-popup-content__body .sm-component-text {
+      justify-content: flex-start;
+      color: #fff !important;
+    }
+
+    .custom-popup-content__title-wrap,
+    .custom-popup-content__head-title .sm-component-text {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .custom-popup-content__title-wrap {
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 19px;
+      width: 100%;
+      height: 26px;
+      background-image: url('./img/video-plus/title.png') !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
+    }
+
+    .custom-popup-content__info-list {
+      margin-bottom: 20px;
+    }
+
+    .custom-popup-content__info-list .info-item {
+      display: flex;
+      font-size: 13px;
+    }
+
+    .custom-popup-content__info-list .info-item .info-item-label {
+      width: 40%;
+    }
+
+    .custom-popup-content__info-list .info-item .info-item-value {
+      flex: 1;
+      color: #00e6ff !important;
+      font-weight: 600;
+    }
+
+    .custom-popup-content__video-border {
+      margin-top: 8px;
+      height: 200px;
+      position: relative;
+    }
+
+    .custom-popup-content__video-player {
+      min-width: 300px;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+  <div id="main">
+    <sm-video-plus url="https://iclient.supermap.io/web/data/video/video2.mp4" video-width="1920" video-height="1080"
+      :autoplay="true" :loop="true" @click="handleMapClick">
+      <sm-video-plus-layer layer-id="smvideopluslayer" :layer-style="layerStyle" :data="pointList"
+        @click="handleLayerClick" @mouseenter="toggleLayerCursor" @mouseleave="toggleLayerCursor">
+      </sm-video-plus-layer>
+      <sm-video-plus-popup v-if="coordinate" :coordinate="coordinate" :max-width="null" :show="popupVisible"
+        :close-on-click="false">
+        <sm-border class="custom-popup-content__border" type="border8">
+          <div class="custom-popup-content__wrap">
+            <div class="custom-popup-content__head-title">
+              <sm-text :title="activeData.name"></sm-text>
+            </div>
+            <div class="custom-popup-content__body">
+              <sm-text class="custom-popup-content__title-wrap" title="基本信息"></sm-text>
+              <div class="custom-popup-content__info-list">
+                <div class="info-item">
+                  <sm-text class="info-item-label" title="名称"></sm-text>
+                  <sm-text class="info-item-value" :title="activeData.name"></sm-text>
+                </div>
+                <div class="info-item">
+                  <sm-text class="info-item-label" title="地点"></sm-text>
+                  <sm-text class="info-item-value" :title="activeData.address"></sm-text>
+                </div>
+                <div class="info-item">
+                  <sm-text class="info-item-label" title="摄像头型号"></sm-text>
+                  <sm-text class="info-item-value" :title="activeData.type"></sm-text>
+                </div>
+              </div>
+              <sm-text class="custom-popup-content__title-wrap" title="视频监控"></sm-text>
+              <sm-border type="border11" class="custom-popup-content__video-border">
+                <sm-video-player class="custom-popup-content__video-player" :url="activeData.url"
+                  :options="videoPlayerOptions">
+                </sm-video-player>
+              </sm-border>
+            </div>
+          </div>
+        </sm-border>
+      </sm-video-plus-popup>
+    </sm-video-plus>
+  </div>
+  <script>
+    new Vue({
+      el: '#main',
+      data() {
+        return {
+          layerStyle: {
+            paint: {
+              'circle-radius': 8,
+              'circle-color': '#B42222',
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#fff'
+            }
+          },
+          pointList: null,
+          coordinate: null,
+          popupVisible: false,
+          activeData: null,
+          videoPlayerOptions: {
+            autoplay: true,
+            controlBar: false,
+            loop: true
+          }
+        };
+      },
+      created() {
+        const points = [{
+          'name': "华润时光里",
+          'address': "新通大道100号",
+          'type': "海康001",
+          'coordinate': [828.5775401070108, 583.1275336915099],
+          'url': 'https://iclient.supermap.io/web/data/video/VID_1.mp4'
+        }, {
+          'name': "华润时光里1",
+          'address': "新通大道101号",
+          'type': "海康002",
+          'coordinate': [66.7379679143293, 761.7949313648855],
+          'url': 'https://iclient.supermap.io/web/data/video/VID_2.mp4'
+        },
+        {
+          'name': "华润时光里2",
+          'address': "新通大道102号",
+          'type': "海康003",
+          'coordinate': [910.7165775401091, 754.60737717794],
+          'url': 'https://iclient.supermap.io/web/data/video/VID_3.mp4'
+        },
+        {
+          'name': "华润时光里3",
+          'address': "新通大道103号",
+          'type': "海康004",
+          'coordinate': [1603.7647058823031, 626.25489256284],
+          'url': 'https://iclient.supermap.io/web/data/video/VID_4.mp4'
+        },
+        {
+          'name': "华润时光里4",
+          'address': "新通大道104号",
+          'type': "海康005",
+          'coordinate': [1398.417112299414, 567.7248540773347],
+          'url': 'https://iclient.supermap.io/web/data/video/VID_5.mp4'
+        }];
+        const features = points.map(function (item, index) {
+          return {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: item.coordinate
+            },
+            properties: item
+          };
+        });
+
+        this.pointList = {
+          type: 'FeatureCollection',
+          features: features
+        };
+      },
+      methods: {
+        handleMapClick(e) {
+          if (e.target.getCanvas().style.cursor !== 'pointer') {
+            this.popupVisible = false;
+          }
+        },
+        handleLayerClick(e) {
+          this.popupVisible = true;
+          this.coordinate = e.pixelPoint;
+          this.activeData = e.features[0].properties;
+        },
+        toggleLayerCursor(e) {
+          const mapCanvas = e.target.getCanvas();
+          if (e.type === 'mouseenter') {
+            mapCanvas.style.cursor = 'pointer';
+            return;
+          }
+          mapCanvas.style.cursor = '';
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

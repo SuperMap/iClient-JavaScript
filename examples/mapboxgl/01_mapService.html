@@ -3,67 +3,75 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <title data-i18n="resources.title_mapService"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_mapService"></title>
+  <script type="text/javascript" src="../js/include-web.js"></script>
+  <style>
+    .mapboxgl-popup-close-button {
+      outline: none;
+    }
+  </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
-<script type="text/javascript">
+  <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+  <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-world/rest/maps/World";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-       "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+      " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
     var map = new mapboxgl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [host + '/iserver/services/maps/rest/maps/World/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}'],
-                    "tileSize": 256,
-                },
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 22
-            }]
+      container: 'map',
+      style: {
+        "version": 8,
+        "sources": {
+          "raster-tiles": {
+            "attribution": attribution,
+            "type": "raster",
+            "tiles": [host + '/iserver/services/maps/rest/maps/World/zxyTileImage.png?prjCoordSys=' + encodeURIComponent('{"epsgCode":3857}') + '&z={z}&x={x}&y={y}'],
+            "tileSize": 256,
+          },
         },
-        center: [-74.50, 40],
-        maxZoom: 18,
-        zoom: 2
+        "layers": [{
+          "id": "simple-tiles",
+          "type": "raster",
+          "source": "raster-tiles",
+          "minzoom": 0,
+          "maxzoom": 22
+        }]
+      },
+      center: [-74.50, 40],
+      maxZoom: 18,
+      zoom: 2
     });
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     map.on('load', function () {
-        mapService();
+      mapService();
     });
 
     function mapService() {
-        new mapboxgl.supermap.MapService(url).getMapInfo(callback);
+      new mapboxgl.supermap.MapService(url).getMapInfo(callback);
     }
 
     function callback(serviceResult) {
-        var result = serviceResult.result;
-        var innerHTML = "(" + resources.text_mapInfoPrint + ")" + "<br><br>";
-        innerHTML += resources.text_mapName + "：" + JSON.stringify(result.name) + "<br>";
-        innerHTML += resources.text_center + ":" + JSON.stringify(result.center) + "<br>";
-        innerHTML += "Bounds:" + JSON.stringify(result.bounds) + "<br>";
-        new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat([-96, 37.8])
-            .setHTML(innerHTML + "</br>")
-            .addTo(map);
+      var result = serviceResult.result;
+      var innerHTML = "(" + resources.text_mapInfoPrint + ")" + "<br><br>";
+      innerHTML += resources.text_mapName + "：" + JSON.stringify(result.name) + "<br>";
+      innerHTML += resources.text_center + ":" + JSON.stringify(result.center) + "<br>";
+      innerHTML += "Bounds:" + JSON.stringify(result.bounds) + "<br>";
+      new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat([-96, 37.8])
+        .setHTML(innerHTML + "</br>")
+        .addTo(map);
     }
 
-</script>
+  </script>
 </body>
+
 </html>

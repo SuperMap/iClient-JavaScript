@@ -72,14 +72,14 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.addFeatures 
      * @description 向专题图图层中添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加的要素。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
         /**
          * @event GraphThemeLayer#beforefeaturesadded
          * @description 向专题图图层中添加数据之前触发。
-         * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features  - 待添加的要素。
+         * @property {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features  - 待添加的要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 
@@ -314,12 +314,12 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {Array.<FeatureVector>} features - 待删除的要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
         me.clearCache();
-        ThemeLayer.prototype.removeFeatures.apply(me, arguments);
+        ThemeLayer.prototype.removeFeatures.call(me, features);
     },
 
     /**

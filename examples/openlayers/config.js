@@ -555,8 +555,8 @@ var exampleConfig = {
                 name: "地图",
                 name_en: "Web map",
                 content: [{
-                    name: "2014当了一回背包客",
-                    name_en: "2014 backpack travel",
+                    name: "地图",
+                    name_en: "Web Map",
                     thumbnail: "ol_onlineWebMap.png",
                     fileName: "onlineWebMap"
                 }]

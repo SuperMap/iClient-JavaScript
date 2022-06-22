@@ -67,7 +67,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
      * @description 添加要素。
-     * @param {ServerFeature|GeoJSONObject|ol.Feature} features - 要素对象。
+     * @param {(Array.<ol.supermap.ThemeFeature>|Array.<GeoJSONObject>|Array.<ol/Feature>|ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -85,11 +85,11 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {FeatureVector} features - 要删除的要素对象。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        Theme.prototype.removeFeatures.apply(this, arguments);
+        Theme.prototype.removeFeatures.call(this, features);
     }
 
     /**
@@ -181,6 +181,7 @@ export class GeoFeature extends Theme {
      * @function ol.source.GeoFeature.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {Object} feature - 要素对象。
+     * @returns {Array.<FeatureVector>} 返回矢量要素
      */
     createThematicFeature(feature) {
         var style = CommonUtil.copyAttributesWithClip(this.style);
@@ -252,6 +253,7 @@ export class GeoFeature extends Theme {
      * @function ol.source.GeoFeature.prototype.getShapesByFeatureID
      * @param {number} featureID - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @returns {Array} 返回图形数组
      */
     getShapesByFeatureID(featureID) {
         var list = [];
