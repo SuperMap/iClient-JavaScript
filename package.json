@@ -93,7 +93,7 @@
     "karma-jasmine": "^5.1.0",
     "karma-sonarqube-unit-reporter": "0.0.23",
     "karma-teamcity-reporter": "^1.1.0",
-    "mini-css-extract-plugin": "^1.1.0",
+    "mini-css-extract-plugin": "^2.6.1",
     "mock-socket": "^9.0.3",
     "nightwatch": "^1.4.3",
     "open": "^8.4.0",
