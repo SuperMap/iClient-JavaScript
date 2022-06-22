@@ -102,10 +102,10 @@
       inputScript('https://iclient.supermap.io/web/libs/three/0.121.1/build/three.js');
     }
     if (inArray(includes, 'xlsx')) {
-      inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.0/xlsx.core.min.js');
+      inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.5/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
-      inputScript('https://iclient.supermap.io/web/libs/proj4/2.7.5/proj4.js');
+      inputScript('https://iclient.supermap.io/web/libs/proj4/2.8.0/proj4.js');
     }
     if (inArray(includes, 'shapefile')) {
       inputScript('https://iclient.supermap.io/web/libs/shapefile/shapefile.js');

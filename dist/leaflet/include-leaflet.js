@@ -54,8 +54,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(excludes, 'leaflet')) {
-            inputCSS('https://iclient.supermap.io/web/libs/leaflet/1.7.1/leaflet.css');
-            inputScript('https://iclient.supermap.io/web/libs/leaflet/1.7.1/leaflet.js');
+          inputCSS('https://iclient.supermap.io/web/libs/leaflet/1.7.1/leaflet.css');
+          inputScript('https://iclient.supermap.io/web/libs/leaflet/1.7.1/leaflet.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
             inputCSS('https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.0/mapbox-gl-enhance.css');
@@ -74,8 +74,8 @@
             inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.js');
         }
         if (inArray(includes, 'leaflet-geoman')) {
-            inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.css');
-            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.min.js');
+          inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.css');
+          inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.min.js');
 
         }
         if (inArray(includes, 'leaflet.miniMap')) {
@@ -95,14 +95,14 @@
             inputScript('https://iclient.supermap.io/web/libs/elasticsearch/16.7.1/elasticsearch.min.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.0/xlsx.core.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.5/xlsx.core.min.js');
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
             inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js');
         }
         if (inArray(includes, 'd3')) {
-            inputScript('https://iclient.supermap.io/web/libs/d3/7.0.3/d3.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/d3/7.4.4/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript('https://iclient.supermap.io/web/libs/d3/d3-hexbin.v0.2.min.js');
@@ -166,7 +166,7 @@
         if (inArray(includes, 'leaflet-mapbox-gl')) {
             inputScript('https://iclient.supermap.io/web/libs/leaflet-mapbox-gl/0.0.15/leaflet-mapbox-gl.min.js');
         }
-        
+
     }
 
     load();

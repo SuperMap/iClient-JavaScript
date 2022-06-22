@@ -55,7 +55,7 @@
         parameter.weights = [400 + Math.random() * 100];
         service.findServiceAreas(parameter, function (serviceResult) {
             var result = serviceResult.result;
-            result.serviceAreaList.map(function (serviceArea) {
+            result && result.serviceAreaList.map(function (serviceArea) {
                 resultLayer.addLayer(L.geoJSON(serviceArea.serviceRegion));
             });
 
