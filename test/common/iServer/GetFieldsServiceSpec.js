@@ -67,7 +67,6 @@ describe('GetFieldsService', () => {
         expect(getFieldsService).not.toBeNull();
         getFieldsService.dataset = 'Countries';
         getFieldsService.datasource = 'World';
-        getFieldsService.events.on({ processCompleted: getFieldsCompleted });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe('GET');
             expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/Countries/fields');
@@ -100,7 +99,6 @@ describe('GetFieldsService', () => {
         var getFieldsService = initGetFieldsService(getFieldsCompleted, getFieldsFailed);
         getFieldsService.dataset = 'NoDataset';
         getFieldsService.datasource = 'World';
-        getFieldsService.events.on({ processFailed: getFieldsFailed });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe('GET');
             expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/NoDataset/fields');
