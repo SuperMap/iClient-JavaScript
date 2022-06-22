@@ -90,7 +90,7 @@
     "karma-chrome-launcher": "^3.1.0",
     "karma-cli": "^2.0.0",
     "karma-coverage": "^2.2.0",
-    "karma-jasmine": "^4.0.1",
+    "karma-jasmine": "^5.1.0",
     "karma-sonarqube-unit-reporter": "0.0.23",
     "karma-teamcity-reporter": "^1.1.0",
     "mini-css-extract-plugin": "^1.1.0",
