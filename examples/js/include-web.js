@@ -81,8 +81,8 @@
             inputScript("https://iclient.supermap.io/web/libs/papaparse/papaparse.min.js");
         }
         if (inArray(includes, 'moment')) {
-            inputScript("https://iclient.supermap.io/web/libs/moment/2.29.1/moment.min.js");
-            inputScript("https://iclient.supermap.io/web/libs/moment/2.29.1/zh-cn.js");
+          inputScript("https://iclient.supermap.io/web/libs/moment/2.29.3/moment.min.js");
+          inputScript("https://iclient.supermap.io/web/libs/moment/2.29.3/zh-cn.js");
         }
         if (inArray(includes, 'bootstrap-datetimepicker')) {
             inputCSS("https://iclient.supermap.io/web/libs/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css");

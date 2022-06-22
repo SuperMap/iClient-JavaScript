@@ -116,7 +116,7 @@
     }
     if (inArray(includes, 'antd')) {
       inputCSS('https://iclient.supermap.io/web/libs/antd/3.25.3/antd.min.css');
-      inputScript('https://iclient.supermap.io/web/libs/moment/2.29.1/moment.min.js');
+      inputScript('https://iclient.supermap.io/web/libs/moment/2.29.3/moment.min.js');
       inputScript('https://iclient.supermap.io/web/libs/antd/3.25.3/antd.min.js');
     }
     if (inArray(includes, 'deck')) {
@@ -168,7 +168,7 @@
       inputScript('https://iclient.supermap.io/web/libs/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
     }
     if (inArray(includes, 'moment')) {
-      inputScript('https://iclient.supermap.io/web/libs/moment/2.29.1/moment.min.js');
+      inputScript('https://iclient.supermap.io/web/libs/moment/2.29.3/moment.min.js');
     }
     if (inArray(includes, 'lodash')) {
       inputScript('https://iclient.supermap.io/web/libs/lodash/4.17.21/lodash.min.js');
