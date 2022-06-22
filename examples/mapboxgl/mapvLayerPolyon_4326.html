@@ -35,11 +35,11 @@
 
 <body>
     <div id='map'></div>
-    <script type="text/javascript" include='mapbox-gl-enhance,mapv,proj4' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include='mapbox-gl-enhance,mapv' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map = new mapboxgl.Map({
-            container: 'map', 
+            container: 'map',
             style: {
                 "version": 8,
                 "sources": {
@@ -60,8 +60,8 @@
                 }]
             },
             crs: mapboxgl.CRS.EPSG4326,
-            center: [112.03027629538065, 22.095590365161783], 
-            zoom: 6 
+            center: [112.03027629538065, 22.095590365161783],
+            zoom: 6
         });
         map.on('load', function () {
             $.get('../data/guang_dong.json', function (geojson) {

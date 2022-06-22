@@ -54,8 +54,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://iclient.supermap.io/web/libs/openlayers/6.9.0/ol.css');
-            inputScript('https://iclient.supermap.io/web/libs/openlayers/6.9.0/ol.js');
+            inputCSS('https://iclient.supermap.io/web/libs/openlayers/6.14.1/ol.css');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/6.14.1/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS('https://iclient.supermap.io/web/libs/openlayers/4.6.5/ol.css');
@@ -75,10 +75,10 @@
             inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://iclient.supermap.io/web/libs/proj4/2.7.5/proj4.js');
+            inputScript('https://iclient.supermap.io/web/libs/proj4/2.8.0/proj4.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript('https://iclient.supermap.io/web/libs/openlayers/ol3-echarts/2.0.4/ol3Echarts.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
             inputScript('https://iclient.supermap.io/web/libs/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
@@ -110,6 +110,9 @@
         }
         if (inArray(includes, 'tensorflow')) {
           inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');
+        }
+        if (inArray(includes, 'xlsx')) {
+            inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.5/xlsx.core.min.js');
         }
 
         // dist

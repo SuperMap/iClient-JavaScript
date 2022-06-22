@@ -1,5 +1,6 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    '@disabled': true,
     'leaflet_05_findServiceAreas': function (browser) {
         var type = 'leaflet';
         var exampleName = '05_findServiceAreas';

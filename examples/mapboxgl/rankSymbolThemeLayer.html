@@ -15,6 +15,10 @@
             height: 100%
         }
 
+        .mapboxgl-popup-close-button {
+          outline: none;
+        }
+
     </style>
     <script type="text/javascript" src="../data/chinaConsumptionLevel.js"></script>
 </head>
@@ -117,7 +121,7 @@
             }
             contentHTML += "</div>";
             var tempPoint = map.unproject(new window.mapboxgl.Point(e.event.x, e.event.y));
-            popup = new mapboxgl.Popup({closeOnClick: false})
+            popup = new mapboxgl.Popup({closeButton: false})
                 .setLngLat([tempPoint.lng, tempPoint.lat])
                 .setHTML(contentHTML)
                 .addTo(map);

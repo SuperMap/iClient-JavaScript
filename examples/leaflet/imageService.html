@@ -9,7 +9,7 @@
 
     <script
       type="text/javascript"
-      include="proj4,turf,leaflet-geoman"
+      include="turf,leaflet-geoman"
       src="../../dist/leaflet/include-leaflet.js"
     ></script>
     <style>
@@ -547,7 +547,7 @@
       }
 
       function removeLayer(map, layer) {
-        if (map.hasLayer(layer)) {
+        if (layer && map.hasLayer(layer)) {
           map.removeLayer(layer);
         }
       }

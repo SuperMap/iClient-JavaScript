@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-common",
   "description": "",
-  "version": "11.0.0-alpha",
+  "version": "11.0.0",
   "keywords": [
     "SuperMap"
   ],
@@ -17,7 +17,8 @@
     "elasticsearch": "16.7.2",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
-    "promise-polyfill": "8.2.1",
-    "lodash.topairs": "4.3.0"
+    "promise-polyfill": "8.2.3",
+    "lodash.topairs": "4.3.0",
+    "xlsx": "0.18.5"
   }
 }

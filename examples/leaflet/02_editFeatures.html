@@ -112,7 +112,7 @@
         closeClearListener();
         var xmax = 120, xmin = 100, ymax = 50, ymin = 20,
             point = [];
-        if (!featureGroup.hasLayer(marker)) {
+        if (!marker || !featureGroup.hasLayer(marker)) {
 
             point = [
                 Math.floor(Math.random() * (ymax - ymin + 1) + ymin),
@@ -137,7 +137,7 @@
 
     function revocationMarker() {
         closeClearListener();
-        if (featureGroup.hasLayer(marker)) {
+        if (marker && featureGroup.hasLayer(marker)) {
             featureGroup.clearLayers();
             marker = null;
         } else {
@@ -148,7 +148,7 @@
     function commit() {
         widgets.alert.clearAlert();
         closeClearListener();
-        if (featureGroup.hasLayer(marker)) {
+        if (marker && featureGroup.hasLayer(marker)) {
             marker = marker.toGeoJSON();
             marker.properties = {POP: 1, CAPITAL: 'test'};
             var addFeatureParams = new L.supermap.EditFeaturesParameters({
@@ -191,7 +191,7 @@
             editType: "delete"
         });
         featureService.editFeatures(deleteParams, function (serviceResult) {
-            if (serviceResult.result.succeed) {
+            if (serviceResult.result && serviceResult.result.succeed) {
                 if (resultLayer) {
                     map.removeLayer(resultLayer);
                     resultLayer = null;

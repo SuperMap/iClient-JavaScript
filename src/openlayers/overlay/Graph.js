@@ -385,7 +385,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {FeatureVector} features - 要删除的要素。
+     * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();
