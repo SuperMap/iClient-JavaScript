@@ -66,7 +66,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待填加的要素。
      */
     addFeatures: function (features) {
         var me = this;
@@ -74,7 +74,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         /**
          * @event GeoFeatureThemeLayer#beforefeaturesadded
          * @description 添加数据之前触发。
-         * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 事件对象。
+         * @property {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 
@@ -99,11 +99,11 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 删除专题图中 features。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {FeatureVector} features - 待删除的要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        ThemeLayer.prototype.removeFeatures.call(this, arguments);
+        ThemeLayer.prototype.removeFeatures.call(this, features);
     },
 
     /**
@@ -190,6 +190,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 要创建的要素。
+     * @returns {Array.<FeatureVector>} 返回矢量要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -273,6 +274,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
+     * @returns {Array} 返回图形数组
      */
     getShapesByFeatureID: function (featureID) {
         var me = this,

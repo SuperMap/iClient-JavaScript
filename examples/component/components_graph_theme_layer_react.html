@@ -176,7 +176,7 @@
           contentHTML += '</div>';
 
           var tempPoint = map.unproject({ x: e.event.x, y: e.event.y });
-          popup = new mapboxgl.Popup({ closeOnClick: false })
+          popup = new mapboxgl.Popup({ closeButton: false })
             .setLngLat([tempPoint.lng, tempPoint.lat])
             .setHTML(contentHTML)
             .addTo(map);

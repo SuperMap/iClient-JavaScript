@@ -26,12 +26,12 @@
 
 <body>
     <div id='map'></div>
-    <script type="text/javascript" include='mapbox-gl-enhance,mapv,proj4' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include='mapbox-gl-enhance,mapv' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map = new mapboxgl.Map({
-            container: 'map', 
+            container: 'map',
             style: {
                 "version": 8,
                 "sources": {

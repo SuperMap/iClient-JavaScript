@@ -1,3 +1,121 @@
+# 11.0.0 #
+
+## 新特性
+
+### 实现全库按需引入和构建，大幅降低构建应用的包大小，最高至90%左右，提升应用加载性能；
+
+### 全面优化所有API的命名空间，更加符合开源库的使用习惯，并且对每个接口增加了使用示例说明；
+
+## API changes
+
+### for Leaflet
+
+- 废弃所有以 SuperMap 为命名空间的接口，更改为以 L.supermap 为命名空间。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+  ```js
+  new SuperMap.ThemeParameters(options);
+  ```
+
+  现在的写法：
+
+  ```js
+  new L.supermap.ThemeParameters(options);
+  ```
+
+- 使用类时，废弃原[工厂方法](https://leafletjs.com/SlavaUkraini/reference.html#class)，更改为类的实例化。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+    ```js
+    L.supermap.tiledMapLayer(url, options);
+    ```
+
+  现在的写法：
+
+    ```js
+    new L.supermap.TiledMapLayer(url, options);
+    ```
+
+- 废弃 `L.Proj.CRS` 更名为 `L.supermap.Proj.CRS`
+
+- 废弃 `L.CRS.NonEarthCRS ` 更名为 `L.supermap.CRS.NonEarthCRS`
+
+- 废弃 `L.CRS.BaiduCRS` 更名为 `L.supermap.CRS.BaiduCRS`
+
+- 废弃 `L.CRS.TianDiTu_WGS84CRS` 更名为 `L.supermap.CRS.TianDiTu_WGS84CRS`
+
+- 废弃 `L.CRS.TianDiTu_MercatorCRS` 更名为 `L.supermap.CRS.TianDiTu_MercatorCRS`
+
+- 动态标绘图层新增支持最大、最小可见比例尺，用来控制图层中标号按照可见比例尺显示
+
+- 动态标绘图层新增支持缩放基准，用来控制图层中标号缩放
+
+### for OpenLayers
+
+- 废弃所有以 SuperMap 为命名空间的接口，更改为以 ol.supermap 为命名空间。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+  ```js
+  new SuperMap.ThemeParameters(options);
+  ```
+
+  现在的写法：
+
+  ```js
+  new ol.supermap.ThemeParameters(options);
+  ```
+
+### for MapboxGL
+
+- 废弃所有以 SuperMap 为命名空间的接口，更改为以 mapboxgl.supermap 为命名空间。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+  ```js
+  new SuperMap.ThemeParameters(options);
+  ```
+
+  现在的写法：
+
+  ```js
+  new mapboxgl.supermap.ThemeParameters(options);
+  ```
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+### for OpenLayers
+
+- 修复 `ol.source.imageSupermapRest` 出图以整图方式出图
+
+- 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+### for MapboxGL
+
+- 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复地图组件(sm-web-map)法显示数据上图中制作的文本标注图层的问题
+
+  - 修复幻灯片组件(sm-slide-show)动态增加页数后无法跳转至最后一页的问题
+
 # 10.2.1 #
 ## Fixed
 

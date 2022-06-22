@@ -294,6 +294,52 @@ describe('leaflet_GraphThemeLayer', () => {
         themeLayer.clear();
     });
 
+    it('removeFeatures use callback param', () => {
+      var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+      themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+      themeLayer.chartsSetting = {
+          width: 240,
+          height: 100,
+          codomain: [0, 40000],
+          barStyle: {fillOpacity: 0.7},
+          barHoverStyle: {fillOpacity: 1},
+          xShapeBlank: [10, 10, 10],
+          axisYTick: 4,
+          axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+          axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+          backgroundStyle: {fillColor: "#CCE8CF"},
+          backgroundRadius: [5, 5, 5, 5],
+          showShadow: true,
+          barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+          barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+      };
+      expect(themeLayer.features.length).toEqual(0);
+      var features = [];
+      for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+          var provinceInfo = chinaConsumptionLevel[i];
+          var geometry = L.point(provinceInfo[1], provinceInfo[2]);
+          var atrributes = {};
+          atrributes.NAME = provinceInfo[0];
+          atrributes.CON2009 = provinceInfo[3];
+          atrributes.CON2010 = provinceInfo[4];
+          atrributes.CON2011 = provinceInfo[5];
+          atrributes.CON2012 = provinceInfo[6];
+          atrributes.CON2013 = provinceInfo[7];
+          var fea = themeFeature(geometry, atrributes);
+          features.push(fea);
+      }
+      themeLayer.addFeatures(features);
+      expect(themeLayer.features.length).toEqual(31);
+      expect(themeLayer.features[0].data.NAME).toEqual("北京市");
+      themeLayer.removeFeatures(function(feature) {
+        return feature.attributes['NAME'] === '北京市';
+      });
+      expect(themeLayer).not.toBeNull();
+      expect(themeLayer.features.length).toEqual(30);
+      expect(themeLayer.features[0].data.NAME).toEqual("天津市");
+      themeLayer.clear();
+  });
+
     it('clearCache', () => {
         var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
         themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
@@ -356,6 +402,90 @@ describe('leaflet_GraphThemeLayer', () => {
         themeLayer.clear();
     });
 
+    it('destroyFeatures multiple feature', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
+            width: 240,
+            height: 100,
+            codomain: [0, 40000],
+            barStyle: {fillOpacity: 0.7},
+            barHoverStyle: {fillOpacity: 1},
+            xShapeBlank: [10, 10, 10],
+            axisYTick: 4,
+            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+            backgroundStyle: {fillColor: "#CCE8CF"},
+            backgroundRadius: [5, 5, 5, 5],
+            showShadow: true,
+            barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+            barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+        };
+        expect(themeLayer.features.length).toEqual(0);
+        var features = [];
+        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+            var provinceInfo = chinaConsumptionLevel[i];
+            var geometry = L.point(provinceInfo[1], provinceInfo[2]);
+            var atrributes = {};
+            atrributes.NAME = provinceInfo[0];
+            atrributes.CON2009 = provinceInfo[3];
+            atrributes.CON2010 = provinceInfo[4];
+            atrributes.CON2011 = provinceInfo[5];
+            atrributes.CON2012 = provinceInfo[6];
+            atrributes.CON2013 = provinceInfo[7];
+            var fea = themeFeature(geometry, atrributes);
+            features.push(fea);
+        }
+        themeLayer.addFeatures(features);
+        var formatFeatures = themeLayer.getFeatures();
+        themeLayer.destroyFeatures(formatFeatures);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.features.length).toEqual(0);
+        themeLayer.clear();
+    });
+
+    it('destroyFeatures single feature', () => {
+      var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+      themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+      themeLayer.chartsSetting = {
+          width: 240,
+          height: 100,
+          codomain: [0, 40000],
+          barStyle: {fillOpacity: 0.7},
+          barHoverStyle: {fillOpacity: 1},
+          xShapeBlank: [10, 10, 10],
+          axisYTick: 4,
+          axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+          axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+          backgroundStyle: {fillColor: "#CCE8CF"},
+          backgroundRadius: [5, 5, 5, 5],
+          showShadow: true,
+          barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+          barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+      };
+      expect(themeLayer.features.length).toEqual(0);
+      var features = [];
+      for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+          var provinceInfo = chinaConsumptionLevel[i];
+          var geometry = L.point(provinceInfo[1], provinceInfo[2]);
+          var atrributes = {};
+          atrributes.NAME = provinceInfo[0];
+          atrributes.CON2009 = provinceInfo[3];
+          atrributes.CON2010 = provinceInfo[4];
+          atrributes.CON2011 = provinceInfo[5];
+          atrributes.CON2012 = provinceInfo[6];
+          atrributes.CON2013 = provinceInfo[7];
+          var fea = themeFeature(geometry, atrributes);
+          features.push(fea);
+      }
+      themeLayer.addFeatures(features);
+      var formatFeatures = themeLayer.getFeatures();
+      themeLayer.destroyFeatures(formatFeatures);
+      expect(themeLayer).not.toBeNull();
+      expect(themeLayer.features.length).toEqual(0);
+      themeLayer.clear();
+  });
+
     //查看当前图层中的有效数据
     it('getFeatures', () => {
         var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
@@ -400,6 +530,53 @@ describe('leaflet_GraphThemeLayer', () => {
         }
         themeLayer.clear();
     });
+
+    it('getFeatures use filter callback', () => {
+      var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+      themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+      themeLayer.chartsSetting = {
+          width: 240,
+          height: 100,
+          codomain: [0, 40000],
+          barStyle: {fillOpacity: 0.7},
+          barHoverStyle: {fillOpacity: 1},
+          xShapeBlank: [10, 10, 10],
+          axisYTick: 4,
+          axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+          axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+          backgroundStyle: {fillColor: "#CCE8CF"},
+          backgroundRadius: [5, 5, 5, 5],
+          showShadow: true,
+          barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+          barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+      };
+      expect(themeLayer.features.length).toEqual(0);
+      var features = [];
+      for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+          var provinceInfo = chinaConsumptionLevel[i];
+          var geometry = L.point(provinceInfo[1], provinceInfo[2]);
+          var atrributes = {};
+          atrributes.NAME = provinceInfo[0];
+          atrributes.CON2009 = provinceInfo[3];
+          atrributes.CON2010 = provinceInfo[4];
+          atrributes.CON2011 = provinceInfo[5];
+          atrributes.CON2012 = provinceInfo[6];
+          atrributes.CON2013 = provinceInfo[7];
+          var fea = themeFeature(geometry, atrributes);
+
+          features.push(fea);
+      }
+      themeLayer.addFeatures(features);
+      var clonedFeatures = themeLayer.getFeatures(function(feature) {
+        return ['北京市', '天津市', '上海市', '重庆市'].indexOf(feature.attributes['NAME']) > -1;
+      });
+      expect(clonedFeatures).not.toBeNull();
+      expect(clonedFeatures.length).toEqual(4);
+      for (var i = 0; i < clonedFeatures.length; i++) {
+          expect(clonedFeatures[i].CLASS_NAME).toEqual("SuperMap.Feature.Vector");
+      }
+      themeLayer.clear();
+  });
 
     //在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature
     it('getFeatureBy', () => {

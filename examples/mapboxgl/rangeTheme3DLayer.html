@@ -93,7 +93,7 @@
     }
     //创建专题图图层
     function createThemeLayer(data) {
-        popup = new mapboxgl.Popup({closeOnClick: true}).addTo(map);
+        popup = new mapboxgl.Popup({closeButton: false}).addTo(map);
         themeLayer = new mapboxgl.supermap.RangeTheme3DLayer("range3DThemeLayer", {
             heightField: themeField,
             themeField: themeField,

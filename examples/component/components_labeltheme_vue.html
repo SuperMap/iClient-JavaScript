@@ -160,7 +160,7 @@
             }
 
             if (!this.popup) {
-              this.popup = new mapboxgl.Popup({ maxWidth: 600 });
+              this.popup = new mapboxgl.Popup({ maxWidth: 600, closeButton: false });
             }
 
             var statisticsData = this.getStatisticsData();

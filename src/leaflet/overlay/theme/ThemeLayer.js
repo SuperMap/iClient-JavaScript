@@ -120,9 +120,9 @@ export var ThemeLayer = L.Layer.extend({
     },
 
     /**
-     * @function ThemeLayer.prototype.addFeatures
-     * @description 添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
+     * @function L.supermap.ThemeLayer.prototype.addFeatures
+     * @description 向专题图图层中添加数据。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待添加要素。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -140,7 +140,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.destroyFeatures
      * @description 销毁要素。
-     * @param {Array.<FeatureVector>} features - 待销毁的要素。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures: function (features) {
         if (features === undefined) {
@@ -150,42 +150,50 @@ export var ThemeLayer = L.Layer.extend({
             return;
         }
         this.removeFeatures(features);
+        if (!Array.isArray(features)) {
+          features = [features];
+        }
         for (var i = features.length - 1; i >= 0; i--) {
             features[i].destroy();
         }
     },
 
     /**
-     * @function ThemeLayer.prototype.removeFeatures
-     * @description 删除专题图中 features。
-     * @param {Array.<FeatureVector>} features - 待删除的要素。
+     * @function L.supermap.ThemeLayer.prototype.removeFeatures
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 将被删除的要素或用来过滤的回调函数。
      */
     removeFeatures: function (features) {
         var me = this;
-        if (!features || features.length === 0) {
+        if (!features) {
             return;
         }
         if (features === me.features) {
             return me.removeAllFeatures();
         }
-        if (!(L.Util.isArray(features))) {
+        if (!L.Util.isArray(features) && !(typeof features === 'function')) {
             features = [features];
         }
 
         var featuresFailRemoved = [];
 
-        for (var i = features.length - 1; i >= 0; i--) {
-            var feature = features[i];
+        for (var i = 0; i < me.features.length; i++) {
+            var feature = me.features[i];
 
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = L.Util.indexOf(me.features, feature);
-
-            if (findex === -1) {
-                featuresFailRemoved.push(feature);
-                continue;
+            if (features && typeof features === 'function') {
+              if (features(feature)) {
+                me.features.splice(i--, 1);
+              }
+            } else {
+              var findex = L.Util.indexOf(features, feature);
+              if (findex === -1) {
+                  featuresFailRemoved.push(feature);
+              } else {
+                me.features.splice(i--, 1);
+              }
             }
-            me.features.splice(findex, 1);
         }
 
         var drawFeatures = [];
@@ -206,10 +214,10 @@ export var ThemeLayer = L.Layer.extend({
 
         var succeed = featuresFailRemoved.length == 0;
         /**
-         * @event ThemeLayer#featuresremoved
-         * @description 成功删除要素之后触发。
-         * @property {Array.<FeatureVector>} features - 事件对象。
-         * @property {boolean} succeed - 要素是否删除成功，true 为删除成功，false 为删除失败。
+         * @event L.supermap.ThemeLayer#featuresremoved
+         * @description 删除的要素成功之后触发。
+         * @property {Array.<FeatureVector>} features - 删除失败的要素数组。
+         * @property {boolean} succeed - 要输是否删除成功，true 为删除成功，false 为删除失败。
          */
         me.fire("featuresremoved", {
             features: featuresFailRemoved,
@@ -236,23 +244,26 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {Array} 返回图层中的有效数据。
+     * @param {Function} [filter] - 根据条件过滤要素的回调函数。
+     * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
-    getFeatures: function () {
-        var me = this;
-        var len = me.features.length;
-        var clonedFeatures = new Array(len);
+    getFeatures: function (filter) {
+        var len = this.features.length;
+        var clonedFeatures = [];
         for (var i = 0; i < len; ++i) {
-            clonedFeatures[i] = me.features[i];
+          if (!filter || (filter && typeof filter === 'function' && filter(this.features[i]))) {
+            clonedFeatures.push(this.features[i]);
+          }
         }
         return clonedFeatures;
     },
 
     /**
-     * @function ThemeLayer.prototype.getFeatureBy
-     * @description 过滤属性。
-     * @param {string} property - 过滤某个属性名。
-     * @param {string} value - 返回属性值。
+     * @function L.supermap.ThemeLayer.prototype.getFeatureBy
+     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
+     * @param {string} property - 要的某个属性名。
+     * @param {string} value - 对应属性名得值。
+     * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
     getFeatureBy: function (property, value) {
         var me = this;
@@ -271,17 +282,18 @@ export var ThemeLayer = L.Layer.extend({
      * @function ThemeLayer.prototype.getFeatureById
      * @description 返回指定 ID 的矢量要素，不存在则返回 null。
      * @param {number} featureId - 要素 ID。
+     * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
     getFeatureById: function (featureId) {
         return this.getFeatureBy('id', featureId);
     },
 
     /**
-     * @function ThemeLayer.prototype.getFeaturesByAttribute
-     * @description 指定属性名和属性值，返回所有匹配的要素数组。
-     * @param {string} attrName - 属性名。
-     * @param {string} attrValue - 属性值。
-     * @returns {Array} 返回所有匹配的要素数组。
+     * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {string} attrName - key 值。
+     * @param {string} attrValue - value 值。
+     * @returns {Array.<FeatureVector>} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
         var me = this,
@@ -449,7 +461,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -484,8 +496,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
-     * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
+     * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
+     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {

@@ -12,7 +12,7 @@ module.exports = {
             this.assert.equal(result.value.length, 4, "expect Number of marker to be 4, actual is " + result.value.length);
         });
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane', 10000);
-        browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg', 10000);
+        browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg', 20000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g path', 10000);
         browser.pause(2000);

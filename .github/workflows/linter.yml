@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: lint
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -29,7 +29,7 @@ jobs:
     # Run Linter against code base #
     ################################
     - name: Lint Code Base
-      uses: docker://github/super-linter:v3
+      uses: github/super-linter@v4
       env:
         VALIDATE_ALL_CODEBASE: false
         PATH_REGEX_INCLUDE: src
