@@ -268,7 +268,7 @@ export var ImageMapLayer = Layer.extend({
         }).addTo(this._map);
 
         var onLoad = function(e) {
-            image.off('error', onLoad, this);
+            image.off('error', onError, this);
             var map = this._map;
             if (!map) {
                 return;
@@ -305,22 +305,19 @@ export var ImageMapLayer = Layer.extend({
              */
             this.fire('load', { bounds: bounds });
         };
+        var onError = function() {
+          this._map.removeLayer(image);
+          /**
+           * @event ImageMapLayer#error
+           * @description 请求图层加载失败后触发。
+           */
+          this.fire('error');
+          image.off('load', onLoad, this);
+        }
 
         image.once('load', onLoad, this);
 
-        image.once(
-            'error',
-            function() {
-                this._map.removeLayer(image);
-                /**
-                 * @event ImageMapLayer#error
-                 * @description 请求图层加载失败后触发。
-                 */
-                this.fire('error');
-                image.off('load', onLoad, this);
-            },
-            this
-        );
+        image.once('error', onError, this);
 
         /**
          * @event ImageMapLayer#loading
