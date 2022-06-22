@@ -92,7 +92,6 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_RBFByDS_commonTest@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
         interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
     });
 
@@ -143,7 +142,6 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_densityByDS_commonTest@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
         interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
     });
 
@@ -202,7 +200,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationIDWAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
     });
 
     var resultDataset_krigingByDS = 'Interpolation_krigingByDS_commonTest';
@@ -269,7 +266,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
     });
 
     var resultDataset_RBFByGeo = 'Interpolation_RBFByGeo_commonTest';
@@ -333,7 +329,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
     });
 
     var resultDataset_densityByGeo = 'Interpolation_densityByGeo_commonTest';
@@ -394,7 +389,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
     });
 
     var resultDataset_IDWByGeo = 'Interpolation_IDWByGeo_commonTest';
@@ -458,7 +452,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationIDWAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
     });
 
     var resultDataset_krigingByGeo = 'Interpolation_krigingByGeo_commonTest';
@@ -526,7 +519,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
     });
 
     //分析失败
@@ -581,7 +573,6 @@ describe('InterpolationAnalystService', () => {
             return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
-        interpolationAnalystService.events.on({ processFailed: analyzeFailed });
     });
 
     //插值分析参数类
