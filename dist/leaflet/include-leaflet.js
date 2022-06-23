@@ -92,7 +92,7 @@
             inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'elasticsearch')) {
-            inputScript('https://iclient.supermap.io/web/libs/elasticsearch/16.7.1/elasticsearch.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/elasticsearch/16.7.3/elasticsearch.min.js');
         }
         if (inArray(includes, 'xlsx')) {
             inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.5/xlsx.core.min.js');

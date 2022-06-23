@@ -476,7 +476,7 @@ export class ElasticSearch {
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
-                callback(err);
+                callback && callback(err);
                 me.events.triggerEvent('error', {error: err});
                 return err;
             });
