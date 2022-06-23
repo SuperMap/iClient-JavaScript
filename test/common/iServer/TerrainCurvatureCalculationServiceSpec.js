@@ -85,7 +85,6 @@ describe('TerrainCurvatureCalculationService', () => {
             return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_commonTest@Jingjin"}}`));
         });
         terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
-        terrainCurvatureCalculationService.events.on({"processCompleted": TerrainCurvatureCalculationServiceCompleted});
     });
 
     //测试失败事件
@@ -132,7 +131,6 @@ describe('TerrainCurvatureCalculationService', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
         terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
-        terrainCurvatureCalculationService.events.on({'processFailed': TerrainCurvatureCalculationServiceFailed});
     });
 });
 

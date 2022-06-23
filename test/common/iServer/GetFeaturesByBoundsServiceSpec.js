@@ -54,10 +54,6 @@ describe('GetFeaturesByBoundsService', () => {
       serviceCompleted,
       serviceFailed
     );
-    getFeaturesByBoundsService.events.on({
-      processFailed: serviceFailed,
-      processCompleted: serviceCompleted
-    });
     expect(getFeaturesByBoundsService).not.toBeNull();
     expect(getFeaturesByBoundsService.CLASS_NAME).toEqual('SuperMap.GetFeaturesByBoundsService');
     getFeaturesByBoundsService.destroy();

@@ -98,7 +98,6 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 name: "中国历史5级以上地震_1900至2016@自然气候数据",
             }))
         })
-        queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
         queryBySQLService.processAsync(params);
     
     });

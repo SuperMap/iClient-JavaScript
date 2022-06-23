@@ -169,7 +169,6 @@ describe('testQueryBySQLService_processAsync', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
-        queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
     });
 
@@ -281,7 +280,6 @@ describe('testQueryBySQLService_processAsync', () => {
             expect(paramsObj.queryParameters.queryOption).toBe("ATTRIBUTEANDGEOMETRY");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
         });
-        queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
     });
 
@@ -338,7 +336,6 @@ describe('testQueryBySQLService_processAsync', () => {
             expect(paramsObj.queryParameters.queryOption).toBe("ATTRIBUTE");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(notExist)"}}`));
         });
-        queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
     });
 
@@ -450,7 +447,6 @@ describe('testQueryBySQLService_processAsync', () => {
             expect(testUrl).toBe(worldMapURL + "/queryResults?key=123&returnContent=true");
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
-        queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
     });
 });

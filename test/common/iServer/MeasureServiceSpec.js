@@ -86,7 +86,6 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance":1565109.0991230179}`));
         });
-        measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
     });
 
@@ -120,10 +119,6 @@ describe('MeasureService', () => {
         var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
         var point = new Point(0, 0);
         var measureParameters = new MeasureParameters(point);
-        measureService.events.on({
-            'processCompleted': measureCompleted,
-            'processFailed': measureFailed
-        });
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(worldMapURL+"/distance");
@@ -168,10 +163,6 @@ describe('MeasureService', () => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"No enum constant com.supermap.services.components.commontypes.Unit.error"}}`));
-        });
-        measureService.events.on({
-            'processCompleted': measureCompleted,
-            'processFailed': measureFailed
         });
         measureService.processAsync(measureParameters);
     });
@@ -344,7 +335,6 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(mapServiceURL+"World Map_Error/area");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`));
         });
-        measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
     });
 
@@ -393,7 +383,6 @@ describe('MeasureService', () => {
           expect(params.distanceMode).toEqual('Geodesic');
           return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance": 3.0616868362}`));
       });
-      measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
       measureService.processAsync(measureParameters);
   });
 
@@ -441,7 +430,6 @@ describe('MeasureService', () => {
         expect(params.distanceMode).toEqual('Planar');
         return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance": 3.9981624957}`));
     });
-    measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
     measureService.processAsync(measureParameters);
 });
 });

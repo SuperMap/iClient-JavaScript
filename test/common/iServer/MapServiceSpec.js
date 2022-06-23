@@ -120,7 +120,6 @@ describe('MapService', () => {
                 )
             );
         });
-        getMapService.events.on({ processFailed: GetMapStatusFailed });
         getMapService.processAsync();
     });
 

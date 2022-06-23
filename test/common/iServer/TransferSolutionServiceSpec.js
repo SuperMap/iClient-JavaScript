@@ -96,7 +96,6 @@ describe('TransferSolutionService', () => {
             expect(testUrl).toBe(trafficTransferURL+"/solutions");
             return Promise.resolve(new Response(JSON.stringify(TransferSolutionServiceResult)));
         });
-        service.events.on({"processCompleted": succeed});
         service.processAsync(params);
     });
 });

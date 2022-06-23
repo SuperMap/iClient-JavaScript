@@ -85,7 +85,6 @@ describe('MathExpressionAnalysisService', () => {
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_commonTest@Jingjin"}`));
         });
         mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
-        mathExpressionAnalysisService.events.on({"processCompleted": MathExpressionAnalysisServiceCompleted});
     });
 
     it('fail:processAsync', (done) => {
@@ -128,7 +127,6 @@ describe('MathExpressionAnalysisService', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
         mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
-        mathExpressionAnalysisService.events.on({"processFailed": MathExpressionAnalysisServiceFailed});
     });
 });
 

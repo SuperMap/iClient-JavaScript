@@ -114,7 +114,6 @@ describe('leaflet_search_SearchView', () => {
                 bounds: polygon.getBounds()
             });
             queryBySQLService = new QueryBySQLService(queryUrl, options);
-            queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
             queryBySQLService.processAsync(params);
         // }, 4000);
     });

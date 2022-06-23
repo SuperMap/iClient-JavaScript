@@ -46,7 +46,6 @@ describe('TilesetsService', () => {
             serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
         };
         var tilesetsService = initTilesetsService_Register(tileSetsURL,analyzeCompleted,analyzeFailed);
-        tilesetsService.events.on({"processCompleted": analyzeCompleted});
         expect(tilesetsService.url).toEqual(tileSetsURL);
         expect(tilesetsService.CLASS_NAME).toBe("SuperMap.TilesetsService");
         tilesetsService.destroy();

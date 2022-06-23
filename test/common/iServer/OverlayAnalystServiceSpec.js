@@ -85,7 +85,6 @@ describe('OverlayAnalystService', () => {
             expect(paramsObj.operation).toBe("UPDATE");
             return Promise.resolve(new Response(overlayEscapedJson));
         });
-        overlayServiceByDatasets.events.on({"processCompleted": OverlayAnalystServiceCompleted});
         overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
     });
 
@@ -124,7 +123,6 @@ describe('OverlayAnalystService', () => {
             expect(paramsObj.operation).toBe("UPDATE");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集Landu@Jingjin不存在"}}`));
         });
-        overlayServiceByDatasets.events.on({"processFailed": OverlayAnalystServiceFailed});
         overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
     });
 
@@ -172,7 +170,6 @@ describe('OverlayAnalystService', () => {
             expect(paramsObj.operation).toBe("CLIP");
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":170.3545301069,"y":395.31795160385},"parts":[2],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":170.3545301069,"y":408.1485649972},{"x":170.3545301069,"y":382.4873382105}]},"succeed":true,"message":null}`));
         });
-        overlayServiceByDatasets.events.on({"processCompleted": OverlayAnalystServiceCompleted});
         overlayServiceByDatasets.processAsync(geOverlayAnalystParameters);
     });
 });

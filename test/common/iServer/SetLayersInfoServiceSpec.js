@@ -78,7 +78,6 @@ describe('SetLayersInfoService', () => {
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
         });
-        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
     });
 
@@ -108,7 +107,6 @@ describe('SetLayersInfoService', () => {
         });
         var layers = layersInfo;
         layers.description = "test";
-        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         var setLayersInfoService = initSetLayersInfoService(url,setLayersFailed,setLayersInfoCompleted);
         spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
             expect(testUrl).toBe(url+"/tempLayersSet");
@@ -118,7 +116,6 @@ describe('SetLayersInfoService', () => {
             expect( paramsObj[0].subLayers.layers[0].ugcLayerType).toBe("VECTOR");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
     });
 
@@ -150,7 +147,6 @@ describe('SetLayersInfoService', () => {
             var escapedJson = "{\"succeed\":false,\"error\":{\"code\":500,\"errorMsg\":\"Index:0不在（0，-1）范围之内。\"}}";
             return Promise.resolve(new Response(escapedJson));
         });
-        setLayersInfoService.events.on({"processFailed": setLayersFailed});
         setLayersInfoService.processAsync(wrongLayerInfo);
     });
     it('setLayersInfo_customQueryParam', (done) => {
@@ -173,13 +169,11 @@ describe('SetLayersInfoService', () => {
         });
         var layers = layersInfo;
         layers.description = "test";
-        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         var setLayersInfoService = initSetLayersInfoService(url+'?key=123',setLayersFailed,setLayersInfoCompleted);
         spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
             expect(testUrl).toBe(url+"/tempLayersSet?key=123");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
     });
 });

@@ -84,7 +84,6 @@ describe('SetLayerInfoService', () => {
             expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_4b85e5ba2d65456c82e430c7636fba8d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/f701028a2b7144b19b582f55c1902b18_4b85e5ba2d65456c82e430c7636fba8d.json"}`));
         });
-        setLayersInfoService.events.on({"processCompleted": setLayerInfoCompleted});
         setLayersInfoService.processAsync(layersInformation);
     });
 
@@ -126,7 +125,6 @@ describe('SetLayerInfoService', () => {
                 expect(paramsObj.datasetInfo.type).toBe("TEXT");
                 return Promise.resolve(new Response(`{"succeed":true}`));
             });
-            setLayerInfoService.events.on({"processCompleted": setLayerInfoCompleted});
             setLayerInfoService.processAsync(layerInformation);
         }
     });
