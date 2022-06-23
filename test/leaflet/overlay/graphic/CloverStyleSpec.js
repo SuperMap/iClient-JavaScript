@@ -86,7 +86,6 @@ describe('leaflet_CloverStyle', () => {
                 done();
             });
             layer.remove();
-            done();
         }, 1000)
     });
 });
