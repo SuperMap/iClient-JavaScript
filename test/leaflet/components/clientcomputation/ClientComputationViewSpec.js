@@ -118,7 +118,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         setTimeout(() => {
             try {
                 expect(document.getElementById('dropDownTop').getAttribute('data-value')).toBe("isolines");
-                clientComputation.viewModel.on('layerloaded', (e) => {
+                clientComputation.viewModel.once('layerloaded', (e) => {
                     try {
                         if (e.name.indexOf("等值线") > -1) {
                             expect(e.layer._layers).not.toBeNull;
@@ -153,7 +153,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
             try {
                 document.getElementById('dropDownTop').click();
                 document.getElementsByClassName('component-dropdownbox__item')[2].click();
-                clientComputation.viewModel.on('layerloaded', (e) => {
+                clientComputation.viewModel.once('layerloaded', (e) => {
                     try {
                         if (e.name.indexOf("等值线") > -1) {
                             expect(e.name.layer._layers).not.toBeNull;
