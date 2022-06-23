@@ -8,7 +8,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-map-pane', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-tile-pane', 10000);
         browser.waitForElementPresent('.leaflet-layer', 10000);
-        browser.pause(3000);
+        browser.pause(10000);
         browser.elements('css selector', '.leaflet-layer', function (result) {
             this.assert.equal(result.value.length, 2, "expect Number of leaflet-layer to be 2, actual is " + result.value.length);
         });
