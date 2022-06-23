@@ -86,6 +86,7 @@ describe('mapboxgl_FieldService', () => {
             }
             return Promise.resolve();
         });
+        let count = 0;
         service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
             try {
@@ -106,7 +107,10 @@ describe('mapboxgl_FieldService', () => {
                 expect(serviceResult.result.SUM).toEqual(28);
                 expect(serviceResult.result.VARIANCE).toEqual(4.666666666666667);
                 expect(serviceResult.result.fieldName).toEqual("SmID");
-                done();
+                count++;
+                if (count === 6) {
+                  done();
+                }
             } catch (e) {
                 console.log("'getFieldStatisticsInfo'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
