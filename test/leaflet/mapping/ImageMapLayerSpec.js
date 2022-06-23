@@ -1,8 +1,8 @@
-import {imageMapLayer} from '../../../src/leaflet/mapping/ImageMapLayer';
-import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
-import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
-import {getQueryValue} from '../../tool/utils';
-import {mockInitImage} from '../../tool/mock_leaflet';
+import { HillshadeParameter } from '../../../src/common/iServer/HillshadeParameter';
+import { NDVIParameter } from '../../../src/common/iServer/NDVIParameter';
+import { imageMapLayer } from '../../../src/leaflet/mapping/ImageMapLayer';
+import { mockInitImage } from '../../tool/mock_leaflet';
+import { getQueryValue } from '../../tool/utils';
 
 var url = GlobeParameter.WorldURL;
 describe('leaflet_ImageMapLayer', () => {
@@ -27,7 +27,7 @@ describe('leaflet_ImageMapLayer', () => {
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
         imageLayer = null;
     });
     afterEach(() => {
@@ -103,7 +103,7 @@ describe('leaflet_ImageMapLayer', () => {
 
     it('bringToFront', (done) => {
         imageLayer1 = imageMapLayer(url).addTo(map);
-        imageLayer1.on('load', () => {
+        imageLayer1.once('load', () => {
             expect(imageLayer1.bringToFront()).not.toBeNull();
             expect(imageLayer1.options.position).toBe("front");
             done();
@@ -113,7 +113,7 @@ describe('leaflet_ImageMapLayer', () => {
 
     it('bringToBack', (done) => {
         imageLayer1 = imageMapLayer(url).addTo(map);
-        imageLayer1.on('load', () => {
+        imageLayer1.once('load', () => {
             expect(imageLayer1.bringToBack()).not.toBeNull();
             expect(imageLayer1.options.position).toBe("back");
             done();
@@ -134,17 +134,16 @@ describe('leaflet_ImageMapLayer', () => {
     it('update_zoomIn', (done) => {
         imageLayer = imageMapLayer(url).addTo(map);
         var oldUrl, newUrl;
-        imageLayer.on('load', () => {
+        imageLayer.once('load', () => {
             oldUrl = imageLayer._currentImage._url;
             expect(oldUrl).toBe(url + '/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-19567879.241005123%2C%22y%22%3A-19567879.24100514%7D%2C%22rightTop%22%3A%7B%22x%22%3A19567879.241005123%2C%22y%22%3A19567879.241005138%7D%7D&width=500&height=500');
-            map.zoomIn();
-            imageLayer.off('load');
             imageLayer.on('load', () => {
                 newUrl = imageLayer._currentImage._url;
                 expect(newUrl).toBe(url + '/image.png?redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-9783939.620502561%2C%22y%22%3A-9783939.620502561%7D%2C%22rightTop%22%3A%7B%22x%22%3A9783939.620502561%2C%22y%22%3A9783939.620502565%7D%7D&width=500&height=500');
                 expect(oldUrl).not.toEqual(newUrl);
                 done();
             });
+            map.zoomIn();
         });
     });
 
