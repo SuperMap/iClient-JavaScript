@@ -65,7 +65,7 @@ describe('openlayers_ImageSuperMapRest', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 0);
+        }, 1000);
     });
 
     it('getImageInternal', () => {

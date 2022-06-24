@@ -337,7 +337,7 @@ describe('ol_DataFlow', () => {
             source.setExcludeField("id");
             expect(source.excludeField).toBe("id");
             done();
-        }, 0)
+        }, 1000)
 
     });
 

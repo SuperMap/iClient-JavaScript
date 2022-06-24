@@ -468,7 +468,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('住宅_Lite(10)');
             done();
-        }, 0)
+        }, 1000)
     });
 
     it('createThemeLayer_Range', (done) => {
@@ -506,7 +506,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路(2)');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(3);
             done();
-        }, 0)
+        }, 1000)
     });
     it('createThemeLayer_Heat', (done) => {
         //插件里面i未定义报错
@@ -576,7 +576,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('未命名标注图层1');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 0)
+        }, 1000)
     });
 
     it('createThemeLayer_SUPERMAP_MAP', (done) => {
@@ -654,7 +654,7 @@ describe('openlayers_WebMap', () => {
             done();
             datavizWebmap.map = null;
             datavizWebmap = null;
-        }, 0)
+        }, 1000)
     });
 
     it('WMS', (done) => {

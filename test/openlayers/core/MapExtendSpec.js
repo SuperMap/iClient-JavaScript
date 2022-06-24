@@ -163,6 +163,6 @@ describe('openlayers_MapExtend', () => {
             expect(map.getFeaturesAtPixel(pixel).length).toBe(3);
             map.removeLayer(layers);
             done();
-        }, 0)
+        }, 1000)
     })
 })

@@ -108,7 +108,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerStyle[0].weight).toEqual(1);
             map.removeLayer(tileVectorLayer);
             done();
-        }, 0);
+        }, 1000);
     });
 
     it('initialize_cartoCSS', (done) => {
