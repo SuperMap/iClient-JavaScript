@@ -52,14 +52,12 @@ module.exports = {
             img: {
                 //图片小于80k采用base64编码
                 test: /\.(png|jpg|jpeg|gif|woff|woff2|svg|eot|ttf)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 150000
-                        }
-                    }
-                ]
+                type: 'asset',
+                parser: {
+                  dataUrlCondition: {
+                    maxSize: 150000
+                  }
+                }
             },
             css: {
                 test: /\.css$/,
