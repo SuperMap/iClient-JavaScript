@@ -195,8 +195,8 @@ describe('openlayers_Label', () => {
                 expect(feas[i].geometry.id).not.toBeNull();
                 expect(feas[i].style).not.toBeNull();
                 expect(feas[i].id).toContain("SuperMap.Feature_");
-                done();
             }
+            done();
         }, 2000)
     });
 
