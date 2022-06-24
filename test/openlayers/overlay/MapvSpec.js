@@ -104,7 +104,7 @@ describe('openlayers_MapV', () => {
             expect(mapVSource.layer.canvasLayer.paneName).toBe("mapPane");
             expect(mapVSource.layer.canvasLayer.zIndex).toEqual(2);
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('addData', (done) => {
@@ -128,7 +128,7 @@ describe('openlayers_MapV', () => {
             expect(mapVSource.dataSet._data[300].geometry.coordinates[1]).toEqual(32);
             expect(mapVSource.mapvOptions.shadowBlur).toEqual(30);
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('getData', () => {
@@ -148,7 +148,7 @@ describe('openlayers_MapV', () => {
             mapVSource.removeData(filter);
             expect(mapVSource.dataSet._data.length).toEqual(299);
             done();
-        }, 4000);
+        }, 0);
     });
 
     it('update', (done) => {
@@ -172,7 +172,7 @@ describe('openlayers_MapV', () => {
             expect(mapVSource.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
             expect(mapVSource.mapvOptions.shadowBlur).toEqual(40);
             done();
-        }, 4000);
+        }, 0);
     });
 
     it('clearData', (done) => {
@@ -180,6 +180,6 @@ describe('openlayers_MapV', () => {
             mapVSource.clearData();
             expect(mapVSource.dataSet._data.length).toEqual(0);
             done();
-        }, 4000);
+        }, 0);
     });
 });

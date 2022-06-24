@@ -70,7 +70,7 @@ describe('mapboxgl_GraticuleLayer', () => {
             expect(graticuleLayer.features).not.toBeNull();
             expect(graticuleLayer.options).not.toBeNull();
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('setVisibility', () => {

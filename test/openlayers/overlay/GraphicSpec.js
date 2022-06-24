@@ -288,7 +288,7 @@ describe('openlayers_GraphicLayer', () => {
                     expect(layer).toBe(graphicLayer);
                 });
             done();
-        }, 4000);
+        }, 0);
     });
 
    it("getGraphicBy add getGraphicById", (done) => {
@@ -327,7 +327,7 @@ describe('openlayers_GraphicLayer', () => {
 
             // map.removeLayer(graphicLayer);
             done();
-        }, 4000)
+        }, 0)
 
 
     });
@@ -363,7 +363,7 @@ describe('openlayers_GraphicLayer', () => {
             expect(graphic[0].getAttributes().name).toBe("graphic_1");
             // map.removeLayer(graphicLayer);
             done();
-        }, 4000);
+        }, 0);
     });
 
    it("removeGraphics", (done) => {
@@ -409,7 +409,7 @@ describe('openlayers_GraphicLayer', () => {
             graphicSource.removeGraphics();
             expect(graphicSource.graphics.length).toEqual(0);
             done();
-        }, 4000);
+        }, 0);
     });
    it("getLayerState", (done) => {
         let graphics = [];
@@ -443,7 +443,7 @@ describe('openlayers_GraphicLayer', () => {
             expect(state).not.toBeNull();
             expect(state.color).toEqual("red");
             done();
-        }, 4000);
+        }, 0);
     });
 
    it("setGraphics", (done) => {
@@ -487,7 +487,7 @@ describe('openlayers_GraphicLayer', () => {
             graphicLayer.getSource().setGraphics(graphics);
             expect(graphicLayer.getSource().graphics.length).toEqual(5);
             done()
-        }, 4000);
+        }, 0);
     });
 
    it("setStyle", (done) => {
@@ -524,7 +524,7 @@ describe('openlayers_GraphicLayer', () => {
             });
             expect(graphicLayer.getSource().color).toEqual("blue");
             done()
-        }, 4000);
+        }, 0);
     });
 
    it("clear", (done) => {
@@ -558,7 +558,7 @@ describe('openlayers_GraphicLayer', () => {
             graphicSource.clear();
             expect(graphicSource.graphics.length).toEqual(0);
             done();
-        }, 4000);
+        }, 0);
     });
 
    it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
@@ -630,6 +630,6 @@ describe('openlayers_GraphicLayer', () => {
                 expect(re).toBe(undefined);
             }
             done();
-        }, 4000);
+        }, 0);
     });
 });

@@ -55,7 +55,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('tianditu');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('resize', (done) => {
@@ -73,7 +73,7 @@ describe('mapboxgl_WebMap', () => {
         setTimeout(() => {
             datavizWebmap.resize();
             done();
-        }, 1000);
+        }, 0);
     });
     it('setMapId', (done) => {
         let options = {
@@ -91,7 +91,7 @@ describe('mapboxgl_WebMap', () => {
             datavizWebmap.setMapId('testID');
             expect(datavizWebmap.mapId).toEqual('testID');
             done();
-        }, 1000);
+        }, 0);
     });
     it('setWebMapOptions', (done) => {
         let options = {
@@ -109,7 +109,7 @@ describe('mapboxgl_WebMap', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
             expect(datavizWebmap.server).toEqual('http://www.test.com/');
             done();
-        }, 1000);
+        }, 0);
     });
     it('setMapOptions', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -132,7 +132,7 @@ describe('mapboxgl_WebMap', () => {
         setTimeout(() => {
             datavizWebmap.setMapOptions(mapOptions);
             done();
-        }, 1000);
+        }, 0);
     });
     it('initialize_TIANDITU_IMAGE', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -157,7 +157,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
             expect(datavizWebmap.mapParams.description).toBe('This is a image');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_TIANDITU_TER', (done) => {
@@ -176,7 +176,7 @@ describe('mapboxgl_WebMap', () => {
         setTimeout(() => {
             expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_OPENSTREET', (done) => {
@@ -202,7 +202,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('openstreet');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_FAILD', (done) => {
@@ -218,7 +218,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_CLOUD', (done) => {
@@ -244,7 +244,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('GAOD');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_GOOGLE', (done) => {
@@ -270,7 +270,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('google_map');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     // 暂时不写
@@ -293,7 +293,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_Vector_Basis', (done) => {
@@ -320,7 +320,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('theme_base');
             expect(datavizWebmap.mapParams.description).toBe('base style');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_Vector_Basis_Line', (done) => {
@@ -347,7 +347,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Line_basis');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_Vector_IMAGE', (done) => {
@@ -386,7 +386,7 @@ describe('mapboxgl_WebMap', () => {
             expect(map.getZoom()).toBeCloseTo(7, 0.001)
             expect(map.getCenter()).toEqual(new mapboxgl.LngLat(120.63222224999998, 30.389530096727963));
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('createThemeLayer_Unique', (done) => {
@@ -414,7 +414,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Unique');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_Range', (done) => {
@@ -473,7 +473,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Heat');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_Marker', (done) => {
@@ -501,7 +501,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('标注图层');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
@@ -533,7 +533,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('createThemeLayer_SUPERMAP_MAP', (done) => {
@@ -621,7 +621,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('wms');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('changeWeight', (done) => {
@@ -652,7 +652,7 @@ describe('mapboxgl_WebMap', () => {
             datavizWebmap._changeWeight(features, 'field');
             // expect(feature.get('weight')).toBe(1);
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('getRangeStyleGroup', (done) => {
@@ -687,7 +687,7 @@ describe('mapboxgl_WebMap', () => {
             datavizWebmap._getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('dashStyle', (done) => {
@@ -754,7 +754,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 1000);
+        }, 0);
     });
     it('vector_symbol', (done) => {
         let options = {
@@ -775,7 +775,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 1000);
+        }, 0);
     });
     it('_getFiterFeatures', (done) => {
         let options = {
@@ -797,7 +797,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 1000);
+        }, 0);
     });
     it('datavizWebMap_WMTS', (done) => {
         let options = {
@@ -818,7 +818,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 1000);
+        }, 0);
     });
     it('datavizWebMap_WMTS_Custom', (done) => {
         let options = {
@@ -839,7 +839,7 @@ describe('mapboxgl_WebMap', () => {
             setTimeout(function () {
                 expect(datavizWebmap.map.getStyle().layers.length).toBe(2);
                 done();
-            }, 2000);
+            }, 0);
         });
     });
 });

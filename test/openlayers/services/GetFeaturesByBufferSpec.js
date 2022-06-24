@@ -160,7 +160,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
             expect(callback).toBeTrue();
             expect(errorCalled).toBeFalse();
             done();
-        },8000)
+        },0)
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, testResult => {
             callback= true;
             serviceResult = testResult;

@@ -283,7 +283,7 @@ describe('openlayers_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 
     it('getThemeInfo_GridUnique', (done) => {

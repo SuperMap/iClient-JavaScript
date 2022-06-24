@@ -80,7 +80,7 @@ describe('mapboxgl_DataFlowService', () => {
             setTimeout(() => {
                 expect(service).not.toBeNull();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -120,7 +120,7 @@ describe('mapboxgl_DataFlowService', () => {
             setTimeout(() => {
                 expect(service).not.toBeNull();
                 done();
-            }, 8000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -166,7 +166,7 @@ describe('mapboxgl_DataFlowService', () => {
                 service.unSubscribe();
                 service.unBroadcast();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -220,7 +220,7 @@ describe('mapboxgl_DataFlowService', () => {
                 service.unSubscribe();
                 service.unBroadcast();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -242,6 +242,6 @@ describe('mapboxgl_DataFlowService', () => {
             service.setExcludeField("id");
             expect(service).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
 });
 });

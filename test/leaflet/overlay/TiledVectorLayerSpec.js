@@ -77,7 +77,7 @@ describe('leaflet_TiledVectorLayer', () => {
             }
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('initialize_serverCartoCSSStyle:true', (done) => {
@@ -108,7 +108,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerStyle[0].weight).toEqual(1);
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('initialize_cartoCSS', (done) => {
@@ -142,7 +142,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerInfo2).toBeNull();
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('setClientCartoCSS', (done) => {
@@ -170,7 +170,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerStyle[0].weight).toEqual(1);
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('setServerCartoCss', (done) => {
@@ -198,7 +198,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerStyle[0].weight).toEqual(1);
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('cartoCSS911', (done) => {
@@ -226,7 +226,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerStyle.__default__[1][4].property).toBe("point-file");
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     //测试其父类
@@ -249,7 +249,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(styles).not.toBeNull();
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('setFeatureStyle, resetFeatureStyle', (done) => {
@@ -281,7 +281,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(tileVectorLayer._updateStyles).toHaveBeenCalled();
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('getDataLayerNames', (done) => {
@@ -304,7 +304,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(nameArray.length).toEqual(4);
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('_extendStyle', (done) => {
@@ -333,7 +333,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(result4).not.toBeNull();
             map.removeLayer(tileVectorLayer);
             done();
-        }, 5000);
+        }, 0);
     });
 
 

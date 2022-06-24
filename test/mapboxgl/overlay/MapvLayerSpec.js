@@ -101,7 +101,7 @@ describe('mapboxgl_MapVLayer', () => {
             expect(mapvLayer.renderer).not.toBeNull();
             expect(mapvLayer.renderer.context).toBe("2d");
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('getTopLeft', () => {
@@ -158,7 +158,7 @@ describe('mapboxgl_MapVLayer', () => {
         setTimeout(() => {
             expect(mapvLayer.dataSet._data.length).toEqual(999);
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('update', () => {

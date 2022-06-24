@@ -212,6 +212,6 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 });

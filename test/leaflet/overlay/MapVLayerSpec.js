@@ -116,7 +116,7 @@ describe('leaflet_MapVLayer', () => {
         setTimeout(() => {
             expect(layer.dataSet._data.length).toEqual(999);
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('update', () => {

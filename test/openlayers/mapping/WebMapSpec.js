@@ -65,7 +65,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('tianditu');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_TIANDITU_IMAGE', (done) => {
@@ -118,7 +118,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.map.trigger('click');
             expect(options.mapSetting.mapClickCallback).toHaveBeenCalled();*/
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_TIANDITU_TER', (done) => {
@@ -150,7 +150,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_BAIDU', (done) => {
@@ -180,7 +180,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
     it('initialize_OPENSTREET', (done) => {
         let options = {
@@ -207,7 +207,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_FAILD', (done) => {
@@ -230,7 +230,7 @@ describe('openlayers_WebMap', () => {
             expect(options.successCallback).not.toHaveBeenCalled();
             expect(options.errorCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_CLOUD', (done) => {
@@ -260,7 +260,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_UNDEFIED', (done) => {
@@ -288,7 +288,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_Vector_Basis', (done) => {
@@ -325,7 +325,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_Vector_Basis_Line', (done) => {
@@ -362,7 +362,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路');
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_Vector_IMAGE', (done) => {
@@ -396,7 +396,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
-        }, 1000)
+        }, 0)
     });
     it('createThemeLayer_Vector_SVG', (done) => {
         let options = {
@@ -430,7 +430,7 @@ describe('openlayers_WebMap', () => {
             expect(options.successCallback).toHaveBeenCalled();
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_Unique', (done) => {
@@ -468,7 +468,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('住宅_Lite(10)');
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_Range', (done) => {
@@ -506,7 +506,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路(2)');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(3);
             done();
-        }, 1000)
+        }, 0)
     });
     it('createThemeLayer_Heat', (done) => {
         //插件里面i未定义报错
@@ -539,7 +539,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Heat');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_Marker', (done) => {
@@ -576,7 +576,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('未命名标注图层1');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_SUPERMAP_MAP', (done) => {
@@ -612,7 +612,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('京津地区土地利用现状图');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_SUPERMAPREST_DATA', (done) => {
@@ -654,7 +654,7 @@ describe('openlayers_WebMap', () => {
             done();
             datavizWebmap.map = null;
             datavizWebmap = null;
-        }, 1000)
+        }, 0)
     });
 
     it('WMS', (done) => {
@@ -694,7 +694,7 @@ describe('openlayers_WebMap', () => {
             // expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('World');
             // expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 1000)
+        }, 0)
     });
 
     /*    it('WMTS', (done) => {
@@ -755,7 +755,7 @@ describe('openlayers_WebMap', () => {
         setTimeout(() => {
             expect(datavizWebmap.server).toBe(defaultServer);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createWMTSSource1', (done) => {
@@ -775,7 +775,7 @@ describe('openlayers_WebMap', () => {
         setTimeout(() => {
             expect(datavizWebmap.server).toBe(defaultServer);
             done();
-        }, 1000)
+        }, 0)
     });
 
     // 被写在styleUtils
@@ -847,7 +847,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.changeWeight(features, 'field');
             // expect(feature.get('weight')).toBe(1);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createBaseLayer-wmts', (done) => {
@@ -873,7 +873,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.createBaseLayer(layerInfo);
             expect(datavizWebmap.createWMTSSource).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('getWmtsInfo', (done) => {
@@ -899,7 +899,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.getWmtsInfo(layerInfo, successCallback);
             expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('isValidResponse', (done) => {
@@ -908,7 +908,7 @@ describe('openlayers_WebMap', () => {
             var response = {};
             expect(datavizWebmap.isValidResponse(response)).toBe(false);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('getReslutionsFromScales', (done) => {
@@ -921,7 +921,7 @@ describe('openlayers_WebMap', () => {
             };
             expect(datavizWebmap.getReslutionsFromScales(scales, 96, 'degrees', 1000)).toBeDefined();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('getRangeStyleGroup', (done) => {
@@ -941,7 +941,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('getRangeStyleGroup1', (done) => {
@@ -959,7 +959,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('refresh', (done) => {
@@ -982,8 +982,8 @@ describe('openlayers_WebMap', () => {
             setTimeout(() => {
                 expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
                 done();
-            }, 1000);            
-        }, 1000)
+            }, 0);            
+        }, 0)
     })
     it('webMapUrl', (done) => {
         let options = {
@@ -1012,7 +1012,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     })
     it('webMapObject', (done) => {
         let options = {
@@ -1031,7 +1031,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(options.successCallback).toHaveBeenCalled();
             done();
-        }, 1000)
+        }, 0)
     })
     
     it('getScales EPSG:1', (done) => {
@@ -1056,7 +1056,7 @@ describe('openlayers_WebMap', () => {
       setTimeout(() => {
         expect(datavizWebmap.scales[0]).toBe('1:65789415978977.37');
         done();
-      }, 1000);
+      }, 0);
     });
     it('getScales EPSG:3857', (done) => {
       //第二次请求wmts参数值太大
@@ -1080,6 +1080,6 @@ describe('openlayers_WebMap', () => {
       setTimeout(() => {
         expect(datavizWebmap.scales[0]).toBe('1:591658710.9091312');
         done();
-      }, 1000);
+      }, 0);
     });
 });

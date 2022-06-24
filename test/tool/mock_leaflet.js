@@ -20,7 +20,7 @@ export function mockInitImage() {
         var me = this;
         setTimeout(function () {
             me.fire('load', {});
-        }, 1000);
+        }, 100);
     });
 }
 export function mockHeatLayer() {

@@ -68,7 +68,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('onAdd_ArcLayer', (done) => {
@@ -89,7 +89,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('onAdd_HexagonLayer', (done) => {
@@ -110,7 +110,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('onAdd_PolygonLayer', (done) => {
@@ -131,7 +131,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('onAdd_scatter-plot', (done) => {
@@ -170,7 +170,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('setVisibility', (done) => {
@@ -202,13 +202,13 @@ describe('mapboxgl_DeckglLayer', () => {
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data).toEqual(data);
             expect(deckglLayer.data.length).toEqual(2);
-        }, 1000)
+        }, 0)
         setTimeout(() => {
             deckglLayer.removeFromMap()
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data.length).toEqual(0);
             done();
-        }, 1000)
+        }, 0)
 
 
     });
@@ -237,13 +237,13 @@ describe('mapboxgl_DeckglLayer', () => {
             deckglLayer.addData(data);
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data.length).toEqual(4);
-        }, 1000)
+        }, 0)
         setTimeout(() => {
             deckglLayer.removeData();
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data.length).toEqual(0);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('setStyle,hexagon-layer', (done) => {
@@ -261,7 +261,7 @@ describe('mapboxgl_DeckglLayer', () => {
             deckglLayer.setStyle({ radius: 1000 });
             expect(deckglLayer.deckGL.props.radius).toEqual(1000);
             done();
-        }, 1000)
+        }, 0)
         
     });
 });

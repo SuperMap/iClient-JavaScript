@@ -97,7 +97,7 @@ describe('openlayers_MapExtend', () => {
             expect(map.getFeaturesAtPixel(pixel).length).toBe(2);
             map.removeLayer(graphicLayer);
             done();
-        }, 4000)
+        }, 0)
     })
     it('forEachFeatureAtPixel_layerGroup_issue26', (done) => {
         var feature = new Feature(new Polygon([
@@ -163,6 +163,6 @@ describe('openlayers_MapExtend', () => {
             expect(map.getFeaturesAtPixel(pixel).length).toBe(3);
             map.removeLayer(layers);
             done();
-        }, 4000)
+        }, 0)
     })
 })

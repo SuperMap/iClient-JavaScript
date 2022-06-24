@@ -85,7 +85,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(style[0].getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
-        }, 1000);
+        }, 0);
     });
 
     // 下面将上述测试显示在div中
@@ -111,7 +111,7 @@ describe('openlayers_VectorTileStyles', () => {
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
                 done();
-            }, 1000)
+            }, 0)
         });
     });
 
@@ -183,7 +183,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(style[0].getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
-        }, 1000);
+        }, 0);
     });
 
     // 下面将上述测试显示在div中
@@ -208,7 +208,7 @@ describe('openlayers_VectorTileStyles', () => {
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
                 done();
-            }, 1000)
+            }, 0)
         });
     });
 
@@ -242,7 +242,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(styleLine.getStroke().getWidth()).toEqual(3.77952);
             expect(styleLine.getStroke().getLineJoin()).toBe("round");
             expect(styleLine.getStroke().getMiterLimit()).toEqual(10);
-        }, 1000);
+        }, 0);
         // featureRegionJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
         var featureRegionJSON = {
             "type": "Feature",
@@ -269,7 +269,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(styleRegion.getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
-        }, 1000);
+        }, 0);
     });
 
     // 下面将上述测试显示在div中
@@ -330,7 +330,7 @@ describe('openlayers_VectorTileStyles', () => {
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
                 done();
-            }, 1000)
+            }, 0)
         });
     });
 
@@ -365,7 +365,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(styleLine.getStroke().getWidth()).toEqual(3.77952);
             expect(styleLine.getStroke().getLineJoin()).toBe("round");
             expect(styleLine.getStroke().getMiterLimit()).toEqual(10);
-        }, 1000);
+        }, 0);
         // featureRegionJSON通过JSON.stringify((new GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
         var featureRegionJSON = {
             "type": "Feature",
@@ -393,7 +393,7 @@ describe('openlayers_VectorTileStyles', () => {
             expect(styleRegion[0].getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
-        }, 1000);
+        }, 0);
     });
 
     // 下面将上述测试显示在div中
@@ -420,7 +420,7 @@ describe('openlayers_VectorTileStyles', () => {
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
                 done();
-            }, 1000)
+            }, 0)
         });
     });
 

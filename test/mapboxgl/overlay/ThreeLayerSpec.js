@@ -70,7 +70,7 @@ describe('mapboxgl_ThreeLayer', () => {
             expect(threeLayer.renderer.scene).not.toBeNull();
             expect(threeLayer.renderer.camera).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('setPosition', () => {

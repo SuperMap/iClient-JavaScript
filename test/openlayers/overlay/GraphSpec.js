@@ -254,7 +254,7 @@ describe('openlayers_Graph', () => {
             graphThemeSource.clear();
             map.removeLayer(layer);
             done();
-        }, 3000);
+        }, 0);
     });
 
     it('removeFeatures use callback', (done) => {
@@ -318,7 +318,7 @@ describe('openlayers_Graph', () => {
           graphThemeSource.clear();
           map.removeLayer(layer);
           done();
-      }, 3000);
+      }, 0);
   });
 
     it('getFeatures use filter callback', (done) => {
@@ -389,7 +389,7 @@ describe('openlayers_Graph', () => {
           graphThemeSource.clear();
           map.removeLayer(layer);
           done();
-      }, 3000);
+      }, 0);
   });
 
     it('isQuadrilateralOverLap', (done) => {
@@ -468,7 +468,7 @@ describe('openlayers_Graph', () => {
             graphThemeSource.clear();
             map.removeLayer(layer);
             done();
-        }, 3000);
+        }, 0);
     });
 
     it('clearCache', (done) => {

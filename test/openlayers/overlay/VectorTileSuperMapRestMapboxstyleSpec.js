@@ -75,7 +75,7 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
         setTimeout(() => {
             expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4)
             done();
-        }, 2000);
+        }, 0);
         map.addLayer(vectorLayer);
 
     });
@@ -97,7 +97,7 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
             expect(vectorLayer.getSource()._tileUrl).toContain("California");
             expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4)
             done();
-        }, 2000);
+        }, 0);
         map.addLayer(vectorLayer);
 
     });

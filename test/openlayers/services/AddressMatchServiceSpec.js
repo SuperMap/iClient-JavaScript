@@ -77,7 +77,7 @@ describe('openlayers_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 
     it('decode', (done) => {
@@ -127,7 +127,7 @@ describe('openlayers_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
     it('code_customQueryParam', (done) => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
@@ -168,7 +168,7 @@ describe('openlayers_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 
     it('decode_customQueryParam', (done) => {
@@ -209,6 +209,6 @@ describe('openlayers_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 });

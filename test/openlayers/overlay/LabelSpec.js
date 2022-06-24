@@ -158,7 +158,7 @@ describe('openlayers_Label', () => {
             expect(thematicFeature.id).not.toBeNull();
             expect(thematicFeature.style).not.toBeNull();
             done();
-        }, 2000);
+        }, 0);
     });
 
     //重绘所有专题要素
@@ -174,7 +174,7 @@ describe('openlayers_Label', () => {
             expect(themeSource.style).not.toBeNull();
             expect(themeSource.styleGroups.length).toEqual(6);
             done();
-        }, 2000);
+        }, 0);
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素
@@ -197,7 +197,7 @@ describe('openlayers_Label', () => {
                 expect(feas[i].id).toContain("SuperMap.Feature_");
             }
             done();
-        }, 2000)
+        }, 0)
     });
 
     //根据用户数据（feature）设置专题要素的 Style
@@ -212,7 +212,7 @@ describe('openlayers_Label', () => {
             expect(featStyle.label).toEqual(13);
             expect(featStyle.strokeColor).toEqual("#8B7B8B");
             done();
-        }, 2000)
+        }, 0)
     });
 
     //设置标签要素的Style
@@ -233,7 +233,7 @@ describe('openlayers_Label', () => {
                 expect(labelFeas[i].id).toContain("SuperMap.Feature_");
             }
             done();
-        }, 2000)
+        }, 0)
     });
 
     //设置标签要素的Style
@@ -251,7 +251,7 @@ describe('openlayers_Label', () => {
             expect(feature.geometry.bounds).not.toBeNull();
             expect(feature.style).not.toBeNull();
             done();
-        }, 2000)
+        }, 0)
     });
 
     //获取标签要素的像素坐标
@@ -266,7 +266,7 @@ describe('openlayers_Label', () => {
             expect(location.x).toEqual(33.691771733333326);
             expect(location.y).toEqual(369.16040391111113);
             done();
-        }, 2000)
+        }, 0)
     });
 
     //获得标签要素的最终范围 默认getPxBoundsMode = 0
@@ -283,7 +283,7 @@ describe('openlayers_Label', () => {
                 expect(boundsQuad[i].y).not.toBeNaN();
             }
             done()
-        }, 2000)
+        }, 0)
     });
 
 
@@ -304,7 +304,7 @@ describe('openlayers_Label', () => {
                 expect(boundsQuad[i].y).not.toBeNaN();
             }
             done();
-        }, 2000)
+        }, 0)
     });
 
     //获得标签要素的最终范围的另一种算法
@@ -379,7 +379,7 @@ describe('openlayers_Label', () => {
                 expect(boundsQuad_rb[i].y).not.toBeNaN();
             }
             done();
-        }, 2000);
+        }, 0);
     });
 
     //根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等
@@ -396,7 +396,7 @@ describe('openlayers_Label', () => {
             expect(labelInfo.rows).toEqual(1);
             expect(labelInfo.w).not.toBeNull();
             done();
-        }, 2000)
+        }, 0)
     });
 
     //旋转bounds
@@ -415,7 +415,7 @@ describe('openlayers_Label', () => {
                 expect(boundsQuad[i].y).not.toBeNaN();
             }
             done();
-        }, 2000);
+        }, 0);
     });
 
     //获取一个点绕旋转中心顺时针旋转后的位置  (此方法用于屏幕坐标)

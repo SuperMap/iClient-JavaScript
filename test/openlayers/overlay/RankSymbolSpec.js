@@ -100,7 +100,7 @@ describe('openlayers_RankSymbol', () => {
             expect(themeSource.symbolType).toEqual("Point");
             themeSource.destroy();
             done();
-        }, 5000);
+        }, 0);
     });
 
     it('createThematicFeature', (done) => {
@@ -134,7 +134,7 @@ describe('openlayers_RankSymbol', () => {
             var result = themeSource.createThematicFeature(features[0]);
             expect(result).toBeFalsy();
             done();
-        }, 2000);
+        }, 0);
     });
 
 });

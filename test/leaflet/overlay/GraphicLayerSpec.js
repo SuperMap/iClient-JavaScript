@@ -85,7 +85,7 @@ describe('leaflet_GraphicLayer', () => {
                 done();
             });
             layer.remove();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_imageStyle', (done) => {
@@ -114,7 +114,7 @@ describe('leaflet_GraphicLayer', () => {
                     done();
                 });
                 layer.remove();
-            }, 1000);
+            }, 0);
         };
     });
     it('overlay_ICL_1299', (done) => {
@@ -173,7 +173,7 @@ describe('leaflet_GraphicLayer', () => {
             const boundingClientRect = map.getContainer().getBoundingClientRect();
             const layerPoint = map.latLngToContainerPoint(g);
             map._renderer._onClick({ type: 'click', clientX: layerPoint.x + boundingClientRect.left, clientY: layerPoint.y+ boundingClientRect.top });
-        }, 1000);
+        }, 0);
     });
 
     describe('GraphicLayer_graphic', () => {
@@ -208,7 +208,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 1000);
+            }, 0);
         });
 
         it('getGraphicsByAttribute', (done) => {
@@ -221,7 +221,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 1000);
+            }, 0);
         });
 
         it('removeGraphics', (done) => {
@@ -245,7 +245,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 1000);
+            }, 0);
         });
 
         it('getState,getRenderer', (done) => {
@@ -260,7 +260,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 1000);
+            }, 0);
         });
 
         it('setStyle', (done) => {
@@ -276,7 +276,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 4000);
+            }, 0);
         });
 
         it('addGraphics', (done) => {
@@ -289,7 +289,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 4000);
+            }, 0);
         });
 
         it('setGraphics', (done) => {
@@ -312,7 +312,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 4000);
+            }, 0);
         });
 
         //特定条件下，期望的函数被调用、
@@ -344,7 +344,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 4000);
+            }, 0);
         });
         it('CRS_4326_ICL_1349', (done) => {
             let { map, testDiv } = createMap();
@@ -362,7 +362,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 4000);
+            }, 0);
         });
         it('CRS_4326_ICL_1349', (done) => {
             let { map, testDiv } = createMap();
@@ -380,7 +380,7 @@ describe('leaflet_GraphicLayer', () => {
                 map.remove();
                 window.document.body.removeChild(testDiv);
                 done();
-            }, 4000);
+            }, 0);
         });
     });
 });

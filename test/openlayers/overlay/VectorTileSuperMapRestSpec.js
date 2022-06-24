@@ -58,7 +58,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
                 console.log("'initialize'案例失败：" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
             }
-        }, 6000);
+        }, 0);
     });
     it('custom_tileLoadFunction', (done) => {
         var tileLoadFunction = jasmine.createSpy('tileLoadFunction');
@@ -89,6 +89,6 @@ describe('openlayers_VectorTileSuperMapRest', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 6000);
+        }, 0);
     });
 });

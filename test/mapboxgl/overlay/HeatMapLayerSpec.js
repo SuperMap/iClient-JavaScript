@@ -240,7 +240,7 @@ describe('mapboxgl_HeatMapLayer', () => {
             expect(heatLayer.rootCanvas.style.display).toBe('none');
             heatLayer.setVisibility(true);
             done();
-        }, 2000);
+        }, 0);
     });
 
     it('removeFeatures', () => {
@@ -253,7 +253,7 @@ describe('mapboxgl_HeatMapLayer', () => {
         setTimeout(() => {
             expect(heatLayer.rootCanvas.style.transform).not.toBeNull()
             done();
-        }, 2000);
+        }, 0);
     });
     it('mapResize', (done) => {
         testDiv.style.width = '1000px'
@@ -261,13 +261,13 @@ describe('mapboxgl_HeatMapLayer', () => {
         setTimeout(() => {
             expect(heatLayer.rootCanvas.width).toBe(1000 * window.devicePixelRatio);
             done();
-        }, 2000);
+        }, 0);
     });
     it('mapZoom', (done) => {
         map.setZoom(3);
         setTimeout(() => {
             expect(heatLayer.rootCanvas.style.display).toBe('block');
             done();
-        }, 2000);
+        }, 0);
     });
 });

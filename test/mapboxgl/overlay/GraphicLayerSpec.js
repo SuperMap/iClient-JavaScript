@@ -64,7 +64,7 @@ describe('mapboxgl_GraphicLayer', () => {
       expect(graphicLayer.deckGL).not.toBeNull();
       graphicLayer.remove();
       done();
-    }, 1000)
+    }, 0)
   });
 
   it('setVisibility', (done) => {
@@ -74,7 +74,7 @@ describe('mapboxgl_GraphicLayer', () => {
       expect(graphicLayer.visibility).toBeFalsy();
       graphicLayer.remove();
       done();
-    }, 1000)
+    }, 0)
   });
 
   it("getGraphicBy add getGraphicById", (done) => {
@@ -89,7 +89,7 @@ describe('mapboxgl_GraphicLayer', () => {
       graphicLayer.remove();
 
       done();
-    }, 1000)
+    }, 0)
   });
   it("getGraphicsByAttribute", (done) => {
     let graphicLayer = creatGraphicLayer();
@@ -99,7 +99,7 @@ describe('mapboxgl_GraphicLayer', () => {
       expect(graphic[0].getAttributes().name).toBe("graphic_1");
       graphicLayer.remove();
       done();
-    }, 1000);
+    }, 0);
   });
   it("removeGraphics", (done) => {
     let graphicLayer = creatGraphicLayer();
@@ -122,7 +122,7 @@ describe('mapboxgl_GraphicLayer', () => {
       graphicLayer.remove();
 
       done();
-    }, 1000);
+    }, 0);
 
   });
   it("getState", (done) => {
@@ -134,7 +134,7 @@ describe('mapboxgl_GraphicLayer', () => {
 
       graphicLayer.remove();
       done();
-    }, 1000);
+    }, 0);
   });
 
   it("setStyle", (done) => {
@@ -146,7 +146,7 @@ describe('mapboxgl_GraphicLayer', () => {
 
       graphicLayer.remove();
       done();
-    }, 4000);
+    }, 0);
   });
 
   it("addGraphics", (done) => {
@@ -169,7 +169,7 @@ describe('mapboxgl_GraphicLayer', () => {
 
       graphicLayer.remove();
       done();
-    }, 4000);
+    }, 0);
   });
 
   it("setGraphics", (done) => {
@@ -190,6 +190,6 @@ describe('mapboxgl_GraphicLayer', () => {
 
       graphicLayer.remove();
       done();
-    }, 4000);
+    }, 0);
   });
 });

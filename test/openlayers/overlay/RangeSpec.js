@@ -366,7 +366,7 @@ describe('openlayers_Range', () => {
             expect(themeLayer.getSource().div).not.toBeUndefined();
             expect(themeLayer.getSource().cache).not.toBeUndefined();
             expect(themeLayer.getSource().features.length).toBeGreaterThan(0);
-        }, 5000);
+        }, 0);
     });
 
     it('getStyleByData', () => {

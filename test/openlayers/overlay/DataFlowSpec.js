@@ -132,7 +132,7 @@ describe('ol_DataFlow', () => {
             setTimeout(() => {
                 expect(service).not.toBeNull();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -184,7 +184,7 @@ describe('ol_DataFlow', () => {
             setTimeout(() => {
                 expect(service).not.toBeNull();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -243,7 +243,7 @@ describe('ol_DataFlow', () => {
                 service.unSubscribe();
                 service.unBroadcast();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -310,7 +310,7 @@ describe('ol_DataFlow', () => {
                 service.unSubscribe();
                 service.unBroadcast();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -337,7 +337,7 @@ describe('ol_DataFlow', () => {
             source.setExcludeField("id");
             expect(source.excludeField).toBe("id");
             done();
-        }, 4000)
+        }, 0)
 
     });
 
@@ -376,6 +376,6 @@ describe('ol_DataFlow', () => {
             source.setGeometry(geometry);
             expect(source.geometry).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 });
