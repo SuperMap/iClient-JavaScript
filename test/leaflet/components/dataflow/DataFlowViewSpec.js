@@ -119,7 +119,7 @@ describe('leaflet_dataflow_DataFlowView', () => {
         setTimeout(() => {
             expect(dataView.viewModel.dataFlowLayer.getLayers).toHaveBeenCalled();
             done();
-        }, 500)
+        }, 0)
     });
 
     it('cancelSubscribe', (done) => {
@@ -127,7 +127,7 @@ describe('leaflet_dataflow_DataFlowView', () => {
         setTimeout(() => {
             expect(dataView.viewModel.dataFlowLayer).toBeNull();
             done();
-        }, 500)
+        }, 0)
     });
 
 })

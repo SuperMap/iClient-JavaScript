@@ -161,7 +161,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 4000);
+        }, 0);
     });
     
     it('processAsync_Range_1', (done) => {
@@ -237,7 +237,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     it('processAsync_Range_UrlLarge', (done) => {
@@ -359,7 +359,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     it('processAsync_Graph', (done) => {
@@ -431,7 +431,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     it('processAsync_JoinItem', (done) => {
@@ -527,7 +527,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     it('processAsync_Unique', (done) => {
@@ -615,7 +615,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     it('processAsync_Unique_0', (done) => {
@@ -711,7 +711,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //统一风格标签专题图
@@ -780,7 +780,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //分段标签专题图
@@ -888,7 +888,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //分段标签专题图
@@ -1024,7 +1024,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //矩阵标签专题图
@@ -1101,7 +1101,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //使用内存数据制作统一风格标签专题图
@@ -1174,7 +1174,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //使用内存数据制作范围分段专题图
@@ -1263,7 +1263,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //点密度专题图
@@ -1321,7 +1321,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
     
     //等级符号专题图
@@ -1387,7 +1387,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
 
     it('ThemeUniqueItem', () => {
@@ -1471,7 +1471,7 @@ describe('ThemeService', () => {
                 themeParameters.destroy();
                 done();
             }
-        }, 4000);
+        }, 0);
     });
 });
 

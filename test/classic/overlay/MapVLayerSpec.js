@@ -174,7 +174,7 @@ describe('classic_MapVLayer', () => {
             expect(data).not.toBeNull();
             expect(data.length).toBe(0);
             done();
-        }, 2000);
+        }, 0);
     });
 
 

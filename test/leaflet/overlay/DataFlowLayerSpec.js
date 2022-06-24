@@ -118,7 +118,7 @@ describe('leaflet_DataFlowLayer', () => {
                 expect(service._events.broadcastSocketConnected.length).toEqual(1);
                 service.unBroadcast();
                 done();
-            }, 4000)
+            }, 0)
         }
         finally {
             if (timer) {
@@ -156,7 +156,7 @@ describe('leaflet_DataFlowLayer', () => {
             setTimeout(() => {
                 expect(service).not.toBeNull();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -196,7 +196,7 @@ describe('leaflet_DataFlowLayer', () => {
                 service.unBroadcast();
                 service.destroy();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -237,7 +237,7 @@ describe('leaflet_DataFlowLayer', () => {
                 service.unBroadcast();
                 service.destroy();
                 done();
-            }, 4000)
+            }, 0)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -254,7 +254,7 @@ describe('leaflet_DataFlowLayer', () => {
         setTimeout(() => {
             expect(layer).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('setExcludeField', (done) => {
@@ -272,7 +272,7 @@ describe('leaflet_DataFlowLayer', () => {
                 layer.setExcludeField("id");
                 expect(layer).not.toBeNull();
                 done();
-            }, 4000)
+            }, 0)
         } catch (e) {
             console.log(e);
         }
@@ -298,7 +298,7 @@ describe('leaflet_DataFlowLayer', () => {
             layer.setGeometry(geometry);
             expect(layer).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
 
     });
 
@@ -341,7 +341,7 @@ describe('leaflet_DataFlowLayer', () => {
             });
             // done();
             layer.dataService.dataFlow.events.triggerEvent('messageSucceeded', e);
-        }, 2000)
+        }, 0)
 
     });
 });

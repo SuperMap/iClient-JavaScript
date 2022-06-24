@@ -150,9 +150,6 @@ describe('EditFeaturesService', () => {
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         updateFeaturesService.processAsync(updateFeaturesParams);
-        setTimeout(() => {
-           
-        }, 2000);
     });
 
     // 删除要素

@@ -74,7 +74,7 @@ describe('BurstPipelineAnalystService', () => {
             expect(serviceFailedEventArgsSystem).toBeNull();
             burstPipelineAnalystService.destroy();
             done();
-        }, 1000);
+        }, 0);
     });
 
     //正确返回结果

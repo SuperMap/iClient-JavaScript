@@ -144,7 +144,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 600)
+        }, 0)
     });
 
 

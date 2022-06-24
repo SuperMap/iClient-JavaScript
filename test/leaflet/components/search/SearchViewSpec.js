@@ -195,7 +195,7 @@ describe('leaflet_search_SearchView', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        }, 0);
 
     })
 })

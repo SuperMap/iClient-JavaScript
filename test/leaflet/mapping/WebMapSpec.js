@@ -86,7 +86,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("testH");
             expect(map.options.server).toBe(server);
             done();
-        }, 2000)
+        }, 0)
     });
 
     it('initialize_TIANDITU_VEC', (done) => {
@@ -132,7 +132,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_TIANDITU_IMG', (done) => {
@@ -178,7 +178,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_TIANDITU_TER', (done) => {
@@ -224,7 +224,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_BAIDU', (done) => {
@@ -270,7 +270,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        }, 0);
     });
 
     it('initialize_WMS', (done) => {
@@ -317,7 +317,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe("http://supermapiserver");
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_WMTS', (done) => {
@@ -364,7 +364,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("180065");
             expect(map.options.server).toBe("http://supermapiserver");
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('initialize_CLOUD', (done) => {
@@ -410,7 +410,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('CLOUD add FEATURE_LAYER', (done) => {
@@ -451,7 +451,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("328215");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('SUPERMAP_REST add MARKER_LAYER', (done) => {
@@ -493,7 +493,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("10235");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_HeatLayer', (done) => {
@@ -536,7 +536,7 @@ describe('leaflet_WebMap', () => {
             expect(map.options.server).toBe(server);
             map = null;
             done();
-        }, 5000)
+        }, 0)
     });
 
     it('createThemeLayer_UniqueLayer', (done) => {
@@ -578,7 +578,7 @@ describe('leaflet_WebMap', () => {
             expect(map.options.server).toBe(server);
             map = null;
             done();
-        }, 5000)
+        }, 0)
     });
 
     xit('createThemeLayer_RangeLayer', (done) => {
@@ -619,7 +619,7 @@ describe('leaflet_WebMap', () => {
             expect(map.options.server).toBe(server);
             map = null;
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_VectorThemeLayer', (done) => {
@@ -662,7 +662,7 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
     it('createThemeLayer_LabelLayer', (done) => {
@@ -703,6 +703,6 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("599184");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 });

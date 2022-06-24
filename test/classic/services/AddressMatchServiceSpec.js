@@ -86,7 +86,7 @@ describe('classic_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 
     it('decode', (done) => {
@@ -136,6 +136,6 @@ describe('classic_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 0);
     });
 });

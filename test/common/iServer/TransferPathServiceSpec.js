@@ -51,7 +51,7 @@ describe('TransferPathService', () => {
                 service.destroy();
                 done();
             }
-        }, 1500)
+        }, 0)
     });
 
     it('success:processAsync', (done) => {

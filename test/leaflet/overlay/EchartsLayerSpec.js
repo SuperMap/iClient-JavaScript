@@ -335,6 +335,6 @@ describe('leaflet_EChartsLayer', () => {
                 expect(false).toBeTruthy();
                 done();
             };
-        }, 4000)
+        }, 0)
     });
 });

@@ -113,7 +113,7 @@ describe('GetGridCellInfosService', () => {
                 queryParam.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
 
     it('fail:processAsync', done => {
@@ -144,7 +144,7 @@ describe('GetGridCellInfosService', () => {
                 myService.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
 
     it('getDatasetInfoCompleted', () => {

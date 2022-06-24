@@ -54,7 +54,7 @@ describe('TransferSolutionService', () => {
                 service.destroy();
                 done();
             }
-        }, 1000);
+        }, 0);
     });
 
     it('success:processAsync', (done) => {
