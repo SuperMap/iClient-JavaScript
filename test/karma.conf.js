@@ -66,7 +66,7 @@ module.exports = function (config) {
       './test-main-classic.js',
 
       /***common的源码***/
-      '../src/common/**/*.js',
+      '../src/common/!(ai)/*.js',
       /**测试文件**/
       './test-main-common.js',
 
