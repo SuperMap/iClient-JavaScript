@@ -65,9 +65,9 @@
             inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.heat/leaflet-heat.js');
         }
         if (inArray(includes, 'leaflet.markercluster')) {
-            inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.markercluster/1.5.1/MarkerCluster.Default.css');
-            inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.markercluster/1.5.1/MarkerCluster.css');
-            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.markercluster/1.5.1/leaflet.markercluster.js');
+            inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.markercluster/1.5.3/MarkerCluster.Default.css');
+            inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.markercluster/1.5.3/MarkerCluster.css');
+            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.markercluster/1.5.3/leaflet.markercluster.js');
         }
         if (inArray(includes, 'leaflet.draw')) {
             inputCSS('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.css');
