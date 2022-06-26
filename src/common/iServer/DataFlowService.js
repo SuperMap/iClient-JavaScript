@@ -31,7 +31,7 @@ export class DataFlowService extends CommonServiceBase {
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketClosed", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketClosed", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -71,9 +71,11 @@ export class DataFlowService extends CommonServiceBase {
             me.events.triggerEvent('broadcastSocketConnected', e);
         };
         this.broadcastWebSocket.onclose = function (e) {
-            me.broadcastWebSocket.isOpen = false;
-            e.eventType = 'broadcastSocketConnected';
-            me.events.triggerEvent('broadcastSocketConnected', e);
+            if (me.broadcastWebSocket) {
+                me.broadcastWebSocket.isOpen = false;
+            }
+            e.eventType = 'broadcastSocketClosed';
+            me.events.triggerEvent('broadcastSocketClosed', e);
         };
         this.broadcastWebSocket.onerror = function (e) {
             e.eventType = 'broadcastSocketError';
@@ -109,6 +111,10 @@ export class DataFlowService extends CommonServiceBase {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
             me.events.triggerEvent('subscribeSocketConnected', e);
+        };
+        this.subscribeWebSocket.onclose = function (e) {
+            e.eventType = 'subscribeWebSocketClosed';
+            me.events.triggerEvent('subscribeWebSocketClosed', e);
         };
         this.subscribeWebSocket.onerror = function (e) {
             e.eventType = 'subscribeSocketError';

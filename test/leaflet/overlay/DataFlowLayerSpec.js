@@ -105,7 +105,7 @@ describe('leaflet_DataFlowLayer', () => {
             service.on('broadcastSocketConnected', (e) => {
                 var dataFlow = service.dataFlow;
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
-                expect(dataFlow.EVENT_TYPES.length).toEqual(8);
+                expect(dataFlow.EVENT_TYPES.length).toEqual(10);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
                 timer = window.setInterval(broadcast_Point(service), 1000);
             });
