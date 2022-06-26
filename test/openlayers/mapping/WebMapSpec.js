@@ -612,7 +612,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('京津地区土地利用现状图');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 0)
+        }, 1000)
     });
 
     it('createThemeLayer_SUPERMAPREST_DATA', (done) => {
@@ -899,7 +899,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.getWmtsInfo(layerInfo, successCallback);
             expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
             done();
-        }, 0)
+        }, 1000)
     });
 
     it('isValidResponse', (done) => {

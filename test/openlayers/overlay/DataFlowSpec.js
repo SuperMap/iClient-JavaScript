@@ -310,7 +310,7 @@ describe('ol_DataFlow', () => {
                 service.unSubscribe();
                 service.unBroadcast();
                 done();
-            }, 2000)
+            }, 4000)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
