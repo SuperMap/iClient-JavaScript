@@ -310,7 +310,7 @@ describe('ol_DataFlow', () => {
                 service.unSubscribe();
                 service.unBroadcast();
                 done();
-            }, 0)
+            }, 2000)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
@@ -337,7 +337,7 @@ describe('ol_DataFlow', () => {
             source.setExcludeField("id");
             expect(source.excludeField).toBe("id");
             done();
-        }, 1000)
+        }, 2000)
 
     });
 

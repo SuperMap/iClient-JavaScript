@@ -325,7 +325,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
-        }, 0)
+        }, 1000)
     });
 
     it('createThemeLayer_Vector_Basis_Line', (done) => {
@@ -362,7 +362,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路');
             done();
-        }, 0)
+        }, 1000)
     });
 
     it('createThemeLayer_Vector_IMAGE', (done) => {
@@ -396,7 +396,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
-        }, 0)
+        }, 1000)
     });
     it('createThemeLayer_Vector_SVG', (done) => {
         let options = {
