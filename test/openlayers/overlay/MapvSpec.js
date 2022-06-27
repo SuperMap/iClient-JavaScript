@@ -148,7 +148,7 @@ describe('openlayers_MapV', () => {
             mapVSource.removeData(filter);
             expect(mapVSource.dataSet._data.length).toEqual(299);
             done();
-        }, 0);
+        }, 2000);
     });
 
     it('update', (done) => {
@@ -172,7 +172,7 @@ describe('openlayers_MapV', () => {
             expect(mapVSource.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
             expect(mapVSource.mapvOptions.shadowBlur).toEqual(40);
             done();
-        }, 0);
+        }, 2000);
     });
 
     it('clearData', (done) => {
@@ -180,6 +180,6 @@ describe('openlayers_MapV', () => {
             mapVSource.clearData();
             expect(mapVSource.dataSet._data.length).toEqual(0);
             done();
-        }, 0);
+        }, 2000);
     });
 });
