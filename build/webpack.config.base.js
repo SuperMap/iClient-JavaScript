@@ -2,7 +2,26 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const LintExportWebpackPlugin = require('./lint-export-webpack-plugin');
+const chalk = require('chalk');
 const pkg = require('../package.json');
+
+function compareDependencies(pkgName, dependenciesToCompare, rootDependencies = pkg.dependencies) {
+  Object.keys(dependenciesToCompare).forEach(name => {
+    if (!rootDependencies[name] || rootDependencies[name] !== dependenciesToCompare[name]) {
+      if (rootDependencies[name].includes('file:src/')){
+        return;
+      }
+      console.log(chalk.red(`ERROR [${pkgName}]: The dependency ${name} version can not match in root package.json!\n`));
+    }
+  });
+}
+
+const packageToClients = ['common', 'classic', 'leaflet', 'openlayers', 'mapboxgl'];
+packageToClients.forEach(client => {
+  // eslint-disable-next-line import/no-dynamic-require
+  const clientPkg = require(`../src/${client}/package.json`);
+  compareDependencies(clientPkg.name, clientPkg.dependencies);
+});
 
 //包版本(ES6或者ES5)
 let moduleVersion = process.env.moduleVersion || 'es5';
