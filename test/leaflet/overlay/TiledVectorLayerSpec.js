@@ -226,7 +226,7 @@ describe('leaflet_TiledVectorLayer', () => {
             expect(layerStyle.__default__[1][4].property).toBe("point-file");
             map.removeLayer(tileVectorLayer);
             done();
-        }, 0);
+        }, 2000);
     });
 
     //测试其父类
