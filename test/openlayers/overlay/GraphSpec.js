@@ -468,7 +468,7 @@ describe('openlayers_Graph', () => {
             graphThemeSource.clear();
             map.removeLayer(layer);
             done();
-        }, 0);
+        }, 1000);
     });
 
     it('clearCache', (done) => {
