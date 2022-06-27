@@ -264,7 +264,7 @@ describe('leaflet_UniqueThemeLayer', () => {
                 console.log("未能通过'getFeaturesBySQL'方法获取接下来'addFeatures'方法所需要的数据");
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     it('addFeatures', (done) => {
@@ -398,7 +398,7 @@ describe('leaflet_UniqueThemeLayer', () => {
                     expect(false).toBeTruthy();
                     done();
                 }
-            }, 0);
+            }, 2000);
         } else {
             expect(false).toBeTruthy();
             console.log("'addFeatures'案例未获取到待添加的数据");
