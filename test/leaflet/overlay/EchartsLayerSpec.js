@@ -337,4 +337,38 @@ describe('leaflet_EChartsLayer', () => {
             };
         }, 0)
     });
+
+    it('canvas top left', (done) => {
+      debugger;
+      var data = [
+        {
+          value: [104.006244, 30.677465]
+        },
+        {
+          value: [104.041946, 30.689538]
+        },
+        {
+          value: [104.002589, 30.64683]
+        }
+      ];
+      var option = {
+        series: [
+          {
+            type: 'effectScatter',
+            coordinateSystem: 'leaflet',
+            data: data,
+            symbolSize: 30
+          }
+        ]
+      };
+      var echartsMapLayer = echartsLayer(option).addTo(map);
+      const layer = document.getElementsByClassName('echarts-layer')[0];
+      const panel = document.getElementsByClassName('leaflet-map-pane')[0];
+      expect(echartsMapLayer).not.toBeNull();
+      expect(layer.style.left).toBe('0px');
+      expect(layer.style.top).toBe('0px');
+      expect(panel.style.transform).toBe('translate3d(0px, 0px, 0px)');
+      debugger;
+      done();
+    });
 });
