@@ -1,5 +1,6 @@
 /**
- * @class ArrayStatistic
+ * @name ArrayStatistic
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 处理数组。
  * @usage
@@ -7,16 +8,20 @@
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const arrayStatistic = {namespace}.ArrayStatistic();
+ *   const result = {namespace}.ArrayStatistic.newInstance();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ArrayStatistic.newInstance();
  *
  * </script>
+ *
  * // ES6 Import
  * import { ArrayStatistic } from '{npm}';
- * 
- * new ArrayStatistic();
+ *
+ * const result = ArrayStatistic.newInstance();
  * ```
  */
-export class ArrayStatistic {
+ export class ArrayStatistic {
 
     // geostatsInstance: null,
 

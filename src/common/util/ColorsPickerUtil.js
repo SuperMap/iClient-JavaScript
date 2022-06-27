@@ -5,10 +5,27 @@ var ColorRender = new Color();
 // 					"www.qzct.net": "#7ed321" = new LevelRenderer.Tool.Color();
 
 /**
- * @class ColorsPickerUtil
+ * @name ColorsPickerUtil
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorsPickerUtil.createCanvas();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ColorsPickerUtil.createCanvas();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { ColorsPickerUtil } from '{npm}';
+ *
+ * const result = ColorsPickerUtil.createCanvas();
+ * ```
  */
 export class ColorsPickerUtil  {
     /**
