@@ -430,7 +430,7 @@ describe('openlayers_WebMap', () => {
             expect(options.successCallback).toHaveBeenCalled();
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             done();
-        }, 0)
+        }, 2000)
     });
 
     it('createThemeLayer_Unique', (done) => {
