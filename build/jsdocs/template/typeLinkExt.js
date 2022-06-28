@@ -30,6 +30,7 @@ var typeLinks = {
     "ol.Object": olapi + "module-ol_Object-BaseObject.html",
     "ol.source.ImageCanvas": olapi + "module-ol_source_ImageCanvas-ImageCanvasSource.html",
     "ol.source.TileImage": olapi + "module-ol_source_TileImage-TileImage.html",
+    "ol.source.Image": olapi + "module-ol_source_Image-ImageSource.html",
     "ol.source.WMTS": olapi + "module-ol_source_WMTS-WMTS.html",
     "ol.source.XYZ": olapi + "module-ol_source_XYZ-XYZ.html",
     "ol.source.Vector": olapi + "module-ol_source_Vector-VectorSource.html",

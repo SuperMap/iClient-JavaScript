@@ -5,7 +5,8 @@ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/
 import {Graph} from './Graph';
 
 /**
- * @class ol.source.RankSymbol
+ * @class RankSymbol
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 等级符号专题图图层源。
  * @param {string} name - 专题图层名。
@@ -32,7 +33,8 @@ import {Graph} from './Graph';
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.Graph}
+ * @extends {Graph}
+ * @usage
  */
 export class RankSymbol extends Graph {
 
@@ -44,7 +46,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function ol.source.RankSymbol.prototype.destroy
+     * @function RankSymbol.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -55,7 +57,7 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @function ol.source.RankSymbol.prototype.setSymbolType
+     * @function RankSymbol.prototype.setSymbolType
      * @description 设置标志符号。
      * @param {string} symbolType - 符号类型。
      */
@@ -66,7 +68,7 @@ export class RankSymbol extends Graph {
 
     /**
      * @private
-     * @function ol.source.RankSymbol.prototype.createThematicFeature
+     * @function RankSymbol.prototype.createThematicFeature
      * @description 创建专题图形要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */

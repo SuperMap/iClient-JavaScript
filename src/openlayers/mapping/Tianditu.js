@@ -6,7 +6,8 @@ import WMTS from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 
 /**
- * @class ol.source.Tianditu
+ * @class Tianditu
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
  * @param {Object} opt_options - 参数。
@@ -22,6 +23,7 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
  * @param {boolean} [opt_options.opaque=true] - 是否透明。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @extends {ol.source.WMTS}
+ * @usage
  */
 export class Tianditu extends WMTS {
   constructor(opt_options) {
@@ -91,7 +93,7 @@ export class Tianditu extends WMTS {
   }
 
   /**
-   * @function ol.source.Tianditu.getTileGrid
+   * @function Tianditu.getTileGrid
    * @description 获取瓦片网格。
    * @param {string} projection - 投影参考对象。
    * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
@@ -104,7 +106,7 @@ export class Tianditu extends WMTS {
   }
 
   /**
-   * @function ol.source.Tianditu.default4326TileGrid
+   * @function Tianditu.default4326TileGrid
    * @description 获取默认 4326 网格瓦片。
    * @returns {ol.tilegrid.WMTS} 返回默认 4326 网格瓦片对象。
    */
@@ -126,7 +128,7 @@ export class Tianditu extends WMTS {
   }
 
   /**
-   * @function ol.source.Tianditu.default3857TileGrid
+   * @function Tianditu.default3857TileGrid
    * @description 获取默认 3857 网格瓦片。
    * @returns {ol.tilegrid.WMTS} 返回默认 3857 网格瓦片对象。
    */

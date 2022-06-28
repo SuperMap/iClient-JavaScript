@@ -13,12 +13,13 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } from 'ol/extent';
 
 /**
- * @class ol.source.ImageSuperMapRest
+ * @class ImageSuperMapRest
+ * @browsernamespace ol.source
  * @category iServer Map Tile
  * @classdesc SuperMap iServer Image 图层源。
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
+ * @param {ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.antialias=false] - 是否反走样地图。
@@ -26,9 +27,9 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
- * @param {(ol/geom/Geometry|ol/geom/Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {ol.geom.Geometry} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
- * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {boolean} [options.markerAngleFixed=false] - 指定点状符号的角度是否固定。
  * @param {boolean} [options.textAngleFixed=false] - 文本角度是否固定。
  * @param {boolean} [options.textOrientationFixed=false] - 文本朝向是否固定。
@@ -38,11 +39,12 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @param {boolean} [options.minVisibleTextSize] - 文本的最小可见尺寸，单位为像素。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
- * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {NDVIParameter|HillshadeParameter} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
  * @param {string} [options.ratio=1.5] - 	请求图片大小比例. 1 表示请求图片大小和地图视窗范围一致, 2 表示请求图片大小是地图视窗范围的2倍，以此类推。
- * @extends {ol.source.TileImage}
+ * @extends {ol.source.Image}
+ * @usage
  */
  export class ImageSuperMapRest extends ImageSource {
   constructor(options) {
@@ -202,7 +204,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
     return imageUrl;
   }
   /**
-   * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
+   * @function ImageSuperMapRest.optionsFromMapJSON
    * @param {string} url - 地址。
    * @param {Object} mapJSONObj - 地图 JSON。
    * @description 获取地图 JSON 信息。

@@ -14,6 +14,7 @@ exports.defineTags = function (dictionary) {
         const deprecatedClasses = [];
         let aliasClass = '';
         let deprecatedClassInstance;
+        let browserNamespace = '';
         if (doclet.tags) {
           for (let index = 0; index < doclet.tags.length; index++) {
             const tag = doclet.tags[index];
@@ -26,6 +27,9 @@ exports.defineTags = function (dictionary) {
             if (tag.title === 'deprecatedclassinstance') {
               deprecatedClassInstance = tag.value;
             }
+            if (tag.title === 'browsernamespace') {
+              browserNamespace = tag.value;
+            }
           }
         }
         doclet.usage = {
@@ -33,7 +37,8 @@ exports.defineTags = function (dictionary) {
           aliasClass: aliasClass,
           globalParams,
           deprecatedClasses: deprecatedClasses,
-          deprecatedClassInstance: deprecatedClassInstance
+          deprecatedClassInstance: deprecatedClassInstance,
+          browserNamespace: browserNamespace
         };
       }
     }

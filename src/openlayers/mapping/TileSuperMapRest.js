@@ -14,7 +14,8 @@ import * as olTilegrid from 'ol/tilegrid';
 import TileGrid from 'ol/tilegrid/TileGrid';
 
 /**
- * @class ol.source.TileSuperMapRest
+ * @class TileSuperMapRest
+ * @browsernamespace ol.source
  * @category iServer Map Tile
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
@@ -34,6 +35,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol.source.TileImage}
+ * @usage
  */
 export class TileSuperMapRest extends TileImage {
     constructor(options) {
@@ -75,7 +77,7 @@ export class TileSuperMapRest extends TileImage {
         var layerUrl = CommonUtil.urlPathAppend(options.url, 'tileImage.' + options.format);
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.getAllRequestParams
+         * @function  TileSuperMapRest.prototype.getAllRequestParams
          * @description 获取全部请求参数。
          */
         function getAllRequestParams() {
@@ -134,7 +136,7 @@ export class TileSuperMapRest extends TileImage {
         }
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.getFullRequestUrl
+         * @function  TileSuperMapRest.prototype.getFullRequestUrl
          * @description 获取完整的请求地址。
          */
         function getFullRequestUrl() {
@@ -146,7 +148,7 @@ export class TileSuperMapRest extends TileImage {
         }
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.createLayerUrl
+         * @function  TileSuperMapRest.prototype.createLayerUrl
          * @description 获取新建图层地址。
          */
         function createLayerUrl() {
@@ -215,7 +217,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
+     * @function  TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息。
      * @param {Object} tileSets - 瓦片集合。
      */
@@ -237,7 +239,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.lastTilesVersion
+     * @function  TileSuperMapRest.prototype.lastTilesVersion
      * @description 请求上一个版本切片，并重新绘制。
      */
     lastTilesVersion() {
@@ -246,7 +248,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.nextTilesVersion
+     * @function  TileSuperMapRest.prototype.nextTilesVersion
      * @description 请求下一个版本切片，并重新绘制。
      */
     nextTilesVersion() {
@@ -255,7 +257,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
+     * @function  TileSuperMapRest.prototype.changeTilesVersion
      * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引。
      */
     changeTilesVersion() {
@@ -285,7 +287,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
+     * @function  TileSuperMapRest.prototype.updateCurrentTileSetsIndex
      * @description 更新当前切片集索引，目前主要提供给控件使用。
      * @param {number} index - 索引号。
      */
@@ -294,7 +296,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
+     * @function  TileSuperMapRest.prototype.mergeTileVersionParam
      * @description 更改 URL 请求参数中的切片版本号，并重绘。
      * @param {Object} version - 版本信息。
      * @returns {boolean} 是否成功。
@@ -310,7 +312,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
+     * @function  TileSuperMapRest.optionsFromMapJSON
      * @description 从 MapJSON 中获取参数对象。
      * @param {string} url - 服务地址。
      * @param {Object} mapJSONObj - 地图 JSON 对象。
@@ -364,7 +366,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.createTileGrid
+     * @function  TileSuperMapRest.createTileGrid
      * @description 创建切片网格。
      * @param {number} extent - 长度。
      * @param {number} maxZoom - 最大的放大级别。

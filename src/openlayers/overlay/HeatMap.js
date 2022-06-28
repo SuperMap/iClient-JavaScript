@@ -14,7 +14,8 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
 /**
- * @class ol.source.HeatMap
+ * @class HeatMap
+ * @browsernamespace ol.source
  * @classdesc 热力图层类。
  * @category Visualization HeatMap
  * @param {string} name - 图层名称
@@ -27,6 +28,7 @@ import Point from 'ol/geom/Point';
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class HeatMap extends ImageCanvasSource {
 
@@ -94,7 +96,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.addFeatures
+     * @function HeatMap.prototype.addFeatures
      * @description 添加热点信息。
      * @param {(GeoJSONObject|Array.<ol.Feature>)} features - 待添加的要素数组。
      * @example
@@ -113,7 +115,7 @@ export class HeatMap extends ImageCanvasSource {
      *          }
      *      ]
      *   };
-     * var heatMapSource = new ol.source.HeatMap("heatMap",{"map": map});
+     * var heatMapSource = new HeatMap("heatMap",{"map": map});
      * heatMapSource.addFeatures(geojson);
      * map.addLayer(new ol.layer.Image({
      *       source: heatMapSource
@@ -126,7 +128,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.setOpacity
+     * @function HeatMap.prototype.setOpacity
      * @description 设置图层的不透明度，取值 [0-1] 之间。
      * @param {number} opacity - 不透明度。
      */
@@ -145,7 +147,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.updateHeatPoints
+     * @function HeatMap.prototype.updateHeatPoints
      * @description 刷新热点图显示。
      * @param {ol.LngLatBounds} resolution - 当前显示范围。
      * @private
@@ -159,7 +161,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.convertFastToPixelPoints
+     * @function HeatMap.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
      * @param {number} resolution - 当前分辨率。
      * @private
@@ -212,7 +214,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.draw
+     * @function HeatMap.prototype.draw
      * @description 绘制热点图。
      * @param {Array} data - convertToPixelPoints 方法计算出的点。
      * @param {number} maxWeight -最大权重。
@@ -242,7 +244,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.colorize
+     * @function HeatMap.prototype.colorize
      * @description 根据渐变色重置热点图 rgb 值。
      * @param {Object} pixels - 像素 rgba 值。
      * @param {Array} gradient - 渐变 canvas.getImageData.data。
@@ -260,7 +262,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.drawCircle
+     * @function HeatMap.drawCircle
      * @description 绘制热点半径圆。
      * @param {number} r - 热点半径。
      * @private
@@ -284,7 +286,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.createGradient
+     * @function HeatMap.createGradient
      * @description 根据 this.canvasColors 设置渐变并 getImageData。
      * @private
      */
@@ -309,7 +311,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.getLocalXY
+     * @function HeatMap.prototype.getLocalXY
      * @description 获取坐标系统。
      * @param {Object} coordinate - 坐标位置。
      */
@@ -337,7 +339,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.rotate
+     * @function HeatMap.prototype.rotate
      * @description 获取某像素坐标点 pixelP 绕中心 center 逆时针旋转 rotation 弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
      * @param {number} rotation - 旋转角度。
@@ -350,7 +352,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.scale
+     * @function HeatMap.prototype.scale
      * @description 获取某像素坐标点 pixelP 相对于中心 center 进行缩放 scaleRatio 倍后的像素点坐标。
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
@@ -364,7 +366,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.removeFeatures
+     * @function HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
      * @param {Array.<FeatureVector>|FeatureVector} features - 热点信息数组。
      */
@@ -397,7 +399,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMapprototype.removeAllFeatures
+     * @function HeatMap.prototype.removeAllFeatures
      * @description 移除全部的热点信息。
      */
     removeAllFeatures() {
@@ -406,7 +408,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.toiClientFeature
+     * @function HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
      * @returns {FeatureVector} 转换后的 iClient 要素

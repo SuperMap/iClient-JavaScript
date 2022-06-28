@@ -6,10 +6,11 @@ import {
 } from './CloverShape'
 
 /**
- * @class ol.style.HitCloverShape
+ * @class HitCloverShape
+ * @browsernamespace ol.style
  * @category  Visualization Graphic
  * @classdesc 三叶草要素高亮风格。
- * @extends {ol.style.CloverShape}
+ * @extends {CloverShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} options.sAngle - 扇叶起始角度。
  * @param {number} options.eAngle - 扇叶终止角度。
@@ -19,6 +20,7 @@ import {
  * @param {number} [options.strokeOpacity] - 透明度。
  * @param {number} [options.fillOpacity] - 填充透明度。
  * @param {number} [options.radius] - 半径。
+ * @usage
  */
 export class HitCloverShape extends CloverShape {
 
@@ -44,14 +46,14 @@ export class HitCloverShape extends CloverShape {
         this._ctx.closePath();
     }
     /**
-     * @function ol.style.HitCloverShape.prototype.getSAngle
+     * @function HitCloverShape.prototype.getSAngle
      * @description 获取扇叶起始角度。
      */
     getSAngle() {
         return this.sAngle;
     }
     /**
-     * @function ol.style.HitCloverShape.prototype.getEAngle
+     * @function HitCloverShape.prototype.getEAngle
      * @description 获取扇叶终止角度。
      */
     getEAngle() {

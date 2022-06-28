@@ -7,12 +7,15 @@ import Geometry from 'ol/geom/Geometry';
 import Style from 'ol/style/Style';
 
 /**
- * @class ol.Graphic
+ * @class OverlayGraphic
+ * @browsernamespace ol
+ * @aliasclass Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类。
  * @param {ol.geom.Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。
  * @extends {ol.Object}
+ * @usage
  */
 export class Graphic extends BaseObject {
 
@@ -26,9 +29,9 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.clone
+     * @function OverlayGraphic.prototype.clone
      * @description 克隆当前要素。
-     * @returns {ol.Graphic} 克隆后的要素。
+     * @returns {OverlayGraphic} 克隆后的要素。
      */
     clone() {
         var clone = new Graphic();
@@ -40,7 +43,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.getId
+     * @function OverlayGraphic.prototype.getId
      * @description 获取当前 ID。
      * @returns {string} id
      */
@@ -49,7 +52,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.setId
+     * @function OverlayGraphic.prototype.setId
      * @description 设置当前要素 ID。
      * @param {string} id - 要素 ID。
      */
@@ -58,7 +61,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.getGeometry
+     * @function OverlayGraphic.prototype.getGeometry
      * @description 获取当前要素几何信息。
      * @returns {ol.geom.Point} 要素几何信息。
      */
@@ -67,7 +70,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.setGeometry
+     * @function OverlayGraphic.prototype.setGeometry
      * @description 设置当前要素几何信息。
      * @param {ol.geom.Point} geometry - 要素几何信息。
      */
@@ -76,7 +79,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.setAttributes
+     * @function OverlayGraphic.prototype.setAttributes
      * @description 设置要素属性。
      * @param {Object} attributes - 属性对象。
      */
@@ -85,7 +88,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.getAttributes
+     * @function OverlayGraphic.prototype.getAttributes
      * @description 获取要素属性。
      * @returns {Object} 要素属性。
      */
@@ -94,7 +97,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.getStyle
+     * @function OverlayGraphic.prototype.getStyle
      * @description 获取样式。
      * @returns {ol.style.Image} ol.style.Image 子类样式对象。
      */
@@ -103,7 +106,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.setStyle
+     * @function OverlayGraphic.prototype.setStyle
      * @description 设置样式。
      * @param {ol.style.Image} style - 样式，ol/style/Image 子类样式对象。
      */
@@ -120,7 +123,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.getStyleFunction
+     * @function OverlayGraphic.prototype.getStyleFunction
      * @description 获取样式函数。
      * @returns {function} 样式函数。
      */
@@ -129,7 +132,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.createStyleFunction
+     * @function OverlayGraphic.createStyleFunction
      * @description  新建样式函数。
      * @param {Object} obj - 对象参数。
      */
@@ -158,7 +161,7 @@ export class Graphic extends BaseObject {
     }
 
     /**
-     * @function ol.Graphic.prototype.destroy
+     * @function OverlayGraphic.prototype.destroy
      * @description  清除参数值。
      */
     destroy() {

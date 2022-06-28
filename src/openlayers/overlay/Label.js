@@ -13,7 +13,8 @@ import {
 import Point from 'ol/geom/Point';
 
 /**
- * @class ol.source.Label
+ * @class Label
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
  * @param {string} name - 名称。
@@ -32,7 +33,8 @@ import Point from 'ol/geom/Point';
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @extends {ol.source.GeoFeature}
+ * @extends {GeoFeature}
+ * @usage
  */
 export class Label extends GeoFeature {
 
@@ -83,7 +85,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.destroy
+     * @function Label.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -95,7 +97,7 @@ export class Label extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Label.prototype.createThematicFeature
+     * @function Label.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 矢量要素。
      * @returns {FeatureThemeVector} 专题图矢量要素。
@@ -121,7 +123,7 @@ export class Label extends GeoFeature {
 
 
     /**
-     * @function ol.source.Label.prototype.redrawThematicFeatures
+     * @function Label.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
@@ -138,7 +140,7 @@ export class Label extends GeoFeature {
         super.redrawThematicFeatures.call(this, bounds);
     }
     /**
-     * @function ol.source.Label.prototype.removeFeatures
+     * @function Label.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
@@ -148,7 +150,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.removeAllFeatures
+     * @function Label.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -156,7 +158,7 @@ export class Label extends GeoFeature {
         super.removeAllFeatures.call(this, arguments);
     }
     /**
-     * @function ol.source.Label.prototype.getDrawnLabels
+     * @function Label.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
      * @param {Array.<FeatureVector>} labelFeatures - 所有标签要素的数组。
      * @returns {Array.<FeatureVector>}  最终要绘制的标签要素数组。
@@ -314,7 +316,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getStyleByData
+     * @function Label.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
      * @param {FeatureVector} feat - 矢量要素对象。
      * @returns {Array.<ThemeStyle>} 专题要素的 Style。
@@ -363,7 +365,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.setLabelsStyle
+     * @function Label.prototype.setLabelsStyle
      * @description 设置标签要素的 Style。
      * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
      * @returns {Array.<FeatureVector>} 赋予 Style 后的标签要素数组。
@@ -391,7 +393,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.setStyle
+     * @function Label.prototype.setStyle
      * @description 设置标签要素的 Style。
      * @param {FeatureVector} feat - 需要赋予 style 的要素。
      */
@@ -440,7 +442,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getLabelPxLocation
+     * @function Label.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
      * @param {FeatureVector} feature - 标签要素。
      * @returns {Object} 标签位置，例如：{"x":1,"y":1}。
@@ -468,7 +470,7 @@ export class Label extends GeoFeature {
 
 
     /**
-     * @function ol.source.Label.prototype.calculateLabelBounds
+     * @function Label.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      * @param {FeatureVector} feature - 需要计算bounds的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}。
@@ -525,7 +527,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.calculateLabelBounds2
+     * @function Label.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}。
@@ -619,7 +621,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getLabelInfo
+     * @function Label.prototype.getLabelInfo
      * @description 根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等。
      * @returns {Object} 绘制后的标签信息。
      */
@@ -718,7 +720,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.rotationBounds
+     * @function Label.prototype.rotationBounds
      * @description 旋转 bounds。
      * @param {Bounds} bounds - 要旋转的 bounds。
      * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性 x（横坐标），属性 y（纵坐标）。
@@ -754,7 +756,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getRotatedLocation
+     * @function Label.prototype.getRotatedLocation
      * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）。
      * @param {number} x - 旋转点横坐标。
      * @param {number} y - 旋转点纵坐标。
@@ -780,7 +782,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getAvoidInfo
+     * @function Label.prototype.getAvoidInfo
      * @description 获取避让的信息。
      * @param {Bounds} bounds - 地图像素范围。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -894,7 +896,7 @@ export class Label extends GeoFeature {
 
 
     /**
-     * @function ol.source.Label.prototype.isQuadrilateralOverLap
+     * @function Label.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
@@ -939,7 +941,7 @@ export class Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.isPointInPoly
+     * @function Label.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

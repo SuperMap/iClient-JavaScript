@@ -10,7 +10,8 @@ import {
 } from './theme/Theme';
 
 /**
- * @class ol.source.Graph
+ * @class Graph
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 统计专题图图层基类。
  * @param {string} chartsType - 图表类别。
@@ -36,7 +37,8 @@ import {
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.Theme}
+ * @extends {Theme}
+ * @usage
  */
 export class Graph extends Theme {
 
@@ -52,7 +54,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.destroy
+     * @function Graph.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -68,7 +70,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.setChartsType
+     * @function Graph.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
      * @param {string} chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
      */
@@ -78,7 +80,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.addFeatures
+     * @function Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据。
      * @param {(ServerFeature|ThemeFeature)} features - 待添加的要素。
      */
@@ -101,7 +103,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.redrawThematicFeatures
+     * @function Graph.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
@@ -146,7 +148,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.createThematicFeature
+     * @function Graph.prototype.createThematicFeature
      * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
      * @param {ServerFeature} feature - 待添加的要素。
      *
@@ -167,7 +169,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.drawCharts
+     * @function Graph.prototype.drawCharts
      * @description 绘制图表。包含压盖处理。
      *
      */
@@ -276,7 +278,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.getShapesByFeatureID
+     * @function Graph.prototype.getShapesByFeatureID
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
@@ -296,7 +298,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isQuadrilateralOverLap
+     * @function Graph.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
@@ -339,7 +341,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isPointInPoly
+     * @function Graph.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。
@@ -354,7 +356,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isChartInMap
+     * @function Graph.prototype.isChartInMap
      * @description  判断图表是否在地图里。
      * @param {Bounds} mapPxBounds - 地图像素范围。
      * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
@@ -374,7 +376,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.clearCache
+     * @function Graph.prototype.clearCache
      * @description  清除缓存。
      */
     clearCache() {
@@ -383,7 +385,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.removeFeatures
+     * @function Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
@@ -393,7 +395,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.removeAllFeatures
+     * @function Graph.prototype.removeAllFeatures
      * @description  移除所有的要素
      */
     removeAllFeatures() {
@@ -402,7 +404,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.redraw
+     * @function Graph.prototype.redraw
      * @description  重绘该图层
      */
     redraw() {
@@ -415,7 +417,7 @@ export class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.clear
+     * @function Graph.prototype.clear
      * @description  清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {

@@ -32,19 +32,20 @@ const defaultProps = {
 const Renderer = ['canvas', 'webgl'];
 
 /**
- * @class ol.source.Graphic
+ * @class Graphic
+ * @browsernamespace ol.source
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
  * @param {Object} options - 参数。
  * @param {ol.Map} options.map - openlayers 地图对象。
- * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
+ * @param {OverlayGraphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
  * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link ol.Graphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link OverlayGraphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link ol.Graphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
- * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link ol.Graphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
@@ -53,6 +54,7 @@ const Renderer = ['canvas', 'webgl'];
  * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class Graphic extends ImageCanvasSource {
     constructor(options) {
@@ -163,7 +165,7 @@ export class Graphic extends ImageCanvasSource {
 
         /**
          * @private
-         * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
+         * @function Graphic.prototype._forEachFeatureAtCoordinate
          * @description 获取在视图上的要素。
          * @param {string} coordinate -坐标。
          * @param {number} resolution -分辨率。
@@ -238,9 +240,9 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.setGraphics
+     * @function Graphic.prototype.setGraphics
      * @description 设置绘制的点要素，会覆盖之前的所有要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<OverlayGraphic>}  graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -251,9 +253,9 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.addGraphics
+     * @function Graphic.prototype.addGraphics
      * @description 追加点要素，不会覆盖之前的要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<OverlayGraphic>}  graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -263,11 +265,11 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicBy
+     * @function Graphic.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
      * @param {string} property - graphic 的属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -281,21 +283,21 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicById
+     * @function Graphic.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy('id', graphicId);
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+     * @function Graphic.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - graphic 的某个属性名称。
      * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @returns {Array.<OverlayGraphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -312,9 +314,9 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.removeGraphics
+     * @function Graphic.prototype.removeGraphics
      * @description 删除要素数组，默认将删除所有要素。
-     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
+     * @param {Array.<OverlayGraphic>} [graphics] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -346,7 +348,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.clear
+     * @function Graphic.prototype.clear
      * @description 释放图层资源。
      */
     clear() {
@@ -354,7 +356,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.update
+     * @function Graphic.prototype.update
      * @description 更新图层。
      */
     update() {
@@ -385,7 +387,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.setStyle
+     * @function Graphic.prototype.setStyle
      * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
@@ -417,7 +419,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getLayerState
+     * @function Graphic.prototype.getLayerState
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
@@ -465,7 +467,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLightClose
+     * @function Graphic.prototype._highLightClose
      * @description 关闭高亮要素显示。
      * @private
      */
@@ -479,11 +481,11 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLight
+     * @function Graphic.prototype._highLight
      * @description 高亮显示选中要素。
      * @param {Array.<number>} center - 中心点。
      * @param {ol.style.Style} image - 点样式。
-     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
+     * @param {OverlayGraphic} selectGraphic - 高效率点图层点要素。
      * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
      * @private
      */
@@ -539,7 +541,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicsInExtent
+     * @function Graphic.prototype.getGraphicsInExtent
      * @description 在指定范围中获取几何要素面积。
      * @param {Object} extent - 长度范围。
      */

@@ -6,7 +6,8 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
 /**
- * @class ol.source.DataFlow
+ * @class DataFlow
+ * @browsernamespace ol.source
  * @category  iServer DataFlow
  * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务,并将订阅得到的数据根据 `options.idField` 自动更新。与 {@link ol.layer.Vector} 结合使用可以实现SuperMap iServer 数据流上图、根据`options.idField`自动更新。
  * @param {Object} opt_options - 参数。
@@ -17,14 +18,14 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {Object} [opt_options.excludeField] - 排除字段
  * @extends {ol.source.Vector}
  * @example
- * var source = new ol.source.DataFlow({
+ * var source = new DataFlow({
  *   ws: urlDataFlow,
  *   idField:"objectId"
  * });
  * var layer = new ol.layer.Vector({
  *    source: source,
  * });
- *
+ * @usage
  */
 export class DataFlow extends VectorSource {
     constructor(opt_options) {
@@ -56,7 +57,7 @@ export class DataFlow extends VectorSource {
     }
 
     // /**
-    //  * @function ol.source.DataFlow.prototype.setPrjCoordSys
+    //  * @function DataFlow.prototype.setPrjCoordSys
     //  * @description 设置坐标参考系。
     //  * @param {Object} prjCoordSys - 参考系。
     //  */
@@ -67,7 +68,7 @@ export class DataFlow extends VectorSource {
     // }
 
     /**
-     * @function ol.source.DataFlow.prototype.setExcludeField
+     * @function DataFlow.prototype.setExcludeField
      * @description 设置唯一字段。
      * @param {Object} excludeField - 排除字段。
      */
@@ -78,7 +79,7 @@ export class DataFlow extends VectorSource {
     }
 
     /**
-     * @function ol.source.DataFlow.prototype.setGeometry
+     * @function DataFlow.prototype.setGeometry
      * @description 设置几何图形。
      * @param {Object} geometry - 要素图形。
      */

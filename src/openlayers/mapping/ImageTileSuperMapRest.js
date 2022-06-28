@@ -7,7 +7,8 @@ import { SecurityManager } from '@supermap/iclient-common/security/SecurityManag
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
- * @class ol.source.ImageTileSuperMapRest
+ * @class ImageTileSuperMapRest
+ * @browsernamespace ol.source
  * @version 10.2.0
  * @category  iServer Image
  * @classdesc iServer影像服务图层源。根据指定的请求参数，返回影像数据栅格瓦片并渲染。
@@ -24,6 +25,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {string} [options.tileProxy] -  代理地址
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @extends {ol.source.XYZ}
+ * @usage
  */
 export class ImageTileSuperMapRest extends XYZ {
     constructor(options) {

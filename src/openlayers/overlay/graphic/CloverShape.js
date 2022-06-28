@@ -6,7 +6,8 @@ import RegularShape from 'ol/style/RegularShape';
 import FillStyle from 'ol/style/Fill';
 import StrokeStyle from 'ol/style/Stroke';
 /**
- * @class ol.style.CloverShape
+ * @class CloverShape
+ * @browsernamespace ol.style
  * @category  Visualization Graphic
  * @classdesc 三叶草要素风格。
  * @extends {ol.style.RegularShape}
@@ -20,6 +21,7 @@ import StrokeStyle from 'ol/style/Stroke';
  * @param {ol.style.Stroke} [options.stroke] - 边框样式。
  * @param {string} [options.stroke.color='#3388ff'] - 边框颜色。
  * @param {number} [options.stroke.width=1] - 边框宽度。
+ * @usage
  */
 export class CloverShape extends RegularShape {
 
@@ -79,7 +81,7 @@ export class CloverShape extends RegularShape {
     }
 
     /**
-     * @function  ol.style.CloverShape.prototype.drawSector
+     * @function CloverShape.prototype.drawSector
      * @description 绘制扇形。
      * @param {CanvasRenderingContext2D} ctx - context 对象
      * @param {number} x - 中心点 x。
@@ -114,14 +116,14 @@ export class CloverShape extends RegularShape {
         }
     }
      /**
-     * @function  ol.style.CloverShape.prototype.getCount
+     * @function  CloverShape.prototype.getCount
      * @description 获取扇叶数量。
      */
     getCount() {
         return this.count_;
     }
     /**
-     * @function  ol.style.CloverShape.prototype.getSpaceAngle
+     * @function  CloverShape.prototype.getSpaceAngle
      * @description 获取扇叶间隔角度。
      */
     getSpaceAngle() {

@@ -16,7 +16,8 @@ import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 
 /**
- * @class ol.source.Theme
+ * @class Theme
+ * @browsernamespace ol.source
  * @category Visualization Theme
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
@@ -31,6 +32,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class Theme extends ImageCanvasSource {
 
@@ -46,7 +48,7 @@ export class Theme extends ImageCanvasSource {
             state: options.state
         });
         /**
-        * @function ol.source.Theme.prototype.on
+        * @function Theme.prototype.on
         * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
         * @param {string} event - 事件名称。
         * @param {RequestCallback} callback - 事件回调函数。
@@ -126,7 +128,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.destroy
+     * @function Theme.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -145,7 +147,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.destroyFeatures
+     * @function Theme.prototype.destroyFeatures
      * @description 销毁要素。
      * @param {Array.<FeatureVector>|FeatureVector} features - 将被销毁的要素。
      */
@@ -166,7 +168,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.setOpacity
+     * @function Theme.prototype.setOpacity
      * @description 设置图层的不透明度，取值[0-1]之间。
      * @param {number} opacity - 不透明度。
      */
@@ -184,8 +186,8 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.addFeatures
-     * @param {(Array.<ol.supermap.ThemeFeature>|Array.<GeoJSONObject>|Array.<ol/Feature>|ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待添加要素。
+     * @function Theme.prototype.addFeatures
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待添加要素。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 FeatureVector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -195,7 +197,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.removeFeatures
+     * @function Theme.prototype.removeFeatures
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除 feature 的数组或用来过滤的回调函数。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
@@ -251,7 +253,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.removeAllFeatures
+     * @function Theme.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -263,7 +265,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatures
+     * @function Theme.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
      * @param {Function} [filter] - 根据条件过滤要素的回调函数。
      * @returns {Array.<FeatureVector>} 用户加入图层的有效数据。
@@ -280,7 +282,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatureBy
+     * @function Theme.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
      * @param {string} property - feature 的某个属性名称。
@@ -300,7 +302,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatureById
+     * @function Theme.prototype.getFeatureById
      * @description 通过给定一个 ID，返回对应的矢量要素。
      * @param {string} featureId - 矢量要素的属性 ID。
      * @returns {FeatureVector} 对应 ID 的 feature，如果不存在则返回 null。
@@ -310,7 +312,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeaturesByAttribute
+     * @function Theme.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性的 key。
      * @param {string} attrValue - 矢量要素的属性 ID。
@@ -332,7 +334,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.redrawThematicFeatures
+     * @function Theme.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
      * @param {Array} extent - 当前级别下计算出的地图范围。
      */
@@ -341,7 +343,7 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @private
-     * @function ol.source.Theme.prototype.onInternal
+     * @function Theme.prototype.onInternal
      * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      * @param {string} event - 事件名称。
      * @param {RequestCallback} callback - 事件回调函数。
@@ -359,7 +361,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.fire
+     * @function Theme.prototype.fire
      * @description 添加专题要素事件监听。
      * @param {string} type - 事件类型。
      * @param {string} event - 事件名称。
@@ -426,7 +428,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.un
+     * @function Theme.prototype.un
      * @description 移除专题要素事件监听。
      * @param {string} event - 事件名称。
      * @param {RequestCallback} callback - 事件回调函数。
@@ -451,7 +453,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.addTFEvents
+     * @function Theme.prototype.addTFEvents
      * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
      * @private
      */
@@ -464,7 +466,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getLocalXY
+     * @function Theme.prototype.getLocalXY
      * @description 获取坐标系统。
      * @param {Object} coordinate - 坐标位置。
      * @returns {Array.<number>} 像素坐标数组。
@@ -493,7 +495,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.rotate
+     * @function Theme.prototype.rotate
      * @description 获取某像素坐标点 pixelP 绕中心 center 逆时针旋转 rotation 弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
      * @param {number} rotation - 旋转角度。
@@ -507,7 +509,7 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.scale
+     * @function Theme.prototype.scale
      * @description 获取某像素坐标点 pixelP 相对于中心 center 进行缩放 scaleRatio 倍后的像素点坐标。
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
@@ -521,9 +523,9 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.toiClientFeature
+     * @function Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(Array.<ol.supermap.ThemeFeature>|Array.<GeoJSONObject>|Array.<ol/Feature>|ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
      * @returns {Array.<FeatureVector>} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
@@ -563,10 +565,10 @@ export class Theme extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Theme.prototype.toFeature
+     * @function Theme.prototype.toFeature
      * @deprecated
-     * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(Array.<ol.supermap.ThemeFeature>|Array.<GeoJSONObject>|Array.<ol/Feature>|ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 待转要素。
+     * @description 转为 iClient 要素，该方法将被弃用，由 {@link Theme#toiClientFeature} 代替。
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
      * @returns {Array.<FeatureVector>} 转换后的 iClient 要素
      */
     toFeature(features) {

@@ -1202,7 +1202,7 @@ export class WebMap extends Observable {
      * @param layerType 图层类型
      * @param projection 地理坐标系
      * @param isLabel  是否有路网图层
-     * @returns {ol.source.Tianditu} 天地图的source
+     * @returns {Tianditu} 天地图的source
      */
     createTiandituSource(layerType, projection, isLabel) {
         let options = {
@@ -1217,7 +1217,7 @@ export class WebMap extends Observable {
      * @private
      * @function WebMap.prototype.createBaiduSource
      * @description 创建百度地图的source。
-     * @returns {ol.source.BaiduMap} baidu地图的source
+     * @returns {BaiduMap} baidu地图的source
      */
     createBaiduSource() {
         return new BaiduMap()

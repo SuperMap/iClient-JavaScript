@@ -7,11 +7,13 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { Util } from '../core/Util';
 
 /**
- * @class ol.source.Turf
+ * @class Turf
+ * @browsernamespace ol.source
  * @category  Visualization Turf
  * @classdesc Turf.js 图层源。
  * @param {Object} opt_options - 参数。
  * @extends {ol.source.Vector}
+ * @usage
  */
 export class Turf extends VectorSource {
 
@@ -225,7 +227,7 @@ export class Turf extends VectorSource {
     }
 
     /**
-     * @function ol.source.turf.prototype.process
+     * @function Turf.prototype.process
      * @description 执行 Turf.js 提供的相关空间分析方法。
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。

@@ -7,7 +7,8 @@ import { ThemeVector } from '@supermap/iclient-common/overlay/ThemeVector';
 import {GeoFeature} from './theme/GeoFeature';
 
 /**
- * @class ol.source.Unique
+ * @class Unique
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
  * @param {string} name - 图层名称
@@ -26,7 +27,8 @@ import {GeoFeature} from './theme/GeoFeature';
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.GeoFeature}
+ * @extends {GeoFeature}
+ * @usage
  */
 export class Unique extends GeoFeature {
 
@@ -40,7 +42,7 @@ export class Unique extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Unique.prototype.destroy
+     * @function Unique.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -52,7 +54,7 @@ export class Unique extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Unique.prototype.createThematicFeature
+     * @function Unique.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {Object} feature - 要素。
      */
@@ -76,7 +78,7 @@ export class Unique extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Unique.prototype.getStyleByData
+     * @function Unique.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
      * @param {Object} fea - 用户要素数据。
      */

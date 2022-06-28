@@ -18,7 +18,8 @@ import Projection from 'ol/proj/Projection';
 import TileGrid from 'ol/tilegrid/TileGrid';
 
 /**
- * @class ol.source.VectorTileSuperMapRest
+ * @class VectorTileSuperMapRest
+ * @browsernamespace ol.source
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
  * @param {Object} options - 参数。
@@ -29,6 +30,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @extends {ol.source.VectorTile}
+ * @usage
  */
 export class VectorTileSuperMapRest extends VectorTile {
     constructor(options) {
@@ -168,7 +170,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         }
         /**
          * @private
-         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @function VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片。
          * @param {Object} tile -瓦片类。
          * @param {string} tileUrl - 瓦片地址。
@@ -244,7 +246,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         }
         /**
          * @private
-         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @function VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片。
          * @param {Object} tile -瓦片类。
          * @param {string} tileUrl - 瓦片地址。
@@ -371,7 +373,7 @@ export class VectorTileSuperMapRest extends VectorTile {
     }
 
     /**
-     * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
+     * @function VectorTileSuperMapRest.optionsFromMapJSON
      * @param {string} url - 地址。
      * @param {Object} mapJSONObj - 地图 JSON。
      * @description 获取地图 JSON 信息。

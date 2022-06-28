@@ -10,7 +10,8 @@ import {
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 
 /**
- * @class ol.source.Mapv
+ * @class Mapv
+ * @browsernamespace ol.source
  * @category  Visualization MapV
  * @classdesc MapV 图层源。
  * @param {Object} opt_options - 参数。
@@ -24,6 +25,7 @@ import ImageCanvasSource from 'ol/source/ImageCanvas';
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {(string|Object)} [opt_options.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class Mapv extends ImageCanvasSource {
 
@@ -84,7 +86,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.addData
+     * @function Mapv.prototype.addData
      * @description 追加数据。
      * @param {Object} data - 要追加的数据。
      * @param {Object} options - 要追加的值。
@@ -94,7 +96,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.getData
+     * @function Mapv.prototype.getData
      * @description 获取数据。
      * @returns {Mapv.DataSet} MapV 数据集。
      */
@@ -106,7 +108,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.removeData
+     * @function Mapv.prototype.removeData
      * @description 删除符合过滤条件的数据。
      * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
@@ -122,7 +124,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.clearData
+     * @function Mapv.prototype.clearData
      * @description 清除数据。
      */
     clearData() {
@@ -131,7 +133,7 @@ export class Mapv extends ImageCanvasSource {
 
 
     /**
-     * @function ol.source.Mapv.prototype.update
+     * @function Mapv.prototype.update
      * @description 更新数据。
      * @param {Object} options - 待更新的数据。
      * @param {Object} options.data - mapv 数据集。

@@ -8,7 +8,8 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import {Theme} from './Theme';
 
 /**
- * @class ol.source.GeoFeature
+ * @class GeoFeature
+ * @browsernamespace ol.source
  * @category Visualization Theme
  * @classdesc 地理几何专题要素型专题图层基类。
  * @param {string} name - 图层名称。
@@ -26,7 +27,8 @@ import {Theme} from './Theme';
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.Theme}
+ * @extends {Theme}
+ * @usage
  */
 
 export class GeoFeature extends Theme {
@@ -47,7 +49,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.destroy
+     * @function GeoFeature.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -65,9 +67,9 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.addFeatures
+     * @function GeoFeature.prototype.addFeatures
      * @description 添加要素。
-     * @param {(Array.<ol.supermap.ThemeFeature>|Array.<GeoJSONObject>|Array.<ol/Feature>|ol.supermap.ThemeFeature|GeoJSONObject|ol/Feature)} features - 要素对象。
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -83,7 +85,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.removeFeatures
+     * @function GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
@@ -93,7 +95,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.removeAllFeatures
+     * @function GeoFeature.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -102,7 +104,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
+     * @function GeoFeature.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      * @param {Object} extent - 视图范围数据。
      */
@@ -178,7 +180,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.createThematicFeature
+     * @function GeoFeature.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {Object} feature - 要素对象。
      * @returns {Array.<FeatureVector>} 返回矢量要素
@@ -209,7 +211,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.clearCache
+     * @function GeoFeature.prototype.clearCache
      * @description 清除缓存。
      */
     clearCache() {
@@ -218,7 +220,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.clear
+     * @function GeoFeature.prototype.clear
      * @description  清除的内容包括数据（features）、专题要素、缓存。
      */
     clear() {
@@ -229,7 +231,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.getCacheCount
+     * @function GeoFeature.prototype.getCacheCount
      * @description 获取当前缓存数量。
      * @returns {number} 返回当前缓存数量。
      */
@@ -238,7 +240,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.setMaxCacheCount
+     * @function GeoFeature.prototype.setMaxCacheCount
      * @param {number} cacheCount - 缓存总数。
      * @description 设置最大缓存条数。
      */
@@ -250,7 +252,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.getShapesByFeatureID
+     * @function GeoFeature.prototype.getShapesByFeatureID
      * @param {number} featureID - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @returns {Array} 返回图形数组

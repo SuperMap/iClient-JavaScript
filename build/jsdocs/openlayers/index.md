@@ -28,18 +28,18 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%"></th>
 </tr><tr>
     <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库[ECharts](https://echarts.baidu.com/)，[MapV](https://mapv.baidu.com/)</p>
-        <a href="ol.source.VectorTileSuperMapRest.html">ol.source.VectorTileSuperMapRest</a><br>
-        <a href="ol.source.Graphic.html">ol.source.Graphic</a><br>
-        <a href="ol.source.DataFlow.html">ol.source.DataFlow</a><br>
-        <a href="ol.source.Range.html">ol.source.Range</a><br>
-        <a href="ol.source.Unique.html">ol.source.Unique</a><br>
-        <a href="ol.source.Mapv.html">ol.source.Mapv</a><br>
+        <a href="VectorTileSuperMapRest.html">VectorTileSuperMapRest</a><br>
+        <a href="Graphic.html">Graphic</a><br>
+        <a href="DataFlow.html">DataFlow</a><br>
+        <a href="Range.html">Range</a><br>
+        <a href="Unique.html">Unique</a><br>
+        <a href="Mapv.html">Mapv</a><br>
         ......</td>
     <td><p>丰富地图，iSevrer REST MAP、互联网地图</p>
-        <a href="ol.source.TileSuperMapRest.html">ol.source.TileSuperMapRest</a><br>
-        <a href="ol.source.ImageSuperMapRest.html">ol.source.ImageSuperMapRest</a><br>
-        <a href="ol.source.BaiduMap.html">ol.source.BaiduMap</a><br>
-        <a href="ol.source.Tianditu.html">ol.source.Tianditu</a><br>
+        <a href="TileSuperMapRest.html">TileSuperMapRest</a><br>
+        <a href="ImageSuperMapRest.html">ImageSuperMapRest</a><br>
+        <a href="BaiduMap.html">BaiduMap</a><br>
+        <a href="Tianditu.html">Tianditu</a><br>
          ......</td>
     <td><p></p>
 </tr></table>

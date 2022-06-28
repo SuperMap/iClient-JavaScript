@@ -7,7 +7,8 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import { Util } from '../core/Util';
 
 /**
- * @class ol.source.BaiduMap
+ * @class BaiduMap
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
  * @param {Object} opt_options - 参数。
@@ -15,6 +16,7 @@ import { Util } from '../core/Util';
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
  * @extends {ol.source.TileImage}
+ * @usage
  */
 export class BaiduMap extends TileImage {
     constructor(opt_options) {
@@ -80,7 +82,7 @@ export class BaiduMap extends TileImage {
 
     // TODO 确认这个方法是否要开出去
     /**
-     * @function ol.source.BaiduMap.defaultTileGrid
+     * @function BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网。
      * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象。
      */
