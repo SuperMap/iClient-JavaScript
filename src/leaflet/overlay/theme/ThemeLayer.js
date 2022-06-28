@@ -214,7 +214,7 @@ export var ThemeLayer = L.Layer.extend({
 
         var succeed = featuresFailRemoved.length == 0;
         /**
-         * @event L.supermap.ThemeLayer#featuresremoved
+         * @event ThemeLayer#featuresremoved
          * @description 删除的要素成功之后触发。
          * @property {Array.<FeatureVector>} features - 删除失败的要素数组。
          * @property {boolean} succeed - 要输是否删除成功，true 为删除成功，false 为删除失败。
