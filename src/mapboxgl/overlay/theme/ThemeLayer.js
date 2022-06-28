@@ -265,7 +265,7 @@ export class Theme {
       }
       var succeed = featuresFailRemoved.length == 0 ? true : false;
       /**
-       * @event mapboxgl.supermap.ThemeLayer#featuresremoved
+       * @event ThemeLayer#featuresremoved
        * @description 要素删除之后触发。
        * @property {Array.<FeatureVector>} features - 未被成功删除的要素。
        * @property {boolean} succeed - 删除成功与否。
@@ -428,7 +428,7 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
@@ -463,7 +463,7 @@ export class Theme {
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature(features) {
