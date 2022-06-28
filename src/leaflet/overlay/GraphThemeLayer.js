@@ -21,7 +21,7 @@
  * @param {string} chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
  * @param {Object} options - 参数。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {string} options.themeFields - 指定创建专题图字段。 
+ * @param {string} options.themeFields - 指定创建专题图字段。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {Object} [options.cache] - 缓存。
  * @param {Object} [options.charts] - 图表。
@@ -29,18 +29,18 @@
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
  * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
- * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。 
- * @param {number} options.chartsSetting.height - 专题要素（图表）高度。 
- * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。 
- * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。 
- * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。 
- * @param {Array.<number>} [options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。 
+ * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。
+ * @param {number} options.chartsSetting.height - 专题要素（图表）高度。
+ * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
+ * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
+ * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
+ * @param {Array.<number>} [options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  * @param {number} [options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @usage
 */
 export var GraphThemeLayer = ThemeLayer.extend({
-    
+
 
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
@@ -70,16 +70,16 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function GraphThemeLayer.prototype.addFeatures 
+     * @function GraphThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据。
-     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待添加的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
         /**
          * @event GraphThemeLayer#beforefeaturesadded
          * @description 向专题图图层中添加数据之前触发。
-         * @property {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features  - 待添加的要素。
+         * @property {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features  - 待添加的要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 

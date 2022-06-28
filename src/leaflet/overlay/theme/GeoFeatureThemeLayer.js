@@ -66,7 +66,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加数据。
-     * @param {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待填加的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
      */
     addFeatures: function (features) {
         var me = this;
@@ -74,7 +74,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         /**
          * @event GeoFeatureThemeLayer#beforefeaturesadded
          * @description 添加数据之前触发。
-         * @property {(Array.<SuperMap.ServerFeature>|Array.<L.supermap.themeFeature>|Array.<GeoJSONObject>|SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 要素。
+         * @property {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 
