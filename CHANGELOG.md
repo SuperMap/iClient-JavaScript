@@ -2,9 +2,13 @@
 
 ## 新特性
 
-### 实现全库按需引入和构建，大幅降低构建应用的包大小，最高至90%左右，提升应用加载性能；
+### 实现全库按需引入和构建，大幅降低构建应用的包大小，最高至90%左右，提升应用加载性能
 
-### 全面优化所有API的命名空间，更加符合开源库的使用习惯，并且对每个接口增加了使用示例说明；
+### 全面优化所有API的命名空间，更加符合开源库的使用习惯，并且对每个接口增加了使用示例说明
+
+### 新增视频增强组件，支持在视频上叠加点位数据，支持点选交互查询，漫游、缩放等交互操作
+
+### 新增动态标绘图管理功能，支持导入、导出标绘图
 
 ## API changes
 
@@ -92,11 +96,19 @@
   new mapboxgl.supermap.ThemeParameters(options);
   ```
 
+### Component
+
+- 新增视频增强组件(sm-video-plus)及其子组件
+
 ## Fixed
 
 ### for Leaflet
 
 - 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+- 修复 `LabelThemeLayer` `GraphThemeLayer` 中调用 `removeFeatures` 失败的问题
+
+- 修复 `EchartsLayer` 在地图移动后再叠加是偏移的问题
 
 ### for OpenLayers
 
@@ -104,15 +116,21 @@
 
 - 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
 
+- 修复 `ol.source.Graph` `ol.source.Label` 中调用 `removeFeatures` 失败的问题
+
 ### for MapboxGL
 
 - 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+- 修复 `LabelThemeLayer` `GraphThemeLayer` 中调用 `removeFeatures` 失败的问题
 
 ### Component
 
 - vue-iclient-mapboxgl
 
-  - 修复地图组件(sm-web-map)法显示数据上图中制作的文本标注图层的问题
+  - 修复地图组件(sm-web-map)无法显示数据上图中制作的文本标注图层的问题
+
+  - 修复地图组件(sm-web-map)当底图为WMTS WMS MapBoxStyle时与其他图层叠加顺序不对的问题
 
   - 修复幻灯片组件(sm-slide-show)动态增加页数后无法跳转至最后一页的问题
 

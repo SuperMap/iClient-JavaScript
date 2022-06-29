@@ -3,7 +3,7 @@
  *          iclient-leaflet.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.0.0-beta
+ *          version: v11.0.0
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -3094,8 +3094,6 @@ function allSettled(arr) {
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
-// @ts-ignore
-var setImmediateFunc = typeof setImmediate !== 'undefined' ? setImmediate : null;
 
 function isArray(x) {
   return Boolean(x && typeof x.length !== 'undefined');
@@ -3329,10 +3327,10 @@ Promise.race = function(arr) {
 // Use polyfill for setImmediate for performance gains
 Promise._immediateFn =
   // @ts-ignore
-  (typeof setImmediateFunc === 'function' &&
+  (typeof setImmediate === 'function' &&
     function(fn) {
       // @ts-ignore
-      setImmediateFunc(fn);
+      setImmediate(fn);
     }) ||
   function(fn) {
     setTimeoutFunc(fn, 0);
@@ -21158,7 +21156,7 @@ class DataFlowService extends CommonServiceBase {
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketClosed", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketClosed", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -21198,9 +21196,11 @@ class DataFlowService extends CommonServiceBase {
             me.events.triggerEvent('broadcastSocketConnected', e);
         };
         this.broadcastWebSocket.onclose = function (e) {
-            me.broadcastWebSocket.isOpen = false;
-            e.eventType = 'broadcastSocketConnected';
-            me.events.triggerEvent('broadcastSocketConnected', e);
+            if (me.broadcastWebSocket) {
+                me.broadcastWebSocket.isOpen = false;
+            }
+            e.eventType = 'broadcastSocketClosed';
+            me.events.triggerEvent('broadcastSocketClosed', e);
         };
         this.broadcastWebSocket.onerror = function (e) {
             e.eventType = 'broadcastSocketError';
@@ -21236,6 +21236,10 @@ class DataFlowService extends CommonServiceBase {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
             me.events.triggerEvent('subscribeSocketConnected', e);
+        };
+        this.subscribeWebSocket.onclose = function (e) {
+            e.eventType = 'subscribeWebSocketClosed';
+            me.events.triggerEvent('subscribeWebSocketClosed', e);
         };
         this.subscribeWebSocket.onerror = function (e) {
             e.eventType = 'subscribeSocketError';
@@ -43861,7 +43865,7 @@ class ElasticSearch {
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
-                callback(err);
+                callback && callback(err);
                 me.events.triggerEvent('error', {error: err});
                 return err;
             });
@@ -45429,10 +45433,27 @@ var ColorRender = new Color();
 // 					"www.qzct.net": "#7ed321" = new LevelRenderer.Tool.Color();
 
 /**
- * @class ColorsPickerUtil
+ * @name ColorsPickerUtil
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorsPickerUtil.createCanvas();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ColorsPickerUtil.createCanvas();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { ColorsPickerUtil } from '{npm}';
+ *
+ * const result = ColorsPickerUtil.createCanvas();
+ * ```
  */
 class ColorsPickerUtil  {
     /**
@@ -45585,7 +45606,8 @@ class ColorsPickerUtil  {
 
 ;// CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
 /**
- * @class ArrayStatistic
+ * @name ArrayStatistic
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 处理数组。
  * @usage
@@ -45593,16 +45615,20 @@ class ColorsPickerUtil  {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const arrayStatistic = {namespace}.ArrayStatistic();
+ *   const result = {namespace}.ArrayStatistic.newInstance();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ArrayStatistic.newInstance();
  *
  * </script>
+ *
  * // ES6 Import
  * import { ArrayStatistic } from '{npm}';
- * 
- * new ArrayStatistic();
+ *
+ * const result = ArrayStatistic.newInstance();
  * ```
  */
-class ArrayStatistic {
+ class ArrayStatistic {
 
     // geostatsInstance: null,
 
@@ -68163,7 +68189,6 @@ let Lang = {
 
 ;// CONCATENATED MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 const external_function_try_return_XLSX_catch_e_return_namespaceObject = function(){try{return XLSX}catch(e){return {}}}();
-var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -68248,12 +68273,12 @@ let FileReaderUtil = {
         let reader = new FileReader();
         reader.onloadend = function (evt) {
             let xLSXData = new Uint8Array(evt.target.result);
-            let workbook = external_function_try_return_XLSX_catch_e_return_default().read(xLSXData, {type: "array"});
+            let workbook = external_function_try_return_XLSX_catch_e_return_namespaceObject.read(xLSXData, {type: "array"});
             try {
                 if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
                     //暂时只读取第一个sheets的内容
                     let sheetName = workbook.SheetNames[0];
-                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default().utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_namespaceObject.utils.sheet_to_csv(workbook.Sheets[sheetName]);
                     success && success.call(context, xLSXCSVString);
                 }
             } catch (error) {
@@ -73386,7 +73411,7 @@ function Projection(srsCode,callback) {
   extend(this, json); // transfer everything over from the projection because we don't know what we'll need
   extend(this, ourProj); // transfer all the methods from the projection
 
-  // copy the 4 things over we calulated in deriveConstants.sphere
+  // copy the 4 things over we calculated in deriveConstants.sphere
   this.a = sphere_.a;
   this.b = sphere_.b;
   this.rf = sphere_.rf;
@@ -76233,7 +76258,9 @@ var lcc_names = [
   "Lambert_Conformal_Conic",
   "Lambert_Conformal_Conic_1SP",
   "Lambert_Conformal_Conic_2SP",
-  "lcc"
+  "lcc",
+  "Lambert Conic Conformal (1SP)",
+  "Lambert Conic Conformal (2SP)"
 ];
 
 /* harmony default export */ const lcc = ({
@@ -79125,7 +79152,169 @@ var tpers_names = ["Tilted_Perspective", "tpers"];
   names: tpers_names
 });
 
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geos.js
+
+
+function geos_init() {
+    this.flip_axis = (this.sweep === 'x' ? 1 : 0);
+    this.h = Number(this.h);
+    this.radius_g_1 = this.h / this.a;
+
+    if (this.radius_g_1 <= 0 || this.radius_g_1 > 1e10) {
+        throw new Error();
+    }
+
+    this.radius_g = 1.0 + this.radius_g_1;
+    this.C = this.radius_g * this.radius_g - 1.0;
+
+    if (this.es !== 0.0) {
+        var one_es = 1.0 - this.es;
+        var rone_es = 1 / one_es;
+
+        this.radius_p = Math.sqrt(one_es);
+        this.radius_p2 = one_es;
+        this.radius_p_inv2 = rone_es;
+
+        this.shape = 'ellipse'; // Use as a condition in the forward and inverse functions.
+    } else {
+        this.radius_p = 1.0;
+        this.radius_p2 = 1.0;
+        this.radius_p_inv2 = 1.0;
+
+        this.shape = 'sphere';  // Use as a condition in the forward and inverse functions.
+    }
+
+    if (!this.title) {
+        this.title = "Geostationary Satellite View";
+    }
+}
+
+function geos_forward(p) {
+    var lon = p.x;
+    var lat = p.y;
+    var tmp, v_x, v_y, v_z;
+    lon = lon - this.long0;
+
+    if (this.shape === 'ellipse') {
+        lat = Math.atan(this.radius_p2 * Math.tan(lat));
+        var r = this.radius_p / hypot(this.radius_p * Math.cos(lat), Math.sin(lat));
+
+        v_x = r * Math.cos(lon) * Math.cos(lat);
+        v_y = r * Math.sin(lon) * Math.cos(lat);
+        v_z = r * Math.sin(lat);
+
+        if (((this.radius_g - v_x) * v_x - v_y * v_y - v_z * v_z * this.radius_p_inv2) < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        tmp = this.radius_g - v_x;
+        if (this.flip_axis) {
+            p.x = this.radius_g_1 * Math.atan(v_y / hypot(v_z, tmp));
+            p.y = this.radius_g_1 * Math.atan(v_z / tmp);
+        } else {
+            p.x = this.radius_g_1 * Math.atan(v_y / tmp);
+            p.y = this.radius_g_1 * Math.atan(v_z / hypot(v_y, tmp));
+        }
+    } else if (this.shape === 'sphere') {
+        tmp = Math.cos(lat);
+        v_x = Math.cos(lon) * tmp;
+        v_y = Math.sin(lon) * tmp;
+        v_z = Math.sin(lat);
+        tmp = this.radius_g - v_x;
+
+        if (this.flip_axis) {
+            p.x = this.radius_g_1 * Math.atan(v_y / hypot(v_z, tmp));
+            p.y = this.radius_g_1 * Math.atan(v_z / tmp);
+        } else {
+            p.x = this.radius_g_1 * Math.atan(v_y / tmp);
+            p.y = this.radius_g_1 * Math.atan(v_z / hypot(v_y, tmp));
+        }
+    }
+    p.x = p.x * this.a;
+    p.y = p.y * this.a;
+    return p;
+}
+
+function geos_inverse(p) {
+    var v_x = -1.0;
+    var v_y = 0.0;
+    var v_z = 0.0;
+    var a, b, det, k;
+
+    p.x = p.x / this.a;
+    p.y = p.y / this.a;
+
+    if (this.shape === 'ellipse') {
+        if (this.flip_axis) {
+            v_z = Math.tan(p.y / this.radius_g_1);
+            v_y = Math.tan(p.x / this.radius_g_1) * hypot(1.0, v_z);
+        } else {
+            v_y = Math.tan(p.x / this.radius_g_1);
+            v_z = Math.tan(p.y / this.radius_g_1) * hypot(1.0, v_y);
+        }
+
+        var v_zp = v_z / this.radius_p;
+        a = v_y * v_y + v_zp * v_zp + v_x * v_x;
+        b = 2 * this.radius_g * v_x;
+        det = (b * b) - 4 * a * this.C;
+
+        if (det < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        k = (-b - Math.sqrt(det)) / (2.0 * a);
+        v_x = this.radius_g + k * v_x;
+        v_y *= k;
+        v_z *= k;
+
+        p.x = Math.atan2(v_y, v_x);
+        p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
+        p.y = Math.atan(this.radius_p_inv2 * Math.tan(p.y));
+    } else if (this.shape === 'sphere') {
+        if (this.flip_axis) {
+            v_z = Math.tan(p.y / this.radius_g_1);
+            v_y = Math.tan(p.x / this.radius_g_1) * Math.sqrt(1.0 + v_z * v_z);
+        } else {
+            v_y = Math.tan(p.x / this.radius_g_1);
+            v_z = Math.tan(p.y / this.radius_g_1) * Math.sqrt(1.0 + v_y * v_y);
+        }
+
+        a = v_y * v_y + v_z * v_z + v_x * v_x;
+        b = 2 * this.radius_g * v_x;
+        det = (b * b) - 4 * a * this.C;
+        if (det < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        k = (-b - Math.sqrt(det)) / (2.0 * a);
+        v_x = this.radius_g + k * v_x;
+        v_y *= k;
+        v_z *= k;
+
+        p.x = Math.atan2(v_y, v_x);
+        p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
+    }
+    p.x = p.x + this.long0;
+    return p;
+}
+
+var geos_names = ["Geostationary Satellite View", "Geostationary_Satellite", "geos"];
+/* harmony default export */ const geos = ({
+    init: geos_init,
+    forward: geos_forward,
+    inverse: geos_inverse,
+    names: geos_names,
+});
+
+
 ;// CONCATENATED MODULE: ./node_modules/proj4/projs.js
+
 
 
 
@@ -79183,6 +79372,7 @@ var tpers_names = ["Tilted_Perspective", "tpers"];
   proj4.Proj.projections.add(robin);
   proj4.Proj.projections.add(geocent);
   proj4.Proj.projections.add(tpers);
+  proj4.Proj.projections.add(geos);
 }
 ;// CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
 
@@ -81425,7 +81615,7 @@ var ImageMapLayer = external_L_namespaceObject.Layer.extend({
         }).addTo(this._map);
 
         var onLoad = function(e) {
-            image.off('error', onLoad, this);
+            image.off('error', onError, this);
             var map = this._map;
             if (!map) {
                 return;
@@ -81462,22 +81652,19 @@ var ImageMapLayer = external_L_namespaceObject.Layer.extend({
              */
             this.fire('load', { bounds: bounds });
         };
+        var onError = function() {
+          this._map.removeLayer(image);
+          /**
+           * @event ImageMapLayer#error
+           * @description 请求图层加载失败后触发。
+           */
+          this.fire('error');
+          image.off('load', onLoad, this);
+        }
 
         image.once('load', onLoad, this);
 
-        image.once(
-            'error',
-            function() {
-                this._map.removeLayer(image);
-                /**
-                 * @event ImageMapLayer#error
-                 * @description 请求图层加载失败后触发。
-                 */
-                this.fire('error');
-                image.off('load', onLoad, this);
-            },
-            this
-        );
+        image.once('error', onError, this);
 
         /**
          * @event ImageMapLayer#loading
@@ -83169,9 +83356,9 @@ var ThemeLayer = external_L_default().Layer.extend({
     },
 
     /**
-     * @function ThemeLayer.prototype.addFeatures
-     * @description 添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
+     * @function L.supermap.ThemeLayer.prototype.addFeatures
+     * @description 向专题图图层中添加数据。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加要素。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -83189,7 +83376,7 @@ var ThemeLayer = external_L_default().Layer.extend({
     /**
      * @function ThemeLayer.prototype.destroyFeatures
      * @description 销毁要素。
-     * @param {Array.<FeatureVector>} features - 待销毁的要素。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures: function (features) {
         if (features === undefined) {
@@ -83199,42 +83386,50 @@ var ThemeLayer = external_L_default().Layer.extend({
             return;
         }
         this.removeFeatures(features);
+        if (!Array.isArray(features)) {
+          features = [features];
+        }
         for (var i = features.length - 1; i >= 0; i--) {
             features[i].destroy();
         }
     },
 
     /**
-     * @function ThemeLayer.prototype.removeFeatures
-     * @description 删除专题图中 features。
-     * @param {Array.<FeatureVector>} features - 待删除的要素。
+     * @function L.supermap.ThemeLayer.prototype.removeFeatures
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 将被删除的要素或用来过滤的回调函数。
      */
     removeFeatures: function (features) {
         var me = this;
-        if (!features || features.length === 0) {
+        if (!features) {
             return;
         }
         if (features === me.features) {
             return me.removeAllFeatures();
         }
-        if (!(external_L_default().Util.isArray(features))) {
+        if (!external_L_default().Util.isArray(features) && !(typeof features === 'function')) {
             features = [features];
         }
 
         var featuresFailRemoved = [];
 
-        for (var i = features.length - 1; i >= 0; i--) {
-            var feature = features[i];
+        for (var i = 0; i < me.features.length; i++) {
+            var feature = me.features[i];
 
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = external_L_default().Util.indexOf(me.features, feature);
-
-            if (findex === -1) {
-                featuresFailRemoved.push(feature);
-                continue;
+            if (features && typeof features === 'function') {
+              if (features(feature)) {
+                me.features.splice(i--, 1);
+              }
+            } else {
+              var findex = external_L_default().Util.indexOf(features, feature);
+              if (findex === -1) {
+                  featuresFailRemoved.push(feature);
+              } else {
+                me.features.splice(i--, 1);
+              }
             }
-            me.features.splice(findex, 1);
         }
 
         var drawFeatures = [];
@@ -83256,9 +83451,9 @@ var ThemeLayer = external_L_default().Layer.extend({
         var succeed = featuresFailRemoved.length == 0;
         /**
          * @event ThemeLayer#featuresremoved
-         * @description 成功删除要素之后触发。
-         * @property {Array.<FeatureVector>} features - 事件对象。
-         * @property {boolean} succeed - 要素是否删除成功，true 为删除成功，false 为删除失败。
+         * @description 删除的要素成功之后触发。
+         * @property {Array.<FeatureVector>} features - 删除失败的要素数组。
+         * @property {boolean} succeed - 要输是否删除成功，true 为删除成功，false 为删除失败。
          */
         me.fire("featuresremoved", {
             features: featuresFailRemoved,
@@ -83285,23 +83480,26 @@ var ThemeLayer = external_L_default().Layer.extend({
     /**
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {Array} 返回图层中的有效数据。
+     * @param {Function} [filter] - 根据条件过滤要素的回调函数。
+     * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
-    getFeatures: function () {
-        var me = this;
-        var len = me.features.length;
-        var clonedFeatures = new Array(len);
+    getFeatures: function (filter) {
+        var len = this.features.length;
+        var clonedFeatures = [];
         for (var i = 0; i < len; ++i) {
-            clonedFeatures[i] = me.features[i];
+          if (!filter || (filter && typeof filter === 'function' && filter(this.features[i]))) {
+            clonedFeatures.push(this.features[i]);
+          }
         }
         return clonedFeatures;
     },
 
     /**
-     * @function ThemeLayer.prototype.getFeatureBy
-     * @description 过滤属性。
-     * @param {string} property - 过滤某个属性名。
-     * @param {string} value - 返回属性值。
+     * @function L.supermap.ThemeLayer.prototype.getFeatureBy
+     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
+     * @param {string} property - 要的某个属性名。
+     * @param {string} value - 对应属性名得值。
+     * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
     getFeatureBy: function (property, value) {
         var me = this;
@@ -83320,17 +83518,18 @@ var ThemeLayer = external_L_default().Layer.extend({
      * @function ThemeLayer.prototype.getFeatureById
      * @description 返回指定 ID 的矢量要素，不存在则返回 null。
      * @param {number} featureId - 要素 ID。
+     * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
     getFeatureById: function (featureId) {
         return this.getFeatureBy('id', featureId);
     },
 
     /**
-     * @function ThemeLayer.prototype.getFeaturesByAttribute
-     * @description 指定属性名和属性值，返回所有匹配的要素数组。
-     * @param {string} attrName - 属性名。
-     * @param {string} attrValue - 属性值。
-     * @returns {Array} 返回所有匹配的要素数组。
+     * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {string} attrName - key 值。
+     * @param {string} attrValue - value 值。
+     * @returns {Array.<FeatureVector>} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
         var me = this,
@@ -83498,7 +83697,7 @@ var ThemeLayer = external_L_default().Layer.extend({
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -83534,7 +83733,7 @@ var ThemeLayer = external_L_default().Layer.extend({
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {
@@ -83622,6 +83821,7 @@ var ThemeLayer = external_L_default().Layer.extend({
         me.renderer.resize();
     }
 });
+
 ;// CONCATENATED MODULE: ./src/leaflet/overlay/theme/GeoFeatureThemeLayer.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83691,7 +83891,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
      */
     addFeatures: function (features) {
         var me = this;
@@ -83699,7 +83899,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
         /**
          * @event GeoFeatureThemeLayer#beforefeaturesadded
          * @description 添加数据之前触发。
-         * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 事件对象。
+         * @property {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 
@@ -83724,11 +83924,11 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 删除专题图中 features。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {FeatureVector} features - 待删除的要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        ThemeLayer.prototype.removeFeatures.call(this, arguments);
+        ThemeLayer.prototype.removeFeatures.call(this, features);
     },
 
     /**
@@ -83815,6 +84015,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 要创建的要素。
+     * @returns {Array.<FeatureVector>} 返回矢量要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -83898,6 +84099,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
+     * @returns {Array} 返回图形数组
      */
     getShapesByFeatureID: function (featureID) {
         var me = this,
@@ -84297,11 +84499,11 @@ var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      /**
      * @function LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {Array.<FeatureVector>} features - 要删除的要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
-        GeoFeatureThemeLayer.prototype.removeFeatures.call(this, arguments);
+        GeoFeatureThemeLayer.prototype.removeFeatures.call(this, features);
     },
 
     /**
@@ -88282,7 +88484,6 @@ const EchartsLayer = external_L_default().Layer.extend({
         this._ec = external_function_try_return_echarts_catch_e_return_default().init(this._echartsContainer);
         this._ec.leafletMap= map;
         const me = this;
-
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
@@ -88323,15 +88524,12 @@ const EchartsLayer = external_L_default().Layer.extend({
                 const coordSys = LeafletMapModel.coordinateSystem;
 
                 const ecLayers = api.getZr().painter.getLayers();
-
+                _setCanvasPosition(me._map, viewportRoot);
                 const moveHandler = function () {
                     if (rendering) {
                         return;
                     }
-                    const offset = me._map.containerPointToLayerPoint([0, 0]);
-                    const mapOffset = [offset.x || 0, offset.y || 0];
-                    viewportRoot.style.left = mapOffset[0] + 'px';
-                    viewportRoot.style.top = mapOffset[1] + 'px';
+                    const mapOffset = _setCanvasPosition(me._map, viewportRoot);
 
                     if (!me.options.loadWhileAnimating) {
                         for (let item in ecLayers) {
@@ -88418,7 +88616,6 @@ const EchartsLayer = external_L_default().Layer.extend({
         _div.style.width = size.x + 'px';
         _div.style.zIndex = 10;
         this._echartsContainer = _div;
-
         this.getPane().appendChild(this._echartsContainer);
         const me = this;
 
@@ -88444,7 +88641,7 @@ const EchartsLayer = external_L_default().Layer.extend({
 function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;
     this.dimensions = ['lng', 'lat'];
-    this._mapOffset = [0, 0];
+    this._mapOffset = _getMapOffset(leafletMap);
 }
 
 LeafletMapCoordSys.prototype.dimensions = ['lng', 'lat'];
@@ -88539,7 +88736,7 @@ LeafletMapCoordSys.create = function (ecModel) {
             coordSys = new LeafletMapCoordSys(leafletMap);
         }
         leafletMapModel.coordinateSystem = coordSys;
-        leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || [0, 0]);
+        leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || _getMapOffset(leafletMap));
     });
     ecModel.eachSeries(function (seriesModel) {
         if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
@@ -88551,6 +88748,19 @@ LeafletMapCoordSys.create = function (ecModel) {
         }
     })
 };
+
+function _getMapOffset(map) {
+  const offset = map.containerPointToLayerPoint([0, 0]);
+  const mapOffset = [offset.x || 0, offset.y || 0];
+  return mapOffset;
+}
+
+function _setCanvasPosition(map, viewportRoot) {
+  const mapOffset = _getMapOffset(map);
+  viewportRoot.style.left = mapOffset[0] + 'px';
+  viewportRoot.style.top = mapOffset[1] + 'px';
+  return mapOffset;
+}
 const echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
@@ -89855,7 +90065,7 @@ let graphicLayer = function (graphics, options) {
  * @param {string} chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
  * @param {Object} options - 参数。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {string} options.themeFields - 指定创建专题图字段。 
+ * @param {string} options.themeFields - 指定创建专题图字段。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {Object} [options.cache] - 缓存。
  * @param {Object} [options.charts] - 图表。
@@ -89863,18 +90073,18 @@ let graphicLayer = function (graphics, options) {
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
  * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
- * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。 
- * @param {number} options.chartsSetting.height - 专题要素（图表）高度。 
- * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。 
- * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。 
- * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。 
- * @param {Array.<number>} [options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。 
+ * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。
+ * @param {number} options.chartsSetting.height - 专题要素（图表）高度。
+ * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
+ * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
+ * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
+ * @param {Array.<number>} [options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  * @param {number} [options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @usage
 */
 var GraphThemeLayer = ThemeLayer.extend({
-    
+
 
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
@@ -89904,16 +90114,16 @@ var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function GraphThemeLayer.prototype.addFeatures 
+     * @function GraphThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据。
-     * @param {(ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
         /**
          * @event GraphThemeLayer#beforefeaturesadded
          * @description 向专题图图层中添加数据之前触发。
-         * @property {(ServerFeature|ThemeFeature|GeoJSONObject)} features  - 待添加的要素。
+         * @property {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features  - 待添加的要素。
          */
         me.fire("beforefeaturesadded", {features: features});
 
@@ -90148,12 +90358,12 @@ var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {Array.<FeatureVector>} features - 待删除的要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
         me.clearCache();
-        ThemeLayer.prototype.removeFeatures.apply(me, arguments);
+        ThemeLayer.prototype.removeFeatures.call(me, features);
     },
 
     /**

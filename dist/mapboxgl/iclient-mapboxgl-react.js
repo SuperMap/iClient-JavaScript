@@ -3,7 +3,7 @@
  *       @supermap/react-iclient.(https://iclient.supermap.io)
  *       Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v11.0.0-beta
+ *       version: v11.0.0
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -24503,7 +24503,7 @@ module.exports = upperFirst;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
-/* harmony default export */ __webpack_exports__["default"] = ({"sm-components-icons":"icon-sm-components_sm-components-icons__Cz44n","sm-components-icons-dituchaxun":"icon-sm-components_sm-components-icons-dituchaxun__mvesU","sm-components-icons-x-bmp":"icon-sm-components_sm-components-icons-x-bmp__cBFsp","sm-components-icons-youxuanluxian":"icon-sm-components_sm-components-icons-youxuanluxian__bb0kF","sm-components-icons-delete":"icon-sm-components_sm-components-icons-delete__UXgJ4","sm-components-icons-visible":"icon-sm-components_sm-components-icons-visible__cS1wq","sm-components-icons-layer-style":"icon-sm-components_sm-components-icons-layer-style__8hlbB","sm-components-icons-line-layer":"icon-sm-components_sm-components-icons-line-layer__tqgkV","sm-components-icons-marker-layer":"icon-sm-components_sm-components-icons-marker-layer__KFg5N","sm-components-icons-point-layer":"icon-sm-components_sm-components-icons-point-layer__dOwxV","sm-components-icons-polygon-layer":"icon-sm-components_sm-components-icons-polygon-layer__KHTb8","sm-components-icons-invisible":"icon-sm-components_sm-components-icons-invisible__HHYIW","sm-components-icons-search":"icon-sm-components_sm-components-icons-search__DdpAS","sm-components-icons-edit":"icon-sm-components_sm-components-icons-edit__b7dQs","sm-components-icons-layers":"icon-sm-components_sm-components-icons-layers__LJtGZ","sm-components-icons-baselayer":"icon-sm-components_sm-components-icons-baselayer__Z2P18","sm-components-icons-setting":"icon-sm-components_sm-components-icons-setting__+DXLn","sm-components-icons-add":"icon-sm-components_sm-components-icons-add__tSVJ1","sm-components-icons-preview":"icon-sm-components_sm-components-icons-preview__pUMS5","sm-components-icons-refresh":"icon-sm-components_sm-components-icons-refresh__cbuuY","sm-components-icons-roadnetwork":"icon-sm-components_sm-components-icons-roadnetwork__P3M-E","sm-components-icons-return":"icon-sm-components_sm-components-icons-return__wZYnG","sm-components-icons-packup":"icon-sm-components_sm-components-icons-packup__X4GCm","sm-components-icons-restoredefault":"icon-sm-components_sm-components-icons-restoredefault__uRSJO","sm-components-icons-uploading":"icon-sm-components_sm-components-icons-uploading__cBqCR","sm-components-icons-error":"icon-sm-components_sm-components-icons-error__Et1uR","sm-components-icons-zoomin":"icon-sm-components_sm-components-icons-zoomin__YeFNc","sm-components-icons-zoomout":"icon-sm-components_sm-components-icons-zoomout__IaBzo","sm-components-icons-last":"icon-sm-components_sm-components-icons-last__Udkwm","sm-components-icons-prev":"icon-sm-components_sm-components-icons-prev__zm694","sm-components-icons-poi-load":"icon-sm-components_sm-components-icons-poi-load__FwI-F","sm-components-icons-poi-save":"icon-sm-components_sm-components-icons-poi-save__499hx","sm-components-icons-label-delete":"icon-sm-components_sm-components-icons-label-delete__0LU7S","sm-components-icons-close":"icon-sm-components_sm-components-icons-close__9-X18","sm-components-icons-mark":"icon-sm-components_sm-components-icons-mark__XrU2c","sm-components-icons-full-figure":"icon-sm-components_sm-components-icons-full-figure__WhflM","sm-components-icons-measure":"icon-sm-components_sm-components-icons-measure__2S-X0","sm-components-icons-creat-custom-map":"icon-sm-components_sm-components-icons-creat-custom-map__DE9gx","sm-components-icons-custom-map":"icon-sm-components_sm-components-icons-custom-map__Wpu2V","sm-components-icons-legend-fold":"icon-sm-components_sm-components-icons-legend-fold__lll9F","sm-components-icons-legend-unfold":"icon-sm-components_sm-components-icons-legend-unfold__7u9sL","sm-components-icons-legend-big":"icon-sm-components_sm-components-icons-legend-big__GPn13","sm-components-icons-attribute":"icon-sm-components_sm-components-icons-attribute__BPPRq","sm-components-icons-legend-small":"icon-sm-components_sm-components-icons-legend-small__z+K4p","sm-components-icons-close-legend":"icon-sm-components_sm-components-icons-close-legend__8cEiX","sm-components-icons-ditusousuo":"icon-sm-components_sm-components-icons-ditusousuo__ledsE","sm-components-icons-luxian":"icon-sm-components_sm-components-icons-luxian__MWp9t"});
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -33250,7 +33250,7 @@ __webpack_require__.d(__webpack_exports__, {
 
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js
 function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
   };
   return _getPrototypeOf(o);
@@ -33329,11 +33329,10 @@ __webpack_require__.d(__webpack_exports__, {
 
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
 function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
-
   return _setPrototypeOf(o, p);
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js

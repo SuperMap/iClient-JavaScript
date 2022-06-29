@@ -669,9 +669,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
   // other code modifying setTimeout (like sinon.useFakeTimers())
 
 
-  var setTimeoutFunc = setTimeout; // @ts-ignore
-
-  var setImmediateFunc = typeof setImmediate !== 'undefined' ? setImmediate : null;
+  var setTimeoutFunc = setTimeout;
 
   function isArray(x) {
     return Boolean(x && typeof x.length !== 'undefined');
@@ -913,9 +911,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
 
 
   Promise._immediateFn = // @ts-ignore
-  typeof setImmediateFunc === 'function' && function (fn) {
+  typeof setImmediate === 'function' && function (fn) {
     // @ts-ignore
-    setImmediateFunc(fn);
+    setImmediate(fn);
   } || function (fn) {
     setTimeoutFunc(fn, 0);
   };
@@ -4692,7 +4690,7 @@ var ElasticSearch = /*#__PURE__*/function () {
 
         return resp;
       }, function (err) {
-        callback(err);
+        callback && callback(err);
         me.events.triggerEvent('error', {
           error: err
         });

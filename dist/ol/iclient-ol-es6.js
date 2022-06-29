@@ -3,7 +3,7 @@
  *          iclient-ol.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.0.0-beta
+ *          version: v11.0.0
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -558,7 +558,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 794:
+/***/ 148:
 /***/ ((module, exports, __webpack_require__) => {
 
 /* module decorator */ module = __webpack_require__.nmd(module);
@@ -3703,8 +3703,6 @@ function allSettled(arr) {
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
-// @ts-ignore
-var setImmediateFunc = typeof setImmediate !== 'undefined' ? setImmediate : null;
 
 function isArray(x) {
   return Boolean(x && typeof x.length !== 'undefined');
@@ -3938,10 +3936,10 @@ Promise.race = function(arr) {
 // Use polyfill for setImmediate for performance gains
 Promise._immediateFn =
   // @ts-ignore
-  (typeof setImmediateFunc === 'function' &&
+  (typeof setImmediate === 'function' &&
     function(fn) {
       // @ts-ignore
-      setImmediateFunc(fn);
+      setImmediate(fn);
     }) ||
   function(fn) {
     setTimeoutFunc(fn, 0);
@@ -21779,7 +21777,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketClosed", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketClosed", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -21819,9 +21817,11 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
             me.events.triggerEvent('broadcastSocketConnected', e);
         };
         this.broadcastWebSocket.onclose = function (e) {
-            me.broadcastWebSocket.isOpen = false;
-            e.eventType = 'broadcastSocketConnected';
-            me.events.triggerEvent('broadcastSocketConnected', e);
+            if (me.broadcastWebSocket) {
+                me.broadcastWebSocket.isOpen = false;
+            }
+            e.eventType = 'broadcastSocketClosed';
+            me.events.triggerEvent('broadcastSocketClosed', e);
         };
         this.broadcastWebSocket.onerror = function (e) {
             e.eventType = 'broadcastSocketError';
@@ -21857,6 +21857,10 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
             me.events.triggerEvent('subscribeSocketConnected', e);
+        };
+        this.subscribeWebSocket.onclose = function (e) {
+            e.eventType = 'subscribeWebSocketClosed';
+            me.events.triggerEvent('subscribeWebSocketClosed', e);
         };
         this.subscribeWebSocket.onerror = function (e) {
             e.eventType = 'subscribeSocketError';
@@ -44482,7 +44486,7 @@ class ElasticSearch {
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
-                callback(err);
+                callback && callback(err);
                 me.events.triggerEvent('error', {error: err});
                 return err;
             });
@@ -46050,10 +46054,27 @@ var ColorRender = new Color();
 // 					"www.qzct.net": "#7ed321" = new LevelRenderer.Tool.Color();
 
 /**
- * @class ColorsPickerUtil
+ * @name ColorsPickerUtil
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorsPickerUtil.createCanvas();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ColorsPickerUtil.createCanvas();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { ColorsPickerUtil } from '{npm}';
+ *
+ * const result = ColorsPickerUtil.createCanvas();
+ * ```
  */
 class ColorsPickerUtil  {
     /**
@@ -46206,7 +46227,8 @@ class ColorsPickerUtil  {
 
 ;// CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
 /**
- * @class ArrayStatistic
+ * @name ArrayStatistic
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 处理数组。
  * @usage
@@ -46214,16 +46236,20 @@ class ColorsPickerUtil  {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const arrayStatistic = {namespace}.ArrayStatistic();
+ *   const result = {namespace}.ArrayStatistic.newInstance();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ArrayStatistic.newInstance();
  *
  * </script>
+ *
  * // ES6 Import
  * import { ArrayStatistic } from '{npm}';
- * 
- * new ArrayStatistic();
+ *
+ * const result = ArrayStatistic.newInstance();
  * ```
  */
-class ArrayStatistic {
+ class ArrayStatistic {
 
     // geostatsInstance: null,
 
@@ -68784,7 +68810,6 @@ let Lang = {
 
 ;// CONCATENATED MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 const external_function_try_return_XLSX_catch_e_return_namespaceObject = function(){try{return XLSX}catch(e){return {}}}();
-var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -68869,12 +68894,12 @@ let FileReaderUtil = {
         let reader = new FileReader();
         reader.onloadend = function (evt) {
             let xLSXData = new Uint8Array(evt.target.result);
-            let workbook = external_function_try_return_XLSX_catch_e_return_default().read(xLSXData, {type: "array"});
+            let workbook = external_function_try_return_XLSX_catch_e_return_namespaceObject.read(xLSXData, {type: "array"});
             try {
                 if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
                     //暂时只读取第一个sheets的内容
                     let sheetName = workbook.SheetNames[0];
-                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default().utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_namespaceObject.utils.sheet_to_csv(workbook.Sheets[sheetName]);
                     success && success.call(context, xLSXCSVString);
                 }
             } catch (error) {
@@ -75332,7 +75357,8 @@ var external_ol_tilegrid_TileGrid_default = /*#__PURE__*/__webpack_require__.n(e
 
 
 /**
- * @class ol.source.BaiduMap
+ * @class BaiduMap
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
  * @param {Object} opt_options - 参数。
@@ -75340,6 +75366,7 @@ var external_ol_tilegrid_TileGrid_default = /*#__PURE__*/__webpack_require__.n(e
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
  * @extends {ol.source.TileImage}
+ * @usage
  */
 class BaiduMap extends (external_ol_source_TileImage_default()) {
     constructor(opt_options) {
@@ -75405,7 +75432,7 @@ class BaiduMap extends (external_ol_source_TileImage_default()) {
 
     // TODO 确认这个方法是否要开出去
     /**
-     * @function ol.source.BaiduMap.defaultTileGrid
+     * @function BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网。
      * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象。
      */
@@ -75468,12 +75495,13 @@ const external_ol_extent_namespaceObject = ol.extent;
 
 
 /**
- * @class ol.source.ImageSuperMapRest
+ * @class ImageSuperMapRest
+ * @browsernamespace ol.source
  * @category iServer Map Tile
  * @classdesc SuperMap iServer Image 图层源。
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
+ * @param {ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.antialias=false] - 是否反走样地图。
@@ -75481,9 +75509,9 @@ const external_ol_extent_namespaceObject = ol.extent;
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
- * @param {(ol/geom/Geometry|ol/geom/Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {ol.geom.Geometry} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
- * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {boolean} [options.markerAngleFixed=false] - 指定点状符号的角度是否固定。
  * @param {boolean} [options.textAngleFixed=false] - 文本角度是否固定。
  * @param {boolean} [options.textOrientationFixed=false] - 文本朝向是否固定。
@@ -75493,11 +75521,12 @@ const external_ol_extent_namespaceObject = ol.extent;
  * @param {boolean} [options.minVisibleTextSize] - 文本的最小可见尺寸，单位为像素。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
- * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {NDVIParameter|HillshadeParameter} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
  * @param {string} [options.ratio=1.5] - 	请求图片大小比例. 1 表示请求图片大小和地图视窗范围一致, 2 表示请求图片大小是地图视窗范围的2倍，以此类推。
- * @extends {ol.source.TileImage}
+ * @extends {ol.source.Image}
+ * @usage
  */
  class ImageSuperMapRest extends (external_ol_source_Image_default()) {
   constructor(options) {
@@ -75657,7 +75686,7 @@ const external_ol_extent_namespaceObject = ol.extent;
     return imageUrl;
   }
   /**
-   * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
+   * @function ImageSuperMapRest.optionsFromMapJSON
    * @param {string} url - 地址。
    * @param {Object} mapJSONObj - 地图 JSON。
    * @description 获取地图 JSON 信息。
@@ -75714,13 +75743,15 @@ var external_ol_source_XYZ_default = /*#__PURE__*/__webpack_require__.n(external
 
 
 /**
- * @class ol.source.SuperMapCloud
+ * @class SuperMapCloud
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 超图云地图图层源。
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @extends {ol.source.XYZ}
+ * @usage
  */
 class SuperMapCloud extends (external_ol_source_XYZ_default()) {
 
@@ -75776,7 +75807,8 @@ var external_ol_tilegrid_WMTS_default = /*#__PURE__*/__webpack_require__.n(exter
 
 
 /**
- * @class ol.source.Tianditu
+ * @class Tianditu
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
  * @param {Object} opt_options - 参数。
@@ -75792,6 +75824,7 @@ var external_ol_tilegrid_WMTS_default = /*#__PURE__*/__webpack_require__.n(exter
  * @param {boolean} [opt_options.opaque=true] - 是否透明。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @extends {ol.source.WMTS}
+ * @usage
  */
 class Tianditu extends (external_ol_source_WMTS_default()) {
   constructor(opt_options) {
@@ -75861,7 +75894,7 @@ class Tianditu extends (external_ol_source_WMTS_default()) {
   }
 
   /**
-   * @function ol.source.Tianditu.getTileGrid
+   * @function Tianditu.getTileGrid
    * @description 获取瓦片网格。
    * @param {string} projection - 投影参考对象。
    * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
@@ -75874,7 +75907,7 @@ class Tianditu extends (external_ol_source_WMTS_default()) {
   }
 
   /**
-   * @function ol.source.Tianditu.default4326TileGrid
+   * @function Tianditu.default4326TileGrid
    * @description 获取默认 4326 网格瓦片。
    * @returns {ol.tilegrid.WMTS} 返回默认 4326 网格瓦片对象。
    */
@@ -75896,7 +75929,7 @@ class Tianditu extends (external_ol_source_WMTS_default()) {
   }
 
   /**
-   * @function ol.source.Tianditu.default3857TileGrid
+   * @function Tianditu.default3857TileGrid
    * @description 获取默认 3857 网格瓦片。
    * @returns {ol.tilegrid.WMTS} 返回默认 3857 网格瓦片对象。
    */
@@ -75939,7 +75972,8 @@ const external_ol_tilegrid_namespaceObject = ol.tilegrid;
 
 
 /**
- * @class ol.source.TileSuperMapRest
+ * @class TileSuperMapRest
+ * @browsernamespace ol.source
  * @category iServer Map Tile
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
@@ -75959,6 +75993,7 @@ const external_ol_tilegrid_namespaceObject = ol.tilegrid;
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol.source.TileImage}
+ * @usage
  */
 class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     constructor(options) {
@@ -76000,7 +76035,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         var layerUrl = Util.urlPathAppend(options.url, 'tileImage.' + options.format);
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.getAllRequestParams
+         * @function  TileSuperMapRest.prototype.getAllRequestParams
          * @description 获取全部请求参数。
          */
         function getAllRequestParams() {
@@ -76059,7 +76094,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         }
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.getFullRequestUrl
+         * @function  TileSuperMapRest.prototype.getFullRequestUrl
          * @description 获取完整的请求地址。
          */
         function getFullRequestUrl() {
@@ -76071,7 +76106,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         }
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.createLayerUrl
+         * @function  TileSuperMapRest.prototype.createLayerUrl
          * @description 获取新建图层地址。
          */
         function createLayerUrl() {
@@ -76140,7 +76175,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
+     * @function  TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息。
      * @param {Object} tileSets - 瓦片集合。
      */
@@ -76162,7 +76197,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.lastTilesVersion
+     * @function  TileSuperMapRest.prototype.lastTilesVersion
      * @description 请求上一个版本切片，并重新绘制。
      */
     lastTilesVersion() {
@@ -76171,7 +76206,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.nextTilesVersion
+     * @function  TileSuperMapRest.prototype.nextTilesVersion
      * @description 请求下一个版本切片，并重新绘制。
      */
     nextTilesVersion() {
@@ -76180,7 +76215,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
+     * @function  TileSuperMapRest.prototype.changeTilesVersion
      * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引。
      */
     changeTilesVersion() {
@@ -76210,7 +76245,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
+     * @function  TileSuperMapRest.prototype.updateCurrentTileSetsIndex
      * @description 更新当前切片集索引，目前主要提供给控件使用。
      * @param {number} index - 索引号。
      */
@@ -76219,7 +76254,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
+     * @function  TileSuperMapRest.prototype.mergeTileVersionParam
      * @description 更改 URL 请求参数中的切片版本号，并重绘。
      * @param {Object} version - 版本信息。
      * @returns {boolean} 是否成功。
@@ -76235,7 +76270,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
+     * @function  TileSuperMapRest.optionsFromMapJSON
      * @description 从 MapJSON 中获取参数对象。
      * @param {string} url - 服务地址。
      * @param {Object} mapJSONObj - 地图 JSON 对象。
@@ -76289,7 +76324,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.createTileGrid
+     * @function  TileSuperMapRest.createTileGrid
      * @description 创建切片网格。
      * @param {number} extent - 长度。
      * @param {number} maxZoom - 最大的放大级别。
@@ -78031,7 +78066,7 @@ function Projection(srsCode,callback) {
   extend(this, json); // transfer everything over from the projection because we don't know what we'll need
   extend(this, ourProj); // transfer all the methods from the projection
 
-  // copy the 4 things over we calulated in deriveConstants.sphere
+  // copy the 4 things over we calculated in deriveConstants.sphere
   this.a = sphere_.a;
   this.b = sphere_.b;
   this.rf = sphere_.rf;
@@ -80878,7 +80913,9 @@ var lcc_names = [
   "Lambert_Conformal_Conic",
   "Lambert_Conformal_Conic_1SP",
   "Lambert_Conformal_Conic_2SP",
-  "lcc"
+  "lcc",
+  "Lambert Conic Conformal (1SP)",
+  "Lambert Conic Conformal (2SP)"
 ];
 
 /* harmony default export */ const lcc = ({
@@ -83770,7 +83807,169 @@ var tpers_names = ["Tilted_Perspective", "tpers"];
   names: tpers_names
 });
 
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geos.js
+
+
+function geos_init() {
+    this.flip_axis = (this.sweep === 'x' ? 1 : 0);
+    this.h = Number(this.h);
+    this.radius_g_1 = this.h / this.a;
+
+    if (this.radius_g_1 <= 0 || this.radius_g_1 > 1e10) {
+        throw new Error();
+    }
+
+    this.radius_g = 1.0 + this.radius_g_1;
+    this.C = this.radius_g * this.radius_g - 1.0;
+
+    if (this.es !== 0.0) {
+        var one_es = 1.0 - this.es;
+        var rone_es = 1 / one_es;
+
+        this.radius_p = Math.sqrt(one_es);
+        this.radius_p2 = one_es;
+        this.radius_p_inv2 = rone_es;
+
+        this.shape = 'ellipse'; // Use as a condition in the forward and inverse functions.
+    } else {
+        this.radius_p = 1.0;
+        this.radius_p2 = 1.0;
+        this.radius_p_inv2 = 1.0;
+
+        this.shape = 'sphere';  // Use as a condition in the forward and inverse functions.
+    }
+
+    if (!this.title) {
+        this.title = "Geostationary Satellite View";
+    }
+}
+
+function geos_forward(p) {
+    var lon = p.x;
+    var lat = p.y;
+    var tmp, v_x, v_y, v_z;
+    lon = lon - this.long0;
+
+    if (this.shape === 'ellipse') {
+        lat = Math.atan(this.radius_p2 * Math.tan(lat));
+        var r = this.radius_p / hypot(this.radius_p * Math.cos(lat), Math.sin(lat));
+
+        v_x = r * Math.cos(lon) * Math.cos(lat);
+        v_y = r * Math.sin(lon) * Math.cos(lat);
+        v_z = r * Math.sin(lat);
+
+        if (((this.radius_g - v_x) * v_x - v_y * v_y - v_z * v_z * this.radius_p_inv2) < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        tmp = this.radius_g - v_x;
+        if (this.flip_axis) {
+            p.x = this.radius_g_1 * Math.atan(v_y / hypot(v_z, tmp));
+            p.y = this.radius_g_1 * Math.atan(v_z / tmp);
+        } else {
+            p.x = this.radius_g_1 * Math.atan(v_y / tmp);
+            p.y = this.radius_g_1 * Math.atan(v_z / hypot(v_y, tmp));
+        }
+    } else if (this.shape === 'sphere') {
+        tmp = Math.cos(lat);
+        v_x = Math.cos(lon) * tmp;
+        v_y = Math.sin(lon) * tmp;
+        v_z = Math.sin(lat);
+        tmp = this.radius_g - v_x;
+
+        if (this.flip_axis) {
+            p.x = this.radius_g_1 * Math.atan(v_y / hypot(v_z, tmp));
+            p.y = this.radius_g_1 * Math.atan(v_z / tmp);
+        } else {
+            p.x = this.radius_g_1 * Math.atan(v_y / tmp);
+            p.y = this.radius_g_1 * Math.atan(v_z / hypot(v_y, tmp));
+        }
+    }
+    p.x = p.x * this.a;
+    p.y = p.y * this.a;
+    return p;
+}
+
+function geos_inverse(p) {
+    var v_x = -1.0;
+    var v_y = 0.0;
+    var v_z = 0.0;
+    var a, b, det, k;
+
+    p.x = p.x / this.a;
+    p.y = p.y / this.a;
+
+    if (this.shape === 'ellipse') {
+        if (this.flip_axis) {
+            v_z = Math.tan(p.y / this.radius_g_1);
+            v_y = Math.tan(p.x / this.radius_g_1) * hypot(1.0, v_z);
+        } else {
+            v_y = Math.tan(p.x / this.radius_g_1);
+            v_z = Math.tan(p.y / this.radius_g_1) * hypot(1.0, v_y);
+        }
+
+        var v_zp = v_z / this.radius_p;
+        a = v_y * v_y + v_zp * v_zp + v_x * v_x;
+        b = 2 * this.radius_g * v_x;
+        det = (b * b) - 4 * a * this.C;
+
+        if (det < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        k = (-b - Math.sqrt(det)) / (2.0 * a);
+        v_x = this.radius_g + k * v_x;
+        v_y *= k;
+        v_z *= k;
+
+        p.x = Math.atan2(v_y, v_x);
+        p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
+        p.y = Math.atan(this.radius_p_inv2 * Math.tan(p.y));
+    } else if (this.shape === 'sphere') {
+        if (this.flip_axis) {
+            v_z = Math.tan(p.y / this.radius_g_1);
+            v_y = Math.tan(p.x / this.radius_g_1) * Math.sqrt(1.0 + v_z * v_z);
+        } else {
+            v_y = Math.tan(p.x / this.radius_g_1);
+            v_z = Math.tan(p.y / this.radius_g_1) * Math.sqrt(1.0 + v_y * v_y);
+        }
+
+        a = v_y * v_y + v_z * v_z + v_x * v_x;
+        b = 2 * this.radius_g * v_x;
+        det = (b * b) - 4 * a * this.C;
+        if (det < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        k = (-b - Math.sqrt(det)) / (2.0 * a);
+        v_x = this.radius_g + k * v_x;
+        v_y *= k;
+        v_z *= k;
+
+        p.x = Math.atan2(v_y, v_x);
+        p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
+    }
+    p.x = p.x + this.long0;
+    return p;
+}
+
+var geos_names = ["Geostationary Satellite View", "Geostationary_Satellite", "geos"];
+/* harmony default export */ const geos = ({
+    init: geos_init,
+    forward: geos_forward,
+    inverse: geos_inverse,
+    names: geos_names,
+});
+
+
 ;// CONCATENATED MODULE: ./node_modules/proj4/projs.js
+
 
 
 
@@ -83828,6 +84027,7 @@ var tpers_names = ["Tilted_Perspective", "tpers"];
   proj4.Proj.projections.add(robin);
   proj4.Proj.projections.add(geocent);
   proj4.Proj.projections.add(tpers);
+  proj4.Proj.projections.add(geos);
 }
 ;// CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
 
@@ -84588,7 +84788,8 @@ class DataFlowService extends ServiceBase {
 
 
 /**
- * @class ol.source.DataFlow
+ * @class DataFlow
+ * @browsernamespace ol.source
  * @category  iServer DataFlow
  * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务,并将订阅得到的数据根据 `options.idField` 自动更新。与 {@link ol.layer.Vector} 结合使用可以实现SuperMap iServer 数据流上图、根据`options.idField`自动更新。
  * @param {Object} opt_options - 参数。
@@ -84599,14 +84800,14 @@ class DataFlowService extends ServiceBase {
  * @param {Object} [opt_options.excludeField] - 排除字段
  * @extends {ol.source.Vector}
  * @example
- * var source = new ol.source.DataFlow({
+ * var source = new DataFlow({
  *   ws: urlDataFlow,
  *   idField:"objectId"
  * });
  * var layer = new ol.layer.Vector({
  *    source: source,
  * });
- *
+ * @usage
  */
 class DataFlow extends (external_ol_source_Vector_default()) {
     constructor(opt_options) {
@@ -84638,7 +84839,7 @@ class DataFlow extends (external_ol_source_Vector_default()) {
     }
 
     // /**
-    //  * @function ol.source.DataFlow.prototype.setPrjCoordSys
+    //  * @function DataFlow.prototype.setPrjCoordSys
     //  * @description 设置坐标参考系。
     //  * @param {Object} prjCoordSys - 参考系。
     //  */
@@ -84649,7 +84850,7 @@ class DataFlow extends (external_ol_source_Vector_default()) {
     // }
 
     /**
-     * @function ol.source.DataFlow.prototype.setExcludeField
+     * @function DataFlow.prototype.setExcludeField
      * @description 设置唯一字段。
      * @param {Object} excludeField - 排除字段。
      */
@@ -84660,7 +84861,7 @@ class DataFlow extends (external_ol_source_Vector_default()) {
     }
 
     /**
-     * @function ol.source.DataFlow.prototype.setGeometry
+     * @function DataFlow.prototype.setGeometry
      * @description 设置几何图形。
      * @param {Object} geometry - 要素图形。
      */
@@ -84763,7 +84964,8 @@ var external_ol_source_ImageCanvas_default = /*#__PURE__*/__webpack_require__.n(
 
 
 /**
- * @class ol.source.Theme
+ * @class Theme
+ * @browsernamespace ol.source
  * @category Visualization Theme
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
@@ -84778,6 +84980,7 @@ var external_ol_source_ImageCanvas_default = /*#__PURE__*/__webpack_require__.n(
  * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
 
@@ -84793,7 +84996,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
             state: options.state
         });
         /**
-        * @function ol.source.Theme.prototype.on
+        * @function Theme.prototype.on
         * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
         * @param {string} event - 事件名称。
         * @param {RequestCallback} callback - 事件回调函数。
@@ -84873,7 +85076,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.destroy
+     * @function Theme.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -84892,9 +85095,9 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.destroyFeatures
-     * @description 销毁某个要素。
-     * @param {FeatureVector} features - 将被销毁的要素。
+     * @function Theme.prototype.destroyFeatures
+     * @description 销毁要素。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -84903,6 +85106,9 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
         }
         if (features) {
             this.removeFeatures(features);
+            if (!Array.isArray(features)) {
+              features = [features];
+            }
             for (var i = features.length - 1; i >= 0; i--) {
                 features[i].destroy();
             }
@@ -84910,7 +85116,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.setOpacity
+     * @function Theme.prototype.setOpacity
      * @description 设置图层的不透明度，取值[0-1]之间。
      * @param {number} opacity - 不透明度。
      */
@@ -84928,8 +85134,8 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.addFeatures
-     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @function Theme.prototype.addFeatures
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待添加要素。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 FeatureVector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -84939,8 +85145,8 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.removeFeatures
-     * @param {Array.<FeatureVector>} features - 要删除 feature 的数组。
+     * @function Theme.prototype.removeFeatures
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除 feature 的数组或用来过滤的回调函数。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
@@ -84948,27 +85154,37 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
      *              删除所有 feature 后再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
-        if (!features || features.length === 0) {
-            return;
-        }
-        if (features === this.features) {
-            return this.removeAllFeatures();
-        }
-        if (!(Util.isArray(features))) {
-            features = [features];
-        }
-        var featuresFailRemoved = [];
-        for (var i = features.length - 1; i >= 0; i--) {
-            var feature = features[i];
-            //如果我们传入的feature在features数组中没有的话，则不进行删除，
-            //并将其放入未删除的数组中。
-            var findex = Util.indexOf(this.features, feature);
+      var me = this;
+      if (!features) {
+          return;
+      }
+      if (features === me.features) {
+          return me.removeAllFeatures();
+      }
+      if (!Util.isArray(features) && !(typeof features === 'function')) {
+          features = [features];
+      }
+
+      var featuresFailRemoved = [];
+
+      for (var i = 0; i < me.features.length; i++) {
+          var feature = me.features[i];
+
+          //如果我们传入的feature在features数组中没有的话，则不进行删除，
+          //并将其放入未删除的数组中。
+          if (features && typeof features === 'function') {
+            if (features(feature)) {
+              me.features.splice(i--, 1);
+            }
+          } else {
+            var findex = Util.indexOf(features, feature);
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
-                continue;
+            } else {
+              me.features.splice(i--, 1);
             }
-            this.features.splice(findex, 1);
-        }
+          }
+      }
         var drawFeatures = [];
         for (var hex = 0, len = this.features.length; hex < len; hex++) {
             feature = this.features[hex];
@@ -84985,7 +85201,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.removeAllFeatures
+     * @function Theme.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -84997,22 +85213,24 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatures
+     * @function Theme.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {FeatureVector} 用户加入图层的有效数据。
+     * @param {Function} [filter] - 根据条件过滤要素的回调函数。
+     * @returns {Array.<FeatureVector>} 用户加入图层的有效数据。
      */
-    getFeatures() {
+    getFeatures(filter) {
         var len = this.features.length;
-        var clonedFeatures = new Array(len);
+        var clonedFeatures = [];
         for (var i = 0; i < len; ++i) {
-            clonedFeatures[i] = this.features[i];
-            //clonedFeatures[i] = this.features[i].clone();
+          if (!filter || (filter && typeof filter === 'function' && filter(this.features[i]))) {
+            clonedFeatures.push(this.features[i]);
+          }
         }
         return clonedFeatures;
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatureBy
+     * @function Theme.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
      * @param {string} property - feature 的某个属性名称。
@@ -85032,7 +85250,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatureById
+     * @function Theme.prototype.getFeatureById
      * @description 通过给定一个 ID，返回对应的矢量要素。
      * @param {string} featureId - 矢量要素的属性 ID。
      * @returns {FeatureVector} 对应 ID 的 feature，如果不存在则返回 null。
@@ -85042,7 +85260,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeaturesByAttribute
+     * @function Theme.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性的 key。
      * @param {string} attrValue - 矢量要素的属性 ID。
@@ -85064,7 +85282,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.redrawThematicFeatures
+     * @function Theme.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
      * @param {Array} extent - 当前级别下计算出的地图范围。
      */
@@ -85073,7 +85291,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
 
     /**
      * @private
-     * @function ol.source.Theme.prototype.onInternal
+     * @function Theme.prototype.onInternal
      * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      * @param {string} event - 事件名称。
      * @param {RequestCallback} callback - 事件回调函数。
@@ -85091,7 +85309,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.fire
+     * @function Theme.prototype.fire
      * @description 添加专题要素事件监听。
      * @param {string} type - 事件类型。
      * @param {string} event - 事件名称。
@@ -85158,7 +85376,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.un
+     * @function Theme.prototype.un
      * @description 移除专题要素事件监听。
      * @param {string} event - 事件名称。
      * @param {RequestCallback} callback - 事件回调函数。
@@ -85183,7 +85401,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.addTFEvents
+     * @function Theme.prototype.addTFEvents
      * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
      * @private
      */
@@ -85196,9 +85414,10 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getLocalXY
+     * @function Theme.prototype.getLocalXY
      * @description 获取坐标系统。
      * @param {Object} coordinate - 坐标位置。
+     * @returns {Array.<number>} 像素坐标数组。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
@@ -85224,11 +85443,12 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.rotate
+     * @function Theme.prototype.rotate
      * @description 获取某像素坐标点 pixelP 绕中心 center 逆时针旋转 rotation 弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
      * @param {number} rotation - 旋转角度。
      * @param {number} center - 中心位置。
+     * @returns {Array.<number>} 旋转后的像素坐标数组。
      */
     rotate(pixelP, rotation, center) {
         var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
@@ -85237,7 +85457,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.scale
+     * @function Theme.prototype.scale
      * @description 获取某像素坐标点 pixelP 相对于中心 center 进行缩放 scaleRatio 倍后的像素点坐标。
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
@@ -85251,10 +85471,10 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.toiClientFeature
+     * @function Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
-     * @returns {FeatureVector} 转换后的 iClient 要素
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {
@@ -85293,11 +85513,11 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Theme.prototype.toFeature
+     * @function Theme.prototype.toFeature
      * @deprecated
-     * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
-     * @returns {FeatureVector} 转换后的 iClient 要素
+     * @description 转为 iClient 要素，该方法将被弃用，由 {@link Theme#toiClientFeature} 代替。
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
+     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);
@@ -85322,7 +85542,8 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
 
 
 /**
- * @class ol.source.Graph
+ * @class Graph
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 统计专题图图层基类。
  * @param {string} chartsType - 图表类别。
@@ -85348,7 +85569,8 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.Theme}
+ * @extends {Theme}
+ * @usage
  */
 class Graph_Graph extends theme_Theme_Theme {
 
@@ -85364,7 +85586,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.destroy
+     * @function Graph.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -85380,7 +85602,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.setChartsType
+     * @function Graph.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
      * @param {string} chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
      */
@@ -85390,7 +85612,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.addFeatures
+     * @function Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据。
      * @param {(ServerFeature|ThemeFeature)} features - 待添加的要素。
      */
@@ -85413,7 +85635,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.redrawThematicFeatures
+     * @function Graph.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
@@ -85458,7 +85680,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.createThematicFeature
+     * @function Graph.prototype.createThematicFeature
      * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
      * @param {ServerFeature} feature - 待添加的要素。
      *
@@ -85479,7 +85701,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.drawCharts
+     * @function Graph.prototype.drawCharts
      * @description 绘制图表。包含压盖处理。
      *
      */
@@ -85588,7 +85810,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.getShapesByFeatureID
+     * @function Graph.prototype.getShapesByFeatureID
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
@@ -85608,7 +85830,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isQuadrilateralOverLap
+     * @function Graph.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
@@ -85651,7 +85873,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isPointInPoly
+     * @function Graph.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。
@@ -85666,7 +85888,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isChartInMap
+     * @function Graph.prototype.isChartInMap
      * @description  判断图表是否在地图里。
      * @param {Bounds} mapPxBounds - 地图像素范围。
      * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
@@ -85686,7 +85908,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.clearCache
+     * @function Graph.prototype.clearCache
      * @description  清除缓存。
      */
     clearCache() {
@@ -85695,9 +85917,9 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.removeFeatures
+     * @function Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {FeatureVector} features - 要删除的要素。
+     * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();
@@ -85705,7 +85927,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.removeAllFeatures
+     * @function Graph.prototype.removeAllFeatures
      * @description  移除所有的要素
      */
     removeAllFeatures() {
@@ -85714,7 +85936,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.redraw
+     * @function Graph.prototype.redraw
      * @description  重绘该图层
      */
     redraw() {
@@ -85727,7 +85949,7 @@ class Graph_Graph extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.clear
+     * @function Graph.prototype.clear
      * @description  清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {
@@ -85756,7 +85978,8 @@ var external_ol_style_RegularShape_default = /*#__PURE__*/__webpack_require__.n(
 
 
 /**
- * @class ol.style.CloverShape
+ * @class CloverShape
+ * @browsernamespace ol.style
  * @category  Visualization Graphic
  * @classdesc 三叶草要素风格。
  * @extends {ol.style.RegularShape}
@@ -85770,6 +85993,7 @@ var external_ol_style_RegularShape_default = /*#__PURE__*/__webpack_require__.n(
  * @param {ol.style.Stroke} [options.stroke] - 边框样式。
  * @param {string} [options.stroke.color='#3388ff'] - 边框颜色。
  * @param {number} [options.stroke.width=1] - 边框宽度。
+ * @usage
  */
 class CloverShape extends (external_ol_style_RegularShape_default()) {
 
@@ -85829,7 +86053,7 @@ class CloverShape extends (external_ol_style_RegularShape_default()) {
     }
 
     /**
-     * @function  ol.style.CloverShape.prototype.drawSector
+     * @function CloverShape.prototype.drawSector
      * @description 绘制扇形。
      * @param {CanvasRenderingContext2D} ctx - context 对象
      * @param {number} x - 中心点 x。
@@ -85864,14 +86088,14 @@ class CloverShape extends (external_ol_style_RegularShape_default()) {
         }
     }
      /**
-     * @function  ol.style.CloverShape.prototype.getCount
+     * @function  CloverShape.prototype.getCount
      * @description 获取扇叶数量。
      */
     getCount() {
         return this.count_;
     }
     /**
-     * @function  ol.style.CloverShape.prototype.getSpaceAngle
+     * @function  CloverShape.prototype.getSpaceAngle
      * @description 获取扇叶间隔角度。
      */
     getSpaceAngle() {
@@ -85886,10 +86110,11 @@ class CloverShape extends (external_ol_style_RegularShape_default()) {
 
 
 /**
- * @class ol.style.HitCloverShape
+ * @class HitCloverShape
+ * @browsernamespace ol.style
  * @category  Visualization Graphic
  * @classdesc 三叶草要素高亮风格。
- * @extends {ol.style.CloverShape}
+ * @extends {CloverShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} options.sAngle - 扇叶起始角度。
  * @param {number} options.eAngle - 扇叶终止角度。
@@ -85899,6 +86124,7 @@ class CloverShape extends (external_ol_style_RegularShape_default()) {
  * @param {number} [options.strokeOpacity] - 透明度。
  * @param {number} [options.fillOpacity] - 填充透明度。
  * @param {number} [options.radius] - 半径。
+ * @usage
  */
 class HitCloverShape extends CloverShape {
 
@@ -85924,14 +86150,14 @@ class HitCloverShape extends CloverShape {
         this._ctx.closePath();
     }
     /**
-     * @function ol.style.HitCloverShape.prototype.getSAngle
+     * @function HitCloverShape.prototype.getSAngle
      * @description 获取扇叶起始角度。
      */
     getSAngle() {
         return this.sAngle;
     }
     /**
-     * @function ol.style.HitCloverShape.prototype.getEAngle
+     * @function HitCloverShape.prototype.getEAngle
      * @description 获取扇叶终止角度。
      */
     getEAngle() {
@@ -86336,7 +86562,7 @@ function scale(pixelP, center, scaleRatio) {
  * @classdesc 高效率点图层 canvas 渲染器。
  * @category Visualization Graphic
  * @extends {ol.Object}
- * @param {ol.source.Graphic} layer - 高效率点图层。
+ * @param {Graphic} layer - 高效率点图层。
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度。
  * @param {number} options.height - 地图高度。
@@ -86501,12 +86727,15 @@ class GraphicCanvasRenderer extends (external_ol_Object_default()) {
 
 
 /**
- * @class ol.Graphic
+ * @class OverlayGraphic
+ * @browsernamespace ol
+ * @aliasclass Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类。
  * @param {ol.geom.Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。
  * @extends {ol.Object}
+ * @usage
  */
 class Graphic_Graphic extends (external_ol_Object_default()) {
 
@@ -86520,9 +86749,9 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.clone
+     * @function OverlayGraphic.prototype.clone
      * @description 克隆当前要素。
-     * @returns {ol.Graphic} 克隆后的要素。
+     * @returns {OverlayGraphic} 克隆后的要素。
      */
     clone() {
         var clone = new Graphic_Graphic();
@@ -86534,7 +86763,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.getId
+     * @function OverlayGraphic.prototype.getId
      * @description 获取当前 ID。
      * @returns {string} id
      */
@@ -86543,7 +86772,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.setId
+     * @function OverlayGraphic.prototype.setId
      * @description 设置当前要素 ID。
      * @param {string} id - 要素 ID。
      */
@@ -86552,7 +86781,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.getGeometry
+     * @function OverlayGraphic.prototype.getGeometry
      * @description 获取当前要素几何信息。
      * @returns {ol.geom.Point} 要素几何信息。
      */
@@ -86561,7 +86790,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.setGeometry
+     * @function OverlayGraphic.prototype.setGeometry
      * @description 设置当前要素几何信息。
      * @param {ol.geom.Point} geometry - 要素几何信息。
      */
@@ -86570,7 +86799,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.setAttributes
+     * @function OverlayGraphic.prototype.setAttributes
      * @description 设置要素属性。
      * @param {Object} attributes - 属性对象。
      */
@@ -86579,7 +86808,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.getAttributes
+     * @function OverlayGraphic.prototype.getAttributes
      * @description 获取要素属性。
      * @returns {Object} 要素属性。
      */
@@ -86588,7 +86817,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.getStyle
+     * @function OverlayGraphic.prototype.getStyle
      * @description 获取样式。
      * @returns {ol.style.Image} ol.style.Image 子类样式对象。
      */
@@ -86597,7 +86826,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.setStyle
+     * @function OverlayGraphic.prototype.setStyle
      * @description 设置样式。
      * @param {ol.style.Image} style - 样式，ol/style/Image 子类样式对象。
      */
@@ -86614,7 +86843,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.getStyleFunction
+     * @function OverlayGraphic.prototype.getStyleFunction
      * @description 获取样式函数。
      * @returns {function} 样式函数。
      */
@@ -86623,7 +86852,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.createStyleFunction
+     * @function OverlayGraphic.createStyleFunction
      * @description  新建样式函数。
      * @param {Object} obj - 对象参数。
      */
@@ -86652,7 +86881,7 @@ class Graphic_Graphic extends (external_ol_Object_default()) {
     }
 
     /**
-     * @function ol.Graphic.prototype.destroy
+     * @function OverlayGraphic.prototype.destroy
      * @description  清除参数值。
      */
     destroy() {
@@ -86704,19 +86933,20 @@ const defaultProps = {
 const Renderer = ['canvas', 'webgl'];
 
 /**
- * @class ol.source.Graphic
+ * @class Graphic
+ * @browsernamespace ol.source
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
  * @param {Object} options - 参数。
  * @param {ol.Map} options.map - openlayers 地图对象。
- * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
+ * @param {OverlayGraphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
  * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link ol.Graphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link OverlayGraphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link ol.Graphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
- * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link ol.Graphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
@@ -86725,6 +86955,7 @@ const Renderer = ['canvas', 'webgl'];
  * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 class Graphic extends (external_ol_source_ImageCanvas_default()) {
     constructor(options) {
@@ -86835,7 +87066,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
 
         /**
          * @private
-         * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
+         * @function Graphic.prototype._forEachFeatureAtCoordinate
          * @description 获取在视图上的要素。
          * @param {string} coordinate -坐标。
          * @param {number} resolution -分辨率。
@@ -86910,9 +87141,9 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.setGraphics
+     * @function Graphic.prototype.setGraphics
      * @description 设置绘制的点要素，会覆盖之前的所有要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<OverlayGraphic>}  graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -86923,9 +87154,9 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.addGraphics
+     * @function Graphic.prototype.addGraphics
      * @description 追加点要素，不会覆盖之前的要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<OverlayGraphic>}  graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -86935,11 +87166,11 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicBy
+     * @function Graphic.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
      * @param {string} property - graphic 的属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -86953,21 +87184,21 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicById
+     * @function Graphic.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
      * @param {string} graphicId - 矢量要素的属性 id
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy('id', graphicId);
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+     * @function Graphic.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - graphic 的某个属性名称。
      * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @returns {Array.<OverlayGraphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -86984,9 +87215,9 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.removeGraphics
+     * @function Graphic.prototype.removeGraphics
      * @description 删除要素数组，默认将删除所有要素。
-     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
+     * @param {Array.<OverlayGraphic>} [graphics] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -87018,7 +87249,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.clear
+     * @function Graphic.prototype.clear
      * @description 释放图层资源。
      */
     clear() {
@@ -87026,7 +87257,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.update
+     * @function Graphic.prototype.update
      * @description 更新图层。
      */
     update() {
@@ -87057,7 +87288,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.setStyle
+     * @function Graphic.prototype.setStyle
      * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
@@ -87089,7 +87320,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getLayerState
+     * @function Graphic.prototype.getLayerState
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
@@ -87137,7 +87368,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLightClose
+     * @function Graphic.prototype._highLightClose
      * @description 关闭高亮要素显示。
      * @private
      */
@@ -87151,11 +87382,11 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLight
+     * @function Graphic.prototype._highLight
      * @description 高亮显示选中要素。
      * @param {Array.<number>} center - 中心点。
      * @param {ol.style.Style} image - 点样式。
-     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
+     * @param {OverlayGraphic} selectGraphic - 高效率点图层点要素。
      * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
      * @private
      */
@@ -87211,7 +87442,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicsInExtent
+     * @function Graphic.prototype.getGraphicsInExtent
      * @description 在指定范围中获取几何要素面积。
      * @param {Object} extent - 长度范围。
      */
@@ -87243,7 +87474,8 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
 
 
 /**
- * @class ol.source.GeoFeature
+ * @class GeoFeature
+ * @browsernamespace ol.source
  * @category Visualization Theme
  * @classdesc 地理几何专题要素型专题图层基类。
  * @param {string} name - 图层名称。
@@ -87261,7 +87493,8 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.Theme}
+ * @extends {Theme}
+ * @usage
  */
 
 class GeoFeature extends theme_Theme_Theme {
@@ -87282,7 +87515,7 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.destroy
+     * @function GeoFeature.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -87300,9 +87533,9 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.addFeatures
+     * @function GeoFeature.prototype.addFeatures
      * @description 添加要素。
-     * @param {ServerFeature|GeoJSONObject|ol.Feature} features - 要素对象。
+     * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -87318,17 +87551,17 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.removeFeatures
+     * @function GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {FeatureVector} features - 要删除的要素对象。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        theme_Theme_Theme.prototype.removeFeatures.apply(this, arguments);
+        theme_Theme_Theme.prototype.removeFeatures.call(this, features);
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.removeAllFeatures
+     * @function GeoFeature.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -87337,7 +87570,7 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
+     * @function GeoFeature.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      * @param {Object} extent - 视图范围数据。
      */
@@ -87413,9 +87646,10 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.createThematicFeature
+     * @function GeoFeature.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {Object} feature - 要素对象。
+     * @returns {Array.<FeatureVector>} 返回矢量要素
      */
     createThematicFeature(feature) {
         var style = Util.copyAttributesWithClip(this.style);
@@ -87443,7 +87677,7 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.clearCache
+     * @function GeoFeature.prototype.clearCache
      * @description 清除缓存。
      */
     clearCache() {
@@ -87452,7 +87686,7 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.clear
+     * @function GeoFeature.prototype.clear
      * @description  清除的内容包括数据（features）、专题要素、缓存。
      */
     clear() {
@@ -87463,7 +87697,7 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.getCacheCount
+     * @function GeoFeature.prototype.getCacheCount
      * @description 获取当前缓存数量。
      * @returns {number} 返回当前缓存数量。
      */
@@ -87472,7 +87706,7 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.setMaxCacheCount
+     * @function GeoFeature.prototype.setMaxCacheCount
      * @param {number} cacheCount - 缓存总数。
      * @description 设置最大缓存条数。
      */
@@ -87484,9 +87718,10 @@ class GeoFeature extends theme_Theme_Theme {
     }
 
     /**
-     * @function ol.source.GeoFeature.prototype.getShapesByFeatureID
+     * @function GeoFeature.prototype.getShapesByFeatureID
      * @param {number} featureID - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @returns {Array} 返回图形数组
      */
     getShapesByFeatureID(featureID) {
         var list = [];
@@ -87519,7 +87754,8 @@ class GeoFeature extends theme_Theme_Theme {
 
 
 /**
- * @class ol.source.Label
+ * @class Label
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
  * @param {string} name - 名称。
@@ -87538,7 +87774,8 @@ class GeoFeature extends theme_Theme_Theme {
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @extends {ol.source.GeoFeature}
+ * @extends {GeoFeature}
+ * @usage
  */
 class Label_Label extends GeoFeature {
 
@@ -87589,7 +87826,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.destroy
+     * @function Label.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -87601,7 +87838,7 @@ class Label_Label extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Label.prototype.createThematicFeature
+     * @function Label.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 矢量要素。
      * @returns {FeatureThemeVector} 专题图矢量要素。
@@ -87627,7 +87864,7 @@ class Label_Label extends GeoFeature {
 
 
     /**
-     * @function ol.source.Label.prototype.redrawThematicFeatures
+     * @function Label.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
@@ -87644,17 +87881,17 @@ class Label_Label extends GeoFeature {
         super.redrawThematicFeatures.call(this, bounds);
     }
     /**
-     * @function ol.source.Label.prototype.removeFeatures
+     * @function Label.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {FeatureVector} features - 要删除的要素对象。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
-        super.removeFeatures.call(this, arguments);
+        super.removeFeatures.call(this, features);
     }
 
     /**
-     * @function ol.source.Label.prototype.removeAllFeatures
+     * @function Label.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -87662,7 +87899,7 @@ class Label_Label extends GeoFeature {
         super.removeAllFeatures.call(this, arguments);
     }
     /**
-     * @function ol.source.Label.prototype.getDrawnLabels
+     * @function Label.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
      * @param {Array.<FeatureVector>} labelFeatures - 所有标签要素的数组。
      * @returns {Array.<FeatureVector>}  最终要绘制的标签要素数组。
@@ -87820,7 +88057,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getStyleByData
+     * @function Label.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
      * @param {FeatureVector} feat - 矢量要素对象。
      * @returns {Array.<ThemeStyle>} 专题要素的 Style。
@@ -87869,7 +88106,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.setLabelsStyle
+     * @function Label.prototype.setLabelsStyle
      * @description 设置标签要素的 Style。
      * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
      * @returns {Array.<FeatureVector>} 赋予 Style 后的标签要素数组。
@@ -87897,7 +88134,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.setStyle
+     * @function Label.prototype.setStyle
      * @description 设置标签要素的 Style。
      * @param {FeatureVector} feat - 需要赋予 style 的要素。
      */
@@ -87946,7 +88183,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getLabelPxLocation
+     * @function Label.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
      * @param {FeatureVector} feature - 标签要素。
      * @returns {Object} 标签位置，例如：{"x":1,"y":1}。
@@ -87974,7 +88211,7 @@ class Label_Label extends GeoFeature {
 
 
     /**
-     * @function ol.source.Label.prototype.calculateLabelBounds
+     * @function Label.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      * @param {FeatureVector} feature - 需要计算bounds的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}。
@@ -88031,7 +88268,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.calculateLabelBounds2
+     * @function Label.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}。
@@ -88125,7 +88362,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getLabelInfo
+     * @function Label.prototype.getLabelInfo
      * @description 根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等。
      * @returns {Object} 绘制后的标签信息。
      */
@@ -88224,7 +88461,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.rotationBounds
+     * @function Label.prototype.rotationBounds
      * @description 旋转 bounds。
      * @param {Bounds} bounds - 要旋转的 bounds。
      * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性 x（横坐标），属性 y（纵坐标）。
@@ -88260,7 +88497,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getRotatedLocation
+     * @function Label.prototype.getRotatedLocation
      * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）。
      * @param {number} x - 旋转点横坐标。
      * @param {number} y - 旋转点纵坐标。
@@ -88286,7 +88523,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.getAvoidInfo
+     * @function Label.prototype.getAvoidInfo
      * @description 获取避让的信息。
      * @param {Bounds} bounds - 地图像素范围。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -88400,7 +88637,7 @@ class Label_Label extends GeoFeature {
 
 
     /**
-     * @function ol.source.Label.prototype.isQuadrilateralOverLap
+     * @function Label.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
@@ -88445,7 +88682,7 @@ class Label_Label extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Label.prototype.isPointInPoly
+     * @function Label.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -88993,7 +89230,8 @@ class MapvLayer extends BaiduMapLayer {
 
 
 /**
- * @class ol.source.Mapv
+ * @class Mapv
+ * @browsernamespace ol.source
  * @category  Visualization MapV
  * @classdesc MapV 图层源。
  * @param {Object} opt_options - 参数。
@@ -89007,6 +89245,7 @@ class MapvLayer extends BaiduMapLayer {
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {(string|Object)} [opt_options.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 class Mapv extends (external_ol_source_ImageCanvas_default()) {
 
@@ -89067,7 +89306,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.addData
+     * @function Mapv.prototype.addData
      * @description 追加数据。
      * @param {Object} data - 要追加的数据。
      * @param {Object} options - 要追加的值。
@@ -89077,7 +89316,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.getData
+     * @function Mapv.prototype.getData
      * @description 获取数据。
      * @returns {Mapv.DataSet} MapV 数据集。
      */
@@ -89089,7 +89328,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.removeData
+     * @function Mapv.prototype.removeData
      * @description 删除符合过滤条件的数据。
      * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
@@ -89105,7 +89344,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.clearData
+     * @function Mapv.prototype.clearData
      * @description 清除数据。
      */
     clearData() {
@@ -89114,7 +89353,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
 
 
     /**
-     * @function ol.source.Mapv.prototype.update
+     * @function Mapv.prototype.update
      * @description 更新数据。
      * @param {Object} options - 待更新的数据。
      * @param {Object} options.data - mapv 数据集。
@@ -89135,7 +89374,8 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
 
 
 /**
- * @class ol.source.Range
+ * @class Range
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 分段专题图图层源。
  * @param {string} name - 名称
@@ -89154,7 +89394,8 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.GeoFeature}
+ * @extends {GeoFeature}
+ * @usage
  */
 class Range extends GeoFeature {
 
@@ -89168,7 +89409,7 @@ class Range extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Range.prototype.destroy
+     * @function Range.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -89180,7 +89421,7 @@ class Range extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Range.prototype.createThematicFeature
+     * @function Range.prototype.createThematicFeature
      * @description 创建专题图要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */
@@ -89208,7 +89449,7 @@ class Range extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Range.prototype.getStyleByData
+     * @function Range.prototype.getStyleByData
      * @description 通过数据获取 style。
      * @param {Object} fea - 要素数据。
      */
@@ -89260,7 +89501,8 @@ class Range extends GeoFeature {
 
 
 /**
- * @class ol.source.RankSymbol
+ * @class RankSymbol
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 等级符号专题图图层源。
  * @param {string} name - 专题图层名。
@@ -89287,7 +89529,8 @@ class Range extends GeoFeature {
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.Graph}
+ * @extends {Graph}
+ * @usage
  */
 class RankSymbol_RankSymbol extends Graph_Graph {
 
@@ -89299,7 +89542,7 @@ class RankSymbol_RankSymbol extends Graph_Graph {
     }
 
     /**
-     * @function ol.source.RankSymbol.prototype.destroy
+     * @function RankSymbol.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -89310,7 +89553,7 @@ class RankSymbol_RankSymbol extends Graph_Graph {
     }
 
     /**
-     * @function ol.source.RankSymbol.prototype.setSymbolType
+     * @function RankSymbol.prototype.setSymbolType
      * @description 设置标志符号。
      * @param {string} symbolType - 符号类型。
      */
@@ -89321,7 +89564,7 @@ class RankSymbol_RankSymbol extends Graph_Graph {
 
     /**
      * @private
-     * @function ol.source.RankSymbol.prototype.createThematicFeature
+     * @function RankSymbol.prototype.createThematicFeature
      * @description 创建专题图形要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */
@@ -89357,11 +89600,13 @@ const external_function_try_return_turf_catch_e_return_namespaceObject = functio
 
 
 /**
- * @class ol.source.Turf
+ * @class Turf
+ * @browsernamespace ol.source
  * @category  Visualization Turf
  * @classdesc Turf.js 图层源。
  * @param {Object} opt_options - 参数。
  * @extends {ol.source.Vector}
+ * @usage
  */
 class Turf extends (external_ol_source_Vector_default()) {
 
@@ -89575,7 +89820,7 @@ class Turf extends (external_ol_source_Vector_default()) {
     }
 
     /**
-     * @function ol.source.turf.prototype.process
+     * @function Turf.prototype.process
      * @description 执行 Turf.js 提供的相关空间分析方法。
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
@@ -89653,7 +89898,8 @@ class Turf extends (external_ol_source_Vector_default()) {
 
 
 /**
- * @class ol.source.Unique
+ * @class Unique
+ * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
  * @param {string} name - 图层名称
@@ -89672,7 +89918,8 @@ class Turf extends (external_ol_source_Vector_default()) {
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.GeoFeature}
+ * @extends {GeoFeature}
+ * @usage
  */
 class Unique extends GeoFeature {
 
@@ -89686,7 +89933,7 @@ class Unique extends GeoFeature {
     }
 
     /**
-     * @function ol.source.Unique.prototype.destroy
+     * @function Unique.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -89698,7 +89945,7 @@ class Unique extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Unique.prototype.createThematicFeature
+     * @function Unique.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {Object} feature - 要素。
      */
@@ -89722,7 +89969,7 @@ class Unique extends GeoFeature {
 
     /**
      * @private
-     * @function ol.source.Unique.prototype.getStyleByData
+     * @function Unique.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
      * @param {Object} fea - 用户要素数据。
      */
@@ -90350,7 +90597,8 @@ var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(ext
 
 
 /**
- * @class ol.source.VectorTileSuperMapRest
+ * @class VectorTileSuperMapRest
+ * @browsernamespace ol.source
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
  * @param {Object} options - 参数。
@@ -90361,6 +90609,7 @@ var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(ext
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @extends {ol.source.VectorTile}
+ * @usage
  */
 class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
     constructor(options) {
@@ -90500,7 +90749,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
         }
         /**
          * @private
-         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @function VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片。
          * @param {Object} tile -瓦片类。
          * @param {string} tileUrl - 瓦片地址。
@@ -90576,7 +90825,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
         }
         /**
          * @private
-         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @function VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片。
          * @param {Object} tile -瓦片类。
          * @param {string} tileUrl - 瓦片地址。
@@ -90703,7 +90952,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
     }
 
     /**
-     * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
+     * @function VectorTileSuperMapRest.optionsFromMapJSON
      * @param {string} url - 地址。
      * @param {Object} mapJSONObj - 地图 JSON。
      * @description 获取地图 JSON 信息。
@@ -90811,7 +91060,8 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
 
 
 /**
- * @class ol.source.HeatMap
+ * @class HeatMap
+ * @browsernamespace ol.source
  * @classdesc 热力图层类。
  * @category Visualization HeatMap
  * @param {string} name - 图层名称
@@ -90824,6 +91074,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 class HeatMap extends (external_ol_source_ImageCanvas_default()) {
 
@@ -90891,7 +91142,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.addFeatures
+     * @function HeatMap.prototype.addFeatures
      * @description 添加热点信息。
      * @param {(GeoJSONObject|Array.<ol.Feature>)} features - 待添加的要素数组。
      * @example
@@ -90910,7 +91161,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
      *          }
      *      ]
      *   };
-     * var heatMapSource = new ol.source.HeatMap("heatMap",{"map": map});
+     * var heatMapSource = new HeatMap("heatMap",{"map": map});
      * heatMapSource.addFeatures(geojson);
      * map.addLayer(new ol.layer.Image({
      *       source: heatMapSource
@@ -90923,7 +91174,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.setOpacity
+     * @function HeatMap.prototype.setOpacity
      * @description 设置图层的不透明度，取值 [0-1] 之间。
      * @param {number} opacity - 不透明度。
      */
@@ -90942,7 +91193,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.updateHeatPoints
+     * @function HeatMap.prototype.updateHeatPoints
      * @description 刷新热点图显示。
      * @param {ol.LngLatBounds} resolution - 当前显示范围。
      * @private
@@ -90956,7 +91207,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.convertFastToPixelPoints
+     * @function HeatMap.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
      * @param {number} resolution - 当前分辨率。
      * @private
@@ -91009,7 +91260,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.draw
+     * @function HeatMap.prototype.draw
      * @description 绘制热点图。
      * @param {Array} data - convertToPixelPoints 方法计算出的点。
      * @param {number} maxWeight -最大权重。
@@ -91039,7 +91290,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.colorize
+     * @function HeatMap.prototype.colorize
      * @description 根据渐变色重置热点图 rgb 值。
      * @param {Object} pixels - 像素 rgba 值。
      * @param {Array} gradient - 渐变 canvas.getImageData.data。
@@ -91057,7 +91308,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.drawCircle
+     * @function HeatMap.drawCircle
      * @description 绘制热点半径圆。
      * @param {number} r - 热点半径。
      * @private
@@ -91081,7 +91332,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.createGradient
+     * @function HeatMap.createGradient
      * @description 根据 this.canvasColors 设置渐变并 getImageData。
      * @private
      */
@@ -91106,7 +91357,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.getLocalXY
+     * @function HeatMap.prototype.getLocalXY
      * @description 获取坐标系统。
      * @param {Object} coordinate - 坐标位置。
      */
@@ -91134,7 +91385,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.rotate
+     * @function HeatMap.prototype.rotate
      * @description 获取某像素坐标点 pixelP 绕中心 center 逆时针旋转 rotation 弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
      * @param {number} rotation - 旋转角度。
@@ -91147,7 +91398,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.scale
+     * @function HeatMap.prototype.scale
      * @description 获取某像素坐标点 pixelP 相对于中心 center 进行缩放 scaleRatio 倍后的像素点坐标。
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
@@ -91161,9 +91412,9 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.removeFeatures
+     * @function HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<FeatureVector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -91194,7 +91445,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMapprototype.removeAllFeatures
+     * @function HeatMap.prototype.removeAllFeatures
      * @description 移除全部的热点信息。
      */
     removeAllFeatures() {
@@ -91203,7 +91454,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.toiClientFeature
+     * @function HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
      * @returns {FeatureVector} 转换后的 iClient 要素
@@ -91647,7 +91898,7 @@ var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(ext
  window.olExtends = olExtends;
  
 // EXTERNAL MODULE: ./node_modules/lodash.remove/index.js
-var lodash_remove = __webpack_require__(794);
+var lodash_remove = __webpack_require__(148);
 var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/MapboxStyles.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
@@ -96949,7 +97200,7 @@ class WebMap extends (external_ol_Observable_default()) {
      * @param layerType 图层类型
      * @param projection 地理坐标系
      * @param isLabel  是否有路网图层
-     * @returns {ol.source.Tianditu} 天地图的source
+     * @returns {Tianditu} 天地图的source
      */
     createTiandituSource(layerType, projection, isLabel) {
         let options = {
@@ -96964,7 +97215,7 @@ class WebMap extends (external_ol_Observable_default()) {
      * @private
      * @function WebMap.prototype.createBaiduSource
      * @description 创建百度地图的source。
-     * @returns {ol.source.BaiduMap} baidu地图的source
+     * @returns {BaiduMap} baidu地图的source
      */
     createBaiduSource() {
         return new BaiduMap()
@@ -100892,7 +101143,8 @@ class WebMap extends (external_ol_Observable_default()) {
 
 
 /**
- * @class ol.source.ImageTileSuperMapRest
+ * @class ImageTileSuperMapRest
+ * @browsernamespace ol.source
  * @version 10.2.0
  * @category  iServer Image
  * @classdesc iServer影像服务图层源。根据指定的请求参数，返回影像数据栅格瓦片并渲染。
@@ -100909,6 +101161,7 @@ class WebMap extends (external_ol_Observable_default()) {
  * @param {string} [options.tileProxy] -  代理地址
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @extends {ol.source.XYZ}
+ * @usage
  */
 class ImageTileSuperMapRest extends (external_ol_source_XYZ_default()) {
     constructor(options) {

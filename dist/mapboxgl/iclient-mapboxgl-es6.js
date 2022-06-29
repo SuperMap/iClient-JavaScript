@@ -3,7 +3,7 @@
  *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.0.0-beta
+ *          version: v11.0.0
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -1355,8 +1355,6 @@ function allSettled(arr) {
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
-// @ts-ignore
-var setImmediateFunc = typeof setImmediate !== 'undefined' ? setImmediate : null;
 
 function isArray(x) {
   return Boolean(x && typeof x.length !== 'undefined');
@@ -1590,10 +1588,10 @@ Promise.race = function(arr) {
 // Use polyfill for setImmediate for performance gains
 Promise._immediateFn =
   // @ts-ignore
-  (typeof setImmediateFunc === 'function' &&
+  (typeof setImmediate === 'function' &&
     function(fn) {
       // @ts-ignore
-      setImmediateFunc(fn);
+      setImmediate(fn);
     }) ||
   function(fn) {
     setTimeoutFunc(fn, 0);
@@ -24462,20 +24460,23 @@ class ThemeLayer_Theme {
 
     /**
      * @function ThemeLayer.prototype.destroyFeatures
-     * @description 销毁某个要素。
-     * @param {FeatureVector} features - 将被销毁的要素。
+     * @description 销毁要素。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
-        var all = (features == undefined);
-        if (all) {
-            features = this.features;
-        }
-        if (features) {
-            this.removeFeatures(features);
-            for (var i = features.length - 1; i >= 0; i--) {
-                features[i].destroy();
-            }
-        }
+      var all = (features === undefined);
+      if (all) {
+          features = this.features;
+      }
+      if (features) {
+          this.removeFeatures(features);
+          if (!Array.isArray(features)) {
+            features = [features];
+          }
+          for (var i = features.length - 1; i >= 0; i--) {
+              features[i].destroy();
+          }
+      }
     }
 
     /**
@@ -24535,52 +24536,63 @@ class ThemeLayer_Theme {
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @param {Array.<FeatureVector>} features - 待删除 features。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除 feature 的数组或用来过滤的回调函数。 
      * @description 删除专题图中的features。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果要删除的 features 数组中的元素过多，推荐使用 removeAllFeatures删除所有 feature后，再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
-        if (!features || features.length === 0) {
-            return;
-        }
-        if (features === this.features) {
-            return this.removeAllFeatures();
-        }
-        if (!(Util.isArray(features))) {
-            features = [features];
-        }
-        var featuresFailRemoved = [];
-        for (var i = features.length - 1; i >= 0; i--) {
-            var feature = features[i];
-            //如果我们传入的feature在features数组中没有的话，则不进行删除，
-            //并将其放入未删除的数组中。
-            var findex = Util.indexOf(this.features, feature);
+      var me = this;
+      if (!features) {
+          return;
+      }
+      if (features === me.features) {
+          return me.removeAllFeatures();
+      }
+      if (!Util.isArray(features) && !(typeof features === 'function')) {
+          features = [features];
+      }
+
+      var featuresFailRemoved = [];
+
+      for (var i = 0; i < me.features.length; i++) {
+          var feature = me.features[i];
+
+          //如果我们传入的feature在features数组中没有的话，则不进行删除，
+          //并将其放入未删除的数组中。
+          if (features && typeof features === 'function') {
+            if (features(feature)) {
+              me.features.splice(i--, 1);
+            }
+          } else {
+            var findex = Util.indexOf(features, feature);
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
-                continue;
+            } else {
+              me.features.splice(i--, 1);
             }
-            this.features.splice(findex, 1);
-        }
-        var drawFeatures = [];
-        for (var hex = 0, len = this.features.length; hex < len; hex++) {
-            feature = this.features[hex];
-            drawFeatures.push(feature);
-        }
-        this.features = [];
-        this.addFeatures(drawFeatures);
-        //绘制专题要素
-        if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getBounds());
-        }
-        var succeed = featuresFailRemoved.length == 0 ? true : false;
-        /**
-         * @event ThemeLayer#featuresremoved
-         * @description 要素删除之后触发。
-         * @property {Array.<FeatureVector>} features - 未被成功删除的要素。
-         * @property {boolean} succeed - 是否删除成功。
-         */
-        external_mapboxgl_default().Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
+          }
+      }
+
+      var drawFeatures = [];
+      for (var hex = 0, len = this.features.length; hex < len; hex++) {
+          feature = this.features[hex];
+          drawFeatures.push(feature);
+      }
+      this.features = [];
+      this.addFeatures(drawFeatures);
+      //绘制专题要素
+      if (this.renderer) {
+          this.redrawThematicFeatures(this.map.getBounds());
+      }
+      var succeed = featuresFailRemoved.length == 0 ? true : false;
+      /**
+       * @event ThemeLayer#featuresremoved
+       * @description 要素删除之后触发。
+       * @property {Array.<FeatureVector>} features - 未被成功删除的要素。
+       * @property {boolean} succeed - 删除成功与否。
+       */
+      external_mapboxgl_default().Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
     }
 
     /**
@@ -24598,15 +24610,18 @@ class ThemeLayer_Theme {
     /**
      * @function ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @returns {FeatureVector} 用户加入图层的有效数据。
+     * @param {Function} [filter] - 根据条件过滤要素的回调函数。
+     * @returns {Array.<FeatureVector>} 用户加入图层的有效数据。
      */
-    getFeatures() {
-        var len = this.features.length;
-        var clonedFeatures = new Array(len);
-        for (var i = 0; i < len; ++i) {
-            clonedFeatures[i] = this.features[i];
+    getFeatures(filter) {
+      var len = this.features.length;
+      var clonedFeatures = [];
+      for (var i = 0; i < len; ++i) {
+        if (!filter || (filter && typeof filter === 'function' && filter(this.features[i]))) {
+          clonedFeatures.push(this.features[i]);
         }
-        return clonedFeatures;
+      }
+      return clonedFeatures;
     }
 
     /**
@@ -24717,6 +24732,7 @@ class ThemeLayer_Theme {
      * @function ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {Object} [coordinate] - 坐标位置。
+     * @returns {Array} 像素坐标数组。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
@@ -24734,8 +24750,8 @@ class ThemeLayer_Theme {
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
-     * @returns {FeatureVector} 转换后的 iClient 要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
+     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {
@@ -24769,7 +24785,7 @@ class ThemeLayer_Theme {
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {ThemeFeature|GeoJSONObject} features - 待转要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature(features) {
@@ -25287,7 +25303,7 @@ class Graph extends ThemeLayer_Theme {
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {FeatureVector} features - 要删除的要素。
+     * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();
@@ -29413,10 +29429,11 @@ class GeoFeature extends ThemeLayer_Theme {
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param {(FeatureVector|Function)} features - 要删除的要素对象或用于过滤的回调函数。
      */
-    removeFeatures() {
+    removeFeatures(features) {
         this.clearCache();
-        ThemeLayer_Theme.prototype.removeFeatures.apply(this, arguments);
+        ThemeLayer_Theme.prototype.removeFeatures.call(this, features);
     }
 
     /**
@@ -29504,6 +29521,7 @@ class GeoFeature extends ThemeLayer_Theme {
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 要素对象。
+     * @returns {Array.<FeatureVector>} 返回矢量要素
      */
     createThematicFeature(feature) {
         var style = Util.copyAttributesWithClip(this.style);
@@ -29571,6 +29589,7 @@ class GeoFeature extends ThemeLayer_Theme {
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @param {number} [featureID=si.refDataID] - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @returns {Array} 返回图形数组
      */
     getShapesByFeatureID(featureID) {
         var list = [];
@@ -29717,10 +29736,11 @@ class LabelThemeLayer_Label extends GeoFeature {
     /**
      * @function LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素对象或用于过滤的回调函数。
      */
-    removeFeatures() {
+    removeFeatures(features) {
         this.labelFeatures = [];
-        super.removeFeatures.call(this, arguments);
+        super.removeFeatures.call(this, features);
     }
 
     /**
@@ -34392,7 +34412,7 @@ class HeatMapLayer extends (external_mapboxgl_default()).Evented {
     /**
      * @function HeatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<FeatureVector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -38877,7 +38897,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketClosed", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketClosed", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -38917,9 +38937,11 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
             me.events.triggerEvent('broadcastSocketConnected', e);
         };
         this.broadcastWebSocket.onclose = function (e) {
-            me.broadcastWebSocket.isOpen = false;
-            e.eventType = 'broadcastSocketConnected';
-            me.events.triggerEvent('broadcastSocketConnected', e);
+            if (me.broadcastWebSocket) {
+                me.broadcastWebSocket.isOpen = false;
+            }
+            e.eventType = 'broadcastSocketClosed';
+            me.events.triggerEvent('broadcastSocketClosed', e);
         };
         this.broadcastWebSocket.onerror = function (e) {
             e.eventType = 'broadcastSocketError';
@@ -38955,6 +38977,10 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
             me.events.triggerEvent('subscribeSocketConnected', e);
+        };
+        this.subscribeWebSocket.onclose = function (e) {
+            e.eventType = 'subscribeWebSocketClosed';
+            me.events.triggerEvent('subscribeWebSocketClosed', e);
         };
         this.subscribeWebSocket.onerror = function (e) {
             e.eventType = 'subscribeSocketError';
@@ -70470,7 +70496,7 @@ class ElasticSearch {
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
-                callback(err);
+                callback && callback(err);
                 me.events.triggerEvent('error', {error: err});
                 return err;
             });
@@ -70641,10 +70667,27 @@ var ColorRender = new Color();
 // 					"www.qzct.net": "#7ed321" = new LevelRenderer.Tool.Color();
 
 /**
- * @class ColorsPickerUtil
+ * @name ColorsPickerUtil
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColorsPickerUtil.createCanvas();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ColorsPickerUtil.createCanvas();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { ColorsPickerUtil } from '{npm}';
+ *
+ * const result = ColorsPickerUtil.createCanvas();
+ * ```
  */
 class ColorsPickerUtil  {
     /**
@@ -70797,7 +70840,8 @@ class ColorsPickerUtil  {
 
 ;// CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
 /**
- * @class ArrayStatistic
+ * @name ArrayStatistic
+ * @namespace
  * @category BaseTypes Util
  * @classdesc 处理数组。
  * @usage
@@ -70805,16 +70849,20 @@ class ColorsPickerUtil  {
  * // 浏览器
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
- *   const arrayStatistic = {namespace}.ArrayStatistic();
+ *   const result = {namespace}.ArrayStatistic.newInstance();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ArrayStatistic.newInstance();
  *
  * </script>
+ *
  * // ES6 Import
  * import { ArrayStatistic } from '{npm}';
- * 
- * new ArrayStatistic();
+ *
+ * const result = ArrayStatistic.newInstance();
  * ```
  */
-class ArrayStatistic {
+ class ArrayStatistic {
 
     // geostatsInstance: null,
 
@@ -79513,7 +79561,6 @@ let Lang = {
 
 ;// CONCATENATED MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 const external_function_try_return_XLSX_catch_e_return_namespaceObject = function(){try{return XLSX}catch(e){return {}}}();
-var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -79598,12 +79645,12 @@ let FileReaderUtil = {
         let reader = new FileReader();
         reader.onloadend = function (evt) {
             let xLSXData = new Uint8Array(evt.target.result);
-            let workbook = external_function_try_return_XLSX_catch_e_return_default().read(xLSXData, {type: "array"});
+            let workbook = external_function_try_return_XLSX_catch_e_return_namespaceObject.read(xLSXData, {type: "array"});
             try {
                 if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
                     //暂时只读取第一个sheets的内容
                     let sheetName = workbook.SheetNames[0];
-                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default().utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_namespaceObject.utils.sheet_to_csv(workbook.Sheets[sheetName]);
                     success && success.call(context, xLSXCSVString);
                 }
             } catch (error) {
