@@ -23,6 +23,12 @@ SuperMap iClient JavaScript 是一套开源开放的 WebGIS 客户端应用开�
 ## 微信小程序范例
 ![WeChatMiniApp](https://iclient.supermap.io/en/web/img/whatsNewWechat.jpg)
 
+## Contributors
+
+<a href="https://github.com/SuperMap/iClient-JavaScript/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=SuperMap/iClient-JavaScript" />
+</a>
+
 ## 许可
 [ Apache License 2.0 ](./LICENSE)
 
