@@ -56,13 +56,23 @@ module.exports = {
 
     //其它解决方案配置
     resolve: {
-        extensions: ['.js', '.json', '.css']
+        extensions: ['.js', '.json', '.css'],
+        mainFields: ['browser', 'main'],
+        fallback: {
+          fs: false,
+          http: require.resolve('stream-http'),
+          https: require.resolve('https-browserify'),
+          os: require.resolve('os-browserify/browser'),
+          stream: require.resolve('stream-browserify'),
+          tty: require.resolve('tty-browserify'),
+          zlib: require.resolve('browserify-zlib')
+        }
     },
 
     externals: {
         echarts: 'function(){try{return echarts}catch(e){return {}}}()',
         mapv: 'function(){try{return mapv}catch(e){return {}}}()',
-        elasticsearch: 'function(){try{return elasticsearch}catch(e){return {}}}()',
+        '@elastic/elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
         '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()'
     },
 

@@ -186,7 +186,8 @@ import './common/iPortal/iPortalDataMetaInfoParamSpec.js';
 import './common/iPortal/iPortalDataStoreInfoParamSpec.js';
 import './common/iPortal/iPortalDataConnectionInfoParamSpec.js';
 
-/**common -- thirdparty**/
+// /**common -- thirdparty**/
+import './common/thirdparty/elasticsearch/@elasticSpec.js';
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
 // import './common/thirdparty/ai/BinaryClassificationSpec.js';
 // import './common/thirdparty/ai/LandcoverClassificationSpec.js';

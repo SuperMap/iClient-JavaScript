@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Events} from '../../commontypes/Events';
-import es from 'elasticsearch';
+import es from '@elastic/elasticsearch';
 import {Util} from "../../commontypes/Util";
 
 /**
@@ -16,6 +16,19 @@ import {Util} from "../../commontypes/Util";
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
+ * @description 从<b>11.1.0</b>开始，该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack.5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：
+   <pre><code>resolve: {
+    mainFields: ['browser', 'main'],
+    fallback: {
+      fs: false,
+      http: require.resolve('stream-http'),
+      https: require.resolve('https-browserify'),
+      os: require.resolve('os-browserify/browser'),
+      stream: require.resolve('stream-browserify'),
+      tty: require.resolve('tty-browserify'),
+      zlib: require.resolve('browserify-zlib')
+    }
+  }</code></pre>
  * @usage
  */
 
@@ -32,9 +45,19 @@ export class ElasticSearch {
          *  @member {Object} ElasticSearch.prototype.client
          *  @description client ES客户端
          */
-        this.client = new es.Client({
+        try {
+          // 老版本
+          this.client = new es.Client({
             host: this.url
-        });
+          });
+        } catch (e) {
+          // 新版本
+          this.client = new es.Client({
+            node: {
+              url: new URL(this.url)
+            }
+          });
+        }
         /**
          *  @deprecated
          *  @member {function} [ElasticSearch.prototype.change]
@@ -108,7 +131,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     bulk(params, callback) {
-        return this.client.bulk(params, callback);
+        return this.client.bulk(params, this._handleCallback(callback));
     }
 
     /**
@@ -120,7 +143,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     clearScroll(params, callback) {
-        return this.client.clearScroll(params, callback);
+        return this.client.clearScroll(params, this._handleCallback(callback));
     }
 
     /**
@@ -132,7 +155,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     count(params, callback) {
-        return this.client.count(params, callback);
+        return this.client.count(params, this._handleCallback(callback));
     }
 
     /**
@@ -144,7 +167,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     create(params, callback) {
-        return this.client.create(params, callback);
+        return this.client.create(params, this._handleCallback(callback));
     }
 
     /**
@@ -156,7 +179,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     delete(params, callback) {
-        return this.client.delete(params, callback);
+        return this.client.delete(params, this._handleCallback(callback));
     }
 
     /**
@@ -168,7 +191,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteByQuery(params, callback) {
-        return this.client.deleteByQuery(params, callback);
+        return this.client.deleteByQuery(params, this._handleCallback(callback));
     }
 
     /**
@@ -180,7 +203,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteScript(params, callback) {
-        return this.client.deleteScript(params, callback);
+        return this.client.deleteScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -192,7 +215,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteTemplate(params, callback) {
-        return this.client.deleteTemplate(params, callback);
+        return this.client.deleteTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -204,7 +227,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     exists(params, callback) {
-        return this.client.exists(params, callback);
+        return this.client.exists(params, this._handleCallback(callback));
     }
 
     /**
@@ -217,7 +240,7 @@ export class ElasticSearch {
      */
 
     existsSource(params, callback) {
-        return this.client.existsSource(params, callback);
+        return this.client.existsSource(params, this._handleCallback(callback));
     }
 
     /**
@@ -229,7 +252,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     explain(params, callback) {
-        return this.client.explain(params, callback);
+        return this.client.explain(params, this._handleCallback(callback));
     }
 
     /**
@@ -241,7 +264,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     fieldCaps(params, callback) {
-        return this.client.fieldCaps(params, callback);
+        return this.client.fieldCaps(params, this._handleCallback(callback));
     }
 
 
@@ -254,7 +277,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     get(params, callback) {
-        return this.client.get(params, callback);
+        return this.client.get(params, this._handleCallback(callback));
     }
 
     /**
@@ -266,7 +289,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getScript(params, callback) {
-        return this.client.getScript(params, callback);
+        return this.client.getScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -278,7 +301,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getSource(params, callback) {
-        return this.client.getSource(params, callback);
+        return this.client.getSource(params, this._handleCallback(callback));
     }
 
     /**
@@ -290,7 +313,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getTemplate(params, callback) {
-        return this.client.getTemplate(params, callback);
+        return this.client.getTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -302,7 +325,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     index(params, callback) {
-        return this.client.index(params, callback);
+        return this.client.index(params, this._handleCallback(callback));
     }
 
     /**
@@ -314,7 +337,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     info(params, callback) {
-        return this.client.info(params, callback);
+        return this.client.info(params, this._handleCallback(callback));
     }
 
     /**
@@ -326,7 +349,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     mget(params, callback) {
-        return this.client.mget(params, callback);
+        return this.client.mget(params, this._handleCallback(callback));
     }
 
     /**
@@ -343,6 +366,7 @@ export class ElasticSearch {
 
         return me.client.msearch(params)
             .then(function (resp) {
+                resp = resp.body || resp;
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
@@ -361,7 +385,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     msearchTemplate(params, callback) {
-        return this.client.msearchTemplate(params, callback);
+        return this.client.msearchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -373,7 +397,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     mtermvectors(params, callback) {
-        return this.client.mtermvectors(params, callback);
+        return this.client.mtermvectors(params, this._handleCallback(callback));
     }
 
     /**
@@ -385,7 +409,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     ping(params, callback) {
-        return this.client.ping(params, callback);
+        return this.client.ping(params, this._handleCallback(callback));
     }
 
     /**
@@ -397,7 +421,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     putScript(params, callback) {
-        return this.client.putScript(params, callback);
+        return this.client.putScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -409,7 +433,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     putTemplate(params, callback) {
-        return this.client.putTemplate(params, callback);
+        return this.client.putTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -421,7 +445,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     reindex(params, callback) {
-        return this.client.reindex(params, callback);
+        return this.client.reindex(params, this._handleCallback(callback));
     }
 
     /**
@@ -433,7 +457,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     reindexRessrottle(params, callback) {
-        return this.client.reindexRessrottle(params, callback);
+        return this.client.reindexRessrottle(params, this._handleCallback(callback));
     }
 
     /**
@@ -445,7 +469,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     renderSearchTemplate(params, callback) {
-        return this.client.renderSearchTemplate(params, callback);
+        return this.client.renderSearchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -457,7 +481,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     scroll(params, callback) {
-        return this.client.scroll(params, callback);
+        return this.client.scroll(params, this._handleCallback(callback));
     }
 
     /**
@@ -473,7 +497,8 @@ export class ElasticSearch {
         let me = this;
         return me.client.search(params)
             .then(function (resp) {
-                me._update(resp.responses, callback);
+                resp = resp.body || resp;
+                me._update(resp, callback);
                 return resp;
             }, function (err) {
                 callback && callback(err);
@@ -491,7 +516,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     searchShards(params, callback) {
-        return this.client.searchShards(params, callback);
+        return this.client.searchShards(params, this._handleCallback(callback));
     }
 
     /**
@@ -503,7 +528,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     searchTemplate(params, callback) {
-        return this.client.searchTemplate(params, callback);
+        return this.client.searchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -515,7 +540,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     suggest(params, callback) {
-        return this.client.suggest(params, callback);
+        return this.client.suggest(params, this._handleCallback(callback));
     }
 
     /**
@@ -527,7 +552,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     termvectors(params, callback) {
-        return this.client.termvectors(params, callback);
+        return this.client.termvectors(params, this._handleCallback(callback));
     }
 
     /**
@@ -539,7 +564,7 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     update(params, callback) {
-        return this.client.update(params, callback);
+        return this.client.update(params, this._handleCallback(callback));
     }
 
     /**
@@ -551,7 +576,28 @@ export class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     updateByQuery(params, callback) {
-        return this.client.updateByQuery(params, callback);
+        return this.client.updateByQuery(params, this._handleCallback(callback));
+    }
+
+    /**
+     * @function ElasticSearch.prototype._handleCallback
+     * @description 处理ElasticSearch 16.x和5.x的callback兼容。 5.x的回调参数多包了一层body
+     * @param {function} callback - 回调函数。
+     * @private
+     */
+    _handleCallback(callback) {
+      return function () {
+        let args = Array.from(arguments);
+        const error = args.shift();
+        let resp = args.shift();
+        const body = resp && resp.body;
+        if (body) {
+          const { statusCode, headers } = resp;
+          args = [statusCode, headers];
+          resp = body;
+        }
+        callback.call(this, error, resp, ...args);
+      };
     }
 
     _update(data, callback) {
