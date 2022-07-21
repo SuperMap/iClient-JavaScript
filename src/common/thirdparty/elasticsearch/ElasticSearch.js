@@ -16,19 +16,23 @@ import {Util} from "../../commontypes/Util";
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description 从<b>11.1.0</b>开始，该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack.5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：
-   <pre><code>resolve: {
-    mainFields: ['browser', 'main'],
-    fallback: {
-      fs: false,
-      http: require.resolve('stream-http'),
-      https: require.resolve('https-browserify'),
-      os: require.resolve('os-browserify/browser'),
-      stream: require.resolve('stream-browserify'),
-      tty: require.resolve('tty-browserify'),
-      zlib: require.resolve('browserify-zlib')
+ * @description 
+ * <h3 style="font-size: 24px">11.1.0</h3>
+ * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack.5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：
+   <pre><code>module.exports: {
+    resolve: {
+      mainFields: ['browser', 'main'],
+      fallback: {
+        fs: false,
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        os: require.resolve('os-browserify/browser'),
+        stream: require.resolve('stream-browserify'),
+        tty: require.resolve('tty-browserify'),
+        zlib: require.resolve('browserify-zlib')
+      }
     }
-  }</code></pre>
+}</code></pre>
  * @usage
  */
 
