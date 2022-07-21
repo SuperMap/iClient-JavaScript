@@ -120,7 +120,7 @@
     "@tensorflow/tfjs": "^3.9.0",
     "@turf/turf": "6.5.0",
     "canvg": "3.0.7",
-    "echarts": "4.9.0",
+    "echarts": "5.3.3",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
     "jsonsql": "0.2.5",
