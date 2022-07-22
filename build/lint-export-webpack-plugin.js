@@ -11,8 +11,9 @@ class LintExportWebpackPlugin {
         if(repeatExportNames.length > 0) {
           throw new Error(`${this.libName}导出名重复：${repeatExportNames}`)
         }
-        const repeatNamespace = lintNamespaceRepeat(this.libName);
-        console.log(`${this.libName}命名空间重复：`, repeatNamespace);
+        // 当SuperMap.xxx都挂在 xx.supermap时，排查SuperMap和各端的命名空间重复
+        // const repeatNamespace = lintNamespaceRepeat(this.libName);
+        // console.log(`${this.libName}命名空间重复：`, repeatNamespace);
       });
     }
    
