@@ -1,5 +1,8 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function(browser){
+        browser.end();
+    }, 
     'openlayers_02_getGridCellInfos': function (browser) {
         var type = 'openlayers';
         var exampleName = '02_getGridCellInfos';
@@ -12,7 +15,7 @@ module.exports = {
         browser.expect.element('#popup-content').text.to.be.contain('column');
         browser.expect.element('#popup-content').text.to.be.contain('row');
         browser.expect.element('#popup-content').text.to.be.contain('value');
-        browser.end();
+        // browser.end();
     }
 };
 

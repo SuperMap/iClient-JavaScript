@@ -1,5 +1,8 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function(browser){
+        browser.end();
+    },
     'leaflet_tiandituLayer_ll': function (browser) {
         browser.windowMaximize();
         var type = 'leaflet';
@@ -36,8 +39,8 @@ module.exports = {
         //    browser.assert.urlEquals('https://iclient.supermap.io/');
         //    browser.closeWindow();
         //});
-        browser.pause(1000);
-        browser.end();
+        // browser.pause(1000);
+        // browser.end();
     }
 };
 

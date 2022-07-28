@@ -96,7 +96,7 @@
     "karma-teamcity-reporter": "^1.1.0",
     "mini-css-extract-plugin": "^2.6.1",
     "mock-socket": "^9.0.3",
-    "nightwatch": "^1.4.3",
+    "nightwatch": "^2.3.0",
     "open": "^8.4.0",
     "pngjs": "^6.0.0",
     "pre-commit": "^1.2.2",

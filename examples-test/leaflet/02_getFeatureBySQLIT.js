@@ -1,5 +1,9 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function (browser) {
+        console.log('Closing down...');
+        browser.end();
+      },
     'leaflet_02_getFeatureBySQL': function (browser) {
         var type = 'leaflet';
         var exampleName = '02_getFeatureBySQL';
@@ -9,8 +13,8 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane canvas', 10000);
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
-        browser.end();
+        // browser.pause(1000);
+        // browser.end();
     }
 };
 
