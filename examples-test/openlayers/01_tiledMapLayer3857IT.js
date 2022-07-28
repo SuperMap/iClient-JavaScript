@@ -1,5 +1,8 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function(browser){
+        browser.end();
+    },
     'openlayers_01_tiledMapLayer3857': function (browser) {
         // browser.windowMaximize();
         browser.resizeWindow(1200, 800);
@@ -10,6 +13,6 @@ module.exports = {
         //运行一次得到基准图片
         commonTools.getStdTile(browser, type, exampleName, 0, 0, 256, 256);
         commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 0, 0, 256, 256);
-        browser.end();
+        // browser.end();
     }
 };

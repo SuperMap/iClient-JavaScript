@@ -4,6 +4,14 @@ require('../base/ExampleTestGlobeParameter');
 // 核密度分析
 module.exports = {
   '@disabled': true,
+  after: function (browser) {
+    //删除测试中产生的数据集
+    browser.pause(1000, function () {
+      var exampleTestResult = 'KernelDensity_Result';
+      request.delete(GlobeParameter.datachangchunURL + exampleTestResult);
+    });
+    browser.end();
+  },
   leaflet_04_densityKernelAnalystService: function (browser) {
     var type = 'leaflet';
     var exampleName = '04_densityKernelAnalystService';
@@ -30,12 +38,5 @@ module.exports = {
     });
     //测试版权点击的正确性
     //commonTools.verifyCopyrightOfLeaflet(browser);
-
-    //删除测试中产生的数据集
-    browser.pause(1000, function () {
-      var exampleTestResult = 'KernelDensity_Result';
-      request.delete(GlobeParameter.datachangchunURL + exampleTestResult);
-    });
-    browser.end();
   }
 };

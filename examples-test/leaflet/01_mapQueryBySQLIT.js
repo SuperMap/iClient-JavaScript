@@ -1,5 +1,9 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after:function(browser){
+        console.log('Closing down...');
+        browser.end();
+      },
     'leaflet_01_mapQueryBySQL': function (browser) {
         var type = 'leaflet';
         var exampleName = '01_mapQueryBySQL';
@@ -12,8 +16,8 @@ module.exports = {
         });
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
-        browser.end();
+        // browser.pause(1000);
+        // browser.end();
     }
 };
 

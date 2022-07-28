@@ -1,6 +1,9 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
     '@disabled': true,
+    after: function(browser){
+        browser.end();
+    },
     'leaflet_05_findServiceAreas': function (browser) {
         var type = 'leaflet';
         var exampleName = '05_findServiceAreas';
@@ -16,13 +19,13 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane svg g path', 10000);
-        browser.pause(2000);
-        browser.elements('tag name', 'path', function (result) {
-            this.assert.equal(result.value.length, 1, "expect Number of findServiceAreas result to be 1, actual is " + result.value.length);
-        });
-        //测试版权点击的正确性
-        //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
-        browser.end();
+        browser.expect.elements('path').count.to.equal(1).before(5000);
+        browser.elements('css selector', '.leaflet-marker-icon', function (result) {
+            console.log('----Hope number findServiceAreas path to be 1, actual is '+ result.value.length)
+        })
+        // 测试版权点击的正确性
+        // commonTools.verifyCopyrightOfLeaflet(browser);
+        // browser.pause(1000);
+        // browser.end();
     }
 };

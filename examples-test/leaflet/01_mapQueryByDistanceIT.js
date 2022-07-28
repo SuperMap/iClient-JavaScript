@@ -1,5 +1,9 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function(browser){
+        browser.end();
+    },
+
     'leaflet_01_mapQueryByDistance': function (browser) {
         var type = 'leaflet';
         var exampleName = '01_mapQueryByDistance';
@@ -20,7 +24,7 @@ module.exports = {
         });
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
-        browser.end();
+        // browser.pause(1000);
+        
     }
 };

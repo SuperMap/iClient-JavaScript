@@ -1,5 +1,8 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function(browser){
+        browser.end();
+    },
     'leaflet_tiandituLayer_mercator': function (browser) {
         browser.windowMaximize();
         var type = 'leaflet';
@@ -37,8 +40,8 @@ module.exports = {
         //    browser.closeWindow();
         //    browser.switchWindow(result.value[0]);
         //});
-        browser.pause(1000);
-        browser.end();
+        // browser.pause(1000);
+        // browser.end();
     }
 };
 
