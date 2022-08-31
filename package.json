@@ -71,7 +71,7 @@
     "browserify-css": "^0.15.0",
     "browserify-imgify": "^0.0.1",
     "chalk": "^3.0.0",
-    "chromedriver": "87.0.5",
+    "chromedriver": "^83.0.1",
     "clean-css-cli": "^4.3.0",
     "commander": "^9.0.0",
     "cross-env": "^7.0.2",
