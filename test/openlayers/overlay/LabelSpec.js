@@ -24,22 +24,7 @@ var addFeaturesExpect = (callback, done) => {
     feat = new ThemeFeature([lng, lat, text], themeData[i]);
     labelFeatures.push(feat);
   }
-  let count = 0;
-  //   const id = setInterval(() => {
-  //     count++;
-  //     console.log(count,themeSource.labelFeatures.length)
-  //     if (themeSource.labelFeatures.length > 0) {
-  //       clearInterval(id);
-  //       callback();
-  //       done();
-  //     } else if (count > 30) {
-  //       clearInterval(id);
-  //       expect(false).toBeTruthy();
-  //       done();
-  //     }
-  //   }, 100);
   var key = themeLayer.on('postrender', function() {
-    count++;
     console.log(count, themeSource.labelFeatures.length);
     if (themeSource.labelFeatures.length > 0) {
       unByKey(key);
