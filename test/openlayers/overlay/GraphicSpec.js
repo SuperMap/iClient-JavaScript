@@ -24,6 +24,7 @@ import Stroke from 'ol/style/Stroke';
 import Point from 'ol/geom/Point';
 import ImageLayer from 'ol/layer/Image';
 import RegularShape from 'ol/style/RegularShape';
+import { unByKey } from 'ol/Observable';
 
 
 var url = "http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China_4326";
@@ -272,23 +273,25 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
-
-        setTimeout(() => {
-            const graphicSource = graphicLayer.getSource();
-            graphicSource.addGraphics(graphics);
-            expect(graphicSource.graphics.length).toEqual(10);
-            graphicLayer.getSource()._forEachFeatureAtCoordinate([-35.16, 38.05], 1, (result) => {
-                expect(result).not.toBeNull();
-            });
-
-            let pixel = map.getPixelFromCoordinate([-35.16, 38.05]);
-            map.forEachFeatureAtPixel(pixel,
-                (graphic, layer) => {
-                    expect(graphic).toBe(graphics[0]);
-                    expect(layer).toBe(graphicLayer);
-                });
-            done();
-        }, 0);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              const graphicSource = graphicLayer.getSource();
+              graphicSource.addGraphics(graphics);
+              expect(graphicSource.graphics.length).toEqual(10);
+              graphicLayer.getSource()._forEachFeatureAtCoordinate([-35.16, 38.05], 1, (result) => {
+                  expect(result).not.toBeNull();
+              });
+  
+              let pixel = map.getPixelFromCoordinate([-35.16, 38.05]);
+              map.forEachFeatureAtPixel(pixel,
+                  (graphic, layer) => {
+                      expect(graphic).toBe(graphics[0]);
+                      expect(layer).toBe(graphicLayer);
+                  });
+              done();
+            }
+          });
     });
 
    it("getGraphicBy add getGraphicById", (done) => {
