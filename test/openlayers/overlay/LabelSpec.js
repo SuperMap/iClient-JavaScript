@@ -25,7 +25,6 @@ var addFeaturesExpect = (callback, done) => {
     labelFeatures.push(feat);
   }
   var key = themeLayer.on('postrender', function() {
-    console.log(count, themeSource.labelFeatures.length);
     if (themeSource.labelFeatures.length > 0) {
       unByKey(key);
       callback();
