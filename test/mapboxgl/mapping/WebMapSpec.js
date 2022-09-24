@@ -105,11 +105,11 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
             expect(datavizWebmap.server).toEqual('http://www.test.com/');
             done();
-        }, 0);
+        })
     });
     it('setMapOptions', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -129,10 +129,10 @@ describe('mapboxgl_WebMap', () => {
             maxZoom: 12,
             isWorldCopy: true
         };
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.setMapOptions(mapOptions);
             done();
-        }, 0);
+        });
     });
     it('initialize_TIANDITU_IMAGE', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
