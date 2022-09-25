@@ -4,6 +4,8 @@ import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Point from 'ol/geom/Point';
+import { unByKey } from 'ol/Observable';
+import ImageLayer from 'ol/layer/Image';
 
 describe('openlayers_RankSymbol', () => {
     var testDiv, map, originalTimeout;
@@ -83,6 +85,11 @@ describe('openlayers_RankSymbol', () => {
                 circleHoverStyle: {fillOpacity: 1}
             }
         });
+        var layer = new ImageLayer({
+          source: themeSource
+        });
+        map.addLayer(layer);
+        expect(themeSource.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -94,13 +101,17 @@ describe('openlayers_RankSymbol', () => {
             var fea = new ThemeFeature(geo, attrs);
             features.push(fea);
         }
-        themeSource.addFeatures(features);
-        setTimeout(() => {
+        var key = layer.on('postrender', function () {
+          if (themeSource.charts.length > 0) {
+            unByKey(key);
             themeSource.setSymbolType("Point");
             expect(themeSource.symbolType).toEqual("Point");
             themeSource.destroy();
+            map.removeLayer(layer);
             done();
-        }, 0);
+          }
+        });
+        themeSource.addFeatures(features);
     });
 
     it('createThematicFeature', (done) => {
