@@ -363,17 +363,12 @@ describe('openlayers_GraphicLayer', () => {
             if (graphicLayer.getSource().renderer) {
               unByKey(key);
               const graphic = graphicLayer.getSource().getGraphicsByAttribute("name", "graphic_1");
-              const key1 = graphic[0].on('postrender', function() {
-                if (graphic[0].getSource().renderer) {
-                  unByKey(key1);
                 expect(graphic).not.toBeNull();
                 expect(graphic[0].getAttributes().name).toBe("graphic_1");
                 // map.removeLayer(graphicLayer);
                 done();
                 }
             })
-            }
-        });
     });
 
    it("removeGraphics", (done) => {
