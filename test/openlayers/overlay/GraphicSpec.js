@@ -319,20 +319,20 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              const graphic = graphicLayer.getSource().getGraphicBy("id", 1);
+              expect(graphic).not.toBeNull();
+              expect(graphic.getId()).toEqual(1);
 
-        setTimeout(() => {
-            const graphic = graphicLayer.getSource().getGraphicBy("id", 1);
-            expect(graphic).not.toBeNull();
-            expect(graphic.getId()).toEqual(1);
-
-            const graphic1 = graphicLayer.getSource().getGraphicById(1);
-            expect(graphic1.getId()).toEqual(1);
+              const graphic1 = graphicLayer.getSource().getGraphicById(1);
+              expect(graphic1.getId()).toEqual(1);
 
             // map.removeLayer(graphicLayer);
-            done();
-        }, 0)
-
-
+              done();
+            }
+        });
     });
    it("getGraphicsByAttribute", (done) => {
         let graphics = [];
@@ -359,14 +359,21 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
-
-        setTimeout(() => {
-            const graphic = graphicLayer.getSource().getGraphicsByAttribute("name", "graphic_1");
-            expect(graphic).not.toBeNull();
-            expect(graphic[0].getAttributes().name).toBe("graphic_1");
-            // map.removeLayer(graphicLayer);
-            done();
-        }, 0);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              const graphic = graphicLayer.getSource().getGraphicsByAttribute("name", "graphic_1");
+              const key1 = graphic[0].on('postrender', function() {
+                if (graphic[0].getSource().renderer) {
+                  unByKey(key1);
+                expect(graphic).not.toBeNull();
+                expect(graphic[0].getAttributes().name).toBe("graphic_1");
+                // map.removeLayer(graphicLayer);
+                done();
+                }
+            })
+            }
+        });
     });
 
    it("removeGraphics", (done) => {
@@ -394,25 +401,27 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              const graphicSource = graphicLayer.getSource();
+              //删除单个
+              let deleteGraphic = graphics[0];
+              expect(graphicSource.graphics.length).toEqual(5);
+              graphicSource.removeGraphics(deleteGraphic);
+              expect(graphicSource.graphics.length).toEqual(4);
 
-        setTimeout(() => {
-            const graphicSource = graphicLayer.getSource();
-            //删除单个
-            let deleteGraphic = graphics[0];
-            expect(graphicSource.graphics.length).toEqual(5);
-            graphicSource.removeGraphics(deleteGraphic);
-            expect(graphicSource.graphics.length).toEqual(4);
+              //多个
+              deleteGraphic = [graphics[1], graphics[2]];
+              graphicSource.removeGraphics(deleteGraphic);
+              expect(graphicSource.graphics.length).toEqual(2);
 
-            //多个
-            deleteGraphic = [graphics[1], graphics[2]];
-            graphicSource.removeGraphics(deleteGraphic);
-            expect(graphicSource.graphics.length).toEqual(2);
-
-            //默认
-            graphicSource.removeGraphics();
-            expect(graphicSource.graphics.length).toEqual(0);
-            done();
-        }, 0);
+              //默认
+              graphicSource.removeGraphics();
+              expect(graphicSource.graphics.length).toEqual(0);
+              done();
+            }
+        });
     });
    it("getLayerState", (done) => {
         let graphics = [];
@@ -440,13 +449,15 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
-
-        setTimeout(() => {
-            const state = graphicLayer.getSource().getLayerState();
-            expect(state).not.toBeNull();
-            expect(state.color).toEqual("red");
-            done();
-        }, 0);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              const state = graphicLayer.getSource().getLayerState();
+              expect(state).not.toBeNull();
+              expect(state.color).toEqual("red");
+              done();
+            }
+        });
     });
 
    it("setGraphics", (done) => {
@@ -474,23 +485,25 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
-
-        setTimeout(() => {
-            graphicLayer.getSource().clear();
-            expect(graphicLayer.getSource().graphics.length).toEqual(0);
-            let graphics = [];
-            for (let j = 0; j < coors.length; ++j) {
-                graphics[j] = new GraphicObj(new Point(coors[j]));
-                graphics[j].setId(j);
-                graphics[j].setAttributes({
-                    name: "graphic_" + j
-                });
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              graphicLayer.getSource().clear();
+              expect(graphicLayer.getSource().graphics.length).toEqual(0);
+              let graphics = [];
+              for (let j = 0; j < coors.length; ++j) {
+                  graphics[j] = new GraphicObj(new Point(coors[j]));
+                  graphics[j].setId(j);
+                  graphics[j].setAttributes({
+                      name: "graphic_" + j
+                  });
+              }
+  
+              graphicLayer.getSource().setGraphics(graphics);
+              expect(graphicLayer.getSource().graphics.length).toEqual(5);
+              done()
             }
-
-            graphicLayer.getSource().setGraphics(graphics);
-            expect(graphicLayer.getSource().graphics.length).toEqual(5);
-            done()
-        }, 0);
+        });
     });
 
    it("setStyle", (done) => {
@@ -519,15 +532,17 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
-
-        setTimeout(() => {
-            expect(graphicLayer.getSource().color).toEqual("red");
-            graphicLayer.getSource().setStyle({
-                color: "blue"
-            });
-            expect(graphicLayer.getSource().color).toEqual("blue");
-            done()
-        }, 0);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              expect(graphicLayer.getSource().color).toEqual("red");
+              graphicLayer.getSource().setStyle({
+                  color: "blue"
+              });
+              expect(graphicLayer.getSource().color).toEqual("blue");
+              done()
+            }
+        });
     });
 
    it("clear", (done) => {
@@ -555,13 +570,15 @@ describe('openlayers_GraphicLayer', () => {
             })
         });
         map.addLayer(graphicLayer);
-
-        setTimeout(() => {
-            const graphicSource = graphicLayer.getSource();
-            graphicSource.clear();
-            expect(graphicSource.graphics.length).toEqual(0);
-            done();
-        }, 0);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              const graphicSource = graphicLayer.getSource();
+              graphicSource.clear();
+              expect(graphicSource.graphics.length).toEqual(0);
+              done();
+            }
+        });
     });
 
    it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
@@ -610,29 +627,32 @@ describe('openlayers_GraphicLayer', () => {
                 color: "rgba(0,166,0,1)",
             }),
         });
-        setTimeout(() => {
-            var resgraphics = graphicLayer.getSource();
-            for (let j = 0; j < resgraphics.length; ++j) {
-                resgraphics[j].setStyle(cloverShapeStyle);
-                var resolution = 1;
-                var evtPixel = [-35.16, 38.05];
-                //1、当鼠标点击在三叶草叶子内时,得到要素,调用高亮函数
-                var innerCoors = [25.576171875, -27.158203125];
-                var callback = function (a, b) {
-                    expect(b).toNotBe(null);
-                    expect(a.coordinate).toBe([25.576171875, -27.158203125]);
-                };
-                graphicLayer.getSource()._forEachFeatureAtCoordinate(innerCoors, resolution, callback, evtPixel);
-                spyOn(graphicLayer, '_highLight');
-                expect(graphicLayer.getSource()._highLight).toHaveBeenCalled();
-                //2、当鼠标点击在三叶草外时, 关闭高亮，返回undefined
-                var outerCoors = [27.685546875, -26.015625];
-                var re = graphicLayer.getSource()._forEachFeatureAtCoordinate(outerCoors, resolution, callback, evtPixel);
-                spyOn(graphicLayer, '_highLightClose');
-                expect(graphicLayer.getSource()._highLightClose).toHaveBeenCalled();
-                expect(re).toBe(undefined);
+        const key = graphicLayer.on('postrender', function() {
+            if (graphicLayer.getSource().renderer) {
+              unByKey(key);
+              var resgraphics = graphicLayer.getSource();
+              for (let j = 0; j < resgraphics.length; ++j) {
+                  resgraphics[j].setStyle(cloverShapeStyle);
+                  var resolution = 1;
+                  var evtPixel = [-35.16, 38.05];
+                  //1、当鼠标点击在三叶草叶子内时,得到要素,调用高亮函数
+                  var innerCoors = [25.576171875, -27.158203125];
+                  var callback = function (a, b) {
+                      expect(b).toNotBe(null);
+                      expect(a.coordinate).toBe([25.576171875, -27.158203125]);
+                  };
+                  graphicLayer.getSource()._forEachFeatureAtCoordinate(innerCoors, resolution, callback, evtPixel);
+                  spyOn(graphicLayer, '_highLight');
+                  expect(graphicLayer.getSource()._highLight).toHaveBeenCalled();
+                  //2、当鼠标点击在三叶草外时, 关闭高亮，返回undefined
+                  var outerCoors = [27.685546875, -26.015625];
+                  var re = graphicLayer.getSource()._forEachFeatureAtCoordinate(outerCoors, resolution, callback, evtPixel);
+                  spyOn(graphicLayer, '_highLightClose');
+                  expect(graphicLayer.getSource()._highLightClose).toHaveBeenCalled();
+                  expect(re).toBe(undefined);
+              }
+              done();
             }
-            done();
-        }, 0);
+        });
     });
 });
