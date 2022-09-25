@@ -13,6 +13,7 @@ describe('mapboxgl_WebMap', () => {
     var originalTimeout, testDiv;
     var server = 'http://support.supermap.com:8090/iportal/';
     var id = 1788054202;
+    var datavizWebmap;
     beforeEach(() => {
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
@@ -26,6 +27,11 @@ describe('mapboxgl_WebMap', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
+      if (datavizWebmap && datavizWebmap.map) {
+        datavizWebmap.map.remove();
+        datavizWebmap.map = null;
+        datavizWebmap = null;
+      }
         window.document.body.removeChild(testDiv);
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
@@ -86,12 +92,12 @@ describe('mapboxgl_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        datavizWebmap = new WebMap(id, options);
+        datavizWebmap.on('mapinitialized', () => {
             datavizWebmap.setMapId('testID');
             expect(datavizWebmap.mapId).toEqual('testID');
             done();
-        }, 0);
+        });
     });
     it('setWebMapOptions', (done) => {
         let options = {
@@ -104,8 +110,8 @@ describe('mapboxgl_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('addlayerssucceeded', () => {
+        datavizWebmap = new WebMap(id, options);
+        datavizWebmap.on('mapinitialized', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
             expect(datavizWebmap.server).toEqual('http://www.test.com/');
             done();
@@ -119,7 +125,7 @@ describe('mapboxgl_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {
+        datavizWebmap = new WebMap(id, {
             server: server
         });
         let mapOptions = {
@@ -129,7 +135,7 @@ describe('mapboxgl_WebMap', () => {
             maxZoom: 12,
             isWorldCopy: true
         };
-        datavizWebmap.on('addlayerssucceeded', () => {
+        datavizWebmap.on('mapinitialized', () => {
             datavizWebmap.setMapOptions(mapOptions);
             done();
         });
@@ -146,18 +152,18 @@ describe('mapboxgl_WebMap', () => {
         let options = {
             server: server
         };
-        var datavizWebmap = new WebMap(id, options);
+        datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
-            expect(datavizWebmap.credentialKey).toBeUndefined();
-            expect(datavizWebmap.credentialValue).toBeUndefined();
+        datavizWebmap.on('mapinitialized', () => {
+          expect(datavizWebmap.credentialKey).toBeUndefined();
+          expect(datavizWebmap.credentialValue).toBeUndefined();
 
-            var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(2, 0.001)
-            expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
-            expect(datavizWebmap.mapParams.description).toBe('This is a image');
-            done();
-        }, 0);
+          var map = datavizWebmap.map;
+          expect(map.getZoom()).toBeCloseTo(2, 0.001)
+          expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
+          expect(datavizWebmap.mapParams.description).toBe('This is a image');
+          done();
+      })
     });
 
     it('initialize_TIANDITU_TER', (done) => {
@@ -173,10 +179,10 @@ describe('mapboxgl_WebMap', () => {
         });
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        datavizWebmap.on('mapinitialized', () => {
             expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
             done();
-        }, 0);
+        });
     });
 
     it('initialize_OPENSTREET', (done) => {
