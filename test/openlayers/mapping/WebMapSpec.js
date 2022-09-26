@@ -664,8 +664,8 @@ describe('openlayers_WebMap', () => {
             successCallback: function () {},
             errorCallback: function () {}
         };
-        let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
-        // let requestUrl = `${proxy}${encodeURIComponent('http://support.supermap.com:8090/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
+        let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+        // let requestUrl = `${proxy}${encodeURIComponent('http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMS;
@@ -705,13 +705,13 @@ describe('openlayers_WebMap', () => {
                 errorCallback: function () {},
                 callback: function () {}
             };
-            let wmtsData ='<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+            let wmtsData ='<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
 
             spyOn(FetchRequest, 'get').and.callFake((url) => {
                 if (url.indexOf('map.json')>-1) {
                     var mapJson = datavizWebMap_WMTS;
                     return Promise.resolve(new Response(mapJson));
-                } else if(url === 'http://support.supermap.com:8090/iserver/services/maps/wmts100?') {
+                } else if(url === 'http://localhost:9876/iserver/services/maps/wmts100?') {
                     return Promise.resolve(new Response(wmtsData));
                 }
                 return Promise.resolve();
@@ -855,7 +855,7 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url === "http://support.supermap.com:8090/iserver/services/maps/wmts100?") {
+            } else if (url === "http://localhost:9876/iserver/services/maps/wmts100?") {
                 return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
@@ -883,7 +883,7 @@ describe('openlayers_WebMap', () => {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             } else {
-                let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+                let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
                 return Promise.resolve(new Response(wmtsData));
             }
         });
@@ -893,7 +893,7 @@ describe('openlayers_WebMap', () => {
         });
         setTimeout(() => {
             var layerInfo = {
-                url: 'http://support.supermap.com:8090/iserver/services/maps/wmts100'
+                url: 'http://localhost:9876/iserver/services/maps/wmts100'
             };
             var successCallback = function () {};
             datavizWebmap.getWmtsInfo(layerInfo, successCallback);
