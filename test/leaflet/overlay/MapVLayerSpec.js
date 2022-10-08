@@ -66,6 +66,7 @@ describe('leaflet_MapVLayer', () => {
         layer.remove();
     });
     afterAll(() => {
+        window.devicePixelRatio = 1;
         document.body.removeChild(testDiv);
         map.remove();
     });
