@@ -740,4 +740,21 @@ describe('GeoJSON', () => {
     expect(obj.geometry.points[0].x).toBe(10);
     expect(obj.geometry.points[0].y).toBe(10);
   });
+
+  it('geometry id same as feature id', () => {
+    var feature = {
+      type: 'Feature',
+      properties: {
+        POP: 1,
+        CAPITAL: 'test'
+      },
+      id: 3,
+      geometry: {
+        type: 'Point',
+        coordinates: [108, 44]
+      }
+    };
+    var result = new GeoJSON().read(feature, feature.type);
+    expect(result.geometry.id).toBe(3);
+  });
 });
