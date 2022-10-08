@@ -3,6 +3,8 @@ import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {utilCityCenter, DataSet} from 'mapv';
 
 var url = GlobeParameter.ChinaURL;
+var dataSet,options;
+
 describe('leaflet_MapVLayer', () => {
     var originalTimeout;
     var testDiv, map, layer;
@@ -39,8 +41,8 @@ describe('leaflet_MapVLayer', () => {
                 count: 30 * Math.random()
             });
         }
-        var dataSet = new DataSet(data);
-        var options = {
+        dataSet = new DataSet(data);
+        options = {
             fillStyle: 'rgba(55, 50, 250, 0.8)',
             shadowColor: 'rgba(255, 250, 50, 1)',
             shadowBlur: 20,
@@ -153,6 +155,14 @@ describe('leaflet_MapVLayer', () => {
         expect(layer.canvas.width).toEqual(500);
         expect(layer.canvas.style.width).toBe('500px');
     });
+
+    it('draw, redraw heatmap', () => {
+      options.draw = 'heatmap';
+      window.devicePixelRatio = 2;
+      var layer = mapVLayer(dataSet, options).addTo(map);
+      layer.draw();
+      expect(layer.canvas.width).toEqual(500 * 2);
+   });
 
     it('setZIndex', () => {
         layer.setZIndex(2);
