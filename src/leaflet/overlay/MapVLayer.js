@@ -222,8 +222,13 @@ export var MapVLayer = L.Layer.extend({
 
         var map = this._map;
         var size = map.getSize();
-        canvas.width = size.x;
-        canvas.height = size.y;
+        if (this.mapVOptions.draw === 'heatmap') {
+          canvas.width = parseInt(size.x) * this.devicePixelRatio;
+          canvas.height = parseInt(size.y) * this.devicePixelRatio;
+        } else {
+          canvas.width = parseInt(size.x);
+          canvas.height = parseInt(size.y);
+        }
         canvas.style.width = size.x + 'px';
         canvas.style.height = size.y + 'px';
         var bounds = map.getBounds();
