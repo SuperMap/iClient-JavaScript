@@ -612,6 +612,7 @@ export class GeoJSON extends JSONFormat {
             feature.bounds = Bounds.fromArray(bbox);
         }
         if (obj.id) {
+            feature.geometry.id = obj.id;
             feature.fid = obj.id;
         }
         return feature;
