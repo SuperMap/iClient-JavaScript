@@ -127,7 +127,7 @@ describe('leaflet_TiandituTileLayer', () => {
         expect(layer.options.key).toBe('123456');
         expect(layer._url).toBe('https://t{s}.tianditu.gov.cn/cia_w/wmts?tk=123456');
         expect(layer.getTileUrl(coords)).toBe(
-            'https://t0.tianditu.gov.cn/cia_w/wmts?tk=123456&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0'
+            'https://t0.tianditu.gov.cn/cia_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0&tk=123456'
         );
     });
 
@@ -139,12 +139,12 @@ describe('leaflet_TiandituTileLayer', () => {
             key: '123456'
         }).addTo(map);
         expect(layer.getTileUrl(coords)).toBe(
-            'https://t0.tianditu.gov.cn/cia_w/wmts?tk=123456&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0'
+            'https://t0.tianditu.gov.cn/cia_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0&tk=123456'
         );
         layer.remove();
         layer.addTo(map);
         expect(layer.getTileUrl(coords)).toBe(
-            'https://t0.tianditu.gov.cn/cia_w/wmts?tk=123456&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0'
+            'https://t0.tianditu.gov.cn/cia_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0&tk=123456'
         );
     });
     it('initialize_noWrap_false', () => {
@@ -156,7 +156,7 @@ describe('leaflet_TiandituTileLayer', () => {
             key: '123456'
         }).addTo(map);
         expect(layer.getTileUrl(coords)).toBe(
-            'https://t0.tianditu.gov.cn/cia_w/wmts?tk=123456&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0'
+            'https://t0.tianditu.gov.cn/cia_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix=2&tilerow=0&tilecol=0&tk=123456'
         );
         expect( document.querySelectorAll('.leaflet-tile').length).toBeGreaterThan(4);
     });
