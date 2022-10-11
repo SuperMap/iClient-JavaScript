@@ -103,5 +103,7 @@ describe('leaflet_TileLayerWMTS', () => {
       const tileUrl = WMTStiledMapLayerObject.getTileUrl(coords)
       expect(tileUrl).not.toBeNull();
       expect(tileUrl).toBe(GlobeParameter.WMTSURL + '/China/default/Custom_China/NaN/0/0.png?token=test');
+      SecurityManager.destroyToken(url);
+      SecurityManager.destroyAllCredentials();
   });
 });
