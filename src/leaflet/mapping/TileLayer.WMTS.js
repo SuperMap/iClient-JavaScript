@@ -3,6 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import "../core/Base";
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class WMTSLayer
@@ -81,8 +83,11 @@ export var WMTSLayer = L.TileLayer.extend({
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();
         var ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
+        var index = this._url.indexOf('?');
+        var url = index > -1 ? this._url.substring(0, this._url.indexOf('?')) : this._url;
+        var urlParams = index > -1 ? this._url.substring(this._url.indexOf('?')) : '';
 
-        var url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
+        url = L.Util.template(url, {s: this._getSubdomain(coords)});
 
         var obj = {
             service: 'WMTS',
@@ -108,7 +113,9 @@ export var WMTSLayer = L.TileLayer.extend({
         } else if (this.options.requestEncoding === 'REST') {
             var params = "/" + obj.layer + "/" + obj.style + "/" + obj.tilematrixSet + "/" + obj.tilematrix + "/" + obj.tilerow + "/" + obj.tilecol + this.formatSuffix;
             url += params;
-        }
+        } 
+        url = CommonUtil.urlAppend(url, urlParams);
+        url = SecurityManager.appendCredential(url);
         return url;
     }
 });
