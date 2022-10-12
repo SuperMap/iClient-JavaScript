@@ -115,6 +115,38 @@ describe('FetchRequest', () => {
             timeout: 45000
         });
     });
+    it('delete_urllong', () => {
+        var ids = []
+        for(var i = 0;i <500; i++){
+            ids.push(i)
+        }
+        var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
+        var params = {
+            ids: ids
+        };
+        setCORS(true);
+        spyOn(FetchRequest, '_fetch').and.callFake((url) => {
+            expect(url).not.toContain('499');
+        });
+        FetchRequest.delete(url, params);
+        expect(FetchRequest._fetch.calls.count()).toBe(1);
+    });
+    it('Get_urllong', () => {
+        var ids = []
+        for(var i = 0;i <500; i++){
+            ids.push(i)
+        }
+        var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
+        var params = {
+            ids: ids
+        };
+        setCORS(true);
+        spyOn(FetchRequest, '_fetch').and.callFake((url) => {
+            expect(url).not.toContain('499');
+        });
+        FetchRequest.get(url, params);
+        expect(FetchRequest._fetch.calls.count()).toBe(1);
+    });
     afterAll(() => {
         SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
         setCORS(defaltCors);

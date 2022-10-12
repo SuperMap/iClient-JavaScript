@@ -6,6 +6,7 @@ import {Util} from '../commontypes/Util';
 import {EditType} from '../REST';
 import {CommonServiceBase} from './CommonServiceBase';
 import {EditFeaturesParameters} from './EditFeaturesParameters';
+import { FetchRequest } from '../util/FetchRequest';
 
 /**
  * @class SuperMap.EditFeaturesService
@@ -90,9 +91,16 @@ export class EditFeaturesService extends CommonServiceBase {
         jsonParameters = EditFeaturesParameters.toJsonParameters(params);
         if (editType === EditType.DELETE) {
             ids = Util.toJSON(params.IDs);
-            me.url = Util.urlAppend(me.url, Util.getParameterString({ids}));
-            method = "DELETE";
             jsonParameters = ids;
+            var urlWithIds = Util.urlAppend(me.url, Util.getParameterString({ids}))
+            if(FetchRequest.urlIsLong(urlWithIds)) {
+                me.url = Util.urlAppend(me.url, Util.getParameterString({_method: 'DELETE'}));
+                method = "POST";
+            } else{
+                me.url = urlWithIds;
+                method = "DELETE";
+            }
+           
         } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
