@@ -369,7 +369,7 @@ export var FetchRequest = {
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
         } else {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), Util.getParameters(url), options);
         }
     },
     /**
@@ -394,7 +394,7 @@ export var FetchRequest = {
             return RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), Util.getParameters(url), options);
         }
         return this._fetch(url, params, options, type);
     },
