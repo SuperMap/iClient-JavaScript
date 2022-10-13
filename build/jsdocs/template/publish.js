@@ -243,7 +243,7 @@ function attachModuleSymbols(doclets, modules) {
 function buildNav(members, view, templatePath) {
   var sorted = sortNav(members);
   view.categories = buildCategories(sorted, templatePath);
-  view.navMap = buildNavMap(sorted);
+  view.navMap = buildNavMap(sorted,view.linkto);
 }
 
 function sortNav(members) {
@@ -291,7 +291,7 @@ function buildCategories(members, templatePath) {
  * @param {array<object>} members.events
  * @return {string} The HTML for the navigation sidebar.
  */
-function buildNavMap(members) {
+function buildNavMap(members,linkto) {
   this.navMap = {};
   _.each(members, function (v) {
     var nav;
@@ -320,6 +320,7 @@ function buildNavMap(members) {
       };
     } else if (v.kind == 'class') {
       nav = {
+        fileName:linkto(v.meta.filename),
         type: 'class',
         longname: v.longname,
         name: v.name,
