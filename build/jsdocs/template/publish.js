@@ -244,6 +244,21 @@ function buildNav(members, view, templatePath) {
   var sorted = sortNav(members);
   view.categories = buildCategories(sorted, templatePath);
   view.navMap = buildNavMap(sorted,view.linkto);
+  var methods = {};
+  for (const key in view.navMap ) {
+    if (Object.hasOwnProperty.call(view.navMap , key)) {
+      const element = view.navMap[key];
+      const m = element.methods.map(e => {
+        return e.name;
+      });
+      if(!element.fileName && m.length>0){
+        console.log("没有文件名的类：", element.longname,element.type,m)
+      }
+      methods[element.fileName] = m;
+    }
+  }
+  var methodsPath = path.join(outdir, 'methods.json');
+  fs.writeFileSync(methodsPath, JSON.stringify(methods), 'utf8');
 }
 
 function sortNav(members) {
@@ -297,6 +312,7 @@ function buildNavMap(members,linkto) {
     var nav;
     if (v.kind == 'namespace') {
       nav = {
+        fileName:linkto(v.meta.filename),
         type: 'namespace',
         longname: v.longname,
         version: v.version,
@@ -345,6 +361,7 @@ function buildNavMap(members,linkto) {
       };
     } else if (v.scope === 'global') {
       nav = {
+        fileName:linkto(v.meta.filename),
         type: 'global',
         longname: v.longname,
         version: v.version,
