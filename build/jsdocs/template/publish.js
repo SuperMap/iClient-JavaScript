@@ -254,10 +254,10 @@ function buildNav(members, view, templatePath) {
       if(!element.fileName && m.length>0){
         console.log("没有文件名的类：", element.longname,element.type,m)
       }
-      if(methods[`${element.fileName}#${element.name}`]){
+      if(methods[element.fileName]){
         console.log("重复的文件名：", element.longname,element.fileName,element.type,m)
       }else{
-        methods[`${element.fileName}#${element.name}`] = m;
+        methods[element.fileName] = m;
       }
       
     }
