@@ -18,7 +18,6 @@
     "includePattern": ".+\\.js?$",
     "include": [
       "src/classic",
-      "src/common/thirdparty/ai",
       "src/common/thirdparty/elasticsearch",
       "src/common/iServer/CommonServiceBase.js",
       "src/common/iServer/GeoCodingParameter.js",
@@ -51,6 +50,7 @@
       "src/common/REST.js"
     ],
     "exclude": [
+      "src/common/thirdparty/ai",
       "src/classic/libs",
       "src/classic/theme",
       "src/classic/resource",
