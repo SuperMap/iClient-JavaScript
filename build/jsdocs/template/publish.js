@@ -254,7 +254,12 @@ function buildNav(members, view, templatePath) {
       if(!element.fileName && m.length>0){
         console.log("没有文件名的类：", element.longname,element.type,m)
       }
-      methods[element.fileName] = m;
+      if(methods[`${element.fileName}#${element.name}`]){
+        console.log("重复的文件名：", element.longname,element.fileName,element.type,m)
+      }else{
+        methods[`${element.fileName}#${element.name}`] = m;
+      }
+      
     }
   }
   var methodsPath = path.join(outdir, 'methods.json');
@@ -312,7 +317,7 @@ function buildNavMap(members,linkto) {
     var nav;
     if (v.kind == 'namespace') {
       nav = {
-        fileName:linkto(v.meta.filename),
+        fileName:`${linkto(v.meta.filename)}#${v.name}`,
         type: 'namespace',
         longname: v.longname,
         version: v.version,
@@ -336,7 +341,7 @@ function buildNavMap(members,linkto) {
       };
     } else if (v.kind == 'class') {
       nav = {
-        fileName:linkto(v.meta.filename),
+        fileName:`${linkto(v.meta.filename)}#${v.name}`,
         type: 'class',
         longname: v.longname,
         name: v.name,
@@ -361,7 +366,7 @@ function buildNavMap(members,linkto) {
       };
     } else if (v.scope === 'global') {
       nav = {
-        fileName:linkto(v.meta.filename),
+        fileName:`${linkto(v.meta.filename)}#${v.name}`,
         type: 'global',
         longname: v.longname,
         version: v.version,
