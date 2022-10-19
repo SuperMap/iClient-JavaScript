@@ -111,3 +111,42 @@ export function conversionDegree(degrees) {
     second = parseInt(second / 10) === 0 ? `0${second}` : second;
     return `${degree}°${fraction}'${second}`;
 }
+
+export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
+  var resolutions = [];
+  if (scales && scales.length > 0) {
+    for (let i = 0; i < scales.length; i++) {
+      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+    }
+  } else {
+    const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
+    for (let i = 0; i < level; i++) {
+      resolutions.push(maxReolution / Math.pow(2, i));
+    }
+  }
+  return resolutions.sort(function (a, b) {
+    return b - a;
+  });
+}
+
+export function getZoomByResolution(resolution, resolutions) {
+  let zoom = 0;
+  let minDistance;
+  for (let i = 0; i < resolutions.length; i++) {
+    if (i === 0) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+    }
+    if (minDistance > Math.abs(resolution - resolutions[i])) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+      zoom = i;
+    }
+  }
+  return zoom;
+}
+
+export function scaleToResolution(scale, dpi, mapUnit) {
+  const inchPerMeter = 1 / 0.0254;
+  const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+  const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
+  return resolution;
+}

@@ -346,7 +346,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         if (options.overlapDisplayed === false) {
             params["overlapDisplayed"] = false;
             if (options.overlapDisplayedOptions) {
-                params["overlapDisplayedOptions"] = me.overlapDisplayedOptions.toString();
+                params["overlapDisplayedOptions"] = options.overlapDisplayedOptions;
             }
         } else {
             params["overlapDisplayed"] = true;
