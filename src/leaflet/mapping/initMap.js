@@ -13,6 +13,7 @@ import proj4 from 'proj4';
  * @function initMap
  * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务，创建的图层为 TiledMapLayer。
  * @category BaseTypes Util
+ * @version 11.0.1
  * @example
  *       initMap(url, {mapOptions, layerOptions});
  * @param {string} url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
@@ -64,6 +65,7 @@ export function initMap(url, options) {
  * @function crsFromMapJSON
  * @description 通过iServer REST地图的配置信息，构建地图的CRS（非平面投影、EPSG:3857、EPSG:4326需要先注册投影）。
  * @category BaseTypes Util
+ * @version 11.0.1
  * @param {Object} mapJSONObj - 地图参数。
  * @param {Object} mapJSONObj.prjCoordSys - 投影配置。
  * @param {Object} mapJSONObj.bounds - 范围。

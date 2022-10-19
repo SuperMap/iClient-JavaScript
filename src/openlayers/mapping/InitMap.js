@@ -14,6 +14,7 @@ window.proj4 = proj4;
  * @function initMap
  * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务，创建的图层为 ol.Tile。
  * @category BaseTypes Util 
+ * @version 11.0.1
  * @param {number} url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {Object} options - 参数。
  * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_Map-Map.html}。
@@ -63,6 +64,7 @@ export function initMap(url, options = {}) {
 /**
  * @function  viewOptionsFromMapJSON
  * @category BaseTypes Util
+ * @version 11.0.1
  * @description 通过 iServer REST 地图参数构造 ol 视图对象。
  * @param {Object} mapJSONObj - 地图 JSON 对象。
  * @param {number} [level=22] - 地图最大级别。
