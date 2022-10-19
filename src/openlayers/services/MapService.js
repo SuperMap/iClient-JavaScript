@@ -49,19 +49,25 @@ export class MapService extends ServiceBase {
     getMapStatusService.processAsync();
   }
 
+  /**
+   * @function  MapService.prototype.getWkt
+   * @description 获取WKT。
+   * @param {RequestCallback} callback - 回调函数。
+   */
   getWkt(callback) {
     var me = this;
     var getMapStatusService = new CommonMapService(`${me.url}/prjCoordSys.wkt`, {
-        proxy: me.options.proxy,
-        withCredentials: me.options.withCredentials,
-        withoutFormatSuffix: true,
-        crossOrigin: me.options.crossOrigin,
-        headers: me.options.headers,
-        eventListeners: {
-            scope: me,
-            processCompleted: callback,
-            processFailed: callback
-        }, projection: me.options.projection
+      proxy: me.options.proxy,
+      withCredentials: me.options.withCredentials,
+      withoutFormatSuffix: true,
+      crossOrigin: me.options.crossOrigin,
+      headers: me.options.headers,
+      eventListeners: {
+        scope: me,
+        processCompleted: callback,
+        processFailed: callback
+      },
+      projection: me.options.projection
     });
     getMapStatusService.processAsync();
   }

@@ -46,7 +46,7 @@ export class TileSuperMapRest extends TileImage {
 
         options.format = options.format ? options.format : 'png';
 
-        super({
+        super({ 
             attributions: options.attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
@@ -322,42 +322,8 @@ export class TileSuperMapRest extends TileImage {
         options.url = url;
         options.crossOrigin = 'anonymous';
         var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
-        var resolutions = getResolutions();
-
-        function getResolutions() {
-            var level = 22;
-            var dpi = 96;
-            var width = extent[2] - extent[0];
-            var height = extent[3] - extent[1];
-            var tileSize = width >= height ? width : height;
-            var maxReolution;
-            if (tileSize === width) {
-                maxReolution = tileSize / mapJSONObj.viewer.width;
-            } else {
-                maxReolution = tileSize / mapJSONObj.viewer.height;
-            }
-            var resolutions = [];
-            var unit = Unit.METER;
-            if (mapJSONObj.coordUnit === Unit.DEGREE) {
-                unit = Unit.DEGREE;
-            }
-            if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
-                for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
-                    resolutions.push(Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
-                }
-            } else {
-                for (let i = 0; i < level; i++) {
-                    resolutions.push(maxReolution / Math.pow(2, i));
-                }
-            }
-
-            function sortNumber(a, b) {
-                return b - a;
-            }
-
-            return resolutions.sort(sortNumber);
-        }
-
+        const { visibleScales, bounds, dpi, coordUnit } = mapJSONObj;
+        var resolutions = Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit);
         options.tileGrid = new TileGrid({
             extent: extent,
             resolutions: resolutions

@@ -17,7 +17,9 @@ import {
   ImageTileSuperMapRest,
   Tianditu,
   TileSuperMapRest,
-  WebMap
+  WebMap,
+  initMap,
+  viewOptionsFromMapJSON
 } from './mapping';
 
 /* overlay */
@@ -133,6 +135,8 @@ if (window && window.ol) {
   ol.supermap.WebPrintingJobService = WebPrintingJobService;
   ol.supermap.ImageService = ImageService;
   ol.supermap.ImageCollectionService = ImageCollectionService;
+  ol.supermap.initMap = initMap;
+  ol.supermap.viewOptionsFromMapJSON = viewOptionsFromMapJSON;
 
   // 处理命名空间重名问题
   ol.supermap.CommonUtil = CommonUtil;
