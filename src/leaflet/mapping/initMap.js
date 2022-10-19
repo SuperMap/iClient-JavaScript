@@ -251,9 +251,8 @@ function getCRS(epsgCodeStr, { bounds, dpi, resolutions }) {
   const wrapLngLeft = proj4(epsgCodeStr, 'EPSG:4326').forward([bounds.left, 0], true);
   const wrapLngRight = proj4(epsgCodeStr, 'EPSG:4326').forward([bounds.right, 0], true);
   const wrapLng = [parseInt(wrapLngLeft[0]), parseInt(wrapLngRight[0])];
-  console.log(wrapLng)
   let options = {
-    // wrapLng,
+    wrapLng,
     bounds: L.bounds([bounds.left, bounds.bottom], [bounds.right, bounds.top]),
     origin: [bounds.left, bounds.top],
     dpi: dpi
