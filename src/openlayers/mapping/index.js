@@ -8,3 +8,4 @@ export { Tianditu } from './Tianditu';
 export { TileSuperMapRest } from './TileSuperMapRest';
 export { WebMap } from './WebMap';
 export { ImageTileSuperMapRest } from './ImageTileSuperMapRest';
+export { initMap, viewOptionsFromMapJSON } from './InitMap';
