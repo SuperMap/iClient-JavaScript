@@ -764,6 +764,7 @@
       }
 
       function query() {
+        clearSearchResult();
         var postData = {};
         if (provinceId != -1) {
           postData.bbox = provinceBbox;
