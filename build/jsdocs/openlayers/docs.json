@@ -23,6 +23,7 @@
         ],
         "exclude": [
             "src/common/overlay/levelRenderer",
+            "src/common/thirdparty/ai",
             "src/common/lang/locales",
             "src/common/iPortal/iPortalQueryResult",
             "src/common/online/OnlineServiceBase",
