@@ -1,5 +1,6 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+   '@disabled': true,
     after:function(browser){
         console.log('Closing down...');
         browser.end();
