@@ -13,7 +13,7 @@ import './leaflet/mapping/TileLayer.WMTSSpec.js';
 import './leaflet/mapping/WebMapSpec.js';
 import './leaflet/mapping/TiandituTileLayerSpec';
 import './leaflet/mapping/ImageTileLayerSpec';
-
+import './leaflet/mapping/initMapSpec.js';
 /*leaflet -- overlay*/
 
 import './leaflet/overlay/EchartsLayerSpec.js';

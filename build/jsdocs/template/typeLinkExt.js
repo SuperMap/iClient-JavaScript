@@ -1,5 +1,5 @@
 var olapi = "https://openlayers.org/en/v6.14.1/apidoc/";
-var lfapi = "https://leafletjs.com/reference-1.7.1.html";
+var lfapi = "https://leafletjs.com/index.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
@@ -69,6 +69,7 @@ var typeLinks = {
     "L.Rectangle": lfapi + '#rectangle',
     'L.LatLngBounds': lfapi+ '#latlngbounds',
     'L.Map': lfapi + '#map-example',
+    'L.MapOptions': lfapi + '#map-option',
     'L.Evented':lfapi +'#evented',
     'L.Browser':lfapi +'#browser',
 

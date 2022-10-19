@@ -112,11 +112,11 @@ export function conversionDegree(degrees) {
     return `${degree}°${fraction}'${second}`;
 }
 
-export function scalesToResolutions(scales, bounds, dpi, unit, level = 22) {
+export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (let i = 0; i < scales.length; i++) {
-      resolutions.push(scaleToResolution(scales[i], dpi, unit));
+      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
     }
   } else {
     const maxReolution = Math.abs(bounds.left - bounds.right) / 256;

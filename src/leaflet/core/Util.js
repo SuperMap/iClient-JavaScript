@@ -3,8 +3,12 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
- import { getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
- 
+ import {
+  getMeterPerMapUnit as MeterPerMapUnit,
+  getZoomByResolution,
+  scalesToResolutions
+} from '@supermap/iclient-common/util/MapCalculateUtil';
+
  /**
  * @function toGeoJSON
  * @category BaseTypes Util
@@ -224,4 +228,7 @@ export var getResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
     }
     return -1;
 };
-
+export {
+  getZoomByResolution,
+  scalesToResolutions
+}
