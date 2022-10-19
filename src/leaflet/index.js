@@ -39,7 +39,9 @@ import {
     WebMap,
     webMap,
     ImageTileLayer,
-    imageTileLayer
+    imageTileLayer,
+    initMap,
+    crsFromMapJSON
 } from './mapping';
 import {
     DataFlowLayer,
@@ -237,7 +239,9 @@ export {
     WebMap,
     webMap,
     ImageTileLayer,
-    imageTileLayer
+    imageTileLayer,
+    initMap,
+    crsFromMapJSON
 };
 export {
     DataFlowLayer,

@@ -73,6 +73,20 @@ describe('GetGridCellInfosService', () => {
         });
         var queryCompleted = event => {
             eventCompleted = event;
+            try {
+                expect(myService.url).toEqual(
+                    dataServiceURL + '/datasources/World/datasets/LandCover/gridValue?x=110&y=50'
+                );
+                myService.destroy();
+                queryParam.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
+                myService.destroy();
+                queryParam.destroy();
+                done();
+            }
         };
         var queryError = event => {
             eventFailed = event;
@@ -97,23 +111,6 @@ describe('GetGridCellInfosService', () => {
             return null;
         });
         myService.processAsync(queryParam);
-
-        setTimeout(() => {
-            try {
-                expect(myService.url).toEqual(
-                    dataServiceURL + '/datasources/World/datasets/LandCover/gridValue?x=110&y=50'
-                );
-                myService.destroy();
-                queryParam.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
-                myService.destroy();
-                queryParam.destroy();
-                done();
-            }
-        }, 0);
     });
 
     it('fail:processAsync', done => {
@@ -133,18 +130,16 @@ describe('GetGridCellInfosService', () => {
             Y: 50
         });
         myService.processAsync();
-        setTimeout(() => {
-            try {
-                expect(myService.processAsync() === undefined).toBeTruthy();
-                myService.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
-                myService.destroy();
-                done();
-            }
-        }, 0);
+        try {
+            expect(myService.processAsync() === undefined).toBeTruthy();
+            myService.destroy();
+            done();
+        } catch (exception) {
+            expect(false).toBeTruthy();
+            console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
+            myService.destroy();
+            done();
+        }
     });
 
     it('getDatasetInfoCompleted', () => {

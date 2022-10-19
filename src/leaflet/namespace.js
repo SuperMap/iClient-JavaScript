@@ -47,7 +47,9 @@ import {
   WebMap,
   webMap,
   ImageTileLayer,
-  imageTileLayer
+  imageTileLayer,
+  initMap,
+  crsFromMapJSON
 } from './mapping';
 
 import {
@@ -300,6 +302,8 @@ L.supermap.wmtsLayer = wmtsLayer;
 L.supermap.WMTSLayer = WMTSLayer;
 L.supermap.webmap = webMap;
 L.supermap.WebMap = WebMap;
+L.supermap.initMap = initMap;
+L.supermap.crsFromMapJSON = crsFromMapJSON;
 // overlay
 L.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
 L.supermap.DefaultStyle = DefaultStyle;

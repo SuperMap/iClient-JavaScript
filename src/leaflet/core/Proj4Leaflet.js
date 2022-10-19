@@ -115,7 +115,7 @@ L.Proj.Projection = L.Class.extend({
  * @param {Array.<number>} [options.resolutions] - 分辨率数组。
  * @param {(Array.<number>|L.Bounds)} [options.bounds] - 范围。
  * @param {number} [options.dpi=96] - dpi。
- * @param {number} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
+ * @param {Array.<number>} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
  * @example
  *    var crs =new CRS("EPSG:4326",{
  *          origin: [-180,90],
@@ -305,7 +305,7 @@ export var CRS = L.Class.extend({
         var meterPerMapUnit = 1;
         if (mapUnit === 'meter') {
             meterPerMapUnit = 1;
-        } else if (mapUnit === 'degrees') {
+        } else if (mapUnit === 'degrees' || mapUnit === 'degree') {
             // 每度表示多少米。
             meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
         } else if (mapUnit === 'kilometer') {
