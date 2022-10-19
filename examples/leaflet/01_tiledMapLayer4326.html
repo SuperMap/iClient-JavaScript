@@ -24,8 +24,6 @@
         //         3.调用 L.map 创建地图
         //         4.调用 L.supermap.TiledMapLayer 创建底图
         new L.supermap.MapService(url).getMapInfo((res) => {
-            var def = `GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]]`;
-            Proj4js.defs('EPSG:4490', def);
             var crs = L.supermap.crsFromMapJSON(res.result);
             map = L.map('map', {
               crs: crs,

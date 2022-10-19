@@ -1,6 +1,7 @@
 import { initMap, crsFromMapJSON } from '../../../src/leaflet/mapping/initMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { mockCreateTile } from '../../tool/mock_leaflet';
+import proj4 from 'proj4';
 
 var map;
 var def4490 = `GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]]`;
@@ -78,7 +79,7 @@ describe('initMap', () => {
   });
 
   it('initMap 4326', async () => {
-    var url = 'http://172.16.14.44:8090/iserver/services/map-jinjing/rest/maps/jinjing';
+    var url = 'http://fake:8090/iserver/services/map-jinjing/rest/maps/jinjing';
     var mapInfo = {
       prjCoordSys: {
         distanceUnit: 'METER',
@@ -268,7 +269,7 @@ describe('initMap', () => {
   });
 
   it('initMap 4490', async () => {
-    var url = 'http://172.16.14.44:8090/iserver/services/map-china/rest/maps/chian4490';
+    var url = 'http://fake:8090/iserver/services/map-china/rest/maps/chian4490';
     var mapInfo = {
       prjCoordSys: {
         distanceUnit: 'METER',
@@ -498,10 +499,8 @@ describe('initMap', () => {
       },
       coordUnit: 'DEGREE'
     };
+    proj4.defs('EPSG:4490', def4490);
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      if (testUrl.includes('prjCoordSys.wkt')) {
-        return Promise.resolve(new Response(def4490));
-      }
       return Promise.resolve(new Response(JSON.stringify(mapInfo)));
     });
     var crs = await crsFromMapJSON(mapInfo);
