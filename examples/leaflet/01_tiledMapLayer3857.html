@@ -15,10 +15,9 @@
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var map,
         url = host + '/iserver/services/map-china400/rest/maps/China';
-      url = 'http://172.16.14.44:8090/iserver/services/map-china400/rest/maps/China';
 
       // 方式一：1.调用 L.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
-      L.supermap.initMap(url, { mapOptions: { zoom: 0 } });
+      L.supermap.initMap(url);
       /*
         // 方式二：1.调用 L.supermap.MapService，获取 SuperMap iServer 地图服务的地图信息
         //         2.调用 L.supermap.crsFromMapJSON 创建 CRS
